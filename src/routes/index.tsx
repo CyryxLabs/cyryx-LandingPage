@@ -1,29 +1,54 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Header } from "@/components/cyryx/Header";
+import { Hero } from "@/components/cyryx/Hero";
+import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
+import { WhyCyryx } from "@/components/cyryx/WhyCyryx";
+import { CoreCapabilities } from "@/components/cyryx/CoreCapabilities";
+import { CommandLayerSection } from "@/components/cyryx/CommandLayerSection";
+import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
+import { ProcessTimeline } from "@/components/cyryx/ProcessTimeline";
+import { CTASection } from "@/components/cyryx/CTASection";
+import { Footer } from "@/components/cyryx/Footer";
+import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Cyryx Labs — Intelligence Infrastructure for Autonomous Execution" },
+      {
+        name: "description",
+        content:
+          "Cyryx Labs builds reasoning engines, command architecture, and secure execution frameworks for organizations deploying AI at enterprise scale.",
+      },
+      { property: "og:title", content: "Cyryx Labs — AI Infrastructure / Command Layer" },
+      {
+        property: "og:description",
+        content:
+          "Reasoning engines, command architecture, and secure execution frameworks for enterprise AI.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "theme-color", content: "#0A0A0A" },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  useCyryxScrollAnimations();
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
+      <Header />
+      <main id="overview">
+        <Hero />
+        <CapabilityStrip />
+        <WhyCyryx />
+        <CoreCapabilities />
+        <CommandLayerSection />
+        <MAAXStudioSpotlight />
+        <ProcessTimeline />
+        <CTASection />
+      </main>
+      <Footer />
     </div>
   );
 }
