@@ -27,7 +27,7 @@ export function Hero() {
       />
       <GridFloor className="opacity-30" />
 
-      <div className="relative mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl items-center gap-10 px-4 pb-14 sm:px-6 sm:pb-18 lg:grid-cols-[minmax(0,0.98fr)_minmax(420px,0.82fr)] lg:gap-8 lg:px-10 lg:pb-20">
+      <div className="relative mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl items-start gap-10 px-4 pb-14 pt-8 sm:px-6 sm:pb-18 sm:pt-12 lg:grid-cols-[minmax(0,0.98fr)_minmax(420px,0.82fr)] lg:items-center lg:gap-8 lg:px-10 lg:pt-0 lg:pb-20">
         <div className="relative z-10 flex max-w-4xl flex-col items-start text-left lg:pt-6">
           <div className="mb-6" data-hero-line>
             <HudLabel withDot className="text-[var(--accent-glow)]">
