@@ -38,8 +38,8 @@ export function useCyryxScrollAnimations() {
         ease: "power3.out",
         scrollTrigger: {
           trigger: el,
-          start: "top 92%",
-          once: true,
+          start: "top bottom-=80",
+          toggleActions: "play none none none",
         },
       });
     });
@@ -48,16 +48,17 @@ export function useCyryxScrollAnimations() {
     gsap.utils.toArray<HTMLElement>(".cx-stagger").forEach((group) => {
       const items = group.querySelectorAll<HTMLElement>(".cx-stagger-item");
       if (!items.length) return;
-      gsap.from(items, {
-        opacity: 0,
-        y: 20,
+      gsap.set(items, { opacity: 0, y: 20 });
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
         duration: 0.7,
         ease: "power2.out",
         stagger: 0.06,
         scrollTrigger: {
           trigger: group,
-          start: "top 92%",
-          once: true,
+          start: "top bottom-=80",
+          toggleActions: "play none none none",
         },
       });
     });
