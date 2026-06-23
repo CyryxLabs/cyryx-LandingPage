@@ -38,7 +38,13 @@ function Index() {
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
-      <main id="overview">
+      <main id="overview" className="relative">
+        {/* Continuous teal core line drawn by scroll (desktop only) */}
+        <span
+          aria-hidden
+          data-core-line
+          className="cx-core-line hidden lg:block"
+        />
         <Hero />
         <CapabilityStrip />
         <WhyCyryx />
