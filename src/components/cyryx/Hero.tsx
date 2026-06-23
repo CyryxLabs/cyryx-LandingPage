@@ -1,9 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
-import { CyryxMark } from "./primitives/CyryxMark";
 import { DashboardPanel } from "./DashboardPanel";
 import { GridFloor } from "./primitives/GridFloor";
 import { ScrollIndicator } from "./ScrollIndicator";
+import { MonolithScene } from "./three/MonolithScene";
+import { MagneticButton } from "./primitives/MagneticButton";
 
 /**
  * Hero — monolith-anchored, centered.
@@ -14,7 +15,8 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative isolate overflow-hidden pt-28 sm:pt-32 lg:pt-40 pb-16 lg:pb-24"
+      data-hero
+      className="relative isolate overflow-hidden pt-24 sm:pt-28 lg:pt-32 pb-16 lg:pb-24"
     >
       <GridFloor />
       <div
@@ -22,73 +24,85 @@ export function Hero() {
         className="pointer-events-none absolute inset-0"
         style={{ background: "var(--gradient-radial-teal)" }}
       />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-[90%] opacity-60"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 35%, color-mix(in oklab, var(--accent-glow) 14%, transparent), transparent 70%)",
+        }}
+      />
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-10 text-center">
-        {/* Brand monolith */}
-        <div
-          className="flex justify-center"
-          data-hero-line
-        >
-          <div className="relative">
-            <CyryxMark
-              size={132}
-              className="drop-shadow-[0_0_36px_color-mix(in_oklab,var(--accent-glow)_50%,transparent)]"
-            />
-            <span
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-full mt-2 h-10 w-px -translate-x-1/2 teal-core-line opacity-70"
-            />
+      {/* Stage: 3D monolith centered, copy overlays */}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+        <div className="relative h-[720px] sm:h-[780px] lg:h-[860px]">
+          {/* Monolith canvas — bounded so any clear-color halo can't bleed outside the slab */}
+          <div className="pointer-events-none absolute left-1/2 top-0 h-full -translate-x-1/2" style={{ width: "min(520px, 55%)" }}>
+            <MonolithScene className="h-full w-full" />
+          </div>
+
+          {/* Top eyebrow */}
+          <div className="absolute left-1/2 top-6 -translate-x-1/2 z-10" data-hero-line>
+            <HudLabel withDot className="text-[var(--accent-glow)]">
+              CYRYX LABS / COMMAND LAYER · v1.04
+            </HudLabel>
+          </div>
+
+          {/* Side telemetry coordinates (desktop) */}
+          <div className="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 flex-col gap-2 z-10" data-hero-line>
+            <span className="hud-label text-[var(--silver-dim)]">LAT 41.014°N</span>
+            <span className="hud-label text-[var(--silver-dim)]">LON 28.978°E</span>
+            <span className="hud-label text-[var(--accent-glow)]">SECTOR 07</span>
+          </div>
+          <div className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 flex-col gap-2 items-end z-10" data-hero-line>
+            <span className="hud-label text-[var(--silver-dim)]">CAM 03 · LIVE</span>
+            <span className="hud-label text-[var(--silver-dim)]">CORE T+00:00</span>
+            <span className="hud-label text-[var(--accent-glow)]">STATUS · OPTIMAL</span>
+          </div>
+
+          {/* Headline overlay */}
+          <div className="absolute inset-x-0 bottom-0 z-10 text-center">
+            <h1 className="font-display font-semibold leading-[0.92] tracking-tight">
+              <span
+                className="block text-silver-gradient text-[44px] sm:text-7xl lg:text-[120px] xl:text-[148px] uppercase mix-blend-screen"
+                data-hero-headline
+              >
+                Command Layer
+              </span>
+              <span
+                className="block text-[44px] sm:text-7xl lg:text-[120px] xl:text-[148px] uppercase italic font-light"
+                style={{ color: "var(--accent-glow)" }}
+                data-hero-headline
+              >
+                for Autonomy
+              </span>
+            </h1>
           </div>
         </div>
 
-        <div className="mt-10 flex justify-center" data-hero-line>
-          <HudLabel withDot className="text-[var(--accent-glow)]">
-            AI Infrastructure / Command Layer
-          </HudLabel>
-        </div>
-
-        <h1 className="mt-6 font-display font-semibold leading-[1.04] tracking-tight">
-          <span
-            className="block text-silver-gradient text-[40px] sm:text-6xl lg:text-[84px] xl:text-[104px] uppercase"
+        {/* Subcopy + CTAs below the stage */}
+        <div className="mx-auto mt-10 max-w-3xl text-center">
+          <p
+            className="text-[15px] sm:text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]"
             data-hero-line
           >
-            Command Layer
-          </span>
-          <span
-            className="block text-[40px] sm:text-6xl lg:text-[84px] xl:text-[104px] uppercase"
-            style={{ color: "var(--accent-glow)" }}
+            Cyryx Labs builds reasoning engines, command architecture, and secure
+            execution frameworks for organizations deploying AI at enterprise scale.
+          </p>
+
+          <div
+            className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center"
             data-hero-line
           >
-            for Autonomy
-          </span>
-        </h1>
-
-        <p
-          className="mt-8 mx-auto max-w-2xl text-[15px] sm:text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]"
-          data-hero-line
-        >
-          Cyryx Labs builds reasoning engines, command architecture, and secure
-          execution frameworks for organizations deploying AI at enterprise scale.
-        </p>
-
-        <div
-          className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center"
-          data-hero-line
-        >
-          <a
-            href="#systems"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[var(--accent-glow)] px-7 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
-          >
-            Explore Systems
-            <ArrowRight className="h-4 w-4" />
-          </a>
-          <a
-            href="#command"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] px-7 hud-label text-[var(--silver)] hover:border-[var(--accent-glow)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)] transition"
-          >
-            View Command Layer
-            <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
-          </a>
+            <MagneticButton href="#systems" variant="primary">
+              Explore Systems
+              <ArrowRight className="h-4 w-4" />
+            </MagneticButton>
+            <MagneticButton href="#command" variant="ghost">
+              View Command Layer
+              <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
+            </MagneticButton>
+          </div>
         </div>
       </div>
 
