@@ -36,8 +36,8 @@ export function Hero() {
       {/* Stage: 3D monolith centered, copy overlays */}
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="relative h-[720px] sm:h-[780px] lg:h-[860px]">
-          {/* Monolith canvas — fills the stage */}
-          <MonolithScene className="absolute inset-0 h-full w-full" />
+          {/* Monolith canvas — bounded to the slab area (avoids clear-color halo) */}
+          <MonolithScene className="absolute left-1/2 top-0 h-full w-[68%] sm:w-[52%] lg:w-[40%] -translate-x-1/2" />
 
           {/* Top eyebrow */}
           <div className="absolute left-1/2 top-6 -translate-x-1/2 z-10" data-hero-line>
