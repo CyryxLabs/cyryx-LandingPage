@@ -8,7 +8,8 @@ import wordmarkAsset from "@/assets/cyryx-wordmark.png.asset.json";
 export function CyryxMark({
   size = 28,
   className = "",
-}: { size?: number; className?: string }) {
+  priority = false,
+}: { size?: number; className?: string; priority?: boolean }) {
   return (
     <img
       src={markAsset.url}
@@ -17,20 +18,31 @@ export function CyryxMark({
       alt=""
       aria-hidden
       draggable={false}
+      decoding="async"
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "auto"}
       className={`block object-contain select-none ${className}`}
       style={{ width: size, height: size, background: "transparent" }}
     />
   );
 }
 
-export function CyryxWordmark({ className = "" }: { className?: string }) {
+export function CyryxWordmark({
+  className = "",
+  priority = false,
+}: { className?: string; priority?: boolean }) {
   return (
     <img
       src={wordmarkAsset.url}
       alt="Cyryx Labs"
+      width={160}
+      height={28}
       draggable={false}
+      decoding="async"
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "auto"}
       className={`block w-auto object-contain select-none ${className || "h-7"}`}
-      style={{ background: "transparent" }}
+      style={{ background: "transparent", aspectRatio: "160 / 28" }}
     />
   );
 }

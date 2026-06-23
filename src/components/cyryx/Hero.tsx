@@ -25,7 +25,11 @@ export function Hero() {
         alt=""
         aria-hidden
         loading="eager"
-        className="pointer-events-none absolute inset-x-0 top-16 mx-auto h-[860px] w-full max-w-[1600px] object-cover object-center opacity-[0.18] mix-blend-screen"
+        decoding="async"
+        fetchPriority="high"
+        width={1600}
+        height={860}
+        className="pointer-events-none absolute inset-x-0 top-16 mx-auto h-[860px] w-full max-w-[1600px] object-cover object-center opacity-[0.28] mix-blend-screen [mask-image:radial-gradient(ellipse_60%_55%_at_50%_45%,#000_55%,transparent_85%)]"
       />
       <div
         aria-hidden

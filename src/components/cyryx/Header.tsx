@@ -36,7 +36,7 @@ export function Header() {
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-10">
           <a href="#top" className="flex items-center min-w-0" aria-label="Cyryx Labs — home">
-            <CyryxWordmark className="h-8 lg:h-9 drop-shadow-[0_0_12px_color-mix(in_oklab,var(--accent-glow)_25%,transparent)]" />
+            <CyryxWordmark priority className="h-8 lg:h-9 drop-shadow-[0_0_12px_color-mix(in_oklab,var(--accent-glow)_25%,transparent)]" />
           </a>
 
           <nav className="hidden lg:flex items-center gap-9">
