@@ -1,17 +1,17 @@
-import { Brain, Cpu, ShieldCheck, Lock, Sparkles } from "lucide-react";
+import { Boxes, Workflow, FlaskConical, Sparkles, Shield } from "lucide-react";
 
 const ITEMS = [
-  { n: "01", icon: Brain, title: "Cybernetic Reasoning" },
-  { n: "02", icon: Cpu, title: "Autonomous Execution" },
-  { n: "03", icon: ShieldCheck, title: "Governed Systems" },
-  { n: "04", icon: Lock, title: "Secure Infrastructure" },
-  { n: "05", icon: Sparkles, title: "Behind MAAX Studio" },
+  { n: "01", icon: Boxes, title: "Products" },
+  { n: "02", icon: Workflow, title: "Solutions" },
+  { n: "03", icon: FlaskConical, title: "Applied AI Lab" },
+  { n: "04", icon: Sparkles, title: "MAAX Studio" },
+  { n: "05", icon: Shield, title: "MAAX Protocol" },
 ];
 
 export function CapabilityStrip() {
   return (
     <section
-      id="systems"
+      id="overview"
       className="relative border-y border-[color-mix(in_oklab,var(--silver)_8%,transparent)] bg-[var(--graphite)]"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-8 lg:py-10">
