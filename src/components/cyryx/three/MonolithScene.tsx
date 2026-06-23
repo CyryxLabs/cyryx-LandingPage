@@ -135,6 +135,9 @@ export function MonolithScene({ className = "" }: { className?: string }) {
       <Canvas
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        onCreated={({ gl }) => {
+          gl.setClearColor(0x000000, 0);
+        }}
         camera={{ position: [0, 0.1, 5.6], fov: 32 }}
       >
         <Suspense fallback={null}>
@@ -160,7 +163,7 @@ export function MonolithScene({ className = "" }: { className?: string }) {
             speed={0.4}
           />
 
-          <Environment preset="night" background={false} />
+          {/* No HDR environment — pure direct lighting keeps the slab dark/cinematic. */}
         </Suspense>
       </Canvas>
     </div>
