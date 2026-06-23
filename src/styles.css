@@ -233,5 +233,4 @@
 @media (prefers-reduced-motion: reduce) {
   .cx-reveal { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
-  }
 }
