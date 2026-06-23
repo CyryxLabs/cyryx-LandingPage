@@ -3,6 +3,66 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
 
+/** Lightweight WebGL availability probe. */
+function detectWebGL(): boolean {
+  try {
+    const c = document.createElement("canvas");
+    return !!(c.getContext("webgl2") || c.getContext("webgl"));
+  } catch {
+    return false;
+  }
+}
+
+/** Dev-only FPS / DPR / render-state logger. */
+function PerfLogger({ active }: { active: boolean }) {
+  const last = useRef(performance.now());
+  const frames = useRef(0);
+  useFrame(({ gl }) => {
+    frames.current++;
+    const now = performance.now();
+    if (now - last.current >= 1000) {
+      // eslint-disable-next-line no-console
+      console.debug(
+        `[MonolithScene] fps=${frames.current} dpr=${gl.getPixelRatio().toFixed(2)} loop=${active ? "always" : "demand"}`,
+      );
+      frames.current = 0;
+      last.current = now;
+    }
+  });
+  return null;
+}
+
+/** Static premium fallback when WebGL is unavailable. */
+function StaticMonolithFallback() {
+  return (
+    <div className="relative h-full w-full" aria-hidden>
+      <div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{
+          width: "min(180px, 38%)",
+          aspectRatio: "1 / 3.1",
+          background:
+            "linear-gradient(180deg,#0b1316 0%,#05080a 50%,#0b1316 100%)",
+          border: "1px solid color-mix(in oklab, var(--silver) 16%, transparent)",
+          borderRadius: "6px",
+          boxShadow:
+            "0 40px 80px -20px rgba(0,0,0,.6), 0 0 60px -10px color-mix(in oklab, var(--accent-glow) 30%, transparent)",
+        }}
+      >
+        <div
+          className="absolute left-1/2 top-[8%] h-[72%] -translate-x-1/2"
+          style={{
+            width: "3px",
+            background:
+              "linear-gradient(180deg,transparent,var(--accent-glow),transparent)",
+            boxShadow: "0 0 14px 1px color-mix(in oklab,var(--accent-glow) 60%,transparent)",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
 /**
  * Cyryx 3D monolith — metallic teal-tinted slab that orbits to scroll,
  * crowned by a vertical glowing teal core. Used as the hero's anchor.
@@ -124,10 +184,12 @@ export function MonolithScene({ className = "" }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
   const [reduce, setReduce] = useState(false);
+  const [webgl, setWebgl] = useState(true);
 
   useEffect(() => {
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduce(mql.matches);
+    setWebgl(detectWebGL());
     const host = hostRef.current;
     if (!host) return;
     // Lazy-mount the Canvas only when the slab scrolls into view.
@@ -151,13 +213,23 @@ export function MonolithScene({ className = "" }: { className?: string }) {
   const isMobile =
     typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
   const dprCap: [number, number] = isMobile ? [1, 1.25] : [1, 1.75];
+  const loopActive = !reduce && visible;
+  const isDev = typeof import.meta !== "undefined" && (import.meta as any).env?.DEV;
+
+  if (!webgl) {
+    return (
+      <div ref={hostRef} className={className} aria-hidden>
+        <StaticMonolithFallback />
+      </div>
+    );
+  }
 
   return (
     <div ref={hostRef} className={className} aria-hidden>
       {mounted && (
       <Canvas
         dpr={dprCap}
-        frameloop={reduce ? "demand" : visible ? "always" : "demand"}
+        frameloop={loopActive ? "always" : "demand"}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
@@ -179,9 +251,11 @@ export function MonolithScene({ className = "" }: { className?: string }) {
           )}
 
           {!reduce && <OrbitDust />}
+          {isDev && <PerfLogger active={loopActive} />}
         </Suspense>
       </Canvas>
       )}
+      {!mounted && <StaticMonolithFallback />}
     </div>
   );
 }
