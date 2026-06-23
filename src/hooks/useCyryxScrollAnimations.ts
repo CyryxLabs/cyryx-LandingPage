@@ -47,15 +47,16 @@ export function useCyryxScrollAnimations() {
     // ── Stagger groups (a parent .cx-stagger reveals children) ──
     gsap.utils.toArray<HTMLElement>(".cx-stagger").forEach((group) => {
       const items = group.querySelectorAll<HTMLElement>(".cx-stagger-item");
-      gsap.to(items, {
-        opacity: 1,
-        y: 0,
+      if (!items.length) return;
+      gsap.from(items, {
+        opacity: 0,
+        y: 20,
         duration: 0.7,
         ease: "power2.out",
         stagger: 0.06,
         scrollTrigger: {
           trigger: group,
-          start: "top 90%",
+          start: "top 92%",
           once: true,
         },
       });
@@ -181,12 +182,21 @@ export function useCyryxScrollAnimations() {
       });
     }
 
-    // Recalculate after images/fonts settle
-    requestAnimationFrame(() => ScrollTrigger.refresh());
-    const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 800);
+    // Recalculate after images/fonts settle.
+    const doRefresh = () => ScrollTrigger.refresh();
+    requestAnimationFrame(doRefresh);
+    const t1 = window.setTimeout(doRefresh, 400);
+    const t2 = window.setTimeout(doRefresh, 1500);
+    window.addEventListener("load", doRefresh);
+    if (document.fonts?.ready) document.fonts.ready.then(doRefresh).catch(() => {});
+    document.querySelectorAll("img").forEach((img) => {
+      if (!img.complete) img.addEventListener("load", doRefresh, { once: true });
+    });
 
     return () => {
-      window.clearTimeout(refreshTimer);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.removeEventListener("load", doRefresh);
       mm.revert();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };

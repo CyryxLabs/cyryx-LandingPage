@@ -230,13 +230,7 @@
   transform: translateY(24px);
 }
 
-.cx-stagger-item {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cx-reveal { opacity: 1; transform: none; }
-  .cx-stagger-item { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
 }
