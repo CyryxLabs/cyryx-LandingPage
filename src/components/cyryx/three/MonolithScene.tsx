@@ -130,13 +130,14 @@ export function MonolithScene({ className = "" }: { className?: string }) {
     <div className={className} aria-hidden>
       <Canvas
         dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
         onCreated={({ gl }) => {
-          gl.setClearColor(0x000000, 0);
+          gl.setClearColor(0x0a0a0a, 1);
         }}
         camera={{ position: [0, 0.1, 5.6], fov: 32 }}
       >
         <Suspense fallback={null}>
+          <color attach="background" args={["#0a0a0a"]} />
           <ambientLight intensity={0.18} />
           <directionalLight position={[3, 4, 5]} intensity={0.45} color="#a8c4c8" />
           <pointLight position={[-2.4, -1.2, 2.2]} intensity={0.7} distance={6} decay={2} color="#00E6D0" />
