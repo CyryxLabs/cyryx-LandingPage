@@ -84,7 +84,8 @@ export function Hero() {
 
           <h1 className="mt-8 sm:mt-10 font-display font-semibold leading-[0.95] tracking-tight">
             <span
-              className="block text-silver-gradient text-[40px] sm:text-6xl lg:text-8xl xl:text-[120px] uppercase"
+              className="block text-[40px] sm:text-6xl lg:text-8xl xl:text-[120px] uppercase"
+              style={{ color: "var(--silver)" }}
               data-hero-headline
             >
               Command Layer
