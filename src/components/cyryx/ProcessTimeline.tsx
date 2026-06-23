@@ -1,25 +1,26 @@
 import { HudLabel } from "./primitives/HudLabel";
 
 const STEPS = [
-  { n: "01", title: "Design", copy: "Define objectives and architecture with our strategy and solutions team." },
-  { n: "02", title: "Deploy", copy: "Launch secure, scalable systems in your environment or ours with speed." },
-  { n: "03", title: "Govern", copy: "Apply policy, monitor performance, and ensure compliance at every layer." },
-  { n: "04", title: "Scale", copy: "Expand capacity, add capabilities, and evolve with your mission without limits." },
+  { n: "01", title: "Diagnose", copy: "We map the workflow, business pain, systems, data, constraints, and target outcome." },
+  { n: "02", title: "Architect", copy: "We design the AI system, model strategy, integrations, UX, and governance layer." },
+  { n: "03", title: "Build", copy: "We develop the product, agent, automation, or workflow with production-ready engineering." },
+  { n: "04", title: "Deploy", copy: "We launch, test, monitor, and iterate with clear operational metrics." },
+  { n: "05", title: "Govern", copy: "We add visibility, approvals, cost controls, audit logs, and human oversight." },
 ];
 
 export function ProcessTimeline() {
   return (
-    <section data-timeline-section className="relative py-20 lg:py-32">
+    <section data-timeline-section id="process" className="relative py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 cx-reveal">
           <div>
-            <HudLabel withDot>Deployment Sequence</HudLabel>
+            <HudLabel withDot>How we work</HudLabel>
             <h2 className="mt-4 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold uppercase text-silver-gradient">
-              From intent to scale.
+              How we turn AI into execution.
             </h2>
           </div>
           <p className="max-w-sm text-sm text-[var(--silver-dim)]">
-            Four phases. One continuous command channel. Engineered for organizations that cannot afford to stall.
+            Five phases. One continuous execution channel — from diagnosis to governed operation.
           </p>
         </div>
 
@@ -35,7 +36,7 @@ export function ProcessTimeline() {
             className="hidden lg:block absolute left-0 right-0 top-[60px] h-px bg-gradient-to-r from-[var(--accent-glow)] via-[color-mix(in_oklab,var(--accent-glow)_60%,transparent)] to-transparent"
           />
 
-          <ol className="grid gap-14 lg:grid-cols-4 lg:gap-10">
+          <ol className="grid gap-14 lg:grid-cols-5 lg:gap-8">
             {STEPS.map((s) => (
               <li
                 key={s.n}
