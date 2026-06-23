@@ -318,6 +318,15 @@
   will-change: transform;
 }
 
+/* When the headline parent uses the silver text gradient, re-apply it to
+   each split word so background-clip: text still paints after GSAP split. */
+.text-silver-gradient .cx-word {
+  background: linear-gradient(180deg, oklch(0.95 0.003 240) 0%, oklch(0.62 0.005 240) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* 3D tilt cards. */
 [data-tilt] {
   transform-style: preserve-3d;
