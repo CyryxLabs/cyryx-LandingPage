@@ -120,16 +120,44 @@ function OrbitDust() {
 }
 
 export function MonolithScene({ className = "" }: { className?: string }) {
+  const hostRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) {
-    return <div className={className} aria-hidden />;
-  }
+  const [visible, setVisible] = useState(false);
+  const [reduce, setReduce] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduce(mql.matches);
+    const host = hostRef.current;
+    if (!host) return;
+    // Lazy-mount the Canvas only when the slab scrolls into view.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setMounted(true);
+            setVisible(true);
+          } else {
+            setVisible(false);
+          }
+        }
+      },
+      { rootMargin: "200px 0px" },
+    );
+    io.observe(host);
+    return () => io.disconnect();
+  }, []);
+
+  const isMobile =
+    typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+  const dprCap: [number, number] = isMobile ? [1, 1.25] : [1, 1.75];
 
   return (
-    <div className={className} aria-hidden>
+    <div ref={hostRef} className={className} aria-hidden>
+      {mounted && (
       <Canvas
-        dpr={[1, 2]}
+        dpr={dprCap}
+        frameloop={reduce ? "demand" : visible ? "always" : "demand"}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
@@ -142,13 +170,18 @@ export function MonolithScene({ className = "" }: { className?: string }) {
           <pointLight position={[-2.4, -1.2, 2.2]} intensity={0.7} distance={6} decay={2} color="#00E6D0" />
           <pointLight position={[2.2, 2.4, 1.6]} intensity={0.4} distance={6} decay={2} color="#5fb4b8" />
 
-          <Float speed={1.1} rotationIntensity={0.25} floatIntensity={0.45}>
+          {reduce ? (
             <Monolith />
-          </Float>
+          ) : (
+            <Float speed={1.1} rotationIntensity={0.25} floatIntensity={0.45}>
+              <Monolith />
+            </Float>
+          )}
 
-          <OrbitDust />
+          {!reduce && <OrbitDust />}
         </Suspense>
       </Canvas>
+      )}
     </div>
   );
 }
