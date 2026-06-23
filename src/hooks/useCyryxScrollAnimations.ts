@@ -38,8 +38,8 @@ export function useCyryxScrollAnimations() {
         ease: "power3.out",
         scrollTrigger: {
           trigger: el,
-          start: "top 88%",
-          toggleActions: "play none none reverse",
+          start: "top 92%",
+          once: true,
         },
       });
     });
@@ -47,16 +47,16 @@ export function useCyryxScrollAnimations() {
     // ── Stagger groups (a parent .cx-stagger reveals children) ──
     gsap.utils.toArray<HTMLElement>(".cx-stagger").forEach((group) => {
       const items = group.querySelectorAll<HTMLElement>(".cx-stagger-item");
-      gsap.from(items, {
-        opacity: 0,
-        y: 24,
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
         duration: 0.7,
         ease: "power2.out",
-        stagger: 0.08,
+        stagger: 0.06,
         scrollTrigger: {
           trigger: group,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
+          start: "top 90%",
+          once: true,
         },
       });
     });
@@ -181,7 +181,12 @@ export function useCyryxScrollAnimations() {
       });
     }
 
+    // Recalculate after images/fonts settle
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+    const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 800);
+
     return () => {
+      window.clearTimeout(refreshTimer);
       mm.revert();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
