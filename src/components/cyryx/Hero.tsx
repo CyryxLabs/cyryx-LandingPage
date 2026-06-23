@@ -31,22 +31,28 @@ export function Hero() {
         <div className="relative z-10 flex max-w-4xl flex-col items-start text-left lg:pt-6">
           <div className="mb-6" data-hero-line>
             <HudLabel withDot className="text-[var(--accent-glow)]">
-              CYRYX LABS / COMMAND LAYER · v1.04
+              CYRYX LABS / AGENTIC EXECUTION · v1.04
             </HudLabel>
           </div>
 
           <h1 className="font-display font-semibold uppercase leading-[0.9] text-[var(--silver)]">
             <span
-              className="block text-[44px] sm:text-[72px] lg:text-[96px] xl:text-[116px]"
+              className="block text-[36px] sm:text-[60px] lg:text-[84px] xl:text-[100px]"
               data-hero-headline
             >
-              Command Layer
+              AI Products &
             </span>
             <span
-              className="mt-2 block text-[44px] font-light italic text-[var(--accent-glow)] sm:text-[72px] lg:text-[96px] xl:text-[116px]"
+              className="block text-[36px] sm:text-[60px] lg:text-[84px] xl:text-[100px]"
               data-hero-headline
             >
-              for Autonomy
+              Execution Systems
+            </span>
+            <span
+              className="mt-2 block text-[28px] font-light italic text-[var(--accent-glow)] sm:text-[44px] lg:text-[56px] xl:text-[64px]"
+              data-hero-headline
+            >
+              for the agentic era.
             </span>
           </h1>
 
@@ -54,38 +60,31 @@ export function Hero() {
             className="mt-6 max-w-2xl text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base lg:text-lg"
             data-hero-line
           >
-            Cyryx Labs builds reasoning engines, command architecture, and secure
-            execution frameworks for organizations deploying AI at enterprise scale.
+            Cyryx Labs builds proprietary AI products, custom automation systems,
+            and agentic workflows that help founders, agencies, and businesses
+            turn AI into governed execution.
           </p>
 
           <div
             className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4"
             data-hero-line
           >
-            <MagneticButton href="#systems" variant="primary">
-              Explore Systems
+            <MagneticButton href="#maax" variant="primary">
+              Explore MAAX Studio
               <ArrowRight className="h-4 w-4" />
             </MagneticButton>
-            <MagneticButton href="#command" variant="ghost">
-              View Command Layer
+            <MagneticButton href="#cta" variant="ghost">
+              Build with Cyryx
               <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
             </MagneticButton>
           </div>
 
-          <div className="mt-10 grid w-full max-w-2xl grid-cols-3 gap-px overflow-hidden rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--silver)_10%,transparent)] sm:mt-12" data-hero-line>
-            {[
-              ["Latency", "8ms"],
-              ["Nodes", "2,468"],
-              ["Uptime", "99.99%"],
-            ].map(([label, value]) => (
-              <div key={label} className="bg-[color-mix(in_oklab,var(--graphite)_88%,var(--onyx))] px-3 py-4 sm:px-5">
-                <div className="hud-label text-[var(--silver-dim)]">{label}</div>
-                <div className="mt-2 font-display text-base font-semibold text-[var(--silver)] sm:text-xl">
-                  {value}
-                </div>
-              </div>
-            ))}
-          </div>
+          <p
+            className="mt-10 hud-label text-[var(--accent-glow)]"
+            data-hero-line
+          >
+            From prompt chaos to governed AI execution.
+          </p>
         </div>
 
         <div className="relative z-0 mx-auto h-[360px] w-full max-w-[440px] sm:h-[500px] lg:h-[640px] lg:max-w-none">
@@ -107,14 +106,14 @@ export function Hero() {
           </div>
 
           <div className="absolute left-0 top-8 hidden flex-col gap-2 lg:flex" data-hero-line>
-            <span className="hud-label text-[var(--silver-dim)]">LAT 41.014°N</span>
-            <span className="hud-label text-[var(--silver-dim)]">LON 28.978°E</span>
-            <span className="hud-label text-[var(--accent-glow)]">SECTOR 07</span>
+            <span className="hud-label text-[var(--silver-dim)]">ACTIVE MISSION</span>
+            <span className="hud-label text-[var(--silver-dim)]">SOUL KERNEL · LOADED</span>
+            <span className="hud-label text-[var(--accent-glow)]">ATLAS CONTEXT · OK</span>
           </div>
           <div className="absolute right-0 bottom-20 hidden flex-col items-end gap-2 lg:flex" data-hero-line>
-            <span className="hud-label text-[var(--silver-dim)]">CAM 03 · LIVE</span>
-            <span className="hud-label text-[var(--silver-dim)]">CORE T+00:00</span>
-            <span className="hud-label text-[var(--accent-glow)]">STATUS · OPTIMAL</span>
+            <span className="hud-label text-[var(--silver-dim)]">OPERATORS · ACTIVE</span>
+            <span className="hud-label text-[var(--silver-dim)]">COMMAND GATES · ARMED</span>
+            <span className="hud-label text-[var(--accent-glow)]">HUMAN APPROVAL READY</span>
           </div>
         </div>
       </div>

@@ -3,9 +3,9 @@ import { CyryxWordmark } from "./primitives/CyryxMark";
 import { HudLabel } from "./primitives/HudLabel";
 
 const COLUMNS = [
-  { title: "Company", links: ["About Us", "Careers", "News", "Contact"] },
-  { title: "Systems", links: ["AI Systems", "Security", "Infrastructure", "Command Layer"] },
-  { title: "Resources", links: ["Documentation", "Whitepapers", "API Access", "Support"] },
+  { title: "Company", links: ["Overview", "Contact", "Careers"] },
+  { title: "Build", links: ["Products", "Solutions", "Applied AI Lab", "MAAX Studio"] },
+  { title: "Social", links: ["X", "LinkedIn", "GitHub", "YouTube"] },
 ];
 
 export function Footer() {
@@ -16,11 +16,14 @@ export function Footer() {
           {/* Brand */}
           <div className="cx-stagger-item">
             <CyryxWordmark className="h-10" />
-            <p className="mt-5 font-display text-sm tracking-[0.32em] uppercase text-[var(--silver-dim)]">
+            <p className="mt-5 text-sm leading-relaxed text-[var(--silver-dim)] max-w-xs">
+              AI products and execution systems for the agentic era.
+            </p>
+            <p className="mt-6 font-display text-sm tracking-[0.32em] uppercase text-[var(--silver-dim)]">
               Intelligence <span className="text-[var(--accent-glow)]">·</span> Execution <span className="text-[var(--accent-glow)]">·</span> Command
             </p>
             <p className="mt-8 text-xs text-[var(--silver-dim)]">
-              &copy; 2025 Cyryx Labs. All rights reserved.
+              &copy; 2026 Cyryx Labs. All rights reserved.
             </p>
           </div>
 
@@ -91,7 +94,7 @@ export function Footer() {
         <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6">
           <div className="flex items-center gap-4">
             <span className="hud-label text-[var(--silver-dim)]">
-              Cyryx Labs — AI Infrastructure / Command Layer
+              Cyryx Labs — AI products & execution systems for the agentic era
             </span>
             <span className="inline-flex items-center gap-1.5 hud-label text-[var(--accent-glow)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)] animate-pulse" />

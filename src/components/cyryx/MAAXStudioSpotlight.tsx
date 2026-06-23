@@ -4,10 +4,13 @@ import { GlassPanel } from "./primitives/GlassPanel";
 import { CyryxMark } from "./primitives/CyryxMark";
 
 const BULLETS = [
-  "Ideate and prototype with AI",
-  "Automate complex production pipelines",
-  "Collaborate in real time with intelligent agents",
-  "Ship content, code, and experiences faster",
+  "Dispatch missions instead of scattered prompts",
+  "Give every project persistent memory",
+  "Route relevant context through an Atlas Graph",
+  "Activate specialized Command Units",
+  "Validate work through quality, security, architecture, and cost gates",
+  "Track every action in a Mission Ledger",
+  "Keep humans in command",
 ];
 
 function ProductPreview() {
@@ -108,7 +111,7 @@ function ProductPreview() {
 
 export function MAAXStudioSpotlight() {
   return (
-    <section id="resources" className="relative py-20 lg:py-32 bg-[var(--graphite)]">
+    <section id="maax" className="relative py-20 lg:py-32 bg-[var(--graphite)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -117,16 +120,17 @@ export function MAAXStudioSpotlight() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div className="cx-reveal">
-            <HudLabel withDot>Flagship Platform</HudLabel>
+            <HudLabel withDot>Flagship Product</HudLabel>
             <h2 className="mt-5 font-display text-[36px] sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-[0.04em] text-silver-gradient">
               MAAX&nbsp;STUDIO
             </h2>
-            <p className="mt-3 hud-label text-[var(--accent-glow)]">
-              The flagship platform by Cyryx Labs.
+            <p className="mt-3 font-display text-base sm:text-lg text-[var(--accent-glow)]">
+              The agentic execution OS for AI-native builders.
             </p>
             <p className="mt-6 max-w-xl text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-              MAAX Studio empowers creators and enterprises with AI-native tools for
-              ideation, automation, and production at unprecedented scale.
+              MAAX Studio helps founders, agencies, and product teams operate AI
+              software squads with project memory, graph-based context, mission
+              control, quality gates, and cost governance.
             </p>
             <ul className="mt-7 space-y-3">
               {BULLETS.map((b) => (
@@ -140,18 +144,11 @@ export function MAAXStudioSpotlight() {
             </ul>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <a
-                href="#"
+                href="#cta"
                 className="inline-flex h-12 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
               >
-                Launch Studio
+                Explore MAAX Studio
                 <ArrowRight className="h-4 w-4" />
-              </a>
-              <a
-                href="#"
-                className="inline-flex h-12 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] px-6 hud-label text-[var(--silver)] hover:border-[var(--accent-glow)] transition"
-              >
-                Documentation
-                <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
               </a>
             </div>
           </div>

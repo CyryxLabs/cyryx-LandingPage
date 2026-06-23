@@ -111,7 +111,7 @@ export function MobileMenu({
           onClick={onClose}
           className="mt-auto inline-flex h-14 items-center justify-center gap-2 rounded-md border border-[var(--accent-glow)] bg-[color-mix(in_oklab,var(--accent-glow)_12%,transparent)] text-[var(--silver)] hud-label shadow-[var(--shadow-glow-teal)]"
         >
-          Schedule a Briefing
+          Start a Project
           <span aria-hidden className="text-[var(--accent-glow)]">→</span>
         </a>
       </div>

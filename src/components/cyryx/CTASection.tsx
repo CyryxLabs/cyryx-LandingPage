@@ -1,4 +1,4 @@
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import lobby from "@/assets/cyryx-cta-lobby.jpg";
 import { CyryxMark } from "./primitives/CyryxMark";
 
@@ -39,27 +39,30 @@ export function CTASection() {
           </div>
         </div>
         <h2 className="font-display text-[36px] sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[1.05] uppercase text-silver-gradient">
-          Ready to initialize <span style={{ color: "var(--accent-glow)" }}>the future?</span>
+          Ready to turn AI into <span style={{ color: "var(--accent-glow)" }}>execution?</span>
         </h2>
         <p className="mt-6 mx-auto max-w-xl text-[15px] sm:text-base lg:text-lg text-[var(--silver-dim)]">
-          Partner with Cyryx Labs to build, deploy, and scale the next generation of intelligent systems.
+          Build your AI product, automate your workflow, or join the MAAX Studio early access program.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <a
             href="#"
             className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
           >
-            Schedule a Briefing
+            Request Access
             <ArrowRight className="h-4 w-4" />
           </a>
           <a
             href="#"
             className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_22%,transparent)] px-6 hud-label text-[var(--silver)] hover:border-[var(--accent-glow)] transition"
           >
-            <Download className="h-4 w-4 text-[var(--accent-glow)]" />
-            Download Overview
+            Start a Project
+            <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
           </a>
         </div>
+        <p className="mt-8 hud-label text-[var(--silver-dim)]">
+          From prompt chaos to governed AI execution.
+        </p>
       </div>
     </section>
   );
