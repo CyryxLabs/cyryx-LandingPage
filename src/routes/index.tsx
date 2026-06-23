@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
+import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
 import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { WhyCyryx } from "@/components/cyryx/WhyCyryx";
 import { CoreCapabilities } from "@/components/cyryx/CoreCapabilities";
@@ -38,6 +39,7 @@ function Index() {
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
+      <BackgroundMonolith />
       <main id="overview" className="relative">
         {/* Continuous teal core line drawn by scroll (desktop only) */}
         <span
