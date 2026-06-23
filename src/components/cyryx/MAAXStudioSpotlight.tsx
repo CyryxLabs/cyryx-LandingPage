@@ -138,13 +138,22 @@ export function MAAXStudioSpotlight() {
                 </li>
               ))}
             </ul>
-            <a
-              href="#"
-              className="mt-8 inline-flex h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] bg-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] px-6 hud-label text-[var(--silver)] shadow-[var(--shadow-glow-teal)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] transition"
-            >
-              Explore MAAX Studio
-              <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
-            </a>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <a
+                href="#"
+                className="inline-flex h-12 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
+              >
+                Launch Studio
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <a
+                href="#"
+                className="inline-flex h-12 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] px-6 hud-label text-[var(--silver)] hover:border-[var(--accent-glow)] transition"
+              >
+                Documentation
+                <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
+              </a>
+            </div>
           </div>
 
           <div className="cx-reveal">
