@@ -40,7 +40,7 @@ function Index() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <BackgroundMonolith />
-      <main id="overview" className="relative">
+      <main id="overview" className="relative z-10">
         {/* Continuous teal core line drawn by scroll (desktop only) */}
         <span
           aria-hidden
