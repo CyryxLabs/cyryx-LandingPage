@@ -130,18 +130,39 @@ export function useCyryxScrollAnimations() {
       );
     }
 
-    // ── Desktop-only: hero dashboard slide-in + parallax visuals ─
+    // ── Desktop-only: hero dashboard rise + parallax visuals + core line draw ─
     mm.add("(min-width: 1024px)", () => {
       const dash = document.querySelector("[data-hero-dashboard]");
       if (dash) {
         gsap.from(dash, {
           opacity: 0,
-          x: 60,
+          y: 60,
           duration: 1.1,
           ease: "power3.out",
-          delay: 0.2,
+          delay: 0.4,
         });
       }
+
+      // Continuous teal core line drawing the full <main> height as user scrolls.
+      const coreLine = document.querySelector<HTMLElement>("[data-core-line]");
+      const mainEl = coreLine?.parentElement;
+      if (coreLine && mainEl) {
+        gsap.fromTo(
+          coreLine,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: mainEl,
+              start: "top top+=120",
+              end: "bottom bottom",
+              scrub: 0.4,
+            },
+          },
+        );
+      }
+
       gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
         gsap.to(el, {
           yPercent: -10,
