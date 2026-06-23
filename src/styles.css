@@ -224,6 +224,69 @@
   box-shadow: 0 0 24px 2px color-mix(in oklab, var(--accent-glow) 60%, transparent);
 }
 
+/* Continuous vertical teal core line behind the page (desktop only). */
+@utility cx-core-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top center;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in oklab, var(--accent-glow) 70%, transparent) 8%,
+    color-mix(in oklab, var(--accent-glow) 35%, transparent) 50%,
+    color-mix(in oklab, var(--accent-glow) 70%, transparent) 92%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px 1px color-mix(in oklab, var(--accent-glow) 35%, transparent);
+  pointer-events: none;
+}
+
+/* Flush 1px-hairline grid (used by Core Capabilities). */
+@utility cx-hairline-grid {
+  background-color: color-mix(in oklab, var(--silver) 10%, transparent);
+  gap: 1px;
+}
+
+/* Bracket-corner icon well. */
+@utility cx-bracket-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 2.75rem;
+  width: 2.75rem;
+  color: var(--accent-glow);
+}
+@utility cx-bracket-icon-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, var(--accent-glow) 8px, transparent 8px) top left/12px 1px no-repeat,
+    linear-gradient(to bottom, var(--accent-glow) 8px, transparent 8px) top left/1px 12px no-repeat,
+    linear-gradient(to left, var(--accent-glow) 8px, transparent 8px) top right/12px 1px no-repeat,
+    linear-gradient(to bottom, var(--accent-glow) 8px, transparent 8px) top right/1px 12px no-repeat,
+    linear-gradient(to right, var(--accent-glow) 8px, transparent 8px) bottom left/12px 1px no-repeat,
+    linear-gradient(to top, var(--accent-glow) 8px, transparent 8px) bottom left/1px 12px no-repeat,
+    linear-gradient(to left, var(--accent-glow) 8px, transparent 8px) bottom right/12px 1px no-repeat,
+    linear-gradient(to top, var(--accent-glow) 8px, transparent 8px) bottom right/1px 12px no-repeat;
+  opacity: 0.55;
+}
+
+/* Big outline numeral used by the timeline. */
+@utility cx-outline-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(64px, 9vw, 128px);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in oklab, var(--accent-glow) 55%, transparent);
+  letter-spacing: -0.02em;
+}
+
 /* Reveal-on-scroll initial state. JS adds .is-visible to play final state. */
 .cx-reveal {
   opacity: 0;

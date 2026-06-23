@@ -1,131 +1,45 @@
+## Direction
 
-# Cyryx Labs Landing Page — Build Plan
+Building **v3 — Kinetic Industrial Command**: the monolith logo becomes the recurring scroll anchor, a continuous teal core line draws down the page connecting sections, capabilities and command panels orbit around it. Locked taste preserved: onyx `#0A0A0A` / graphite `#121417` / teal `#00E6D0` / silver `#C7C9CC`, Orbitron display + Inter body, full-width stacked sections.
 
-A single-page, mobile-first marketing site matching the provided layout reference, with the uploaded logo as the brand mark and GSAP-driven scroll storytelling.
+## What changes vs. current
 
-## Scope
+- **Hero**: oversized centered monolith as the hero anchor (replaces side-by-side dashboard layout); two-line Orbitron headline below; HUD dashboard becomes a wider, lower-mounted "console" panel underneath rather than a sibling card.
+- **Capability strip**: from 5 stacked cards to a single instrument-bar with numbered slots `01–05` divided by vertical hairlines.
+- **Why Cyryx**: from editorial stack with 4 bullets + 3 stats to a clean 2-col (eyebrow + Orbitron headline left / paragraph + manifesto link right). Stats move to a thin telemetry rail above the section.
+- **Core Capabilities**: 6 cards become a flush 3×2 grid with 1px hairline gutters (no rounded panels), bracketed icon wells, hover scanline bar at bottom.
+- **Command Layer panels**: keep 3 panels but alternate left/right with phase tags `PHASE_01 / 02 / 03` and a per-panel progress hairline.
+- **MAAX Studio**: 2-col with brighter product-UI mock (window chrome + sidebar + canvas + status pill) and primary white CTA + ghost docs CTA.
+- **How It Works**: 4-step horizontal with oversized outlined numerals (`-webkit-text-stroke` teal); desktop draws a horizontal line through them on scroll.
+- **CTA**: monolith reappears centered above the headline, soft teal wash background, single primary button.
+- **Footer**: 4 columns + brand block, fine mono legal row with `SYSTEM_STATUS: OPTIMAL`.
+- **Continuous teal core line**: a thin vertical `#00E6D0` line runs behind the central column from hero through CTA, drawing in via GSAP as user scrolls (desktop only).
 
-One route (`/`) composed of 10 sections, all responsive, all built mobile-up. No backend, no auth, no CMS — pure presentation. Email signup is a non-functional UI (visual only) unless you want it wired later.
+Content (all section copy, capability names, MAAX bullets, footer links) stays as already implemented — this is composition, hierarchy, density, and emphasis only.
 
-## Design System (`src/styles.css`)
+## Technical scope
 
-Semantic tokens in oklch — never hardcoded colors in components.
+- **No new deps.** Reuse existing GSAP setup in `src/hooks/useCyryxScrollAnimations.ts`; add one new timeline for the continuous core-line draw (desktop only, respects `prefers-reduced-motion`).
+- **Files to edit**:
+  - `src/components/cyryx/Hero.tsx` — recompose to monolith-centered, dashboard below.
+  - `src/components/cyryx/DashboardPanel.tsx` — restyle as wide console (window chrome + 8/4 split telemetry).
+  - `src/components/cyryx/CapabilityStrip.tsx` — instrument-bar layout.
+  - `src/components/cyryx/WhyCyryx.tsx` — 2-col rebalance, stats move to thin rail.
+  - `src/components/cyryx/CoreCapabilities.tsx` — flush hairline grid, bracket icons, hover scanline.
+  - `src/components/cyryx/CommandLayerSection.tsx` — alternating panels + phase tags.
+  - `src/components/cyryx/MAAXStudioSpotlight.tsx` — product UI mock refresh.
+  - `src/components/cyryx/ProcessTimeline.tsx` — outlined numerals + draw line.
+  - `src/components/cyryx/CTASection.tsx` — center monolith above headline.
+  - `src/components/cyryx/Footer.tsx` — minor density + status pill.
+  - `src/routes/index.tsx` — wrap main in a relative container that hosts the continuous teal core line element.
+  - `src/styles.css` — add `.cx-core-line`, `.cx-hairline-grid`, `.cx-bracket-icon`, `.cx-outline-num` utilities.
+  - `src/hooks/useCyryxScrollAnimations.ts` — add core-line scroll draw; tighten existing reveals for tighter rhythm.
+- **No content changes.** No new images. No backend.
 
-- `--background` Onyx `#0A0A0A`
-- `--surface` Graphite `#121417`
-- `--surface-2` Charcoal `#1B1E22`
-- `--surface-3` Deep Space `#23272B`
-- `--foreground` Silver `#C7C9CC`
-- `--muted-foreground` dimmed silver
-- `--accent` Teal `#0D3B3B`
-- `--accent-2` Emerald `#0E5B57`
-- `--accent-glow` `#00E6D0` (used sparingly)
-- `--border` low-opacity silver
-- Gradients: `--gradient-radial-teal`, `--gradient-panel`
-- Shadows: `--shadow-glow-teal`, `--shadow-panel`
+## Verification
 
-Typography (loaded via `<link>` in `__root.tsx` head):
-- Display / wordmark: **Orbitron** (wide geometric futuristic — Versa-style stand-in via Google Fonts)
-- Body / UI: **Inter**
-- Mono labels: **JetBrains Mono** for HUD micro-details
+Playwright snapshots at 390 / 768 / 1280 / 1440. Confirm: monolith centered hero, dashboard below, vertical teal line visible behind central column at desktop, capability bar single row at lg, 3×2 hairline capabilities grid, alternating command panels, no horizontal overflow on mobile, no console errors.
 
-Utility classes for: glass panel, thin teal border, scan-line, grid-floor background, HUD label.
+## Out of scope
 
-## Assets
-
-Upload the three provided images via `lovable-assets`:
-- `LogoCyryx.png` → monolith icon (used in header, hero, footer, CTA)
-- `2939515b-...png` → full lockup (used in mobile menu / brand moments)
-- The wide hero render → optional hero background accent
-
-No other stock images — all section visuals (server racks, command room, neural mesh, lobby) generated with `imagegen` in matching dark-teal-graphite palette to avoid the "image collage" feel. Each generated image is purposeful (one per section panel that needs it).
-
-## Component Architecture
-
-```
-src/components/cyryx/
-  Header.tsx
-  MobileMenu.tsx
-  Hero.tsx
-  DashboardPanel.tsx          // responsive: compact mobile / full desktop
-  MetricCard.tsx              // count-up animated
-  CapabilityStrip.tsx
-  WhyCyryx.tsx
-  CoreCapabilities.tsx
-  CapabilityCard.tsx
-  CommandLayerSection.tsx
-  CommandLayerPanel.tsx
-  MAAXStudioSpotlight.tsx
-  ProcessTimeline.tsx
-  CTASection.tsx
-  Footer.tsx
-  ScrollIndicator.tsx
-  primitives/
-    GlassPanel.tsx
-    HudLabel.tsx
-    SectionEyebrow.tsx
-    GridFloor.tsx             // pure CSS bg
-```
-
-`src/routes/index.tsx` composes them in order. SEO metadata updated in route `head()`.
-
-## GSAP Scroll Storytelling
-
-Install: `gsap` (free ScrollTrigger included).
-
-Single hook `useCyryxScrollAnimations()` mounted in the page that registers `gsap.matchMedia()` with three breakpoints:
-
-- `(max-width: 767px)` — reveals only: fade+y, stagger, count-up; vertical timeline draw; no pinning; no parallax beyond 10px.
-- `(min-width: 768px) and (max-width: 1023px)` — light sticky, mild parallax.
-- `(min-width: 1024px)` — pinned dashboard moment, parallax visuals, horizontal timeline draw, richer staggers.
-
-Respects `prefers-reduced-motion` (skip all timelines, set final states).
-
-Per-section animations exactly as specified in the brief (header blur on scroll, hero line-by-line reveal, metric count-up, capability card staggers, command panels sequential reveal, MAAX inner cards stagger, timeline draw, CTA fade, footer column stagger).
-
-Mobile menu open/close uses its own GSAP timeline (panel slide+fade, link stagger, CTA last, close-icon rotate).
-
-## Sections (content matches brief verbatim)
-
-1. **Header** — sticky, dark glass, scroll-triggered blur intensify; mobile hamburger + slide-down menu with 6 links + CTA.
-2. **Hero** — eyebrow / H1 / sub / 2 CTAs / monolith logo / responsive dashboard / scroll indicator on grid-floor background.
-3. **Capability Strip** — 5 stacked cards on mobile, horizontal row on desktop.
-4. **Why Cyryx** — editorial stack with 4 bullets + 3 count-up stats + one infrastructure visual.
-5. **Core Capabilities** — 6 glass cards (1col → 2col → 3col grid).
-6. **Inside the Command Layer** — 3 editorial panels (image top / text below on mobile, asymmetric grid on desktop).
-7. **MAAX Studio Spotlight** — eyebrow, headline, body, 4 bullets, CTA + simplified product UI preview (responsive complexity).
-8. **How It Works** — 4-step timeline, vertical mobile (line draws down) / horizontal desktop (line draws across).
-9. **Final CTA** — single cinematic background (generated dark lobby), headline, copy, 2 stacked buttons.
-10. **Footer** — logo+tagline, 4 link columns (accordions on mobile), email signup, social icons, legal row.
-
-## Accessibility
-
-Semantic landmarks, single H1, focus-visible rings in teal, ARIA on hamburger/menu, 44px+ tap targets, contrast verified for silver-on-onyx, `prefers-reduced-motion` respected, no horizontal overflow.
-
-## Performance
-
-- Lazy-load below-the-fold generated images
-- Responsive `<img>` with width/height to prevent CLS
-- `will-change` only on actively-animating elements; cleared after
-- ScrollTriggers killed on unmount
-- No video backgrounds
-- Lenis NOT included (mobile risk; native scroll is fine here)
-
-## Out of scope (ask if you want them)
-
-- Working email capture (would need Lovable Cloud)
-- Actual sub-pages behind nav links (this is one-page; links scroll to anchors)
-- i18n
-- Dark/light toggle (dark only by design)
-
-## Build order
-
-1. Tokens + fonts + global CSS utilities
-2. Upload logo assets, generate 5–7 supporting visuals
-3. Primitives (GlassPanel, HudLabel, GridFloor)
-4. Header + MobileMenu
-5. Hero + DashboardPanel + MetricCard + ScrollIndicator
-6. Sections 3–9 top to bottom
-7. Footer
-8. `useCyryxScrollAnimations` hook with matchMedia
-9. Mobile QA pass at 360 / 390 / 430, then 768, then 1280+
+- Working email capture, sub-pages, dark/light toggle, copy rewrites, new images, palette/font changes.

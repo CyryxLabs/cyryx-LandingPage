@@ -1,9 +1,10 @@
 import { ArrowRight, Download } from "lucide-react";
 import lobby from "@/assets/cyryx-cta-lobby.jpg";
+import { CyryxMark } from "./primitives/CyryxMark";
 
 export function CTASection() {
   return (
-    <section id="cta" className="relative isolate overflow-hidden py-24 lg:py-36">
+    <section id="cta" className="relative isolate overflow-hidden py-28 lg:py-40">
       <img
         src={lobby}
         alt=""
@@ -11,7 +12,7 @@ export function CTASection() {
         loading="lazy"
         width={1920}
         height={1080}
-        className="absolute inset-0 h-full w-full object-cover opacity-50"
+        className="absolute inset-0 h-full w-full object-cover opacity-40"
         data-parallax
       />
       <div
@@ -25,7 +26,19 @@ export function CTASection() {
       />
 
       <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-10 text-center cx-reveal">
-        <h2 className="font-display text-[36px] sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[1.05] text-silver-gradient">
+        <div className="flex justify-center mb-10">
+          <div className="relative">
+            <CyryxMark
+              size={96}
+              className="drop-shadow-[0_0_32px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)]"
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-full mt-2 h-12 w-px -translate-x-1/2 teal-core-line opacity-70"
+            />
+          </div>
+        </div>
+        <h2 className="font-display text-[36px] sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[1.05] uppercase text-silver-gradient">
           Ready to initialize <span style={{ color: "var(--accent-glow)" }}>the future?</span>
         </h2>
         <p className="mt-6 mx-auto max-w-xl text-[15px] sm:text-base lg:text-lg text-[var(--silver-dim)]">

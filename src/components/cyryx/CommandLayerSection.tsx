@@ -42,37 +42,54 @@ export function CommandLayerSection() {
           </p>
         </div>
 
-        <div className="cx-stagger mt-12 lg:mt-16 grid gap-6 lg:gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {PANELS.map((p, i) => (
-            <article
-              key={p.title}
-              className={`cx-stagger-item group ${i === 1 ? "md:col-span-2 lg:col-span-1" : ""}`}
-            >
-              <div className="relative overflow-hidden rounded-xl border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] aspect-[4/3]">
-                <img
-                  src={p.img}
-                  alt={p.alt}
-                  loading="lazy"
-                  width={1280}
-                  height={960}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[var(--onyx)] via-transparent to-transparent opacity-80" />
-                <div className="absolute top-3 left-3 hud-label text-[var(--accent-glow)]">
-                  0{i + 1} / 03
+        <div className="cx-stagger mt-14 lg:mt-20 flex flex-col gap-14 lg:gap-24">
+          {PANELS.map((p, i) => {
+            const reverse = i % 2 === 1;
+            return (
+              <article
+                key={p.title}
+                className={`cx-stagger-item group grid gap-8 lg:gap-14 items-center lg:grid-cols-2 ${reverse ? "lg:[&>div:first-child]:order-2" : ""}`}
+              >
+                <div className="relative overflow-hidden border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] aspect-[16/10]">
+                  <img
+                    src={p.img}
+                    alt={p.alt}
+                    loading="lazy"
+                    width={1280}
+                    height={800}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    data-parallax
+                  />
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[var(--onyx)] via-transparent to-transparent opacity-70" />
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                    <span className="hud-label text-[var(--accent-glow)]">PHASE_{`0${i + 1}`}</span>
+                    <span className="hud-label text-[var(--silver-dim)]">0{i + 1} / 03</span>
+                  </div>
                 </div>
-              </div>
-              <h3 className="mt-5 font-display text-xl lg:text-2xl font-semibold text-[var(--silver)]">
-                {p.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                {p.copy}
-              </p>
-              <a href="#" className="mt-4 inline-flex items-center gap-2 hud-label text-[var(--accent-glow)] hover:gap-3 transition-all">
-                {p.link} <ArrowRight className="h-3.5 w-3.5" />
-              </a>
-            </article>
-          ))}
+                <div>
+                  <span className="hud-label text-[var(--accent-glow)]">{`PHASE_${`0${i + 1}`}`}</span>
+                  <h3 className="mt-4 font-display text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold uppercase text-silver-gradient leading-[1.05]">
+                    {p.title}
+                  </h3>
+                  <p className="mt-5 max-w-md text-sm sm:text-base leading-relaxed text-[var(--silver-dim)]">
+                    {p.copy}
+                  </p>
+                  <div className="mt-6 h-px w-full bg-[color-mix(in_oklab,var(--silver)_10%,transparent)] relative overflow-hidden">
+                    <span
+                      className="absolute inset-y-0 left-0 bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)]"
+                      style={{ width: `${33 * (i + 1)}%` }}
+                    />
+                  </div>
+                  <a
+                    href="#"
+                    className="mt-6 inline-flex items-center gap-2 hud-label text-[var(--accent-glow)] hover:gap-3 transition-all"
+                  >
+                    {p.link} <ArrowRight className="h-3.5 w-3.5" />
+                  </a>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

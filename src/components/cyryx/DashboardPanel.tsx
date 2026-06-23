@@ -112,11 +112,16 @@ export function DashboardPanel() {
       glow
       className="relative overflow-hidden p-4 sm:p-5 lg:p-6"
     >
-      {/* Header bar */}
+      {/* Window-chrome header bar */}
       <div className="flex items-center justify-between border-b border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pb-3">
-        <HudLabel withDot>System Overview</HudLabel>
         <div className="flex items-center gap-2">
-          <span className="hud-label text-[var(--silver-dim)]">Live</span>
+          <span className="h-2 w-2 rounded-full bg-[color-mix(in_oklab,var(--silver)_30%,transparent)]" />
+          <span className="h-2 w-2 rounded-full bg-[color-mix(in_oklab,var(--silver)_30%,transparent)]" />
+          <span className="h-2 w-2 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)]" />
+          <span className="ml-3 hud-label text-[var(--silver-dim)]">cyryx_console / system_overview</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="hud-label text-[var(--silver-dim)]">v1.04</span>
           <span className="hud-label text-[var(--accent-glow)]">UTC 04:21</span>
         </div>
       </div>

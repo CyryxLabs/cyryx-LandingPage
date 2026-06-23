@@ -92,9 +92,15 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6">
-          <span className="hud-label text-[var(--silver-dim)]">
-            Cyryx Labs — AI Infrastructure / Command Layer
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="hud-label text-[var(--silver-dim)]">
+              Cyryx Labs — AI Infrastructure / Command Layer
+            </span>
+            <span className="inline-flex items-center gap-1.5 hud-label text-[var(--accent-glow)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)] animate-pulse" />
+              SYS_STATUS: OPTIMAL
+            </span>
+          </div>
           <div className="flex gap-6">
             {["Privacy", "Terms", "Security"].map((l) => (
               <a key={l} href="#" className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition">
