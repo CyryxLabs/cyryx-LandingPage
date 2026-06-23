@@ -6,11 +6,11 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { label: "Overview", href: "#overview" },
-  { label: "Systems", href: "#systems" },
-  { label: "Intelligence", href: "#intelligence" },
-  { label: "Command", href: "#command" },
-  { label: "Infrastructure", href: "#infrastructure" },
-  { label: "Resources", href: "#resources" },
+  { label: "Products", href: "#products" },
+  { label: "Solutions", href: "#solutions" },
+  { label: "Applied AI Lab", href: "#applied-lab" },
+  { label: "MAAX Studio", href: "#maax" },
+  { label: "Contact", href: "#cta" },
 ];
 
 export function Header() {
@@ -55,7 +55,7 @@ export function Header() {
             href="#cta"
             className="hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_40%,transparent)] text-[var(--silver)] hud-label hover:bg-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)] hover:shadow-[var(--shadow-glow-teal)] transition-all"
           >
-            Schedule a Briefing
+            Start a Project
             <span aria-hidden className="text-[var(--accent-glow)]">→</span>
           </a>
 
