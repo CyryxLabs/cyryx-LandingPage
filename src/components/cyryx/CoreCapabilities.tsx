@@ -31,7 +31,8 @@ export function CoreCapabilities() {
           {CARDS.map(({ n, icon: Icon, title, copy }) => (
             <article
               key={title}
-              className="cx-stagger-item group relative bg-[var(--graphite)] p-8 lg:p-10 transition-colors hover:bg-[var(--onyx)]"
+              data-tilt
+              className="cx-stagger-item group relative bg-[var(--graphite)] p-8 lg:p-10 transition-colors hover:bg-[var(--onyx)] hover:shadow-[0_30px_60px_-30px_color-mix(in_oklab,var(--accent-glow)_45%,transparent)]"
             >
               <div className="flex items-center justify-between">
                 <div className="cx-bracket-icon">

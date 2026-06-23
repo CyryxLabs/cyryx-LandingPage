@@ -28,6 +28,27 @@ export function useCyryxScrollAnimations() {
 
     const mm = gsap.matchMedia();
 
+    // ── Split [data-hero-headline] into word spans for reveal ─
+    document.querySelectorAll<HTMLElement>("[data-hero-headline]").forEach((el) => {
+      if (el.dataset.split === "1") return;
+      const text = el.textContent ?? "";
+      el.textContent = "";
+      text.split(/(\s+)/).forEach((part) => {
+        if (/^\s+$/.test(part)) {
+          el.appendChild(document.createTextNode(part));
+        } else if (part.length) {
+          const outer = document.createElement("span");
+          outer.className = "cx-word-mask";
+          const inner = document.createElement("span");
+          inner.className = "cx-word";
+          inner.textContent = part;
+          outer.appendChild(inner);
+          el.appendChild(outer);
+        }
+      });
+      el.dataset.split = "1";
+    });
+
     // ── Universal reveals ────────────────────────────────────────
     const reveals = gsap.utils.toArray<HTMLElement>(".cx-reveal");
     reveals.forEach((el) => {
@@ -203,6 +224,55 @@ export function useCyryxScrollAnimations() {
         delay: 0.1,
       });
     }
+
+    // ── Hero headline word-by-word rise ────────────────────────
+    const heroWords = gsap.utils.toArray<HTMLElement>("[data-hero-headline] .cx-word");
+    if (heroWords.length) {
+      gsap.set(heroWords, { yPercent: 110, rotate: 4 });
+      gsap.to(heroWords, {
+        yPercent: 0,
+        rotate: 0,
+        duration: 1.1,
+        ease: "expo.out",
+        stagger: 0.07,
+        delay: 0.25,
+      });
+    }
+
+    // ── Desktop hero scrub: scale/lift the 3D stage as you scroll away ─
+    mm.add("(min-width: 1024px)", () => {
+      const hero = document.querySelector<HTMLElement>("[data-hero]");
+      if (hero) {
+        gsap.to(hero, {
+          scale: 0.94,
+          y: -40,
+          filter: "blur(2px)",
+          opacity: 0.65,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: "bottom bottom",
+            end: "bottom top",
+            scrub: 0.6,
+          },
+        });
+      }
+
+      // 3D tilt on capability cards via mouse
+      document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((card) => {
+        const onMove = (e: PointerEvent) => {
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = `perspective(900px) rotateX(${-py * 6}deg) rotateY(${px * 8}deg) translateZ(0)`;
+        };
+        const onLeave = () => {
+          card.style.transform = "perspective(900px) rotateX(0) rotateY(0)";
+        };
+        card.addEventListener("pointermove", onMove);
+        card.addEventListener("pointerleave", onLeave);
+      });
+    });
 
     // Recalculate after images/fonts settle.
     const doRefresh = () => ScrollTrigger.refresh();
