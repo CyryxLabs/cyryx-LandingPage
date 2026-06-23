@@ -23,7 +23,7 @@ export function CyryxWordmark({ className = "" }: { className?: string }) {
     <img
       src={wordmarkAsset.url}
       alt="Cyryx Labs"
-      className={`block h-7 w-auto object-contain ${className}`}
+      className={`block w-auto object-contain ${className || "h-7"}`}
       draggable={false}
     />
   );
