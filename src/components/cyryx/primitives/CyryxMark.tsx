@@ -1,4 +1,5 @@
-import monolith from "@/assets/cyryx-monolith.png";
+import markAsset from "@/assets/cyryx-mark.png.asset.json";
+import wordmarkAsset from "@/assets/cyryx-wordmark.png.asset.json";
 
 export function CyryxMark({
   size = 28,
@@ -6,7 +7,7 @@ export function CyryxMark({
 }: { size?: number; className?: string }) {
   return (
     <img
-      src={monolith}
+      src={markAsset.url}
       width={size}
       height={size}
       alt=""
@@ -19,10 +20,11 @@ export function CyryxMark({
 
 export function CyryxWordmark({ className = "" }: { className?: string }) {
   return (
-    <span
-      className={`font-display text-silver-gradient text-[15px] font-semibold tracking-[0.28em] uppercase ${className}`}
-    >
-      Cyryx<span className="text-[var(--accent-glow)]">·</span>Labs
-    </span>
+    <img
+      src={wordmarkAsset.url}
+      alt="Cyryx Labs"
+      className={`block h-7 w-auto object-contain ${className}`}
+      draggable={false}
+    />
   );
 }
