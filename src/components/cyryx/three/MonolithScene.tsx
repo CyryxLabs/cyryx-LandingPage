@@ -39,12 +39,13 @@ function Monolith() {
       <mesh castShadow receiveShadow position={[0, 0, 0]}>
         <boxGeometry args={[1.15, 3.6, 0.32]} />
         <meshPhysicalMaterial
-          color="#0e1417"
-          metalness={1}
-          roughness={0.22}
-          clearcoat={1}
-          clearcoatRoughness={0.15}
-          envMapIntensity={1.4}
+          color="#05080a"
+          metalness={0.95}
+          roughness={0.38}
+          clearcoat={0.6}
+          clearcoatRoughness={0.4}
+          envMapIntensity={0.35}
+          reflectivity={0.4}
         />
       </mesh>
 
@@ -137,11 +138,11 @@ export function MonolithScene({ className = "" }: { className?: string }) {
         camera={{ position: [0, 0.1, 5.6], fov: 32 }}
       >
         <Suspense fallback={null}>
-          <color attach="background" args={["#00000000"]} />
-          <ambientLight intensity={0.35} />
-          <directionalLight position={[3, 4, 5]} intensity={1.3} color="#cfeef0" />
-          <pointLight position={[-3, -2, 3]} intensity={1.6} color="#00E6D0" />
-          <pointLight position={[0, 3, -2]} intensity={0.6} color="#1f8c8c" />
+          <ambientLight intensity={0.12} />
+          <directionalLight position={[3, 4, 5]} intensity={0.55} color="#a8c4c8" />
+          <pointLight position={[-2.8, -1.6, 2.4]} intensity={3.2} distance={9} decay={1.6} color="#00E6D0" />
+          <pointLight position={[2.4, 2.6, 1.8]} intensity={1.4} distance={8} decay={1.8} color="#5fb4b8" />
+          <pointLight position={[0, -2.4, 2]} intensity={1.8} distance={6} decay={1.8} color="#00E6D0" />
 
           <Float speed={1.1} rotationIntensity={0.25} floatIntensity={0.45}>
             <Monolith />
@@ -159,7 +160,7 @@ export function MonolithScene({ className = "" }: { className?: string }) {
             speed={0.4}
           />
 
-          <Environment preset="warehouse" />
+          <Environment preset="night" background={false} />
         </Suspense>
       </Canvas>
     </div>
