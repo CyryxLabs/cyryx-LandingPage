@@ -1,95 +1,91 @@
-import { ArrowRight } from "lucide-react";
-import observe from "@/assets/cyryx-observe.jpg";
-import orchestrate from "@/assets/cyryx-orchestrate.jpg";
-import resilience from "@/assets/cyryx-resilience.jpg";
+import { Rocket, Workflow, Bot, BookOpen, Plug, ShieldCheck } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 
-const PANELS = [
+const SOLUTIONS = [
   {
-    title: "Observe Everything",
-    img: observe,
-    alt: "Real-time telemetry dashboard",
-    copy: "Real-time telemetry and deep visibility across every layer—models, data, infrastructure, and agents.",
-    link: "Explore Observability",
+    icon: Rocket,
+    title: "AI Product Development",
+    copy: "From idea to AI product. We help teams design, build, and launch AI-powered products with clear architecture, fast execution, and scalable foundations.",
+    deliverables: ["Product strategy", "PRD", "UX/UI", "MVP", "Backend", "AI integration", "Auth", "Payments", "Dashboard", "Deployment"],
   },
   {
-    title: "Orchestrate With Precision",
-    img: orchestrate,
-    alt: "Server corridor",
-    copy: "Coordinate complex workflows with intelligent routing, dependency resolution, and guardrails.",
-    link: "Explore Orchestration",
+    icon: Workflow,
+    title: "Agentic Workflow Automation",
+    copy: "Turn repetitive work into intelligent workflows. AI-powered automations that connect tools, trigger actions, route decisions, and keep humans in control.",
+    deliverables: ["Workflow design", "Agent orchestration", "API integrations", "Human approvals", "Notifications", "Logs", "Dashboards"],
   },
   {
-    title: "Operate With Resilience",
-    img: resilience,
-    alt: "Command center operations display",
-    copy: "Built for continuity with fault tolerance, redundancy, and adaptive recovery at global scale.",
-    link: "Explore Resilience",
+    icon: Bot,
+    title: "Internal AI Copilots & Agents",
+    copy: "Build agents that understand your business. Internal copilots and agents connected to your data, tools, workflows, and operating rules.",
+    deliverables: ["Knowledge base", "RAG", "Tool access", "Permissions", "Guardrails", "Evaluation", "Usage logs"],
+  },
+  {
+    icon: BookOpen,
+    title: "AI Knowledge Systems",
+    copy: "Turn scattered knowledge into operational intelligence. Retrieve, reason over, and act on the information you already have.",
+    deliverables: ["Document ingestion", "Semantic search", "Knowledge graph", "Citations", "Versioning", "Access controls", "Internal chat"],
+  },
+  {
+    icon: Plug,
+    title: "AI Integrations & Infrastructure",
+    copy: "Connect AI to the systems that run your business. Production-ready integrations across models, APIs, databases, workflows, and dashboards.",
+    deliverables: ["OpenAI / Anthropic / Gemini", "Supabase", "Stripe", "Vercel", "GitHub", "Slack", "Notion", "Airtable", "Make / n8n / Zapier", "CRMs"],
+  },
+  {
+    icon: ShieldCheck,
+    title: "AI Governance & Cost Control",
+    copy: "AI with control, not chaos. Governance layers that make AI measurable, auditable, cost-aware, and safe to operate.",
+    deliverables: ["Model routing", "Usage caps", "Cost tracking", "Approval flows", "Audit logs", "Security controls", "Eval rubrics", "Human-in-the-loop"],
   },
 ];
 
 export function CommandLayerSection() {
   return (
-    <section id="command" className="relative py-20 lg:py-32">
+    <section id="solutions" className="relative py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        <div className="max-w-2xl cx-reveal">
-          <HudLabel withDot>Inside the Command Layer</HudLabel>
-          <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.08] text-silver-gradient">
-            Observe. Orchestrate. Operate.
+        <div className="max-w-3xl cx-reveal">
+          <HudLabel withDot>Solutions</HudLabel>
+          <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.08] text-silver-gradient uppercase">
+            AI solutions built for execution, not hype.
           </h2>
-          <p className="mt-5 max-w-xl text-[15px] sm:text-base text-[var(--silver-dim)]">
-            Three pillars of the Cyryx command layer, working as one continuous fabric across your stack.
+          <p className="mt-5 text-[15px] sm:text-base text-[var(--silver-dim)]">
+            We help businesses design, build, and deploy AI systems that connect
+            to real workflows, real data, and real outcomes.
           </p>
         </div>
 
-        <div className="cx-stagger mt-14 lg:mt-20 flex flex-col gap-14 lg:gap-24">
-          {PANELS.map((p, i) => {
-            const reverse = i % 2 === 1;
-            return (
-              <article
-                key={p.title}
-                className={`cx-stagger-item group grid gap-8 lg:gap-14 items-center lg:grid-cols-2 ${reverse ? "lg:[&>div:first-child]:order-2" : ""}`}
-              >
-                <div className="relative overflow-hidden border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] aspect-[16/10]">
-                  <img
-                    src={p.img}
-                    alt={p.alt}
-                    loading="lazy"
-                    width={1280}
-                    height={800}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    data-parallax
-                  />
-                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[var(--onyx)] via-transparent to-transparent opacity-70" />
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                    <span className="hud-label text-[var(--accent-glow)]">PHASE_{`0${i + 1}`}</span>
-                    <span className="hud-label text-[var(--silver-dim)]">0{i + 1} / 03</span>
-                  </div>
-                </div>
-                <div>
-                  <span className="hud-label text-[var(--accent-glow)]">{`PHASE_${`0${i + 1}`}`}</span>
-                  <h3 className="mt-4 font-display text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold uppercase text-silver-gradient leading-[1.05]">
-                    {p.title}
-                  </h3>
-                  <p className="mt-5 max-w-md text-sm sm:text-base leading-relaxed text-[var(--silver-dim)]">
-                    {p.copy}
-                  </p>
-                  <div className="mt-6 h-px w-full bg-[color-mix(in_oklab,var(--silver)_10%,transparent)] relative overflow-hidden">
+        <div className="cx-stagger mt-14 lg:mt-20 grid gap-3 lg:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {SOLUTIONS.map(({ icon: Icon, title, copy, deliverables }) => (
+            <article
+              key={title}
+              data-tilt
+              className="cx-stagger-item glass-panel rounded-md p-6 lg:p-7 flex flex-col"
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-sm border border-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)]">
+                <Icon className="h-4 w-4 text-[var(--accent-glow)]" />
+              </span>
+              <h3 className="mt-5 font-display text-lg font-semibold uppercase tracking-wider text-[var(--silver)]">
+                {title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
+                {copy}
+              </p>
+              <div className="mt-5 pt-5 border-t border-[color-mix(in_oklab,var(--silver)_10%,transparent)]">
+                <span className="hud-label text-[var(--silver-dim)]">Deliverables</span>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {deliverables.map((d) => (
                     <span
-                      className="absolute inset-y-0 left-0 bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)]"
-                      style={{ width: `${33 * (i + 1)}%` }}
-                    />
-                  </div>
-                  <a
-                    href="#"
-                    className="mt-6 inline-flex items-center gap-2 hud-label text-[var(--accent-glow)] hover:gap-3 transition-all"
-                  >
-                    {p.link} <ArrowRight className="h-3.5 w-3.5" />
-                  </a>
+                      key={d}
+                      className="rounded-sm border border-[color-mix(in_oklab,var(--silver)_12%,transparent)] px-2 py-1 text-[11px] text-[var(--silver-dim)] hover:text-[var(--accent-glow)] hover:border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] transition-colors"
+                    >
+                      {d}
+                    </span>
+                  ))}
                 </div>
-              </article>
-            );
-          })}
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
