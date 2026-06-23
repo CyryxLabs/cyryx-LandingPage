@@ -1,4 +1,4 @@
-import monolith from "@/assets/cyryx-monolith.png.asset.json";
+import monolith from "@/assets/cyryx-monolith.png";
 
 export function CyryxMark({
   size = 28,
@@ -6,7 +6,7 @@ export function CyryxMark({
 }: { size?: number; className?: string }) {
   return (
     <img
-      src={monolith.url}
+      src={monolith}
       width={size}
       height={size}
       alt=""
