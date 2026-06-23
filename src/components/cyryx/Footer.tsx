@@ -1,5 +1,5 @@
 import { Linkedin, Twitter, Youtube, Github, ArrowRight } from "lucide-react";
-import { CyryxMark, CyryxWordmark } from "./primitives/CyryxMark";
+import { CyryxWordmark } from "./primitives/CyryxMark";
 import { HudLabel } from "./primitives/HudLabel";
 
 const COLUMNS = [
@@ -15,10 +15,7 @@ export function Footer() {
         <div className="cx-stagger grid gap-10 lg:grid-cols-[1.3fr_2.2fr_1.5fr]">
           {/* Brand */}
           <div className="cx-stagger-item">
-            <div className="flex items-center gap-2.5">
-              <CyryxMark size={36} />
-              <CyryxWordmark className="text-base" />
-            </div>
+            <CyryxWordmark className="h-10" />
             <p className="mt-5 font-display text-sm tracking-[0.32em] uppercase text-[var(--silver-dim)]">
               Intelligence <span className="text-[var(--accent-glow)]">·</span> Execution <span className="text-[var(--accent-glow)]">·</span> Command
             </p>
