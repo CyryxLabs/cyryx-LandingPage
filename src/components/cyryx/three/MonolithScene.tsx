@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Float, Stars } from "@react-three/drei";
+import { Float } from "@react-three/drei";
 import * as THREE from "three";
 
 /**
@@ -55,8 +55,7 @@ function Monolith() {
         <meshStandardMaterial
           color="#00E6D0"
           emissive="#00E6D0"
-          emissiveIntensity={2.6}
-          toneMapped={false}
+          emissiveIntensity={1.6}
         />
       </mesh>
 
@@ -66,8 +65,7 @@ function Monolith() {
         <meshStandardMaterial
           color="#00E6D0"
           emissive="#00E6D0"
-          emissiveIntensity={1.6}
-          toneMapped={false}
+          emissiveIntensity={1.2}
         />
       </mesh>
 
@@ -77,9 +75,8 @@ function Monolith() {
         <meshBasicMaterial
           color="#00E6D0"
           transparent
-          opacity={0.08}
+          opacity={0.06}
           side={THREE.DoubleSide}
-          toneMapped={false}
         />
       </mesh>
     </group>
@@ -112,12 +109,11 @@ function OrbitDust() {
   return (
     <points ref={ref} geometry={geo.current!}>
       <pointsMaterial
-        size={0.012}
+        size={0.014}
         color="#7ff5e6"
         transparent
-        opacity={0.55}
+        opacity={0.35}
         sizeAttenuation
-        toneMapped={false}
       />
     </points>
   );
@@ -141,29 +137,16 @@ export function MonolithScene({ className = "" }: { className?: string }) {
         camera={{ position: [0, 0.1, 5.6], fov: 32 }}
       >
         <Suspense fallback={null}>
-          <ambientLight intensity={0.12} />
-          <directionalLight position={[3, 4, 5]} intensity={0.55} color="#a8c4c8" />
-          <pointLight position={[-2.8, -1.6, 2.4]} intensity={3.2} distance={9} decay={1.6} color="#00E6D0" />
-          <pointLight position={[2.4, 2.6, 1.8]} intensity={1.4} distance={8} decay={1.8} color="#5fb4b8" />
-          <pointLight position={[0, -2.4, 2]} intensity={1.8} distance={6} decay={1.8} color="#00E6D0" />
+          <ambientLight intensity={0.18} />
+          <directionalLight position={[3, 4, 5]} intensity={0.45} color="#a8c4c8" />
+          <pointLight position={[-2.4, -1.2, 2.2]} intensity={0.7} distance={6} decay={2} color="#00E6D0" />
+          <pointLight position={[2.2, 2.4, 1.6]} intensity={0.4} distance={6} decay={2} color="#5fb4b8" />
 
           <Float speed={1.1} rotationIntensity={0.25} floatIntensity={0.45}>
             <Monolith />
           </Float>
 
           <OrbitDust />
-
-          <Stars
-            radius={50}
-            depth={30}
-            count={1200}
-            factor={2.4}
-            saturation={0}
-            fade
-            speed={0.4}
-          />
-
-          {/* No HDR environment — pure direct lighting keeps the slab dark/cinematic. */}
         </Suspense>
       </Canvas>
     </div>
