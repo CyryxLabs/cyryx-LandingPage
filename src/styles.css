@@ -296,6 +296,13 @@
 @media (prefers-reduced-motion: reduce) {
   .cx-reveal { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
+  .cx-word { transform: none !important; }
+  [data-tilt] { transform: none !important; transition: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 /* Word-reveal mask for hero headline split. */

@@ -14,8 +14,12 @@ interface Props {
  */
 export function MagneticButton({ href, children, variant = "primary", className }: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
+  const reduce =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   const onMove = (e: React.PointerEvent<HTMLAnchorElement>) => {
+    if (reduce) return;
     const el = ref.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -35,7 +39,7 @@ export function MagneticButton({ href, children, variant = "primary", className 
       onPointerMove={onMove}
       onPointerLeave={onLeave}
       className={cn(
-        "group relative inline-flex h-12 items-center justify-center gap-2 rounded-md px-7 hud-label font-semibold transition-[transform,box-shadow,background-color,color] duration-300 ease-out will-change-transform",
+        "group relative inline-flex h-12 items-center justify-center gap-2 rounded-md px-7 hud-label font-semibold transition-[transform,box-shadow,background-color,color] duration-300 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--onyx)]",
         variant === "primary"
           ? "bg-[var(--accent-glow)] text-[var(--onyx)] shadow-[var(--shadow-glow-teal)] hover:brightness-110"
           : "border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] text-[var(--silver)] hover:border-[var(--accent-glow)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)]",
