@@ -10,25 +10,28 @@ import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
 import { ProcessTimeline } from "@/components/cyryx/ProcessTimeline";
 import { CTASection } from "@/components/cyryx/CTASection";
 import { Footer } from "@/components/cyryx/Footer";
+import { AppliedAILab } from "@/components/cyryx/AppliedAILab";
+import { WhoWeServe } from "@/components/cyryx/WhoWeServe";
+import { Ecosystem } from "@/components/cyryx/Ecosystem";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cyryx Labs — Intelligence Infrastructure for Autonomous Execution" },
+      { title: "Cyryx Labs — AI Products & Execution Systems for the Agentic Era" },
       {
         name: "description",
         content:
-          "Cyryx Labs builds reasoning engines, command architecture, and secure execution frameworks for organizations deploying AI at enterprise scale.",
+          "Cyryx Labs builds proprietary AI products, custom automation systems, and agentic workflows that turn AI into governed execution.",
       },
-      { property: "og:title", content: "Cyryx Labs — AI Infrastructure / Command Layer" },
+      { property: "og:title", content: "Cyryx Labs — AI Products & Execution Systems" },
       {
         property: "og:description",
         content:
-          "Reasoning engines, command architecture, and secure execution frameworks for enterprise AI.",
+          "Proprietary AI products, custom AI systems, and agentic workflows for the agentic era.",
       },
       { property: "og:type", content: "website" },
-      { name: "theme-color", content: "#0A0A0A" },
+      { name: "theme-color", content: "#050607" },
     ],
   }),
   component: Index,
@@ -51,9 +54,12 @@ function Index() {
         <CapabilityStrip />
         <WhyCyryx />
         <CoreCapabilities />
-        <CommandLayerSection />
         <MAAXStudioSpotlight />
+        <CommandLayerSection />
+        <AppliedAILab />
         <ProcessTimeline />
+        <WhoWeServe />
+        <Ecosystem />
         <CTASection />
       </main>
       <Footer />

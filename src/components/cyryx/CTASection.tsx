@@ -1,4 +1,4 @@
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import lobby from "@/assets/cyryx-cta-lobby.jpg";
 import { CyryxMark } from "./primitives/CyryxMark";
 
