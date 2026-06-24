@@ -13,6 +13,8 @@ import { Footer } from "@/components/cyryx/Footer";
 import { AppliedAILab } from "@/components/cyryx/AppliedAILab";
 import { WhoWeServe } from "@/components/cyryx/WhoWeServe";
 import { Ecosystem } from "@/components/cyryx/Ecosystem";
+import { MetricsBand } from "@/components/cyryx/MetricsBand";
+import { ContactSection } from "@/components/cyryx/ContactSection";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 export const Route = createFileRoute("/")({
@@ -58,9 +60,11 @@ function Index() {
         <CommandLayerSection />
         <AppliedAILab />
         <ProcessTimeline />
+        <MetricsBand />
         <WhoWeServe />
         <Ecosystem />
         <CTASection />
+        <ContactSection />
       </main>
       <Footer />
     </div>
