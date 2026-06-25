@@ -180,6 +180,7 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
         lineRects,
         documentWidth: document.documentElement.scrollWidth,
         viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
       };
     });
 
@@ -193,7 +194,7 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
       expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
       expect(line.top).toBeGreaterThanOrEqual(0);
-      expect(line.bottom).toBeLessThanOrEqual(window.innerHeight + 1);
+      expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
     }
   }
 });
