@@ -73,8 +73,10 @@ lines.push("");
 lines.push("Artifacts: `lighthouse-report`, `a11y-report`, `playwright-report` (see workflow run).");
 
 // Optional: surface the JSON-LD snapshot diff inline when UPDATE_JSONLD_SNAPSHOT ran.
+// Gate via POST_JSONLD_DIFF (defaults to "1"; set to "0" to disable in PR comment).
 const diffPath = "jsonld-diff/jsonld.diff";
-if (existsSync(diffPath)) {
+const postDiff = (process.env.POST_JSONLD_DIFF ?? "1") !== "0";
+if (postDiff && existsSync(diffPath)) {
   const diff = readFileSync(diffPath, "utf8").trim();
   if (diff) {
     lines.push("");
@@ -89,3 +91,51 @@ const md = lines.join("\n");
 process.stdout.write(md + "\n");
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, md + "\n");
 writeFileSync("quality-summary.md", md);
+
+// --- Single HTML quality report ---------------------------------------------
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+const runUrl = process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
+  ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+  : null;
+const sarifLink = runUrl ? `${runUrl}#artifacts` : "a11y-report/axe.sarif";
+function lhCard(label, r, dir) {
+  if (!r) return `<section><h3>${label}</h3><p>n/a</p></section>`;
+  return `<section>
+    <h3>${label} <a href="${esc(dir)}/">(report)</a></h3>
+    <ul>
+      <li>LCP: <b>${fmt(r.lcp)} ms</b></li>
+      <li>CLS: <b>${fmt(r.cls, 3)}</b></li>
+      <li>TBT: <b>${fmt(r.tbt)} ms</b></li>
+      <li>Performance: <b>${fmt((r.perf ?? 0) * 100)}</b></li>
+      <li>Accessibility: <b>${fmt((r.a11y ?? 0) * 100)}</b></li>
+      <li>SEO: <b>${fmt((r.seo ?? 0) * 100)}</b></li>
+    </ul>
+  </section>`;
+}
+const violationsHtml = violations.length
+  ? `<table><thead><tr><th>Project</th><th>Rule</th><th>Impact</th><th>Selector</th></tr></thead><tbody>${violations
+      .map((v) => `<tr><td>${esc(v.project)}</td><td><code>${esc(v.id)}</code></td><td>${esc(v.impact ?? "-")}</td><td><code>${esc(v.targets[0] ?? "-")}</code></td></tr>`)
+      .join("")}</tbody></table>`
+  : `<p>✅ No axe-core violations.</p>`;
+const html = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Quality report</title>
+<style>body{font:14px/1.5 system-ui,sans-serif;max-width:960px;margin:2rem auto;padding:0 1rem;color:#111}
+h1{margin-bottom:.25rem}h3{margin-top:1.5rem}table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #ddd;padding:6px 8px;text-align:left}code{background:#f4f4f5;padding:1px 4px;border-radius:3px}
+.lh{display:grid;grid-template-columns:1fr 1fr;gap:1rem}a{color:#2563eb}</style></head>
+<body>
+<h1>Quality report</h1>
+${runUrl ? `<p>CI run: <a href="${esc(runUrl)}">${esc(runUrl)}</a></p>` : ""}
+<h2>Lighthouse</h2>
+<div class="lh">
+  ${lhCard("Mobile", mobile, "lighthouse-report/mobile")}
+  ${lhCard("Desktop", desktop, "lighthouse-report/desktop")}
+</div>
+<h2>axe-core (${violations.length})</h2>
+<p>SARIF: <a href="${esc(sarifLink)}">${esc(sarifLink)}</a></p>
+${violationsHtml}
+</body></html>`;
+writeFileSync("quality-report.html", html);
+console.log("Wrote quality-report.html");
