@@ -88,6 +88,18 @@ export function Hero() {
           repeat: -1,
         },
       );
+
+      // Headline lines reveal (preserves nested color spans)
+      const lines = gsap.utils.toArray<HTMLElement>(".cx-headline > span");
+      gsap.set(lines, { yPercent: 110, opacity: 0 });
+      gsap.to(lines, {
+        yPercent: 0,
+        opacity: 1,
+        duration: 1.1,
+        ease: "expo.out",
+        stagger: 0.12,
+        delay: 0.15,
+      });
     },
     { scope: root },
   );
@@ -242,16 +254,15 @@ export function Hero() {
 
             {/* Editorial headline */}
             <h1
-              className="mt-6 font-display font-semibold leading-[0.92] tracking-[-0.04em] text-[var(--silver)]"
-              data-hero-headline
+              className="cx-headline mt-6 font-display font-semibold leading-[0.92] tracking-[-0.04em] text-[var(--silver)]"
             >
-              <span className="block text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px]">
+              <span className="inline-block overflow-hidden pb-[0.08em] text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px]">
                 Engineering
               </span>
-              <span className="block text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px] text-silver-gradient">
+              <span className="block overflow-hidden pb-[0.08em] text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px] text-silver-gradient">
                 the agentic
               </span>
-              <span className="block text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px]">
+              <span className="block overflow-hidden pb-[0.08em] text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px]">
                 <span className="italic font-light text-[var(--silver-dim)]">era of </span>
                 <span className="text-[var(--accent-glow)]">execution.</span>
               </span>
