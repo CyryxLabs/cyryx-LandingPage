@@ -21,9 +21,15 @@ const defaults = {
 };
 
 let raw = readFileSync(template, "utf8");
+const active = {};
 for (const [key, fallback] of Object.entries(defaults)) {
   const value = process.env[key] ?? String(fallback);
+  active[key] = { value, source: process.env[key] != null ? "env" : "default" };
   raw = raw.replaceAll(`"${key}"`, value);
 }
 writeFileSync(out, raw);
 console.log(`Wrote ${out}`);
+console.log(`Active Lighthouse budgets:`);
+for (const [k, { value, source }] of Object.entries(active)) {
+  console.log(`  ${k.padEnd(22)} = ${value}  (${source})`);
+}

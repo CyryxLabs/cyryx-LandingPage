@@ -24,6 +24,7 @@ env:
   LH_CLS_MAX: ${{ vars.LH_CLS_MAX || '0.1' }}
   AXE_FAIL_ON: ${{ vars.AXE_FAIL_ON || 'critical' }}
   FORBIDDEN_TERMS_FILE: ${{ vars.FORBIDDEN_TERMS_FILE || '.quality/forbidden-terms.json' }}
+  POST_JSONLD_DIFF: ${{ vars.POST_JSONLD_DIFF || '1' }}
   UPDATE_JSONLD_SNAPSHOT: ${{ (github.event_name == 'workflow_dispatch' && inputs.update_jsonld_snapshot) && '1' || (vars.UPDATE_JSONLD_SNAPSHOT || '') }}
 
 jobs:
@@ -148,6 +149,13 @@ jobs:
         continue-on-error: true
       - name: Build summary
         run: node scripts/summarize-quality.mjs
+      - name: Upload combined HTML quality report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-report-html
+          path: quality-report.html
+          if-no-files-found: warn
       - name: Post PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:

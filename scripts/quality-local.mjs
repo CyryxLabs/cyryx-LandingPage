@@ -12,6 +12,18 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync } from "node:fs";
 
+const budgetKeys = [
+  "LH_PERF_MIN", "LH_A11Y_MIN", "LH_SEO_MIN",
+  "LH_LCP_MAX_MOBILE", "LH_LCP_MAX_DESKTOP",
+  "LH_TBT_MAX_MOBILE", "LH_TBT_MAX_DESKTOP", "LH_CLS_MAX",
+  "AXE_FAIL_ON", "FORBIDDEN_TERMS_FILE", "POST_JSONLD_DIFF",
+];
+console.log("Active quality budgets:");
+for (const k of budgetKeys) {
+  const v = process.env[k];
+  console.log(`  ${k.padEnd(22)} = ${v ?? "(default)"}`);
+}
+
 const steps = [
   ["Validate forbidden-terms", "bun", ["run", "quality:validate-terms"]],
   ["Build production bundle", "bun", ["run", "build"]],
@@ -19,6 +31,7 @@ const steps = [
   ["Lighthouse (mobile)", "bun", ["run", "quality:lhci:mobile"]],
   ["Lighthouse (desktop)", "bun", ["run", "quality:lhci:desktop"]],
   ["axe JSON → SARIF", "bun", ["run", "quality:axe-sarif"]],
+  ["Build combined HTML report", "node", ["scripts/summarize-quality.mjs"]],
 ];
 
 for (const dir of ["a11y-report", "lighthouse-report/mobile", "lighthouse-report/desktop", "playwright-report"]) {
