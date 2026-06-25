@@ -242,6 +242,46 @@
   }
 }
 
+/* Windows High Contrast / forced-colors: keep headlines and overlays legible. */
+@media (forced-colors: active) {
+  .text-chrome-gradient {
+    background: none;
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+    filter: none;
+    forced-color-adjust: none;
+  }
+  [data-hero] img {
+    forced-color-adjust: none;
+  }
+  [data-hero] {
+    background: Canvas;
+  }
+}
+
+/* Accessible skip link — only visible when focused. */
+@utility skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--accent-glow);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transform: translateY(-110%);
+  transition: transform 0.2s ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
 @utility teal-core-line {
   background: linear-gradient(
     180deg,
