@@ -17,9 +17,8 @@ const COLUMNS = [
     title: "Products",
     links: [
       { label: "MAAX Studio", href: "/products/maax-studio" },
-      { label: "Aulexa", href: "/products/aulexa" },
-      { label: "LuminAI", href: "/products/luminai" },
-      { label: "Future Systems", href: "/research" },
+      { label: "Applied AI Lab", href: "/research" },
+      { label: "Solutions", href: "/solutions" },
     ],
   },
   {

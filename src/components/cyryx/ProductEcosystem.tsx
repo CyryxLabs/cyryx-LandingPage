@@ -13,30 +13,12 @@ const PRODUCTS = [
     href: "/products/maax-studio",
   },
   {
-    name: "Aulexa",
-    status: "AI Education · In Development",
-    statusTone: "dim" as const,
+    name: "Cyryx Applied AI Lab",
+    status: "Research & Development",
+    statusTone: "accent" as const,
     copy:
-      "An AI-powered education platform helping educators create, structure, and accelerate instructional materials, lesson planning, and classroom workflows.",
-    cta: "Visit Product",
-    href: "/products/aulexa",
-  },
-  {
-    name: "LuminAI",
-    status: "In Development",
-    statusTone: "dim" as const,
-    copy:
-      "An AI-native product in active development under the Cyryx Labs ecosystem. More details coming soon.",
-    cta: "Coming Soon",
-    href: "/products/luminai",
-  },
-  {
-    name: "Future Systems",
-    status: "Research Pipeline",
-    statusTone: "dim" as const,
-    copy:
-      "Additional AI products and vertical systems developed inside Cyryx Applied AI Lab and validated through real-world solution work.",
-    cta: "View Pipeline",
+      "The applied R&D layer behind every Cyryx system — protocol design, evaluation, governance, and enterprise architecture. Where new AI products are incubated and validated before they ship.",
+    cta: "Explore the Lab",
     href: "/research",
   },
 ];
@@ -73,7 +55,7 @@ export function ProductEcosystem() {
           </p>
         </div>
 
-        <div className="cx-stagger mt-14 lg:mt-20 grid gap-3 lg:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="cx-stagger mt-14 lg:mt-20 grid gap-4 lg:gap-6 sm:grid-cols-2">
           {PRODUCTS.map((p) => (
             <article
               key={p.name}

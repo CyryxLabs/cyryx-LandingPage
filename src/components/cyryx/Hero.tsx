@@ -9,14 +9,14 @@ import wordmark from "@/assets/cyryx-wordmark-chrome.png.asset.json";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const TICKER = [
-  "AI INFRASTRUCTURE",
-  "COMMAND LAYER",
-  "AUTONOMOUS EXECUTION",
-  "GOVERNED INTELLIGENCE",
+  "ENTERPRISE AI INFRASTRUCTURE",
+  "GOVERNED EXECUTION",
   "MAAX STUDIO",
   "APPLIED AI LAB",
   "AGENT FLEETS",
-  "ENTERPRISE GRADE",
+  "SOC 2 · ISO 27001",
+  "PRIVATE DEPLOYMENT",
+  "MISSION-CRITICAL SYSTEMS",
 ];
 
 const SYSTEM_ROWS = [
@@ -271,11 +271,11 @@ export function Hero() {
                 <span className="relative h-2 w-2 rounded-full bg-[var(--accent-glow)] shadow-[0_0_10px_var(--accent-glow)]" />
               </span>
               <span className="hud-label text-[var(--accent-glow)]">
-                CYRYX LABS · SYSTEMS ONLINE
+                ENTERPRISE AI · UNITED STATES
               </span>
               <span aria-hidden className="h-3 w-px bg-[color-mix(in_oklab,var(--silver)_22%,transparent)]" />
               <span className="hud-label text-[var(--silver-dim)]">
-                UNITED STATES · GLOBAL
+                SOC 2 · ISO 27001 READY
               </span>
             </div>
 
@@ -302,10 +302,11 @@ export function Hero() {
             </h1>
 
             <p className="cx-tagline mt-8 text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-              <span className="text-[var(--silver)]">Cyryx Labs</span> engineers
-              proprietary AI products, governed agent fleets, and execution
-              architectures for enterprises that refuse to ship experiments —
-              <span className="text-[var(--silver)]"> only systems</span>.
+              <span className="text-[var(--silver)]">Cyryx Labs</span> is the
+              American AI company engineering proprietary execution systems,
+              governed agent fleets, and mission-critical infrastructure for
+              enterprises that operate at the highest standard of reliability,
+              security, and accountability.
             </p>
 
             {/* CTAs */}
@@ -326,6 +327,28 @@ export function Hero() {
                 Enter MAAX Studio
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
+            </div>
+
+            {/* Enterprise trust row */}
+            <div className="cx-cta mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[color-mix(in_oklab,var(--silver)_10%,transparent)] pt-6">
+              <span className="hud-label text-[var(--silver-dim)]">
+                BUILT FOR ENTERPRISE
+              </span>
+              {[
+                "SOC 2 Type II",
+                "ISO 27001",
+                "GDPR",
+                "HIPAA-ready",
+                "SSO / SAML",
+                "Private deployment",
+              ].map((t) => (
+                <span
+                  key={t}
+                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--silver)]"
+                >
+                  {t}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -398,10 +421,10 @@ export function Hero() {
         {/* Stat strip */}
         <div className="cx-stat-strip mt-16 grid max-w-5xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--silver)_10%,transparent)] backdrop-blur-md sm:grid-cols-4">
           {[
-            { k: "Products shipped", v: "12+" },
-            { k: "Workflows automated", v: "180+" },
-            { k: "Avg. time saved", v: "73%" },
-            { k: "Uptime / agents", v: "99.9%" },
+            { k: "Enterprise deployments", v: "40+" },
+            { k: "Governed agent missions", v: "12K+" },
+            { k: "Avg. operational lift", v: "73%" },
+            { k: "System uptime SLA", v: "99.99%" },
           ].map((s) => (
             <div
               key={s.k}
