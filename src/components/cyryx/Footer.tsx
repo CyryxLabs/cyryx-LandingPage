@@ -26,8 +26,8 @@ const COLUMNS = [
     links: [
       { label: "Research", href: "/research" },
       { label: "Documentation", href: "#" },
-      { label: "GitHub", href: "#" },
       { label: "Brand", href: "#" },
+      { label: "Early Access", href: "/contact" },
     ],
   },
 ];
@@ -118,7 +118,7 @@ export function Footer() {
         <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6">
           <div className="flex items-center gap-4">
             <span className="hud-label text-[var(--silver-dim)]">
-              Cyryx Labs — AI products & execution systems for the agentic era
+              Cyryx Labs — AI products and governed execution systems for the agentic era
             </span>
             <span className="inline-flex items-center gap-1.5 hud-label text-[var(--accent-glow)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)] animate-pulse" />
