@@ -53,9 +53,12 @@ function Index() {
   useCyryxScrollAnimations();
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
+      <a href="#overview" className="skip-link">
+        Skip to content
+      </a>
       <Header />
       <BackgroundMonolith />
-      <main id="overview" className="relative z-10">
+      <main id="overview" role="main" tabIndex={-1} className="relative z-10 focus:outline-none">
         {/* Continuous teal core line drawn by scroll (desktop only) */}
         <span
           aria-hidden
