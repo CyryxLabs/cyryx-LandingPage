@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import voidBg from "@/assets/cyryx-hero-void.jpg.asset.json";
-import shield from "@/assets/cyryx-shield-hero.png.asset.json";
+import monolith from "@/assets/cyryx-monolith.png.asset.json";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -182,9 +182,9 @@ export function Hero() {
       >
         <div className="cx-stage relative h-full w-full max-w-[1400px]">
           <img
-            src={shield.url}
+            src={monolith.url}
             alt=""
-            className="cx-shield absolute right-[-6%] top-1/2 h-[78%] w-auto max-w-none -translate-y-1/2 opacity-90 mix-blend-screen sm:right-[-2%] sm:h-[88%] lg:right-[2%] lg:h-[92%]"
+            className="cx-shield absolute right-[-6%] top-1/2 h-[78%] w-auto max-w-none -translate-y-1/2 opacity-95 sm:right-[-2%] sm:h-[88%] lg:right-[2%] lg:h-[96%]"
             draggable={false}
           />
           {/* teal aura */}
