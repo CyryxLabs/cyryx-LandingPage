@@ -245,7 +245,7 @@ export function Hero() {
           </h1>
 
           {/* Sub */}
-          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] sm:text-lg">
             We engineer the proprietary AI infrastructure and governed agent
             systems that mission-critical American enterprises run on.
           </p>
