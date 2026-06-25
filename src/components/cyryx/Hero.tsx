@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const MARQUEE = [
   "AGENTIC WORKFLOWS",
@@ -21,85 +22,127 @@ export function Hero() {
 
   useGSAP(
     () => {
-      // Aurora blobs drift
-      gsap.to(".cx-aurora-a", {
-        xPercent: 8,
-        yPercent: -6,
-        duration: 14,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
-      gsap.to(".cx-aurora-b", {
-        xPercent: -10,
-        yPercent: 8,
-        duration: 18,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
-      gsap.to(".cx-aurora-c", {
-        xPercent: 6,
-        yPercent: 6,
-        duration: 22,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
+      const mm = gsap.matchMedia();
+
+      // ── Reduced motion: snap to final state, no loops, no scrub ──
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(".cx-headline > span", { yPercent: 0, opacity: 1 });
+        gsap.set(".cx-side-panel", { opacity: 1, y: 0 });
       });
 
-      // Marquee infinite scroll
-      const track = root.current?.querySelector<HTMLElement>(".cx-marquee-track");
-      if (track) {
-        gsap.to(track, {
+      // ── Motion-allowed shared setup ─────────────────────────────
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // Intro timeline — headline lines + supporting bits
+        const intro = gsap.timeline({
+          defaults: { ease: "expo.out", duration: 1.05 },
+        });
+        intro
+          .set(".cx-headline > span", { yPercent: 110, opacity: 0 })
+          .to(".cx-headline > span", {
+            yPercent: 0,
+            opacity: 1,
+            stagger: 0.12,
+          }, 0.1)
+          .from(
+            "[data-hero-line]",
+            { y: 18, opacity: 0, duration: 0.7, stagger: 0.08, ease: "power3.out" },
+            "<0.25",
+          );
+
+        // Pulse ring — light, no GL look
+        gsap.fromTo(
+          ".cx-pulse-ring",
+          { scale: 0.6, opacity: 0.7 },
+          { scale: 2.4, opacity: 0, duration: 2.2, ease: "power2.out", repeat: -1 },
+        );
+
+        // Marquee — always on (transform-only, cheap)
+        gsap.to(".cx-marquee-track", {
           xPercent: -50,
           duration: 38,
           ease: "none",
           repeat: -1,
         });
-      }
-
-      // Conic sweep
-      gsap.to(".cx-sweep", {
-        rotate: 360,
-        duration: 28,
-        ease: "none",
-        repeat: -1,
-        transformOrigin: "50% 50%",
       });
 
-      // Floating side panel — soft idle motion
-      gsap.to(".cx-side-panel", {
-        y: -10,
-        duration: 4.5,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
+      // ── Desktop ≥768px: rich ambient + scroll parallax ─────────
+      mm.add(
+        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          // Aurora drift
+          gsap.to(".cx-aurora-a", {
+            xPercent: 8, yPercent: -6, duration: 14,
+            ease: "sine.inOut", repeat: -1, yoyo: true,
+          });
+          gsap.to(".cx-aurora-b", {
+            xPercent: -10, yPercent: 8, duration: 18,
+            ease: "sine.inOut", repeat: -1, yoyo: true,
+          });
+          gsap.to(".cx-aurora-c", {
+            xPercent: 6, yPercent: 6, duration: 22,
+            ease: "sine.inOut", repeat: -1, yoyo: true,
+          });
 
-      // Ping ring on status dot
-      gsap.fromTo(
-        ".cx-pulse-ring",
-        { scale: 0.6, opacity: 0.7 },
-        {
-          scale: 2.4,
-          opacity: 0,
-          duration: 2.2,
-          ease: "power2.out",
-          repeat: -1,
+          // Conic sweep
+          gsap.to(".cx-sweep", {
+            rotate: 360, duration: 28, ease: "none", repeat: -1,
+            transformOrigin: "50% 50%",
+          });
+
+          // Idle float on side panel
+          gsap.to(".cx-side-panel", {
+            y: -10, duration: 4.5,
+            ease: "sine.inOut", repeat: -1, yoyo: true,
+          });
+
+          // Scroll-linked parallax (no pinning — cheap, smooth)
+          gsap.to(".cx-aurora-a", {
+            yPercent: "+=18", ease: "none",
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.6,
+            },
+          });
+          gsap.to(".cx-aurora-b", {
+            yPercent: "-=14", ease: "none",
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.6,
+            },
+          });
+          gsap.to(".cx-side-panel", {
+            yPercent: -8, ease: "none",
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.8,
+            },
+          });
         },
       );
 
-      // Headline lines reveal (preserves nested color spans)
-      const lines = gsap.utils.toArray<HTMLElement>(".cx-headline > span");
-      gsap.set(lines, { yPercent: 110, opacity: 0 });
-      gsap.to(lines, {
-        yPercent: 0,
-        opacity: 1,
-        duration: 1.1,
-        ease: "expo.out",
-        stagger: 0.12,
-        delay: 0.15,
-      });
+      // ── Mobile <768px: lightweight reveal, no pinning, no parallax ──
+      mm.add(
+        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          gsap.from(".cx-side-panel", {
+            opacity: 0,
+            y: 24,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ".cx-side-panel",
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          });
+        },
+      );
     },
     { scope: root },
   );
