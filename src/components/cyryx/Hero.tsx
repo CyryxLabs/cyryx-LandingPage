@@ -31,33 +31,41 @@ export function Hero() {
           if (reduceMotion) return;
 
           const tl = gsap.timeline({
-            defaults: { ease: "power3.out", duration: 0.9 },
+            defaults: {
+              ease: "power3.out",
+              duration: isMobile ? 0.7 : 0.9,
+            },
           });
 
           tl.from(".cx-bg", { opacity: 0, duration: 1.4, ease: "power2.out" })
             .from(
               ".cx-eyebrow",
-              { opacity: 0, y: 16, duration: 0.7 },
+              { opacity: 0, y: isMobile ? 10 : 16, duration: 0.6 },
               "-=1.0",
             )
             .from(
               ".cx-line",
-              { opacity: 0, y: 28, duration: 0.95, stagger: 0.12 },
+              {
+                opacity: 0,
+                y: isMobile ? 18 : 28,
+                duration: isMobile ? 0.7 : 0.95,
+                stagger: isMobile ? 0.08 : 0.12,
+              },
               "-=0.55",
             )
             .from(
               ".cx-sub",
-              { opacity: 0, y: 18, duration: 0.7 },
+              { opacity: 0, y: isMobile ? 12 : 18, duration: 0.65 },
               "-=0.55",
             )
             .from(
               ".cx-cta",
-              { opacity: 0, y: 14, duration: 0.6, stagger: 0.08 },
+              { opacity: 0, y: 12, duration: 0.55, stagger: 0.08 },
               "-=0.45",
             )
             .from(
               ".cx-meta",
-              { opacity: 0, y: 10, duration: 0.55, stagger: 0.06 },
+              { opacity: 0, y: 8, duration: 0.5, stagger: 0.05 },
               "-=0.35",
             )
             .from(
@@ -101,7 +109,19 @@ export function Hero() {
           }
 
           if (isMobile) {
-            gsap.set(".cx-bg-img", { scale: 1.02 });
+            // No pinning, no scrub — just a soft fade on the background
+            // as the user scrolls past the hero.
+            gsap.set(".cx-bg-img", { scale: 1.04 });
+            gsap.to([".cx-bg-img", ".cx-stage"], {
+              opacity: 0.55,
+              ease: "none",
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top top",
+                end: "bottom 40%",
+                scrub: 0.4,
+              },
+            });
           }
         },
       );
@@ -121,12 +141,19 @@ export function Hero() {
         <img
           src={heroBanner.url}
           alt=""
-          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-right will-change-transform"
+          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-[65%_center] will-change-transform sm:object-[75%_center] lg:object-right"
           draggable={false}
         />
-        {/* deep vignette to anchor copy */}
+        {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 lg:hidden"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.78) 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 hidden lg:block"
           style={{
             background:
               "linear-gradient(90deg, #000 0%, rgba(0,0,0,0.92) 28%, rgba(0,0,0,0.55) 52%, rgba(0,0,0,0.15) 78%, transparent 100%)",
@@ -162,7 +189,7 @@ export function Hero() {
       {/* Teal aura behind banner */}
       <div
         aria-hidden
-        className="cx-stage pointer-events-none absolute right-[8%] top-1/2 -z-[5] h-[55vh] w-[55vh] -translate-y-1/2 rounded-full"
+        className="cx-stage pointer-events-none absolute left-1/2 top-[58%] -z-[5] h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rounded-full lg:left-auto lg:right-[8%] lg:top-1/2"
         style={{
           background:
             "radial-gradient(circle, color-mix(in oklab, var(--accent-glow) 22%, transparent) 0%, transparent 65%)",
@@ -182,17 +209,17 @@ export function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="mt-10 font-display font-semibold leading-[0.92] tracking-[-0.04em] text-white">
-            <span className="cx-line block text-[clamp(44px,8.4vw,116px)]">
+          <h1 className="mt-10 font-display font-semibold leading-[0.9] tracking-[-0.045em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55)]">
+            <span className="cx-line block text-[clamp(48px,8.4vw,116px)]">
               Intelligence
             </span>
-            <span className="cx-line block text-[clamp(44px,8.4vw,116px)] text-silver-gradient">
+            <span className="cx-line block text-[clamp(48px,8.4vw,116px)] text-silver-gradient">
               that executes.
             </span>
           </h1>
 
           {/* Sub */}
-          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
             We engineer the proprietary AI infrastructure and governed agent
             systems that mission-critical American enterprises run on.
           </p>
