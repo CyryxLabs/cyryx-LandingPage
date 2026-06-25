@@ -121,12 +121,19 @@ export function Hero() {
         <img
           src={heroBanner.url}
           alt=""
-          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-right will-change-transform"
+          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-[65%_center] will-change-transform sm:object-[75%_center] lg:object-right"
           draggable={false}
         />
-        {/* deep vignette to anchor copy */}
+        {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 lg:hidden"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.78) 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 hidden lg:block"
           style={{
             background:
               "linear-gradient(90deg, #000 0%, rgba(0,0,0,0.92) 28%, rgba(0,0,0,0.55) 52%, rgba(0,0,0,0.15) 78%, transparent 100%)",
@@ -162,7 +169,7 @@ export function Hero() {
       {/* Teal aura behind banner */}
       <div
         aria-hidden
-        className="cx-stage pointer-events-none absolute right-[8%] top-1/2 -z-[5] h-[55vh] w-[55vh] -translate-y-1/2 rounded-full"
+        className="cx-stage pointer-events-none absolute left-1/2 top-[58%] -z-[5] h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rounded-full lg:left-auto lg:right-[8%] lg:top-1/2"
         style={{
           background:
             "radial-gradient(circle, color-mix(in oklab, var(--accent-glow) 22%, transparent) 0%, transparent 65%)",
@@ -182,17 +189,17 @@ export function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="mt-10 font-display font-semibold leading-[0.92] tracking-[-0.04em] text-white">
-            <span className="cx-line block text-[clamp(44px,8.4vw,116px)]">
+          <h1 className="mt-10 font-display font-semibold leading-[0.9] tracking-[-0.045em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55)]">
+            <span className="cx-line block text-[clamp(48px,8.4vw,116px)]">
               Intelligence
             </span>
-            <span className="cx-line block text-[clamp(44px,8.4vw,116px)] text-silver-gradient">
+            <span className="cx-line block text-[clamp(48px,8.4vw,116px)] text-silver-gradient">
               that executes.
             </span>
           </h1>
 
           {/* Sub */}
-          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
             We engineer the proprietary AI infrastructure and governed agent
             systems that mission-critical American enterprises run on.
           </p>
