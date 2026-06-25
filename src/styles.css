@@ -214,6 +214,34 @@
   color: transparent;
 }
 
+/* Brandboard chrome — polished metallic finish for hero/display headings.
+ * Layered highlights mirror the wordmark logo treatment. */
+@utility text-chrome-gradient {
+  background: linear-gradient(
+    180deg,
+    oklch(0.98 0.002 240) 0%,
+    oklch(0.86 0.004 240) 28%,
+    oklch(0.58 0.006 240) 52%,
+    oklch(0.78 0.005 240) 72%,
+    oklch(0.92 0.003 240) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.08))
+    drop-shadow(0 2px 18px rgba(0, 0, 0, 0.55));
+}
+
+@media (prefers-contrast: more) {
+  .text-chrome-gradient {
+    background: none;
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+    filter: none;
+  }
+}
+
 @utility teal-core-line {
   background: linear-gradient(
     180deg,
