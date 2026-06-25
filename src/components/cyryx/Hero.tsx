@@ -240,12 +240,12 @@ export function Hero() {
           {/* Headline */}
           <h1
             id="hero-heading"
-            className="font-display font-semibold leading-[1.02] tracking-[-0.04em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)] pb-2"
+            className="font-display font-semibold leading-[1.08] tracking-[-0.03em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)] pb-2"
           >
-            <span className="cx-line block text-[clamp(44px,8vw,108px)] text-chrome-gradient pb-[0.08em]">
+            <span className="cx-line block text-[clamp(36px,7.2vw,104px)] text-chrome-gradient pb-[0.14em] [overflow-wrap:break-word]">
               Intelligence
             </span>
-            <span className="cx-line block text-[clamp(44px,8vw,108px)] text-chrome-gradient pb-[0.08em]">
+            <span className="cx-line block text-[clamp(36px,7.2vw,104px)] text-chrome-gradient pb-[0.14em] [overflow-wrap:break-word]">
               that executes.
             </span>
           </h1>
