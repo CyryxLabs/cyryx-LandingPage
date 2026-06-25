@@ -515,3 +515,14 @@
   transform-style: preserve-3d;
   transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s ease;
 }
+
+/* Performance: skip rendering/layout for off-screen sections below the hero.
+   Massive paint/layout savings on initial load; reserves intrinsic height
+   so the scrollbar and CLS stay stable. */
+main > section:not([data-hero]) {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 720px;
+}
+
+/* Default below-the-fold images to lazy decode; the hero image keeps its
+   explicit fetchPriority="high" + loading="eager" overrides. */
