@@ -7,7 +7,12 @@ import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const META = ["AI INFRASTRUCTURE", "COMMAND LAYER", "GOVERNED EXECUTION"];
+const META = [
+  "AI PRODUCTS",
+  "AGENTIC SYSTEMS",
+  "GOVERNED EXECUTION",
+  "APPLIED AI INFRASTRUCTURE",
+];
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -238,35 +243,36 @@ export function Hero() {
             className="cx-hero-heading font-display font-semibold tracking-[0] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
             <span className="cx-line cx-hero-title-line block text-chrome-gradient [overflow-wrap:break-word]">
-              Intelligence
+              The execution layer
             </span>
             <span className="cx-line cx-hero-title-line block text-chrome-gradient [overflow-wrap:break-word]">
-              that executes.
+              for operational AI.
             </span>
           </h1>
 
           {/* Sub */}
           <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:text-lg">
-            We engineer the proprietary AI infrastructure and governed agent
-            systems that mission-critical American enterprises run on.
+            Cyryx Labs builds AI products, agentic workflow systems, and
+            governed execution infrastructure for teams moving from scattered
+            AI experiments to structured, auditable operations.
           </p>
 
           {/* CTAs */}
           <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:gap-5">
             <a
-              href="#cta"
-              aria-label="Initialize a Cyryx AI system — primary call to action"
+              href="#maax"
+              aria-label="Explore MAAX Studio — flagship product"
               className="cx-cta group relative inline-flex min-h-14 items-center justify-center gap-2 overflow-hidden rounded-none border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-9 py-4 text-center text-[12px] font-semibold uppercase tracking-[0.28em] text-black transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
-              <span>Initialize a System</span>
+              <span>Explore MAAX Studio</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
-              href="#maax"
-              aria-label="Enter the MAAX Studio workspace"
+              href="#contact"
+              aria-label="Start a project with Cyryx Labs"
               className="cx-cta group inline-flex min-h-14 items-center justify-center gap-2 rounded-none border border-white/25 bg-transparent px-9 py-4 text-center text-[12px] font-semibold uppercase tracking-[0.28em] text-white transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
-              <span>Enter MAAX Studio</span>
+              <span>Start a Project</span>
               <ArrowUpRight
                 className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 aria-hidden="true"
@@ -277,7 +283,7 @@ export function Hero() {
 
         {/* Bottom meta rail */}
         <ul
-          aria-label="Cyryx platform pillars and compliance"
+          aria-label="Cyryx platform pillars and operating posture"
           className="mt-24 flex list-none flex-wrap items-center gap-x-10 gap-y-4 border-t border-white/10 pt-6"
         >
           {META.map((m) => (
@@ -290,7 +296,7 @@ export function Hero() {
             </li>
           ))}
           <li className="cx-meta ml-auto font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]">
-            SOC 2 · ISO 27001 · HIPAA-Ready
+            Governance-ready architecture · Human-commanded autonomy · Cost-aware execution
           </li>
         </ul>
       </div>

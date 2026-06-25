@@ -18,7 +18,7 @@ export function WhyCyryx() {
           <div>
             <HudLabel withDot>Company Thesis</HudLabel>
             <h2 className="mt-5 font-display text-[32px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
-              The next AI shift is not adoption.<br />
+              The next AI shift is not access.<br />
               <span style={{ color: "var(--accent-glow)" }}>It is execution.</span>
             </h2>
           </div>

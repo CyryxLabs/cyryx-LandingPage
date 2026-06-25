@@ -4,13 +4,15 @@ import { GlassPanel } from "./primitives/GlassPanel";
 import { CyryxMark } from "./primitives/CyryxMark";
 
 const BULLETS = [
-  "Dispatch missions instead of scattered prompts",
-  "Give every project persistent memory",
-  "Route relevant context through an Atlas Graph",
-  "Activate specialized Command Units",
-  "Validate work through quality, security, architecture, and cost gates",
-  "Track every action in a Mission Ledger",
-  "Keep humans in command",
+  "Turn goals into structured missions",
+  "Maintain persistent project memory",
+  "Map project context through an Atlas-style context layer",
+  "Activate specialized command units and operator cells",
+  "Route work through execution protocols",
+  "Validate output through quality, security, architecture, and cost gates",
+  "Track mission activity through ledgers and decision memory",
+  "Keep humans in command of critical delivery decisions",
+  "Provide a clear Mission Control surface for visibility and review",
 ];
 
 function ProductPreview() {
@@ -128,9 +130,13 @@ export function MAAXStudioSpotlight() {
               The agentic execution OS for AI-native builders.
             </p>
             <p className="mt-6 max-w-xl text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-              MAAX Studio helps founders, agencies, and product teams operate AI
-              software squads with project memory, graph-based context, mission
-              control, quality gates, and cost governance.
+              MAAX Studio is Cyryx Labs' flagship product: a local-first
+              agentic software factory environment for founders, agencies, and
+              product teams building with AI. It is being built as a
+              runtime-first system for coordinating software work through
+              structured missions, project memory, specialized operators,
+              command units, gates, delivery packages, and human-governed
+              execution.
             </p>
             <ul className="mt-7 space-y-3">
               {BULLETS.map((b) => (
@@ -147,7 +153,7 @@ export function MAAXStudioSpotlight() {
                 href="#cta"
                 className="inline-flex h-12 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
               >
-                Explore MAAX Studio
+                Request Early Access
                 <ArrowRight className="h-4 w-4" />
               </a>
             </div>
