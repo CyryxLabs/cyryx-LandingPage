@@ -36,14 +36,9 @@ export function Hero() {
 
           tl.from(".cx-bg", { opacity: 0, duration: 1.4, ease: "power2.out" })
             .from(
-              ".cx-shield",
-              { opacity: 0, scale: 0.92, y: 30, duration: 1.4, ease: "power3.out" },
-              "-=1.0",
-            )
-            .from(
               ".cx-eyebrow",
               { opacity: 0, y: 16, duration: 0.7 },
-              "-=0.9",
+              "-=1.0",
             )
             .from(
               ".cx-line",
@@ -90,16 +85,6 @@ export function Hero() {
                 start: "top top",
                 end: "bottom top",
                 scrub: 0.6,
-              },
-            });
-            gsap.to(".cx-shield", {
-              yPercent: -16,
-              ease: "none",
-              scrollTrigger: {
-                trigger: root.current,
-                start: "top top",
-                end: "bottom top",
-                scrub: 0.4,
               },
             });
             gsap.to(".cx-stage", {
