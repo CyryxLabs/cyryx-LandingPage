@@ -46,12 +46,14 @@ export function ProductEcosystem() {
         <div className="max-w-3xl cx-reveal">
           <HudLabel withDot>Product Ecosystem</HudLabel>
           <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.06] tracking-[-0.02em] text-silver-gradient">
-            An expanding AI product ecosystem.
+            An expanding AI execution ecosystem.
           </h2>
           <p className="mt-5 text-[15px] sm:text-base text-[var(--silver-dim)] max-w-2xl">
-            Cyryx Labs builds multiple AI products over time — starting with
-            MAAX Studio as the flagship, with additional systems developed
-            through applied research and validated through real-world solutions.
+            Cyryx Labs is building a portfolio of AI products and
+            infrastructure layers. The first flagship is MAAX Studio — a
+            local-first agentic software execution environment for AI-native
+            builders. Additional products and internal systems will emerge
+            from the same applied research layer and from real client work.
           </p>
         </div>
 
