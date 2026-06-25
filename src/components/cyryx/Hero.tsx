@@ -164,6 +164,7 @@ export function Hero() {
       ref={root}
       id="top"
       data-hero
+      aria-labelledby="hero-heading"
       className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-black"
     >
       {/* Background */}
