@@ -54,6 +54,62 @@ export const Route = createFileRoute("/")({
       },
       { rel: "canonical", href: "/" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://cyryxlabs.com/#organization",
+              name: "Cyryx Labs",
+              url: "https://cyryxlabs.com/",
+              description:
+                "Cyryx Labs is an AI product and systems company building proprietary AI products, governed agentic workflow systems, and execution infrastructure.",
+              slogan: "The execution layer for operational AI.",
+              foundingDate: "2024",
+              knowsAbout: [
+                "Operational AI",
+                "Agentic workflow systems",
+                "AI execution infrastructure",
+                "Governed autonomy",
+                "MAAX Runtime",
+              ],
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://cyryxlabs.com/#website",
+              url: "https://cyryxlabs.com/",
+              name: "Cyryx Labs",
+              publisher: { "@id": "https://cyryxlabs.com/#organization" },
+              inLanguage: "en",
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://cyryxlabs.com/#webpage",
+              url: "https://cyryxlabs.com/",
+              name: "Cyryx Labs — AI Products & Execution Systems for the Agentic Era",
+              isPartOf: { "@id": "https://cyryxlabs.com/#website" },
+              about: { "@id": "https://cyryxlabs.com/#organization" },
+              description:
+                "Proprietary AI products, governed agentic workflows, and execution infrastructure for teams operationalizing AI.",
+            },
+            {
+              "@type": "SoftwareApplication",
+              "@id": "https://cyryxlabs.com/#maax-studio",
+              name: "MAAX Studio",
+              applicationCategory: "DeveloperApplication",
+              operatingSystem: "macOS, Windows, Linux",
+              description:
+                "MAAX Studio is a runtime-first agentic execution environment for operational AI, powered by the MAAX Runtime.",
+              brand: { "@id": "https://cyryxlabs.com/#organization" },
+              offers: { "@type": "Offer", availability: "https://schema.org/PreOrder", price: "0", priceCurrency: "USD" },
+            },
+          ],
+        }),
+      },
+    ],
   }),
   component: Index,
 });
