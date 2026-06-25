@@ -233,6 +233,50 @@
     drop-shadow(0 2px 18px rgba(0, 0, 0, 0.55));
 }
 
+/* Hero headline sizing: tuned to keep tall/descender glyphs visible from
+   360px portrait through 1024px landscape/tablet without negative tracking. */
+.cx-hero-heading {
+  line-height: 1.1;
+  letter-spacing: 0;
+  overflow: visible;
+  padding-bottom: 0.16em;
+  text-wrap: balance;
+}
+
+.cx-hero-title-line {
+  font-size: clamp(2.25rem, 7.5vw, 6.5rem);
+  line-height: 1.14;
+  letter-spacing: 0;
+  overflow: visible;
+  padding-bottom: 0.18em;
+}
+
+@media (min-width: 360px) and (max-width: 767px) {
+  .cx-hero-heading {
+    line-height: 1.12;
+    padding-bottom: 0.2em;
+  }
+
+  .cx-hero-title-line {
+    font-size: clamp(2.25rem, 10vw, 4.25rem);
+    line-height: 1.16;
+    padding-bottom: 0.2em;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .cx-hero-heading {
+    line-height: 1.1;
+    padding-bottom: 0.18em;
+  }
+
+  .cx-hero-title-line {
+    font-size: clamp(4rem, 7.3vw, 4.85rem);
+    line-height: 1.13;
+    padding-bottom: 0.18em;
+  }
+}
+
 @media (prefers-contrast: more) {
   .text-chrome-gradient {
     background: none;
@@ -244,18 +288,77 @@
 
 /* Windows High Contrast / forced-colors: keep headlines and overlays legible. */
 @media (forced-colors: active) {
-  .text-chrome-gradient {
-    background: none;
-    color: CanvasText;
-    -webkit-text-fill-color: CanvasText;
-    filter: none;
-    forced-color-adjust: none;
+  html {
+    forced-color-adjust: auto;
   }
-  [data-hero] img {
-    forced-color-adjust: none;
+
+  .skip-link,
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    background: Highlight;
+    color: HighlightText;
+    outline: 2px solid CanvasText;
+    outline-offset: 3px;
   }
+
   [data-hero] {
     background: Canvas;
+    color: CanvasText;
+  }
+
+  [data-hero] .text-chrome-gradient,
+  [data-hero] .cx-hero-title-line {
+    background: none !important;
+    background-image: none !important;
+    color: CanvasText !important;
+    -webkit-text-fill-color: CanvasText !important;
+    filter: none !important;
+    forced-color-adjust: auto;
+  }
+
+  [data-hero] .cx-sub,
+  [data-hero] .cx-meta,
+  [data-hero] .cx-scroll span {
+    color: CanvasText;
+    text-shadow: none;
+  }
+
+  [data-hero] .cx-stage,
+  [data-hero] .cx-hero-noise {
+    display: none;
+  }
+
+  [data-hero] .cx-hero-overlay {
+    background: Canvas !important;
+  }
+
+  [data-hero] .cx-hero-line-glow,
+  [data-hero] .cx-scroll-dot {
+    background: Highlight !important;
+  }
+
+  [data-hero] img {
+    opacity: 0;
+  }
+
+  [data-hero] a {
+    border-color: LinkText;
+    color: LinkText;
+  }
+
+  [data-hero] a:first-of-type {
+    background: ButtonFace;
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+
+  [data-hero] a:focus,
+  [data-hero] a:focus-visible,
+  header a:focus-visible,
+  header button:focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 4px;
+    box-shadow: none;
   }
 }
 
@@ -280,6 +383,18 @@
   transform: translateY(0);
   outline: 2px solid #000;
   outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .skip-link,
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+    outline: 2px solid CanvasText;
+    outline-offset: 3px;
+  }
 }
 
 @utility teal-core-line {
