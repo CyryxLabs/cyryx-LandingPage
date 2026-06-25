@@ -5,7 +5,7 @@ const ITEMS = [
   { n: "02", icon: Workflow, title: "Solutions" },
   { n: "03", icon: FlaskConical, title: "Applied AI Lab" },
   { n: "04", icon: Sparkles, title: "MAAX Studio" },
-  { n: "05", icon: Shield, title: "MAAX Protocol" },
+  { n: "05", icon: Shield, title: "MAAX Runtime" },
 ];
 
 export function CapabilityStrip() {
