@@ -3,6 +3,7 @@ import { ArrowUpRight, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import shieldMark from "@/assets/cyryx-shield-mark.png.asset.json";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -27,7 +28,8 @@ export function Hero() {
       // ── Reduced motion: snap to final state, no loops, no scrub ──
       mm.add("(prefers-reduced-motion: reduce)", () => {
         gsap.set(".cx-headline > span", { yPercent: 0, opacity: 1 });
-        gsap.set(".cx-side-panel", { opacity: 1, y: 0 });
+        gsap.set(".cx-shield-stage", { opacity: 1, y: 0, scale: 1 });
+        gsap.set(".cx-glow-line", { scaleY: 1, opacity: 1 });
       });
 
       // ── Motion-allowed shared setup ─────────────────────────────
@@ -38,11 +40,19 @@ export function Hero() {
         });
         intro
           .set(".cx-headline > span", { yPercent: 110, opacity: 0 })
+          .set(".cx-shield-stage", { opacity: 0, scale: 0.85, y: 30 })
+          .set(".cx-glow-line", { scaleY: 0, opacity: 0, transformOrigin: "50% 50%" })
+          .to(".cx-shield-stage", {
+            opacity: 1, scale: 1, y: 0, duration: 1.4, ease: "expo.out",
+          }, 0)
+          .to(".cx-glow-line", {
+            scaleY: 1, opacity: 1, duration: 1.1, ease: "power3.out",
+          }, 0.35)
           .to(".cx-headline > span", {
             yPercent: 0,
             opacity: 1,
             stagger: 0.12,
-          }, 0.1)
+          }, 0.2)
           .from(
             "[data-hero-line]",
             { y: 18, opacity: 0, duration: 0.7, stagger: 0.08, ease: "power3.out" },
@@ -55,6 +65,18 @@ export function Hero() {
           { scale: 0.6, opacity: 0.7 },
           { scale: 2.4, opacity: 0, duration: 2.2, ease: "power2.out", repeat: -1 },
         );
+
+        // Glow line breathing
+        gsap.to(".cx-glow-line", {
+          opacity: 0.55, duration: 1.8,
+          ease: "sine.inOut", repeat: -1, yoyo: true,
+        });
+
+        // Shield gentle hover
+        gsap.to(".cx-shield-stage", {
+          y: -12, duration: 4.2,
+          ease: "sine.inOut", repeat: -1, yoyo: true,
+        });
 
         // Marquee — always on (transform-only, cheap)
         gsap.to(".cx-marquee-track", {
@@ -89,12 +111,6 @@ export function Hero() {
             transformOrigin: "50% 50%",
           });
 
-          // Idle float on side panel
-          gsap.to(".cx-side-panel", {
-            y: -10, duration: 4.5,
-            ease: "sine.inOut", repeat: -1, yoyo: true,
-          });
-
           // Scroll-linked parallax (no pinning — cheap, smooth)
           gsap.to(".cx-aurora-a", {
             yPercent: "+=18", ease: "none",
@@ -114,8 +130,8 @@ export function Hero() {
               scrub: 0.6,
             },
           });
-          gsap.to(".cx-side-panel", {
-            yPercent: -8, ease: "none",
+          gsap.to(".cx-shield-stage", {
+            yPercent: -10, ease: "none",
             scrollTrigger: {
               trigger: root.current,
               start: "top top",
@@ -130,13 +146,13 @@ export function Hero() {
       mm.add(
         "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
         () => {
-          gsap.from(".cx-side-panel", {
+          gsap.from(".cx-shield-stage", {
             opacity: 0,
             y: 24,
             duration: 0.8,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: ".cx-side-panel",
+              trigger: ".cx-shield-stage",
               start: "top 85%",
               toggleActions: "play none none none",
             },
