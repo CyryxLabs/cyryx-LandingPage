@@ -16,16 +16,18 @@ export function WhyCyryx() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 lg:items-end cx-reveal">
           <div>
-            <HudLabel withDot>The Problem</HudLabel>
-            <h2 className="mt-5 font-display text-[32px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-tight text-silver-gradient uppercase">
-              AI adoption is easy.<br />
-              <span style={{ color: "var(--accent-glow)" }}>AI execution is not.</span>
+            <HudLabel withDot>Company Thesis</HudLabel>
+            <h2 className="mt-5 font-display text-[32px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
+              The next AI shift is not adoption.<br />
+              <span style={{ color: "var(--accent-glow)" }}>It is execution.</span>
             </h2>
           </div>
           <p className="text-[15px] sm:text-base lg:text-lg leading-relaxed text-[var(--silver-dim)] max-w-xl">
-            Most teams already use AI. But their workflows are still scattered across
-            prompts, files, tools, chats, and manual decisions. Context gets lost.
-            Costs are invisible. Outputs are inconsistent. Execution is hard to govern.
+            AI tools are easy to access. Operational AI systems are harder to build.
+            Most teams already use models, prompts, automations, and agents — but the
+            work remains scattered across disconnected tools, manual decisions, invisible
+            costs, and fragile workflows. Cyryx Labs exists to build the systems that
+            make AI executable, governable, and useful inside real businesses.
           </p>
         </div>
 
