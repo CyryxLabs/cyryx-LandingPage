@@ -17,6 +17,7 @@ import { Ecosystem } from "@/components/cyryx/Ecosystem";
 import { MetricsBand } from "@/components/cyryx/MetricsBand";
 import { ContactSection } from "@/components/cyryx/ContactSection";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
+import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -35,6 +36,14 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
       { name: "theme-color", content: "#050607" },
+    ],
+    links: [
+      {
+        rel: "preload",
+        as: "image",
+        href: heroBanner.url,
+        fetchpriority: "high",
+      },
     ],
   }),
   component: Index,
