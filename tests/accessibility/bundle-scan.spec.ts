@@ -1,19 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { globby } from "globby";
+import { loadForbiddenTerms } from "./_forbidden-terms";
 
-const FORBIDDEN: RegExp[] = [
-  /\bSOC\s?2\b/i,
-  /\bISO\s?27001\b/i,
-  /\bHIPAA\b/i,
-  /\b148\+/,
-  /\b62%/,
-  /\b97\.4%/,
-  /\bCursor\b/,
-  /\bWindsurf\b/,
-  /\bCopilot\b/,
-  /\bVS\s?Code\s+plugin\b/i,
-];
+const FORBIDDEN = loadForbiddenTerms();
 
 test("Built production bundles are clean and include MAAX Runtime/Studio", async () => {
   const files = await globby([".output/**/*.{html,js,mjs,css}", "dist/**/*.{html,js,mjs,css}"]);
@@ -26,8 +16,8 @@ test("Built production bundles are clean and include MAAX Runtime/Studio", async
     const content = await readFile(file, "utf8");
     if (/MAAX Runtime/.test(content)) hasRuntime = true;
     if (/MAAX Studio/.test(content)) hasStudio = true;
-    for (const pattern of FORBIDDEN) {
-      if (pattern.test(content)) offenders.push(`${pattern} → ${file}`);
+    for (const { label, pattern } of FORBIDDEN) {
+      if (pattern.test(content)) offenders.push(`${label} → ${file}`);
     }
   }
   expect(offenders, offenders.join("\n")).toEqual([]);
