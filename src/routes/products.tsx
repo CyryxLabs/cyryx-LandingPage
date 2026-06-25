@@ -16,7 +16,7 @@ export const Route = createFileRoute("/products")({
     <StubPage
       eyebrow="Cyryx Labs · Products"
       title="Proprietary AI products for the agentic era."
-      description="MAAX Studio and the Cyryx Applied AI Lab — proprietary execution systems developed inside Cyryx Labs and validated through real-world enterprise deployments."
+      description="MAAX Studio and the Cyryx Applied AI Lab — proprietary execution systems developed inside Cyryx Labs for teams operationalizing AI."
       status="Catalog Expanding"
     />
   ),

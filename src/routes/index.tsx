@@ -35,6 +35,14 @@ export const Route = createFileRoute("/")({
           "Proprietary AI products, custom AI systems, and agentic workflows for the agentic era.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Cyryx Labs — AI Products & Execution Systems" },
+      {
+        name: "twitter:description",
+        content:
+          "The execution layer for operational AI. AI products, agentic workflow systems, and governed execution infrastructure.",
+      },
       { name: "theme-color", content: "#050607" },
     ],
     links: [
@@ -44,6 +52,7 @@ export const Route = createFileRoute("/")({
         href: heroBanner.url,
         fetchPriority: "high",
       },
+      { rel: "canonical", href: "/" },
     ],
   }),
   component: Index,
