@@ -34,147 +34,216 @@ export function Hero() {
     () => {
       const mm = gsap.matchMedia();
 
-      // ── Reduced motion: snap to final state ─────────────────────
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(".cx-banner, .cx-eyebrow, .cx-headline-line, .cx-tagline, .cx-cta, .cx-stat, .cx-hud, .cx-scan-bar", {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          clipPath: "inset(0% 0% 0% 0%)",
-        });
-      });
-
-      // ── Motion-allowed shared intro ─────────────────────────────
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-
-        // 1. Cinematic banner reveal — clip-path wipe + slow zoom
-        tl.set(".cx-banner", {
-          clipPath: "inset(50% 0% 50% 0%)",
-          scale: 1.15,
-          opacity: 0,
-        })
-          .set(".cx-banner-img", { scale: 1.18 })
-          .set(".cx-scan-bar", { scaleY: 0, transformOrigin: "50% 0%" })
-          .set([".cx-eyebrow", ".cx-headline-line", ".cx-tagline", ".cx-cta", ".cx-stat", ".cx-hud"], {
-            opacity: 0,
-            y: 30,
-          })
-          .to(".cx-banner", {
-            clipPath: "inset(0% 0% 0% 0%)",
-            opacity: 1,
-            scale: 1,
-            duration: 1.6,
-            ease: "expo.out",
-          })
-          .to(".cx-banner-img", {
-            scale: 1,
-            duration: 2.4,
-            ease: "expo.out",
-          }, "<")
-          .to(".cx-scan-bar", {
-            scaleY: 1,
-            duration: 1.0,
-            ease: "power2.out",
-          }, "-=1.2")
-          .to(".cx-eyebrow", {
-            opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-          }, "-=1.1")
-          .to(".cx-headline-line", {
-            opacity: 1, y: 0, duration: 1.0, ease: "expo.out", stagger: 0.12,
-          }, "-=0.9")
-          .to(".cx-tagline", {
-            opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-          }, "-=0.6")
-          .to(".cx-cta", {
-            opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.08,
-          }, "-=0.5")
-          .to(".cx-hud", {
-            opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.06,
-          }, "-=0.6")
-          .to(".cx-stat", {
-            opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.07,
-          }, "-=0.4");
-
-        // Loops — transform-only, cheap
-        gsap.to(".cx-marquee-track", {
-          xPercent: -50, duration: 42, ease: "none", repeat: -1,
-        });
-        gsap.fromTo(".cx-pulse-ring",
-          { scale: 0.6, opacity: 0.7 },
-          { scale: 2.4, opacity: 0, duration: 2.2, ease: "power2.out", repeat: -1 },
-        );
-        // Scan-line sweep across the banner
-        gsap.fromTo(".cx-scan-bar",
-          { yPercent: -10, opacity: 0 },
-          { yPercent: 1000, opacity: 0.9, duration: 4.5, ease: "power1.inOut", repeat: -1, repeatDelay: 1.2 },
-        );
-      });
-
-      // ── Desktop: scroll-driven 3D parallax (no GL, pure transforms) ──
       mm.add(
-        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          // Banner zoom + lift on scroll (cinematic)
-          gsap.to(".cx-banner-img", {
-            yPercent: -8,
-            scale: 1.08,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.6,
-            },
-          });
-          // Foreground copy floats up faster (depth)
-          gsap.to(".cx-foreground", {
-            yPercent: -14,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.4,
-            },
-          });
-          // HUD strip drifts slower (background depth)
-          gsap.to(".cx-hud-stack", {
-            yPercent: 6,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.8,
-            },
-          });
-          // Vignette darkens as you scroll out — sense of departure
-          gsap.to(".cx-vignette", {
-            opacity: 0.95,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: true,
-            },
-          });
+        {
+          isMobile: "(max-width: 767px)",
+          isTablet: "(min-width: 768px) and (max-width: 1023px)",
+          isDesktop: "(min-width: 1024px)",
+          reduceMotion: "(prefers-reduced-motion: reduce)",
         },
-      );
+        (context) => {
+          const { isMobile, isTablet, isDesktop, reduceMotion } =
+            context.conditions as {
+              isMobile: boolean;
+              isTablet: boolean;
+              isDesktop: boolean;
+              reduceMotion: boolean;
+            };
 
-      // ── Mobile: lightweight reveals only, no pinning ──
-      mm.add(
-        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          gsap.from(".cx-stat", {
-            opacity: 0, y: 16, duration: 0.7, ease: "power3.out", stagger: 0.08,
-            scrollTrigger: {
-              trigger: ".cx-stat-strip",
-              start: "top 90%",
-              toggleActions: "play none none none",
-            },
+          // ── Reduced motion: snap to final state, skip all scroll work ──
+          if (reduceMotion) {
+            gsap.set(
+              ".cx-banner, .cx-banner-img, .cx-eyebrow, .cx-headline-line, .cx-tagline, .cx-cta, .cx-stat, .cx-hud, .cx-scan-bar, .cx-vignette, .cx-foreground, .cx-hud-stack",
+              {
+                clearProps: "transform,opacity,clipPath",
+              },
+            );
+            gsap.set(".cx-scan-bar", { opacity: 0 });
+            return;
+          }
+
+          // ── Enterprise intro: restrained, precise, no overshoot ──
+          const tl = gsap.timeline({
+            defaults: { ease: "power3.out", duration: 0.7 },
           });
+
+          tl.set(".cx-banner", {
+            clipPath: "inset(8% 0% 8% 0%)",
+            opacity: 0,
+          })
+            .set(".cx-banner-img", { scale: 1.08 })
+            .set(".cx-scan-bar", {
+              scaleY: 0,
+              transformOrigin: "50% 0%",
+              opacity: 0,
+            })
+            .set(
+              [
+                ".cx-eyebrow",
+                ".cx-headline-line",
+                ".cx-tagline",
+                ".cx-cta",
+                ".cx-stat",
+                ".cx-hud",
+              ],
+              { opacity: 0, y: 18 },
+            )
+            .to(".cx-banner", {
+              clipPath: "inset(0% 0% 0% 0%)",
+              opacity: 1,
+              duration: 1.1,
+              ease: "power4.out",
+            })
+            .to(
+              ".cx-banner-img",
+              { scale: 1, duration: 2.0, ease: "power2.out" },
+              "<",
+            )
+            .to(
+              ".cx-eyebrow",
+              { opacity: 1, y: 0, duration: 0.55 },
+              "-=0.85",
+            )
+            .to(
+              ".cx-headline-line",
+              { opacity: 1, y: 0, duration: 0.8, stagger: 0.09 },
+              "-=0.7",
+            )
+            .to(
+              ".cx-tagline",
+              { opacity: 1, y: 0, duration: 0.6 },
+              "-=0.45",
+            )
+            .to(
+              ".cx-cta",
+              { opacity: 1, y: 0, duration: 0.55, stagger: 0.07 },
+              "-=0.35",
+            )
+            .to(
+              ".cx-hud",
+              { opacity: 1, y: 0, duration: 0.6, stagger: 0.06 },
+              "-=0.45",
+            )
+            .to(
+              ".cx-stat",
+              { opacity: 1, y: 0, duration: 0.5, stagger: 0.06 },
+              "-=0.3",
+            );
+
+          // Continuous, transform-only loops — cheap on all devices
+          gsap.to(".cx-marquee-track", {
+            xPercent: -50,
+            duration: isMobile ? 28 : 48,
+            ease: "none",
+            repeat: -1,
+          });
+          gsap.fromTo(
+            ".cx-pulse-ring",
+            { scale: 0.6, opacity: 0.7 },
+            { scale: 2.4, opacity: 0, duration: 2.4, ease: "power2.out", repeat: -1 },
+          );
+
+          // Scan-line sweep — desktop/tablet only; off on mobile to save paint
+          if (!isMobile) {
+            gsap.fromTo(
+              ".cx-scan-bar",
+              { yPercent: -10, opacity: 0 },
+              {
+                yPercent: 1000,
+                opacity: 0.85,
+                duration: 5.2,
+                ease: "power1.inOut",
+                repeat: -1,
+                repeatDelay: 1.6,
+              },
+            );
+          }
+
+          // ── Desktop: full parallax depth, no pinning ──
+          if (isDesktop) {
+            gsap.to(".cx-banner-img", {
+              yPercent: -8,
+              scale: 1.06,
+              ease: "none",
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: 0.6,
+              },
+            });
+            gsap.to(".cx-foreground", {
+              yPercent: -10,
+              ease: "none",
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: 0.4,
+              },
+            });
+            gsap.to(".cx-hud-stack", {
+              yPercent: 5,
+              ease: "none",
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: 0.8,
+              },
+            });
+            gsap.to(".cx-vignette", {
+              opacity: 0.9,
+              ease: "none",
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: true,
+              },
+            });
+          }
+
+          // ── Tablet: subtle parallax only, no pinning ──
+          if (isTablet) {
+            gsap.to(".cx-banner-img", {
+              yPercent: -4,
+              scale: 1.03,
+              ease: "none",
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: 0.6,
+              },
+            });
+            gsap.to(".cx-vignette", {
+              opacity: 0.8,
+              ease: "none",
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: true,
+              },
+            });
+          }
+
+          // ── Mobile: lightweight reveals only, no parallax, no pinning ──
+          if (isMobile) {
+            gsap.from(".cx-stat", {
+              opacity: 0,
+              y: 14,
+              duration: 0.6,
+              ease: "power3.out",
+              stagger: 0.07,
+              scrollTrigger: {
+                trigger: ".cx-stat-strip",
+                start: "top 88%",
+                toggleActions: "play none none none",
+              },
+            });
+          }
         },
       );
     },
