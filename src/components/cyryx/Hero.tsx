@@ -31,33 +31,41 @@ export function Hero() {
           if (reduceMotion) return;
 
           const tl = gsap.timeline({
-            defaults: { ease: "power3.out", duration: 0.9 },
+            defaults: {
+              ease: "power3.out",
+              duration: isMobile ? 0.7 : 0.9,
+            },
           });
 
           tl.from(".cx-bg", { opacity: 0, duration: 1.4, ease: "power2.out" })
             .from(
               ".cx-eyebrow",
-              { opacity: 0, y: 16, duration: 0.7 },
+              { opacity: 0, y: isMobile ? 10 : 16, duration: 0.6 },
               "-=1.0",
             )
             .from(
               ".cx-line",
-              { opacity: 0, y: 28, duration: 0.95, stagger: 0.12 },
+              {
+                opacity: 0,
+                y: isMobile ? 18 : 28,
+                duration: isMobile ? 0.7 : 0.95,
+                stagger: isMobile ? 0.08 : 0.12,
+              },
               "-=0.55",
             )
             .from(
               ".cx-sub",
-              { opacity: 0, y: 18, duration: 0.7 },
+              { opacity: 0, y: isMobile ? 12 : 18, duration: 0.65 },
               "-=0.55",
             )
             .from(
               ".cx-cta",
-              { opacity: 0, y: 14, duration: 0.6, stagger: 0.08 },
+              { opacity: 0, y: 12, duration: 0.55, stagger: 0.08 },
               "-=0.45",
             )
             .from(
               ".cx-meta",
-              { opacity: 0, y: 10, duration: 0.55, stagger: 0.06 },
+              { opacity: 0, y: 8, duration: 0.5, stagger: 0.05 },
               "-=0.35",
             )
             .from(
@@ -101,7 +109,19 @@ export function Hero() {
           }
 
           if (isMobile) {
-            gsap.set(".cx-bg-img", { scale: 1.02 });
+            // No pinning, no scrub — just a soft fade on the background
+            // as the user scrolls past the hero.
+            gsap.set(".cx-bg-img", { scale: 1.04 });
+            gsap.to([".cx-bg-img", ".cx-stage"], {
+              opacity: 0.55,
+              ease: "none",
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top top",
+                end: "bottom 40%",
+                scrub: 0.4,
+              },
+            });
           }
         },
       );
