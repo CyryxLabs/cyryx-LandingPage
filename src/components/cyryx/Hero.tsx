@@ -3,6 +3,7 @@ import { ArrowUpRight, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import shieldMark from "@/assets/cyryx-shield-mark.png.asset.json";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -27,7 +28,8 @@ export function Hero() {
       // ── Reduced motion: snap to final state, no loops, no scrub ──
       mm.add("(prefers-reduced-motion: reduce)", () => {
         gsap.set(".cx-headline > span", { yPercent: 0, opacity: 1 });
-        gsap.set(".cx-side-panel", { opacity: 1, y: 0 });
+        gsap.set(".cx-shield-stage", { opacity: 1, y: 0, scale: 1 });
+        gsap.set(".cx-glow-line", { scaleY: 1, opacity: 1 });
       });
 
       // ── Motion-allowed shared setup ─────────────────────────────
@@ -38,11 +40,19 @@ export function Hero() {
         });
         intro
           .set(".cx-headline > span", { yPercent: 110, opacity: 0 })
+          .set(".cx-shield-stage", { opacity: 0, scale: 0.85, y: 30 })
+          .set(".cx-glow-line", { scaleY: 0, opacity: 0, transformOrigin: "50% 50%" })
+          .to(".cx-shield-stage", {
+            opacity: 1, scale: 1, y: 0, duration: 1.4, ease: "expo.out",
+          }, 0)
+          .to(".cx-glow-line", {
+            scaleY: 1, opacity: 1, duration: 1.1, ease: "power3.out",
+          }, 0.35)
           .to(".cx-headline > span", {
             yPercent: 0,
             opacity: 1,
             stagger: 0.12,
-          }, 0.1)
+          }, 0.2)
           .from(
             "[data-hero-line]",
             { y: 18, opacity: 0, duration: 0.7, stagger: 0.08, ease: "power3.out" },
@@ -55,6 +65,18 @@ export function Hero() {
           { scale: 0.6, opacity: 0.7 },
           { scale: 2.4, opacity: 0, duration: 2.2, ease: "power2.out", repeat: -1 },
         );
+
+        // Glow line breathing
+        gsap.to(".cx-glow-line", {
+          opacity: 0.55, duration: 1.8,
+          ease: "sine.inOut", repeat: -1, yoyo: true,
+        });
+
+        // Shield gentle hover
+        gsap.to(".cx-shield-stage", {
+          y: -12, duration: 4.2,
+          ease: "sine.inOut", repeat: -1, yoyo: true,
+        });
 
         // Marquee — always on (transform-only, cheap)
         gsap.to(".cx-marquee-track", {
@@ -89,12 +111,6 @@ export function Hero() {
             transformOrigin: "50% 50%",
           });
 
-          // Idle float on side panel
-          gsap.to(".cx-side-panel", {
-            y: -10, duration: 4.5,
-            ease: "sine.inOut", repeat: -1, yoyo: true,
-          });
-
           // Scroll-linked parallax (no pinning — cheap, smooth)
           gsap.to(".cx-aurora-a", {
             yPercent: "+=18", ease: "none",
@@ -114,8 +130,8 @@ export function Hero() {
               scrub: 0.6,
             },
           });
-          gsap.to(".cx-side-panel", {
-            yPercent: -8, ease: "none",
+          gsap.to(".cx-shield-stage", {
+            yPercent: -10, ease: "none",
             scrollTrigger: {
               trigger: root.current,
               start: "top top",
@@ -130,13 +146,13 @@ export function Hero() {
       mm.add(
         "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
         () => {
-          gsap.from(".cx-side-panel", {
+          gsap.from(".cx-shield-stage", {
             opacity: 0,
             y: 24,
             duration: 0.8,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: ".cx-side-panel",
+              trigger: ".cx-shield-stage",
               start: "top 85%",
               toggleActions: "play none none none",
             },
@@ -281,7 +297,7 @@ export function Hero() {
               </span>
               <span aria-hidden className="h-3 w-px bg-[color-mix(in_oklab,var(--silver)_22%,transparent)]" />
               <span className="hud-label text-[var(--silver-dim)]">
-                São Paulo / Worldwide
+                United States · Worldwide
               </span>
             </div>
 
@@ -345,114 +361,64 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column — floating live-system panel */}
+          {/* Right column — brushed-metal shield centerpiece */}
           <div className="relative hidden lg:block" data-hero-line>
-            <div className="cx-side-panel relative">
-              {/* Glow halo */}
+            <div className="cx-shield-stage relative mx-auto aspect-square w-full max-w-[520px]">
+              {/* Cyan glow halo */}
               <div
                 aria-hidden
-                className="absolute -inset-10 -z-10 rounded-[36px] opacity-70 blur-3xl"
+                className="absolute inset-0 -z-10 blur-3xl opacity-80"
                 style={{
                   background:
-                    "radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--accent-glow) 35%, transparent), transparent 70%)",
+                    "radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--accent-glow) 55%, transparent) 0%, transparent 65%)",
                 }}
               />
 
-              <div
-                className="relative overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--silver)_12%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_82%,transparent)] p-6 backdrop-blur-xl"
-                style={{ boxShadow: "var(--shadow-panel)" }}
-              >
-                {/* Bracket corners */}
-                <span aria-hidden className="absolute left-3 top-3 h-3 w-3 border-l border-t border-[var(--accent-glow)]" />
-                <span aria-hidden className="absolute right-3 top-3 h-3 w-3 border-r border-t border-[var(--accent-glow)]" />
-                <span aria-hidden className="absolute bottom-3 left-3 h-3 w-3 border-b border-l border-[var(--accent-glow)]" />
-                <span aria-hidden className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-[var(--accent-glow)]" />
-
-                {/* Header row */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-[var(--accent-glow)] shadow-[0_0_10px_var(--accent-glow)]" />
-                    <span className="hud-label text-[var(--silver)]">
-                      cyryx.agent / runtime
-                    </span>
-                  </div>
-                  <span className="hud-label text-[var(--silver-dim)]">LIVE</span>
-                </div>
-
-                {/* Big metric */}
-                <div className="mt-6">
-                  <div className="hud-label text-[var(--silver-dim)]">
-                    Workflows executed · 24h
-                  </div>
-                  <div className="mt-2 flex items-baseline gap-3">
-                    <span className="font-display text-5xl font-semibold text-[var(--silver)]">
-                      18,427
-                    </span>
-                    <span className="font-mono text-xs text-[var(--accent-glow)]">
-                      ▲ 12.4%
-                    </span>
-                  </div>
-                </div>
-
-                {/* Mini bar chart */}
-                <div className="mt-6 flex h-20 items-end gap-1.5">
-                  {[42, 58, 36, 71, 49, 84, 62, 90, 73, 55, 78, 96, 68, 82].map(
-                    (h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 rounded-sm"
-                        style={{
-                          height: `${h}%`,
-                          background:
-                            i === 11
-                              ? "linear-gradient(180deg, var(--accent-glow), color-mix(in oklab, var(--accent-glow) 40%, transparent))"
-                              : "color-mix(in oklab, var(--silver) 18%, transparent)",
-                          boxShadow:
-                            i === 11
-                              ? "0 0 14px color-mix(in oklab, var(--accent-glow) 60%, transparent)"
-                              : "none",
-                        }}
-                      />
-                    ),
-                  )}
-                </div>
-
-                {/* Agent feed */}
-                <div className="mt-6 space-y-2 border-t border-[color-mix(in_oklab,var(--silver)_10%,transparent)] pt-4">
-                  {[
-                    { t: "agent.maax", m: "Synced 1,204 records → Aulexa", c: true },
-                    { t: "agent.lumin", m: "Drafted 28 outbound replies", c: true },
-                    { t: "agent.ops", m: "Auditing pipeline (running)", c: false },
-                  ].map((row) => (
-                    <div
-                      key={row.t}
-                      className="flex items-center justify-between font-mono text-[11px] text-[var(--silver-dim)]"
-                    >
-                      <span className="flex items-center gap-2">
-                        <span
-                          className={`h-1.5 w-1.5 rounded-full ${
-                            row.c
-                              ? "bg-[var(--accent-glow)]"
-                              : "bg-[var(--silver-dim)] animate-pulse"
-                          }`}
-                        />
-                        <span className="text-[var(--silver)]">{row.t}</span>
-                        <span className="text-[var(--silver-dim)]">
-                          — {row.m}
-                        </span>
-                      </span>
-                      <span className="text-[var(--silver-dim)]">
-                        {row.c ? "ok" : "···"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+              {/* Concentric scan rings */}
+              <div aria-hidden className="absolute inset-0 grid place-items-center">
+                <div className="absolute h-[105%] w-[105%] rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_22%,transparent)]" />
+                <div className="absolute h-[88%] w-[88%] rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_14%,transparent)]" />
+                <div className="absolute h-[70%] w-[70%] rounded-full border border-[color-mix(in_oklab,var(--silver)_10%,transparent)]" />
               </div>
 
-              {/* Floating label badge */}
-              <div className="absolute -left-6 top-1/2 -translate-y-1/2 rotate-[-90deg] origin-left">
+              {/* Vertical cyan glow line */}
+              <div
+                aria-hidden
+                className="cx-glow-line absolute left-1/2 top-[6%] h-[88%] w-px -translate-x-1/2"
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 0%, var(--accent-glow) 20%, var(--accent-glow) 80%, transparent 100%)",
+                  boxShadow:
+                    "0 0 24px color-mix(in oklab, var(--accent-glow) 80%, transparent), 0 0 60px color-mix(in oklab, var(--accent-glow) 50%, transparent)",
+                }}
+              />
+
+              {/* The brushed-metal shield */}
+              <img
+                src={shieldMark.url}
+                alt="Cyryx shield mark"
+                className="relative z-10 h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
+                draggable={false}
+              />
+
+              {/* Corner brackets */}
+              <span aria-hidden className="absolute left-0 top-0 h-5 w-5 border-l-2 border-t-2 border-[var(--accent-glow)]" />
+              <span aria-hidden className="absolute right-0 top-0 h-5 w-5 border-r-2 border-t-2 border-[var(--accent-glow)]" />
+              <span aria-hidden className="absolute bottom-0 left-0 h-5 w-5 border-b-2 border-l-2 border-[var(--accent-glow)]" />
+              <span aria-hidden className="absolute bottom-0 right-0 h-5 w-5 border-b-2 border-r-2 border-[var(--accent-glow)]" />
+
+              {/* Floating spec labels */}
+              <div className="absolute -left-2 top-6 flex items-center gap-2">
+                <span className="h-px w-10 bg-[var(--accent-glow)]" />
+                <span className="hud-label text-[var(--silver-dim)]">SYS / 001</span>
+              </div>
+              <div className="absolute -right-2 bottom-6 flex items-center gap-2">
+                <span className="hud-label text-[var(--silver-dim)]">EXEC LAYER</span>
+                <span className="h-px w-10 bg-[var(--accent-glow)]" />
+              </div>
+              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 <span className="hud-label text-[var(--silver-dim)]">
-                  Command Layer · 002
+                  The intelligence behind <span className="text-[var(--accent-glow)]">automation</span>
                 </span>
               </div>
             </div>
