@@ -18,17 +18,37 @@ export function Hero() {
       mm.add(
         {
           isMobile: "(max-width: 767px)",
-          isDesktop: "(min-width: 768px)",
+          isTablet: "(min-width: 768px) and (max-width: 1023px)",
+          isDesktop: "(min-width: 1024px)",
+          isAbove768: "(min-width: 768px)",
           reduceMotion: "(prefers-reduced-motion: reduce)",
         },
         (ctx) => {
-          const { isMobile, isDesktop, reduceMotion } = ctx.conditions as {
+          const { isMobile, isDesktop, isAbove768, reduceMotion } = ctx.conditions as {
             isMobile: boolean;
             isDesktop: boolean;
+            isAbove768: boolean;
             reduceMotion: boolean;
           };
 
-          if (reduceMotion) return;
+          if (reduceMotion) {
+            // Snap everything to final state — no motion, no scrub, no loop.
+            gsap.set(
+              [
+                ".cx-bg",
+                ".cx-bg-img",
+                ".cx-eyebrow",
+                ".cx-line",
+                ".cx-sub",
+                ".cx-cta",
+                ".cx-meta",
+                ".cx-scroll",
+                ".cx-stage",
+              ],
+              { clearProps: "all", opacity: 1, y: 0, x: 0, scale: 1 },
+            );
+            return;
+          }
 
           const tl = gsap.timeline({
             defaults: {
@@ -83,21 +103,27 @@ export function Hero() {
             yoyo: true,
           });
 
-          if (isDesktop) {
+          if (isAbove768) {
+            // Tablet gets a lighter parallax; desktop gets the full effect.
+            const bannerY = isDesktop ? -10 : -6;
+            const bannerScale = isDesktop ? 1.06 : 1.04;
+            const stageY = isDesktop ? -6 : -3;
+            const stageOpacity = isDesktop ? 0.4 : 0.6;
+
             gsap.to(".cx-bg-img", {
-              yPercent: -10,
-              scale: 1.06,
+              yPercent: bannerY,
+              scale: bannerScale,
               ease: "none",
               scrollTrigger: {
                 trigger: root.current,
                 start: "top top",
                 end: "bottom top",
-                scrub: 0.6,
+                scrub: isDesktop ? 0.6 : 0.4,
               },
             });
             gsap.to(".cx-stage", {
-              yPercent: -6,
-              opacity: 0.4,
+              yPercent: stageY,
+              opacity: stageOpacity,
               ease: "none",
               scrollTrigger: {
                 trigger: root.current,
@@ -219,7 +245,7 @@ export function Hero() {
           </h1>
 
           {/* Sub */}
-          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] sm:text-lg">
             We engineer the proprietary AI infrastructure and governed agent
             systems that mission-critical American enterprises run on.
           </p>
