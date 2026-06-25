@@ -237,18 +237,10 @@ export function Hero() {
       {/* Foreground content */}
       <div className="relative mx-auto w-full max-w-7xl px-6 pb-28 pt-32 sm:px-10 sm:pt-40 lg:px-14">
         <div className="max-w-3xl">
-          {/* Eyebrow */}
-          <div className="cx-eyebrow inline-flex items-center gap-3 border-l-2 border-[var(--accent-glow)] pl-3">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_10px_var(--accent-glow)]" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]">
-              Cyryx Labs · Enterprise AI · United States
-            </span>
-          </div>
-
           {/* Headline */}
           <h1
             id="hero-heading"
-            className="mt-10 font-display font-semibold leading-[0.9] tracking-[-0.045em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
+            className="font-display font-semibold leading-[0.9] tracking-[-0.045em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
             <span className="cx-line block text-[clamp(48px,8.4vw,116px)] text-chrome-gradient">
               Intelligence
