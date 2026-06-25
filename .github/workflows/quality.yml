@@ -80,10 +80,18 @@ jobs:
       - name: Show JSON-LD snapshot diff (UPDATE_JSONLD_SNAPSHOT only)
         if: always() && env.UPDATE_JSONLD_SNAPSHOT == '1'
         run: |
+          mkdir -p jsonld-diff
           echo "### JSON-LD snapshot diff" >> "$GITHUB_STEP_SUMMARY"
           echo '```diff' >> "$GITHUB_STEP_SUMMARY"
-          git --no-pager diff --no-color -- tests/accessibility/__snapshots__/jsonld.snapshot.json | tee -a "$GITHUB_STEP_SUMMARY" || true
+          git --no-pager diff --no-color -- tests/accessibility/__snapshots__/jsonld.snapshot.json | tee jsonld-diff/jsonld.diff -a "$GITHUB_STEP_SUMMARY" || true
           echo '```' >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload JSON-LD diff artifact (UPDATE_JSONLD_SNAPSHOT only)
+        if: always() && env.UPDATE_JSONLD_SNAPSHOT == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: jsonld-snapshot-diff
+          path: jsonld-diff/jsonld.diff
+          if-no-files-found: warn
       - name: Print artifact links (SARIF + raw axe JSON)
         if: always()
         run: |
