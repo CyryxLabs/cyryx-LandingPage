@@ -2,12 +2,12 @@ import { AlertCircle, GitBranch, EyeOff, Repeat, ScrollText, ShieldAlert } from 
 import { HudLabel } from "./primitives/HudLabel";
 
 const PAINS = [
-  { icon: AlertCircle, title: "Scattered prompts", copy: "Knowledge fragmented across chats, docs, and tools." },
-  { icon: GitBranch, title: "Lost context", copy: "Each session restarts from zero. Nothing compounds." },
-  { icon: EyeOff, title: "Invisible costs", copy: "Token spend, model choice, and margin run in the dark." },
-  { icon: Repeat, title: "Inconsistent output", copy: "Same task, different results. No reliable contract." },
-  { icon: ShieldAlert, title: "Manual rework", copy: "Humans patching AI output instead of governing it." },
-  { icon: ScrollText, title: "Weak auditability", copy: "No ledger of who decided what, when, or why." },
+  { icon: AlertCircle, title: "Scattered context", copy: "Knowledge, decisions, and execution history spread across chats, documents, tools, and dashboards." },
+  { icon: GitBranch, title: "Session resets", copy: "Each AI interaction starts with too little memory and too much repeated explanation." },
+  { icon: Repeat, title: "Inconsistent output", copy: "The same task can produce different results without a reliable execution contract." },
+  { icon: EyeOff, title: "Invisible costs", copy: "Model usage, token spend, routing decisions, and margin impact are often hard to see." },
+  { icon: ShieldAlert, title: "Manual rework", copy: "Humans spend time repairing AI output instead of governing the system that produced it." },
+  { icon: ScrollText, title: "Weak auditability", copy: "Important decisions disappear without a clear record of who decided what, when, and why." },
 ];
 
 export function WhyCyryx() {
