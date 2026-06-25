@@ -48,6 +48,9 @@ export function Hero() {
               ],
               { clearProps: "all", opacity: 1, y: 0, x: 0, scale: 1 },
             );
+            // Kill any ScrollTriggers that may have been created elsewhere on the page.
+            ScrollTrigger.getAll().forEach((t) => t.kill());
+            gsap.globalTimeline.clear();
             return;
           }
 
@@ -242,17 +245,20 @@ export function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="mt-10 font-display font-semibold leading-[0.9] tracking-[-0.045em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55)]">
-            <span className="cx-line block text-[clamp(48px,8.4vw,116px)]">
+          <h1
+            id="hero-heading"
+            className="mt-10 font-display font-semibold leading-[0.9] tracking-[-0.045em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
+          >
+            <span className="cx-line block text-[clamp(48px,8.4vw,116px)] text-chrome-gradient">
               Intelligence
             </span>
-            <span className="cx-line block text-[clamp(48px,8.4vw,116px)] text-silver-gradient">
+            <span className="cx-line block text-[clamp(48px,8.4vw,116px)] text-chrome-gradient">
               that executes.
             </span>
           </h1>
 
           {/* Sub */}
-          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] sm:text-lg">
+          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:text-lg">
             We engineer the proprietary AI infrastructure and governed agent
             systems that mission-critical American enterprises run on.
           </p>
@@ -261,40 +267,51 @@ export function Hero() {
           <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:gap-5">
             <a
               href="#cta"
-              className="cx-cta group relative inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-none border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-9 text-[12px] font-semibold uppercase tracking-[0.28em] text-black transition hover:brightness-110"
+              aria-label="Initialize a Cyryx AI system — primary call to action"
+              className="cx-cta group relative inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-none border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-9 text-[12px] font-semibold uppercase tracking-[0.28em] text-black transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               <span>Initialize a System</span>
-              <ArrowUpRight className="h-4 w-4" />
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
               href="#maax"
-              className="cx-cta group inline-flex h-14 items-center justify-center gap-2 rounded-none border border-white/20 bg-transparent px-9 text-[12px] font-semibold uppercase tracking-[0.28em] text-white transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+              aria-label="Enter the MAAX Studio workspace"
+              className="cx-cta group inline-flex h-14 items-center justify-center gap-2 rounded-none border border-white/25 bg-transparent px-9 text-[12px] font-semibold uppercase tracking-[0.28em] text-white transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               <span>Enter MAAX Studio</span>
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight
+                className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+              />
             </a>
           </div>
         </div>
 
         {/* Bottom meta rail */}
-        <div className="mt-24 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-white/10 pt-6">
+        <ul
+          aria-label="Cyryx platform pillars and compliance"
+          className="mt-24 flex list-none flex-wrap items-center gap-x-10 gap-y-4 border-t border-white/10 pt-6"
+        >
           {META.map((m) => (
-            <span
+            <li
               key={m}
               className="cx-meta font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]"
             >
-              <span className="mr-3 text-[var(--accent-glow)]">/</span>
+              <span aria-hidden="true" className="mr-3 text-[var(--accent-glow)]">/</span>
               {m}
-            </span>
+            </li>
           ))}
-          <span className="cx-meta ml-auto font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]">
+          <li className="cx-meta ml-auto font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]">
             SOC 2 · ISO 27001 · HIPAA-Ready
-          </span>
-        </div>
+          </li>
+        </ul>
       </div>
 
       {/* Scroll cue */}
-      <div className="cx-scroll absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2">
+      <div
+        aria-hidden="true"
+        className="cx-scroll pointer-events-none absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
+      >
         <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-[var(--silver-dim)]">
           Scroll
         </span>
