@@ -47,11 +47,13 @@ export function CommandLayerSection() {
         <div className="max-w-3xl cx-reveal">
           <HudLabel withDot>Solutions</HudLabel>
           <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.08] text-silver-gradient uppercase">
-            AI solutions built for execution, not hype.
+            AI solutions built for execution, not theater.
           </h2>
           <p className="mt-5 text-[15px] sm:text-base text-[var(--silver-dim)]">
-            We help businesses design, build, and deploy AI systems that connect
-            to real workflows, real data, and real outcomes.
+            Cyryx Solutions helps businesses design, build, and deploy
+            practical AI systems that connect to real workflows, real data,
+            and real outcomes — moving teams from scattered experimentation to
+            structured execution.
           </p>
         </div>
 
