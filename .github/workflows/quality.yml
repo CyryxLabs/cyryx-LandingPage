@@ -5,6 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      update_jsonld_snapshot:
+        description: "Regenerate the schema.org JSON-LD snapshot (commits as artifact `jsonld-snapshot-updated`; copy into the repo manually)."
+        type: boolean
+        default: false
 
 # Tune thresholds per branch by overriding these in repo/branch variables.
 env:
@@ -18,16 +24,22 @@ env:
   LH_CLS_MAX: ${{ vars.LH_CLS_MAX || '0.1' }}
   AXE_FAIL_ON: ${{ vars.AXE_FAIL_ON || 'critical' }}
   FORBIDDEN_TERMS_FILE: ${{ vars.FORBIDDEN_TERMS_FILE || '.quality/forbidden-terms.json' }}
+  UPDATE_JSONLD_SNAPSHOT: ${{ (github.event_name == 'workflow_dispatch' && inputs.update_jsonld_snapshot) && '1' || (vars.UPDATE_JSONLD_SNAPSHOT || '') }}
 
 jobs:
   a11y-content-seo:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bunx playwright install --with-deps chromium
+      - name: Validate forbidden-terms config + list active rules
+        run: node scripts/validate-forbidden-terms.mjs
       - name: Build production bundle (for bundle scan)
         run: bun run build
       - name: Run Playwright suite (a11y · content · SEO · bundle scan)
@@ -39,6 +51,13 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with: { name: a11y-report, path: a11y-report }
+      - name: Upload raw axe-core JSON reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: axe-raw-json
+          path: a11y-report/*.json
+          if-no-files-found: warn
       - name: Convert axe violations to SARIF
         if: always()
         run: node scripts/axe-to-sarif.mjs a11y-report a11y-report/axe.sarif
@@ -52,6 +71,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with: { name: playwright-report, path: playwright-report }
+      - name: Upload regenerated JSON-LD snapshot (workflow_dispatch only)
+        if: always() && env.UPDATE_JSONLD_SNAPSHOT == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: jsonld-snapshot-updated
+          path: tests/accessibility/__snapshots__/jsonld.snapshot.json
 
   lighthouse:
     runs-on: ubuntu-latest
