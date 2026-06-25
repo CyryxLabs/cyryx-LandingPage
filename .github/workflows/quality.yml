@@ -17,6 +17,7 @@ env:
   LH_TBT_MAX_DESKTOP: ${{ vars.LH_TBT_MAX_DESKTOP || '200' }}
   LH_CLS_MAX: ${{ vars.LH_CLS_MAX || '0.1' }}
   AXE_FAIL_ON: ${{ vars.AXE_FAIL_ON || 'critical' }}
+  FORBIDDEN_TERMS_FILE: ${{ vars.FORBIDDEN_TERMS_FILE || '.quality/forbidden-terms.json' }}
 
 jobs:
   a11y-content-seo:
@@ -38,6 +39,15 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with: { name: a11y-report, path: a11y-report }
+      - name: Convert axe violations to SARIF
+        if: always()
+        run: node scripts/axe-to-sarif.mjs a11y-report a11y-report/axe.sarif
+      - name: Upload SARIF to GitHub code scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: a11y-report/axe.sarif
+          category: axe-core
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4

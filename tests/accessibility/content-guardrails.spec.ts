@@ -2,20 +2,9 @@ import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { globby } from "globby";
 import path from "node:path";
+import { loadForbiddenTerms } from "./_forbidden-terms";
 
-const FORBIDDEN_PATTERNS: { label: string; pattern: RegExp }[] = [
-  { label: "SOC 2 claim", pattern: /\bSOC\s?2\b/i },
-  { label: "ISO 27001 claim", pattern: /\bISO\s?27001\b/i },
-  { label: "HIPAA claim", pattern: /\bHIPAA\b/i },
-  { label: "Fake metric 148+", pattern: /\b148\+/ },
-  { label: "Fake metric 62%", pattern: /\b62%/ },
-  { label: "Fake metric 97.4%", pattern: /\b97\.4%/ },
-  { label: "Fake metric 24 models", pattern: /\b24\s+models\b/i },
-  { label: "Competitor: Cursor", pattern: /\bCursor\b/ },
-  { label: "Competitor: Windsurf", pattern: /\bWindsurf\b/ },
-  { label: "Competitor: Copilot", pattern: /\bCopilot\b/ },
-  { label: "VS Code plugin framing", pattern: /\bVS\s?Code\s+plugin\b/i },
-];
+const FORBIDDEN_PATTERNS = loadForbiddenTerms();
 
 test("Source code is free of forbidden terms", async () => {
   const files = await globby(["src/**/*.{ts,tsx,md,mdx,css}"], { gitignore: true });
