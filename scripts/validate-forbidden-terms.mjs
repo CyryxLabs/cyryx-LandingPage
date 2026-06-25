@@ -75,9 +75,7 @@ if (files.length === 0) {
 }
 
 console.log(`\n🔍 Scanning ${files.length} compiled file(s) for active patterns:`);
-const contents = await Promise.all(
-  files.map(async (f) => [f, (await import("node:fs/promises")).then] && [f, readFileSync(f, "utf8")]),
-);
+const contents = files.map((f) => [f, readFileSync(f, "utf8")]);
 let anyMatch = false;
 for (const t of parsed.terms) {
   const re = new RegExp(t.pattern, (t.flags ?? "").includes("g") ? t.flags : (t.flags ?? "") + "g");
