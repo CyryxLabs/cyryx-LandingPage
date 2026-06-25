@@ -42,7 +42,7 @@ export const Route = createFileRoute("/")({
         rel: "preload",
         as: "image",
         href: heroBanner.url,
-        fetchpriority: "high",
+        fetchPriority: "high",
       },
     ],
   }),
@@ -53,12 +53,23 @@ function Index() {
   useCyryxScrollAnimations();
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
-      <a href="#overview" className="skip-link">
+      <a
+        href="#main-content"
+        className="skip-link"
+        onClick={(event) => {
+          const main = document.getElementById("main-content");
+          if (!main) return;
+          event.preventDefault();
+          main.focus({ preventScroll: true });
+          main.scrollIntoView({ block: "start" });
+          window.history.replaceState(null, "", "#main-content");
+        }}
+      >
         Skip to content
       </a>
       <Header />
       <BackgroundMonolith />
-      <main id="overview" role="main" tabIndex={-1} className="relative z-10 focus:outline-none">
+      <main id="main-content" role="main" tabIndex={-1} className="relative z-10 focus:outline-none">
         {/* Continuous teal core line drawn by scroll (desktop only) */}
         <span
           aria-hidden

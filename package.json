@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "vite build && if [ -n \"$CI\" ]; then bun run test:a11y; fi",
     "build:dev": "vite build --mode development",
+    "build:ci": "CI=1 bun run build",
     "preview": "vite preview",
+    "test:a11y": "playwright test --config=playwright.config.ts",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -73,11 +75,13 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "2.6.2",
+    "@playwright/test": "^1.61.1",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@types/three": "^0.184.1",
     "@vitejs/plugin-react": "^5.2.0",
+    "axe-core": "^4.12.1",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",

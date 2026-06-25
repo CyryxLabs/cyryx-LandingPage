@@ -63,11 +63,6 @@ export function Hero() {
 
           tl.from(".cx-bg", { opacity: 0, duration: 1.4, ease: "power2.out" })
             .from(
-              ".cx-eyebrow",
-              { opacity: 0, y: isMobile ? 10 : 16, duration: 0.6 },
-              "-=1.0",
-            )
-            .from(
               ".cx-line",
               {
                 opacity: 0,
@@ -183,14 +178,14 @@ export function Hero() {
         />
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
         <div
-          className="absolute inset-0 lg:hidden"
+          className="cx-hero-overlay absolute inset-0 lg:hidden"
           style={{
             background:
               "linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.7) 35%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.85) 100%)",
           }}
         />
         <div
-          className="absolute inset-0 hidden lg:block"
+          className="cx-hero-overlay absolute inset-0 hidden lg:block"
           style={{
             background:
               "linear-gradient(90deg, #000 0%, rgba(0,0,0,0.94) 30%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.2) 80%, transparent 100%)",
@@ -198,7 +193,7 @@ export function Hero() {
         />
         {/* top/bottom feather */}
         <div
-          className="absolute inset-0"
+          className="cx-hero-overlay absolute inset-0"
           style={{
             background:
               "linear-gradient(180deg, #000 0%, transparent 18%, transparent 72%, #000 100%)",
@@ -206,7 +201,7 @@ export function Hero() {
         />
         {/* subtle horizontal teal line */}
         <div
-          className="absolute left-0 right-0 top-1/2 h-px"
+          className="cx-hero-line-glow absolute left-0 right-0 top-1/2 h-px"
           style={{
             background:
               "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--accent-glow) 60%, transparent) 50%, transparent 100%)",
@@ -215,7 +210,7 @@ export function Hero() {
         />
         {/* noise */}
         <div
-          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
+          className="cx-hero-noise absolute inset-0 opacity-[0.06] mix-blend-overlay"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>\")",
@@ -240,12 +235,12 @@ export function Hero() {
           {/* Headline */}
           <h1
             id="hero-heading"
-            className="font-display font-semibold leading-[1.08] tracking-[-0.03em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)] pb-2"
+            className="cx-hero-heading font-display font-semibold tracking-[0] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
-            <span className="cx-line block text-[clamp(36px,7.2vw,104px)] text-chrome-gradient pb-[0.14em] [overflow-wrap:break-word]">
+            <span className="cx-line cx-hero-title-line block text-chrome-gradient [overflow-wrap:break-word]">
               Intelligence
             </span>
-            <span className="cx-line block text-[clamp(36px,7.2vw,104px)] text-chrome-gradient pb-[0.14em] [overflow-wrap:break-word]">
+            <span className="cx-line cx-hero-title-line block text-chrome-gradient [overflow-wrap:break-word]">
               that executes.
             </span>
           </h1>
@@ -261,7 +256,7 @@ export function Hero() {
             <a
               href="#cta"
               aria-label="Initialize a Cyryx AI system — primary call to action"
-              className="cx-cta group relative inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-none border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-9 text-[12px] font-semibold uppercase tracking-[0.28em] text-black transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="cx-cta group relative inline-flex min-h-14 items-center justify-center gap-2 overflow-hidden rounded-none border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-9 py-4 text-center text-[12px] font-semibold uppercase tracking-[0.28em] text-black transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               <span>Initialize a System</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -269,7 +264,7 @@ export function Hero() {
             <a
               href="#maax"
               aria-label="Enter the MAAX Studio workspace"
-              className="cx-cta group inline-flex h-14 items-center justify-center gap-2 rounded-none border border-white/25 bg-transparent px-9 text-[12px] font-semibold uppercase tracking-[0.28em] text-white transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="cx-cta group inline-flex min-h-14 items-center justify-center gap-2 rounded-none border border-white/25 bg-transparent px-9 py-4 text-center text-[12px] font-semibold uppercase tracking-[0.28em] text-white transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               <span>Enter MAAX Studio</span>
               <ArrowUpRight
