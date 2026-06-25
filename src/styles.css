@@ -524,7 +524,5 @@ main > section:not([data-hero]) {
   contain-intrinsic-size: 1px 720px;
 }
 
-/* Hint browsers to decode images off the main thread. */
-img {
-  content-visibility: auto;
-}
+/* Default below-the-fold images to lazy decode; the hero image keeps its
+   explicit fetchPriority="high" + loading="eager" overrides. */
