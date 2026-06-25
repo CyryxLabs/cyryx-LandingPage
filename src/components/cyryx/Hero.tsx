@@ -1,31 +1,14 @@
 import { useRef } from "react";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import heroBanner from "@/assets/cyryx-hero-cinematic.png.asset.json";
-import wordmark from "@/assets/cyryx-wordmark-chrome.png.asset.json";
+import voidBg from "@/assets/cyryx-hero-void.jpg.asset.json";
+import shield from "@/assets/cyryx-shield-hero.png.asset.json";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const TICKER = [
-  "ENTERPRISE AI INFRASTRUCTURE",
-  "GOVERNED EXECUTION",
-  "MAAX STUDIO",
-  "APPLIED AI LAB",
-  "AGENT FLEETS",
-  "SOC 2 · ISO 27001",
-  "PRIVATE DEPLOYMENT",
-  "MISSION-CRITICAL SYSTEMS",
-];
-
-const SYSTEM_ROWS = [
-  { k: "REASONING ENGINES", v: "12 ACTIVE", c: true },
-  { k: "EXECUTION STATUS", v: "98.7%", c: true },
-  { k: "NETWORK", v: "SECURE", c: true },
-  { k: "LATENCY", v: "8 MS", c: true },
-  { k: "REGION", v: "GLOBAL", c: false },
-];
+const META = ["AI INFRASTRUCTURE", "COMMAND LAYER", "GOVERNED EXECUTION"];
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -33,136 +16,74 @@ export function Hero() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-
       mm.add(
         {
           isMobile: "(max-width: 767px)",
-          isTablet: "(min-width: 768px) and (max-width: 1023px)",
-          isDesktop: "(min-width: 1024px)",
+          isDesktop: "(min-width: 768px)",
           reduceMotion: "(prefers-reduced-motion: reduce)",
         },
-        (context) => {
-          const { isMobile, isTablet, isDesktop, reduceMotion } =
-            context.conditions as {
-              isMobile: boolean;
-              isTablet: boolean;
-              isDesktop: boolean;
-              reduceMotion: boolean;
-            };
+        (ctx) => {
+          const { isMobile, isDesktop, reduceMotion } = ctx.conditions as {
+            isMobile: boolean;
+            isDesktop: boolean;
+            reduceMotion: boolean;
+          };
 
-          // ── Reduced motion: snap to final state, skip all scroll work ──
-          if (reduceMotion) {
-            gsap.set(
-              ".cx-banner, .cx-banner-img, .cx-eyebrow, .cx-headline-line, .cx-tagline, .cx-cta, .cx-stat, .cx-hud, .cx-scan-bar, .cx-vignette, .cx-foreground, .cx-hud-stack",
-              {
-                clearProps: "transform,opacity,clipPath",
-              },
-            );
-            gsap.set(".cx-scan-bar", { opacity: 0 });
-            return;
-          }
+          if (reduceMotion) return;
 
-          // ── Enterprise intro: restrained, precise, no overshoot ──
           const tl = gsap.timeline({
-            defaults: { ease: "power3.out", duration: 0.7 },
+            defaults: { ease: "power3.out", duration: 0.9 },
           });
 
-          tl.set(".cx-banner", {
-            clipPath: "inset(8% 0% 8% 0%)",
-            opacity: 0,
-          })
-            .set(".cx-banner-img", { scale: 1.08 })
-            .set(".cx-scan-bar", {
-              scaleY: 0,
-              transformOrigin: "50% 0%",
-              opacity: 0,
-            })
-            .set(
-              [
-                ".cx-eyebrow",
-                ".cx-headline-line",
-                ".cx-tagline",
-                ".cx-cta",
-                ".cx-stat",
-                ".cx-hud",
-              ],
-              { opacity: 0, y: 18 },
+          tl.from(".cx-bg", { opacity: 0, duration: 1.4, ease: "power2.out" })
+            .from(
+              ".cx-shield",
+              { opacity: 0, scale: 0.92, y: 30, duration: 1.4, ease: "power3.out" },
+              "-=1.0",
             )
-            .to(".cx-banner", {
-              clipPath: "inset(0% 0% 0% 0%)",
-              opacity: 1,
-              duration: 1.1,
-              ease: "power4.out",
-            })
-            .to(
-              ".cx-banner-img",
-              { scale: 1, duration: 2.0, ease: "power2.out" },
-              "<",
-            )
-            .to(
+            .from(
               ".cx-eyebrow",
-              { opacity: 1, y: 0, duration: 0.55 },
-              "-=0.85",
+              { opacity: 0, y: 16, duration: 0.7 },
+              "-=0.9",
             )
-            .to(
-              ".cx-headline-line",
-              { opacity: 1, y: 0, duration: 0.8, stagger: 0.09 },
-              "-=0.7",
+            .from(
+              ".cx-line",
+              { opacity: 0, y: 28, duration: 0.95, stagger: 0.12 },
+              "-=0.55",
             )
-            .to(
-              ".cx-tagline",
-              { opacity: 1, y: 0, duration: 0.6 },
+            .from(
+              ".cx-sub",
+              { opacity: 0, y: 18, duration: 0.7 },
+              "-=0.55",
+            )
+            .from(
+              ".cx-cta",
+              { opacity: 0, y: 14, duration: 0.6, stagger: 0.08 },
               "-=0.45",
             )
-            .to(
-              ".cx-cta",
-              { opacity: 1, y: 0, duration: 0.55, stagger: 0.07 },
+            .from(
+              ".cx-meta",
+              { opacity: 0, y: 10, duration: 0.55, stagger: 0.06 },
               "-=0.35",
             )
-            .to(
-              ".cx-hud",
-              { opacity: 1, y: 0, duration: 0.6, stagger: 0.06 },
-              "-=0.45",
-            )
-            .to(
-              ".cx-stat",
-              { opacity: 1, y: 0, duration: 0.5, stagger: 0.06 },
+            .from(
+              ".cx-scroll",
+              { opacity: 0, duration: 0.6 },
               "-=0.3",
             );
 
-          // Continuous, transform-only loops — cheap on all devices
-          gsap.to(".cx-marquee-track", {
-            xPercent: -50,
-            duration: isMobile ? 28 : 48,
-            ease: "none",
+          gsap.to(".cx-scroll-dot", {
+            y: 14,
+            opacity: 0.2,
+            duration: 1.6,
+            ease: "power1.inOut",
             repeat: -1,
+            yoyo: true,
           });
-          gsap.fromTo(
-            ".cx-pulse-ring",
-            { scale: 0.6, opacity: 0.7 },
-            { scale: 2.4, opacity: 0, duration: 2.4, ease: "power2.out", repeat: -1 },
-          );
 
-          // Scan-line sweep — desktop/tablet only; off on mobile to save paint
-          if (!isMobile) {
-            gsap.fromTo(
-              ".cx-scan-bar",
-              { yPercent: -10, opacity: 0 },
-              {
-                yPercent: 1000,
-                opacity: 0.85,
-                duration: 5.2,
-                ease: "power1.inOut",
-                repeat: -1,
-                repeatDelay: 1.6,
-              },
-            );
-          }
-
-          // ── Desktop: full parallax depth, no pinning ──
           if (isDesktop) {
-            gsap.to(".cx-banner-img", {
-              yPercent: -8,
+            gsap.to(".cx-bg-img", {
+              yPercent: -10,
               scale: 1.06,
               ease: "none",
               scrollTrigger: {
@@ -172,8 +93,8 @@ export function Hero() {
                 scrub: 0.6,
               },
             });
-            gsap.to(".cx-foreground", {
-              yPercent: -10,
+            gsap.to(".cx-shield", {
+              yPercent: -16,
               ease: "none",
               scrollTrigger: {
                 trigger: root.current,
@@ -182,18 +103,9 @@ export function Hero() {
                 scrub: 0.4,
               },
             });
-            gsap.to(".cx-hud-stack", {
-              yPercent: 5,
-              ease: "none",
-              scrollTrigger: {
-                trigger: root.current,
-                start: "top top",
-                end: "bottom top",
-                scrub: 0.8,
-              },
-            });
-            gsap.to(".cx-vignette", {
-              opacity: 0.9,
+            gsap.to(".cx-stage", {
+              yPercent: -6,
+              opacity: 0.4,
               ease: "none",
               scrollTrigger: {
                 trigger: root.current,
@@ -204,45 +116,8 @@ export function Hero() {
             });
           }
 
-          // ── Tablet: subtle parallax only, no pinning ──
-          if (isTablet) {
-            gsap.to(".cx-banner-img", {
-              yPercent: -4,
-              scale: 1.03,
-              ease: "none",
-              scrollTrigger: {
-                trigger: root.current,
-                start: "top top",
-                end: "bottom top",
-                scrub: 0.6,
-              },
-            });
-            gsap.to(".cx-vignette", {
-              opacity: 0.8,
-              ease: "none",
-              scrollTrigger: {
-                trigger: root.current,
-                start: "top top",
-                end: "bottom top",
-                scrub: true,
-              },
-            });
-          }
-
-          // ── Mobile: lightweight reveals only, no parallax, no pinning ──
           if (isMobile) {
-            gsap.from(".cx-stat", {
-              opacity: 0,
-              y: 14,
-              duration: 0.6,
-              ease: "power3.out",
-              stagger: 0.07,
-              scrollTrigger: {
-                trigger: ".cx-stat-strip",
-                start: "top 88%",
-                toggleActions: "play none none none",
-              },
-            });
+            gsap.set(".cx-bg-img", { scale: 1.02 });
           }
         },
       );
@@ -255,287 +130,145 @@ export function Hero() {
       ref={root}
       id="top"
       data-hero
-      className="relative isolate overflow-hidden bg-[var(--onyx)]"
+      className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-black"
     >
-      {/* ── Full-bleed cinematic banner ───────────────────────────── */}
-      <div className="absolute inset-0 -z-10">
-        <div className="cx-banner relative h-full w-full overflow-hidden">
+      {/* Background */}
+      <div aria-hidden className="cx-bg absolute inset-0 -z-10">
+        <img
+          src={voidBg.url}
+          alt=""
+          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          draggable={false}
+        />
+        {/* deep vignette to anchor copy */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 80% at 30% 50%, transparent 0%, rgba(0,0,0,0.6) 55%, #000 100%)",
+          }}
+        />
+        {/* top/bottom feather */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, #000 0%, transparent 18%, transparent 72%, #000 100%)",
+          }}
+        />
+        {/* subtle horizontal teal line */}
+        <div
+          className="absolute left-0 right-0 top-1/2 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--accent-glow) 60%, transparent) 50%, transparent 100%)",
+            opacity: 0.4,
+          }}
+        />
+        {/* noise */}
+        <div
+          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>\")",
+          }}
+        />
+      </div>
+
+      {/* Centerpiece shield */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 flex items-center justify-center"
+      >
+        <div className="cx-stage relative h-full w-full max-w-[1400px]">
           <img
-            src={heroBanner.url}
+            src={shield.url}
             alt=""
-            aria-hidden
-            className="cx-banner-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+            className="cx-shield absolute right-[-6%] top-1/2 h-[78%] w-auto max-w-none -translate-y-1/2 opacity-90 mix-blend-screen sm:right-[-2%] sm:h-[88%] lg:right-[2%] lg:h-[92%]"
             draggable={false}
           />
-
-          {/* Cinematic legibility wash: left-side dark gradient so copy reads */}
+          {/* teal aura */}
           <div
-            aria-hidden
-            className="absolute inset-0"
+            className="absolute right-[10%] top-1/2 h-[60vh] w-[60vh] -translate-y-1/2 rounded-full"
             style={{
               background:
-                "linear-gradient(90deg, var(--onyx) 0%, color-mix(in oklab, var(--onyx) 88%, transparent) 28%, color-mix(in oklab, var(--onyx) 40%, transparent) 55%, transparent 80%)",
-            }}
-          />
-          {/* Top + bottom feather */}
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, var(--onyx) 0%, transparent 18%, transparent 70%, var(--onyx) 100%)",
-            }}
-          />
-          {/* Vignette that intensifies on scroll */}
-          <div
-            aria-hidden
-            className="cx-vignette absolute inset-0 opacity-50"
-            style={{
-              background:
-                "radial-gradient(ellipse 90% 70% at 50% 50%, transparent 30%, var(--onyx) 100%)",
-            }}
-          />
-          {/* Cyan scanline */}
-          <div
-            aria-hidden
-            className="cx-scan-bar absolute inset-x-0 top-0 h-[2px] origin-top"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--accent-glow) 90%, transparent) 50%, transparent 100%)",
-              boxShadow:
-                "0 0 24px color-mix(in oklab, var(--accent-glow) 80%, transparent), 0 0 60px color-mix(in oklab, var(--accent-glow) 50%, transparent)",
-            }}
-          />
-          {/* Subtle dotted overlay */}
-          <div
-            aria-hidden
-            className="absolute inset-0 opacity-[0.10] mix-blend-screen"
-            style={{
-              backgroundImage:
-                "radial-gradient(color-mix(in oklab, var(--silver) 40%, transparent) 1px, transparent 1px)",
-              backgroundSize: "32px 32px",
-            }}
-          />
-          {/* Noise */}
-          <div
-            aria-hidden
-            className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>\")",
+                "radial-gradient(circle, color-mix(in oklab, var(--accent-glow) 30%, transparent) 0%, transparent 60%)",
+              filter: "blur(40px)",
             }}
           />
         </div>
       </div>
 
-      {/* ── Foreground content ────────────────────────────────────── */}
-      <div className="cx-foreground relative mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-5 pb-24 pt-32 sm:px-8 sm:pt-36 lg:px-12 lg:pt-40">
-        <div className="grid items-end gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          {/* Left — manifesto */}
-          <div className="max-w-xl">
-            {/* Status chip */}
-            <div className="cx-eyebrow inline-flex items-center gap-3 rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_70%,transparent)] px-4 py-1.5 backdrop-blur-md">
-              <span className="relative grid h-2 w-2 place-items-center">
-                <span className="cx-pulse-ring absolute h-2 w-2 rounded-full bg-[var(--accent-glow)]" />
-                <span className="relative h-2 w-2 rounded-full bg-[var(--accent-glow)] shadow-[0_0_10px_var(--accent-glow)]" />
-              </span>
-              <span className="hud-label text-[var(--accent-glow)]">
-                ENTERPRISE AI · UNITED STATES
-              </span>
-              <span aria-hidden className="h-3 w-px bg-[color-mix(in_oklab,var(--silver)_22%,transparent)]" />
-              <span className="hud-label text-[var(--silver-dim)]">
-                SOC 2 · ISO 27001 READY
-              </span>
-            </div>
-
-            {/* Wordmark */}
-            <img
-              src={wordmark.url}
-              alt="Cyryx Labs"
-              className="cx-headline-line mt-8 block h-auto w-[300px] sm:w-[380px] lg:w-[420px]"
-              draggable={false}
-            />
-
-            {/* Editorial headline */}
-            <h1 className="mt-8 font-display font-semibold leading-[0.95] tracking-[-0.035em] text-[var(--silver)]">
-              <span className="cx-headline-line block text-[42px] sm:text-[58px] lg:text-[64px]">
-                The intelligence
-              </span>
-              <span className="cx-headline-line block text-[42px] sm:text-[58px] lg:text-[64px] text-silver-gradient">
-                infrastructure behind
-              </span>
-              <span className="cx-headline-line block text-[42px] sm:text-[58px] lg:text-[64px]">
-                <span className="text-[var(--accent-glow)]">autonomous</span>{" "}
-                <span className="italic font-light text-[var(--silver-dim)]">execution.</span>
-              </span>
-            </h1>
-
-            <p className="cx-tagline mt-8 text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-              <span className="text-[var(--silver)]">Cyryx Labs</span> is the
-              American AI company engineering proprietary execution systems,
-              governed agent fleets, and mission-critical infrastructure for
-              enterprises that operate at the highest standard of reliability,
-              security, and accountability.
-            </p>
-
-            {/* CTAs */}
-            <div className="mt-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
-              <a
-                href="#cta"
-                className="cx-cta group relative inline-flex h-14 min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-full bg-[var(--accent-glow)] px-8 text-sm font-semibold tracking-wide text-[var(--onyx)] shadow-[var(--shadow-glow-teal)] transition hover:brightness-110"
-              >
-                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                <Sparkles className="relative h-4 w-4" />
-                <span className="relative">Initialize a System</span>
-                <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-              <a
-                href="#maax"
-                className="cx-cta group inline-flex h-14 min-w-[240px] items-center justify-center gap-2 rounded-full border border-[color-mix(in_oklab,var(--silver)_22%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_60%,transparent)] px-8 text-sm font-medium text-[var(--silver)] backdrop-blur-md transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
-              >
-                Enter MAAX Studio
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-            </div>
-
-            {/* Enterprise trust row */}
-            <div className="cx-cta mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[color-mix(in_oklab,var(--silver)_10%,transparent)] pt-6">
-              <span className="hud-label text-[var(--silver-dim)]">
-                BUILT FOR ENTERPRISE
-              </span>
-              {[
-                "SOC 2 Type II",
-                "ISO 27001",
-                "GDPR",
-                "HIPAA-ready",
-                "SSO / SAML",
-                "Private deployment",
-              ].map((t) => (
-                <span
-                  key={t}
-                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--silver)]"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+      {/* Foreground content */}
+      <div className="relative mx-auto w-full max-w-7xl px-6 pb-28 pt-32 sm:px-10 sm:pt-40 lg:px-14">
+        <div className="max-w-3xl">
+          {/* Eyebrow */}
+          <div className="cx-eyebrow inline-flex items-center gap-3 border-l-2 border-[var(--accent-glow)] pl-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_10px_var(--accent-glow)]" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]">
+              Cyryx Labs · Enterprise AI · United States
+            </span>
           </div>
 
-          {/* Right — floating HUD stack (over the banner, not replacing it) */}
-          <div className="cx-hud-stack relative hidden lg:block">
-            <div className="ml-auto w-full max-w-md space-y-4">
-              {/* System overview card */}
-              <div
-                className="cx-hud relative overflow-hidden rounded-xl border border-[color-mix(in_oklab,var(--accent-glow)_22%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_72%,transparent)] p-5 backdrop-blur-xl"
-                style={{ boxShadow: "var(--shadow-panel)" }}
-              >
-                <span aria-hidden className="absolute left-2 top-2 h-2.5 w-2.5 border-l border-t border-[var(--accent-glow)]" />
-                <span aria-hidden className="absolute right-2 top-2 h-2.5 w-2.5 border-r border-t border-[var(--accent-glow)]" />
-                <span aria-hidden className="absolute bottom-2 left-2 h-2.5 w-2.5 border-b border-l border-[var(--accent-glow)]" />
-                <span aria-hidden className="absolute bottom-2 right-2 h-2.5 w-2.5 border-b border-r border-[var(--accent-glow)]" />
+          {/* Headline */}
+          <h1 className="mt-10 font-display font-semibold leading-[0.92] tracking-[-0.04em] text-white">
+            <span className="cx-line block text-[clamp(44px,8.4vw,116px)]">
+              Intelligence
+            </span>
+            <span className="cx-line block text-[clamp(44px,8.4vw,116px)] text-silver-gradient">
+              that executes.
+            </span>
+          </h1>
 
-                <div className="flex items-center justify-between">
-                  <span className="hud-label text-[var(--silver)]">SYSTEM OVERVIEW</span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)]" />
-                    <span className="hud-label text-[var(--accent-glow)]">LIVE</span>
-                  </span>
-                </div>
+          {/* Sub */}
+          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+            We engineer the proprietary AI infrastructure and governed agent
+            systems that mission-critical American enterprises run on.
+          </p>
 
-                <div className="mt-4 space-y-2">
-                  {SYSTEM_ROWS.map((r) => (
-                    <div key={r.k} className="flex items-center justify-between font-mono text-[11px]">
-                      <span className="text-[var(--silver-dim)]">{r.k}</span>
-                      <span className={r.c ? "text-[var(--accent-glow)]" : "text-[var(--silver)]"}>
-                        {r.v}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Mini telemetry bars */}
-                <div className="mt-4 flex h-12 items-end gap-[3px]">
-                  {[42, 58, 36, 71, 49, 84, 62, 90, 73, 55, 78, 96, 68, 82, 60, 88, 54, 72].map(
-                    (h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 rounded-[1px]"
-                        style={{
-                          height: `${h}%`,
-                          background:
-                            i >= 14
-                              ? "linear-gradient(180deg, var(--accent-glow), color-mix(in oklab, var(--accent-glow) 40%, transparent))"
-                              : "color-mix(in oklab, var(--silver) 20%, transparent)",
-                          boxShadow:
-                            i >= 14 ? "0 0 8px color-mix(in oklab, var(--accent-glow) 60%, transparent)" : "none",
-                        }}
-                      />
-                    ),
-                  )}
-                </div>
-              </div>
-
-              {/* Compact bracket label */}
-              <div className="cx-hud flex items-center gap-3">
-                <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_60%,transparent)] to-transparent" />
-                <span className="hud-label text-[var(--silver-dim)]">
-                  002 / COMMAND LAYER · ENGAGED
-                </span>
-                <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_60%,transparent)] to-transparent" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Stat strip */}
-        <div className="cx-stat-strip mt-16 grid max-w-5xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--silver)_10%,transparent)] backdrop-blur-md sm:grid-cols-4">
-          {[
-            { k: "Enterprise deployments", v: "40+" },
-            { k: "Governed agent missions", v: "12K+" },
-            { k: "Avg. operational lift", v: "73%" },
-            { k: "System uptime SLA", v: "99.99%" },
-          ].map((s) => (
-            <div
-              key={s.k}
-              className="cx-stat bg-[color-mix(in_oklab,var(--onyx)_82%,transparent)] px-6 py-5"
+          {/* CTAs */}
+          <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:gap-5">
+            <a
+              href="#cta"
+              className="cx-cta group relative inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-none border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-9 text-[12px] font-semibold uppercase tracking-[0.28em] text-black transition hover:brightness-110"
             >
-              <div className="font-display text-3xl font-semibold text-[var(--silver)]">
-                {s.v}
-              </div>
-              <div className="mt-1 hud-label">{s.k}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Marquee */}
-      <div
-        aria-hidden
-        className="relative border-y border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_85%,transparent)] py-4 backdrop-blur-md"
-      >
-        <div className="overflow-hidden">
-          <div className="cx-marquee-track flex w-max items-center gap-12 whitespace-nowrap">
-            {[...TICKER, ...TICKER].map((item, i) => (
-              <span key={i} className="flex items-center gap-12">
-                <span className="font-display text-2xl font-light tracking-tight text-[color-mix(in_oklab,var(--silver)_70%,transparent)] sm:text-3xl">
-                  {item}
-                </span>
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_10px_var(--accent-glow)]" />
-              </span>
-            ))}
+              <span>Initialize a System</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+            <a
+              href="#maax"
+              className="cx-cta group inline-flex h-14 items-center justify-center gap-2 rounded-none border border-white/20 bg-transparent px-9 text-[12px] font-semibold uppercase tracking-[0.28em] text-white transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+            >
+              <span>Enter MAAX Studio</span>
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
           </div>
         </div>
+
+        {/* Bottom meta rail */}
+        <div className="mt-24 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-white/10 pt-6">
+          {META.map((m) => (
+            <span
+              key={m}
+              className="cx-meta font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]"
+            >
+              <span className="mr-3 text-[var(--accent-glow)]">/</span>
+              {m}
+            </span>
+          ))}
+          <span className="cx-meta ml-auto font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]">
+            SOC 2 · ISO 27001 · HIPAA-Ready
+          </span>
+        </div>
       </div>
 
-      {/* Bottom hairline */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--accent-glow) 60%, transparent) 50%, transparent 100%)",
-        }}
-      />
+      {/* Scroll cue */}
+      <div className="cx-scroll absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2">
+        <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-[var(--silver-dim)]">
+          Scroll
+        </span>
+        <span className="cx-scroll-dot h-6 w-px bg-gradient-to-b from-[var(--accent-glow)] to-transparent" />
+      </div>
     </section>
   );
 }
