@@ -10,6 +10,11 @@
     "build:ci": "CI=1 bun run build",
     "preview": "vite preview",
     "test:a11y": "playwright test --config=playwright.config.ts",
+    "test:a11y:update-jsonld": "UPDATE_JSONLD_SNAPSHOT=1 playwright test --config=playwright.config.ts --grep \"JSON-LD\"",
+    "test:a11y:ci": "A11Y_REPORT_DIR=a11y-report playwright test --config=playwright.config.ts",
+    "quality:validate-terms": "node scripts/validate-forbidden-terms.mjs",
+    "quality:axe-sarif": "node scripts/axe-to-sarif.mjs a11y-report a11y-report/axe.sarif",
+    "quality:local": "bun run quality:validate-terms && bun run build && bun run test:a11y:ci && bun run quality:axe-sarif",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
