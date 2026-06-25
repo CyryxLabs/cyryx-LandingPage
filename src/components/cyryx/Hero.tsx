@@ -297,7 +297,7 @@ export function Hero() {
               </span>
               <span aria-hidden className="h-3 w-px bg-[color-mix(in_oklab,var(--silver)_22%,transparent)]" />
               <span className="hud-label text-[var(--silver-dim)]">
-                São Paulo / Worldwide
+                United States · Worldwide
               </span>
             </div>
 
