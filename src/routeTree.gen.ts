@@ -16,8 +16,6 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
-import { Route as ProductsLuminaiRouteImport } from './routes/products.luminai'
-import { Route as ProductsAulexaRouteImport } from './routes/products.aulexa'
 
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
@@ -54,16 +52,6 @@ const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
   path: '/maax-studio',
   getParentRoute: () => ProductsRoute,
 } as any)
-const ProductsLuminaiRoute = ProductsLuminaiRouteImport.update({
-  id: '/luminai',
-  path: '/luminai',
-  getParentRoute: () => ProductsRoute,
-} as any)
-const ProductsAulexaRoute = ProductsAulexaRouteImport.update({
-  id: '/aulexa',
-  path: '/aulexa',
-  getParentRoute: () => ProductsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -72,8 +60,6 @@ export interface FileRoutesByFullPath {
   '/products': typeof ProductsRouteWithChildren
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
-  '/products/aulexa': typeof ProductsAulexaRoute
-  '/products/luminai': typeof ProductsLuminaiRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
 }
 export interface FileRoutesByTo {
@@ -83,8 +69,6 @@ export interface FileRoutesByTo {
   '/products': typeof ProductsRouteWithChildren
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
-  '/products/aulexa': typeof ProductsAulexaRoute
-  '/products/luminai': typeof ProductsLuminaiRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
 }
 export interface FileRoutesById {
@@ -95,8 +79,6 @@ export interface FileRoutesById {
   '/products': typeof ProductsRouteWithChildren
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
-  '/products/aulexa': typeof ProductsAulexaRoute
-  '/products/luminai': typeof ProductsLuminaiRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
 }
 export interface FileRouteTypes {
@@ -108,8 +90,6 @@ export interface FileRouteTypes {
     | '/products'
     | '/research'
     | '/solutions'
-    | '/products/aulexa'
-    | '/products/luminai'
     | '/products/maax-studio'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -119,8 +99,6 @@ export interface FileRouteTypes {
     | '/products'
     | '/research'
     | '/solutions'
-    | '/products/aulexa'
-    | '/products/luminai'
     | '/products/maax-studio'
   id:
     | '__root__'
@@ -130,8 +108,6 @@ export interface FileRouteTypes {
     | '/products'
     | '/research'
     | '/solutions'
-    | '/products/aulexa'
-    | '/products/luminai'
     | '/products/maax-studio'
   fileRoutesById: FileRoutesById
 }
@@ -195,32 +171,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsMaaxStudioRouteImport
       parentRoute: typeof ProductsRoute
     }
-    '/products/luminai': {
-      id: '/products/luminai'
-      path: '/luminai'
-      fullPath: '/products/luminai'
-      preLoaderRoute: typeof ProductsLuminaiRouteImport
-      parentRoute: typeof ProductsRoute
-    }
-    '/products/aulexa': {
-      id: '/products/aulexa'
-      path: '/aulexa'
-      fullPath: '/products/aulexa'
-      preLoaderRoute: typeof ProductsAulexaRouteImport
-      parentRoute: typeof ProductsRoute
-    }
   }
 }
 
 interface ProductsRouteChildren {
-  ProductsAulexaRoute: typeof ProductsAulexaRoute
-  ProductsLuminaiRoute: typeof ProductsLuminaiRoute
   ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
-  ProductsAulexaRoute: ProductsAulexaRoute,
-  ProductsLuminaiRoute: ProductsLuminaiRoute,
   ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
 }
 
