@@ -11,12 +11,12 @@ const AUDIENCE = [
 const VALUES = [
   "Product-led thinking",
   "Execution-first architecture",
-  "Human-in-the-loop control",
+  "Human-commanded autonomy",
   "Context-aware systems",
   "Cost-conscious implementation",
-  "Enterprise-grade governance",
+  "Governance-ready design",
   "Builder-focused velocity",
-  "Practical AI deployment",
+  "Runtime-first product philosophy",
 ];
 
 export function WhoWeServe() {
