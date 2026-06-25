@@ -143,6 +143,9 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { name: lighthouse-report-desktop, path: lighthouse-report/desktop }
         continue-on-error: true
+      - uses: actions/download-artifact@v4
+        with: { name: jsonld-snapshot-diff, path: jsonld-diff }
+        continue-on-error: true
       - name: Build summary
         run: node scripts/summarize-quality.mjs
       - name: Post PR comment
