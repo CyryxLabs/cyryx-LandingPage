@@ -3,8 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import voidBg from "@/assets/cyryx-hero-void.jpg.asset.json";
-import monolith from "@/assets/cyryx-monolith.png.asset.json";
+import heroBanner from "@/assets/cyryx-hero-cinematic-banner.png.asset.json";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -135,9 +134,9 @@ export function Hero() {
       {/* Background */}
       <div aria-hidden className="cx-bg absolute inset-0 -z-10">
         <img
-          src={voidBg.url}
+          src={heroBanner.url}
           alt=""
-          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-right will-change-transform"
           draggable={false}
         />
         {/* deep vignette to anchor copy */}
@@ -145,7 +144,7 @@ export function Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(120% 80% at 30% 50%, transparent 0%, rgba(0,0,0,0.6) 55%, #000 100%)",
+              "linear-gradient(90deg, #000 0%, rgba(0,0,0,0.92) 28%, rgba(0,0,0,0.55) 52%, rgba(0,0,0,0.15) 78%, transparent 100%)",
           }}
         />
         {/* top/bottom feather */}
@@ -175,29 +174,16 @@ export function Hero() {
         />
       </div>
 
-      {/* Centerpiece shield */}
+      {/* Teal aura behind banner */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 flex items-center justify-center"
-      >
-        <div className="cx-stage relative h-full w-full max-w-[1400px]">
-          <img
-            src={monolith.url}
-            alt=""
-            className="cx-shield absolute right-[-6%] top-1/2 h-[78%] w-auto max-w-none -translate-y-1/2 opacity-95 sm:right-[-2%] sm:h-[88%] lg:right-[2%] lg:h-[96%]"
-            draggable={false}
-          />
-          {/* teal aura */}
-          <div
-            className="absolute right-[10%] top-1/2 h-[60vh] w-[60vh] -translate-y-1/2 rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle, color-mix(in oklab, var(--accent-glow) 30%, transparent) 0%, transparent 60%)",
-              filter: "blur(40px)",
-            }}
-          />
-        </div>
-      </div>
+        className="cx-stage pointer-events-none absolute right-[8%] top-1/2 -z-[5] h-[55vh] w-[55vh] -translate-y-1/2 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--accent-glow) 22%, transparent) 0%, transparent 65%)",
+          filter: "blur(50px)",
+        }}
+      />
 
       {/* Foreground content */}
       <div className="relative mx-auto w-full max-w-7xl px-6 pb-28 pt-32 sm:px-10 sm:pt-40 lg:px-14">
