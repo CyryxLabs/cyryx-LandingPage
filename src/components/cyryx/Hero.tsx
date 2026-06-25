@@ -256,7 +256,7 @@ export function Hero() {
             <h1
               className="cx-headline mt-6 font-display font-semibold leading-[0.92] tracking-[-0.04em] text-[var(--silver)]"
             >
-              <span className="inline-block overflow-hidden pb-[0.08em] text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px]">
+              <span className="block overflow-hidden pb-[0.08em] text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px]">
                 Engineering
               </span>
               <span className="block overflow-hidden pb-[0.08em] text-[52px] sm:text-[78px] lg:text-[104px] xl:text-[124px] text-silver-gradient">
