@@ -72,6 +72,19 @@ if (violations.length) {
 lines.push("");
 lines.push("Artifacts: `lighthouse-report`, `a11y-report`, `playwright-report` (see workflow run).");
 
+// Optional: surface the JSON-LD snapshot diff inline when UPDATE_JSONLD_SNAPSHOT ran.
+const diffPath = "jsonld-diff/jsonld.diff";
+if (existsSync(diffPath)) {
+  const diff = readFileSync(diffPath, "utf8").trim();
+  if (diff) {
+    lines.push("");
+    lines.push("### JSON-LD snapshot diff");
+    lines.push("```diff");
+    lines.push(diff.length > 6000 ? diff.slice(0, 6000) + "\n…(truncated)" : diff);
+    lines.push("```");
+  }
+}
+
 const md = lines.join("\n");
 process.stdout.write(md + "\n");
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, md + "\n");

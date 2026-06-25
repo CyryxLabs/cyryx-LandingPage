@@ -14,7 +14,10 @@
     "test:a11y:ci": "A11Y_REPORT_DIR=a11y-report playwright test --config=playwright.config.ts",
     "quality:validate-terms": "node scripts/validate-forbidden-terms.mjs",
     "quality:axe-sarif": "node scripts/axe-to-sarif.mjs a11y-report a11y-report/axe.sarif",
-    "quality:local": "bun run quality:validate-terms && bun run build && bun run test:a11y:ci && bun run quality:axe-sarif",
+    "quality:lhci:mobile": "node scripts/render-lhci-config.mjs lighthouserc.mobile.json lhci.runtime.mobile.json && bunx @lhci/cli@0.14.x autorun --config=./lhci.runtime.mobile.json",
+    "quality:lhci:desktop": "node scripts/render-lhci-config.mjs lighthouserc.desktop.json lhci.runtime.desktop.json && bunx @lhci/cli@0.14.x autorun --config=./lhci.runtime.desktop.json",
+    "quality:fetch-artifacts": "node scripts/fetch-quality-artifacts.mjs",
+    "quality:local": "node scripts/quality-local.mjs",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
