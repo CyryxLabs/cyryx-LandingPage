@@ -168,6 +168,12 @@ export function Hero() {
         <img
           src={heroBanner.url}
           alt=""
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+          sizes="100vw"
+          width={1920}
+          height={1080}
           className="cx-bg-img absolute inset-0 h-full w-full object-cover object-[65%_center] will-change-transform sm:object-[75%_center] lg:object-right"
           draggable={false}
         />
@@ -176,14 +182,14 @@ export function Hero() {
           className="absolute inset-0 lg:hidden"
           style={{
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.78) 100%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.7) 35%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.85) 100%)",
           }}
         />
         <div
           className="absolute inset-0 hidden lg:block"
           style={{
             background:
-              "linear-gradient(90deg, #000 0%, rgba(0,0,0,0.92) 28%, rgba(0,0,0,0.55) 52%, rgba(0,0,0,0.15) 78%, transparent 100%)",
+              "linear-gradient(90deg, #000 0%, rgba(0,0,0,0.94) 30%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.2) 80%, transparent 100%)",
           }}
         />
         {/* top/bottom feather */}
