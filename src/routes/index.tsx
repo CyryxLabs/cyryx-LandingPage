@@ -7,6 +7,7 @@ import { WhyCyryx } from "@/components/cyryx/WhyCyryx";
 import { CoreCapabilities } from "@/components/cyryx/CoreCapabilities";
 import { CommandLayerSection } from "@/components/cyryx/CommandLayerSection";
 import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
+import { ProductEcosystem } from "@/components/cyryx/ProductEcosystem";
 import { ProcessTimeline } from "@/components/cyryx/ProcessTimeline";
 import { CTASection } from "@/components/cyryx/CTASection";
 import { Footer } from "@/components/cyryx/Footer";
@@ -56,6 +57,7 @@ function Index() {
         <CapabilityStrip />
         <WhyCyryx />
         <CoreCapabilities />
+        <ProductEcosystem />
         <MAAXStudioSpotlight />
         <CommandLayerSection />
         <AppliedAILab />

@@ -1,63 +1,72 @@
 import { ArrowRight } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
-import { DashboardPanel } from "./DashboardPanel";
-import { GridFloor } from "./primitives/GridFloor";
 import { ScrollIndicator } from "./ScrollIndicator";
-import { MonolithScene } from "./three/MonolithScene";
-import { MagneticButton } from "./primitives/MagneticButton";
+import heroMonolith from "@/assets/cyryx-hero-monolith.jpg";
 
 export function Hero() {
   return (
     <section
       id="top"
       data-hero
-      className="relative isolate overflow-hidden bg-[var(--onyx)] pt-20 sm:pt-24 lg:pt-28"
+      className="relative isolate overflow-hidden bg-[var(--onyx)]"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,var(--onyx)_0%,var(--graphite)_48%,var(--onyx)_100%)]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-[72vh] opacity-80"
-        style={{
-          background:
-            "linear-gradient(180deg, color-mix(in oklab, var(--accent-glow) 10%, transparent), transparent 62%)",
-        }}
-      />
-      <GridFloor className="opacity-30" />
+      {/* Full-bleed cinematic monolith background */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src={heroMonolith}
+          alt=""
+          aria-hidden
+          fetchPriority="high"
+          decoding="async"
+          width={1920}
+          height={1280}
+          className="h-full w-full object-cover object-[70%_center] sm:object-[65%_center] lg:object-center opacity-90"
+        />
+        {/* Left-side darkening for text legibility */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, var(--onyx) 0%, color-mix(in oklab, var(--onyx) 92%, transparent) 28%, color-mix(in oklab, var(--onyx) 55%, transparent) 55%, transparent 100%)",
+          }}
+        />
+        {/* Top + bottom vignette */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, color-mix(in oklab, var(--onyx) 70%, transparent) 0%, transparent 22%, transparent 70%, var(--onyx) 100%)",
+          }}
+        />
+      </div>
 
-      <div className="relative mx-auto grid min-h-[760px] max-w-7xl items-start gap-10 px-4 pb-14 pt-8 sm:px-6 sm:pb-18 sm:pt-12 lg:min-h-[820px] lg:grid-cols-[minmax(0,0.98fr)_minmax(420px,0.82fr)] lg:gap-8 lg:px-10 lg:pt-16 lg:pb-20">
-        <div className="relative z-10 flex max-w-4xl flex-col items-start text-left lg:pt-6">
-          <div className="mb-6" data-hero-line>
+      <div className="relative mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-5 pb-24 pt-32 sm:px-8 sm:pt-36 lg:min-h-[92vh] lg:px-12 lg:pt-40 lg:pb-32">
+        <div className="max-w-2xl lg:max-w-3xl">
+          <div data-hero-line>
             <HudLabel withDot className="text-[var(--accent-glow)]">
-              CYRYX LABS / AGENTIC EXECUTION · v1.04
+              CYRYX LABS / AGENTIC EXECUTION
             </HudLabel>
           </div>
 
-          <h1 className="font-display font-semibold uppercase leading-[0.9] text-[var(--silver)]">
-            <span
-              className="block text-[36px] sm:text-[60px] lg:text-[84px] xl:text-[100px]"
-              data-hero-headline
-            >
-              AI Products &
+          <h1
+            className="mt-8 font-display font-semibold leading-[1.02] tracking-[-0.02em] text-[var(--silver)]"
+            data-hero-headline
+          >
+            <span className="block text-[40px] sm:text-[60px] lg:text-[78px] xl:text-[88px]">
+              AI products and
             </span>
-            <span
-              className="block text-[36px] sm:text-[60px] lg:text-[84px] xl:text-[100px]"
-              data-hero-headline
-            >
-              Execution Systems
+            <span className="block text-[40px] sm:text-[60px] lg:text-[78px] xl:text-[88px] text-silver-gradient">
+              execution systems
             </span>
-            <span
-              className="mt-2 block text-[28px] font-light italic text-[var(--accent-glow)] sm:text-[44px] lg:text-[56px] xl:text-[64px]"
-              data-hero-headline
-            >
+            <span className="mt-1 block text-[28px] sm:text-[40px] lg:text-[52px] xl:text-[60px] font-normal text-[var(--silver-dim)]">
               for the agentic era.
             </span>
           </h1>
 
           <p
-            className="mt-6 max-w-2xl text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base lg:text-lg"
+            className="mt-8 max-w-xl text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base lg:text-lg"
             data-hero-line
           >
             Cyryx Labs builds proprietary AI products, custom automation systems,
@@ -66,63 +75,35 @@ export function Hero() {
           </p>
 
           <div
-            className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4"
+            className="mt-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4"
             data-hero-line
           >
-            <MagneticButton href="#maax" variant="primary">
+            <a
+              href="#cta"
+              className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-md bg-[var(--accent-glow)] px-7 text-sm font-semibold tracking-wide text-[var(--onyx)] shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
+            >
+              Start a Project
+              <ArrowRight className="h-4 w-4" />
+            </a>
+            <a
+              href="#maax"
+              className="inline-flex h-12 min-w-[200px] items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_22%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_60%,transparent)] px-7 text-sm font-medium text-[var(--silver)] hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] transition backdrop-blur-sm"
+            >
               Explore MAAX Studio
               <ArrowRight className="h-4 w-4" />
-            </MagneticButton>
-            <MagneticButton href="#cta" variant="ghost">
-              Build with Cyryx
-              <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
-            </MagneticButton>
+            </a>
           </div>
 
           <p
             className="mt-10 hud-label text-[var(--accent-glow)]"
             data-hero-line
           >
-            From prompt chaos to governed AI execution.
+            From scattered AI experimentation to governed execution.
           </p>
         </div>
-
-        <div className="relative z-0 mx-auto h-[360px] w-full max-w-[440px] sm:h-[500px] lg:h-[640px] lg:max-w-none">
-          <div
-            aria-hidden
-            className="absolute inset-x-4 bottom-0 h-[28%] border-t border-[color-mix(in_oklab,var(--accent-glow)_28%,transparent)]"
-            style={{
-              background:
-                "linear-gradient(180deg, color-mix(in oklab, var(--accent-glow) 14%, transparent), transparent 68%)",
-              transform: "perspective(520px) rotateX(64deg)",
-              transformOrigin: "bottom center",
-            }}
-          />
-          <div
-            aria-hidden
-            className="absolute left-1/2 top-0 h-full w-[min(100%,520px)] -translate-x-1/2"
-          >
-            <MonolithScene className="h-full w-full" />
-          </div>
-
-          <div className="absolute left-0 top-8 hidden flex-col gap-2 lg:flex" data-hero-line>
-            <span className="hud-label text-[var(--silver-dim)]">ACTIVE MISSION</span>
-            <span className="hud-label text-[var(--silver-dim)]">SOUL KERNEL · LOADED</span>
-            <span className="hud-label text-[var(--accent-glow)]">ATLAS CONTEXT · OK</span>
-          </div>
-          <div className="absolute right-0 bottom-20 hidden flex-col items-end gap-2 lg:flex" data-hero-line>
-            <span className="hud-label text-[var(--silver-dim)]">OPERATORS · ACTIVE</span>
-            <span className="hud-label text-[var(--silver-dim)]">COMMAND GATES · ARMED</span>
-            <span className="hud-label text-[var(--accent-glow)]">HUMAN APPROVAL READY</span>
-          </div>
-        </div>
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-10">
-        <DashboardPanel />
-      </div>
-
-      <div className="relative flex justify-center pb-12">
+      <div className="relative flex justify-center pb-8">
         <ScrollIndicator />
       </div>
     </section>

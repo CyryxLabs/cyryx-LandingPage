@@ -5,12 +5,12 @@ import { MobileMenu } from "./MobileMenu";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { label: "Overview", href: "#overview" },
   { label: "Products", href: "#products" },
   { label: "Solutions", href: "#solutions" },
   { label: "Applied AI Lab", href: "#applied-lab" },
   { label: "MAAX Studio", href: "#maax" },
-  { label: "Contact", href: "#cta" },
+  { label: "Company", href: "/company" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export function Header() {
