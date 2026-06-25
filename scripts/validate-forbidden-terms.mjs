@@ -7,17 +7,31 @@ import { resolve } from "node:path";
 const file = process.env.FORBIDDEN_TERMS_FILE ?? ".quality/forbidden-terms.json";
 const path = resolve(file);
 
-if (!existsSync(path)) {
-  console.error(`❌ Forbidden terms file not found: ${file}`);
+function fail(reason, details = []) {
+  console.error(`\n❌ Forbidden-terms config invalid.`);
+  console.error(`   file: ${file}`);
+  console.error(`   resolved: ${path}`);
+  console.error(`   reason: ${reason}`);
+  if (details.length) {
+    console.error(`   details:`);
+    for (const d of details) console.error(`     - ${d}`);
+  }
+  console.error(
+    `\n   Fix: ensure the file exists and matches { "terms": [ { "label": string, "pattern": string, "flags"?: string } ] }.`,
+  );
+  console.error(`   Override path with FORBIDDEN_TERMS_FILE=path/to/file.json.\n`);
   process.exit(1);
+}
+
+if (!existsSync(path)) {
+  fail("file does not exist at the resolved path");
 }
 
 let parsed;
 try {
   parsed = JSON.parse(readFileSync(path, "utf8"));
 } catch (err) {
-  console.error(`❌ ${file} is not valid JSON: ${err.message}`);
-  process.exit(1);
+  fail(`file is not valid JSON: ${err.message}`);
 }
 
 const errors = [];
@@ -41,8 +55,7 @@ const seen = new Set();
 });
 
 if (errors.length) {
-  console.error(`❌ ${file} failed schema validation:\n  - ${errors.join("\n  - ")}`);
-  process.exit(1);
+  fail("schema validation failed", errors);
 }
 
 console.log(`✅ ${file} valid — ${parsed.terms.length} active forbidden-term rule(s):`);

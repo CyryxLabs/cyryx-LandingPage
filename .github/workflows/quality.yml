@@ -77,6 +77,26 @@ jobs:
         with:
           name: jsonld-snapshot-updated
           path: tests/accessibility/__snapshots__/jsonld.snapshot.json
+      - name: Show JSON-LD snapshot diff (UPDATE_JSONLD_SNAPSHOT only)
+        if: always() && env.UPDATE_JSONLD_SNAPSHOT == '1'
+        run: |
+          echo "### JSON-LD snapshot diff" >> "$GITHUB_STEP_SUMMARY"
+          echo '```diff' >> "$GITHUB_STEP_SUMMARY"
+          git --no-pager diff --no-color -- tests/accessibility/__snapshots__/jsonld.snapshot.json | tee -a "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+      - name: Print artifact links (SARIF + raw axe JSON)
+        if: always()
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          {
+            echo "### Accessibility artifacts"
+            echo ""
+            echo "- 🔎 Code scanning (axe SARIF): ${{ github.server_url }}/${{ github.repository }}/security/code-scanning?query=tool%3Aaxe-core"
+            echo "- 📦 Run artifacts (SARIF + raw axe JSON + reports): ${RUN_URL}#artifacts"
+            echo "  - \`a11y-report\` — full JSON + HTML report"
+            echo "  - \`axe-raw-json\` — raw axe-core JSON per page"
+            echo "  - \`playwright-report\` — Playwright HTML report"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   lighthouse:
     runs-on: ubuntu-latest
