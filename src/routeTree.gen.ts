@@ -9,38 +9,178 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SolutionsRouteImport } from './routes/solutions'
+import { Route as ResearchRouteImport } from './routes/research'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as ProductsLuminaiRouteImport } from './routes/products.luminai'
+import { Route as ProductsAulexaRouteImport } from './routes/products.aulexa'
 
+const SolutionsRoute = SolutionsRouteImport.update({
+  id: '/solutions',
+  path: '/solutions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchRoute = ResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompanyRoute = CompanyRouteImport.update({
+  id: '/company',
+  path: '/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
+  id: '/maax-studio',
+  path: '/maax-studio',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const ProductsLuminaiRoute = ProductsLuminaiRouteImport.update({
+  id: '/luminai',
+  path: '/luminai',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const ProductsAulexaRoute = ProductsAulexaRouteImport.update({
+  id: '/aulexa',
+  path: '/aulexa',
+  getParentRoute: () => ProductsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/company': typeof CompanyRoute
+  '/contact': typeof ContactRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/research': typeof ResearchRoute
+  '/solutions': typeof SolutionsRoute
+  '/products/aulexa': typeof ProductsAulexaRoute
+  '/products/luminai': typeof ProductsLuminaiRoute
+  '/products/maax-studio': typeof ProductsMaaxStudioRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/company': typeof CompanyRoute
+  '/contact': typeof ContactRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/research': typeof ResearchRoute
+  '/solutions': typeof SolutionsRoute
+  '/products/aulexa': typeof ProductsAulexaRoute
+  '/products/luminai': typeof ProductsLuminaiRoute
+  '/products/maax-studio': typeof ProductsMaaxStudioRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/company': typeof CompanyRoute
+  '/contact': typeof ContactRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/research': typeof ResearchRoute
+  '/solutions': typeof SolutionsRoute
+  '/products/aulexa': typeof ProductsAulexaRoute
+  '/products/luminai': typeof ProductsLuminaiRoute
+  '/products/maax-studio': typeof ProductsMaaxStudioRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/company'
+    | '/contact'
+    | '/products'
+    | '/research'
+    | '/solutions'
+    | '/products/aulexa'
+    | '/products/luminai'
+    | '/products/maax-studio'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/company'
+    | '/contact'
+    | '/products'
+    | '/research'
+    | '/solutions'
+    | '/products/aulexa'
+    | '/products/luminai'
+    | '/products/maax-studio'
+  id:
+    | '__root__'
+    | '/'
+    | '/company'
+    | '/contact'
+    | '/products'
+    | '/research'
+    | '/solutions'
+    | '/products/aulexa'
+    | '/products/luminai'
+    | '/products/maax-studio'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CompanyRoute: typeof CompanyRoute
+  ContactRoute: typeof ContactRoute
+  ProductsRoute: typeof ProductsRouteWithChildren
+  ResearchRoute: typeof ResearchRoute
+  SolutionsRoute: typeof SolutionsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/solutions': {
+      id: '/solutions'
+      path: '/solutions'
+      fullPath: '/solutions'
+      preLoaderRoute: typeof SolutionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research': {
+      id: '/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof ResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/company': {
+      id: '/company'
+      path: '/company'
+      fullPath: '/company'
+      preLoaderRoute: typeof CompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +188,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/products/maax-studio': {
+      id: '/products/maax-studio'
+      path: '/maax-studio'
+      fullPath: '/products/maax-studio'
+      preLoaderRoute: typeof ProductsMaaxStudioRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/products/luminai': {
+      id: '/products/luminai'
+      path: '/luminai'
+      fullPath: '/products/luminai'
+      preLoaderRoute: typeof ProductsLuminaiRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/products/aulexa': {
+      id: '/products/aulexa'
+      path: '/aulexa'
+      fullPath: '/products/aulexa'
+      preLoaderRoute: typeof ProductsAulexaRouteImport
+      parentRoute: typeof ProductsRoute
+    }
   }
 }
 
+interface ProductsRouteChildren {
+  ProductsAulexaRoute: typeof ProductsAulexaRoute
+  ProductsLuminaiRoute: typeof ProductsLuminaiRoute
+  ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
+}
+
+const ProductsRouteChildren: ProductsRouteChildren = {
+  ProductsAulexaRoute: ProductsAulexaRoute,
+  ProductsLuminaiRoute: ProductsLuminaiRoute,
+  ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
+}
+
+const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
+  ProductsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CompanyRoute: CompanyRoute,
+  ContactRoute: ContactRoute,
+  ProductsRoute: ProductsRouteWithChildren,
+  ResearchRoute: ResearchRoute,
+  SolutionsRoute: SolutionsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

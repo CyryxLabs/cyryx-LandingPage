@@ -3,9 +3,34 @@ import { CyryxWordmark } from "./primitives/CyryxMark";
 import { HudLabel } from "./primitives/HudLabel";
 
 const COLUMNS = [
-  { title: "Company", links: ["Overview", "Contact", "Careers"] },
-  { title: "Build", links: ["Products", "Solutions", "Applied AI Lab", "MAAX Studio"] },
-  { title: "Social", links: ["X", "LinkedIn", "GitHub", "YouTube"] },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: "/company" },
+      { label: "Products", href: "/products" },
+      { label: "Solutions", href: "/solutions" },
+      { label: "Applied AI Lab", href: "/research" },
+      { label: "Contact", href: "/contact" },
+    ],
+  },
+  {
+    title: "Products",
+    links: [
+      { label: "MAAX Studio", href: "/products/maax-studio" },
+      { label: "Aulexa", href: "/products/aulexa" },
+      { label: "LuminAI", href: "/products/luminai" },
+      { label: "Future Systems", href: "/research" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Research", href: "/research" },
+      { label: "Documentation", href: "#" },
+      { label: "GitHub", href: "#" },
+      { label: "Brand", href: "#" },
+    ],
+  },
 ];
 
 export function Footer() {
@@ -34,9 +59,9 @@ export function Footer() {
                 <HudLabel>{col.title}</HudLabel>
                 <ul className="mt-4 space-y-3">
                   {col.links.map((l) => (
-                    <li key={l}>
-                      <a href="#" className="text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors">
-                        {l}
+                    <li key={l.label}>
+                      <a href={l.href} className="text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors">
+                        {l.label}
                       </a>
                     </li>
                   ))}
