@@ -32,7 +32,7 @@ export function Hero() {
           };
 
           if (reduceMotion) {
-            // Snap everything to final state — no motion, no scrub, no loop.
+            // Fully disable GSAP/ScrollTrigger work — snap to final state, no loops.
             gsap.set(
               [
                 ".cx-bg",
@@ -43,6 +43,7 @@ export function Hero() {
                 ".cx-cta",
                 ".cx-meta",
                 ".cx-scroll",
+                ".cx-scroll-dot",
                 ".cx-stage",
               ],
               { clearProps: "all", opacity: 1, y: 0, x: 0, scale: 1 },
