@@ -1,0 +1,27 @@
+{
+  "ci": {
+    "collect": {
+      "url": ["http://127.0.0.1:4175/"],
+      "startServerCommand": "bun run dev --host 127.0.0.1 --port 4175",
+      "startServerReadyPattern": "ready in",
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop",
+        "emulatedFormFactor": "mobile",
+        "throttlingMethod": "simulate",
+        "onlyCategories": ["performance", "accessibility", "seo", "best-practices"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["warn", { "minScore": "LH_PERF_MIN" }],
+        "categories:accessibility": ["error", { "minScore": "LH_A11Y_MIN" }],
+        "categories:seo": ["error", { "minScore": "LH_SEO_MIN" }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": "LH_LCP_MAX_MOBILE" }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": "LH_CLS_MAX" }],
+        "total-blocking-time": ["error", { "maxNumericValue": "LH_TBT_MAX_MOBILE" }]
+      }
+    },
+    "upload": { "target": "filesystem", "outputDir": "./lighthouse-report/mobile" }
+  }
+}
