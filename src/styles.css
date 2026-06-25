@@ -60,7 +60,7 @@
   --color-teal: var(--teal);
   --color-emerald-accent: var(--emerald-accent);
   --color-accent-glow: var(--accent-glow);
-  --font-display: "Orbitron", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
