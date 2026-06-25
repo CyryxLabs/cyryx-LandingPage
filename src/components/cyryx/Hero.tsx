@@ -24,9 +24,8 @@ export function Hero() {
           reduceMotion: "(prefers-reduced-motion: reduce)",
         },
         (ctx) => {
-          const { isMobile, isTablet, isDesktop, isAbove768, reduceMotion } = ctx.conditions as {
+          const { isMobile, isDesktop, isAbove768, reduceMotion } = ctx.conditions as {
             isMobile: boolean;
-            isTablet: boolean;
             isDesktop: boolean;
             isAbove768: boolean;
             reduceMotion: boolean;
