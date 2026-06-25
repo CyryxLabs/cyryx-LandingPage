@@ -6,16 +6,30 @@ on:
   pull_request:
     branches: [main]
 
+# Tune thresholds per branch by overriding these in repo/branch variables.
+env:
+  LH_PERF_MIN: ${{ vars.LH_PERF_MIN || '0.85' }}
+  LH_A11Y_MIN: ${{ vars.LH_A11Y_MIN || '0.95' }}
+  LH_SEO_MIN: ${{ vars.LH_SEO_MIN || '0.95' }}
+  LH_LCP_MAX_MOBILE: ${{ vars.LH_LCP_MAX_MOBILE || '3500' }}
+  LH_LCP_MAX_DESKTOP: ${{ vars.LH_LCP_MAX_DESKTOP || '2500' }}
+  LH_TBT_MAX_MOBILE: ${{ vars.LH_TBT_MAX_MOBILE || '300' }}
+  LH_TBT_MAX_DESKTOP: ${{ vars.LH_TBT_MAX_DESKTOP || '200' }}
+  LH_CLS_MAX: ${{ vars.LH_CLS_MAX || '0.1' }}
+  AXE_FAIL_ON: ${{ vars.AXE_FAIL_ON || 'critical' }}
+
 jobs:
   a11y-content-seo:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bunx playwright install --with-deps chromium
-      - name: Run accessibility + content guardrail + SEO tests
+      - name: Build production bundle (for bundle scan)
+        run: bun run build
+      - name: Run Playwright suite (a11y · content · SEO · bundle scan)
         env:
           CI: "1"
           A11Y_REPORT_DIR: a11y-report
@@ -23,28 +37,53 @@ jobs:
       - name: Upload accessibility report (JSON + HTML)
         if: always()
         uses: actions/upload-artifact@v4
-        with:
-          name: a11y-report
-          path: a11y-report
+        with: { name: a11y-report, path: a11y-report }
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
+        with: { name: playwright-report, path: playwright-report }
 
   lighthouse:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        form_factor: [mobile, desktop]
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - name: Run Lighthouse CI (mobile)
-        run: bunx @lhci/cli@0.14.x autorun --config=./lighthouserc.json
+      - name: Render LHCI config with env thresholds
+        run: node scripts/render-lhci-config.mjs lighthouserc.${{ matrix.form_factor }}.json lhci.runtime.json
+      - name: Run Lighthouse CI (${{ matrix.form_factor }})
+        run: bunx @lhci/cli@0.14.x autorun --config=./lhci.runtime.json
       - name: Upload Lighthouse report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-report
-          path: lighthouse-report
+          name: lighthouse-report-${{ matrix.form_factor }}
+          path: lighthouse-report/${{ matrix.form_factor }}
+
+  summarize:
+    needs: [a11y-content-seo, lighthouse]
+    if: always() && github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: a11y-report, path: a11y-report }
+        continue-on-error: true
+      - uses: actions/download-artifact@v4
+        with: { name: lighthouse-report-mobile, path: lighthouse-report/mobile }
+        continue-on-error: true
+      - uses: actions/download-artifact@v4
+        with: { name: lighthouse-report-desktop, path: lighthouse-report/desktop }
+        continue-on-error: true
+      - name: Build summary
+        run: node scripts/summarize-quality.mjs
+      - name: Post PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: quality-summary
+          path: quality-summary.md
