@@ -6,8 +6,8 @@ const PILLARS = [
     n: "01",
     icon: Boxes,
     tag: "Products",
-    title: "Proprietary AI products for the agentic era.",
-    copy: "We build software products that help builders, founders, agencies, and teams operate with more intelligence, speed, and control — starting with MAAX Studio.",
+    title: "Proprietary AI products built around execution.",
+    copy: "We build AI-native software products for builders, founders, agencies, and teams that need more than chat-based assistance — starting with MAAX Studio, our flagship runtime-first execution environment.",
     href: "#maax",
     cta: "Explore MAAX Studio",
   },
@@ -16,7 +16,7 @@ const PILLARS = [
     icon: Workflow,
     tag: "Solutions",
     title: "Custom AI systems for real business workflows.",
-    copy: "We design and deploy AI-powered internal tools, copilots, automation platforms, intelligent workflows, and integrations for companies that want practical operational leverage.",
+    copy: "We design and build AI-powered systems that connect to how companies actually operate: internal copilots, workflow automation, knowledge systems, data-connected agents, dashboards, integrations, and governance layers. We do not start with hype. We start with workflow.",
     href: "#solutions",
     cta: "See solutions",
   },
@@ -24,8 +24,8 @@ const PILLARS = [
     n: "03",
     icon: FlaskConical,
     tag: "Applied AI Lab",
-    title: "Research and development for governed AI execution.",
-    copy: "We develop the protocols, agent architectures, context systems, evaluation models, and governance layers behind Cyryx products and client solutions.",
+    title: "Research and architecture for governed AI execution.",
+    copy: "Cyryx Applied AI Lab develops the patterns, protocols, architectures, and evaluation models behind our products and client systems — agentic execution, project memory, context intelligence, governed workflow architecture, evaluation gates, model routing, and cost control.",
     href: "#applied-lab",
     cta: "Inside the Lab",
   },
@@ -40,12 +40,14 @@ export function CoreCapabilities() {
           <div>
             <HudLabel withDot>What we build</HudLabel>
             <h2 className="mt-4 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold uppercase text-silver-gradient">
-              What we build.
+              AI systems for the agentic era.
             </h2>
           </div>
           <p className="max-w-md text-sm text-[var(--silver-dim)]">
-            Cyryx Labs operates across three connected pillars: proprietary
-            products, custom AI solutions, and applied AI research.
+            Cyryx Labs operates across three connected pillars: proprietary AI
+            products, custom AI systems, and applied AI research. Together they
+            form the foundation for execution infrastructure that is
+            structured, observable, cost-aware, and human-governed.
           </p>
         </div>
 
