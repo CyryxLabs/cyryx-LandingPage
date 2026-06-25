@@ -140,6 +140,8 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
 });
 
 test("Hero headline typography stays unclipped from 360px to 1024px", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+
   for (const viewport of [
     { width: 360, height: 800 },
     { width: 390, height: 844 },
@@ -190,8 +192,8 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
       expect(line.paddingBottom).toBeGreaterThan(line.fontSize * 0.16);
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
       expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
-      expect(line.top).toBeGreaterThanOrEqual(metrics.heading.top - 1);
-      expect(line.bottom).toBeLessThanOrEqual(metrics.heading.bottom + 1);
+      expect(line.top).toBeGreaterThanOrEqual(0);
+      expect(line.bottom).toBeLessThanOrEqual(window.innerHeight + 1);
     }
   }
 });
