@@ -111,10 +111,15 @@ test.beforeEach(async ({ page }) => {
 
 test("Hero has no critical axe violations", async ({ page }, testInfo) => {
   const results = await scanHeroWithAxe(page);
-  const critical = results.violations.filter((violation) => violation.impact === "critical");
-  await writeA11yReport(testInfo.project.name, results, critical);
+  const failOn = (process.env.AXE_FAIL_ON ?? "critical").toLowerCase();
+  const order = ["minor", "moderate", "serious", "critical"] as const;
+  const threshold = Math.max(0, order.indexOf(failOn as (typeof order)[number]));
+  const blocking = results.violations.filter(
+    (v) => v.impact && order.indexOf(v.impact) >= threshold,
+  );
+  await writeA11yReport(testInfo.project.name, results, blocking);
 
-  expect(critical, JSON.stringify(critical, null, 2)).toHaveLength(0);
+  expect(blocking, JSON.stringify(blocking, null, 2)).toHaveLength(0);
 });
 
 test("Skip link lands on main content and keyboard focus continues through Hero", async ({ page }) => {
