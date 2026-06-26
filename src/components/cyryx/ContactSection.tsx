@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
 import { HudLabel } from "./primitives/HudLabel";
 import { GlassPanel } from "./primitives/GlassPanel";
 import { submitContact } from "@/lib/contact.functions";
@@ -20,11 +21,18 @@ export function ContactSection() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [serverError, setServerError] = useState<string | null>(null);
+  const [messageLen, setMessageLen] = useState(0);
+  const successRef = useRef<HTMLDivElement | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setServerError(null);
     const fd = new FormData(e.currentTarget);
+    // Honeypot — bots usually fill all visible-looking fields.
+    if (String(fd.get("website") ?? "").length > 0) {
+      setStatus("success");
+      return;
+    }
     const raw = {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
@@ -39,6 +47,7 @@ export function ContactSection() {
         if (!next[key]) next[key] = issue.message;
       }
       setErrors(next);
+      toast.error("Please fix the highlighted fields and try again.");
       return;
     }
     setErrors({});
@@ -47,10 +56,16 @@ export function ContactSection() {
       await submit({ data: parsed.data });
       setStatus("success");
       (e.target as HTMLFormElement).reset();
+      setMessageLen(0);
+      toast.success("Message sent — we'll reply within 24h.");
+      requestAnimationFrame(() => {
+        successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
     } catch (err) {
       setStatus("error");
       console.error("Contact form submission failed", err);
       setServerError("Something went wrong. Please try again later.");
+      toast.error("Couldn't send your message. Please try again.");
     }
   }
 
@@ -69,7 +84,7 @@ export function ContactSection() {
 
         <GlassPanel liquid className="mt-8 p-5 sm:mt-10 sm:p-8 cx-reveal">
           {status === "success" ? (
-            <div className="flex flex-col items-center gap-3 py-10 text-center">
+            <div ref={successRef} className="flex flex-col items-center gap-3 py-10 text-center">
               <CheckCircle2 className="h-10 w-10 text-[var(--accent-glow)]" />
               <h3 className="font-display text-xl uppercase text-[var(--silver)]">Message received</h3>
               <p className="text-sm text-[var(--silver-dim)]">
@@ -94,6 +109,18 @@ export function ContactSection() {
                 Required fields are marked. Errors appear below each field.
               </p>
 
+              {/* Honeypot — visually hidden, off-screen, autocomplete off. */}
+              <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                <label htmlFor="website">Leave this field empty</label>
+                <input
+                  id="website"
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <Field
                 label="Name"
                 name="name"
@@ -102,6 +129,7 @@ export function ContactSection() {
                 error={errors.name}
                 autoComplete="name"
                 onValidate={validateField}
+                liveValidate={!!errors.name}
               />
               <Field
                 label="Email"
@@ -113,6 +141,7 @@ export function ContactSection() {
                 error={errors.email}
                 autoComplete="email"
                 onValidate={validateField}
+                liveValidate={!!errors.email}
               />
               <Field
                 label="Company"
@@ -122,6 +151,7 @@ export function ContactSection() {
                 error={errors.company}
                 autoComplete="organization"
                 onValidate={validateField}
+                liveValidate={!!errors.company}
               />
               <Field
                 as="textarea"
@@ -131,12 +161,16 @@ export function ContactSection() {
                 help="A few sentences is enough — at least 10 characters."
                 error={errors.message}
                 onValidate={validateField}
+                liveValidate={!!errors.message}
+                onInputChange={(v) => setMessageLen(v.length)}
+                counter={messageLen > 1500 ? `${messageLen}/2000` : undefined}
               />
 
               {serverError && (
                 <p
                   className="rounded-md border border-[color-mix(in_oklab,var(--destructive,#ef4444)_45%,transparent)] bg-[color-mix(in_oklab,var(--destructive,#ef4444)_10%,transparent)] px-3 py-2 text-sm text-[color:var(--destructive,#ef4444)]"
                   role="alert"
+                  aria-live="polite"
                 >
                   {serverError}
                 </p>
@@ -145,7 +179,7 @@ export function ContactSection() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="cx-btn cx-liquid-glass mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md px-6 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] disabled:opacity-60 sm:w-auto sm:self-start"
+                className="cx-btn cx-cta cx-cta-primary cx-liquid-glass mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md px-6 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] sm:w-auto sm:self-start"
               >
                 {status === "loading" ? (
                   <>
@@ -189,6 +223,9 @@ function Field({
   inputMode,
   optional,
   onValidate,
+  liveValidate,
+  onInputChange,
+  counter,
 }: {
   as?: "input" | "textarea";
   label: string;
@@ -201,6 +238,9 @@ function Field({
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
   optional?: boolean;
   onValidate?: (name: keyof Errors, value: string) => void;
+  liveValidate?: boolean;
+  onInputChange?: (value: string) => void;
+  counter?: string;
 }) {
   const helpId = help ? `${name}-help` : undefined;
   const errorId = error ? `${name}-error` : undefined;
@@ -211,6 +251,14 @@ function Field({
   const stateClass = error
     ? "border-[color-mix(in_oklab,var(--destructive,#ef4444)_60%,transparent)] focus:ring-[color-mix(in_oklab,var(--destructive,#ef4444)_35%,transparent)]"
     : "border-[color-mix(in_oklab,var(--silver)_14%,transparent)]";
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const v = e.currentTarget.value;
+    onInputChange?.(v);
+    if (liveValidate) onValidate?.(name, v);
+  };
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -239,6 +287,7 @@ function Field({
           aria-invalid={!!error}
           aria-describedby={describedBy}
           onBlur={(e) => onValidate?.(name, e.currentTarget.value)}
+          onChange={handleChange}
           className={`${baseClass} ${stateClass} min-h-[7.5rem] py-3 leading-relaxed`}
         />
       ) : (
@@ -253,23 +302,34 @@ function Field({
           aria-invalid={!!error}
           aria-describedby={describedBy}
           onBlur={(e) => onValidate?.(name, e.currentTarget.value)}
+          onChange={handleChange}
           className={`${baseClass} ${stateClass} h-12`}
         />
       )}
 
-      {error ? (
-        <p
-          id={errorId}
-          role="alert"
-          className="text-xs font-medium text-[color:var(--destructive,#ef4444)]"
-        >
-          {error}
-        </p>
-      ) : help ? (
-        <p id={helpId} className="text-xs text-[var(--silver-dim)]">
-          {help}
-        </p>
-      ) : null}
+      <div className="flex items-start justify-between gap-3">
+        {error ? (
+          <p
+            id={errorId}
+            role="alert"
+            aria-live="polite"
+            className="text-xs font-medium text-[color:var(--destructive,#ef4444)]"
+          >
+            {error}
+          </p>
+        ) : help ? (
+          <p id={helpId} className="text-xs text-[var(--silver-dim)]">
+            {help}
+          </p>
+        ) : (
+          <span />
+        )}
+        {counter && (
+          <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--silver-dim)] tabular-nums">
+            {counter}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
