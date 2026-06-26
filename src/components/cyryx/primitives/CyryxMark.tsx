@@ -35,14 +35,14 @@ export function CyryxWordmark({
     <img
       src={wordmarkAsset.url}
       alt="Cyryx Labs"
-      width={160}
-      height={28}
+      width={1650}
+      height={486}
       draggable={false}
       decoding="async"
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : "auto"}
       className={`block w-auto object-contain select-none ${className || "h-7"}`}
-      style={{ background: "transparent", aspectRatio: "160 / 28" }}
+      style={{ background: "transparent", aspectRatio: "1650 / 486" }}
     />
   );
 }
