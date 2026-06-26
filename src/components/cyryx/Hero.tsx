@@ -331,13 +331,13 @@ export function Hero() {
           {META.map((m) => (
             <li
               key={m}
-              className="cx-meta font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]"
+              className="cx-meta font-mono text-[11px] uppercase tracking-[0.32em] text-silver-gradient"
             >
               <span aria-hidden="true" className="mr-3 text-[var(--accent-glow)]">/</span>
               {m}
             </li>
           ))}
-          <li className="cx-meta ml-auto font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--silver-dim)]">
+          <li className="cx-meta ml-auto font-mono text-[11px] uppercase tracking-[0.32em] text-silver-gradient">
             Governance-ready architecture · Human-commanded autonomy · Cost-aware execution
           </li>
         </ul>
