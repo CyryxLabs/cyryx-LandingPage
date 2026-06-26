@@ -38,7 +38,7 @@ function readDiagnostics(): ScrollDiagnosticPayload | undefined {
 }
 
 export function DiagnosticsOverlay() {
-  const [visible, setVisible] = useState(() => isDiagnosticUrl());
+  const [visible, setVisible] = useState(false);
   const [sample, setSample] = useState<ScrollDiagnosticPayload | undefined>(() => readDiagnostics());
 
   useEffect(() => {
