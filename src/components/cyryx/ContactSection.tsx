@@ -49,7 +49,8 @@ export function ContactSection() {
       (e.target as HTMLFormElement).reset();
     } catch (err) {
       setStatus("error");
-      setServerError(err instanceof Error ? err.message : "Submission failed");
+      console.error("Contact form submission failed", err);
+      setServerError("Something went wrong. Please try again later.");
     }
   }
 
