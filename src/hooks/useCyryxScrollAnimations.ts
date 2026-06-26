@@ -303,34 +303,63 @@ export function useCyryxScrollAnimations() {
       },
     );
 
-    // ── Global 3D scroll tilt on every <img> (tablet & desktop only) ─
-    mm.add("(min-width: 768px)", () => {
-      const imgs = gsap.utils.toArray<HTMLImageElement>("img");
-      imgs.forEach((img) => {
-        if (img.dataset.no3d === "1") return;
-        const parent = img.parentElement;
-        if (parent && getComputedStyle(parent).perspective === "none") {
-          parent.style.perspective = "1200px";
-        }
-        gsap.set(img, { transformOrigin: "50% 50%", willChange: "transform" });
-        gsap.fromTo(
-          img,
-          { rotateX: 8, y: 30, scale: 0.97 },
-          {
-            rotateX: -6,
-            y: -30,
-            scale: 1.02,
-            ease: "none",
-            scrollTrigger: {
-              trigger: img,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.6,
-            },
-          },
-        );
-      });
-    });
+    // ── Global 3D scroll tilt on every <img>, intensity per breakpoint ─
+    // Reduced-motion is fully bypassed by the early-return at the top of this
+    // effect. Low-perf devices (html.cx-low-perf) skip the effect entirely.
+    if (!document.documentElement.classList.contains("cx-low-perf")) {
+      mm.add(
+        {
+          isMobile: "(min-width: 480px) and (max-width: 767px)",
+          isTablet: "(min-width: 768px) and (max-width: 1023px)",
+          isDesktop: "(min-width: 1024px)",
+        },
+        (context) => {
+          const { isMobile, isTablet } = context.conditions as {
+            isMobile: boolean;
+            isTablet: boolean;
+            isDesktop: boolean;
+          };
+          // Per-breakpoint intensity: mobile subtle, desktop pronounced.
+          const cfg = isMobile
+            ? { rot: 3, y: 10, scale: 0.005, scrub: 1.2 }
+            : isTablet
+              ? { rot: 5, y: 20, scale: 0.012, scrub: 0.9 }
+              : { rot: 8, y: 32, scale: 0.02, scrub: 0.5 };
+
+          gsap.utils.toArray<HTMLImageElement>("img").forEach((img) => {
+            if (img.dataset.no3d === "1") return;
+            const parent = img.parentElement;
+            if (parent && getComputedStyle(parent).perspective === "none") {
+              parent.style.perspective = "1200px";
+            }
+            gsap.set(img, {
+              transformOrigin: "50% 50%",
+              willChange: "transform",
+              force3D: true,
+            });
+            gsap.fromTo(
+              img,
+              { rotateX: cfg.rot, y: cfg.y, scale: 1 - cfg.scale },
+              {
+                rotateX: -cfg.rot * 0.75,
+                y: -cfg.y,
+                scale: 1 + cfg.scale,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: img,
+                  start: "top bottom",
+                  end: "bottom top",
+                  // Larger scrub value = stronger throttling/smoothing —
+                  // mobile gets the heaviest smoothing to stay jank-free.
+                  scrub: cfg.scrub,
+                  invalidateOnRefresh: true,
+                },
+              },
+            );
+          });
+        },
+      );
+    }
 
     // Recalculate after images/fonts settle.
     const doRefresh = () => ScrollTrigger.refresh();
