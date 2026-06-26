@@ -28,10 +28,10 @@ export function Header() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+          "cx-liquid-glass fixed inset-x-0 top-0 z-50 rounded-none border-x-0 border-t-0 transition-all duration-300",
           scrolled
-            ? "backdrop-blur-xl bg-[color-mix(in_oklab,var(--onyx)_82%,transparent)] border-b border-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] shadow-[0_1px_0_0_color-mix(in_oklab,var(--accent-glow)_12%,transparent)]"
-            : "backdrop-blur-md bg-[color-mix(in_oklab,var(--onyx)_50%,transparent)] border-b border-[color-mix(in_oklab,var(--silver)_6%,transparent)]",
+            ? "shadow-[0_1px_0_0_color-mix(in_oklab,var(--accent-glow)_18%,transparent)]"
+            : "shadow-none",
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-10">
@@ -57,7 +57,7 @@ export function Header() {
 
           <a
             href="#cta"
-            className="hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_40%,transparent)] text-[var(--silver)] hud-label hover:bg-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)] hover:shadow-[var(--shadow-glow-teal)] transition-all"
+            className="cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
             Start a Project
             <span aria-hidden className="text-[var(--accent-glow)]">→</span>
@@ -68,7 +68,7 @@ export function Header() {
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={menuOpen}
-            className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] text-[var(--silver)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)]"
+            className="cx-btn cx-liquid-glass lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)]"
           >
             <Menu className="h-5 w-5" />
           </button>
