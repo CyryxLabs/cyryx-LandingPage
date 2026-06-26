@@ -365,6 +365,36 @@
   }
 }
 
+/* Low-performance device fallback (set by inline detector in __root.tsx).
+   Mirrors prefers-reduced-motion: kills backdrop-filter, hero aura, noise,
+   and shortens animations — without breaking layout or contrast. */
+html.cx-low-perf .cx-hero-panel {
+  backdrop-filter: none;
+  background: color-mix(in oklab, #000 60%, transparent);
+}
+html.cx-low-perf .cx-hero-noise,
+html.cx-low-perf .cx-hero-line-glow,
+html.cx-low-perf .cx-stage {
+  display: none !important;
+}
+html.cx-low-perf header {
+  backdrop-filter: none !important;
+}
+html.cx-low-perf *,
+html.cx-low-perf *::before,
+html.cx-low-perf *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 120ms !important;
+}
+
+/* Stronger, always-visible keyboard focus on hero CTAs across all widths. */
+.cx-cta:focus-visible {
+  outline: 2px solid var(--accent-glow);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent-glow) 35%, transparent);
+}
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .cx-hero-heading {
     line-height: 0.98;
