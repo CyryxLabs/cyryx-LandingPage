@@ -40,7 +40,7 @@ export function Header() {
             className="inline-flex min-h-11 items-center min-w-0 shrink-0 -mx-1 px-1"
             aria-label="Cyryx Labs — home"
           >
-            <CyryxWordmark priority className="h-9 lg:h-12" />
+            <CyryxWordmark priority className="h-9 lg:h-11 -translate-y-[2px]" />
           </a>
 
           <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
