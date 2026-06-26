@@ -60,7 +60,7 @@ export function StickyMobileCTA() {
         </a>
         <a
           href="#maax"
-          className="inline-flex h-12 min-h-11 min-w-11 items-center justify-center rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_42%,transparent)] px-4 hud-label text-[var(--silver)]"
+          className="cx-liquid-glass inline-flex h-12 min-h-11 min-w-11 items-center justify-center rounded-md px-4 hud-label text-[var(--silver)]"
         >
           MAAX
         </a>
