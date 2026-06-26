@@ -56,7 +56,7 @@ export function ContactSection() {
 
   return (
     <section id="contact" className="relative py-14 sm:py-20 lg:py-32">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-10">
         <div className="cx-reveal text-center">
           <HudLabel withDot>Contact</HudLabel>
           <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] text-silver-gradient">
@@ -67,7 +67,7 @@ export function ContactSection() {
           </p>
         </div>
 
-        <GlassPanel liquid className="mt-10 p-5 sm:p-8 cx-reveal">
+        <GlassPanel liquid className="mt-8 p-5 sm:mt-10 sm:p-8 cx-reveal">
           {status === "success" ? (
             <div className="flex flex-col items-center gap-3 py-10 text-center">
               <CheckCircle2 className="h-10 w-10 text-[var(--accent-glow)]" />
@@ -78,43 +78,66 @@ export function ContactSection() {
               <button
                 type="button"
                 onClick={() => setStatus("idle")}
-                className="mt-2 inline-flex min-h-11 items-center px-3 hud-label text-[var(--accent-glow)] underline-offset-4 hover:underline"
+                className="cx-btn mt-2 inline-flex min-h-11 items-center px-3 hud-label text-[var(--accent-glow)] underline-offset-4 hover:underline"
               >
                 Send another
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="grid gap-4">
-              <Field label="Name" name="name" error={errors.name} autoComplete="name" />
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+              className="flex flex-col gap-5"
+              aria-describedby="contact-form-help"
+            >
+              <p id="contact-form-help" className="sr-only">
+                Required fields are marked. Errors appear below each field.
+              </p>
+
+              <Field
+                label="Name"
+                name="name"
+                placeholder="Your full name"
+                help="So we know who we're talking to."
+                error={errors.name}
+                autoComplete="name"
+                onValidate={validateField}
+              />
               <Field
                 label="Email"
                 name="email"
                 type="email"
                 inputMode="email"
+                placeholder="you@company.com"
+                help="We'll reply here within 24h."
                 error={errors.email}
                 autoComplete="email"
+                onValidate={validateField}
               />
-              <Field label="Company (optional)" name="company" error={errors.company} autoComplete="organization" />
-              <div>
-                <label htmlFor="message" className="hud-label text-[var(--silver-dim)]">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  required
-                  maxLength={2000}
-                  className="mt-2 w-full rounded-md border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_70%,transparent)] px-4 py-3 text-[15px] text-[var(--silver)] outline-none transition focus:border-[var(--accent-glow)] focus:ring-2 focus:ring-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)]"
-                  placeholder="What are you trying to build, automate, or govern?"
-                />
-                {errors.message && (
-                  <p className="mt-1.5 text-xs text-[color:var(--destructive,#ef4444)]">{errors.message}</p>
-                )}
-              </div>
+              <Field
+                label="Company"
+                name="company"
+                optional
+                placeholder="Where you work (optional)"
+                error={errors.company}
+                autoComplete="organization"
+                onValidate={validateField}
+              />
+              <Field
+                as="textarea"
+                label="Message"
+                name="message"
+                placeholder="What are you trying to build, automate, or govern?"
+                help="A few sentences is enough — at least 10 characters."
+                error={errors.message}
+                onValidate={validateField}
+              />
 
               {serverError && (
-                <p className="text-sm text-[color:var(--destructive,#ef4444)]" role="alert">
+                <p
+                  className="rounded-md border border-[color-mix(in_oklab,var(--destructive,#ef4444)_45%,transparent)] bg-[color-mix(in_oklab,var(--destructive,#ef4444)_10%,transparent)] px-3 py-2 text-sm text-[color:var(--destructive,#ef4444)]"
+                  role="alert"
+                >
                   {serverError}
                 </p>
               )}
@@ -122,7 +145,7 @@ export function ContactSection() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="mt-2 inline-flex h-12 min-h-[44px] w-full items-center justify-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label font-semibold text-[var(--onyx)] shadow-[var(--shadow-glow-teal)] transition hover:brightness-110 disabled:opacity-60 sm:w-auto sm:self-start"
+                className="cx-btn mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label font-semibold text-[var(--onyx)] shadow-[var(--shadow-glow-teal)] disabled:opacity-60 sm:w-auto sm:self-start"
               >
                 {status === "loading" ? (
                   <>
@@ -140,38 +163,113 @@ export function ContactSection() {
       </div>
     </section>
   );
+
+  function validateField(name: keyof Errors, value: string) {
+    const schema = (
+      FormSchema.shape as Record<string, z.ZodTypeAny>
+    )[name as string];
+    if (!schema) return;
+    const r = schema.safeParse(value);
+    setErrors((prev) => ({
+      ...prev,
+      [name]: r.success ? undefined : r.error.issues[0]?.message,
+    }));
+  }
 }
 
 function Field({
+  as = "input",
   label,
   name,
   type = "text",
   error,
+  help,
+  placeholder,
   autoComplete,
   inputMode,
+  optional,
+  onValidate,
 }: {
+  as?: "input" | "textarea";
   label: string;
-  name: string;
+  name: keyof Errors;
   type?: string;
   error?: string;
+  help?: string;
+  placeholder?: string;
   autoComplete?: string;
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  optional?: boolean;
+  onValidate?: (name: keyof Errors, value: string) => void;
 }) {
+  const helpId = help ? `${name}-help` : undefined;
+  const errorId = error ? `${name}-error` : undefined;
+  const describedBy = [helpId, errorId].filter(Boolean).join(" ") || undefined;
+
+  const baseClass =
+    "block w-full rounded-md border bg-[color-mix(in_oklab,var(--onyx)_55%,transparent)] px-4 text-[15px] text-[var(--silver)] placeholder:text-[color-mix(in_oklab,var(--silver-dim)_75%,transparent)] outline-none transition focus:border-[var(--accent-glow)] focus:ring-2 focus:ring-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)]";
+  const stateClass = error
+    ? "border-[color-mix(in_oklab,var(--destructive,#ef4444)_60%,transparent)] focus:ring-[color-mix(in_oklab,var(--destructive,#ef4444)_35%,transparent)]"
+    : "border-[color-mix(in_oklab,var(--silver)_14%,transparent)]";
+
   return (
-    <div>
-      <label htmlFor={name} className="hud-label text-[var(--silver-dim)]">
-        {label}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        inputMode={inputMode}
-        autoComplete={autoComplete}
-        required={!label.includes("optional")}
-        className="mt-2 h-12 min-h-[44px] w-full rounded-md border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_70%,transparent)] px-4 text-[15px] text-[var(--silver)] outline-none transition focus:border-[var(--accent-glow)] focus:ring-2 focus:ring-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)]"
-      />
-      {error && <p className="mt-1.5 text-xs text-[color:var(--destructive,#ef4444)]">{error}</p>}
+    <div className="flex flex-col gap-1.5">
+      <div className="flex items-baseline justify-between gap-3">
+        <label
+          htmlFor={name}
+          className="hud-label text-[var(--silver)]"
+        >
+          {label}
+        </label>
+        {optional && (
+          <span className="text-[10px] uppercase tracking-[0.24em] text-[var(--silver-dim)]">
+            Optional
+          </span>
+        )}
+      </div>
+
+      {as === "textarea" ? (
+        <textarea
+          id={name}
+          name={name}
+          rows={5}
+          required={!optional}
+          maxLength={2000}
+          placeholder={placeholder}
+          aria-invalid={!!error}
+          aria-describedby={describedBy}
+          onBlur={(e) => onValidate?.(name, e.currentTarget.value)}
+          className={`${baseClass} ${stateClass} min-h-[7.5rem] py-3 leading-relaxed`}
+        />
+      ) : (
+        <input
+          id={name}
+          name={name}
+          type={type}
+          inputMode={inputMode}
+          autoComplete={autoComplete}
+          required={!optional}
+          placeholder={placeholder}
+          aria-invalid={!!error}
+          aria-describedby={describedBy}
+          onBlur={(e) => onValidate?.(name, e.currentTarget.value)}
+          className={`${baseClass} ${stateClass} h-12`}
+        />
+      )}
+
+      {error ? (
+        <p
+          id={errorId}
+          role="alert"
+          className="text-xs font-medium text-[color:var(--destructive,#ef4444)]"
+        >
+          {error}
+        </p>
+      ) : help ? (
+        <p id={helpId} className="text-xs text-[var(--silver-dim)]">
+          {help}
+        </p>
+      ) : null}
     </div>
   );
 }
