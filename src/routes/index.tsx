@@ -8,7 +8,9 @@ import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { PerfToggle } from "@/components/cyryx/PerfToggle";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
-import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
+import hero640 from "@/assets/cyryx-hero-serene-640.webp.asset.json";
+import hero1280 from "@/assets/cyryx-hero-serene-1280.webp.asset.json";
+import hero1920 from "@/assets/cyryx-hero-serene-1920.webp.asset.json";
 
 // Below-the-fold: code-split to shrink the initial mobile bundle.
 const WhyCyryx = lazy(() => import("@/components/cyryx/WhyCyryx").then(m => ({ default: m.WhyCyryx })));
@@ -56,7 +58,9 @@ export const Route = createFileRoute("/")({
       {
         rel: "preload",
         as: "image",
-        href: heroBanner.url,
+        href: hero1920.url,
+        imageSrcSet: `${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`,
+        imageSizes: "(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px",
         fetchPriority: "high",
       },
       { rel: "canonical", href: "/" },

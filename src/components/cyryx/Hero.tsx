@@ -4,6 +4,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
+import hero640 from "@/assets/cyryx-hero-serene-640.webp.asset.json";
+import hero1280 from "@/assets/cyryx-hero-serene-1280.webp.asset.json";
+import hero1920 from "@/assets/cyryx-hero-serene-1920.webp.asset.json";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
@@ -177,7 +180,8 @@ export function Hero() {
       {/* Background */}
       <div aria-hidden className="cx-bg absolute inset-0 -z-10" data-hide-overlay={hideOverlay || undefined}>
         <img
-          src={heroBanner.url}
+          src={hero1920.url}
+          srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
           alt=""
           fetchPriority="high"
           loading="eager"
