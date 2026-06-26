@@ -38,12 +38,12 @@ function readDiagnostics(): ScrollDiagnosticPayload | undefined {
 }
 
 export function DiagnosticsOverlay() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(() => isDiagnosticUrl());
   const [sample, setSample] = useState<ScrollDiagnosticPayload | undefined>(() => readDiagnostics());
 
   useEffect(() => {
     const initial = isDiagnosticUrl();
-    setVisible(initial);
+    setVisible((current) => current || initial);
     document.documentElement.dataset.cyryxDiag = initial ? "1" : "0";
 
     const onDiagnostics = (event: Event) => {
