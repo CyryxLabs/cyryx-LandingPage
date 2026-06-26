@@ -1,22 +1,9 @@
-## Objetivo
+Vou corrigir especificamente o fundo branco que ficou preso dentro da letra “B” em “Labs”.
 
-Corrigir o logo do header desktop usando a variante chrome/metálica (`cyryx-wordmark-chrome.png`) já existente, com glifos levemente translúcidos para integrar ao efeito glass.
+Plano:
+1. Inspecionar o SVG/asset atual usado pela logo para localizar o preenchimento branco dentro da letra B.
+2. Remover somente esse preenchimento branco, preservando o restante da logo, cores, proporção e alinhamento.
+3. Gerar/substituir o asset transparente corrigido e manter o componente da logo apontando para a versão limpa.
+4. Validar visualmente no desktop em fundo escuro e em outras seções para garantir que não exista quadrado, borda ou fundo branco restante.
 
-## Alterações
-
-1. **`src/components/cyryx/primitives/CyryxMark.tsx`**
-   - Trocar o import `cyryx-wordmark.png.asset.json` por `cyryx-wordmark-chrome.png.asset.json` no componente `CyryxWordmark`.
-   - Atualizar `width`/`height`/`aspectRatio` para as dimensões reais do asset chrome.
-   - Adicionar `opacity-90` (≈90%) ao `<img>` para manter o efeito de leve transparência sobre o glass header.
-
-2. **`src/components/cyryx/Header.tsx`**
-   - Sem mudanças estruturais. Manter `h-9 lg:h-11 -translate-y-[2px]` já ajustado.
-
-## Fora de escopo
-
-- Não substituir o logo no footer, mobile menu, ou outros pontos da aplicação (a não ser que peça).
-- Não criar nova variante de cor por CSS — usar exclusivamente o asset chrome existente.
-
-## Verificação
-
-- Confirmar visualmente via preview que o wordmark aparece em tom prata/chrome alinhado com o menu, sem fundo opaco.
+Detalhe técnico: se o branco estiver como path/fill dentro do SVG, vou editar/remover esse elemento; se estiver rasterizado no asset, vou limpar a área e republicar a imagem transparente.
