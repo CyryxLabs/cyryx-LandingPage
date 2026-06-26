@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
-import architectureImg from "@/assets/cyryx-architecture.jpg";
+import architectureImg from "@/assets/cyryx-macbook-ide.jpg";
 
 const PRODUCTS = [
   {
@@ -45,16 +45,16 @@ export function ProductEcosystem() {
 
         {/* IDE showcase figure */}
         <figure className="cx-reveal mt-10 lg:mt-14">
-          <div className="relative overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_12%,transparent)] bg-[var(--graphite)] shadow-[0_30px_80px_-40px_color-mix(in_oklab,var(--accent-glow)_45%,transparent)]">
-            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9]">
+          <div className="relative overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[var(--onyx)] shadow-[0_30px_80px_-40px_color-mix(in_oklab,var(--accent-glow)_45%,transparent)]">
+            <div className="relative w-full aspect-[16/9]">
               <img
                 src={architectureImg}
                 alt="MAAX Studio — Cyryx Labs agentic IDE: explorer, editor, execution graph, governance gates and evaluation terminal."
                 loading="lazy"
                 decoding="async"
                 width={1600}
-                height={1008}
-                className="absolute inset-0 h-full w-full object-contain sm:object-cover object-left-top"
+                height={900}
+                className="absolute inset-0 h-full w-full object-cover object-center"
               />
               {/* Region labels — hidden on small screens to avoid clutter, revealed from sm+ */}
               {[
