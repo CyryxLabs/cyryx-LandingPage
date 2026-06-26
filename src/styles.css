@@ -413,8 +413,6 @@ html.cx-low-perf *::after {
     0 12px 32px -16px color-mix(in oklab, #000 70%, transparent);
   transition: border-color 0.25s ease, background 0.25s ease,
     box-shadow 0.25s ease, transform 0.15s ease;
-}
-@utility cx-liquid-glass {
   &:hover {
     border-color: color-mix(in oklab, var(--accent-glow) 55%, transparent);
     background: linear-gradient(
