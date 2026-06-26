@@ -67,7 +67,11 @@ export function MobileMenu({
       role="dialog"
       aria-modal="true"
       aria-label="Main navigation"
-      className="cx-liquid-glass fixed inset-0 z-[60] rounded-none lg:hidden"
+      className="cx-liquid-glass fixed inset-0 z-[60] rounded-none border-none lg:hidden"
+      style={{
+        background:
+          "linear-gradient(135deg, color-mix(in oklab, var(--onyx) 88%, transparent) 0%, color-mix(in oklab, var(--onyx) 78%, transparent) 100%)",
+      }}
     >
       <div className="absolute inset-0 grid-floor opacity-30" aria-hidden />
       <div className="relative flex h-dvh flex-col px-6 pt-[max(env(safe-area-inset-top),1.25rem)] pb-[max(env(safe-area-inset-bottom),2.5rem)]">
