@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,6 +16,27 @@ const META = [
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
+  const [debug, setDebug] = useState(false);
+  const [hideOverlay, setHideOverlay] = useState(false);
+  const [parallax, setParallax] = useState({ y: 0, scale: 1, progress: 0 });
+
+  // Enable debug via ?heroDebug=1 or pressing "D"
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (new URLSearchParams(window.location.search).get("heroDebug") === "1") {
+      setDebug(true);
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "d" && (e.altKey || e.metaKey)) {
+        setDebug((v) => !v);
+      }
+      if (debug && e.key.toLowerCase() === "o") {
+        setHideOverlay((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [debug]);
 
   useGSAP(
     () => {
@@ -107,52 +128,41 @@ export function Hero() {
             yoyo: true,
           });
 
-          if (isAbove768) {
-            // Tablet gets a lighter parallax; desktop gets the full effect.
-            const bannerY = isDesktop ? -10 : -6;
-            const bannerScale = isDesktop ? 1.06 : 1.04;
-            const stageY = isDesktop ? -6 : -3;
-            const stageOpacity = isDesktop ? 0.4 : 0.6;
+          // Same parallax shape across all breakpoints — tuned per device.
+          // Mobile keeps the transform; we just dial back the travel/scale.
+          const bannerY = isDesktop ? -10 : isMobile ? -7 : -6;
+          const bannerScale = isDesktop ? 1.06 : isMobile ? 1.05 : 1.04;
+          const stageY = isDesktop ? -6 : isMobile ? -4 : -3;
+          const stageOpacity = isDesktop ? 0.4 : isMobile ? 0.5 : 0.6;
 
-            gsap.to(".cx-bg-img", {
-              yPercent: bannerY,
-              scale: bannerScale,
-              ease: "none",
-              scrollTrigger: {
-                trigger: root.current,
-                start: "top top",
-                end: "bottom top",
-                scrub: isDesktop ? 0.6 : 0.4,
-              },
-            });
-            gsap.to(".cx-stage", {
-              yPercent: stageY,
-              opacity: stageOpacity,
-              ease: "none",
-              scrollTrigger: {
-                trigger: root.current,
-                start: "top top",
-                end: "bottom top",
-                scrub: true,
-              },
-            });
-          }
-
-          if (isMobile) {
-            // No pinning, no scrub — just a soft fade on the background
-            // as the user scrolls past the hero.
-            gsap.set(".cx-bg-img", { scale: 1.04 });
-            gsap.to([".cx-bg-img", ".cx-stage"], {
-              opacity: 0.55,
-              ease: "none",
-              scrollTrigger: {
-                trigger: root.current,
-                start: "top top",
-                end: "bottom 40%",
-                scrub: 0.4,
-              },
-            });
-          }
+          gsap.to(".cx-bg-img", {
+            yPercent: bannerY,
+            scale: bannerScale,
+            ease: "none",
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: isDesktop ? 0.6 : 0.4,
+              onUpdate: (self) =>
+                setParallax({
+                  y: bannerY * self.progress,
+                  scale: 1 + (bannerScale - 1) * self.progress,
+                  progress: self.progress,
+                }),
+            },
+          });
+          gsap.to(".cx-stage", {
+            yPercent: stageY,
+            opacity: stageOpacity,
+            ease: "none",
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
         },
       );
     },
@@ -168,7 +178,7 @@ export function Hero() {
       className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-black"
     >
       {/* Background */}
-      <div aria-hidden className="cx-bg absolute inset-0 -z-10">
+      <div aria-hidden className="cx-bg absolute inset-0 -z-10" data-hide-overlay={hideOverlay || undefined}>
         <img
           src={heroBanner.url}
           alt=""
@@ -183,14 +193,16 @@ export function Hero() {
         />
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
         <div
-          className="cx-hero-overlay absolute inset-0 lg:hidden"
+          className="cx-hero-overlay absolute inset-0 lg:hidden data-[hide=true]:hidden"
+          data-hide={hideOverlay ? "true" : "false"}
           style={{
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 38%, rgba(0,0,0,0.18) 62%, rgba(0,0,0,0.78) 100%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.32) 36%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0.68) 100%)",
           }}
         />
         <div
-          className="cx-hero-overlay absolute inset-0 hidden lg:block"
+          className="cx-hero-overlay absolute inset-0 hidden lg:block data-[hide=true]:lg:hidden"
+          data-hide={hideOverlay ? "true" : "false"}
           style={{
             background:
               "linear-gradient(90deg, #000 0%, rgba(0,0,0,0.94) 30%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.2) 80%, transparent 100%)",
@@ -198,10 +210,11 @@ export function Hero() {
         />
         {/* top/bottom feather */}
         <div
-          className="cx-hero-overlay absolute inset-0"
+          className="cx-hero-overlay absolute inset-0 data-[hide=true]:hidden"
+          data-hide={hideOverlay ? "true" : "false"}
           style={{
             background:
-              "linear-gradient(180deg, #000 0%, transparent 18%, transparent 72%, #000 100%)",
+              "linear-gradient(180deg, #000 0%, transparent 14%, transparent 78%, #000 100%)",
           }}
         />
         {/* subtle horizontal teal line */}
@@ -222,6 +235,35 @@ export function Hero() {
           }}
         />
       </div>
+
+      {/* Debug HUD — toggle with Alt/⌘ + D, then O to hide overlays */}
+      {debug && (
+        <div className="pointer-events-auto fixed bottom-4 right-4 z-[60] w-60 rounded-md border border-white/15 bg-black/85 p-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white/90 backdrop-blur">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-[var(--accent-glow)]">Hero Debug</span>
+            <button
+              type="button"
+              onClick={() => setDebug(false)}
+              className="text-white/60 hover:text-white"
+              aria-label="Close debug"
+            >
+              ×
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={() => setHideOverlay((v) => !v)}
+            className="mb-2 w-full rounded border border-white/20 px-2 py-1 text-left hover:border-[var(--accent-glow)]"
+          >
+            Overlay: {hideOverlay ? "off" : "on"} (O)
+          </button>
+          <div className="space-y-0.5 normal-case tracking-normal">
+            <div>progress: {parallax.progress.toFixed(3)}</div>
+            <div>yPercent: {parallax.y.toFixed(2)}</div>
+            <div>scale: {parallax.scale.toFixed(3)}</div>
+          </div>
+        </div>
+      )}
 
       {/* Teal aura behind banner */}
       <div
