@@ -3,9 +3,9 @@ import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import hero640 from "@/assets/cyryx-hero-serene-640.webp.asset.json";
-import hero1280 from "@/assets/cyryx-hero-serene-1280.webp.asset.json";
-import hero1920 from "@/assets/cyryx-hero-serene-1920.webp.asset.json";
+import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
+import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
+import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
@@ -127,6 +127,19 @@ export function Hero() {
             yoyo: true,
           });
 
+          // Core line glow — reinforces the vertical teal axis of the monolith.
+          gsap.fromTo(
+            ".cx-hero-line-glow",
+            { opacity: 0.25 },
+            {
+              opacity: 0.55,
+              duration: 2.4,
+              ease: "sine.inOut",
+              repeat: -1,
+              yoyo: true,
+            },
+          );
+
           // Same parallax shape across all breakpoints — tuned per device.
           // Mobile keeps the transform; we just dial back the travel/scale.
           const bannerY = isDesktop ? -10 : isMobile ? -7 : -6;
@@ -188,24 +201,16 @@ export function Hero() {
           sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
           width={1920}
           height={1080}
-          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-[72%_center] will-change-transform sm:object-[75%_center] lg:object-right"
+            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
           draggable={false}
         />
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
         <div
-          className="cx-hero-overlay absolute inset-0 lg:hidden data-[hide=true]:hidden"
+          className="cx-hero-overlay absolute inset-0 data-[hide=true]:hidden"
           data-hide={hideOverlay ? "true" : "false"}
           style={{
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.32) 36%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0.68) 100%)",
-          }}
-        />
-        <div
-          className="cx-hero-overlay absolute inset-0 hidden lg:block data-[hide=true]:lg:hidden"
-          data-hide={hideOverlay ? "true" : "false"}
-          style={{
-            background:
-              "linear-gradient(90deg, #000 0%, rgba(0,0,0,0.94) 30%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.2) 80%, transparent 100%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.08) 60%, rgba(0,0,0,0.78) 100%)",
           }}
         />
         {/* top/bottom feather */}
@@ -268,7 +273,7 @@ export function Hero() {
       {/* Teal aura behind banner */}
       <div
         aria-hidden
-        className="cx-stage pointer-events-none absolute left-1/2 top-[58%] -z-[5] h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rounded-full lg:left-auto lg:right-[8%] lg:top-1/2"
+        className="cx-stage pointer-events-none absolute left-1/2 top-[58%] -z-[5] h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rounded-full lg:top-1/2"
         style={{
           background:
             "radial-gradient(circle, color-mix(in oklab, var(--accent-glow) 22%, transparent) 0%, transparent 65%)",
