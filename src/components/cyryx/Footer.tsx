@@ -41,10 +41,12 @@ export function Footer() {
           <div className="cx-stagger-item">
             <CyryxWordmark className="h-10" />
             <p className="mt-5 text-sm leading-relaxed text-[var(--silver-dim)] max-w-xs">
-              AI products and execution systems for the agentic era.
+              Cyryx Labs builds proprietary AI products, applied AI systems,
+              and implementation services for businesses moving into the
+              agentic era.
             </p>
             <p className="mt-6 font-display text-sm tracking-[0.32em] uppercase text-[var(--silver-dim)]">
-              Intelligence <span className="text-[var(--accent-glow)]">·</span> Execution <span className="text-[var(--accent-glow)]">·</span> Command
+              Build <span className="text-[var(--accent-glow)]">·</span> Implement <span className="text-[var(--accent-glow)]">·</span> Govern
             </p>
             <p className="mt-8 text-xs text-[var(--silver-dim)]">
               &copy; 2026 Cyryx Labs. All rights reserved.
@@ -118,7 +120,7 @@ export function Footer() {
         <div className="mt-12 flex flex-col gap-4 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <span className="hud-label text-[var(--silver-dim)]">
-              Cyryx Labs — AI products and governed execution systems for the agentic era
+              Cyryx Labs — Build AI into your business.
             </span>
             <span className="inline-flex items-center gap-1.5 hud-label text-[var(--accent-glow)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)] animate-pulse" />

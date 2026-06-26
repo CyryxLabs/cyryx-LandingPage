@@ -5,12 +5,12 @@ const SIGNALS = [
   "Workflow completion rate",
   "Human review load",
   "Model cost per task",
-  "Evaluation pass rate",
   "Error and retry rate",
   "Context retrieval precision",
-  "Delivery acceptance rate",
+  "Lead conversion quality",
   "Automation coverage",
-  "Governance and audit completeness",
+  "Governance completeness",
+  "Delivery acceptance quality",
 ];
 
 export function MetricsBand() {
@@ -24,8 +24,8 @@ export function MetricsBand() {
           </h2>
           <p className="mt-5 text-[15px] sm:text-base text-[var(--silver-dim)]">
             Cyryx Labs does not measure AI value by novelty. We measure it by
-            whether the system improves execution. These are the operating
-            signals we instrument inside the products and systems we build.
+            whether the system improves business execution. These are the
+            operating signals we design for.
           </p>
         </div>
         <ul className="cx-stagger mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--silver)_10%,transparent)] sm:grid-cols-3 lg:grid-cols-5">

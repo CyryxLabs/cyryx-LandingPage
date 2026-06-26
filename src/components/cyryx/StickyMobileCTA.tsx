@@ -55,7 +55,7 @@ export function StickyMobileCTA() {
           href="#contact"
           className="cx-liquid-glass inline-flex h-12 min-h-11 flex-1 items-center justify-center gap-2 rounded-md px-4 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] active:brightness-95"
         >
-          Talk to us
+          Start an AI Project
           <ArrowRight className="h-4 w-4" />
         </a>
         <a

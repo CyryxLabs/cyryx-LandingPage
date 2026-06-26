@@ -2,11 +2,11 @@ import { Bot, Brain, ShieldCheck, Route, Boxes } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 
 const FOCUS = [
-  { icon: Bot, title: "Agentic Execution Systems", copy: "We design systems that turn goals into structured missions, routed execution, validated outputs, and auditable outcomes." },
-  { icon: Brain, title: "Context Intelligence", copy: "We build context systems that help AI retrieve the right information, at the right time, with less waste and higher precision." },
-  { icon: ShieldCheck, title: "AI Governance & Evaluation", copy: "We create evaluation and governance layers that make AI systems measurable, auditable, cost-aware, and safe to operate." },
-  { icon: Route, title: "Model Routing & Cost Intelligence", copy: "We develop routing and cost-intelligence systems that help teams use the right model for the right task without losing margin or control." },
-  { icon: Boxes, title: "Productized AI Systems", copy: "We turn applied AI experiments into production-ready products, reusable systems, and scalable business capabilities." },
+  { icon: Bot, title: "Agentic Workflow Design", copy: "We design structured workflows that turn business goals into routed, reviewable, AI-assisted execution." },
+  { icon: Brain, title: "Context Intelligence", copy: "We build systems that help AI retrieve and use the right business context at the right time." },
+  { icon: ShieldCheck, title: "Evaluation & Governance", copy: "We develop methods to review, measure, and improve AI output with human oversight." },
+  { icon: Route, title: "Model Routing & Cost Awareness", copy: "We design systems that help teams use the right AI capability for the right task while keeping costs visible." },
+  { icon: Boxes, title: "Knowledge & Productized Systems", copy: "We turn scattered business knowledge into searchable internal intelligence, and repeated patterns into reusable systems, products, and implementation frameworks." },
 ];
 
 export function AppliedAILab() {
@@ -18,17 +18,17 @@ export function AppliedAILab() {
           <div>
             <HudLabel withDot>Cyryx Applied AI Lab</HudLabel>
             <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-tight text-silver-gradient uppercase">
-              We don&rsquo;t just implement AI. We design the systems that make AI operational.
+              Research that becomes working systems.
             </h2>
           </div>
           <div>
             <p className="text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)] max-w-md">
-              Cyryx Applied AI Lab develops the protocols, architectures,
-              evaluation models, and execution systems behind our products and
-              client solutions.
+              Cyryx Applied AI Lab develops the architecture, workflow
+              patterns, evaluation methods, and productized systems behind
+              Cyryx products and client implementations.
             </p>
             <p className="mt-5 hud-label text-[var(--accent-glow)]">
-              Applied research for real AI execution.
+              Turning applied AI research into practical systems businesses can use.
             </p>
           </div>
         </div>

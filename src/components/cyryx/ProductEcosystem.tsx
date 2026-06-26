@@ -8,7 +8,7 @@ const PRODUCTS = [
     status: "Flagship Product",
     statusTone: "accent" as const,
     copy:
-      "A local-first agentic execution OS for AI-native builders. Mission control, project memory, graph-based context, command units, quality gates, mission ledgers, cost visibility, and human-governed execution.",
+      "A native agentic command workbench for governed software execution. Built for founders, builders, agencies, and product teams — coordinating software work through missions, operators, memory, gates, evidence, and human-governed delivery.",
     cta: "Explore MAAX Studio",
     href: "/products/maax-studio",
   },
@@ -17,7 +17,7 @@ const PRODUCTS = [
     status: "Research & Development",
     statusTone: "accent" as const,
     copy:
-      "The applied R&D layer behind every Cyryx system — protocol design, evaluation, governance, and enterprise architecture. Where new AI products are incubated and validated before they ship.",
+      "The applied R&D layer behind every Cyryx system. Cyryx Applied AI Lab develops the protocols, architectures, evaluation methods, and execution patterns behind our products and client solutions.",
     cta: "Explore the Lab",
     href: "/research",
   },
@@ -32,14 +32,16 @@ export function ProductEcosystem() {
         <div className="max-w-3xl cx-reveal">
           <HudLabel withDot>Product Ecosystem</HudLabel>
           <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.06] tracking-[-0.02em] text-silver-gradient">
-            An expanding AI execution ecosystem.
+            A technology company built around AI execution.
           </h2>
           <p className="mt-5 text-[15px] sm:text-base text-[var(--silver-dim)] max-w-2xl">
-            Cyryx Labs is building a portfolio of AI products and
-            infrastructure layers. The first flagship is MAAX Studio — a
-            local-first agentic software execution environment for AI-native
-            builders. Additional products and internal systems will emerge
-            from the same applied research layer and from real client work.
+            Cyryx Labs combines proprietary product development, applied AI
+            research, and real-world implementation capability. Our flagship
+            product, MAAX Studio, is being built as a native agentic command
+            workbench for AI-native software execution. Through Cyryx Solutions,
+            we help businesses implement practical AI systems today. Through
+            the Applied AI Lab, we turn research and architecture into reusable
+            systems.
           </p>
         </div>
 

@@ -9,9 +9,9 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const META = [
   "AI PRODUCTS",
-  "AGENTIC SYSTEMS",
-  "GOVERNED EXECUTION",
-  "APPLIED AI INFRASTRUCTURE",
+  "APPLIED AI SYSTEMS",
+  "WORKFLOW AUTOMATION",
+  "AI RESEARCH",
 ];
 
 export function Hero() {
@@ -286,15 +286,15 @@ export function Hero() {
             className="cx-hero-heading font-orbitron font-bold tracking-[0.01em] text-silver-gradient [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
             <span className="cx-line cx-hero-title-line block text-chrome-gradient">
-              The Execution Layer for Operational AI
+              Building operational intelligence for the AI era.
             </span>
           </h1>
 
           {/* Sub */}
           <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-[var(--silver-dim)] [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
-            Cyryx Labs builds AI products, agentic workflow systems, and
-            governed execution infrastructure for teams moving from scattered
-            AI experiments to structured, auditable operations.
+            Cyryx Labs develops proprietary AI products, applied systems, and
+            implementation architecture that help organizations turn artificial
+            intelligence into working business capability.
           </p>
 
           {/* CTAs */}
@@ -309,10 +309,10 @@ export function Hero() {
             </a>
             <a
               href="#contact"
-              aria-label="Start a project with Cyryx Labs"
+              aria-label="Start an AI project with Cyryx Labs"
               className="cx-cta cx-cta-ghost cx-liquid-glass group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-silver-gradient transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
             >
-              <span>Start a Project</span>
+              <span>Start an AI Project</span>
               <ArrowUpRight
                 className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 aria-hidden="true"
@@ -339,11 +339,11 @@ export function Hero() {
             ))}
           </ul>
           <p className="cx-meta flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center font-mono text-[10.5px] uppercase tracking-[0.3em]">
-            <span className="text-metal-dim">Governance-ready architecture</span>
+            <span className="text-metal-dim">Product thinking</span>
             <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-            <span className="text-metal-dim">Human-commanded autonomy</span>
+            <span className="text-metal-dim">Applied AI engineering</span>
             <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-            <span className="text-metal-dim">Cost-aware execution</span>
+            <span className="text-metal-dim">Governed execution</span>
           </p>
         </div>
         </div>

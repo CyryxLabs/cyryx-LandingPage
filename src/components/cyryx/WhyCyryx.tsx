@@ -2,12 +2,12 @@ import { AlertCircle, GitBranch, EyeOff, Repeat, ScrollText, ShieldAlert } from 
 import { HudLabel } from "./primitives/HudLabel";
 
 const PAINS = [
-  { icon: AlertCircle, title: "Scattered context", copy: "Knowledge, decisions, and execution history spread across chats, documents, tools, and dashboards." },
-  { icon: GitBranch, title: "Session resets", copy: "Each AI interaction starts with too little memory and too much repeated explanation." },
-  { icon: Repeat, title: "Inconsistent output", copy: "The same task can produce different results without a reliable execution contract." },
-  { icon: EyeOff, title: "Invisible costs", copy: "Model usage, token spend, routing decisions, and margin impact are often hard to see." },
-  { icon: ShieldAlert, title: "Manual rework", copy: "Humans spend time repairing AI output instead of governing the system that produced it." },
-  { icon: ScrollText, title: "Weak auditability", copy: "Important decisions disappear without a clear record of who decided what, when, and why." },
+  { icon: AlertCircle, title: "Scattered context", copy: "Business knowledge is spread across documents, chats, websites, tools, dashboards, and human memory." },
+  { icon: Repeat, title: "Manual work", copy: "Teams still repeat tasks that could be automated, routed, summarized, or structured by AI." },
+  { icon: GitBranch, title: "Disconnected tools", copy: "AI output often stays outside the systems where the business actually operates." },
+  { icon: ShieldAlert, title: "Inconsistent results", copy: "Without workflow design, review points, and operating rules, AI output is hard to repeat or trust." },
+  { icon: EyeOff, title: "Poor visibility", copy: "Usage, cost, performance, decisions, and handoffs are difficult to monitor." },
+  { icon: ScrollText, title: "No operating layer", copy: "Most companies have AI tools, but not an AI system designed around how the business works." },
 ];
 
 export function WhyCyryx() {
@@ -18,16 +18,18 @@ export function WhyCyryx() {
           <div>
             <HudLabel withDot>Company Thesis</HudLabel>
             <h2 className="mt-5 font-display text-[32px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
-              The next AI shift is not access.<br />
-              <span style={{ color: "var(--accent-glow)" }}>It is execution.</span>
+              AI is no longer the question.<br />
+              <span style={{ color: "var(--accent-glow)" }}>Execution is.</span>
             </h2>
           </div>
           <p className="text-[15px] sm:text-base lg:text-lg leading-relaxed text-[var(--silver-dim)] max-w-xl">
-            AI tools are easy to access. Operational AI systems are harder to build.
-            Most teams already use models, prompts, automations, and agents — but the
-            work remains scattered across disconnected tools, manual decisions, invisible
-            costs, and fragile workflows. Cyryx Labs exists to build the systems that
-            make AI executable, governable, and useful inside real businesses.
+            Most companies now have access to powerful AI tools. The harder
+            problem is turning those tools into reliable systems that
+            understand context, support real workflows, preserve decisions,
+            control costs, and produce work that can be reviewed. Cyryx Labs
+            exists to build that operational layer — proprietary AI products,
+            applied systems, and implementation architecture for businesses
+            moving from scattered AI experimentation to structured execution.
           </p>
         </div>
 
