@@ -28,20 +28,6 @@ export function ProductEcosystem() {
     <section id="products" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--onyx)]">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] to-transparent" />
 
-      {/* Cinematic background visual */}
-      <div aria-hidden className="absolute inset-x-0 top-0 h-[420px] overflow-hidden opacity-[0.18]">
-        <img
-          src={architectureImg}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          width={1600}
-          height={1008}
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[color-mix(in_oklab,var(--onyx)_60%,transparent)] to-[var(--onyx)]" />
-      </div>
-
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="max-w-3xl cx-reveal">
           <HudLabel withDot>Product Ecosystem</HudLabel>
@@ -56,6 +42,46 @@ export function ProductEcosystem() {
             from the same applied research layer and from real client work.
           </p>
         </div>
+
+        {/* IDE showcase figure */}
+        <figure className="cx-reveal mt-10 lg:mt-14">
+          <div className="relative overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_12%,transparent)] bg-[var(--graphite)] shadow-[0_30px_80px_-40px_color-mix(in_oklab,var(--accent-glow)_45%,transparent)]">
+            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9]">
+              <img
+                src={architectureImg}
+                alt="MAAX Studio — Cyryx Labs agentic IDE: explorer, editor, execution graph, governance gates and evaluation terminal."
+                loading="lazy"
+                decoding="async"
+                width={1600}
+                height={1008}
+                className="absolute inset-0 h-full w-full object-contain sm:object-cover object-left-top"
+              />
+              {/* Region labels — hidden on small screens to avoid clutter, revealed from sm+ */}
+              {[
+                { label: "Explorer", title: "File explorer — runtime, agents, gates, evals", pos: "left-[3%] top-[14%]" },
+                { label: "Editor + Tabs", title: "Multi-tab editor with syntax highlighting and minimap", pos: "left-[34%] top-[14%]" },
+                { label: "Execution Graph", title: "Agentic step graph with quality / security / architecture / cost gates", pos: "right-[3%] top-[14%]" },
+                { label: "Eval Terminal", title: "Terminal, problems and evaluation runs with token, latency and cost", pos: "left-[34%] bottom-[6%]" },
+              ].map((r) => (
+                <span
+                  key={r.label}
+                  title={r.title}
+                  aria-label={r.title}
+                  className={`hidden sm:inline-flex absolute ${r.pos} items-center gap-1.5 rounded-sm border border-[color-mix(in_oklab,var(--accent-glow)_40%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_75%,transparent)] px-2 py-1 backdrop-blur-sm hud-label text-[10px] text-[var(--accent-glow)] shadow-[0_0_12px_color-mix(in_oklab,var(--accent-glow)_25%,transparent)] transition-opacity duration-300 opacity-70 hover:opacity-100`}
+                >
+                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_6px_var(--accent-glow)]" />
+                  {r.label}
+                </span>
+              ))}
+            </div>
+          </div>
+          <figcaption className="mt-3 grid gap-1 text-[11px] text-[var(--silver-dim)] sm:hidden">
+            <span><span className="text-[var(--accent-glow)]">Explorer</span> · arquivos, agentes e gates</span>
+            <span><span className="text-[var(--accent-glow)]">Editor</span> · abas e minimap</span>
+            <span><span className="text-[var(--accent-glow)]">Execution Graph</span> · gates de qualidade</span>
+            <span><span className="text-[var(--accent-glow)]">Eval Terminal</span> · tokens, latência e custo</span>
+          </figcaption>
+        </figure>
 
         <div className="cx-stagger mt-14 lg:mt-20 grid gap-4 lg:gap-6 sm:grid-cols-2">
           {PRODUCTS.map((p) => (
