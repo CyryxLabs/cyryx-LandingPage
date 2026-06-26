@@ -331,6 +331,7 @@ export function useCyryxScrollAnimations() {
 
           gsap.utils.toArray<HTMLImageElement>("img").forEach((img) => {
             if (img.dataset.no3d === "1") return;
+            if (img.closest("[data-hero]")) return;
             const parent = img.parentElement;
             if (parent && getComputedStyle(parent).perspective === "none") {
               parent.style.perspective = "1200px";

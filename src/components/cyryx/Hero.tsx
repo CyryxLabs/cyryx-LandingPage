@@ -206,7 +206,8 @@ export function Hero() {
           sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
           width={1920}
           height={1080}
-            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          data-no3d="1"
+          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
           draggable={false}
         />
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
