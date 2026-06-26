@@ -12,7 +12,8 @@ const URL_PARAM = "copy";
 const DEFAULT_VARIANT: CopyVariant = "v3";
 
 function isVariant(value: string | null | undefined): value is CopyVariant {
-  return !!value && (AVAILABLE_COPY_VARIANTS as readonly string[]).includes(value);
+  if (!value) return false;
+  return (AVAILABLE_COPY_VARIANTS as readonly string[]).includes(value);
 }
 
 /**
