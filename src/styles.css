@@ -136,6 +136,7 @@
   html {
     color-scheme: dark;
     scroll-behavior: smooth;
+    overflow-anchor: none;
   }
 
   /* Offset in-page anchor jumps so the fixed header doesn't cover the
