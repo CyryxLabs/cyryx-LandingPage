@@ -5,7 +5,7 @@ export const Route = createFileRoute("/products/maax-studio")({
   head: () => ({
     meta: [
       { title: "MAAX Studio — Agentic Execution OS · Cyryx Labs" },
-      { name: "description", content: "MAAX Studio is the agentic execution OS for AI-native builders — mission control, project memory, context graphs, command units, quality gates, and human-governed delivery." },
+      { name: "description", content: "MAAX Studio is the agentic execution OS for AI-native builders: mission control, project memory, context graphs, and human-governed delivery." },
       { property: "og:title", content: "MAAX Studio — Agentic Execution OS" },
       { property: "og:description", content: "The agentic execution OS for AI-native builders." },
       { property: "og:url", content: "/products/maax-studio" },
