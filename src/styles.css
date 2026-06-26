@@ -262,7 +262,7 @@
   }
 
   .cx-hero-title-line {
-    font-size: clamp(1.875rem, 8.4vw, 3rem);
+    font-size: clamp(2.125rem, 9.4vw, 3.25rem);
     line-height: 1.04;
     letter-spacing: -0.022em;
     padding-bottom: 0.1em;
@@ -291,8 +291,12 @@
   }
 
   .cx-hero-ctas > a {
-    min-height: 52px;
+    min-height: 46px;
     width: 100%;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
   }
 }
 
