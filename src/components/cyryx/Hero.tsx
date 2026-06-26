@@ -235,8 +235,8 @@ export function Hero() {
       />
 
       {/* Foreground content */}
-      <div className="relative mx-auto w-full max-w-7xl px-6 pb-28 pt-32 sm:px-10 sm:pt-40 lg:px-14">
-        <div className="max-w-[64rem]">
+      <div className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-28 sm:px-10 sm:pt-40 sm:pb-28 lg:px-14">
+        <div className="cx-hero-panel mx-auto max-w-[64rem] sm:mx-0">
           {/* Headline */}
           <h1
             id="hero-heading"
@@ -251,18 +251,18 @@ export function Hero() {
           </h1>
 
           {/* Sub */}
-          <p className="cx-sub mt-8 max-w-xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:text-lg">
+          <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
             Cyryx Labs builds AI products, agentic workflow systems, and
             governed execution infrastructure for teams moving from scattered
             AI experiments to structured, auditable operations.
           </p>
 
           {/* CTAs */}
-          <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:gap-5">
+          <div className="cx-hero-ctas mt-8 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:gap-5">
             <a
               href="#maax"
               aria-label="Explore MAAX Studio — flagship product"
-              className="cx-cta group relative inline-flex min-h-14 items-center justify-center gap-2 overflow-hidden rounded-none border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-9 py-4 text-center text-[12px] font-semibold uppercase tracking-[0.28em] text-black transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="cx-cta cx-cta-primary group relative inline-flex min-h-[52px] w-full items-center justify-center gap-2 overflow-hidden rounded-none border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-7 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.26em] text-black shadow-[0_10px_30px_-12px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-9 sm:py-4 sm:text-[12px] sm:tracking-[0.28em]"
             >
               <span>Explore MAAX Studio</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -270,7 +270,7 @@ export function Hero() {
             <a
               href="#contact"
               aria-label="Start a project with Cyryx Labs"
-              className="cx-cta group inline-flex min-h-14 items-center justify-center gap-2 rounded-none border border-white/25 bg-transparent px-9 py-4 text-center text-[12px] font-semibold uppercase tracking-[0.28em] text-white transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="cx-cta cx-cta-ghost group inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-none border border-white/25 bg-white/[0.04] px-7 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.26em] text-white backdrop-blur-sm transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-9 sm:py-4 sm:text-[12px] sm:tracking-[0.28em]"
             >
               <span>Start a Project</span>
               <ArrowUpRight
