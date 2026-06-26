@@ -1,10 +1,11 @@
-import { Boxes, Workflow, FlaskConical, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
+import { ProductsGlyph, SolutionsGlyph, LabGlyph } from "./primitives/BrandGlyphs";
 
 const PILLARS = [
   {
     n: "01",
-    icon: Boxes,
+    icon: ProductsGlyph,
     tag: "Products",
     title: "Proprietary AI products built around execution.",
     copy: "We build AI-native software products for builders, founders, agencies, and teams that need more than chat-based assistance — starting with MAAX Studio, our flagship runtime-first execution environment.",
@@ -13,7 +14,7 @@ const PILLARS = [
   },
   {
     n: "02",
-    icon: Workflow,
+    icon: SolutionsGlyph,
     tag: "Solutions",
     title: "Custom AI systems for real business workflows.",
     copy: "We design and build AI-powered systems that connect to how companies actually operate: internal copilots, workflow automation, knowledge systems, data-connected agents, dashboards, integrations, and governance layers. We do not start with hype. We start with workflow.",
@@ -22,7 +23,7 @@ const PILLARS = [
   },
   {
     n: "03",
-    icon: FlaskConical,
+    icon: LabGlyph,
     tag: "Applied AI Lab",
     title: "Research and architecture for governed AI execution.",
     copy: "Cyryx Applied AI Lab develops the patterns, protocols, architectures, and evaluation models behind our products and client systems — agentic execution, project memory, context intelligence, governed workflow architecture, evaluation gates, model routing, and cost control.",
@@ -58,17 +59,17 @@ export function CoreCapabilities() {
               data-tilt
               className="cx-stagger-item group relative bg-[var(--graphite)] p-8 lg:p-10 transition-colors hover:bg-[var(--onyx)] hover:shadow-[0_30px_60px_-30px_color-mix(in_oklab,var(--accent-glow)_45%,transparent)]"
             >
-              <div className="flex items-center justify-between">
-                <div className="cx-bracket-icon">
+              <div className="flex items-center justify-between gap-3">
+                <div className="cx-bracket-icon shrink-0">
                   <span aria-hidden className="cx-bracket-icon-corners" />
-                  <Icon className="h-5 w-5 text-[var(--accent-glow)]" />
+                  <Icon className="h-7 w-7" />
                 </div>
-                <span className="font-display text-xs font-bold tracking-widest text-[var(--silver-dim)]">
+                <span className="font-display text-xs font-bold tracking-widest text-[var(--silver-dim)] shrink-0">
                   {n}
                 </span>
               </div>
               <span className="mt-8 block hud-label text-[var(--accent-glow)]">{tag}</span>
-              <h3 className="mt-3 font-display text-xl lg:text-2xl font-semibold uppercase tracking-tight text-silver-gradient leading-[1.15]">
+              <h3 className="mt-3 font-display text-[19px] sm:text-xl lg:text-2xl font-semibold uppercase tracking-tight text-silver-gradient leading-[1.18] [text-wrap:balance] hyphens-auto break-words min-w-0">
                 {title}
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-[var(--silver-dim)]">
