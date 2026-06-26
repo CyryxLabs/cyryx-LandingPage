@@ -12,7 +12,7 @@ const PAINS = [
 
 export function WhyCyryx() {
   return (
-    <section id="problem" className="relative py-20 lg:py-32">
+    <section id="problem" className="relative py-14 sm:py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 lg:items-end cx-reveal">
           <div>

@@ -70,7 +70,7 @@ export function MobileMenu({
       className="fixed inset-0 z-[60] bg-[color-mix(in_oklab,var(--onyx)_96%,transparent)] backdrop-blur-2xl lg:hidden"
     >
       <div className="absolute inset-0 grid-floor opacity-30" aria-hidden />
-      <div className="relative flex h-dvh flex-col px-6 pt-5 pb-10">
+      <div className="relative flex h-dvh flex-col px-6 pt-[max(env(safe-area-inset-top),1.25rem)] pb-[max(env(safe-area-inset-bottom),2.5rem)]">
         <div className="flex items-center justify-between h-12">
           <div className="flex items-center gap-2.5">
             <CyryxMark size={30} />
@@ -93,7 +93,7 @@ export function MobileMenu({
               key={l.label}
               href={l.href}
               onClick={onClose}
-              className="group flex items-baseline justify-between border-b border-[color-mix(in_oklab,var(--silver)_8%,transparent)] py-5"
+              className="group flex min-h-[56px] items-baseline justify-between border-b border-[color-mix(in_oklab,var(--silver)_8%,transparent)] py-5"
             >
               <span className="font-display text-3xl font-semibold text-silver-gradient">
                 {l.label}

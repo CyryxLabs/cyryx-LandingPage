@@ -35,7 +35,7 @@ const COLUMNS = [
 export function Footer() {
   return (
     <footer className="relative border-t border-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] bg-[var(--graphite)]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-14 lg:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-12 pb-[max(env(safe-area-inset-bottom),3rem)] lg:py-20">
         <div className="cx-stagger grid gap-10 lg:grid-cols-[1.3fr_2.2fr_1.5fr]">
           {/* Brand */}
           <div className="cx-stagger-item">

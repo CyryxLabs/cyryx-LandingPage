@@ -55,7 +55,7 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="relative py-20 lg:py-32">
+    <section id="contact" className="relative py-14 sm:py-20 lg:py-32">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-10">
         <div className="cx-reveal text-center">
           <HudLabel withDot>Contact</HudLabel>
@@ -78,7 +78,7 @@ export function ContactSection() {
               <button
                 type="button"
                 onClick={() => setStatus("idle")}
-                className="mt-2 hud-label text-[var(--accent-glow)] underline-offset-4 hover:underline"
+                className="mt-2 inline-flex min-h-11 items-center px-3 hud-label text-[var(--accent-glow)] underline-offset-4 hover:underline"
               >
                 Send another
               </button>

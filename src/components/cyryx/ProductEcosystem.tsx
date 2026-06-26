@@ -25,7 +25,7 @@ const PRODUCTS = [
 
 export function ProductEcosystem() {
   return (
-    <section id="products" className="relative py-20 lg:py-32 bg-[var(--onyx)]">
+    <section id="products" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--onyx)]">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] to-transparent" />
 
       {/* Cinematic background visual */}
@@ -81,7 +81,7 @@ export function ProductEcosystem() {
               </p>
               <a
                 href={p.href}
-                className="mt-6 inline-flex items-center gap-2 hud-label text-[var(--accent-glow)] group-hover:gap-3 transition-all"
+                className="mt-4 inline-flex min-h-11 items-center gap-2 -mx-1 px-1 hud-label text-[var(--accent-glow)] group-hover:gap-3 transition-all"
               >
                 {p.cta}
                 <ArrowRight className="h-3.5 w-3.5" />

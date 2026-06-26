@@ -33,7 +33,7 @@ const PILLARS = [
 
 export function CoreCapabilities() {
   return (
-    <section id="products" className="relative py-20 lg:py-32 bg-[var(--graphite)]">
+    <section id="products" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--graphite)]">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] to-transparent" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 cx-reveal">
@@ -74,7 +74,7 @@ export function CoreCapabilities() {
               <p className="mt-4 text-sm leading-relaxed text-[var(--silver-dim)]">
                 {copy}
               </p>
-              <a href={href} className="mt-6 inline-flex items-center gap-2 hud-label text-[var(--accent-glow)]">
+              <a href={href} className="mt-4 inline-flex min-h-11 items-center gap-2 -mx-1 px-1 hud-label text-[var(--accent-glow)]">
                 {cta} <ArrowRight className="h-3.5 w-3.5" />
               </a>
               <span
