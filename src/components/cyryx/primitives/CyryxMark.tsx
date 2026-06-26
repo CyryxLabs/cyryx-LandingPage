@@ -17,6 +17,7 @@ export function CyryxMark({
       height={size}
       alt=""
       aria-hidden
+      data-no3d="1"
       draggable={false}
       decoding="async"
       loading={priority ? "eager" : "lazy"}
@@ -35,6 +36,7 @@ export function CyryxWordmark({
     <img
       src={wordmarkAsset.url}
       alt="Cyryx Labs"
+      data-no3d="1"
       width={1682}
       height={517}
       draggable={false}
