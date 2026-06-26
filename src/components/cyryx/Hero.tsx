@@ -3,7 +3,6 @@ import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
 import hero640 from "@/assets/cyryx-hero-serene-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-serene-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-serene-1920.webp.asset.json";
