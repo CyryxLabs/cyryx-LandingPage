@@ -13,15 +13,6 @@ export default defineConfig({
     define: {
       __CYRYX_BUILD_VERSION__: JSON.stringify(buildVersion),
     },
-    build: {
-      rollupOptions: {
-        output: {
-          entryFileNames: "assets/[name]-[hash].js",
-          chunkFileNames: "assets/[name]-[hash].js",
-          assetFileNames: "assets/[name]-[hash][extname]",
-        },
-      },
-    },
   },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).

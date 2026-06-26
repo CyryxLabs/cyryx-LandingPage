@@ -1,29 +1,43 @@
 ## Diagnóstico
 
-Testei https://cyryxlabs.com agora com um navegador headless real (Playwright):
+O servidor está saudável:
+- `GET https://cyryxlabs.com/` → 200, `cache-control: no-cache, must-revalidate, max-age=0`, `x-cyryx-build: 2026-06-26T22:35:36Z`
+- `GET /assets/styles-CtVwFtW-.css` → 200, `content-type: text/css`, 138 KB de Tailwind v4 + tokens
+- SSR HTML contém todas as classes Tailwind e o `<link rel="stylesheet">` correto
+- No replay da preview, o DOM anima normalmente (transforms/opacity oscilando) — a página está estilizada
 
-- **Renderiza perfeitamente.** Logo 56px, fundo escuro `oklch(0.07 0 0)`, hero monolith e headline "Built to achieve. Not just to generate." aparecem com o design correto.
-- O CSS `/assets/styles-2-0CpefQ.css` carrega (161 regras), JS carrega 200, nenhuma requisição falhou, nenhum erro no console.
-- Screenshot do teste em `/tmp/browser/cyryx/live.png` confirma layout idêntico ao preview.
+A tela "horrível" que você vê é HTML antigo cacheado no seu navegador desktop, anterior ao fix `no-store`. Esse HTML aponta para um bundle CSS que foi substituído por hash novo no último deploy → o `<link>` 404 silenciosamente → fallback para markup cru.
 
-Conclusão: **o código e o deploy estão corretos**. O screenshot "unstyled" que você mandou é o que o seu navegador específico está exibindo — não o que o site está realmente servindo. As causas prováveis são:
+## Solução em 3 passos
 
-1. **Cache antigo do navegador** servindo o HTML quebrado de quando o SSR ainda estava crashando (antes do fix do `gsap.registerPlugin`).
-2. **Extensão do Chrome** (a sessão mostra `tb_remapper.js` injetado) interferindo no carregamento de CSS.
-3. **Service Worker / cache da Cloudflare** num edge específico ainda servindo HTML antigo sem a tag `<link rel="stylesheet">`.
+### 1. Ação imediata (sem código)
+- Hard refresh no desktop: **Ctrl+Shift+R** (Win/Linux) ou **Cmd+Shift+R** (Mac)
+- Se persistir: DevTools → Application → Clear storage → Clear site data → reload
+- Validação esperada: `view-source:` mostra `<meta name="x-cyryx-build" ...>` recente e o CSS link carrega 200
 
-## Ações (sem mudança de código)
+### 2. Garantir que nunca mais aconteça (mudança de código)
+- Em `src/routes/__root.tsx` adicionar no `<head>` (via `head().meta`):
+  - `<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">`
+  - `<meta http-equiv="Pragma" content="no-cache">`
+  - Reforça `no-store` mesmo em proxies intermediários que ignorem header HTTP
+- Inserir, antes da hidratação no `RootShell`, script defensivo que desregistra qualquer Service Worker legado:
+  ```js
+  if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
+  ```
+  Garante que clientes com SW antigo não fiquem presos em HTML obsoleto.
 
-1. **Hard refresh no seu navegador**: Cmd+Shift+R (Mac) / Ctrl+Shift+F5 (Win) em https://cyryxlabs.com.
-2. Se persistir: abrir em **aba anônima** (sem extensões) para confirmar se é cache/extensão.
-3. Se persistir mesmo em anônima: **republicar o site** para emitir um novo deploy e invalidar o cache da Cloudflare em todos os edges. Posso disparar o publish quando você confirmar.
-4. Como verificação final, posso rodar o Playwright de novo após o republish e te mandar o screenshot do que o site servindo no momento.
+### 3. Sanity check do `vite.config.ts`
+- O override de `rollupOptions.output.entryFileNames/chunkFileNames/assetFileNames` é redundante (o preset `@lovable.dev/vite-tanstack-config` já aplica hashing) e adiciona risco de divergência com o manifest do nitro
+- Remover o bloco `build.rollupOptions` mantendo apenas o `define` de `__CYRYX_BUILD_VERSION__`
+- Reduz superfície para regressões futuras de bundle/manifest
 
-## O que NÃO vou fazer
+## Após implementar
 
-- Não vou mudar componentes/CSS/animação — a página está construída e servida exatamente como aparece no preview; mexer no código agora introduziria regressão sem resolver o problema do seu navegador.
-- O aviso de hydration mismatch do GSAP existe mas é cosmético (não causa página em branco); pode ser endereçado depois.
+- Publicar para `https://cyryxlabs.com`
+- Validar via `curl -sI` que HTML continua `no-store` e CSS continua hashed
+- Confirmar no desktop (após hard refresh único) que o layout volta normal e `?cyryxDiag=1` mostra o build novo
 
-## Próximo passo recomendado
+## Detalhes técnicos
 
-Faça o hard refresh primeiro. Se ainda estiver quebrado, me avise que eu disparo o republish.
+- `_headers` em `public/_headers` é sintaxe de Cloudflare Pages — neste projeto (Worker) é inerte; quem manda nos headers é `src/server.ts`. Não precisa remover, mas também não está protegendo nada hoje.
+- O `x-cyryx-build` já está no response e visível no overlay de diagnóstico — útil pra confirmar versão sem precisar abrir o bundle.
