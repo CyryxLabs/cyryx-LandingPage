@@ -5,6 +5,7 @@ import { Hero } from "@/components/cyryx/Hero";
 import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
 import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { Footer } from "@/components/cyryx/Footer";
+import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
 
@@ -191,6 +192,7 @@ function Index() {
         </Suspense>
       </main>
       <Footer />
+      <StickyMobileCTA />
     </div>
   );
 }
