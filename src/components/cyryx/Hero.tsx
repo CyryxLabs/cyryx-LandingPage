@@ -282,7 +282,7 @@ export function Hero() {
           {/* Headline */}
           <h1
             id="hero-heading"
-            className="cx-hero-heading font-display font-bold text-silver-gradient [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
+            className="cx-hero-heading font-orbitron font-bold tracking-[0.01em] text-silver-gradient [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
             <span className="cx-line cx-hero-title-line block text-chrome-gradient sm:whitespace-nowrap">
               The execution layer
@@ -327,7 +327,7 @@ export function Hero() {
         <div
           aria-label="Cyryx platform pillars and operating posture"
           role="group"
-          className="mt-24 flex flex-col gap-5 border-t border-white/10 pt-6"
+          className="mt-24 flex flex-col gap-3 border-t border-white/10 pt-6"
         >
           <ul className="grid list-none grid-cols-2 gap-y-4 md:grid-cols-4 md:gap-y-0">
             {META.map((m, i) => (
@@ -342,17 +342,15 @@ export function Hero() {
               </li>
             ))}
           </ul>
-          <ul className="flex list-none flex-wrap items-center justify-center gap-x-2 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.3em] md:justify-end">
-            {["Governance-ready architecture", "Human-commanded autonomy", "Cost-aware execution"].map(
-              (item, idx, arr) => (
-                <li key={item} className="cx-meta flex items-center gap-2">
-                  <span className="text-metal-dim">{item}</span>
-                  {idx < arr.length - 1 && (
-                    <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-                  )}
-                </li>
-              ),
-            )}
+          <ul className="grid list-none grid-cols-1 items-center md:grid-cols-4">
+            <li aria-hidden="true" className="hidden md:block" />
+            <li className="cx-meta col-span-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.3em] md:col-span-3 md:justify-start md:pl-5">
+              <span className="text-metal-dim">Governance-ready architecture</span>
+              <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
+              <span className="text-metal-dim">Human-commanded autonomy</span>
+              <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
+              <span className="text-metal-dim">Cost-aware execution</span>
+            </li>
           </ul>
         </div>
       </div>
