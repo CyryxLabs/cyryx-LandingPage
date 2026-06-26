@@ -309,20 +309,18 @@ export function useCyryxScrollAnimations() {
     if (!document.documentElement.classList.contains("cx-low-perf")) {
       mm.add(
         {
-          isMobile: "(min-width: 480px) and (max-width: 767px)",
           isTablet: "(min-width: 768px) and (max-width: 1023px)",
           isDesktop: "(min-width: 1024px)",
         },
         (context) => {
-          const { isMobile, isTablet } = context.conditions as {
-            isMobile: boolean;
+          const { isTablet } = context.conditions as {
             isTablet: boolean;
             isDesktop: boolean;
           };
-          // Per-breakpoint intensity: mobile subtle, desktop pronounced.
-          const cfg = isMobile
-            ? { rot: 3, y: 10, scale: 0.005, scrub: 1.2 }
-            : isTablet
+          // Mobile is intentionally excluded — image tilt costs perf and
+          // adds wobble on small screens. Tablet gets a light pass, desktop
+          // the full cinematic effect. No pinning is used anywhere.
+          const cfg = isTablet
               ? { rot: 5, y: 20, scale: 0.012, scrub: 0.9 }
               : { rot: 8, y: 32, scale: 0.02, scrub: 0.5 };
 
