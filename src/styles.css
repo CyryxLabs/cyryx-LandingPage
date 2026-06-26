@@ -296,6 +296,75 @@
   }
 }
 
+/* Critical-width guard: 320–360px (small phones). Prevent any overflow
+   in the hero title/sub/CTAs and reduce panel padding further. */
+@media (max-width: 359px) {
+  .cx-hero-title-line {
+    font-size: clamp(1.625rem, 8vw, 2rem);
+    letter-spacing: -0.02em;
+  }
+
+  .cx-hero-sub {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .cx-hero-panel {
+    padding: 1rem 0.9rem 1.15rem;
+    border-radius: 12px;
+  }
+
+  .cx-hero-ctas > a {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    letter-spacing: 0.22em;
+    font-size: 10.5px;
+  }
+}
+
+/* Touch feedback for CTAs — clear active state without layout shift. */
+.cx-cta {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 0.15s ease, filter 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease, background-color 0.2s ease;
+}
+.cx-cta:active {
+  transform: translateY(1px) scale(0.995);
+}
+.cx-cta-primary:active {
+  filter: brightness(0.92);
+}
+.cx-cta-ghost:active {
+  background-color: color-mix(in oklab, var(--accent-glow) 10%, transparent);
+  border-color: var(--accent-glow);
+}
+
+/* Reduced motion: drop expensive hero effects + animations. */
+@media (prefers-reduced-motion: reduce) {
+  .cx-hero-panel {
+    backdrop-filter: none;
+    background: color-mix(in oklab, #000 55%, transparent);
+  }
+  .cx-hero-noise,
+  .cx-hero-line-glow {
+    display: none !important;
+  }
+  .cx-cta,
+  .cx-cta:active {
+    transition: none;
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .cx-hero-heading {
     line-height: 0.98;

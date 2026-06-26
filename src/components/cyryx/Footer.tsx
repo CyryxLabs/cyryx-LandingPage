@@ -115,8 +115,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6">
-          <div className="flex items-center gap-4">
+        <div className="mt-12 flex flex-col gap-4 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <span className="hud-label text-[var(--silver-dim)]">
               Cyryx Labs — AI products and governed execution systems for the agentic era
             </span>
@@ -125,7 +125,7 @@ export function Footer() {
               SYS_STATUS: OPTIMAL
             </span>
           </div>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
             {["Privacy", "Terms", "Security"].map((l) => (
               <a key={l} href="#" className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition">
                 {l}
