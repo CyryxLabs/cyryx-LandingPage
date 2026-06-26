@@ -60,7 +60,7 @@
   --color-teal: var(--teal);
   --color-emerald-accent: var(--emerald-accent);
   --color-accent-glow: var(--accent-glow);
-  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-display: "Inter Tight", "Inter", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
@@ -236,44 +236,49 @@
 /* Hero headline sizing: tuned to keep tall/descender glyphs visible from
    360px portrait through 1024px landscape/tablet without negative tracking. */
 .cx-hero-heading {
-  line-height: 1.1;
-  letter-spacing: 0;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  font-feature-settings: "ss01", "cv11";
   overflow: visible;
   padding-bottom: 0.16em;
   text-wrap: balance;
 }
 
 .cx-hero-title-line {
-  font-size: clamp(2.25rem, 7.5vw, 6.5rem);
-  line-height: 1.14;
-  letter-spacing: 0;
+  font-size: clamp(2.5rem, 8vw, 7rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 700;
   overflow: visible;
-  padding-bottom: 0.18em;
+  padding-bottom: 0.08em;
 }
 
 @media (min-width: 360px) and (max-width: 767px) {
   .cx-hero-heading {
-    line-height: 1.12;
-    padding-bottom: 0.2em;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    padding-bottom: 0.12em;
   }
 
   .cx-hero-title-line {
-    font-size: clamp(2.25rem, 10vw, 4.25rem);
-    line-height: 1.16;
-    padding-bottom: 0.2em;
+    font-size: clamp(2.5rem, 11.5vw, 4.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    padding-bottom: 0.12em;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .cx-hero-heading {
-    line-height: 1.1;
-    padding-bottom: 0.18em;
+    line-height: 0.98;
+    padding-bottom: 0.1em;
   }
 
   .cx-hero-title-line {
-    font-size: clamp(4rem, 7.3vw, 4.85rem);
-    line-height: 1.13;
-    padding-bottom: 0.18em;
+    font-size: clamp(4.25rem, 7.6vw, 5.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    padding-bottom: 0.1em;
   }
 }
 

@@ -1,23 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
 import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
 import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
-import { WhyCyryx } from "@/components/cyryx/WhyCyryx";
-import { CoreCapabilities } from "@/components/cyryx/CoreCapabilities";
-import { CommandLayerSection } from "@/components/cyryx/CommandLayerSection";
-import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
-import { ProductEcosystem } from "@/components/cyryx/ProductEcosystem";
-import { ProcessTimeline } from "@/components/cyryx/ProcessTimeline";
-import { CTASection } from "@/components/cyryx/CTASection";
 import { Footer } from "@/components/cyryx/Footer";
-import { AppliedAILab } from "@/components/cyryx/AppliedAILab";
-import { WhoWeServe } from "@/components/cyryx/WhoWeServe";
-import { Ecosystem } from "@/components/cyryx/Ecosystem";
-import { MetricsBand } from "@/components/cyryx/MetricsBand";
-import { ContactSection } from "@/components/cyryx/ContactSection";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
+
+// Below-the-fold: code-split to shrink the initial mobile bundle.
+const WhyCyryx = lazy(() => import("@/components/cyryx/WhyCyryx").then(m => ({ default: m.WhyCyryx })));
+const CoreCapabilities = lazy(() => import("@/components/cyryx/CoreCapabilities").then(m => ({ default: m.CoreCapabilities })));
+const CommandLayerSection = lazy(() => import("@/components/cyryx/CommandLayerSection").then(m => ({ default: m.CommandLayerSection })));
+const MAAXStudioSpotlight = lazy(() => import("@/components/cyryx/MAAXStudioSpotlight").then(m => ({ default: m.MAAXStudioSpotlight })));
+const ProductEcosystem = lazy(() => import("@/components/cyryx/ProductEcosystem").then(m => ({ default: m.ProductEcosystem })));
+const ProcessTimeline = lazy(() => import("@/components/cyryx/ProcessTimeline").then(m => ({ default: m.ProcessTimeline })));
+const CTASection = lazy(() => import("@/components/cyryx/CTASection").then(m => ({ default: m.CTASection })));
+const AppliedAILab = lazy(() => import("@/components/cyryx/AppliedAILab").then(m => ({ default: m.AppliedAILab })));
+const WhoWeServe = lazy(() => import("@/components/cyryx/WhoWeServe").then(m => ({ default: m.WhoWeServe })));
+const Ecosystem = lazy(() => import("@/components/cyryx/Ecosystem").then(m => ({ default: m.Ecosystem })));
+const MetricsBand = lazy(() => import("@/components/cyryx/MetricsBand").then(m => ({ default: m.MetricsBand })));
+const ContactSection = lazy(() => import("@/components/cyryx/ContactSection").then(m => ({ default: m.ContactSection })));
+
+const SectionFallback = () => <div aria-hidden style={{ minHeight: 480 }} />;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -170,18 +175,20 @@ function Index() {
         />
         <Hero />
         <CapabilityStrip />
-        <WhyCyryx />
-        <CoreCapabilities />
-        <ProductEcosystem />
-        <MAAXStudioSpotlight />
-        <CommandLayerSection />
-        <AppliedAILab />
-        <ProcessTimeline />
-        <MetricsBand />
-        <WhoWeServe />
-        <Ecosystem />
-        <CTASection />
-        <ContactSection />
+        <Suspense fallback={<SectionFallback />}>
+          <WhyCyryx />
+          <CoreCapabilities />
+          <ProductEcosystem />
+          <MAAXStudioSpotlight />
+          <CommandLayerSection />
+          <AppliedAILab />
+          <ProcessTimeline />
+          <MetricsBand />
+          <WhoWeServe />
+          <Ecosystem />
+          <CTASection />
+          <ContactSection />
+        </Suspense>
       </main>
       <Footer />
     </div>

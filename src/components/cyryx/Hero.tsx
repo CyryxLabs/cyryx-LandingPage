@@ -240,7 +240,7 @@ export function Hero() {
           {/* Headline */}
           <h1
             id="hero-heading"
-            className="cx-hero-heading font-display font-semibold tracking-[0] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
+            className="cx-hero-heading font-display font-bold text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
             <span className="cx-line cx-hero-title-line block text-chrome-gradient [overflow-wrap:break-word]">
               The execution layer
