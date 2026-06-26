@@ -78,7 +78,7 @@ export function ContactSection() {
               <button
                 type="button"
                 onClick={() => setStatus("idle")}
-                className="mt-2 hud-label text-[var(--accent-glow)] underline-offset-4 hover:underline"
+                className="mt-2 inline-flex min-h-11 items-center px-3 hud-label text-[var(--accent-glow)] underline-offset-4 hover:underline"
               >
                 Send another
               </button>

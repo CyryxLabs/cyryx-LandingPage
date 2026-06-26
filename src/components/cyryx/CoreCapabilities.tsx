@@ -74,7 +74,7 @@ export function CoreCapabilities() {
               <p className="mt-4 text-sm leading-relaxed text-[var(--silver-dim)]">
                 {copy}
               </p>
-              <a href={href} className="mt-6 inline-flex items-center gap-2 hud-label text-[var(--accent-glow)]">
+              <a href={href} className="mt-4 inline-flex min-h-11 items-center gap-2 -mx-1 px-1 hud-label text-[var(--accent-glow)]">
                 {cta} <ArrowRight className="h-3.5 w-3.5" />
               </a>
               <span

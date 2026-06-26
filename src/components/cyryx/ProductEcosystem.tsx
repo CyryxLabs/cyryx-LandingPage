@@ -81,7 +81,7 @@ export function ProductEcosystem() {
               </p>
               <a
                 href={p.href}
-                className="mt-6 inline-flex items-center gap-2 hud-label text-[var(--accent-glow)] group-hover:gap-3 transition-all"
+                className="mt-4 inline-flex min-h-11 items-center gap-2 -mx-1 px-1 hud-label text-[var(--accent-glow)] group-hover:gap-3 transition-all"
               >
                 {p.cta}
                 <ArrowRight className="h-3.5 w-3.5" />
