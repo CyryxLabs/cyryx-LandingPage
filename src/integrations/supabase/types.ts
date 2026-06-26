@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      cta_events: {
+        Row: {
+          created_at: string
+          cta: string
+          href: string | null
+          id: string
+          path: string
+          referrer: string | null
+          section: string
+          user_agent: string | null
+          variant: string | null
+        }
+        Insert: {
+          created_at?: string
+          cta: string
+          href?: string | null
+          id?: string
+          path: string
+          referrer?: string | null
+          section: string
+          user_agent?: string | null
+          variant?: string | null
+        }
+        Update: {
+          created_at?: string
+          cta?: string
+          href?: string | null
+          id?: string
+          path?: string
+          referrer?: string | null
+          section?: string
+          user_agent?: string | null
+          variant?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
