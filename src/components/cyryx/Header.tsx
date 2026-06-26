@@ -34,21 +34,21 @@ export function Header() {
             : "shadow-none",
         )}
       >
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-10">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:h-24 lg:px-10">
           <a
             href="#top"
-            className="inline-flex min-h-11 items-center min-w-0 -mx-1 px-1"
+            className="inline-flex min-h-11 items-center min-w-0 shrink-0 -mx-1 px-1"
             aria-label="Cyryx Labs — home"
           >
-            <CyryxWordmark priority className="h-7 lg:h-8" />
+            <CyryxWordmark priority className="h-9 lg:h-12" />
           </a>
 
-          <nav className="hidden lg:flex items-center gap-9">
+          <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
             {NAV.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition-colors relative py-2"
+                className="hud-label text-[0.7rem] tracking-[0.18em] text-[var(--silver-dim)] hover:text-[var(--silver)] transition-colors relative py-2 whitespace-nowrap"
               >
                 {item.label}
               </a>
