@@ -2,7 +2,6 @@ import { ArrowRight, Check } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 import { GlassPanel } from "./primitives/GlassPanel";
 import maaxDevices from "@/assets/cyryx-maax-devices.jpg";
-import maaxLogo from "@/assets/cyryx-maax-visual.png.asset.json";
 
 const BULLETS = [
   "Turn goals into structured missions",
@@ -44,15 +43,9 @@ export function MAAXStudioSpotlight() {
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div className="cx-reveal">
             <HudLabel withDot>Flagship Product</HudLabel>
-            <img
-              src={maaxLogo.url}
-              alt="MAAX Studio"
-              width={1254}
-              height={1254}
-              loading="lazy"
-              decoding="async"
-              className="mt-5 block h-auto w-full max-w-[420px] object-contain mix-blend-screen"
-            />
+            <h2 className="mt-5 font-display text-[36px] sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-[0.04em] text-silver-gradient">
+              MAAX&nbsp;STUDIO
+            </h2>
             <p className="mt-3 font-display text-base sm:text-lg text-[var(--accent-glow)]">
               The agentic execution OS for AI-native builders.
             </p>
