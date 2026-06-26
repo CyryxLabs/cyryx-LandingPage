@@ -17,7 +17,7 @@ const BULLETS = [
 
 function ProductPreview() {
   return (
-    <GlassPanel glow className="overflow-hidden p-2 sm:p-3">
+    <GlassPanel glow className="overflow-hidden p-2 sm:p-3" data-macbook-figure>
       <img
         src={maaxDevices}
         alt="MAAX Studio agentic IDE shown on an external monitor and MacBook side by side"
