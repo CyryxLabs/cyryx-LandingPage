@@ -293,7 +293,7 @@ export function Hero() {
           </h1>
 
           {/* Sub */}
-          <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
+          <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-[var(--silver-dim)] [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
             Cyryx Labs builds AI products, agentic workflow systems, and
             governed execution infrastructure for teams moving from scattered
             AI experiments to structured, auditable operations.
