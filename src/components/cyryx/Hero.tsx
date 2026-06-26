@@ -278,7 +278,8 @@ export function Hero() {
 
       {/* Foreground content */}
       <div className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-28 sm:px-10 sm:pt-40 sm:pb-28 lg:px-14">
-        <div className="cx-hero-panel mx-auto max-w-[64rem] sm:mx-0">
+        <div className="mx-auto w-full max-w-[68rem] sm:mx-0">
+          <div className="cx-hero-panel">
           {/* Headline */}
           <h1
             id="hero-heading"
@@ -318,13 +319,13 @@ export function Hero() {
               />
             </a>
           </div>
-        </div>
+          </div>
 
         {/* Bottom meta rail */}
         <div
           aria-label="Cyryx platform pillars and operating posture"
           role="group"
-          className="mt-24 flex flex-col gap-4 border-t border-white/10 pt-6"
+          className="mt-20 flex flex-col gap-4 border-t border-white/10 pt-6 sm:mt-24"
         >
           <ul className="flex list-none flex-col gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8 md:gap-y-3">
             {META.map((m) => (
@@ -344,6 +345,7 @@ export function Hero() {
             <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
             <span className="text-metal-dim">Cost-aware execution</span>
           </p>
+        </div>
         </div>
       </div>
 
