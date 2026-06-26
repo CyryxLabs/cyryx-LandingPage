@@ -51,6 +51,11 @@ function withCacheHeaders(request: Request, response: Response): Response {
     headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
     headers.set("pragma", "no-cache");
     headers.set("expires", "0");
+  } else if (url.pathname.startsWith("/assets/styles-") && contentType.includes("text/css")) {
+    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+    headers.set("pragma", "no-cache");
+    headers.set("expires", "0");
+    headers.set("x-cyryx-cache-policy", "stylesheet-no-store");
   } else if (url.pathname.startsWith("/assets/") && response.ok) {
     headers.set("cache-control", "public, max-age=31536000, immutable");
     headers.set("x-cyryx-cache-policy", "hashed-asset-immutable");
