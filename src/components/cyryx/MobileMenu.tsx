@@ -2,6 +2,9 @@ import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { gsap } from "gsap";
 import { CyryxMark, CyryxWordmark } from "./primitives/CyryxMark";
+import { useCopyVariant } from "@/lib/copy-variant";
+import { getCopy } from "@/copy";
+import { trackCta } from "@/lib/track-cta";
 
 export function MobileMenu({
   open,
@@ -16,6 +19,7 @@ export function MobileMenu({
   const linksRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const headerCta = getCopy(useCopyVariant()).header.cta;
 
   useEffect(() => {
     if (!open) return;
@@ -91,7 +95,11 @@ export function MobileMenu({
           </button>
         </div>
 
-        <nav ref={linksRef} className="mt-14 flex flex-col gap-1">
+        <nav
+          ref={linksRef}
+          className="mt-14 flex flex-col gap-1"
+          aria-label="Mobile primary"
+        >
           {links.map((l, i) => (
             <a
               key={l.label}
@@ -112,10 +120,14 @@ export function MobileMenu({
         <a
           ref={ctaRef}
           href="#contact"
-          onClick={onClose}
+          aria-label={headerCta}
+          onClick={() => {
+            trackCta({ cta: "start_project", section: "mobile_menu", href: "#contact" });
+            onClose();
+          }}
           className="cx-btn cx-liquid-glass mt-auto inline-flex h-14 items-center justify-center gap-2 rounded-md text-[var(--silver)] hud-label shadow-[var(--shadow-glow-teal)]"
         >
-          Start an AI Project
+          {headerCta}
           <span aria-hidden className="text-[var(--accent-glow)]">→</span>
         </a>
       </div>

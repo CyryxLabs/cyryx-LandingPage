@@ -18,6 +18,7 @@ import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
+import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
 
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
@@ -64,6 +65,11 @@ const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
   path: '/api/public/web-vitals',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
+  id: '/api/public/cta-events',
+  path: '/api/public/cta-events',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/research'
     | '/solutions'
     | '/products/maax-studio'
+    | '/api/public/cta-events'
     | '/api/public/web-vitals'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/research'
     | '/solutions'
     | '/products/maax-studio'
+    | '/api/public/cta-events'
     | '/api/public/web-vitals'
   id:
     | '__root__'
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/research'
     | '/solutions'
     | '/products/maax-studio'
+    | '/api/public/cta-events'
     | '/api/public/web-vitals'
   fileRoutesById: FileRoutesById
 }
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRouteWithChildren
   ResearchRoute: typeof ResearchRoute
   SolutionsRoute: typeof SolutionsRoute
+  ApiPublicCtaEventsRoute: typeof ApiPublicCtaEventsRoute
   ApiPublicWebVitalsRoute: typeof ApiPublicWebVitalsRoute
 }
 
@@ -211,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebVitalsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cta-events': {
+      id: '/api/public/cta-events'
+      path: '/api/public/cta-events'
+      fullPath: '/api/public/cta-events'
+      preLoaderRoute: typeof ApiPublicCtaEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -234,6 +254,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRouteWithChildren,
   ResearchRoute: ResearchRoute,
   SolutionsRoute: SolutionsRoute,
+  ApiPublicCtaEventsRoute: ApiPublicCtaEventsRoute,
   ApiPublicWebVitalsRoute: ApiPublicWebVitalsRoute,
 }
 export const routeTree = rootRouteImport

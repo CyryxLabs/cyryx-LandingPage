@@ -1,8 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import lobby from "@/assets/cyryx-cta-lobby.jpg";
 import { CyryxMark } from "./primitives/CyryxMark";
+import { useCopyVariant } from "@/lib/copy-variant";
+import { getCopy } from "@/copy";
+import { trackCta } from "@/lib/track-cta";
 
 export function CTASection() {
+  const copy = getCopy(useCopyVariant()).finalCta;
   return (
     <section id="cta" className="relative isolate overflow-hidden py-20 sm:py-28 lg:py-40">
       <img
@@ -39,28 +43,33 @@ export function CTASection() {
           </div>
         </div>
         <h2 className="font-display text-[36px] sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[1.05] uppercase text-silver-gradient">
-          Ready to build AI into <span style={{ color: "var(--accent-glow)" }}>your business?</span>
+          {copy.headline}{" "}
+          <span style={{ color: "var(--accent-glow)" }}>{copy.headlineAccent}</span>
         </h2>
         <p className="mt-6 mx-auto max-w-xl text-[15px] sm:text-base lg:text-lg text-[var(--silver-dim)]">
-          Whether you need an AI-powered website, workflow automation, an
-          internal assistant, a custom AI product, or early access to MAAX
-          Studio, Cyryx Labs can help turn the idea into a working system.
+          {copy.body}
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <a
             href="#contact"
-            aria-label="Start an AI project — open contact form"
+            aria-label={`${copy.ctaPrimary} — open contact form`}
+            onClick={() =>
+              trackCta({ cta: "start_project", section: "final_cta", href: "#contact" })
+            }
             className="cx-liquid-glass inline-flex h-12 min-h-11 w-full sm:w-auto items-center justify-center gap-2 rounded-md px-6 hud-label text-[var(--accent-glow)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
           >
-            Start an AI Project
+            {copy.ctaPrimary}
             <ArrowRight className="h-4 w-4" />
           </a>
           <a
             href="#contact"
-            aria-label="Request MAAX Studio access — open contact form"
+            aria-label={`${copy.ctaSecondary} — open contact form`}
+            onClick={() =>
+              trackCta({ cta: "request_maax_access", section: "final_cta", href: "#contact" })
+            }
             className="cx-liquid-glass inline-flex h-12 min-h-11 w-full sm:w-auto items-center justify-center gap-2 rounded-md px-6 hud-label text-[var(--silver)] transition"
           >
-            Request MAAX Studio Access
+            {copy.ctaSecondary}
             <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
           </a>
         </div>
@@ -74,7 +83,7 @@ export function CTASection() {
           </a>
         </p>
         <p className="mt-4 hud-label text-[var(--silver-dim)]">
-          Build AI into your business.
+          {copy.tagline}
         </p>
       </div>
     </section>

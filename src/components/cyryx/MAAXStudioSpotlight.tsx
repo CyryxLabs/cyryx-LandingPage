@@ -3,6 +3,9 @@ import { HudLabel } from "./primitives/HudLabel";
 import { GlassPanel } from "./primitives/GlassPanel";
 import maaxDevices from "@/assets/cyryx-maax-devices.jpg";
 import maaxLogo from "@/assets/cyryx-maax-visual.png.asset.json";
+import { useCopyVariant } from "@/lib/copy-variant";
+import { getCopy } from "@/copy";
+import { trackCta } from "@/lib/track-cta";
 
 const BULLETS = [
   "Turn software goals into structured missions",
@@ -34,6 +37,7 @@ function ProductPreview() {
 }
 
 export function MAAXStudioSpotlight() {
+  const copy = getCopy(useCopyVariant()).maaxSpotlight;
   return (
     <section id="maax" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--graphite)]">
       <div
@@ -55,7 +59,7 @@ export function MAAXStudioSpotlight() {
               className="mt-5 block w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[520px] h-auto object-contain"
             />
             <p className="mt-3 font-display text-base sm:text-lg text-[var(--accent-glow)]">
-              The native command workbench for AI-native software execution.
+              {copy.eyebrow}
             </p>
             <p className="mt-6 max-w-xl text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
               MAAX Studio is Cyryx Labs' flagship proprietary product. It is
@@ -80,10 +84,17 @@ export function MAAXStudioSpotlight() {
             <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <a
                 href="#contact"
-                aria-label="Request early access — open contact form"
+                aria-label={`${copy.cta} — open contact form`}
+                onClick={() =>
+                  trackCta({
+                    cta: "request_early_access",
+                    section: "maax_spotlight",
+                    href: "#contact",
+                  })
+                }
                 className="inline-flex h-12 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
               >
-                Request Early Access
+                {copy.cta}
                 <ArrowRight className="h-4 w-4" />
               </a>
             </div>
