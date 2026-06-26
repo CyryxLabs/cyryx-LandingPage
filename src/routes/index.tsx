@@ -84,7 +84,7 @@ export const Route = createFileRoute("/")({
               foundingDate: "2024",
               industry: "Artificial Intelligence",
               areaServed: "Worldwide",
-              email: "hello@cyryxlabs.com",
+              email: "contact@cyryxlabs.com",
               sameAs: [
                 "https://www.linkedin.com/company/cyryx-labs",
                 "https://x.com/cyryxlabs",

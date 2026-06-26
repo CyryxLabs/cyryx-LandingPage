@@ -76,10 +76,10 @@ export function CTASection() {
         <p className="mt-6 text-sm text-[var(--silver-dim)]">
           Or email us at{" "}
           <a
-            href="mailto:hello@cyryxlabs.com"
+            href="mailto:contact@cyryxlabs.com"
             className="text-[var(--accent-glow)] underline-offset-4 hover:underline"
           >
-            hello@cyryxlabs.com
+            contact@cyryxlabs.com
           </a>
         </p>
         <p className="mt-4 hud-label text-[var(--silver-dim)]">
