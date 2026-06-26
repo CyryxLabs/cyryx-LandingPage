@@ -12,7 +12,7 @@ export function GlassPanel({ className, children, glow, liquid, ...rest }: Props
     <div
       className={cn(
         "relative rounded-xl",
-        liquid ? "cx-liquid-glass" : "glass-panel",
+        liquid === false ? "glass-panel" : "cx-liquid-glass",
         glow && "shadow-[var(--shadow-glow-teal)]",
         className,
       )}
