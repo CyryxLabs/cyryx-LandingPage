@@ -56,12 +56,12 @@ export function ProductEcosystem() {
                 height={900}
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
-              {/* Region labels — hidden on small screens to avoid clutter, revealed from sm+ */}
+              {/* Region labels — positioned over the laptop screen area, sm+ only */}
               {[
-                { label: "Explorer", title: "File explorer — runtime, agents, gates, evals", pos: "left-[3%] top-[14%]" },
-                { label: "Editor + Tabs", title: "Multi-tab editor with syntax highlighting and minimap", pos: "left-[34%] top-[14%]" },
-                { label: "Execution Graph", title: "Agentic step graph with quality / security / architecture / cost gates", pos: "right-[3%] top-[14%]" },
-                { label: "Eval Terminal", title: "Terminal, problems and evaluation runs with token, latency and cost", pos: "left-[34%] bottom-[6%]" },
+                { label: "Explorer", title: "File explorer — runtime, agents, gates, evals", pos: "left-[24%] top-[20%]" },
+                { label: "Editor + Tabs", title: "Multi-tab editor with syntax highlighting and minimap", pos: "left-[40%] top-[20%]" },
+                { label: "Execution Graph", title: "Agentic step graph with governance gates", pos: "left-[58%] top-[20%]" },
+                { label: "Eval Terminal", title: "Terminal / problems / evaluation: tokens, latency and cost", pos: "left-[40%] top-[54%]" },
               ].map((r) => (
                 <span
                   key={r.label}
