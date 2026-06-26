@@ -81,6 +81,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { httpEquiv: "Cache-Control", content: "no-store, no-cache, must-revalidate" },
+      { httpEquiv: "Pragma", content: "no-cache" },
       { title: "Cyryx Labs — AI Execution Systems" },
       { name: "description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
       { name: "author", content: "Lovable" },
