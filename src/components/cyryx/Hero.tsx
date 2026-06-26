@@ -242,10 +242,10 @@ export function Hero() {
             id="hero-heading"
             className="cx-hero-heading font-display font-bold text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
-            <span className="cx-line cx-hero-title-line block text-chrome-gradient whitespace-nowrap">
+            <span className="cx-line cx-hero-title-line block text-chrome-gradient sm:whitespace-nowrap">
               The execution layer
             </span>
-            <span className="cx-line cx-hero-title-line block text-chrome-gradient whitespace-nowrap">
+            <span className="cx-line cx-hero-title-line block text-chrome-gradient sm:whitespace-nowrap">
               for operational AI.
             </span>
           </h1>
