@@ -40,7 +40,7 @@ export function Header() {
             className="inline-flex min-h-11 items-center min-w-0 -mx-1 px-1"
             aria-label="Cyryx Labs — home"
           >
-            <CyryxWordmark priority className="h-8 lg:h-9 drop-shadow-[0_0_12px_color-mix(in_oklab,var(--accent-glow)_25%,transparent)]" />
+            <CyryxWordmark priority className="h-7 lg:h-8" />
           </a>
 
           <nav className="hidden lg:flex items-center gap-9">
