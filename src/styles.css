@@ -245,12 +245,12 @@
 }
 
 .cx-hero-title-line {
-  font-size: clamp(2.5rem, 8vw, 7rem);
-  line-height: 0.98;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.25rem, 6.4vw, 5.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
   font-weight: 700;
   overflow: visible;
-  padding-bottom: 0.08em;
+  padding-bottom: 0.06em;
 }
 
 @media (min-width: 360px) and (max-width: 767px) {
@@ -261,7 +261,7 @@
   }
 
   .cx-hero-title-line {
-    font-size: clamp(2.5rem, 11.5vw, 4.5rem);
+    font-size: clamp(2rem, 10vw, 3.75rem);
     line-height: 1.0;
     letter-spacing: -0.025em;
     padding-bottom: 0.12em;
@@ -275,7 +275,7 @@
   }
 
   .cx-hero-title-line {
-    font-size: clamp(4.25rem, 7.6vw, 5.25rem);
+    font-size: clamp(3.25rem, 6.6vw, 4.5rem);
     line-height: 0.98;
     letter-spacing: -0.03em;
     padding-bottom: 0.1em;
