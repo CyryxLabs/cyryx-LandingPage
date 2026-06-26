@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
@@ -14,7 +13,7 @@ import { trackCta } from "@/lib/track-cta";
 // during Cloudflare Workers SSR triggers "Disallowed operation called
 // within global scope" and blanks the page.
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(useGSAP, ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 }
 
 export function Hero() {
@@ -42,8 +41,10 @@ export function Hero() {
     return () => window.removeEventListener("keydown", onKey);
   }, [debug]);
 
-  useGSAP(
-    () => {
+  useEffect(() => {
+    if (!root.current) return;
+
+    const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
       mm.add(
         {
@@ -182,9 +183,10 @@ export function Hero() {
           });
         },
       );
-    },
-    { scope: root },
-  );
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
