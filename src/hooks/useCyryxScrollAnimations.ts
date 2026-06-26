@@ -9,6 +9,52 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+type HeroDiagnostics = {
+  source: "useCyryxScrollAnimations";
+  scrollY: number;
+  viewport: string;
+  hero: {
+    transform: string;
+    inlineTransform: string;
+    filter: string;
+    inlineFilter: string;
+    scaleX: number;
+    scaleY: number;
+    hasScale: boolean;
+    hasBlur: boolean;
+  };
+  hookHeroTweenCount: number;
+  hookHeroScrollTriggerCount: number;
+  updatedAt: string;
+};
+
+declare global {
+  interface Window {
+    __CYRYX_SCROLL_DIAGNOSTICS__?: HeroDiagnostics;
+  }
+}
+
+function readScale(transform: string) {
+  if (!transform || transform === "none") return { scaleX: 1, scaleY: 1 };
+  const matrix3d = transform.match(/^matrix3d\((.+)\)$/);
+  if (matrix3d) {
+    const values = matrix3d[1].split(",").map((value) => Number.parseFloat(value.trim()));
+    return {
+      scaleX: Number.isFinite(values[0]) ? Math.hypot(values[0], values[1], values[2]) : 1,
+      scaleY: Number.isFinite(values[5]) ? Math.hypot(values[4], values[5], values[6]) : 1,
+    };
+  }
+  const matrix = transform.match(/^matrix\((.+)\)$/);
+  if (matrix) {
+    const values = matrix[1].split(",").map((value) => Number.parseFloat(value.trim()));
+    return {
+      scaleX: Number.isFinite(values[0]) ? Math.hypot(values[0], values[1]) : 1,
+      scaleY: Number.isFinite(values[3]) ? Math.hypot(values[2], values[3]) : 1,
+    };
+  }
+  return { scaleX: transform.includes("scale(") ? Number.NaN : 1, scaleY: transform.includes("scale(") ? Number.NaN : 1 };
+}
+
 /**
  * Global scroll storytelling for the Cyryx landing page.
  * Uses gsap.matchMedia for mobile / tablet / desktop tiers and
@@ -16,6 +62,40 @@ if (typeof window !== "undefined") {
  */
 export function useCyryxScrollAnimations() {
   useEffect(() => {
+    let diagnosticsRaf = 0;
+    const publishHeroDiagnostics = () => {
+      diagnosticsRaf = 0;
+      const hero = document.querySelector<HTMLElement>("[data-hero]");
+      if (!hero) return;
+      const computed = getComputedStyle(hero);
+      const { scaleX, scaleY } = readScale(computed.transform);
+      const normalizedFilter = computed.filter === "none" ? "" : computed.filter;
+      const diagnostics: HeroDiagnostics = {
+        source: "useCyryxScrollAnimations",
+        scrollY: window.scrollY,
+        viewport: `${window.innerWidth}×${window.innerHeight}`,
+        hero: {
+          transform: computed.transform,
+          inlineTransform: hero.style.transform,
+          filter: computed.filter,
+          inlineFilter: hero.style.filter,
+          scaleX,
+          scaleY,
+          hasScale: Math.abs(scaleX - 1) > 0.003 || Math.abs(scaleY - 1) > 0.003,
+          hasBlur: normalizedFilter.includes("blur(") || hero.style.filter.includes("blur("),
+        },
+        hookHeroTweenCount: gsap.getTweensOf(hero).length,
+        hookHeroScrollTriggerCount: 0,
+        updatedAt: new Date().toISOString(),
+      };
+      window.__CYRYX_SCROLL_DIAGNOSTICS__ = diagnostics;
+      window.dispatchEvent(new CustomEvent("cyryx:scroll-diagnostics", { detail: diagnostics }));
+    };
+    const scheduleHeroDiagnostics = () => {
+      if (diagnosticsRaf) return;
+      diagnosticsRaf = requestAnimationFrame(publishHeroDiagnostics);
+    };
+
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
       // Snap all reveals to final state, count-ups to target.
@@ -28,6 +108,7 @@ export function useCyryxScrollAnimations() {
           ? el.dataset.countupFormat.replace("{n}", el.dataset.countup ?? "0")
           : (el.dataset.countup ?? "0");
       });
+      scheduleHeroDiagnostics();
       return;
     }
 
@@ -354,15 +435,23 @@ export function useCyryxScrollAnimations() {
     const t1 = window.setTimeout(doRefresh, 400);
     const t2 = window.setTimeout(doRefresh, 1500);
     window.addEventListener("load", doRefresh);
+    window.addEventListener("scroll", scheduleHeroDiagnostics, { passive: true });
+    window.addEventListener("resize", scheduleHeroDiagnostics);
+    window.addEventListener("cyryx:diagnostics-toggle", scheduleHeroDiagnostics);
     if (document.fonts?.ready) document.fonts.ready.then(doRefresh).catch(() => {});
     document.querySelectorAll("img").forEach((img) => {
       if (!img.complete) img.addEventListener("load", doRefresh, { once: true });
     });
+    scheduleHeroDiagnostics();
 
     return () => {
+      if (diagnosticsRaf) cancelAnimationFrame(diagnosticsRaf);
       window.clearTimeout(t1);
       window.clearTimeout(t2);
       window.removeEventListener("load", doRefresh);
+      window.removeEventListener("scroll", scheduleHeroDiagnostics);
+      window.removeEventListener("resize", scheduleHeroDiagnostics);
+      window.removeEventListener("cyryx:diagnostics-toggle", scheduleHeroDiagnostics);
       mm.revert();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };

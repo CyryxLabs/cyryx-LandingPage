@@ -7,6 +7,7 @@ import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { PerfToggle } from "@/components/cyryx/PerfToggle";
+import { DiagnosticsOverlay } from "@/components/cyryx/DiagnosticsOverlay";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
@@ -199,6 +200,7 @@ function Index() {
       <Footer />
       <StickyMobileCTA />
       <PerfToggle />
+      <DiagnosticsOverlay />
     </div>
   );
 }
