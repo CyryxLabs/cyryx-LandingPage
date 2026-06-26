@@ -1,5 +1,5 @@
 import markAsset from "@/assets/cyryx-mark.png.asset.json";
-import wordmarkAsset from "@/assets/cyryx-logo-clean-v2.png.asset.json";
+import wordmarkAsset from "@/assets/cyryx-logo-clean-v3.png.asset.json";
 
 /**
  * Official Cyryx brand marks. Header wordmark uses the recut transparent
