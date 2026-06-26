@@ -28,6 +28,7 @@ export const submitContact = createServerFn({ method: "POST" })
       email: data.email,
       company: data.company,
       messageLength: data.message.length,
+      consent: data.consent,
       at: new Date().toISOString(),
     });
     return { ok: true as const, receivedAt: new Date().toISOString() };
