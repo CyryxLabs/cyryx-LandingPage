@@ -236,16 +236,16 @@ export function Hero() {
 
       {/* Foreground content */}
       <div className="relative mx-auto w-full max-w-7xl px-6 pb-28 pt-32 sm:px-10 sm:pt-40 lg:px-14">
-        <div className="max-w-3xl">
+        <div className="max-w-[64rem]">
           {/* Headline */}
           <h1
             id="hero-heading"
             className="cx-hero-heading font-display font-bold text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
-            <span className="cx-line cx-hero-title-line block text-chrome-gradient [overflow-wrap:break-word]">
+            <span className="cx-line cx-hero-title-line block text-chrome-gradient whitespace-nowrap">
               The execution layer
             </span>
-            <span className="cx-line cx-hero-title-line block text-chrome-gradient [overflow-wrap:break-word]">
+            <span className="cx-line cx-hero-title-line block text-chrome-gradient whitespace-nowrap">
               for operational AI.
             </span>
           </h1>
