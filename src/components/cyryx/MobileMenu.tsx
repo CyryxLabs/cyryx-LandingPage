@@ -111,7 +111,7 @@ export function MobileMenu({
 
         <a
           ref={ctaRef}
-          href="#cta"
+          href="#contact"
           onClick={onClose}
           className="cx-btn cx-liquid-glass mt-auto inline-flex h-14 items-center justify-center gap-2 rounded-md text-[var(--silver)] hud-label shadow-[var(--shadow-glow-teal)]"
         >

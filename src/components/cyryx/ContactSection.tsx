@@ -12,6 +12,9 @@ const FormSchema = z.object({
   email: z.string().trim().email("Enter a valid email").max(255),
   company: z.string().trim().max(120).optional().default(""),
   message: z.string().trim().min(10, "At least 10 characters").max(2000),
+  consent: z.literal(true, {
+    errorMap: () => ({ message: "Please accept the Privacy Policy to continue" }),
+  }),
 });
 
 type Errors = Partial<Record<keyof z.infer<typeof FormSchema>, string>>;
@@ -22,6 +25,7 @@ export function ContactSection() {
   const [errors, setErrors] = useState<Errors>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [messageLen, setMessageLen] = useState(0);
+  const [consent, setConsent] = useState(false);
   const successRef = useRef<HTMLDivElement | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -38,6 +42,7 @@ export function ContactSection() {
       email: String(fd.get("email") ?? ""),
       company: String(fd.get("company") ?? ""),
       message: String(fd.get("message") ?? ""),
+      consent: fd.get("consent") === "on",
     };
     const parsed = FormSchema.safeParse(raw);
     if (!parsed.success) {
@@ -57,6 +62,7 @@ export function ContactSection() {
       setStatus("success");
       (e.target as HTMLFormElement).reset();
       setMessageLen(0);
+      setConsent(false);
       toast.success("Message sent — we'll reply within 24h.");
       requestAnimationFrame(() => {
         successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -175,6 +181,60 @@ export function ContactSection() {
                   {serverError}
                 </p>
               )}
+
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="consent"
+                  className="flex items-start gap-3 text-[13px] leading-relaxed text-[var(--silver-dim)]"
+                >
+                  <input
+                    id="consent"
+                    name="consent"
+                    type="checkbox"
+                    checked={consent}
+                    onChange={(e) => {
+                      setConsent(e.currentTarget.checked);
+                      if (e.currentTarget.checked && errors.consent) {
+                        setErrors((p) => ({ ...p, consent: undefined }));
+                      }
+                    }}
+                    aria-invalid={!!errors.consent}
+                    aria-describedby={errors.consent ? "consent-error" : undefined}
+                    required
+                    className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-[color-mix(in_oklab,var(--silver)_30%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_55%,transparent)] accent-[var(--accent-glow)] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)]"
+                  />
+                  <span>
+                    I agree to be contacted by Cyryx Labs about this inquiry and
+                    acknowledge the{" "}
+                    <a
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[var(--silver)] underline underline-offset-4 hover:text-[var(--accent-glow)]"
+                    >
+                      Privacy Policy
+                    </a>
+                    . You can withdraw consent at any time by emailing{" "}
+                    <a
+                      href="mailto:privacy@cyryxlabs.com"
+                      className="text-[var(--silver)] underline underline-offset-4 hover:text-[var(--accent-glow)]"
+                    >
+                      privacy@cyryxlabs.com
+                    </a>
+                    .
+                  </span>
+                </label>
+                {errors.consent && (
+                  <p
+                    id="consent-error"
+                    role="alert"
+                    aria-live="polite"
+                    className="text-xs font-medium text-[color:var(--destructive,#ef4444)]"
+                  >
+                    {errors.consent}
+                  </p>
+                )}
+              </div>
 
               <button
                 type="submit"
