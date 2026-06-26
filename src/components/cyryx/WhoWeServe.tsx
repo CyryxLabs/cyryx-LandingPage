@@ -2,21 +2,21 @@ import { Rocket, Briefcase, Building2, Layers } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 
 const AUDIENCE = [
-  { icon: Rocket, title: "Founders", copy: "Build AI products, MVPs, SaaS platforms, and internal tools with speed and structure." },
-  { icon: Briefcase, title: "Agencies", copy: "Deliver client work with repeatable AI workflows, reusable systems, and clearer operational leverage." },
-  { icon: Building2, title: "Businesses", copy: "Automate manual work, connect internal tools, and turn scattered processes into intelligent workflows." },
-  { icon: Layers, title: "Product Teams", copy: "Add AI capabilities, agents, copilots, and workflow automation to existing products and operations." },
+  { icon: Building2, title: "Small & Medium Businesses", copy: "Use AI to improve websites, capture leads, answer questions, automate repetitive work, and organize internal knowledge." },
+  { icon: Rocket, title: "Founders & Startups", copy: "Build AI-powered MVPs, SaaS products, dashboards, and internal tools with stronger architecture." },
+  { icon: Briefcase, title: "Agencies", copy: "Deliver client work with reusable AI workflows, premium landing pages, automations, and internal systems." },
+  { icon: Layers, title: "Product Teams", copy: "Add AI capabilities, workflow automation, assistants, and governance layers to existing products." },
 ];
 
 const VALUES = [
-  "Product-led thinking",
-  "Execution-first architecture",
-  "Human-commanded autonomy",
-  "Context-aware systems",
-  "Cost-conscious implementation",
-  "Governance-ready design",
-  "Builder-focused velocity",
-  "Runtime-first product philosophy",
+  "AI technology company, not a generic agency",
+  "Proprietary product roadmap through MAAX Studio",
+  "Applied R&D through Cyryx Applied AI Lab",
+  "Practical implementation through Cyryx Solutions",
+  "Product-quality engineering",
+  "Workflow-first strategy",
+  "Human-controlled execution",
+  "Cost-aware architecture",
 ];
 
 export function WhoWeServe() {
@@ -26,7 +26,7 @@ export function WhoWeServe() {
         <div className="max-w-3xl cx-reveal">
           <HudLabel withDot>Who we serve</HudLabel>
           <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-tight text-silver-gradient uppercase">
-            Built for teams ready to operationalize AI.
+            Built for businesses, builders, and teams ready to use AI practically.
           </h2>
         </div>
 
@@ -48,13 +48,13 @@ export function WhoWeServe() {
           <div>
             <HudLabel withDot>Why Cyryx</HudLabel>
             <h2 className="mt-5 font-display text-[28px] sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-[1.1] tracking-tight text-silver-gradient uppercase">
-              Product-first. Execution-focused. Human-governed.
+              Product-first. Research-backed. Implementation-ready.
             </h2>
           </div>
           <p className="text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)] max-w-xl">
-            Cyryx Labs combines product development, applied AI research,
-            automation engineering, and execution governance. We do not sell AI
-            hype. We build systems that work inside real businesses.
+            Cyryx Labs is built differently from a typical services company.
+            We do not only implement tools. We design systems, build products,
+            and develop proprietary architecture for governed AI execution.
           </p>
         </div>
 

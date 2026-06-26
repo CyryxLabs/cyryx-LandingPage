@@ -7,8 +7,8 @@ const PILLARS = [
     n: "01",
     icon: ProductsGlyph,
     tag: "Products",
-    title: "Proprietary AI products built around execution.",
-    copy: "We build AI-native software products for builders, founders, agencies, and teams that need more than chat-based assistance — starting with MAAX Studio, our flagship runtime-first execution environment.",
+    title: "Proprietary AI products.",
+    copy: "We build AI-native products designed around execution, memory, workflow coordination, and governed autonomy. Our flagship product is MAAX Studio.",
     href: "#maax",
     cta: "Explore MAAX Studio",
   },
@@ -16,17 +16,17 @@ const PILLARS = [
     n: "02",
     icon: SolutionsGlyph,
     tag: "Solutions",
-    title: "Custom AI systems for real business workflows.",
-    copy: "We design and build AI-powered systems that connect to how companies actually operate: internal copilots, workflow automation, knowledge systems, data-connected agents, dashboards, integrations, and governance layers. We do not start with hype. We start with workflow.",
+    title: "Applied AI systems for real business workflows.",
+    copy: "Cyryx Solutions is the implementation arm of Cyryx Labs. We help companies build AI-powered websites, workflow automations, internal assistants, integrations, knowledge systems, and custom AI products.",
     href: "#solutions",
-    cta: "See solutions",
+    cta: "See Solutions",
   },
   {
     n: "03",
     icon: LabGlyph,
     tag: "Applied AI Lab",
-    title: "Research and architecture for governed AI execution.",
-    copy: "Cyryx Applied AI Lab develops the patterns, protocols, architectures, and evaluation models behind our products and client systems — agentic execution, project memory, context intelligence, governed workflow architecture, evaluation gates, model routing, and cost control.",
+    title: "Research and architecture for practical AI.",
+    copy: "Cyryx Applied AI Lab develops the architecture, evaluation methods, workflow patterns, and productized systems behind our products and client implementations.",
     href: "#applied-lab",
     cta: "Inside the Lab",
   },
@@ -41,14 +41,14 @@ export function CoreCapabilities() {
           <div>
             <HudLabel withDot>What we build</HudLabel>
             <h2 className="mt-4 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold uppercase text-silver-gradient">
-              AI systems for the agentic era.
+              Products, systems, and architecture for operational AI.
             </h2>
           </div>
           <p className="max-w-md text-sm text-[var(--silver-dim)]">
-            Cyryx Labs operates across three connected pillars: proprietary AI
-            products, custom AI systems, and applied AI research. Together they
-            form the foundation for execution infrastructure that is
-            structured, observable, cost-aware, and human-governed.
+            Cyryx Labs operates through three connected engines: proprietary
+            products, applied AI systems, and research-backed implementation.
+            Together, they help companies turn artificial intelligence into
+            practical business capability.
           </p>
         </div>
 

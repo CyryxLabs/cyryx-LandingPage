@@ -1,11 +1,11 @@
 import { HudLabel } from "./primitives/HudLabel";
 
 const STEPS = [
-  { n: "01", title: "Diagnose", copy: "We map the workflow, business pain, systems, data, constraints, and target outcome." },
-  { n: "02", title: "Architect", copy: "We design the AI system, model strategy, integrations, UX, and governance layer." },
-  { n: "03", title: "Build", copy: "We develop the product, agent, automation, or workflow with production-ready engineering." },
-  { n: "04", title: "Deploy", copy: "We launch, test, monitor, and iterate with clear operational metrics." },
-  { n: "05", title: "Govern", copy: "We add visibility, approvals, cost controls, audit logs, and human oversight." },
+  { n: "01", title: "Diagnose", copy: "We understand the business, workflow, tools, pain points, constraints, and target outcome." },
+  { n: "02", title: "Architect", copy: "We define the AI use case, system design, user flow, integrations, governance needs, and implementation plan." },
+  { n: "03", title: "Build", copy: "We develop the website, automation, assistant, integration, internal tool, or AI product." },
+  { n: "04", title: "Launch", copy: "We test, deploy, connect tools, and prepare the system for real use." },
+  { n: "05", title: "Improve", copy: "We monitor usage, reduce friction, improve workflows, and add governance where needed." },
 ];
 
 export function ProcessTimeline() {
@@ -16,11 +16,11 @@ export function ProcessTimeline() {
           <div>
             <HudLabel withDot>How we work</HudLabel>
             <h2 className="mt-4 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold uppercase text-silver-gradient">
-              How we turn AI into execution.
+              From idea to implemented system.
             </h2>
           </div>
           <p className="max-w-sm text-sm text-[var(--silver-dim)]">
-            Five phases. One continuous execution channel — from diagnosis to governed operation.
+            Five phases. One execution channel from diagnosis to operation.
           </p>
         </div>
 

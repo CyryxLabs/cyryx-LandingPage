@@ -2,11 +2,11 @@ import { HudLabel } from "./primitives/HudLabel";
 import { CyryxMark } from "./primitives/CyryxMark";
 
 const NODES = [
-  { tag: "Company", name: "Cyryx Labs", copy: "AI product and systems company building execution infrastructure for the agentic era." },
-  { tag: "Flagship Product", name: "MAAX Studio", copy: "Local-first agentic software execution environment for AI-native builders." },
-  { tag: "Execution Architecture", name: "MAAX Runtime", copy: "The proprietary runtime architecture behind missions, memory, context, command units, operator cells, gates, ledgers, delivery packages, and cost control." },
-  { tag: "Applied R&D", name: "Cyryx Applied AI Lab", copy: "Research and architecture layer for governed AI execution, evaluation, and productized systems." },
-  { tag: "Solutions", name: "Cyryx Solutions", copy: "Custom AI systems, automations, copilots, workflows, integrations, and governance layers for businesses." },
+  { tag: "Company", name: "Cyryx Labs", copy: "AI technology company building proprietary products, applied AI systems, and implementation capability for the agentic era." },
+  { tag: "Flagship Product", name: "MAAX Studio", copy: "Native command workbench for AI-native software execution." },
+  { tag: "Implementation Arm", name: "Cyryx Solutions", copy: "AI-powered websites, workflow automation, internal assistants, integrations, and custom AI products for businesses." },
+  { tag: "Research Layer", name: "Cyryx Applied AI Lab", copy: "Applied research and architecture behind Cyryx products, systems, and evaluation methods." },
+  { tag: "Execution Architecture", name: "MAAX Runtime", copy: "The proprietary architecture behind missions, operators, memory, gates, evidence, delivery review, and governed execution." },
 ];
 
 export function Ecosystem() {
@@ -20,7 +20,7 @@ export function Ecosystem() {
           <HudLabel withDot>Ecosystem</HudLabel>
           <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-tight text-silver-gradient uppercase">
             Built by Cyryx Labs.<br />
-            <span style={{ color: "var(--accent-glow)" }}>Powered by execution architecture.</span>
+            <span style={{ color: "var(--accent-glow)" }}>Powered by AI execution architecture.</span>
           </h2>
         </div>
 

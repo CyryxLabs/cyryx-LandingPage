@@ -5,13 +5,14 @@ import maaxDevices from "@/assets/cyryx-maax-devices.jpg";
 import maaxLogo from "@/assets/cyryx-maax-visual.png.asset.json";
 
 const BULLETS = [
-  "Turn goals into structured missions",
-  "Maintain persistent project memory",
-  "Map project context through an Atlas-style context layer",
-  "Activate specialized command units and operator cells",
-  "Route work through execution protocols",
-  "Validate output through quality, security, architecture, and cost gates",
-  "Track mission activity through ledgers and decision memory",
+  "Turn software goals into structured missions",
+  "Coordinate specialized operators",
+  "Preserve project memory and decisions",
+  "Map project context through Atlas",
+  "Route work through command units",
+  "Validate execution through command gates",
+  "Track work through mission ledgers",
+  "Review output through delivery dossiers",
   "Keep humans in command of critical delivery decisions",
   "Provide a clear Mission Control surface for visibility and review",
 ];
@@ -54,16 +55,17 @@ export function MAAXStudioSpotlight() {
               className="mt-5 block w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[520px] h-auto object-contain"
             />
             <p className="mt-3 font-display text-base sm:text-lg text-[var(--accent-glow)]">
-              The agentic execution OS for AI-native builders.
+              The native command workbench for AI-native software execution.
             </p>
             <p className="mt-6 max-w-xl text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-              MAAX Studio is Cyryx Labs' flagship product: a local-first
-              agentic software factory environment for founders, agencies, and
-              product teams building with AI. It is being built as a
-              runtime-first system for coordinating software work through
-              structured missions, project memory, specialized operators,
-              command units, gates, delivery packages, and human-governed
-              execution.
+              MAAX Studio is Cyryx Labs' flagship proprietary product. It is
+              being built for founders, builders, agencies, and product teams
+              that need a more structured way to coordinate AI-native software
+              work. Instead of treating AI as a chat window, MAAX Studio is
+              designed around missions, operators, memory, gates, evidence,
+              and human-governed delivery — transforming software objectives
+              into structured missions that can be planned, reviewed,
+              coordinated, and governed.
             </p>
             <ul className="mt-7 space-y-3">
               {BULLETS.map((b) => (

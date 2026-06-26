@@ -9,8 +9,7 @@ const NAV = [
   { label: "Solutions", href: "#solutions" },
   { label: "Applied AI Lab", href: "#applied-lab" },
   { label: "MAAX Studio", href: "#maax" },
-  { label: "Company", href: "/company" },
-  { label: "Contact", href: "#contact" },
+  { label: "MAAX Runtime", href: "#ecosystem" },
 ];
 
 export function Header() {
@@ -59,7 +58,7 @@ export function Header() {
             href="#contact"
             className="cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
-            Start a Project
+            Start an AI Project
             <span aria-hidden className="text-[var(--accent-glow)]">→</span>
           </a>
 

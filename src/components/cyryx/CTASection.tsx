@@ -39,26 +39,28 @@ export function CTASection() {
           </div>
         </div>
         <h2 className="font-display text-[36px] sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[1.05] uppercase text-silver-gradient">
-          Ready to turn AI into <span style={{ color: "var(--accent-glow)" }}>execution?</span>
+          Ready to build AI into <span style={{ color: "var(--accent-glow)" }}>your business?</span>
         </h2>
         <p className="mt-6 mx-auto max-w-xl text-[15px] sm:text-base lg:text-lg text-[var(--silver-dim)]">
-          Build your AI product, automate your workflow, or join the MAAX Studio early access program.
+          Whether you need an AI-powered website, workflow automation, an
+          internal assistant, a custom AI product, or early access to MAAX
+          Studio, Cyryx Labs can help turn the idea into a working system.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <a
             href="#contact"
-            aria-label="Request access — open contact form"
+            aria-label="Start an AI project — open contact form"
             className="cx-liquid-glass inline-flex h-12 min-h-11 w-full sm:w-auto items-center justify-center gap-2 rounded-md px-6 hud-label text-[var(--accent-glow)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
           >
-            Request Access
+            Start an AI Project
             <ArrowRight className="h-4 w-4" />
           </a>
           <a
             href="#contact"
-            aria-label="Start a project — open contact form"
+            aria-label="Request MAAX Studio access — open contact form"
             className="cx-liquid-glass inline-flex h-12 min-h-11 w-full sm:w-auto items-center justify-center gap-2 rounded-md px-6 hud-label text-[var(--silver)] transition"
           >
-            Start a Project
+            Request MAAX Studio Access
             <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
           </a>
         </div>
@@ -72,7 +74,7 @@ export function CTASection() {
           </a>
         </p>
         <p className="mt-4 hud-label text-[var(--silver-dim)]">
-          From prompt chaos to governed AI execution.
+          Build AI into your business.
         </p>
       </div>
     </section>
