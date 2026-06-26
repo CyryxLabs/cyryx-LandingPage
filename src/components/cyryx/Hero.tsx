@@ -324,31 +324,26 @@ export function Hero() {
         <div
           aria-label="Cyryx platform pillars and operating posture"
           role="group"
-          className="mt-24 flex flex-col gap-3 border-t border-white/10 pt-6"
+          className="mt-24 flex flex-col gap-4 border-t border-white/10 pt-6"
         >
-          <ul className="grid list-none grid-cols-2 gap-y-4 md:grid-cols-4 md:gap-y-0">
-            {META.map((m, i) => (
+          <ul className="flex list-none flex-col gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8 md:gap-y-3">
+            {META.map((m) => (
               <li
                 key={m}
-                className={`cx-meta flex items-center font-mono text-[11px] uppercase tracking-[0.32em] ${
-                  i > 0 ? "md:border-l md:border-white/10 md:pl-5" : ""
-                }`}
+                className="cx-meta flex items-center font-mono text-[11px] uppercase tracking-[0.32em]"
               >
                 <span aria-hidden="true" className="mr-3 text-[var(--accent-glow)]">/</span>
                 <span className="text-metal">{m}</span>
               </li>
             ))}
           </ul>
-          <ul className="grid list-none grid-cols-1 items-center md:grid-cols-4">
-            <li aria-hidden="true" className="hidden md:block" />
-            <li className="cx-meta col-span-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.3em] md:col-span-3 md:justify-start md:pl-5">
-              <span className="text-metal-dim">Governance-ready architecture</span>
-              <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-              <span className="text-metal-dim">Human-commanded autonomy</span>
-              <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-              <span className="text-metal-dim">Cost-aware execution</span>
-            </li>
-          </ul>
+          <p className="cx-meta flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center font-mono text-[10.5px] uppercase tracking-[0.3em]">
+            <span className="text-metal-dim">Governance-ready architecture</span>
+            <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
+            <span className="text-metal-dim">Human-commanded autonomy</span>
+            <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
+            <span className="text-metal-dim">Cost-aware execution</span>
+          </p>
         </div>
       </div>
 
