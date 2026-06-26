@@ -272,36 +272,36 @@ html.cx-low-perf .glass-panel {
 /* Hero headline sizing: tuned to keep tall/descender glyphs visible from
    360px portrait through 1024px landscape/tablet without negative tracking. */
 .cx-hero-heading {
-  line-height: 0.98;
-  letter-spacing: -0.025em;
+  line-height: 1.08;
+  letter-spacing: 0.02em;
   font-feature-settings: "ss01", "cv11";
   overflow: visible;
-  padding-bottom: 0.16em;
+  padding-bottom: 0.12em;
   text-wrap: balance;
 }
 
 .cx-hero-title-line {
-  font-size: clamp(2.25rem, 6.4vw, 5.25rem);
-  line-height: 1.02;
-  letter-spacing: -0.028em;
+  font-size: clamp(1.9rem, 4.6vw, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
   font-weight: 700;
   overflow: visible;
-  padding-bottom: 0.06em;
+  padding-bottom: 0.08em;
 }
 
 @media (min-width: 360px) and (max-width: 767px) {
   .cx-hero-heading {
-    line-height: 1.04;
-    letter-spacing: -0.02em;
-    padding-bottom: 0.12em;
+    line-height: 1.12;
+    letter-spacing: 0.015em;
+    padding-bottom: 0.1em;
     text-wrap: balance;
   }
 
   .cx-hero-title-line {
-    font-size: clamp(2.125rem, 9.4vw, 3.25rem);
-    line-height: 1.04;
-    letter-spacing: -0.022em;
-    padding-bottom: 0.1em;
+    font-size: clamp(1.65rem, 7vw, 2.4rem);
+    line-height: 1.14;
+    letter-spacing: 0.012em;
+    padding-bottom: 0.08em;
   }
 
   /* Mobile glass panel for the hero copy — light, GPU-cheap. */
@@ -339,8 +339,8 @@ html.cx-low-perf .glass-panel {
    in the hero title/sub/CTAs and reduce panel padding further. */
 @media (max-width: 359px) {
   .cx-hero-title-line {
-    font-size: clamp(1.625rem, 8vw, 2rem);
-    letter-spacing: -0.02em;
+    font-size: clamp(1.35rem, 6.6vw, 1.7rem);
+    letter-spacing: 0.01em;
   }
 
   .cx-hero-sub {
@@ -501,15 +501,15 @@ html.cx-low-perf .cx-liquid-glass {
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .cx-hero-heading {
-    line-height: 0.98;
+    line-height: 1.08;
     padding-bottom: 0.1em;
   }
 
   .cx-hero-title-line {
-    font-size: clamp(3.25rem, 6.6vw, 4.5rem);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    padding-bottom: 0.1em;
+    font-size: clamp(2.25rem, 4.8vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: 0.018em;
+    padding-bottom: 0.08em;
   }
 
   .cx-hero-ctas {
