@@ -10,7 +10,12 @@ import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+// Register only in the browser. Calling registerPlugin at module scope
+// during Cloudflare Workers SSR triggers "Disallowed operation called
+// within global scope" and blanks the page.
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(useGSAP, ScrollTrigger);
+}
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
