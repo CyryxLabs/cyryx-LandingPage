@@ -274,6 +274,35 @@ export function useCyryxScrollAnimations() {
       });
     });
 
+    // ── MacBook IDE figure — smooth reveal, no pinning, tuned per breakpoint
+    mm.add(
+      {
+        isMobile: "(max-width: 767px)",
+        isTabletUp: "(min-width: 768px)",
+      },
+      (context) => {
+        const { isMobile } = context.conditions as { isMobile: boolean; isTabletUp: boolean };
+        gsap.utils.toArray<HTMLElement>("[data-macbook-figure] img").forEach((img) => {
+          gsap.fromTo(
+            img,
+            { autoAlpha: 0, y: isMobile ? 18 : 32, scale: isMobile ? 0.99 : 0.965 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              duration: isMobile ? 0.9 : 1.1,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: img,
+                start: isMobile ? "top 92%" : "top 85%",
+                toggleActions: "play none none none",
+              },
+            },
+          );
+        });
+      },
+    );
+
     // Recalculate after images/fonts settle.
     const doRefresh = () => ScrollTrigger.refresh();
     requestAnimationFrame(doRefresh);
