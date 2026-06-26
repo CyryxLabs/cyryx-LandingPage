@@ -53,7 +53,7 @@ export function StickyMobileCTA() {
       <div className="mx-auto flex max-w-7xl items-center gap-2">
         <a
           href="#contact"
-          className="inline-flex h-12 min-h-11 flex-1 items-center justify-center gap-2 rounded-md bg-[var(--accent-glow)] px-4 hud-label font-semibold text-[var(--onyx)] shadow-[var(--shadow-glow-teal)] active:brightness-95"
+          className="cx-liquid-glass inline-flex h-12 min-h-11 flex-1 items-center justify-center gap-2 rounded-md px-4 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] active:brightness-95"
         >
           Talk to us
           <ArrowRight className="h-4 w-4" />

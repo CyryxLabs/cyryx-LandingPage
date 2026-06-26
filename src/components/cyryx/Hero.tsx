@@ -304,7 +304,7 @@ export function Hero() {
             <a
               href="#maax"
               aria-label="Explore MAAX Studio — flagship product"
-              className="cx-cta cx-cta-primary group relative inline-flex min-h-[48px] w-full items-center justify-center gap-2 overflow-hidden rounded-md border border-[var(--accent-glow)] bg-[var(--accent-glow)] px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-black shadow-[0_10px_30px_-12px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
+              className="cx-cta cx-cta-primary cx-liquid-glass group relative inline-flex min-h-[48px] w-full items-center justify-center gap-2 overflow-hidden rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--accent-glow)] shadow-[0_10px_30px_-12px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
             >
               <span>Explore MAAX Studio</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
