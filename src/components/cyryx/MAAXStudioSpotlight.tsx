@@ -47,11 +47,11 @@ export function MAAXStudioSpotlight() {
             <img
               src={maaxLogo.url}
               alt="MAAX Studio logo"
-              width={1254}
-              height={1254}
+              width={1794}
+              height={222}
               loading="lazy"
               decoding="async"
-              className="mt-5 block w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[420px] object-contain mix-blend-screen"
+              className="mt-5 block w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[520px] h-auto object-contain"
             />
             <p className="mt-3 font-display text-base sm:text-lg text-[var(--accent-glow)]">
               The agentic execution OS for AI-native builders.
