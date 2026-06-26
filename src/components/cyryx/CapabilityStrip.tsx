@@ -14,18 +14,26 @@ export function CapabilityStrip() {
       id="overview"
       className="relative border-y border-[color-mix(in_oklab,var(--silver)_8%,transparent)] bg-[var(--graphite)]"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-8 lg:py-10">
-        <div className="cx-stagger grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-7 lg:py-9">
+        <div className="cx-stagger grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-y-5 sm:gap-y-0">
           {ITEMS.map(({ n, icon: Icon, title }, i) => (
             <div
               key={title}
-              className={`cx-stagger-item group flex items-center gap-4 px-3 sm:px-4 lg:px-6 py-3 ${i > 0 ? "lg:border-l border-[color-mix(in_oklab,var(--silver)_8%,transparent)]" : ""}`}
+              className={`cx-stagger-item group relative flex min-w-0 flex-col gap-2 px-4 lg:px-6 ${
+                i > 0
+                  ? "sm:[&:not(:nth-child(3n+1))]:border-l lg:border-l lg:[&:not(:nth-child(3n+1))]:border-l border-[color-mix(in_oklab,var(--silver)_8%,transparent)]"
+                  : ""
+              }`}
             >
-              <span className="font-display text-xs font-bold tracking-widest text-[var(--accent-glow)]">
+              <span className="font-display text-[10px] font-bold tracking-[0.2em] text-[var(--accent-glow)]">
                 {n}
               </span>
-              <Icon className="h-4 w-4 text-[var(--accent-glow)] opacity-80 shrink-0" />
-              <span className="hud-label text-[var(--silver)] truncate">{title}</span>
+              <div className="flex min-w-0 items-center gap-2.5">
+                <Icon className="h-4 w-4 shrink-0 text-[var(--accent-glow)] opacity-80" />
+                <span className="hud-label text-[13px] text-[var(--silver)] leading-tight break-words min-w-0">
+                  {title}
+                </span>
+              </div>
             </div>
           ))}
         </div>
