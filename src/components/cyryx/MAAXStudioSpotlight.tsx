@@ -2,6 +2,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 import { GlassPanel } from "./primitives/GlassPanel";
 import maaxDevices from "@/assets/cyryx-maax-devices.jpg";
+import maaxVisual from "@/assets/cyryx-maax-visual.png.asset.json";
 
 const BULLETS = [
   "Turn goals into structured missions",
@@ -80,6 +81,23 @@ export function MAAXStudioSpotlight() {
           </div>
 
           <div className="cx-reveal">
+            <div
+              className="mb-6 overflow-hidden rounded-xl"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 40%, color-mix(in oklab, var(--accent-glow) 22%, transparent) 0%, transparent 65%), var(--graphite)",
+              }}
+            >
+              <img
+                src={maaxVisual.url}
+                alt="MAAX Studio brand visual"
+                width={1254}
+                height={1254}
+                loading="lazy"
+                decoding="async"
+                className="block h-auto w-full object-contain mix-blend-screen"
+              />
+            </div>
             <ProductPreview />
           </div>
         </div>
