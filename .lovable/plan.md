@@ -1,100 +1,56 @@
-## Diagnóstico
-- `.cx-hero-title-line` foi calibrada para Inter Tight (`clamp(2.25rem, 6.4vw, 5.25rem)`, letter-spacing `-0.028em`). Com Orbitron — fonte geométrica muito mais larga — o tamanho explode no desktop e o tracking negativo aperta as letras de forma desconfortável; em tablet a frase única quebra mal.
-- Título mora em `<div class="cx-hero-panel mx-auto max-w-[64rem] sm:mx-0">` (coluna esquerda de 64rem) enquanto a meta rail abaixo usa o container externo `max-w-7xl` cheio. Larguras diferentes = sensação de "tudo desalinhado".
+## Goal
 
-## Mudanças
+1. Make every "Start a Project" / "Request Access" / "Request Early Access" CTA route the user to the actual contact form (`#contact`), with `mailto:` as a clearly labeled secondary option where relevant.
+2. Do a focused review of the landing page layout and GSAP effects so the page feels coherent — no over-animated sections, consistent reveal cadence, and respects `prefers-reduced-motion` (already wired in `useCyryxScrollAnimations`).
 
-### 1. `src/styles.css` — re-tunar tipografia para Orbitron
+No content rewrites, no new sections. Pure navigation + polish.
 
-Substituir o bloco `.cx-hero-heading` + `.cx-hero-title-line` (linhas ~274–290), o bloco mobile (~292–305), o crítico 320–360px (~340–344) e o tablet 768–1024 (~503–513) por valores adequados a Orbitron:
+---
 
-```css
-.cx-hero-heading {
-  line-height: 1.08;
-  letter-spacing: 0.02em;
-  font-feature-settings: "ss01", "cv11";
-  overflow: visible;
-  padding-bottom: 0.12em;
-  text-wrap: balance;
-}
+## 1. CTA navigation fixes
 
-.cx-hero-title-line {
-  font-size: clamp(1.9rem, 4.6vw, 3.75rem);
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  font-weight: 700;
-  overflow: visible;
-  padding-bottom: 0.08em;
-}
+Today several CTAs go nowhere (`href="#"`) or only scroll to a generic CTA band. Target the real contact form section (`<section id="contact">` in `ContactSection.tsx`) so the user lands directly on the form, prefilled-context where useful.
 
-@media (min-width: 360px) and (max-width: 767px) {
-  .cx-hero-heading { line-height: 1.12; letter-spacing: 0.015em; padding-bottom: 0.1em; }
-  .cx-hero-title-line {
-    font-size: clamp(1.65rem, 7vw, 2.4rem);
-    line-height: 1.14;
-    letter-spacing: 0.012em;
-    padding-bottom: 0.08em;
-  }
-}
+| File | Element | Current | New |
+|---|---|---|---|
+| `src/components/cyryx/CTASection.tsx` | "Request Access" button | `href="#"` | `href="#contact"` + `aria-label="Request access — open contact form"` |
+| `src/components/cyryx/CTASection.tsx` | "Start a Project" button | `href="#"` | `href="#contact"` |
+| `src/components/cyryx/CTASection.tsx` | (add) tertiary text link | — | `mailto:hello@cyryxlabs.com` as small "or email us" fallback |
+| `src/components/cyryx/Header.tsx` | "Start a Project" header CTA | `href="#cta"` | `href="#contact"` |
+| `src/components/cyryx/StickyMobileCTA.tsx` | primary CTA | already `#contact` | keep |
+| `src/components/cyryx/MAAXStudioSpotlight.tsx` | "Request Early Access" | `href="#cta"` | `href="#contact"` (form is the actual conversion surface) |
+| `src/components/cyryx/Hero.tsx` | primary CTA already `#contact` | keep | — |
+| `src/components/cyryx/Footer.tsx` | placeholder `href="#"` links | dead links | wire footer "Contact" → `#contact`; socials → real urls or remove |
 
-@media (max-width: 359px) {
-  .cx-hero-title-line {
-    font-size: clamp(1.35rem, 6.6vw, 1.7rem);
-    letter-spacing: 0.01em;
-  }
-}
+All anchor jumps will use smooth in-page scroll (CSS `scroll-behavior: smooth` is already set globally; verify and add if missing in `src/styles.css`).
 
-@media (min-width: 768px) and (max-width: 1024px) {
-  .cx-hero-heading { line-height: 1.08; padding-bottom: 0.1em; }
-  .cx-hero-title-line {
-    font-size: clamp(2.25rem, 4.8vw, 3rem);
-    line-height: 1.08;
-    letter-spacing: 0.018em;
-    padding-bottom: 0.08em;
-  }
-}
-```
+The email address for `mailto:` will be confirmed with the user before implementation (see clarifying question below) — default suggestion: `hello@cyryxlabs.com`.
 
-Resultado: Orbitron respira (`+0.02em` espaçamento), tamanhos cabem em uma linha em telas ≥ ~900px e quebram com elegância (`text-wrap: balance`) abaixo disso.
+## 2. GSAP / layout review pass
 
-### 2. `src/components/cyryx/Hero.tsx` — container e grade consistentes
+Scope is conservative — no rewrite of `useCyryxScrollAnimations.ts`. Targeted adjustments only:
 
-Hoje o painel do título usa `max-w-[64rem]` e a meta rail herda o container externo `max-w-7xl`. Alinhar tudo na mesma coluna de conteúdo:
+- **Reveal consistency**: audit `.cx-reveal` and `.cx-stagger` usage across `Hero`, `WhyCyryx`, `CoreCapabilities`, `ProcessTimeline`, `MetricsBand`, `MAAXStudioSpotlight`, `WhoWeServe`, `Ecosystem`, `CTASection`, `ContactSection`. Ensure every section root that should fade-in carries `.cx-reveal` and child grids use `.cx-stagger` + `.cx-stagger-item`. Add any missing classes; remove duplicates.
+- **Global image 3D tilt**: currently applied to *every* `<img>` (see hook). Add `data-no3d="1"` to images where the effect harms readability (logos in Header/Footer, MacBook figure already handled, MAAX product preview if any). Keeps the cinematic feel on hero/lifestyle imagery only.
+- **Hero scrub fade**: keep, but reduce `opacity: 0.65` → `0.8` so the next section transition feels less abrupt.
+- **Timeline draw**: verify `[data-timeline-section]`/`[data-timeline-line]` markup still exists in `ProcessTimeline`; if not, no-op (hook already guards).
+- **Section vertical rhythm**: standardize section padding to `py-20 sm:py-28 lg:py-36` across `WhyCyryx`, `CoreCapabilities`, `ProcessTimeline`, `WhoWeServe`, `Ecosystem`, `MAAXStudioSpotlight`. Hero and CTASection keep their custom values.
+- **Container widths**: confirm each section uses `max-w-7xl px-4 sm:px-6 lg:px-10` to match Header/Hero gutters. Adjust any outliers.
+- **Scroll offset for anchor jumps**: fixed header overlaps anchored sections. Add `scroll-margin-top: 6rem` (`lg:scroll-margin-top: 7rem`) to `#contact`, `#cta`, `#maax`, `#products`, `#solutions`, `#applied-lab` via a `.cx-anchor` utility in `src/styles.css`, then apply on those `<section>` elements. Fixes "form is hidden under the header" after clicking a CTA.
 
-- Manter o container externo `max-w-7xl px-5 sm:px-10 lg:px-14` (gutters responsivos já corretos).
-- Mover a meta rail para **dentro** de um wrapper com a mesma largura/alinhamento do `cx-hero-panel`, para criar um eixo vertical único:
+## 3. Verification
 
-```tsx
-<div className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-28 sm:px-10 sm:pt-40 sm:pb-28 lg:px-14">
-  <div className="mx-auto w-full max-w-[68rem] sm:mx-0">
-    <div className="cx-hero-panel">
-      {/* h1 + sub + ctas — sem mudança */}
-    </div>
+After implementation:
+- `bun run typecheck` (typecheck must pass).
+- Manually click each updated CTA in the preview to confirm it lands on the form with the heading visible (not under header).
+- Check `prefers-reduced-motion: reduce` path still snaps reveals to final state.
 
-    {/* meta rail agora compartilha a mesma coluna */}
-    <div
-      aria-label="Cyryx platform pillars and operating posture"
-      role="group"
-      className="mt-20 flex flex-col gap-4 border-t border-white/10 pt-6 sm:mt-24"
-    >
-      <ul className="flex list-none flex-col gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-6 md:gap-y-3">
-        {/* pilares — sem mudança estrutural */}
-      </ul>
-      <p className="cx-meta flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center font-mono text-[10.5px] uppercase tracking-[0.3em]">
-        {/* postura — sem mudança */}
-      </p>
-    </div>
-  </div>
-</div>
-```
+---
 
-- Container interno único `max-w-[68rem]` (ligeiramente mais largo que os 64rem antigos para abrigar a frase em uma linha em desktops médios sem quebrar).
-- `cx-hero-panel` perde o `mx-auto max-w-[64rem] sm:mx-0` próprio (o wrapper pai já garante isso).
-- Gutters vêm SEMPRE do container `max-w-7xl px-5 sm:px-10 lg:px-14` — uma única fonte de verdade para padding horizontal.
+## Open question before implementing
 
-### 3. Resultado
-- "The Execution Layer for Operational AI" cabe em uma linha em desktop e tablet, com espaçamento Orbitron harmônico (positivo, não negativo).
-- Título, sub, CTAs e meta rail compartilham o mesmo eixo esquerdo e a mesma largura máxima — nada flutua "para fora" da grade.
-- Mobile mantém quebras naturais via `text-wrap: balance` e o painel translúcido.
+Confirm the destination email for the secondary `mailto:` link and footer contact link:
+- Default: `hello@cyryxlabs.com`
+- Or provide the address you want exposed publicly.
 
-Sem mudanças em animações GSAP, glifos, ou outros componentes.
+If you prefer **no** `mailto:` (form-only conversion), I'll skip the email fallback and just route every CTA to `#contact`.

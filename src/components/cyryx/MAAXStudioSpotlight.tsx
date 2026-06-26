@@ -77,7 +77,8 @@ export function MAAXStudioSpotlight() {
             </ul>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <a
-                href="#cta"
+                href="#contact"
+                aria-label="Request early access — open contact form"
                 className="inline-flex h-12 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
               >
                 Request Early Access

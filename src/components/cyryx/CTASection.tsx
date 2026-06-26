@@ -46,21 +46,32 @@ export function CTASection() {
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <a
-            href="#"
+            href="#contact"
+            aria-label="Request access — open contact form"
             className="cx-liquid-glass inline-flex h-12 min-h-11 w-full sm:w-auto items-center justify-center gap-2 rounded-md px-6 hud-label text-[var(--accent-glow)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
           >
             Request Access
             <ArrowRight className="h-4 w-4" />
           </a>
           <a
-            href="#"
+            href="#contact"
+            aria-label="Start a project — open contact form"
             className="cx-liquid-glass inline-flex h-12 min-h-11 w-full sm:w-auto items-center justify-center gap-2 rounded-md px-6 hud-label text-[var(--silver)] transition"
           >
             Start a Project
             <ArrowRight className="h-4 w-4 text-[var(--accent-glow)]" />
           </a>
         </div>
-        <p className="mt-8 hud-label text-[var(--silver-dim)]">
+        <p className="mt-6 text-sm text-[var(--silver-dim)]">
+          Or email us at{" "}
+          <a
+            href="mailto:hello@cyryxlabs.com"
+            className="text-[var(--accent-glow)] underline-offset-4 hover:underline"
+          >
+            hello@cyryxlabs.com
+          </a>
+        </p>
+        <p className="mt-4 hud-label text-[var(--silver-dim)]">
           From prompt chaos to governed AI execution.
         </p>
       </div>
