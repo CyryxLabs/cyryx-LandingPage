@@ -11,7 +11,7 @@ const NODES = [
 
 export function Ecosystem() {
   return (
-    <section id="ecosystem" className="relative py-20 lg:py-32">
+    <section id="ecosystem" className="relative py-14 sm:py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="text-center cx-reveal">
           <div className="flex justify-center mb-6">

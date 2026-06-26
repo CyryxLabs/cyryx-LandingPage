@@ -113,7 +113,7 @@ function ProductPreview() {
 
 export function MAAXStudioSpotlight() {
   return (
-    <section id="maax" className="relative py-20 lg:py-32 bg-[var(--graphite)]">
+    <section id="maax" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--graphite)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"

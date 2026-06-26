@@ -55,7 +55,7 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="relative py-20 lg:py-32">
+    <section id="contact" className="relative py-14 sm:py-20 lg:py-32">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-10">
         <div className="cx-reveal text-center">
           <HudLabel withDot>Contact</HudLabel>

@@ -4,7 +4,7 @@ import { CyryxMark } from "./primitives/CyryxMark";
 
 export function CTASection() {
   return (
-    <section id="cta" className="relative isolate overflow-hidden py-28 lg:py-40">
+    <section id="cta" className="relative isolate overflow-hidden py-20 sm:py-28 lg:py-40">
       <img
         src={lobby}
         alt=""
