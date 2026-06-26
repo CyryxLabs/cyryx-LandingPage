@@ -255,16 +255,17 @@
 
 @media (min-width: 360px) and (max-width: 767px) {
   .cx-hero-heading {
-    line-height: 1.02;
+    line-height: 1.04;
     letter-spacing: -0.02em;
     padding-bottom: 0.12em;
+    text-wrap: balance;
   }
 
   .cx-hero-title-line {
-    font-size: clamp(2rem, 10vw, 3.75rem);
-    line-height: 1.0;
-    letter-spacing: -0.025em;
-    padding-bottom: 0.12em;
+    font-size: clamp(1.875rem, 8.4vw, 3rem);
+    line-height: 1.04;
+    letter-spacing: -0.022em;
+    padding-bottom: 0.1em;
   }
 }
 
