@@ -46,15 +46,15 @@ export function ProductEcosystem() {
         {/* IDE showcase figure */}
         <figure className="cx-reveal mt-10 lg:mt-14">
           <div className="relative overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[var(--onyx)] shadow-[0_30px_80px_-40px_color-mix(in_oklab,var(--accent-glow)_45%,transparent)]">
-            <div className="relative w-full aspect-[16/9]">
+            <div className="relative w-full">
               <img
                 src={architectureImg}
                 alt="MAAX Studio — Cyryx Labs agentic IDE: explorer, editor, execution graph, governance gates and evaluation terminal."
                 loading="lazy"
                 decoding="async"
-                width={1600}
-                height={900}
-                className="absolute inset-0 h-full w-full object-cover object-center"
+                width={1376}
+                height={768}
+                className="block h-auto w-full object-contain"
               />
               {/* Region labels — positioned over the laptop screen area, sm+ only */}
               {[
