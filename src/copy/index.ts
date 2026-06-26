@@ -1,7 +1,9 @@
 import { v3 } from "./v3";
 import type { CopyDocument } from "./types";
+import { assertCopy } from "./schema";
 
 export type { CopyDocument } from "./types";
+export { CopyDocumentSchema, validateCopy } from "./schema";
 
 const REGISTRY = {
   v3,
@@ -13,7 +15,7 @@ export const AVAILABLE_COPY_VARIANTS = Object.keys(REGISTRY) as readonly CopyVar
 
 export function getCopy(variant: CopyVariant | string | null | undefined): CopyDocument {
   if (variant && variant in REGISTRY) {
-    return REGISTRY[variant as CopyVariant];
+    return assertCopy(REGISTRY[variant as CopyVariant], variant as string);
   }
-  return REGISTRY.v3;
+  return assertCopy(REGISTRY.v3, "v3");
 }
