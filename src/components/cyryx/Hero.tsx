@@ -282,7 +282,7 @@ export function Hero() {
           {/* Headline */}
           <h1
             id="hero-heading"
-            className="cx-hero-heading font-display font-bold text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
+            className="cx-hero-heading font-display font-bold text-silver-gradient [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
             <span className="cx-line cx-hero-title-line block text-chrome-gradient sm:whitespace-nowrap">
               The execution layer
@@ -312,7 +312,7 @@ export function Hero() {
             <a
               href="#contact"
               aria-label="Start a project with Cyryx Labs"
-              className="cx-cta cx-cta-ghost cx-liquid-glass group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
+              className="cx-cta cx-cta-ghost cx-liquid-glass group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-silver-gradient transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
             >
               <span>Start a Project</span>
               <ArrowUpRight
