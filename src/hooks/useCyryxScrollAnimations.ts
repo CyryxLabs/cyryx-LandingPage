@@ -2,7 +2,12 @@ import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+// Register only in the browser. Calling registerPlugin at module scope
+// during Cloudflare Workers SSR triggers "Disallowed operation called
+// within global scope" and blanks the page.
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * Global scroll storytelling for the Cyryx landing page.
