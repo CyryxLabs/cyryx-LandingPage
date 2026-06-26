@@ -31,7 +31,7 @@ const SectionFallback = () => <div aria-hidden style={{ minHeight: 480 }} />;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cyryx Labs — AI Products & Execution Systems for the Agentic Era" },
+      { title: "Cyryx Labs — AI Execution Systems for the Agentic Era" },
       {
         name: "description",
         content:
