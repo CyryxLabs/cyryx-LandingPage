@@ -12,6 +12,9 @@ const FormSchema = z.object({
   email: z.string().trim().email("Enter a valid email").max(255),
   company: z.string().trim().max(120).optional().default(""),
   message: z.string().trim().min(10, "At least 10 characters").max(2000),
+  consent: z.literal(true, {
+    errorMap: () => ({ message: "Please accept the Privacy Policy to continue" }),
+  }),
 });
 
 type Errors = Partial<Record<keyof z.infer<typeof FormSchema>, string>>;
@@ -22,6 +25,7 @@ export function ContactSection() {
   const [errors, setErrors] = useState<Errors>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [messageLen, setMessageLen] = useState(0);
+  const [consent, setConsent] = useState(false);
   const successRef = useRef<HTMLDivElement | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -38,6 +42,7 @@ export function ContactSection() {
       email: String(fd.get("email") ?? ""),
       company: String(fd.get("company") ?? ""),
       message: String(fd.get("message") ?? ""),
+      consent: fd.get("consent") === "on",
     };
     const parsed = FormSchema.safeParse(raw);
     if (!parsed.success) {
@@ -57,6 +62,7 @@ export function ContactSection() {
       setStatus("success");
       (e.target as HTMLFormElement).reset();
       setMessageLen(0);
+      setConsent(false);
       toast.success("Message sent — we'll reply within 24h.");
       requestAnimationFrame(() => {
         successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
