@@ -1,5 +1,5 @@
 import markAsset from "@/assets/cyryx-mark.png.asset.json";
-import wordmarkAsset from "@/assets/cyryx-logo-clean-v3.png.asset.json";
+import wordmarkAsset from "@/assets/cyryx-logo-n2.png.asset.json";
 
 /**
  * Official Cyryx brand marks. Header wordmark uses the recut transparent
@@ -37,14 +37,14 @@ export function CyryxWordmark({
       src={wordmarkAsset.url}
       alt="Cyryx Labs"
       data-no3d="1"
-      width={1808}
-      height={565}
+      width={1920}
+      height={640}
       draggable={false}
       decoding="async"
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : "auto"}
       className={`block w-auto object-contain align-middle select-none opacity-90 ${className || "h-7"}`}
-      style={{ background: "transparent", aspectRatio: "1808 / 565" }}
+      style={{ background: "transparent", aspectRatio: "1920 / 640" }}
     />
   );
 }
