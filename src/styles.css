@@ -395,6 +395,44 @@ html.cx-low-perf *::after {
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent-glow) 35%, transparent);
 }
 
+/* Liquid-glass surface — layered translucency, inner highlight,
+   soft outer halo. Works on any dark backdrop. */
+@utility cx-liquid-glass {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, #fff 8%, transparent) 0%,
+    color-mix(in oklab, #fff 2%, transparent) 45%,
+    color-mix(in oklab, var(--accent-glow) 6%, transparent) 100%
+  );
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid color-mix(in oklab, #fff 14%, transparent);
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in oklab, #fff 22%, transparent),
+    inset 0 -1px 0 0 color-mix(in oklab, #000 30%, transparent),
+    0 12px 32px -16px color-mix(in oklab, #000 70%, transparent);
+  transition: border-color 0.25s ease, background 0.25s ease,
+    box-shadow 0.25s ease, transform 0.15s ease;
+}
+@utility cx-liquid-glass {
+  &:hover {
+    border-color: color-mix(in oklab, var(--accent-glow) 55%, transparent);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, #fff 12%, transparent) 0%,
+      color-mix(in oklab, var(--accent-glow) 10%, transparent) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 color-mix(in oklab, #fff 28%, transparent),
+      inset 0 -1px 0 0 color-mix(in oklab, #000 30%, transparent),
+      0 18px 40px -18px color-mix(in oklab, var(--accent-glow) 50%, transparent);
+  }
+}
+html.cx-low-perf .cx-liquid-glass {
+  backdrop-filter: none;
+  background: color-mix(in oklab, #fff 6%, transparent);
+}
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .cx-hero-heading {
     line-height: 0.98;
