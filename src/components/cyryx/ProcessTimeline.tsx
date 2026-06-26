@@ -1,11 +1,11 @@
 import { HudLabel } from "./primitives/HudLabel";
 
 const STEPS = [
-  { n: "01", title: "Diagnose", copy: "We understand the business, workflow, tools, pain points, constraints, and target outcome." },
-  { n: "02", title: "Architect", copy: "We define the AI use case, system design, user flow, integrations, governance needs, and implementation plan." },
-  { n: "03", title: "Build", copy: "We develop the website, automation, assistant, integration, internal tool, or AI product." },
-  { n: "04", title: "Launch", copy: "We test, deploy, connect tools, and prepare the system for real use." },
-  { n: "05", title: "Improve", copy: "We monitor usage, reduce friction, improve workflows, and add governance where needed." },
+  { n: "01", title: "Define", copy: "We start with the business objective, workflow, tools, constraints, and success criteria — building toward a measured outcome, not a deployed feature." },
+  { n: "02", title: "Architect", copy: "We design the system: AI use case, data flows, integrations, governance, evaluation criteria, and implementation plan." },
+  { n: "03", title: "Build", copy: "We develop the product, automation, assistant, or integration — with architecture that makes it governable from day one." },
+  { n: "04", title: "Launch", copy: "We deploy, connect tools, establish monitoring, and verify the system works under real conditions before we call it done." },
+  { n: "05", title: "Improve", copy: "We track performance, reduce errors, improve workflows, and build on what works." },
 ];
 
 export function ProcessTimeline() {
@@ -16,11 +16,11 @@ export function ProcessTimeline() {
           <div>
             <HudLabel withDot>How we work</HudLabel>
             <h2 className="mt-4 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold uppercase text-silver-gradient">
-              From idea to implemented system.
+              From objective to working system.
             </h2>
           </div>
           <p className="max-w-sm text-sm text-[var(--silver-dim)]">
-            Five phases. One execution channel from diagnosis to operation.
+            Five phases. One execution channel from objective to outcome.
           </p>
         </div>
 

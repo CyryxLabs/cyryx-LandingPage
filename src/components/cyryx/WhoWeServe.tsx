@@ -2,21 +2,21 @@ import { Rocket, Briefcase, Building2, Layers } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 
 const AUDIENCE = [
-  { icon: Building2, title: "Small & Medium Businesses", copy: "Use AI to improve websites, capture leads, answer questions, automate repetitive work, and organize internal knowledge." },
-  { icon: Rocket, title: "Founders & Startups", copy: "Build AI-powered MVPs, SaaS products, dashboards, and internal tools with stronger architecture." },
-  { icon: Briefcase, title: "Agencies", copy: "Deliver client work with reusable AI workflows, premium landing pages, automations, and internal systems." },
-  { icon: Layers, title: "Product Teams", copy: "Add AI capabilities, workflow automation, assistants, and governance layers to existing products." },
+  { icon: Rocket, title: "Founders & Startups", copy: "Build AI-powered products and MVPs with architecture that scales. Start with a working system. Grow without rebuilding." },
+  { icon: Building2, title: "Small & Medium Businesses", copy: "Deploy AI across websites, operations, and internal knowledge with structure that keeps you in control." },
+  { icon: Briefcase, title: "Agencies", copy: "Deliver client work with reusable AI systems, premium design, automation frameworks, and internal infrastructure." },
+  { icon: Layers, title: "Product Teams", copy: "Add AI capabilities, workflow automation, and review layers to products already in market." },
 ];
 
 const VALUES = [
-  "AI technology company, not a generic agency",
-  "Proprietary product roadmap through MAAX Studio",
-  "Applied R&D through Cyryx Applied AI Lab",
-  "Practical implementation through Cyryx Solutions",
-  "Product-quality engineering",
-  "Workflow-first strategy",
-  "Human-controlled execution",
-  "Cost-aware architecture",
+  "Every build starts with a defined success criterion",
+  "Architecture is designed for governance, not added later",
+  "Cost and usage are visible from day one",
+  "Human review is a structural feature, not an option",
+  "Research informs every product and implementation",
+  "We measure outcomes, not outputs",
+  "Systems compound. Tools don't.",
+  "AI does the work. Humans stay in command.",
 ];
 
 export function WhoWeServe() {
@@ -26,7 +26,7 @@ export function WhoWeServe() {
         <div className="max-w-3xl cx-reveal">
           <HudLabel withDot>Who we serve</HudLabel>
           <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-tight text-silver-gradient uppercase">
-            Built for businesses, builders, and teams ready to use AI practically.
+            Built for companies serious about AI that compounds.
           </h2>
         </div>
 
@@ -48,13 +48,14 @@ export function WhoWeServe() {
           <div>
             <HudLabel withDot>Why Cyryx</HudLabel>
             <h2 className="mt-5 font-display text-[28px] sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-[1.1] tracking-tight text-silver-gradient uppercase">
-              Product-first. Research-backed. Implementation-ready.
+              We do not automate processes. We build systems.
             </h2>
           </div>
           <p className="text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)] max-w-xl">
-            Cyryx Labs is built differently from a typical services company.
-            We do not only implement tools. We design systems, build products,
-            and develop proprietary architecture for governed AI execution.
+            The difference matters. An automation executes a task. A system
+            tracks whether the task achieved its objective, learns from that
+            outcome, and improves the next execution. Cyryx Labs builds
+            systems.
           </p>
         </div>
 

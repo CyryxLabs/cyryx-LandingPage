@@ -2,11 +2,11 @@ import { HudLabel } from "./primitives/HudLabel";
 import { CyryxMark } from "./primitives/CyryxMark";
 
 const NODES = [
-  { tag: "Company", name: "Cyryx Labs", copy: "AI technology company building proprietary products, applied AI systems, and implementation capability for the agentic era." },
-  { tag: "Flagship Product", name: "MAAX Studio", copy: "Native command workbench for AI-native software execution." },
-  { tag: "Implementation Arm", name: "Cyryx Solutions", copy: "AI-powered websites, workflow automation, internal assistants, integrations, and custom AI products for businesses." },
-  { tag: "Research Layer", name: "Cyryx Applied AI Lab", copy: "Applied research and architecture behind Cyryx products, systems, and evaluation methods." },
-  { tag: "Execution Architecture", name: "MAAX Runtime", copy: "The proprietary architecture behind missions, operators, memory, gates, evidence, delivery review, and governed execution." },
+  { tag: "Company", name: "Cyryx Labs", copy: "AI technology company building products, execution systems, and applied research." },
+  { tag: "Product Platform", name: "MAAX Studio", copy: "Command platform for AI-native software development. Missions, memory, operators, gates, cost, and human review." },
+  { tag: "Business Systems", name: "Cyryx Solutions", copy: "AI systems for companies: websites, automation, assistants, integrations, and custom products." },
+  { tag: "Research & Architecture", name: "Cyryx Applied AI Lab", copy: "Applied research and architecture behind Cyryx products and client systems." },
+  { tag: "Execution Architecture", name: "MAAX Runtime", copy: "The execution architecture powering missions, memory, operators, and delivery." },
 ];
 
 export function Ecosystem() {
@@ -19,8 +19,8 @@ export function Ecosystem() {
           </div>
           <HudLabel withDot>Ecosystem</HudLabel>
           <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-tight text-silver-gradient uppercase">
-            Built by Cyryx Labs.<br />
-            <span style={{ color: "var(--accent-glow)" }}>Powered by AI execution architecture.</span>
+            One company.<br />
+            <span style={{ color: "var(--accent-glow)" }}>Three layers of capability.</span>
           </h2>
         </div>
 

@@ -5,37 +5,37 @@ const SOLUTIONS = [
   {
     icon: Rocket,
     title: "AI Websites & Lead Systems",
-    copy: "Modern websites and landing pages with AI-powered intake, lead qualification, automated follow-up, CRM routing, and conversion-focused user flows.",
-    deliverables: ["Website or landing page", "AI intake assistant", "Lead qualification flow", "Forms", "CRM or email routing", "Analytics setup", "Deployment"],
+    copy: "Websites and landing pages designed around AI-powered intake, lead qualification, CRM routing, and conversion architecture.",
+    deliverables: ["Website or landing page", "AI intake", "Lead qualification", "CRM routing", "Conversion analytics", "Deployment"],
   },
   {
     icon: Workflow,
     title: "Workflow Automation",
-    copy: "Automate repetitive business processes across the tools your team already uses.",
-    deliverables: ["Workflow mapping", "Automation design", "Tool integrations", "Human approvals", "Notifications", "Logs", "Dashboards"],
+    copy: "Structured automation across the tools your team already uses — designed with human approvals, monitoring, and clear accountability.",
+    deliverables: ["Workflow mapping", "Automation design", "Tool integrations", "Approval flows", "Notifications", "Logs", "Dashboards"],
   },
   {
     icon: Bot,
     title: "Internal AI Assistants",
-    copy: "AI assistants connected to your company knowledge, documents, tools, policies, and workflows.",
+    copy: "AI assistants connected to company knowledge, policies, documents, and tools — with permissions, guardrails, and usage visibility built in.",
     deliverables: ["Knowledge base", "Document ingestion", "Retrieval system", "Permissions", "Guardrails", "Usage logs", "Internal interface"],
   },
   {
     icon: BookOpen,
     title: "Custom AI Product Development",
-    copy: "Turn AI product ideas into MVPs, SaaS platforms, dashboards, and launch-ready digital products.",
-    deliverables: ["Product strategy", "BRD / PRD", "UX/UI", "Frontend", "Backend", "AI integration", "Authentication", "Payments", "Dashboard", "Deployment"],
+    copy: "From idea to launch-ready AI product — with product strategy, architecture, design, and engineering built as a system, not assembled as parts.",
+    deliverables: ["Strategy", "BRD/PRD", "UX/UI", "Frontend", "Backend", "AI integration", "Auth", "Payments", "Dashboard", "Deployment"],
   },
   {
     icon: Plug,
     title: "AI Integrations",
-    copy: "Connect AI to the systems that run your business.",
-    deliverables: ["Websites", "Databases", "CRMs", "Payment systems", "Dashboards", "Communication tools", "Workflow platforms", "Repository systems"],
+    copy: "AI connected to the systems where your business runs: databases, CRMs, communication tools, payment systems, and workflow platforms.",
+    deliverables: ["API & connector architecture", "Data flows", "Real-time sync", "Access controls", "Monitoring"],
   },
   {
     icon: ShieldCheck,
     title: "AI Governance & Cost Control",
-    copy: "Make AI usage more visible, measurable, reviewable, and cost-aware.",
+    copy: "Structure for teams that need to measure, review, and control what AI does across the organization.",
     deliverables: ["Usage tracking", "Approval flows", "Audit logs", "Evaluation rubrics", "Human review", "Access controls", "Cost monitoring"],
   },
 ];
@@ -47,15 +47,11 @@ export function CommandLayerSection() {
         <div className="max-w-3xl cx-reveal">
           <HudLabel withDot>Solutions</HudLabel>
           <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.08] text-silver-gradient uppercase">
-            Applied AI systems for businesses ready to move.
+            AI systems built for companies that need them to work.
           </h2>
           <p className="mt-5 text-[15px] sm:text-base text-[var(--silver-dim)]">
-            Cyryx Solutions helps companies turn AI ideas into working systems.
-            We design and build AI-powered websites, workflow automations,
-            internal assistants, integrations, and custom AI products connected
-            to real business operations. This is where Cyryx Labs brings
-            product thinking, applied AI architecture, and engineering
-            execution into practical systems companies can use now.
+            Cyryx Solutions turns AI opportunities into operational systems.
+            Not demos. Not pilots. Working systems connected to real workflows.
           </p>
         </div>
 
