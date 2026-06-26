@@ -136,6 +136,15 @@ function RootShell({ children }: { children: ReactNode }) {
               "(function(){try{var n=navigator,c=n.connection||n.mozConnection||n.webkitConnection,low=false;if(c){if(c.saveData)low=true;if(/^(slow-2g|2g|3g)$/.test(c.effectiveType||''))low=true;}if(typeof n.deviceMemory==='number'&&n.deviceMemory<4)low=true;if(typeof n.hardwareConcurrency==='number'&&n.hardwareConcurrency<=4&&matchMedia('(max-width:767px)').matches)low=true;if(low)document.documentElement.classList.add('cx-low-perf');}catch(e){}})();",
           }}
         />
+        {/* Always open new page loads at the very top. Disables the browser's
+            automatic scroll restoration and strips any hash from the URL so a
+            shared/refreshed `/#contact` link doesn't auto-jump to the form. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var h=window.location.hash;if(h){history.replaceState(null,'',window.location.pathname+window.location.search);}window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});}catch(e){}})();",
+          }}
+        />
       </head>
       <body>
         {children}
