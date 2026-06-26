@@ -8,16 +8,16 @@ import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
 
 const BULLETS = [
-  "Turn software goals into structured missions",
-  "Coordinate specialized operators",
-  "Preserve project memory and decisions",
-  "Map project context through Atlas",
-  "Route work through command units",
-  "Validate execution through command gates",
-  "Track work through mission ledgers",
-  "Review output through delivery dossiers",
-  "Keep humans in command of critical delivery decisions",
-  "Provide a clear Mission Control surface for visibility and review",
+  "Mission Engine — structured execution from objective to delivery",
+  "Atlas Engine — project knowledge graph and context intelligence",
+  "Operator System — specialized agents assigned by domain and role",
+  "Command Gates — quality, security, architecture, and cost validation",
+  "Margin Governor — cost estimation, tracking, and enforcement",
+  "Mission Ledger — audit trail of every decision, gate, and delivery",
+  "Continuity Engine — failure recovery with structured context capture",
+  "Delivery Package — every mission ends with evidence, not just output",
+  "Human review checkpoint before any delivery reaches you",
+  "Mission Control — visibility, structure, and human command at every step",
 ];
 
 function ProductPreview() {
@@ -62,14 +62,12 @@ export function MAAXStudioSpotlight() {
               {copy.eyebrow}
             </p>
             <p className="mt-6 max-w-xl text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-              MAAX Studio is Cyryx Labs' flagship proprietary product. It is
-              being built for founders, builders, agencies, and product teams
-              that need a more structured way to coordinate AI-native software
-              work. Instead of treating AI as a chat window, MAAX Studio is
-              designed around missions, operators, memory, gates, evidence,
-              and human-governed delivery — transforming software objectives
-              into structured missions that can be planned, reviewed,
-              coordinated, and governed.
+              Most AI tools treat software development as a conversation. MAAX
+              Studio treats it as a governed execution system. Every mission
+              runs under a defined objective, a project memory layer,
+              specialized operators, quality gates, cost tracking, and a human
+              review checkpoint before delivery. AI does the work. You control
+              the outcome.
             </p>
             <ul className="mt-7 space-y-3">
               {BULLETS.map((b) => (

@@ -295,19 +295,19 @@ export function Hero() {
           {/* CTAs */}
           <div className="cx-hero-ctas mt-8 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:gap-5">
             <a
-              href="#maax"
-              aria-label="Explore MAAX Studio — flagship product"
+              href="#contact"
+              aria-label="Start a Project with Cyryx Labs"
               className="cx-cta cx-cta-primary cx-liquid-glass group relative inline-flex min-h-[48px] w-full items-center justify-center gap-2 overflow-hidden rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--accent-glow)] shadow-[0_10px_30px_-12px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
-              onClick={() => trackCta({ cta: "explore_maax", section: "hero", href: "#maax" })}
+              onClick={() => trackCta({ cta: "start_project", section: "hero", href: "#contact" })}
             >
               <span>{copy.ctaPrimary}</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
-              href="#contact"
-              aria-label={`${copy.ctaSecondary} with Cyryx Labs`}
+              href="#maax"
+              aria-label="Explore MAAX Studio — flagship product"
               className="cx-cta cx-cta-ghost cx-liquid-glass group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-silver-gradient transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
-              onClick={() => trackCta({ cta: "start_project", section: "hero", href: "#contact" })}
+              onClick={() => trackCta({ cta: "explore_maax", section: "hero", href: "#maax" })}
             >
               <span>{copy.ctaSecondary}</span>
               <ArrowUpRight

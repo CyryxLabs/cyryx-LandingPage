@@ -2,11 +2,12 @@ import { Bot, Brain, ShieldCheck, Route, Boxes } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 
 const FOCUS = [
-  { icon: Bot, title: "Agentic Workflow Design", copy: "We design structured workflows that turn business goals into routed, reviewable, AI-assisted execution." },
-  { icon: Brain, title: "Context Intelligence", copy: "We build systems that help AI retrieve and use the right business context at the right time." },
-  { icon: ShieldCheck, title: "Evaluation & Governance", copy: "We develop methods to review, measure, and improve AI output with human oversight." },
-  { icon: Route, title: "Model Routing & Cost Awareness", copy: "We design systems that help teams use the right AI capability for the right task while keeping costs visible." },
-  { icon: Boxes, title: "Knowledge & Productized Systems", copy: "We turn scattered business knowledge into searchable internal intelligence, and repeated patterns into reusable systems, products, and implementation frameworks." },
+  { icon: ShieldCheck, title: "Goal-Grounded Generation", copy: "How AI systems can evaluate output against defined objectives before delivery. The architecture behind generation that verifies, not just produces." },
+  { icon: Brain, title: "Context Intelligence", copy: "How AI retrieves and uses the right business context at the right time. The architecture behind memory systems that compound." },
+  { icon: Bot, title: "Evaluation Architecture", copy: "Methods for measuring AI output quality before and after deployment. Rubrics, gates, scoring systems, and feedback loops that make quality measurable." },
+  { icon: Route, title: "Agentic Workflow Design", copy: "How multi-agent systems coordinate work across tools, roles, and review points without losing structure, cost control, or human oversight." },
+  { icon: Boxes, title: "Model Routing & Economics", copy: "How systems route tasks to the right model for the right cost while keeping spend visible and accountable." },
+  { icon: Brain, title: "Knowledge Systems", copy: "How scattered business knowledge becomes structured intelligence that AI can retrieve, use, and build on." },
 ];
 
 export function AppliedAILab() {
@@ -18,17 +19,18 @@ export function AppliedAILab() {
           <div>
             <HudLabel withDot>Cyryx Applied AI Lab</HudLabel>
             <h2 className="mt-5 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-tight text-silver-gradient uppercase">
-              Research that becomes working systems.
+              Research built to ship.
             </h2>
           </div>
           <div>
             <p className="text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)] max-w-md">
-              Cyryx Applied AI Lab develops the architecture, workflow
-              patterns, evaluation methods, and productized systems behind
-              Cyryx products and client implementations.
+              The Applied AI Lab develops the architecture and evaluation
+              methods behind Cyryx products and client systems. This is not
+              academic research. Every pattern we study becomes infrastructure
+              we build.
             </p>
             <p className="mt-5 hud-label text-[var(--accent-glow)]">
-              Turning applied AI research into practical systems businesses can use.
+              Research that ships. Architecture that compounds.
             </p>
           </div>
         </div>

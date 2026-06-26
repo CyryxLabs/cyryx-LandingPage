@@ -6,27 +6,27 @@ const PILLARS = [
   {
     n: "01",
     icon: ProductsGlyph,
-    tag: "Products",
-    title: "Proprietary AI products.",
-    copy: "We build AI-native products designed around execution, memory, workflow coordination, and governed autonomy. Our flagship product is MAAX Studio.",
+    tag: "MAAX Studio",
+    title: "Product platform for AI-native software execution.",
+    copy: "MAAX Studio gives builders, founders, and technical teams a structured command surface for AI-assisted software work: missions, project memory, specialized operators, command gates, cost governance, and human review before delivery.",
     href: "#maax",
     cta: "Explore MAAX Studio",
   },
   {
     n: "02",
     icon: SolutionsGlyph,
-    tag: "Solutions",
-    title: "Applied AI systems for real business workflows.",
-    copy: "Cyryx Solutions is the implementation arm of Cyryx Labs. We help companies build AI-powered websites, workflow automations, internal assistants, integrations, knowledge systems, and custom AI products.",
+    tag: "Cyryx Solutions",
+    title: "Business systems built for how your company actually works.",
+    copy: "We design and build AI websites, workflow automation, internal assistants, knowledge systems, integrations, and custom AI products — with architecture that makes them measurable, governable, and improvable.",
     href: "#solutions",
-    cta: "See Solutions",
+    cta: "See What We Build",
   },
   {
     n: "03",
     icon: LabGlyph,
-    tag: "Applied AI Lab",
-    title: "Research and architecture for practical AI.",
-    copy: "Cyryx Applied AI Lab develops the architecture, evaluation methods, workflow patterns, and productized systems behind our products and client implementations.",
+    tag: "Cyryx Applied AI Lab",
+    title: "Research and architecture that ships.",
+    copy: "The Lab develops the evaluation methods, system architectures, and workflow patterns that shape our products and client systems. Research that ships. Architecture that compounds.",
     href: "#applied-lab",
     cta: "Inside the Lab",
   },
@@ -41,14 +41,12 @@ export function CoreCapabilities() {
           <div>
             <HudLabel withDot>What we build</HudLabel>
             <h2 className="mt-4 font-display text-[30px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold uppercase text-silver-gradient">
-              Products, systems, and architecture for operational AI.
+              Three engines. One thesis.
             </h2>
           </div>
           <p className="max-w-md text-sm text-[var(--silver-dim)]">
-            Cyryx Labs operates through three connected engines: proprietary
-            products, applied AI systems, and research-backed implementation.
-            Together, they help companies turn artificial intelligence into
-            practical business capability.
+            Cyryx Labs operates across three interconnected areas. Each one
+            exists to close the gap between AI capability and business outcome.
           </p>
         </div>
 

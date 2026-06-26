@@ -81,10 +81,10 @@ export function ContactSection() {
         <div className="cx-reveal text-center">
           <HudLabel withDot>Contact</HudLabel>
           <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] text-silver-gradient">
-            Start a <span style={{ color: "var(--accent-glow)" }}>conversation</span>
+            Tell us what <span style={{ color: "var(--accent-glow)" }}>you're building.</span>
           </h2>
           <p className="mt-4 text-[15px] sm:text-base text-[var(--silver-dim)]">
-            Tell us what you want to build. We typically reply within 24h.
+            We'll tell you whether we can help, and how. We typically reply within 24h.
           </p>
         </div>
 

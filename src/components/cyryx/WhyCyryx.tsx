@@ -2,12 +2,12 @@ import { AlertCircle, GitBranch, EyeOff, Repeat, ScrollText, ShieldAlert } from 
 import { HudLabel } from "./primitives/HudLabel";
 
 const PAINS = [
-  { icon: AlertCircle, title: "Scattered context", copy: "Business knowledge is spread across documents, chats, websites, tools, dashboards, and human memory." },
-  { icon: Repeat, title: "Manual work", copy: "Teams still repeat tasks that could be automated, routed, summarized, or structured by AI." },
-  { icon: GitBranch, title: "Disconnected tools", copy: "AI output often stays outside the systems where the business actually operates." },
-  { icon: ShieldAlert, title: "Inconsistent results", copy: "Without workflow design, review points, and operating rules, AI output is hard to repeat or trust." },
-  { icon: EyeOff, title: "Poor visibility", copy: "Usage, cost, performance, decisions, and handoffs are difficult to monitor." },
-  { icon: ScrollText, title: "No operating layer", copy: "Most companies have AI tools, but not an AI system designed around how the business works." },
+  { icon: AlertCircle, title: "Output without objectives", copy: "Teams generate content, code, and decisions with no defined measure of success. AI produces. Nobody knows if it worked." },
+  { icon: Repeat, title: "Generation without verification", copy: "AI delivers a single response optimized for probability — not for the goal. There is no evaluation before deployment." },
+  { icon: GitBranch, title: "Context without continuity", copy: "Business knowledge is scattered across tools, documents, chats, and people. Every AI interaction starts from zero." },
+  { icon: ShieldAlert, title: "Automation without governance", copy: "AI acts across workflows without structure for review, cost control, or accountability. Work happens. Errors compound." },
+  { icon: EyeOff, title: "Systems without architecture", copy: "Companies have AI tools. Few have AI systems designed around how the business works. The difference is compounding returns." },
+  { icon: ScrollText, title: "Tools without measurement", copy: "Without success criteria, evaluation rubrics, and review loops, AI value cannot be confirmed or improved over time." },
 ];
 
 export function WhyCyryx() {
@@ -18,18 +18,18 @@ export function WhyCyryx() {
           <div>
             <HudLabel withDot>Company Thesis</HudLabel>
             <h2 className="mt-5 font-display text-[32px] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
-              AI is no longer the question.<br />
-              <span style={{ color: "var(--accent-glow)" }}>Execution is.</span>
+              The gap between AI output and business outcome is the{" "}
+              <span style={{ color: "var(--accent-glow)" }}>defining problem of this era.</span>
             </h2>
           </div>
           <p className="text-[15px] sm:text-base lg:text-lg leading-relaxed text-[var(--silver-dim)] max-w-xl">
-            Most companies now have access to powerful AI tools. The harder
-            problem is turning those tools into reliable systems that
-            understand context, support real workflows, preserve decisions,
-            control costs, and produce work that can be reviewed. Cyryx Labs
-            exists to build that operational layer — proprietary AI products,
-            applied systems, and implementation architecture for businesses
-            moving from scattered AI experimentation to structured execution.
+            Every company now has access to AI. Most cannot measure whether it
+            works. Models generate. They do not verify. Agents respond. They do
+            not evaluate. The gap between what AI generates and what a business
+            actually needs is not a model problem — it is a systems problem.
+            Cyryx Labs closes that gap, building the products, execution
+            systems, and research infrastructure that connect AI capability to
+            measurable business outcomes.
           </p>
         </div>
 

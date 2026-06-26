@@ -9,8 +9,8 @@ const SIGNALS = [
   "Context retrieval precision",
   "Lead conversion quality",
   "Automation coverage",
-  "Governance completeness",
-  "Delivery acceptance quality",
+  "Delivery acceptance rate",
+  "Goal-achievement rate",
 ];
 
 export function MetricsBand() {
@@ -20,12 +20,11 @@ export function MetricsBand() {
         <div className="cx-reveal max-w-3xl">
           <HudLabel withDot>Execution Signals</HudLabel>
           <h2 className="mt-4 font-display text-2xl sm:text-3xl lg:text-4xl font-semibold uppercase leading-[1.1] text-silver-gradient">
-            Built for measurable execution.
+            We measure AI by whether it changes how work gets done.
           </h2>
           <p className="mt-5 text-[15px] sm:text-base text-[var(--silver-dim)]">
-            Cyryx Labs does not measure AI value by novelty. We measure it by
-            whether the system improves business execution. These are the
-            operating signals we design for.
+            Not novelty. Not output volume. These are the operating signals
+            Cyryx Labs designs around.
           </p>
         </div>
         <ul className="cx-stagger mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--silver)_10%,transparent)] sm:grid-cols-3 lg:grid-cols-5">
