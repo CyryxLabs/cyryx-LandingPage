@@ -138,6 +138,17 @@
     scroll-behavior: smooth;
   }
 
+  /* Offset in-page anchor jumps so the fixed header doesn't cover the
+     target heading / form. Matches the header height (16 mobile / 24 lg). */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+  @media (min-width: 1024px) {
+    section[id] {
+      scroll-margin-top: 7rem;
+    }
+  }
+
   * {
     border-color: var(--color-border);
   }
