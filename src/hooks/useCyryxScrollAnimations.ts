@@ -244,25 +244,8 @@ export function useCyryxScrollAnimations() {
       });
     }
 
-    // ── Desktop hero scrub: scale/lift the 3D stage as you scroll away ─
+    // ── Desktop interactions: keep effects scoped below the hero ─
     mm.add("(min-width: 1024px)", () => {
-      const hero = document.querySelector<HTMLElement>("[data-hero]");
-      if (hero) {
-        gsap.to(hero, {
-          scale: 0.94,
-          y: -40,
-          filter: "blur(2px)",
-          opacity: 0.65,
-          ease: "none",
-          scrollTrigger: {
-            trigger: hero,
-            start: "bottom bottom",
-            end: "bottom top",
-            scrub: 0.6,
-          },
-        });
-      }
-
       // 3D tilt on capability cards via mouse
       document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((card) => {
         const onMove = (e: PointerEvent) => {
