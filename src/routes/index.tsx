@@ -6,6 +6,7 @@ import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMono
 import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
+import { PerfToggle } from "@/components/cyryx/PerfToggle";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
 
@@ -193,6 +194,7 @@ function Index() {
       </main>
       <Footer />
       <StickyMobileCTA />
+      <PerfToggle />
     </div>
   );
 }
