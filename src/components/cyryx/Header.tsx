@@ -37,10 +37,10 @@ export function Header() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:h-24 lg:px-10">
           <a
             href="#top"
-            className="inline-flex min-h-11 items-center min-w-0 shrink-0 -mx-1 px-1"
+            className="-mx-1 inline-flex h-12 min-w-0 shrink-0 items-center px-1 lg:h-16"
             aria-label="Cyryx Labs — home"
           >
-            <CyryxWordmark priority className="h-9 lg:h-11 -translate-y-[2px]" />
+            <CyryxWordmark priority className="h-10 lg:h-14" />
           </a>
 
           <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
