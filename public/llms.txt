@@ -1,0 +1,19 @@
+# Cyryx Labs
+
+> Cyryx Labs builds proprietary AI products, custom AI systems, and governed agentic workflows for teams operationalizing AI.
+
+Cyryx Labs is the execution layer for operational AI. We design and ship AI products, agentic workflow systems, and execution infrastructure — anchored by MAAX Studio, our runtime-first agentic execution environment powered by the MAAX Runtime.
+
+## Pages
+
+- [Home](/): Cyryx Labs overview, capabilities, and the MAAX execution layer.
+- [Company](/company): Who we are, mission, and how we operate.
+- [Products](/products): The Cyryx product ecosystem.
+- [MAAX Studio](/products/maax-studio): Runtime-first agentic execution environment for operational AI.
+- [Solutions](/solutions): How teams use Cyryx to operationalize AI.
+- [Research](/research): Applied AI research and execution patterns.
+- [Contact](/contact): Get in touch with the Cyryx Labs team.
+
+## Optional
+
+- [Privacy](/privacy): Privacy policy and data handling.
