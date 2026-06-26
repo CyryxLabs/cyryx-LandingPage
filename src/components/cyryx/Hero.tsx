@@ -175,7 +175,7 @@ export function Hero() {
           fetchPriority="high"
           loading="eager"
           decoding="async"
-          sizes="100vw"
+          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
           width={1920}
           height={1080}
           className="cx-bg-img absolute inset-0 h-full w-full object-cover object-[65%_center] will-change-transform sm:object-[75%_center] lg:object-right"

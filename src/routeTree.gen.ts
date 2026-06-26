@@ -16,6 +16,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
@@ -52,6 +53,11 @@ const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
   path: '/maax-studio',
   getParentRoute: () => ProductsRoute,
 } as any)
+const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
+  id: '/api/public/web-vitals',
+  path: '/api/public/web-vitals',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/research'
     | '/solutions'
     | '/products/maax-studio'
+    | '/api/public/web-vitals'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/research'
     | '/solutions'
     | '/products/maax-studio'
+    | '/api/public/web-vitals'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/research'
     | '/solutions'
     | '/products/maax-studio'
+    | '/api/public/web-vitals'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,6 +130,7 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRouteWithChildren
   ResearchRoute: typeof ResearchRoute
   SolutionsRoute: typeof SolutionsRoute
+  ApiPublicWebVitalsRoute: typeof ApiPublicWebVitalsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -171,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsMaaxStudioRouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/api/public/web-vitals': {
+      id: '/api/public/web-vitals'
+      path: '/api/public/web-vitals'
+      fullPath: '/api/public/web-vitals'
+      preLoaderRoute: typeof ApiPublicWebVitalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -193,6 +213,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRouteWithChildren,
   ResearchRoute: ResearchRoute,
   SolutionsRoute: SolutionsRoute,
+  ApiPublicWebVitalsRoute: ApiPublicWebVitalsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
