@@ -67,7 +67,7 @@ export function MobileMenu({
       role="dialog"
       aria-modal="true"
       aria-label="Main navigation"
-      className="fixed inset-0 z-[60] bg-[color-mix(in_oklab,var(--onyx)_96%,transparent)] backdrop-blur-2xl lg:hidden"
+      className="cx-liquid-glass fixed inset-0 z-[60] rounded-none lg:hidden"
     >
       <div className="absolute inset-0 grid-floor opacity-30" aria-hidden />
       <div className="relative flex h-dvh flex-col px-6 pt-[max(env(safe-area-inset-top),1.25rem)] pb-[max(env(safe-area-inset-bottom),2.5rem)]">
@@ -81,7 +81,7 @@ export function MobileMenu({
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] text-[var(--silver)]"
+            className="cx-btn cx-liquid-glass inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)]"
           >
             <X className="h-5 w-5" />
           </button>
@@ -109,7 +109,7 @@ export function MobileMenu({
           ref={ctaRef}
           href="#cta"
           onClick={onClose}
-          className="mt-auto inline-flex h-14 items-center justify-center gap-2 rounded-md border border-[var(--accent-glow)] bg-[color-mix(in_oklab,var(--accent-glow)_12%,transparent)] text-[var(--silver)] hud-label shadow-[var(--shadow-glow-teal)]"
+          className="cx-btn cx-liquid-glass mt-auto inline-flex h-14 items-center justify-center gap-2 rounded-md text-[var(--silver)] hud-label shadow-[var(--shadow-glow-teal)]"
         >
           Start a Project
           <span aria-hidden className="text-[var(--accent-glow)]">→</span>
