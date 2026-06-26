@@ -130,14 +130,14 @@ export function DashboardPanel() {
       <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_1.4fr_1fr]">
         {/* Left widgets - hide on mobile, show on lg */}
         <div className="hidden lg:flex flex-col gap-3">
-          <div className="rounded-md border border-[color-mix(in_oklab,var(--silver)_8%,transparent)] p-3">
+          <div className="cx-liquid-glass rounded-md p-3">
             <HudLabel>Reasoning Engines</HudLabel>
             <div className="mt-3 flex items-end gap-3">
               <RingMetric pct={87} label="Active" />
               <RingMetric pct={62} label="Inference" />
             </div>
           </div>
-          <div className="rounded-md border border-[color-mix(in_oklab,var(--silver)_8%,transparent)] p-3">
+          <div className="cx-liquid-glass rounded-md p-3">
             <HudLabel>Execution Status</HudLabel>
             <div className="mt-3 space-y-2">
               {[
@@ -163,7 +163,7 @@ export function DashboardPanel() {
         </div>
 
         {/* Globe */}
-        <div className="relative rounded-md border border-[color-mix(in_oklab,var(--silver)_8%,transparent)] p-3 min-h-[180px] sm:min-h-[220px] lg:min-h-[300px]">
+        <div className="cx-liquid-glass relative rounded-md p-3 min-h-[180px] sm:min-h-[220px] lg:min-h-[300px]">
           <HudLabel>Global Mesh</HudLabel>
           <div className="absolute inset-3 top-8">
             <MiniGlobe />
@@ -180,7 +180,7 @@ export function DashboardPanel() {
           ].map((m) => (
             <div
               key={m.l}
-              className="rounded-md border border-[color-mix(in_oklab,var(--silver)_8%,transparent)] p-2.5 sm:p-3"
+              className="cx-liquid-glass rounded-md p-2.5 sm:p-3"
             >
               <HudLabel>{m.l}</HudLabel>
               <div className="mt-1 font-display text-lg font-semibold text-silver-gradient">
@@ -193,7 +193,7 @@ export function DashboardPanel() {
       </div>
 
       {/* Telemetry bars */}
-      <div className="mt-4 hidden sm:block rounded-md border border-[color-mix(in_oklab,var(--silver)_8%,transparent)] p-3">
+      <div className="mt-4 hidden sm:block cx-liquid-glass rounded-md p-3">
         <div className="flex items-center justify-between">
           <HudLabel>System Telemetry</HudLabel>
           <span className="hud-label text-[var(--silver-dim)]">2.6 PB/s</span>

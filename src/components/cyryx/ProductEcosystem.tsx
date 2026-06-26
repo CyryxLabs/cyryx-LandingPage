@@ -48,7 +48,7 @@ export function ProductEcosystem() {
           data-macbook-figure
           className="cx-reveal mt-10 lg:mt-14 mx-auto w-full max-w-[1100px]"
         >
-          <div className="relative overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[var(--onyx)] shadow-[0_30px_80px_-40px_color-mix(in_oklab,var(--accent-glow)_45%,transparent)]">
+          <div className="cx-liquid-glass relative overflow-hidden rounded-lg shadow-[0_30px_80px_-40px_color-mix(in_oklab,var(--accent-glow)_45%,transparent)]">
             <div className="relative w-full">
               <img
                 src={architectureImg}
