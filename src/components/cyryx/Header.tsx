@@ -56,7 +56,7 @@ export function Header() {
           </nav>
 
           <a
-            href="#cta"
+            href="#contact"
             className="cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
             Start a Project
