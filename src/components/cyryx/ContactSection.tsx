@@ -210,9 +210,11 @@ export function ContactSection() {
                       href="/privacy"
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label="Cyryx Labs Privacy Policy (opens in a new tab)"
                       className="text-[var(--silver)] underline underline-offset-4 hover:text-[var(--accent-glow)]"
                     >
                       Privacy Policy
+                      <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                     . You can withdraw consent at any time by emailing{" "}
                     <a
@@ -238,7 +240,9 @@ export function ContactSection() {
 
               <button
                 type="submit"
-                disabled={status === "loading"}
+                disabled={status === "loading" || !consent}
+                aria-disabled={status === "loading" || !consent}
+                title={!consent ? "Accept the Privacy Policy to enable sending" : undefined}
                 className="cx-btn cx-cta cx-cta-primary cx-liquid-glass mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md px-6 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] sm:w-auto sm:self-start"
               >
                 {status === "loading" ? (
