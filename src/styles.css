@@ -890,3 +890,83 @@ html.cx-low-perf .cx-sticky-cta {
   background-clip: text;
   color: transparent;
 }
+
+/* ============================================================
+   Header offset + smooth-scroll flash + a11y contrast
+   ============================================================ */
+
+:root {
+  /* Read by useSmoothScroll() so anchored sections clear the fixed header. */
+  --header-h: 64px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 96px;
+  }
+}
+
+/* Lift native anchor jumps below the fixed header for users who opt into
+   reduced motion / disable JS. Pairs with scroll-behavior: smooth set by
+   the smooth-scroll hook. */
+[id] {
+  scroll-margin-top: calc(var(--header-h) + 8px);
+}
+
+/* Flash an outline around a section the user just smooth-scrolled to so it
+   is easy to locate. Triggered by useSmoothScroll() via data-cx-flash. */
+@keyframes cx-flash-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent-glow) 60%, transparent);
+  }
+  60% {
+    box-shadow: 0 0 0 12px color-mix(in oklab, var(--accent-glow) 0%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+[data-cx-flash="true"] {
+  border-radius: 12px;
+  animation: cx-flash-pulse 1.2s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-cx-flash="true"] {
+    animation: none;
+  }
+}
+
+/* High-contrast mode: lift dim silver text closer to AAA against onyx and
+   keep accent-glow / silver headlines unchanged. */
+@media (prefers-contrast: more) {
+  :root {
+    --silver-dim: oklch(0.78 0.005 240);
+    --silver: oklch(0.92 0.004 240);
+  }
+}
+
+/* Gradient-text fallback — if -webkit-background-clip fails (older browsers,
+   forced-colors mode) the text still renders solid silver instead of
+   collapsing to transparent. The utility's own background-clip wins when
+   supported. */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .text-silver-gradient,
+  .text-chrome-gradient,
+  .text-metal,
+  .text-metal-dim {
+    color: var(--silver);
+    background: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .text-silver-gradient,
+  .text-chrome-gradient,
+  .text-metal,
+  .text-metal-dim {
+    color: CanvasText;
+    background: none !important;
+  }
+}
