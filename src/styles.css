@@ -237,10 +237,10 @@ html.cx-low-perf .glass-panel {
   background: linear-gradient(
     180deg,
     oklch(0.98 0.002 240) 0%,
-    oklch(0.86 0.004 240) 28%,
-    oklch(0.58 0.006 240) 52%,
-    oklch(0.78 0.005 240) 72%,
-    oklch(0.92 0.003 240) 100%
+    oklch(0.9 0.004 240) 28%,
+    oklch(0.74 0.006 240) 52%,
+    oklch(0.84 0.005 240) 72%,
+    oklch(0.94 0.003 240) 100%
   );
   background-clip: text;
   color: transparent;
@@ -255,10 +255,10 @@ html.cx-low-perf .glass-panel {
   background: linear-gradient(
     180deg,
     oklch(0.98 0.002 240) 0%,
-    oklch(0.86 0.004 240) 28%,
-    oklch(0.58 0.006 240) 52%,
-    oklch(0.78 0.005 240) 72%,
-    oklch(0.92 0.003 240) 100%
+    oklch(0.92 0.004 240) 28%,
+    oklch(0.74 0.006 240) 52%,
+    oklch(0.86 0.005 240) 72%,
+    oklch(0.96 0.003 240) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -524,7 +524,8 @@ html.cx-low-perf .cx-liquid-glass {
 }
 
 @media (prefers-contrast: more) {
-  .text-chrome-gradient {
+  .text-chrome-gradient,
+  .text-silver-gradient {
     background: none;
     color: #fff;
     -webkit-text-fill-color: #fff;
@@ -553,6 +554,7 @@ html.cx-low-perf .cx-liquid-glass {
   }
 
   [data-hero] .text-chrome-gradient,
+  [data-hero] .text-silver-gradient,
   [data-hero] .cx-hero-title-line {
     background: none !important;
     background-image: none !important;
