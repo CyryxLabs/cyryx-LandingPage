@@ -143,6 +143,11 @@
   section[id] {
     scroll-margin-top: 5rem;
   }
+  @media (min-width: 640px) {
+    section[id] {
+      scroll-margin-top: 6rem;
+    }
+  }
   @media (min-width: 1024px) {
     section[id] {
       scroll-margin-top: 7rem;
@@ -388,6 +393,30 @@ html.cx-low-perf .glass-panel {
 .cx-cta-ghost:active {
   background-color: color-mix(in oklab, var(--accent-glow) 10%, transparent);
   border-color: var(--accent-glow);
+}
+
+/* Unified disabled state for any CTA / button variant. */
+.cx-cta:disabled,
+.cx-cta[aria-disabled="true"],
+.cx-cta[data-disabled],
+.cx-btn:disabled,
+.cx-btn[aria-disabled="true"],
+.cx-btn[data-disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+/* Stronger hover lift for primary CTAs to feel premium. */
+.cx-cta-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 36px -16px color-mix(in oklab, var(--accent-glow) 60%, transparent),
+    var(--shadow-glow-teal, 0 0 24px color-mix(in oklab, var(--accent-glow) 35%, transparent));
 }
 
 /* Reduced motion: drop expensive hero effects + animations. */
