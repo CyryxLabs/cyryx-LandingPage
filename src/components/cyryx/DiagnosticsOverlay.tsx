@@ -74,11 +74,7 @@ export function DiagnosticsOverlay() {
   }, [sample]);
 
   if (!visible) {
-    return (
-      <div className="fixed bottom-3 left-3 z-[70] rounded border border-[var(--border)] bg-[var(--onyx)]/85 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver-dim)] backdrop-blur-sm">
-        build {BUILD_LABEL}
-      </div>
-    );
+    return null;
   }
 
   return (
