@@ -101,8 +101,66 @@ export function LabGlyph({ title, ...props }: GlyphProps) {
   );
 }
 
+export function MaaxStudioGlyph({ title, ...props }: GlyphProps) {
+  const id = "cx-glyph-maax-studio";
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      fill="none"
+      stroke={`url(#${id})`}
+      strokeWidth={1.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      role={title ? "img" : "presentation"}
+      aria-label={title}
+      {...props}
+    >
+      <GradientDefs id={id} />
+      {/* faceted prism — multi-agent generation */}
+      <path d="M24 8 L38 20 L30 40 H18 L10 20 Z" />
+      <path d="M24 8 L18 40" opacity="0.55" />
+      <path d="M24 8 L30 40" opacity="0.55" />
+      <path d="M10 20 L38 20" opacity="0.55" />
+      {/* divergent rays from apex */}
+      <path d="M24 8 V2" />
+      <path d="M24 8 L18 2.5" opacity="0.7" />
+      <path d="M24 8 L30 2.5" opacity="0.7" />
+      <circle cx="24" cy="22" r="1.8" fill={`url(#${id})`} stroke="none" />
+    </svg>
+  );
+}
+
+export function MaaxRuntimeGlyph({ title, ...props }: GlyphProps) {
+  const id = "cx-glyph-maax-runtime";
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      fill="none"
+      stroke={`url(#${id})`}
+      strokeWidth={1.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      role={title ? "img" : "presentation"}
+      aria-label={title}
+      {...props}
+    >
+      <GradientDefs id={id} />
+      {/* hexagonal governance ring */}
+      <path d="M24 5 L40 14 V32 L24 41 L8 32 V14 Z" />
+      {/* inner rotated square — execution core */}
+      <path d="M24 16 L32 23 L24 30 L16 23 Z" />
+      {/* orbital pipeline trace */}
+      <path d="M6 23 H16" opacity="0.7" />
+      <path d="M32 23 H42" opacity="0.7" />
+      <circle cx="24" cy="23" r="1.6" fill={`url(#${id})`} stroke="none" />
+    </svg>
+  );
+}
+
 export const BrandGlyphs = {
   Products: ProductsGlyph,
   Solutions: SolutionsGlyph,
   Lab: LabGlyph,
+  MaaxStudio: MaaxStudioGlyph,
+  MaaxRuntime: MaaxRuntimeGlyph,
 };
