@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useCopyVariant } from "@/lib/copy-variant";
+import { getCopy } from "@/copy";
+import { trackCta } from "@/lib/track-cta";
 
 /**
  * Mobile-only sticky bottom CTA. Hidden on lg+. Appears after the user has
@@ -8,6 +11,7 @@ import { ArrowRight } from "lucide-react";
  */
 export function StickyMobileCTA() {
   const [visible, setVisible] = useState(false);
+  const headerCta = getCopy(useCopyVariant()).header.cta;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -53,13 +57,16 @@ export function StickyMobileCTA() {
       <div className="mx-auto flex max-w-7xl items-center gap-2">
         <a
           href="#contact"
+          aria-label={headerCta}
+          onClick={() => trackCta({ cta: "start_project", section: "sticky", href: "#contact" })}
           className="cx-liquid-glass inline-flex h-12 min-h-11 flex-1 items-center justify-center gap-2 rounded-md px-4 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] active:brightness-95"
         >
-          Start an AI Project
+          {headerCta}
           <ArrowRight className="h-4 w-4" />
         </a>
         <a
           href="#maax"
+          aria-label="Jump to MAAX Studio"
           className="cx-liquid-glass inline-flex h-12 min-h-11 min-w-11 items-center justify-center rounded-md px-4 hud-label text-[var(--silver)]"
         >
           MAAX

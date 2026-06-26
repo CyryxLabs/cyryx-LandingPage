@@ -4,18 +4,15 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import heroBanner from "@/assets/cyryx-hero-monolith-serene.png.asset.json";
+import { useCopyVariant } from "@/lib/copy-variant";
+import { getCopy } from "@/copy";
+import { trackCta } from "@/lib/track-cta";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const META = [
-  "AI PRODUCTS",
-  "APPLIED AI SYSTEMS",
-  "WORKFLOW AUTOMATION",
-  "AI RESEARCH",
-];
-
 export function Hero() {
   const root = useRef<HTMLElement>(null);
+  const copy = getCopy(useCopyVariant()).hero;
   const [debug, setDebug] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
   const [parallax, setParallax] = useState({ y: 0, scale: 1, progress: 0 });
@@ -286,15 +283,13 @@ export function Hero() {
             className="cx-hero-heading font-orbitron font-bold tracking-[0.01em] text-silver-gradient [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
             <span className="cx-line cx-hero-title-line block text-chrome-gradient">
-              Building operational intelligence for the AI era.
+              {copy.headline}
             </span>
           </h1>
 
           {/* Sub */}
           <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-[var(--silver-dim)] [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
-            Cyryx Labs develops proprietary AI products, applied systems, and
-            implementation architecture that help organizations turn artificial
-            intelligence into working business capability.
+            {copy.sub}
           </p>
 
           {/* CTAs */}
@@ -303,16 +298,18 @@ export function Hero() {
               href="#maax"
               aria-label="Explore MAAX Studio — flagship product"
               className="cx-cta cx-cta-primary cx-liquid-glass group relative inline-flex min-h-[48px] w-full items-center justify-center gap-2 overflow-hidden rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--accent-glow)] shadow-[0_10px_30px_-12px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
+              onClick={() => trackCta({ cta: "explore_maax", section: "hero", href: "#maax" })}
             >
-              <span>Explore MAAX Studio</span>
+              <span>{copy.ctaPrimary}</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
               href="#contact"
-              aria-label="Start an AI project with Cyryx Labs"
+              aria-label={`${copy.ctaSecondary} with Cyryx Labs`}
               className="cx-cta cx-cta-ghost cx-liquid-glass group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-silver-gradient transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
+              onClick={() => trackCta({ cta: "start_project", section: "hero", href: "#contact" })}
             >
-              <span>Start an AI Project</span>
+              <span>{copy.ctaSecondary}</span>
               <ArrowUpRight
                 className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 aria-hidden="true"
@@ -328,7 +325,7 @@ export function Hero() {
           className="mt-20 flex flex-col gap-4 border-t border-white/10 pt-6 sm:mt-24"
         >
           <ul className="flex list-none flex-col gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8 md:gap-y-3">
-            {META.map((m) => (
+            {copy.meta.map((m) => (
               <li
                 key={m}
                 className="cx-meta flex items-center font-mono text-[11px] uppercase tracking-[0.32em]"
@@ -339,11 +336,14 @@ export function Hero() {
             ))}
           </ul>
           <p className="cx-meta flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center font-mono text-[10.5px] uppercase tracking-[0.3em]">
-            <span className="text-metal-dim">Product thinking</span>
-            <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-            <span className="text-metal-dim">Applied AI engineering</span>
-            <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-            <span className="text-metal-dim">Governed execution</span>
+            {copy.rail.map((item, i) => (
+              <span key={item} className="flex items-center gap-x-3">
+                {i > 0 && (
+                  <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
+                )}
+                <span className="text-metal-dim">{item}</span>
+              </span>
+            ))}
           </p>
         </div>
         </div>

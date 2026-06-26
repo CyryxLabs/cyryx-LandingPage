@@ -3,6 +3,9 @@ import { Menu } from "lucide-react";
 import { CyryxWordmark } from "./primitives/CyryxMark";
 import { MobileMenu } from "./MobileMenu";
 import { cn } from "@/lib/utils";
+import { useCopyVariant } from "@/lib/copy-variant";
+import { getCopy } from "@/copy";
+import { trackCta } from "@/lib/track-cta";
 
 const NAV = [
   { label: "Products", href: "#products" },
@@ -15,6 +18,7 @@ const NAV = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerCta = getCopy(useCopyVariant()).header.cta;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -42,7 +46,10 @@ export function Header() {
             <CyryxWordmark priority className="h-10 lg:h-14" />
           </a>
 
-          <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
+          <nav
+            className="hidden lg:flex items-center gap-7 xl:gap-8"
+            aria-label="Primary"
+          >
             {NAV.map((item) => (
               <a
                 key={item.label}
@@ -56,9 +63,11 @@ export function Header() {
 
           <a
             href="#contact"
+            aria-label={headerCta}
+            onClick={() => trackCta({ cta: "start_project", section: "header", href: "#contact" })}
             className="cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
-            Start an AI Project
+            {headerCta}
             <span aria-hidden className="text-[var(--accent-glow)]">→</span>
           </a>
 

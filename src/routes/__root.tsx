@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { initWebVitals } from "../lib/web-vitals";
+import { syncCopyVariantToDocument } from "../lib/copy-variant";
+import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -159,7 +161,9 @@ function RootComponent() {
 
   useEffect(() => {
     initWebVitals();
+    syncCopyVariantToDocument();
   }, []);
+  useSmoothScroll();
 
   return (
     <QueryClientProvider client={queryClient}>
