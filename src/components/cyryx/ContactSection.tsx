@@ -145,7 +145,7 @@ export function ContactSection() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="cx-btn mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label font-semibold text-[var(--onyx)] shadow-[var(--shadow-glow-teal)] disabled:opacity-60 sm:w-auto sm:self-start"
+                className="cx-btn cx-liquid-glass mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md px-6 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] disabled:opacity-60 sm:w-auto sm:self-start"
               >
                 {status === "loading" ? (
                   <>
