@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { ContactSchema } from "../../src/lib/contact.functions";
+import { ContactSchema } from "../../src/lib/contact.schema";
 
 test.describe("Contact form consent — client", () => {
   test("submit is disabled until consent is checked and shows specific error", async ({ page }) => {
