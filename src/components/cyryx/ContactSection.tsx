@@ -67,7 +67,7 @@ export function ContactSection() {
           </p>
         </div>
 
-        <GlassPanel className="mt-10 p-5 sm:p-8 cx-reveal">
+        <GlassPanel liquid className="mt-10 p-5 sm:p-8 cx-reveal">
           {status === "success" ? (
             <div className="flex flex-col items-center gap-3 py-10 text-center">
               <CheckCircle2 className="h-10 w-10 text-[var(--accent-glow)]" />
