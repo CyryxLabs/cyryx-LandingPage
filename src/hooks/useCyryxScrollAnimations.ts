@@ -303,6 +303,35 @@ export function useCyryxScrollAnimations() {
       },
     );
 
+    // ── Global 3D scroll tilt on every <img> (tablet & desktop only) ─
+    mm.add("(min-width: 768px)", () => {
+      const imgs = gsap.utils.toArray<HTMLImageElement>("img");
+      imgs.forEach((img) => {
+        if (img.dataset.no3d === "1") return;
+        const parent = img.parentElement;
+        if (parent && getComputedStyle(parent).perspective === "none") {
+          parent.style.perspective = "1200px";
+        }
+        gsap.set(img, { transformOrigin: "50% 50%", willChange: "transform" });
+        gsap.fromTo(
+          img,
+          { rotateX: 8, y: 30, scale: 0.97 },
+          {
+            rotateX: -6,
+            y: -30,
+            scale: 1.02,
+            ease: "none",
+            scrollTrigger: {
+              trigger: img,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.6,
+            },
+          },
+        );
+      });
+    });
+
     // Recalculate after images/fonts settle.
     const doRefresh = () => ScrollTrigger.refresh();
     requestAnimationFrame(doRefresh);
