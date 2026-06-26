@@ -178,7 +178,7 @@ export function Hero() {
           sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
           width={1920}
           height={1080}
-          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-[65%_center] will-change-transform sm:object-[75%_center] lg:object-right"
+          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-[72%_center] will-change-transform sm:object-[75%_center] lg:object-right"
           draggable={false}
         />
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
@@ -186,7 +186,7 @@ export function Hero() {
           className="cx-hero-overlay absolute inset-0 lg:hidden"
           style={{
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.7) 35%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.85) 100%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 38%, rgba(0,0,0,0.18) 62%, rgba(0,0,0,0.78) 100%)",
           }}
         />
         <div
