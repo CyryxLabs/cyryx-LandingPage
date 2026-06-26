@@ -8,9 +8,9 @@ import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { PerfToggle } from "@/components/cyryx/PerfToggle";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
-import hero640 from "@/assets/cyryx-hero-serene-640.webp.asset.json";
-import hero1280 from "@/assets/cyryx-hero-serene-1280.webp.asset.json";
-import hero1920 from "@/assets/cyryx-hero-serene-1920.webp.asset.json";
+import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
+import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
+import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
 
 // Below-the-fold: code-split to shrink the initial mobile bundle.
 const WhyCyryx = lazy(() => import("@/components/cyryx/WhyCyryx").then(m => ({ default: m.WhyCyryx })));
