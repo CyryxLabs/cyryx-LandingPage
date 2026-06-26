@@ -6,7 +6,23 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+const buildVersion = process.env.LOVABLE_DEPLOYMENT_ID ?? new Date().toISOString();
+
 export default defineConfig({
+  vite: {
+    define: {
+      __CYRYX_BUILD_VERSION__: JSON.stringify(buildVersion),
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          entryFileNames: "assets/[name]-[hash].js",
+          chunkFileNames: "assets/[name]-[hash].js",
+          assetFileNames: "assets/[name]-[hash][extname]",
+        },
+      },
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

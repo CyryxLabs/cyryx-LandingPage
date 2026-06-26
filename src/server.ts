@@ -1,5 +1,6 @@
 import "./lib/error-capture";
 
+import { BUILD_VERSION } from "./lib/build-info";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
@@ -37,18 +38,46 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
+function withCacheHeaders(request: Request, response: Response): Response {
+  if (request.method !== "GET" && request.method !== "HEAD") return response;
+
+  const url = new URL(request.url);
+  const headers = new Headers(response.headers);
+  const contentType = headers.get("content-type") ?? "";
+
+  headers.set("x-cyryx-build", BUILD_VERSION);
+  if (url.pathname.startsWith("/assets/")) {
+    headers.set("cache-control", "public, max-age=31536000, immutable");
+    headers.set("x-cyryx-cache-policy", "hashed-asset-immutable");
+  } else if (contentType.includes("text/html")) {
+    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+    headers.set("pragma", "no-cache");
+    headers.set("expires", "0");
+    headers.set("x-cyryx-cache-policy", "html-no-store");
+  } else {
+    headers.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
+    headers.set("x-cyryx-cache-policy", "short-lived");
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return withCacheHeaders(request, await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
-      return new Response(renderErrorPage(), {
+      return withCacheHeaders(request, new Response(renderErrorPage(), {
         status: 500,
         headers: { "content-type": "text/html; charset=utf-8" },
-      });
+      }));
     }
   },
 };
