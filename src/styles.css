@@ -63,6 +63,7 @@
   --font-display: "Inter Tight", "Inter", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-orbitron: "Orbitron", "Inter Tight", system-ui, sans-serif;
 }
 
 :root {
