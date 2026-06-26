@@ -90,7 +90,7 @@ export function ProductEcosystem() {
           {PRODUCTS.map((p) => (
             <article
               key={p.name}
-              className="cx-stagger-item group relative flex flex-col rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_85%,transparent)] p-6 lg:p-7 backdrop-blur-sm transition hover:border-[color-mix(in_oklab,var(--accent-glow)_40%,transparent)]"
+              className="cx-stagger-item cx-liquid-glass group relative flex flex-col rounded-md p-6 lg:p-7"
             >
               <span
                 className={
