@@ -108,6 +108,10 @@ export function Footer() {
                   key={label}
                   href="#"
                   aria-label={label}
+                  aria-disabled="true"
+                  tabIndex={-1}
+                  data-no-smooth-scroll="true"
+                  onClick={(e) => e.preventDefault()}
                   className="grid h-11 w-11 place-items-center rounded-md border border-[color-mix(in_oklab,var(--silver)_12%,transparent)] text-[var(--silver-dim)] hover:text-[var(--accent-glow)] hover:border-[var(--accent-glow)] transition"
                 >
                   <Icon className="h-4 w-4" />
