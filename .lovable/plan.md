@@ -1,50 +1,52 @@
-## Objetivo
-1. Aplicar fonte **Orbitron** no título principal do Hero ("The execution layer / for operational AI.").
-2. Corrigir o alinhamento desktop da meta rail (linha de pilares + linha de postura) para harmonizar verticalmente.
-
 ## Mudanças
 
-### 1. Carregar Orbitron (`src/routes/__root.tsx`)
-- Acrescentar `family=Orbitron:wght@500;600;700` no `<link>` do Google Fonts já existente (duas tags `preload` + `stylesheet`). Sem novo `<link>`, só estender a URL atual.
-
-### 2. Registrar token (`src/styles.css`)
-- Adicionar dentro do `@theme` existente:
-  ```css
-  --font-orbitron: "Orbitron", "Inter Tight", system-ui, sans-serif;
-  ```
-- Isso gera a utility `font-orbitron`.
-
-### 3. Aplicar no título (`src/components/cyryx/Hero.tsx`)
-- Trocar `font-display` por `font-orbitron` no `<h1 className="cx-hero-heading …">`.
-- Ajustar tracking levemente (`tracking-[-0.01em]` → `tracking-[0.01em]`) já que Orbitron é geométrica/wide, para evitar parecer apertada.
-
-### 4. Alinhar harmonicamente a meta rail desktop (`src/components/cyryx/Hero.tsx`)
-Problema atual (visível na imagem): linha 1 tem 4 colunas em grid, linha 2 fica encostada à direita com `md:justify-end` — sem relação visual com a grade acima.
-
-Solução: usar o **mesmo grid 4-col** para as duas linhas e ancorar a linha de postura nas 3 últimas colunas, mantendo simetria com os pilares.
+### 1. Título do Hero — uma única linha
+`src/components/cyryx/Hero.tsx` — substituir os dois `<span class="cx-line">` por um único:
 
 ```tsx
-<ul className="grid grid-cols-2 md:grid-cols-4 gap-y-4 md:gap-y-0">
-  {/* pilares — sem mudança estrutural */}
-</ul>
-<ul className="grid grid-cols-1 md:grid-cols-4 items-center pt-1">
-  {/* célula vazia */}
-  <li aria-hidden="true" className="hidden md:block" />
-  {/* postura ocupando col-span-3, alinhada com as 3 últimas colunas dos pilares */}
-  <li className="md:col-span-3 md:pl-5 flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.3em]">
+<span className="cx-line cx-hero-title-line block text-chrome-gradient">
+  The Execution Layer for Operational AI
+</span>
+```
+
+Mantém `font-orbitron` e gradient. Em telas pequenas o navegador quebra naturalmente; remover `sm:whitespace-nowrap` para evitar overflow horizontal com Orbitron (que é mais larga que Inter Tight).
+
+### 2. Meta rail — alinhamento harmônico
+
+Problema atual: grid 4-col com conteúdo `flex items-center` à esquerda de cada célula faz as colunas parecerem desiguais (gaps visuais inconsistentes), e a linha de postura encostada na coluna 2 não cria simetria visível.
+
+Solução: abandonar o grid 4-col e usar **flex `justify-between`** para distribuir os 4 pilares uniformemente de borda a borda, e centralizar a linha de postura abaixo, criando um eixo central simétrico.
+
+```tsx
+<div
+  aria-label="Cyryx platform pillars and operating posture"
+  role="group"
+  className="mt-24 flex flex-col gap-4 border-t border-white/10 pt-6"
+>
+  <ul className="flex list-none flex-col gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8">
+    {META.map((m) => (
+      <li
+        key={m}
+        className="cx-meta flex items-center font-mono text-[11px] uppercase tracking-[0.32em]"
+      >
+        <span aria-hidden="true" className="mr-3 text-[var(--accent-glow)]">/</span>
+        <span className="text-metal">{m}</span>
+      </li>
+    ))}
+  </ul>
+  <p className="cx-meta flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center font-mono text-[10.5px] uppercase tracking-[0.3em]">
     <span className="text-metal-dim">Governance-ready architecture</span>
     <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
     <span className="text-metal-dim">Human-commanded autonomy</span>
     <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
     <span className="text-metal-dim">Cost-aware execution</span>
-  </li>
-</ul>
+  </p>
+</div>
 ```
 
-- Espaço entre as duas linhas reduzido de `gap-5` para `gap-3` para parecerem um bloco coeso.
-- `md:pl-5` na célula da postura alinha exatamente com o padding da segunda coluna dos pilares (que tem `md:pl-5` via `md:border-l md:pl-5`).
-- Em mobile a postura continua centralizada em uma linha única.
+Resultado:
+- Linha 1: 4 pilares espalhados igualmente entre as bordas com `justify-between` — espaçamento uniforme visual.
+- Linha 2: postura centralizada — eixo central limpo, simétrico em relação ao bloco acima.
+- Mobile: pilares empilham em coluna, postura permanece centralizada.
 
-## Resultado
-- Título com presença futurista/tech via Orbitron, mantendo o tratamento metálico/chrome.
-- Meta rail desktop forma uma grade harmônica 4 colunas: pilares na linha 1, postura ancorada nas colunas 2–4 da linha 2, criando ritmo visual claro em vez do flutuar à direita atual.
+Sem mudanças em CSS, tokens ou animações.
