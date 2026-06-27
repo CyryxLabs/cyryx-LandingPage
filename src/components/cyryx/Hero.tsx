@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
@@ -9,19 +7,12 @@ import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
 
-// Register only in the browser. Calling registerPlugin at module scope
-// during Cloudflare Workers SSR triggers "Disallowed operation called
-// within global scope" and blanks the page.
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 export function Hero() {
   const root = useRef<HTMLElement>(null);
   const copy = getCopy(useCopyVariant()).hero;
   const [debug, setDebug] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
-  const [parallax, setParallax] = useState({ y: 0, scale: 1, progress: 0 });
+  const parallax = { y: 0, scale: 1, progress: 0 };
 
   // Enable debug via ?heroDebug=1 or pressing "D"
   useEffect(() => {
@@ -40,153 +31,6 @@ export function Hero() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [debug]);
-
-  useEffect(() => {
-    if (!root.current) return;
-
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      mm.add(
-        {
-          isMobile: "(max-width: 767px)",
-          isTablet: "(min-width: 768px) and (max-width: 1023px)",
-          isDesktop: "(min-width: 1024px)",
-          isAbove768: "(min-width: 768px)",
-          reduceMotion: "(prefers-reduced-motion: reduce)",
-        },
-        (ctx) => {
-          const { isMobile, isDesktop, isAbove768, reduceMotion } = ctx.conditions as {
-            isMobile: boolean;
-            isDesktop: boolean;
-            isAbove768: boolean;
-            reduceMotion: boolean;
-          };
-
-          if (reduceMotion) {
-            // Fully disable GSAP/ScrollTrigger work — snap to final state, no loops.
-            gsap.set(
-              [
-                ".cx-bg",
-                ".cx-bg-img",
-                ".cx-eyebrow",
-                ".cx-line",
-                ".cx-sub",
-                ".cx-cta",
-                ".cx-meta",
-                ".cx-scroll",
-                ".cx-scroll-dot",
-                ".cx-stage",
-              ],
-              { clearProps: "all", opacity: 1, y: 0, x: 0, scale: 1 },
-            );
-            // Kill any ScrollTriggers that may have been created elsewhere on the page.
-            ScrollTrigger.getAll().forEach((t) => t.kill());
-            gsap.globalTimeline.clear();
-            return;
-          }
-
-          const tl = gsap.timeline({
-            defaults: {
-              ease: "power3.out",
-              duration: isMobile ? 0.7 : 0.9,
-            },
-          });
-
-          tl.from(".cx-bg", { opacity: 0, duration: 1.4, ease: "power2.out" })
-            .from(
-              ".cx-line",
-              {
-                opacity: 0,
-                y: isMobile ? 18 : 28,
-                duration: isMobile ? 0.7 : 0.95,
-                stagger: isMobile ? 0.08 : 0.12,
-              },
-              "-=0.55",
-            )
-            .from(
-              ".cx-sub",
-              { opacity: 0, y: isMobile ? 12 : 18, duration: 0.65 },
-              "-=0.55",
-            )
-            .from(
-              ".cx-cta",
-              { opacity: 0, y: 12, duration: 0.55, stagger: 0.08 },
-              "-=0.45",
-            )
-            .from(
-              ".cx-meta",
-              { opacity: 0, y: 8, duration: 0.5, stagger: 0.05 },
-              "-=0.35",
-            )
-            .from(
-              ".cx-scroll",
-              { opacity: 0, duration: 0.6 },
-              "-=0.3",
-            );
-
-          gsap.to(".cx-scroll-dot", {
-            y: 14,
-            opacity: 0.2,
-            duration: 1.6,
-            ease: "power1.inOut",
-            repeat: -1,
-            yoyo: true,
-          });
-
-          // Core line glow — reinforces the vertical teal axis of the monolith.
-          gsap.fromTo(
-            ".cx-hero-line-glow",
-            { opacity: 0.25 },
-            {
-              opacity: 0.55,
-              duration: 2.4,
-              ease: "sine.inOut",
-              repeat: -1,
-              yoyo: true,
-            },
-          );
-
-          // Same parallax shape across all breakpoints — tuned per device.
-          // Mobile keeps the transform; we just dial back the travel/scale.
-          const bannerY = isDesktop ? -10 : isMobile ? -7 : -6;
-          const bannerScale = isDesktop ? 1.06 : isMobile ? 1.05 : 1.04;
-          const stageY = isDesktop ? -6 : isMobile ? -4 : -3;
-          const stageOpacity = isDesktop ? 0.4 : isMobile ? 0.5 : 0.6;
-
-          gsap.to(".cx-bg-img", {
-            yPercent: bannerY,
-            scale: bannerScale,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: isDesktop ? 0.6 : 0.4,
-              onUpdate: (self) =>
-                setParallax({
-                  y: bannerY * self.progress,
-                  scale: 1 + (bannerScale - 1) * self.progress,
-                  progress: self.progress,
-                }),
-            },
-          });
-          gsap.to(".cx-stage", {
-            yPercent: stageY,
-            opacity: stageOpacity,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: true,
-            },
-          });
-        },
-      );
-    }, root);
-
-    return () => ctx.revert();
-  }, []);
 
   return (
     <section
