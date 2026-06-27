@@ -12,7 +12,7 @@ export function Hero() {
   const copy = getCopy(useCopyVariant()).hero;
   const [debug, setDebug] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
-  const [parallax, setParallax] = useState({ y: 0, scale: 1, progress: 0 });
+  const parallax = { y: 0, scale: 1, progress: 0 };
 
   // Enable debug via ?heroDebug=1 or pressing "D"
   useEffect(() => {
