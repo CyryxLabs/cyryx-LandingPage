@@ -50,7 +50,7 @@ const AUDIT_TARGETS: AuditTarget[] = [
   { label: "Capability strip", selector: "[data-capability-strip], section[aria-label*='Capabilit' i]" },
   { label: "Why Cyryx (#problem)", selector: "section#problem", required: true },
   { label: "Core capabilities", selector: "section#products", required: true },
-  { label: "Product ecosystem", selector: "section#products", required: true },
+  { label: "Product ecosystem", selector: "section#product-ecosystem", required: true },
   { label: "MAAX spotlight (#maax)", selector: "section#maax", required: true },
   { label: "Command layer (#solutions)", selector: "section#solutions", required: true },
   { label: "Applied AI lab (#applied-lab)", selector: "section#applied-lab", required: true },
