@@ -12,6 +12,8 @@ type CssDiagnosticPayload = {
   hasMdMedia: boolean;
   hasLgMedia: boolean;
   hasLgFlex: boolean;
+  desktopNavFlex: boolean;
+  coreLineVisible: boolean;
   active: {
     sm: boolean;
     md: boolean;
@@ -63,6 +65,8 @@ function readCssDiagnostics(): CssDiagnosticPayload | undefined {
   const file = url?.pathname.split("/").pop() ?? "not found";
   const hash = file.match(/^styles-([^.]+)\.css$/)?.[1] ?? (file === "styles.css" ? "dev-src" : "unknown");
   const version = url?.searchParams.get("v") ?? BUILD_LABEL;
+  const desktopNav = document.querySelector<HTMLElement>('header nav[class*="lg:flex"], header .lg\\:flex');
+  const coreLine = document.querySelector<HTMLElement>('[data-core-line]');
 
   return {
     href,
@@ -73,7 +77,9 @@ function readCssDiagnostics(): CssDiagnosticPayload | undefined {
     cssLength: cssText.length,
     hasMdMedia: /@media[^{}]*(48rem|768px)/.test(cssText),
     hasLgMedia: /@media[^{}]*(64rem|1024px)/.test(cssText),
-    hasLgFlex: cssText.includes(".lg\\:flex"),
+    hasLgFlex: /(?:\.lg\\:flex|lg\\:flex|lg\\\\:flex)/.test(cssText),
+    desktopNavFlex: desktopNav ? getComputedStyle(desktopNav).display === "flex" : false,
+    coreLineVisible: coreLine ? getComputedStyle(coreLine).display !== "none" : false,
     active: {
       sm: window.matchMedia("(min-width: 640px)").matches,
       md: window.matchMedia("(min-width: 768px)").matches,
@@ -161,7 +167,8 @@ export function DiagnosticsOverlay() {
           <div>hash: {css?.hash ?? "—"}</div>
           <div>version: {css?.version ?? "—"}</div>
           <div>rules readable: <Status ok={css?.cssRulesReadable ?? false} /> · bytes: {css?.cssLength ?? "—"}</div>
-          <div>md media: <Status ok={css?.hasMdMedia ?? false} /> · lg media: <Status ok={css?.hasLgMedia ?? false} /> · lg:flex: <Status ok={css?.hasLgFlex ?? false} /></div>
+          <div>md media: <Status ok={css?.hasMdMedia ?? false} /> · lg media: <Status ok={css?.hasLgMedia ?? false} /> · lg:flex rule: <Status ok={css?.hasLgFlex ?? false} /></div>
+          <div>desktop nav flex: <Status ok={css?.desktopNavFlex ?? false} /> · core line visible: <Status ok={css?.coreLineVisible ?? false} /></div>
           <div>href: <span className="break-all text-[var(--silver-dim)]">{css?.href ?? "—"}</span></div>
         </div>
 
