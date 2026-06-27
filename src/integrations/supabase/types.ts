@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_submissions: {
+        Row: {
+          company: string | null
+          consent_given_at: string
+          created_at: string
+          email: string
+          id: string
+          ip_hash: string | null
+          message: string
+          name: string
+          user_agent_hash: string | null
+        }
+        Insert: {
+          company?: string | null
+          consent_given_at?: string
+          created_at?: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          message: string
+          name: string
+          user_agent_hash?: string | null
+        }
+        Update: {
+          company?: string | null
+          consent_given_at?: string
+          created_at?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          message?: string
+          name?: string
+          user_agent_hash?: string | null
+        }
+        Relationships: []
+      }
       cta_events: {
         Row: {
           created_at: string
@@ -137,6 +173,51 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscribers: {
+        Row: {
+          confirm_token: string | null
+          confirm_token_expires_at: string | null
+          confirmed_at: string | null
+          consent_given_at: string
+          created_at: string
+          email: string
+          id: string
+          ip_hash: string | null
+          status: Database["public"]["Enums"]["newsletter_status"]
+          unsubscribed_at: string | null
+          updated_at: string
+          user_agent_hash: string | null
+        }
+        Insert: {
+          confirm_token?: string | null
+          confirm_token_expires_at?: string | null
+          confirmed_at?: string | null
+          consent_given_at?: string
+          created_at?: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          status?: Database["public"]["Enums"]["newsletter_status"]
+          unsubscribed_at?: string | null
+          updated_at?: string
+          user_agent_hash?: string | null
+        }
+        Update: {
+          confirm_token?: string | null
+          confirm_token_expires_at?: string | null
+          confirmed_at?: string | null
+          consent_given_at?: string
+          created_at?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          status?: Database["public"]["Enums"]["newsletter_status"]
+          unsubscribed_at?: string | null
+          updated_at?: string
+          user_agent_hash?: string | null
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
@@ -251,6 +332,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      newsletter_status: "pending" | "confirmed" | "unsubscribed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -379,6 +461,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      newsletter_status: ["pending", "confirmed", "unsubscribed"],
     },
   },
 } as const
