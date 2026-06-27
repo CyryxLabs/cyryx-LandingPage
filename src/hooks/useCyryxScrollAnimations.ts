@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { CyryxScrollDiagnosticPayload } from "@/types/cyryx-diagnostics";
 
 // Register only in the browser. Calling registerPlugin at module scope
 // during Cloudflare Workers SSR triggers "Disallowed operation called
@@ -9,28 +10,9 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-type HeroDiagnostics = {
-  source: "useCyryxScrollAnimations";
-  scrollY: number;
-  viewport: string;
-  hero: {
-    transform: string;
-    inlineTransform: string;
-    filter: string;
-    inlineFilter: string;
-    scaleX: number;
-    scaleY: number;
-    hasScale: boolean;
-    hasBlur: boolean;
-  };
-  hookHeroTweenCount: number;
-  hookHeroScrollTriggerCount: number;
-  updatedAt: string;
-};
-
 declare global {
   interface Window {
-    __CYRYX_SCROLL_DIAGNOSTICS__?: HeroDiagnostics;
+    __CYRYX_SCROLL_DIAGNOSTICS__?: CyryxScrollDiagnosticPayload;
   }
 }
 
@@ -55,6 +37,12 @@ function readScale(transform: string) {
   return { scaleX: transform.includes("scale(") ? Number.NaN : 1, scaleY: transform.includes("scale(") ? Number.NaN : 1 };
 }
 
+function readBreakpoint(width: number): CyryxScrollDiagnosticPayload["breakpoint"] {
+  if (width >= 1024) return "desktop";
+  if (width >= 768) return "tablet";
+  return "mobile";
+}
+
 /**
  * Global scroll storytelling for the Cyryx landing page.
  * Uses gsap.matchMedia for mobile / tablet / desktop tiers and
@@ -63,6 +51,8 @@ function readScale(transform: string) {
 export function useCyryxScrollAnimations() {
   useEffect(() => {
     let diagnosticsRaf = 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const lowPerf = document.documentElement.classList.contains("cx-low-perf");
     const publishHeroDiagnostics = () => {
       diagnosticsRaf = 0;
       const hero = document.querySelector<HTMLElement>("[data-hero]");
@@ -70,10 +60,23 @@ export function useCyryxScrollAnimations() {
       const computed = getComputedStyle(hero);
       const { scaleX, scaleY } = readScale(computed.transform);
       const normalizedFilter = computed.filter === "none" ? "" : computed.filter;
-      const diagnostics: HeroDiagnostics = {
+      const scrollTriggerCount = ScrollTrigger.getAll().length;
+      const diagnostics: CyryxScrollDiagnosticPayload = {
         source: "useCyryxScrollAnimations",
         scrollY: window.scrollY,
         viewport: `${window.innerWidth}×${window.innerHeight}`,
+        breakpoint: readBreakpoint(window.innerWidth),
+        gsap: {
+          enabled: !reduceMotion,
+          reason: reduceMotion ? "reduced-motion" : lowPerf ? "low-perf" : "running",
+          reduceMotion,
+          lowPerf,
+          tweenCount: gsap.globalTimeline.getChildren(true, true, true).length,
+          scrollTriggerCount,
+          desktopQuery: window.matchMedia("(min-width: 1024px)").matches,
+          tabletQuery: window.matchMedia("(min-width: 768px) and (max-width: 1023px)").matches,
+          mobileQuery: window.matchMedia("(max-width: 767px)").matches,
+        },
         hero: {
           transform: computed.transform,
           inlineTransform: hero.style.transform,
@@ -85,7 +88,7 @@ export function useCyryxScrollAnimations() {
           hasBlur: normalizedFilter.includes("blur(") || hero.style.filter.includes("blur("),
         },
         hookHeroTweenCount: gsap.getTweensOf(hero).length,
-        hookHeroScrollTriggerCount: 0,
+        hookHeroScrollTriggerCount: scrollTriggerCount,
         updatedAt: new Date().toISOString(),
       };
       window.__CYRYX_SCROLL_DIAGNOSTICS__ = diagnostics;
@@ -96,7 +99,6 @@ export function useCyryxScrollAnimations() {
       diagnosticsRaf = requestAnimationFrame(publishHeroDiagnostics);
     };
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
       // Snap all reveals to final state, count-ups to target.
       document.querySelectorAll<HTMLElement>(".cx-reveal").forEach((el) => {
