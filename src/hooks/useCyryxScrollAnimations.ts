@@ -312,6 +312,29 @@ export function useCyryxScrollAnimations() {
           immediateRender: false,
         });
       }
+
+      // Core teal line — same idea as desktop but with heavier scrub
+      // smoothing and a later start so it stays jank-free on phones.
+      // Parallax and 3D tilt remain intentionally disabled on mobile.
+      const coreLine = document.querySelector<HTMLElement>("[data-core-line]");
+      const mainEl = coreLine?.parentElement;
+      if (coreLine && mainEl) {
+        gsap.fromTo(
+          coreLine,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "none",
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: mainEl,
+              start: "top top+=80",
+              end: "bottom bottom",
+              scrub: 1.2,
+            },
+          },
+        );
+      }
     });
 
     // ── Hero line-by-line headline ───────────────────────────────
