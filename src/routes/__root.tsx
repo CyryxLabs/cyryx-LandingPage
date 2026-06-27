@@ -87,6 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Cyryx Labs — AI Execution Systems" },
       { name: "description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
       { name: "author", content: "Lovable" },
+      { name: "google-site-verification", content: "Bc35xHMHU3j3kg9Iuj2it5vGwLp4IIXwzz_m-VSIk8g" },
       { property: "og:title", content: "Cyryx Labs — AI Execution Systems" },
       { property: "og:description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
       { property: "og:type", content: "website" },
