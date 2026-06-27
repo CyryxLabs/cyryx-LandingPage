@@ -1,36 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { BUILD_LABEL, BUILD_VERSION } from "@/lib/build-info";
-
-type ScrollDiagnosticPayload = {
-  source: "useCyryxScrollAnimations";
-  scrollY: number;
-  viewport: string;
-  breakpoint: "mobile" | "tablet" | "desktop";
-  gsap: {
-    enabled: boolean;
-    reason: "running" | "reduced-motion" | "low-perf";
-    reduceMotion: boolean;
-    lowPerf: boolean;
-    tweenCount: number;
-    scrollTriggerCount: number;
-    desktopQuery: boolean;
-    tabletQuery: boolean;
-    mobileQuery: boolean;
-  };
-  hero: {
-    transform: string;
-    inlineTransform: string;
-    filter: string;
-    inlineFilter: string;
-    scaleX: number;
-    scaleY: number;
-    hasScale: boolean;
-    hasBlur: boolean;
-  };
-  hookHeroTweenCount: number;
-  hookHeroScrollTriggerCount: number;
-  updatedAt: string;
-};
+import type { CyryxScrollDiagnosticPayload } from "@/types/cyryx-diagnostics";
 
 type CssDiagnosticPayload = {
   href: string;
@@ -53,7 +23,7 @@ type CssDiagnosticPayload = {
 
 declare global {
   interface Window {
-    __CYRYX_SCROLL_DIAGNOSTICS__?: ScrollDiagnosticPayload;
+    __CYRYX_SCROLL_DIAGNOSTICS__?: CyryxScrollDiagnosticPayload;
   }
 }
 
@@ -63,7 +33,7 @@ const isDiagnosticUrl = () => {
   return params.get("cyryxDiag") === "1" || params.get("diagnostics") === "1";
 };
 
-function readDiagnostics(): ScrollDiagnosticPayload | undefined {
+function readDiagnostics(): CyryxScrollDiagnosticPayload | undefined {
   if (typeof window === "undefined") return undefined;
   return window.__CYRYX_SCROLL_DIAGNOSTICS__;
 }
@@ -120,7 +90,7 @@ function Status({ ok }: { ok: boolean }) {
 
 export function DiagnosticsOverlay() {
   const [visible, setVisible] = useState(false);
-  const [sample, setSample] = useState<ScrollDiagnosticPayload | undefined>(() => readDiagnostics());
+  const [sample, setSample] = useState<CyryxScrollDiagnosticPayload | undefined>(() => readDiagnostics());
   const [css, setCss] = useState<CssDiagnosticPayload | undefined>(() => readCssDiagnostics());
 
   useEffect(() => {

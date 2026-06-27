@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { CyryxScrollDiagnosticPayload } from "@/types/cyryx-diagnostics";
 
 // Register only in the browser. Calling registerPlugin at module scope
 // during Cloudflare Workers SSR triggers "Disallowed operation called
@@ -9,40 +10,9 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-type HeroDiagnostics = {
-  source: "useCyryxScrollAnimations";
-  scrollY: number;
-  viewport: string;
-  breakpoint: "mobile" | "tablet" | "desktop";
-  gsap: {
-    enabled: boolean;
-    reason: "running" | "reduced-motion" | "low-perf";
-    reduceMotion: boolean;
-    lowPerf: boolean;
-    tweenCount: number;
-    scrollTriggerCount: number;
-    desktopQuery: boolean;
-    tabletQuery: boolean;
-    mobileQuery: boolean;
-  };
-  hero: {
-    transform: string;
-    inlineTransform: string;
-    filter: string;
-    inlineFilter: string;
-    scaleX: number;
-    scaleY: number;
-    hasScale: boolean;
-    hasBlur: boolean;
-  };
-  hookHeroTweenCount: number;
-  hookHeroScrollTriggerCount: number;
-  updatedAt: string;
-};
-
 declare global {
   interface Window {
-    __CYRYX_SCROLL_DIAGNOSTICS__?: HeroDiagnostics;
+    __CYRYX_SCROLL_DIAGNOSTICS__?: CyryxScrollDiagnosticPayload;
   }
 }
 
@@ -67,7 +37,7 @@ function readScale(transform: string) {
   return { scaleX: transform.includes("scale(") ? Number.NaN : 1, scaleY: transform.includes("scale(") ? Number.NaN : 1 };
 }
 
-function readBreakpoint(width: number): HeroDiagnostics["breakpoint"] {
+function readBreakpoint(width: number): CyryxScrollDiagnosticPayload["breakpoint"] {
   if (width >= 1024) return "desktop";
   if (width >= 768) return "tablet";
   return "mobile";
@@ -91,7 +61,7 @@ export function useCyryxScrollAnimations() {
       const { scaleX, scaleY } = readScale(computed.transform);
       const normalizedFilter = computed.filter === "none" ? "" : computed.filter;
       const scrollTriggerCount = ScrollTrigger.getAll().length;
-      const diagnostics: HeroDiagnostics = {
+      const diagnostics: CyryxScrollDiagnosticPayload = {
         source: "useCyryxScrollAnimations",
         scrollY: window.scrollY,
         viewport: `${window.innerWidth}×${window.innerHeight}`,
