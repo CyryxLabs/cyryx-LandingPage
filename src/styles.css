@@ -305,6 +305,19 @@ html.cx-low-perf .glass-panel {
   padding-bottom: 0.08em;
 }
 
+/* Production guard: the hero must never be scaled, blurred, dimmed, or tilted
+   by stale desktop animation code. This overrides normal inline GSAP writes. */
+[data-hero] {
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+[data-hero] .cx-bg-img {
+  transform: none !important;
+  filter: none !important;
+}
+
 @media (min-width: 360px) and (max-width: 767px) {
   .cx-hero-heading {
     line-height: 1.12;
