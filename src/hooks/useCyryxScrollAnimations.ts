@@ -50,7 +50,9 @@ function readBreakpoint(width: number): CyryxScrollDiagnosticPayload["breakpoint
  */
 export function useCyryxScrollAnimations() {
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     let diagnosticsRaf = 0;
+    const preExistingScrollTriggers = new Set(ScrollTrigger.getAll());
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lowPerf = document.documentElement.classList.contains("cx-low-perf");
     const publishHeroDiagnostics = () => {
@@ -219,6 +221,7 @@ export function useCyryxScrollAnimations() {
             {
               [isDesktop ? "scaleX" : "scaleY"]: 1,
               ease: "none",
+              immediateRender: false,
               scrollTrigger: {
                 trigger: timelineSection,
                 start: "top 70%",
@@ -235,6 +238,7 @@ export function useCyryxScrollAnimations() {
               x: isDesktop ? 16 : 0,
               duration: 0.6,
               ease: "power2.out",
+              immediateRender: false,
               scrollTrigger: {
                 trigger: step,
                 start: "top 80%",
@@ -256,6 +260,7 @@ export function useCyryxScrollAnimations() {
           duration: 1.1,
           ease: "power3.out",
           delay: 0.4,
+          immediateRender: false,
         });
       }
 
@@ -269,6 +274,7 @@ export function useCyryxScrollAnimations() {
           {
             scaleY: 1,
             ease: "none",
+            immediateRender: false,
             scrollTrigger: {
               trigger: mainEl,
               start: "top top+=120",
@@ -303,6 +309,7 @@ export function useCyryxScrollAnimations() {
           duration: 0.9,
           ease: "power3.out",
           delay: 0.15,
+          immediateRender: false,
         });
       }
     });
@@ -317,6 +324,7 @@ export function useCyryxScrollAnimations() {
         ease: "power3.out",
         stagger: 0.12,
         delay: 0.1,
+        immediateRender: false,
       });
     }
 
@@ -370,6 +378,7 @@ export function useCyryxScrollAnimations() {
               scale: 1,
               duration: isMobile ? 0.9 : 1.1,
               ease: "power3.out",
+              immediateRender: false,
               scrollTrigger: {
                 trigger: img,
                 start: isMobile ? "top 92%" : "top 85%",
@@ -462,7 +471,9 @@ export function useCyryxScrollAnimations() {
       window.removeEventListener("resize", scheduleHeroDiagnostics);
       window.removeEventListener("cyryx:diagnostics-toggle", scheduleHeroDiagnostics);
       mm.revert();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      ScrollTrigger.getAll().forEach((t) => {
+        if (!preExistingScrollTriggers.has(t)) t.kill();
+      });
     };
   }, []);
 }

@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import { useId, type SVGProps } from "react";
 
 /**
  * Cyryx Labs brand glyphs — metallic silver→teal gradient.
@@ -22,8 +22,12 @@ function GradientDefs({ id }: { id: string }) {
   );
 }
 
+function useSvgGradientId(prefix: string) {
+  return `${prefix}-${useId().replace(/:/g, "")}`;
+}
+
 export function ProductsGlyph({ title, ...props }: GlyphProps) {
-  const id = "cx-glyph-products";
+  const id = useSvgGradientId("cx-glyph-products");
   return (
     <svg
       viewBox="0 0 48 48"
@@ -48,7 +52,7 @@ export function ProductsGlyph({ title, ...props }: GlyphProps) {
 }
 
 export function SolutionsGlyph({ title, ...props }: GlyphProps) {
-  const id = "cx-glyph-solutions";
+  const id = useSvgGradientId("cx-glyph-solutions");
   return (
     <svg
       viewBox="0 0 48 48"
@@ -77,7 +81,7 @@ export function SolutionsGlyph({ title, ...props }: GlyphProps) {
 }
 
 export function LabGlyph({ title, ...props }: GlyphProps) {
-  const id = "cx-glyph-lab";
+  const id = useSvgGradientId("cx-glyph-lab");
   return (
     <svg
       viewBox="0 0 48 48"
@@ -102,7 +106,7 @@ export function LabGlyph({ title, ...props }: GlyphProps) {
 }
 
 export function MaaxStudioGlyph({ title, ...props }: GlyphProps) {
-  const id = "cx-glyph-maax-studio";
+  const id = useSvgGradientId("cx-glyph-maax-studio");
   return (
     <svg
       viewBox="0 0 48 48"
@@ -131,7 +135,7 @@ export function MaaxStudioGlyph({ title, ...props }: GlyphProps) {
 }
 
 export function MaaxRuntimeGlyph({ title, ...props }: GlyphProps) {
-  const id = "cx-glyph-maax-runtime";
+  const id = useSvgGradientId("cx-glyph-maax-runtime");
   return (
     <svg
       viewBox="0 0 48 48"
