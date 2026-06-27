@@ -5,8 +5,6 @@ import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMono
 import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
-import { PerfToggle } from "@/components/cyryx/PerfToggle";
-import { DiagnosticsOverlay } from "@/components/cyryx/DiagnosticsOverlay";
 import { WhyCyryx } from "@/components/cyryx/WhyCyryx";
 import { CoreCapabilities } from "@/components/cyryx/CoreCapabilities";
 import { CommandLayerSection } from "@/components/cyryx/CommandLayerSection";
@@ -192,12 +190,6 @@ function Index() {
       </main>
       <Footer />
       <StickyMobileCTA />
-      {import.meta.env.DEV ? (
-        <>
-          <PerfToggle />
-          <DiagnosticsOverlay />
-        </>
-      ) : null}
     </div>
   );
 }

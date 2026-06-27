@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
  * Enable with ?perf=1 or Alt/⌘ + P.
  */
 export function PerfToggle() {
+  if (!import.meta.env.DEV) return null;
+
   const [open, setOpen] = useState(false);
   const [lowPerf, setLowPerf] = useState(false);
 
