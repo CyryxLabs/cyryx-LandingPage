@@ -827,13 +827,16 @@ html.cx-low-perf .cx-liquid-glass {
 .cx-word-mask {
   display: inline-block;
   overflow: hidden;
-  vertical-align: bottom;
-  line-height: 1;
-  padding-bottom: 0.08em;
+  vertical-align: baseline;
+  line-height: inherit;
+  /* Tiny bottom padding to keep descenders visible without clipping
+     into the next line when the headline wraps. */
+  padding-bottom: 0.05em;
 }
 .cx-word {
   display: inline-block;
   will-change: transform;
+  line-height: inherit;
 }
 
 /* When the headline parent uses the silver text gradient, re-apply it to
