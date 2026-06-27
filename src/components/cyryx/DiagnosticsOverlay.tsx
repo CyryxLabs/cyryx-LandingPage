@@ -101,7 +101,7 @@ export function DiagnosticsOverlay() {
     const refreshCss = () => setCss(readCssDiagnostics());
 
     const onDiagnostics = (event: Event) => {
-      const detail = (event as CustomEvent<ScrollDiagnosticPayload>).detail;
+      const detail = (event as CustomEvent<CyryxScrollDiagnosticPayload>).detail;
       if (detail) setSample(detail);
     };
     const onKeyDown = (event: KeyboardEvent) => {
