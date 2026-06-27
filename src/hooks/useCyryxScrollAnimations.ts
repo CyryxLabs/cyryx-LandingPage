@@ -140,11 +140,15 @@ export function useCyryxScrollAnimations() {
     // ── Universal reveals ────────────────────────────────────────
     const reveals = gsap.utils.toArray<HTMLElement>(".cx-reveal");
     reveals.forEach((el) => {
-      gsap.to(el, {
+      gsap.fromTo(el, {
+        opacity: 0,
+        y: 24,
+      }, {
         opacity: 1,
         y: 0,
         duration: 0.9,
         ease: "power3.out",
+        immediateRender: false,
         scrollTrigger: {
           trigger: el,
           start: "top bottom-=80",
@@ -157,13 +161,16 @@ export function useCyryxScrollAnimations() {
     gsap.utils.toArray<HTMLElement>(".cx-stagger").forEach((group) => {
       const items = group.querySelectorAll<HTMLElement>(".cx-stagger-item");
       if (!items.length) return;
-      gsap.set(items, { opacity: 0, y: 20 });
-      gsap.to(items, {
+      gsap.fromTo(items, {
+        opacity: 0,
+        y: 20,
+      }, {
         opacity: 1,
         y: 0,
         duration: 0.7,
         ease: "power2.out",
         stagger: 0.06,
+        immediateRender: false,
         scrollTrigger: {
           trigger: group,
           start: "top bottom-=80",
