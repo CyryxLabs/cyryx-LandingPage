@@ -192,8 +192,12 @@ function Index() {
       </main>
       <Footer />
       <StickyMobileCTA />
-      <PerfToggle />
-      <DiagnosticsOverlay />
+      {import.meta.env.DEV ? (
+        <>
+          <PerfToggle />
+          <DiagnosticsOverlay />
+        </>
+      ) : null}
     </div>
   );
 }
