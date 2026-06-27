@@ -95,11 +95,13 @@ function Status({ ok }: { ok: boolean }) {
 }
 
 export function DiagnosticsOverlay() {
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(true);
-  const [sample, setSample] = useState<CyryxScrollDiagnosticPayload | undefined>(() => readDiagnostics());
-  const [css, setCss] = useState<CssDiagnosticPayload | undefined>(() => readCssDiagnostics());
+  const [sample, setSample] = useState<CyryxScrollDiagnosticPayload | undefined>();
+  const [css, setCss] = useState<CssDiagnosticPayload | undefined>();
 
   useEffect(() => {
+    setMounted(true);
     document.documentElement.dataset.cyryxDiag = "1";
 
     const refreshCss = () => setCss(readCssDiagnostics());
@@ -145,7 +147,7 @@ export function DiagnosticsOverlay() {
     return sample.hero.hasScale || sample.hero.hasBlur ? "alert" : "clean";
   }, [sample]);
 
-  if (!visible) {
+  if (!mounted || !visible) {
     return null;
   }
 
