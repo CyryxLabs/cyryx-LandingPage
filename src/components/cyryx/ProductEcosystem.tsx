@@ -25,7 +25,7 @@ const PRODUCTS = [
 
 export function ProductEcosystem() {
   return (
-    <section id="products" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--onyx)]">
+    <section id="product-ecosystem" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--onyx)]">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
