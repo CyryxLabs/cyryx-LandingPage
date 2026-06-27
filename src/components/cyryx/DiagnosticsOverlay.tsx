@@ -29,6 +29,70 @@ declare global {
   }
 }
 
+type AuditTarget = {
+  label: string;
+  selector: string;
+  required?: boolean;
+};
+
+type AuditResult = AuditTarget & {
+  found: boolean;
+  count: number;
+  visible: boolean;
+};
+
+const AUDIT_TARGETS: AuditTarget[] = [
+  { label: "Header", selector: "header", required: true },
+  { label: "Main", selector: "main#main-content", required: true },
+  { label: "Hero", selector: "section[data-hero]", required: true },
+  { label: "Hero heading", selector: "#hero-heading", required: true },
+  { label: "Core line (desktop)", selector: "[data-core-line]" },
+  { label: "Capability strip", selector: "[data-capability-strip], section[aria-label*='Capabilit' i]" },
+  { label: "Why Cyryx (#problem)", selector: "section#problem", required: true },
+  { label: "Core capabilities", selector: "section#products", required: true },
+  { label: "Product ecosystem", selector: "section#products", required: true },
+  { label: "MAAX spotlight (#maax)", selector: "section#maax", required: true },
+  { label: "Command layer (#solutions)", selector: "section#solutions", required: true },
+  { label: "Applied AI lab (#applied-lab)", selector: "section#applied-lab", required: true },
+  { label: "Process timeline (#process)", selector: "section#process[data-timeline-section]", required: true },
+  { label: "Metrics band (#metrics)", selector: "section#metrics", required: true },
+  { label: "Who we serve (#audience)", selector: "section#audience", required: true },
+  { label: "Ecosystem (#ecosystem)", selector: "section#ecosystem", required: true },
+  { label: "CTA (#cta)", selector: "section#cta", required: true },
+  { label: "Contact (#contact)", selector: "section#contact", required: true },
+  { label: "Footer", selector: "footer", required: true },
+  { label: "Sticky mobile CTA", selector: "[data-sticky-mobile-cta], [aria-label*='mobile cta' i]" },
+];
+
+function runAudit(): AuditResult[] {
+  if (typeof document === "undefined") return [];
+  return AUDIT_TARGETS.map((target) => {
+    let nodes: NodeListOf<Element> | [] = [];
+    try {
+      nodes = document.querySelectorAll(target.selector);
+    } catch {
+      nodes = [] as never;
+    }
+    const first = nodes[0] as HTMLElement | undefined;
+    let visible = false;
+    if (first) {
+      const rect = first.getBoundingClientRect();
+      const style = getComputedStyle(first);
+      visible =
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        rect.width > 0 &&
+        rect.height > 0;
+    }
+    return {
+      ...target,
+      found: nodes.length > 0,
+      count: nodes.length,
+      visible,
+    };
+  });
+}
+
 const isDiagnosticUrl = () => {
   if (typeof window === "undefined") return false;
   const params = new URLSearchParams(window.location.search);
@@ -99,6 +163,7 @@ export function DiagnosticsOverlay() {
   const [visible, setVisible] = useState(true);
   const [sample, setSample] = useState<CyryxScrollDiagnosticPayload | undefined>();
   const [css, setCss] = useState<CssDiagnosticPayload | undefined>();
+  const [audit, setAudit] = useState<AuditResult[]>([]);
 
   useEffect(() => {
     setMounted(true);
@@ -109,6 +174,7 @@ export function DiagnosticsOverlay() {
       const next = readDiagnostics();
       if (next) setSample(next);
     };
+    const refreshAudit = () => setAudit(runAudit());
 
     const onDiagnostics = (event: Event) => {
       const detail = (event as CustomEvent<CyryxScrollDiagnosticPayload>).detail;
@@ -130,9 +196,11 @@ export function DiagnosticsOverlay() {
     window.addEventListener("resize", refreshCss);
     refreshCss();
     refreshSample();
+    refreshAudit();
     const interval = window.setInterval(() => {
       refreshCss();
       refreshSample();
+      refreshAudit();
     }, 1000);
     return () => {
       window.removeEventListener("cyryx:scroll-diagnostics", onDiagnostics as EventListener);
@@ -146,6 +214,13 @@ export function DiagnosticsOverlay() {
     if (!sample) return "waiting";
     return sample.hero.hasScale || sample.hero.hasBlur ? "alert" : "clean";
   }, [sample]);
+
+  const auditSummary = useMemo(() => {
+    const missing = audit.filter((a) => !a.found);
+    const invisible = audit.filter((a) => a.found && !a.visible);
+    const missingRequired = missing.filter((a) => a.required);
+    return { missing, invisible, missingRequired };
+  }, [audit]);
 
   if (!mounted || !visible) {
     return null;
@@ -213,6 +288,34 @@ export function DiagnosticsOverlay() {
         <div>hook hero ScrollTriggers: {sample?.hookHeroScrollTriggerCount ?? "—"}</div>
           <div>updated: {sample?.updatedAt ?? "—"}</div>
         </div>
+
+        <div className="space-y-1.5 border-t border-[var(--border)] pt-2">
+          <div className="flex items-center justify-between uppercase tracking-[0.18em] text-[var(--silver-dim)]">
+            <span>DOM audit</span>
+            <span className={auditSummary.missingRequired.length ? "text-destructive" : "text-[var(--accent-glow)]"}>
+              {audit.length - auditSummary.missing.length}/{audit.length} found
+            </span>
+          </div>
+          {auditSummary.missing.length === 0 && auditSummary.invisible.length === 0 ? (
+            <div className="text-[var(--accent-glow)]">all expected elements present & visible</div>
+          ) : (
+            <ul className="space-y-1">
+              {auditSummary.missing.map((a) => (
+                <li key={`m-${a.selector}-${a.label}`} className={a.required ? "text-destructive" : "text-[var(--silver-dim)]"}>
+                  ✗ missing{a.required ? " (required)" : ""}: <span className="text-[var(--silver)]">{a.label}</span>
+                  <div className="break-all pl-3 text-[var(--silver-dim)]">selector: <code>{a.selector}</code></div>
+                </li>
+              ))}
+              {auditSummary.invisible.map((a) => (
+                <li key={`i-${a.selector}-${a.label}`} className="text-[#f5c451]">
+                  ⚠ hidden: <span className="text-[var(--silver)]">{a.label}</span>
+                  <div className="break-all pl-3 text-[var(--silver-dim)]">selector: <code>{a.selector}</code></div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
         <div className="pt-1 text-[var(--silver-dim)]">toggle: Alt + Shift + D · query: ?cyryxDiag=1</div>
       </div>
     </aside>
