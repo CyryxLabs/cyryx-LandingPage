@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ResearchRouteImport } from './routes/research'
@@ -18,10 +19,23 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
+import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
+import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as ApiPublicNewsletterSubscribeRouteImport } from './routes/api/public/newsletter.subscribe'
+import { Route as ApiPublicNewsletterConfirmRouteImport } from './routes/api/public/newsletter.confirm'
 
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
   path: '/solutions',
@@ -67,6 +81,21 @@ const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
   path: '/maax-studio',
   getParentRoute: () => ProductsRoute,
 } as any)
+const NewsletterConfirmRoute = NewsletterConfirmRouteImport.update({
+  id: '/newsletter/confirm',
+  path: '/newsletter/confirm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
   id: '/api/public/web-vitals',
   path: '/api/public/web-vitals',
@@ -77,10 +106,39 @@ const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
   path: '/api/public/cta-events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
+  id: '/api/public/contact',
+  path: '/api/public/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailTransactionalSendRoute =
+  LovableEmailTransactionalSendRouteImport.update({
+    id: '/lovable/email/transactional/send',
+    path: '/lovable/email/transactional/send',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
     path: '/lovable/email/queue/process',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicNewsletterSubscribeRoute =
+  ApiPublicNewsletterSubscribeRouteImport.update({
+    id: '/api/public/newsletter/subscribe',
+    path: '/api/public/newsletter/subscribe',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicNewsletterConfirmRoute =
+  ApiPublicNewsletterConfirmRouteImport.update({
+    id: '/api/public/newsletter/confirm',
+    path: '/api/public/newsletter/confirm',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -93,10 +151,19 @@ export interface FileRoutesByFullPath {
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
+  '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,10 +174,19 @@ export interface FileRoutesByTo {
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
+  '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,10 +198,19 @@ export interface FileRoutesById {
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
+  '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -138,10 +223,19 @@ export interface FileRouteTypes {
     | '/research'
     | '/sitemap.xml'
     | '/solutions'
+    | '/unsubscribe'
+    | '/email/unsubscribe'
+    | '/newsletter/confirm'
     | '/products/maax-studio'
+    | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
+    | '/lovable/email/suppression'
+    | '/api/public/newsletter/confirm'
+    | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -152,10 +246,19 @@ export interface FileRouteTypes {
     | '/research'
     | '/sitemap.xml'
     | '/solutions'
+    | '/unsubscribe'
+    | '/email/unsubscribe'
+    | '/newsletter/confirm'
     | '/products/maax-studio'
+    | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
+    | '/lovable/email/suppression'
+    | '/api/public/newsletter/confirm'
+    | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   id:
     | '__root__'
     | '/'
@@ -166,10 +269,19 @@ export interface FileRouteTypes {
     | '/research'
     | '/sitemap.xml'
     | '/solutions'
+    | '/unsubscribe'
+    | '/email/unsubscribe'
+    | '/newsletter/confirm'
     | '/products/maax-studio'
+    | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
+    | '/lovable/email/suppression'
+    | '/api/public/newsletter/confirm'
+    | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -181,13 +293,29 @@ export interface RootRouteChildren {
   ResearchRoute: typeof ResearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolutionsRoute: typeof SolutionsRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
+  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
+  NewsletterConfirmRoute: typeof NewsletterConfirmRoute
+  ApiPublicContactRoute: typeof ApiPublicContactRoute
   ApiPublicCtaEventsRoute: typeof ApiPublicCtaEventsRoute
   ApiPublicWebVitalsRoute: typeof ApiPublicWebVitalsRoute
+  LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ApiPublicNewsletterConfirmRoute: typeof ApiPublicNewsletterConfirmRoute
+  ApiPublicNewsletterSubscribeRoute: typeof ApiPublicNewsletterSubscribeRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
+  LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/solutions': {
       id: '/solutions'
       path: '/solutions'
@@ -251,6 +379,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsMaaxStudioRouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/newsletter/confirm': {
+      id: '/newsletter/confirm'
+      path: '/newsletter/confirm'
+      fullPath: '/newsletter/confirm'
+      preLoaderRoute: typeof NewsletterConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/web-vitals': {
       id: '/api/public/web-vitals'
       path: '/api/public/web-vitals'
@@ -265,11 +414,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCtaEventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/contact': {
+      id: '/api/public/contact'
+      path: '/api/public/contact'
+      fullPath: '/api/public/contact'
+      preLoaderRoute: typeof ApiPublicContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/send': {
+      id: '/lovable/email/transactional/send'
+      path: '/lovable/email/transactional/send'
+      fullPath: '/lovable/email/transactional/send'
+      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
       path: '/lovable/email/queue/process'
       fullPath: '/lovable/email/queue/process'
       preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/newsletter/subscribe': {
+      id: '/api/public/newsletter/subscribe'
+      path: '/api/public/newsletter/subscribe'
+      fullPath: '/api/public/newsletter/subscribe'
+      preLoaderRoute: typeof ApiPublicNewsletterSubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/newsletter/confirm': {
+      id: '/api/public/newsletter/confirm'
+      path: '/api/public/newsletter/confirm'
+      fullPath: '/api/public/newsletter/confirm'
+      preLoaderRoute: typeof ApiPublicNewsletterConfirmRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -296,9 +480,18 @@ const rootRouteChildren: RootRouteChildren = {
   ResearchRoute: ResearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolutionsRoute: SolutionsRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
+  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
+  NewsletterConfirmRoute: NewsletterConfirmRoute,
+  ApiPublicContactRoute: ApiPublicContactRoute,
   ApiPublicCtaEventsRoute: ApiPublicCtaEventsRoute,
   ApiPublicWebVitalsRoute: ApiPublicWebVitalsRoute,
+  LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ApiPublicNewsletterConfirmRoute: ApiPublicNewsletterConfirmRoute,
+  ApiPublicNewsletterSubscribeRoute: ApiPublicNewsletterSubscribeRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
+  LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -10,14 +10,39 @@ export const submitContact = createServerFn({ method: "POST" })
     if (data.website && data.website.length > 0) {
       return { ok: true as const, receivedAt: new Date().toISOString() };
     }
-    // Persisted to server logs for now; swap for DB insert when Cloud is enabled.
-    console.log("[contact] submission", {
-      name: data.name,
-      email: data.email,
-      company: data.company,
-      messageLength: data.message.length,
-      consent: data.consent,
-      at: new Date().toISOString(),
-    });
-    return { ok: true as const, receivedAt: new Date().toISOString() };
+    const submittedAt = new Date().toISOString();
+    const normalizedEmail = data.email.toLowerCase();
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { enqueueInternalEmail } = await import("@/lib/email/send-internal.server");
+      await supabaseAdmin.from("contact_submissions").insert({
+        name: data.name,
+        email: normalizedEmail,
+        company: data.company || null,
+        message: data.message,
+      });
+      await Promise.all([
+        enqueueInternalEmail({
+          templateName: "contact-notification",
+          templateData: {
+            name: data.name,
+            email: normalizedEmail,
+            company: data.company || "",
+            message: data.message,
+            submittedAt,
+          },
+          idempotencyKey: `contact-notify-fn-${submittedAt}`,
+        }),
+        enqueueInternalEmail({
+          templateName: "contact-confirmation",
+          recipientEmail: normalizedEmail,
+          templateData: { name: data.name },
+          idempotencyKey: `contact-confirm-fn-${submittedAt}`,
+        }),
+      ]);
+    } catch (err) {
+      console.error("[contact] submission pipeline failed", err);
+      throw new Error("submission_failed");
+    }
+    return { ok: true as const, receivedAt: submittedAt };
   });

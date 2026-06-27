@@ -21,6 +21,7 @@
     "seo:self-check": "node scripts/seo-self-check.mjs",
     "seo:lighthouse": "node scripts/lighthouse-seo-audit.mjs",
     "seo:post-deploy": "node scripts/post-deploy-verify-gsc.mjs",
+    "compliance:self-check": "node scripts/compliance-self-check.mjs",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -111,5 +112,10 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^8.0.16"
+  },
+  "pnpm": {
+    "overrides": {
+      "entities": "4.5.0"
+    }
   }
 }
