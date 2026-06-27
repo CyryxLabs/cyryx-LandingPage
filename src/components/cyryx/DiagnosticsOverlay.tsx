@@ -95,16 +95,18 @@ function Status({ ok }: { ok: boolean }) {
 }
 
 export function DiagnosticsOverlay() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [sample, setSample] = useState<CyryxScrollDiagnosticPayload | undefined>(() => readDiagnostics());
   const [css, setCss] = useState<CssDiagnosticPayload | undefined>(() => readCssDiagnostics());
 
   useEffect(() => {
-    const initial = isDiagnosticUrl();
-    setVisible((current) => current || initial);
-    document.documentElement.dataset.cyryxDiag = initial ? "1" : "0";
+    document.documentElement.dataset.cyryxDiag = "1";
 
     const refreshCss = () => setCss(readCssDiagnostics());
+    const refreshSample = () => {
+      const next = readDiagnostics();
+      if (next) setSample(next);
+    };
 
     const onDiagnostics = (event: Event) => {
       const detail = (event as CustomEvent<CyryxScrollDiagnosticPayload>).detail;
@@ -124,11 +126,17 @@ export function DiagnosticsOverlay() {
     window.addEventListener("cyryx:scroll-diagnostics", onDiagnostics as EventListener);
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("resize", refreshCss);
-    if (initial) refreshCss();
+    refreshCss();
+    refreshSample();
+    const interval = window.setInterval(() => {
+      refreshCss();
+      refreshSample();
+    }, 1000);
     return () => {
       window.removeEventListener("cyryx:scroll-diagnostics", onDiagnostics as EventListener);
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("resize", refreshCss);
+      window.clearInterval(interval);
     };
   }, []);
 
