@@ -131,6 +131,51 @@
 
 .dark { color-scheme: dark; }
 
+/* ---------------------------------------------------------------
+   Legacy-browser fallbacks (iOS <16.4, Chrome <111, Firefox <113,
+   Samsung Internet <22, old in-app webviews). When either oklch()
+   or color-mix() is unsupported, swap the brand palette and the
+   most-used translucent tokens for hex/rgba equivalents so borders,
+   gradients, and surfaces remain visible.
+--------------------------------------------------------------- */
+@supports not (color: oklch(0 0 0)) {
+  :root {
+    --onyx: #0A0A0A;
+    --graphite: #121417;
+    --charcoal: #1B1E22;
+    --deep-space: #23272B;
+    --silver: #C7C9CC;
+    --silver-dim: #8A8D92;
+    --teal: #0D3B3B;
+    --emerald-accent: #0E5B57;
+    --accent-glow: #00E6D0;
+    --destructive: #E5484D;
+    --destructive-foreground: #FFFFFF;
+    --border: rgba(199, 201, 204, 0.12);
+    --input: rgba(199, 201, 204, 0.16);
+    --sidebar-border: rgba(199, 201, 204, 0.10);
+  }
+}
+
+@supports not (background: color-mix(in oklab, red, blue)) {
+  :root {
+    --gradient-radial-teal: radial-gradient(
+      ellipse at center,
+      rgba(0, 230, 208, 0.14) 0%,
+      transparent 60%
+    );
+    --gradient-panel: linear-gradient(
+      180deg,
+      rgba(27, 30, 34, 0.90) 0%,
+      rgba(18, 20, 23, 0.95) 100%
+    );
+    --shadow-glow-teal: 0 0 48px -8px rgba(0, 230, 208, 0.35);
+    --shadow-panel:
+      0 1px 0 0 rgba(199, 201, 204, 0.06) inset,
+      0 24px 60px -24px rgba(0, 0, 0, 0.7);
+  }
+}
+
 @layer base {
   html {
     color-scheme: dark;
