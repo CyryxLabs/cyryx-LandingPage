@@ -170,8 +170,10 @@ function Status({ ok }: { ok: boolean }) {
 }
 
 export function DiagnosticsOverlay() {
-  if (!import.meta.env.DEV) return null;
+  return import.meta.env.DEV ? <DiagnosticsOverlayInner /> : null;
+}
 
+function DiagnosticsOverlayInner() {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(true);
   const [sample, setSample] = useState<CyryxScrollDiagnosticPayload | undefined>();
