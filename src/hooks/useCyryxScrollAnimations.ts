@@ -55,6 +55,8 @@ export function useCyryxScrollAnimations() {
     const preExistingScrollTriggers = new Set(ScrollTrigger.getAll());
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lowPerf = document.documentElement.classList.contains("cx-low-perf");
+    // TEMP DEBUG: disable GSAP on desktop (≥1024px) to isolate render issue.
+    const disableOnDesktop = window.matchMedia("(min-width: 1024px)").matches;
     const publishHeroDiagnostics = () => {
       diagnosticsRaf = 0;
       const hero = document.querySelector<HTMLElement>("[data-hero]");
@@ -101,7 +103,7 @@ export function useCyryxScrollAnimations() {
       diagnosticsRaf = requestAnimationFrame(publishHeroDiagnostics);
     };
 
-    if (reduceMotion) {
+    if (reduceMotion || disableOnDesktop) {
       // Snap all reveals to final state, count-ups to target.
       document.querySelectorAll<HTMLElement>(".cx-reveal").forEach((el) => {
         el.style.opacity = "1";
@@ -112,6 +114,9 @@ export function useCyryxScrollAnimations() {
           ? el.dataset.countupFormat.replace("{n}", el.dataset.countup ?? "0")
           : (el.dataset.countup ?? "0");
       });
+      if (disableOnDesktop) {
+        document.documentElement.setAttribute("data-cx-gsap", "disabled-desktop");
+      }
       scheduleHeroDiagnostics();
       return;
     }
