@@ -93,6 +93,17 @@ function runAudit(): AuditResult[] {
   });
 }
 
+function findDuplicateIds(): string[] {
+  if (typeof document === "undefined") return [];
+  const counts = new Map<string, number>();
+  for (const el of Array.from(document.querySelectorAll<HTMLElement>("[id]"))) {
+    const id = el.id;
+    if (!id) continue;
+    counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
+  return Array.from(counts.entries()).filter(([, n]) => n > 1).map(([id, n]) => `${id} ×${n}`);
+}
+
 const isDiagnosticUrl = () => {
   if (typeof window === "undefined") return false;
   const params = new URLSearchParams(window.location.search);
@@ -164,6 +175,7 @@ export function DiagnosticsOverlay() {
   const [sample, setSample] = useState<CyryxScrollDiagnosticPayload | undefined>();
   const [css, setCss] = useState<CssDiagnosticPayload | undefined>();
   const [audit, setAudit] = useState<AuditResult[]>([]);
+  const [dupIds, setDupIds] = useState<string[]>([]);
 
   useEffect(() => {
     setMounted(true);
@@ -174,7 +186,10 @@ export function DiagnosticsOverlay() {
       const next = readDiagnostics();
       if (next) setSample(next);
     };
-    const refreshAudit = () => setAudit(runAudit());
+    const refreshAudit = () => {
+      setAudit(runAudit());
+      setDupIds(findDuplicateIds());
+    };
 
     const onDiagnostics = (event: Event) => {
       const detail = (event as CustomEvent<CyryxScrollDiagnosticPayload>).detail;
@@ -296,6 +311,9 @@ export function DiagnosticsOverlay() {
               {audit.length - auditSummary.missing.length}/{audit.length} found
             </span>
           </div>
+          {dupIds.length > 0 ? (
+            <div className="text-destructive">⚠ duplicate ids: {dupIds.join(", ")}</div>
+          ) : null}
           {auditSummary.missing.length === 0 && auditSummary.invisible.length === 0 ? (
             <div className="text-[var(--accent-glow)]">all expected elements present & visible</div>
           ) : (
