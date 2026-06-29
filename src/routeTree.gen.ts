@@ -23,6 +23,7 @@ import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
@@ -103,6 +104,12 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnswersWhatIsGovernedAiExecutionRoute =
+  AnswersWhatIsGovernedAiExecutionRouteImport.update({
+    id: '/answers/what-is-governed-ai-execution',
+    path: '/answers/what-is-governed-ai-execution',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -163,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
@@ -188,6 +196,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
@@ -214,6 +223,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
@@ -266,6 +277,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
@@ -291,6 +303,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
@@ -317,6 +330,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolutionsRoute: typeof SolutionsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  AnswersWhatIsGovernedAiExecutionRoute: typeof AnswersWhatIsGovernedAiExecutionRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   NewsletterConfirmRoute: typeof NewsletterConfirmRoute
   ResearchSlugRoute: typeof ResearchSlugRoute
@@ -433,6 +447,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/answers/what-is-governed-ai-execution': {
+      id: '/answers/what-is-governed-ai-execution'
+      path: '/answers/what-is-governed-ai-execution'
+      fullPath: '/answers/what-is-governed-ai-execution'
+      preLoaderRoute: typeof AnswersWhatIsGovernedAiExecutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -520,6 +541,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolutionsRoute: SolutionsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  AnswersWhatIsGovernedAiExecutionRoute: AnswersWhatIsGovernedAiExecutionRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   NewsletterConfirmRoute: NewsletterConfirmRoute,
   ResearchSlugRoute: ResearchSlugRoute,
