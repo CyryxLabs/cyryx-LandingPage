@@ -21,7 +21,10 @@ for (const route of ROUTES) {
 test("mobile nav order + no Answers", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto("/", { waitUntil: "domcontentloaded", timeout: 60_000 });
-  await page.getByRole("button", { name: /open menu/i }).click();
+  await page.waitForLoadState("networkidle");
+  const openBtn = page.getByRole("button", { name: /open menu/i });
+  await expect(openBtn).toBeVisible();
+  await openBtn.click();
   const panel = page.locator('[role="dialog"][aria-label="Main navigation"]');
   await panel.waitFor({ state: "attached" });
   const navLocator = panel.locator('nav[aria-label="Mobile primary"] a');
