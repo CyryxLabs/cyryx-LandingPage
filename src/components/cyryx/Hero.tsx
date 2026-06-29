@@ -15,6 +15,7 @@ export function Hero() {
   const [hideOverlay, setHideOverlay] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const [videoInView, setVideoInView] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const parallax = { y: 0, scale: 1, progress: 0 };
 
@@ -30,13 +31,17 @@ export function Hero() {
   // Pause video when offscreen to save CPU/battery
   useEffect(() => {
     if (typeof window === "undefined" || reducedMotion) return;
-    const v = videoRef.current;
     const host = root.current;
-    if (!v || !host) return;
+    if (!host) return;
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) v.play().catch(() => {});
-        else v.pause();
+        const v = videoRef.current;
+        if (entry.isIntersecting) {
+          setVideoInView(true); // mounts src for the first time
+          v?.play().catch(() => {});
+        } else {
+          v?.pause();
+        }
       },
       { threshold: 0.05 },
     );
@@ -91,13 +96,13 @@ export function Hero() {
         {!reducedMotion && (
           <video
             ref={videoRef}
-            src={heroVideo.url}
+            src={videoInView ? heroVideo.url : undefined}
             poster={hero1920.url}
             autoPlay
             muted
             loop
             playsInline
-            preload="auto"
+            preload="none"
             disablePictureInPicture
             disableRemotePlayback
             onLoadedData={() => setVideoReady(true)}
