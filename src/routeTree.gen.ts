@@ -26,6 +26,7 @@ import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe
 import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
 import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './routes/answers.what-is-goal-grounded-generation'
 import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
+import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
 import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
@@ -125,6 +126,12 @@ const AnswersWhatAreCommandGatesInAiSystemsRoute =
     path: '/answers/what-are-command-gates-in-ai-systems',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AnswersHowToMeasureAiOutputQualityRoute =
+  AnswersHowToMeasureAiOutputQualityRouteImport.update({
+    id: '/answers/how-to-measure-ai-output-quality',
+    path: '/answers/how-to-measure-ai-output-quality',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AnswersAiExecutionSystemVsAiAutomationRoute =
   AnswersAiExecutionSystemVsAiAutomationRouteImport.update({
     id: '/answers/ai-execution-system-vs-ai-automation',
@@ -192,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
+  '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
   '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
@@ -221,6 +229,7 @@ export interface FileRoutesByTo {
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
+  '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
   '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
@@ -251,6 +260,7 @@ export interface FileRoutesById {
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
+  '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
   '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
+    | '/answers/how-to-measure-ai-output-quality'
     | '/answers/what-are-command-gates-in-ai-systems'
     | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
@@ -311,6 +322,7 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
+    | '/answers/how-to-measure-ai-output-quality'
     | '/answers/what-are-command-gates-in-ai-systems'
     | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
@@ -340,6 +352,7 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
+    | '/answers/how-to-measure-ai-output-quality'
     | '/answers/what-are-command-gates-in-ai-systems'
     | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
@@ -370,6 +383,7 @@ export interface RootRouteChildren {
   SolutionsRoute: typeof SolutionsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   AnswersAiExecutionSystemVsAiAutomationRoute: typeof AnswersAiExecutionSystemVsAiAutomationRoute
+  AnswersHowToMeasureAiOutputQualityRoute: typeof AnswersHowToMeasureAiOutputQualityRoute
   AnswersWhatAreCommandGatesInAiSystemsRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRoute
   AnswersWhatIsGoalGroundedGenerationRoute: typeof AnswersWhatIsGoalGroundedGenerationRoute
   AnswersWhatIsGovernedAiExecutionRoute: typeof AnswersWhatIsGovernedAiExecutionRoute
@@ -510,6 +524,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/answers/how-to-measure-ai-output-quality': {
+      id: '/answers/how-to-measure-ai-output-quality'
+      path: '/answers/how-to-measure-ai-output-quality'
+      fullPath: '/answers/how-to-measure-ai-output-quality'
+      preLoaderRoute: typeof AnswersHowToMeasureAiOutputQualityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/answers/ai-execution-system-vs-ai-automation': {
       id: '/answers/ai-execution-system-vs-ai-automation'
       path: '/answers/ai-execution-system-vs-ai-automation'
@@ -606,6 +627,8 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   AnswersAiExecutionSystemVsAiAutomationRoute:
     AnswersAiExecutionSystemVsAiAutomationRoute,
+  AnswersHowToMeasureAiOutputQualityRoute:
+    AnswersHowToMeasureAiOutputQualityRoute,
   AnswersWhatAreCommandGatesInAiSystemsRoute:
     AnswersWhatAreCommandGatesInAiSystemsRoute,
   AnswersWhatIsGoalGroundedGenerationRoute:
