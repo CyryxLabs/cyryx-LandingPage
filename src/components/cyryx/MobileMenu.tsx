@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { gsap } from "gsap";
+import { Link } from "@tanstack/react-router";
 import { CyryxMark, CyryxWordmark } from "./primitives/CyryxMark";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
@@ -102,11 +103,12 @@ export function MobileMenu({
           aria-label="Mobile primary"
         >
           {links.map((l, i) => (
-            <a
+            <Link
               key={l.label}
-              href={l.href}
+              to={l.href}
               onClick={onClose}
-              className="group flex min-h-[56px] items-baseline justify-between border-b border-[color-mix(in_oklab,var(--silver)_8%,transparent)] py-5"
+              activeProps={{ className: "group flex min-h-[56px] items-baseline justify-between border-b border-[color-mix(in_oklab,var(--accent-glow)_40%,transparent)] py-5" }}
+              inactiveProps={{ className: "group flex min-h-[56px] items-baseline justify-between border-b border-[color-mix(in_oklab,var(--silver)_8%,transparent)] py-5" }}
             >
               <span className="font-display text-3xl font-semibold text-silver-gradient inline-flex items-center gap-2">
                 {l.label}
@@ -120,23 +122,23 @@ export function MobileMenu({
               <span className="hud-label text-[var(--silver-dim)] group-hover:text-[var(--accent-glow)] transition-colors">
                 0{i + 1}
               </span>
-            </a>
+            </Link>
           ))}
         </nav>
 
-        <a
+        <Link
           ref={ctaRef}
-          href="#contact"
+          to="/contact"
           aria-label={headerCta}
           onClick={() => {
-            trackCta({ cta: "start_project", section: "mobile_menu", href: "#contact" });
+            trackCta({ cta: "start_project", section: "mobile_menu", href: "/contact" });
             onClose();
           }}
           className="cx-btn cx-liquid-glass mt-auto inline-flex h-14 items-center justify-center gap-2 rounded-md text-[var(--silver)] hud-label shadow-[var(--shadow-glow-teal)]"
         >
           {headerCta}
           <span aria-hidden className="text-[var(--accent-glow)]">→</span>
-        </a>
+        </Link>
       </div>
     </div>
   );

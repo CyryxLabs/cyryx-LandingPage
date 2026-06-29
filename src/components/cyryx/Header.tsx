@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { CyryxWordmark } from "./primitives/CyryxMark";
 import { MobileMenu } from "./MobileMenu";
 import { cn } from "@/lib/utils";
@@ -9,12 +10,11 @@ import { trackCta } from "@/lib/track-cta";
 import { hasNewPublication } from "@/data/publications";
 
 const NAV = [
-  { label: "Products", href: "#products" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Applied AI Lab", href: "#applied-lab" },
-  { label: "MAAX Studio", href: "#maax" },
-  { label: "MAAX Runtime", href: "#ecosystem" },
+  { label: "MAAX Studio", href: "/products/maax-studio" },
+  { label: "Solutions", href: "/solutions" },
   { label: "Research", href: "/research" },
+  { label: "Answers", href: "/answers" },
+  { label: "Company", href: "/company" },
 ];
 
 export function Header() {
@@ -40,23 +40,31 @@ export function Header() {
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:h-24 lg:px-10">
-          <a
-            href="#top"
+          <Link
+            to="/"
             className="-mx-1 inline-flex h-12 min-w-0 shrink-0 items-center px-1 lg:h-16"
             aria-label="Cyryx Labs — home"
           >
             <CyryxWordmark priority className="h-10 lg:h-14" />
-          </a>
+          </Link>
 
           <nav
             className="hidden lg:flex items-center gap-7 xl:gap-8"
             aria-label="Primary"
           >
             {NAV.map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
-                className="hud-label text-[0.7rem] tracking-[0.18em] text-[var(--silver-dim)] hover:text-[var(--silver)] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5"
+                to={item.href}
+                activeOptions={{ exact: item.href === "/" }}
+                activeProps={{
+                  className:
+                    "hud-label text-[0.7rem] tracking-[0.18em] text-[var(--silver)] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5 after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]",
+                }}
+                inactiveProps={{
+                  className:
+                    "hud-label text-[0.7rem] tracking-[0.18em] text-[var(--silver-dim)] hover:text-[var(--silver)] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5",
+                }}
               >
                 {item.label}
                 {item.label === "Research" && hasNewPublication() && (
@@ -66,19 +74,19 @@ export function Header() {
                     className="h-1.5 w-1.5 rounded-full bg-[#0E5B57] shadow-[0_0_6px_#0E5B57]"
                   />
                 )}
-              </a>
+              </Link>
             ))}
           </nav>
 
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             aria-label={headerCta}
-            onClick={() => trackCta({ cta: "start_project", section: "header", href: "#contact" })}
+            onClick={() => trackCta({ cta: "start_project", section: "header", href: "/contact" })}
             className="cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
             {headerCta}
             <span aria-hidden className="text-[var(--accent-glow)]">→</span>
-          </a>
+          </Link>
 
           <button
             type="button"
