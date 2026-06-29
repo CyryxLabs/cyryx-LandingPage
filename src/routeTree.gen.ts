@@ -19,6 +19,7 @@ import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
+import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
@@ -88,6 +89,12 @@ const AnswersIndexRoute = AnswersIndexRouteImport.update({
   path: '/answers/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SolutionsAiWebsitesLeadSystemsRoute =
+  SolutionsAiWebsitesLeadSystemsRouteImport.update({
+    id: '/ai-websites-lead-systems',
+    path: '/ai-websites-lead-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const ResearchSlugRoute = ResearchSlugRouteImport.update({
   id: '/research/$slug',
   path: '/research/$slug',
@@ -196,7 +203,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/solutions': typeof SolutionsRoute
+  '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByFullPath {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
@@ -226,7 +234,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/solutions': typeof SolutionsRoute
+  '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
@@ -237,6 +245,7 @@ export interface FileRoutesByTo {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/answers': typeof AnswersIndexRoute
   '/research': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
@@ -257,7 +266,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/solutions': typeof SolutionsRoute
+  '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
@@ -268,6 +277,7 @@ export interface FileRoutesById {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
@@ -300,6 +310,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-websites-lead-systems'
     | '/answers/'
     | '/research/'
     | '/api/public/contact'
@@ -330,6 +341,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-websites-lead-systems'
     | '/answers'
     | '/research'
     | '/api/public/contact'
@@ -360,6 +372,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-websites-lead-systems'
     | '/answers/'
     | '/research/'
     | '/api/public/contact'
@@ -380,7 +393,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SolutionsRoute: typeof SolutionsRoute
+  SolutionsRoute: typeof SolutionsRouteWithChildren
   UnsubscribeRoute: typeof UnsubscribeRoute
   AnswersAiExecutionSystemVsAiAutomationRoute: typeof AnswersAiExecutionSystemVsAiAutomationRoute
   AnswersHowToMeasureAiOutputQualityRoute: typeof AnswersHowToMeasureAiOutputQualityRoute
@@ -474,6 +487,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/answers/'
       preLoaderRoute: typeof AnswersIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/solutions/ai-websites-lead-systems': {
+      id: '/solutions/ai-websites-lead-systems'
+      path: '/ai-websites-lead-systems'
+      fullPath: '/solutions/ai-websites-lead-systems'
+      preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
     }
     '/research/$slug': {
       id: '/research/$slug'
@@ -616,6 +636,18 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
   ProductsRouteChildren,
 )
 
+interface SolutionsRouteChildren {
+  SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
+}
+
+const SolutionsRouteChildren: SolutionsRouteChildren = {
+  SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
+}
+
+const SolutionsRouteWithChildren = SolutionsRoute._addFileChildren(
+  SolutionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CompanyRoute: CompanyRoute,
@@ -623,7 +655,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SolutionsRoute: SolutionsRoute,
+  SolutionsRoute: SolutionsRouteWithChildren,
   UnsubscribeRoute: UnsubscribeRoute,
   AnswersAiExecutionSystemVsAiAutomationRoute:
     AnswersAiExecutionSystemVsAiAutomationRoute,
