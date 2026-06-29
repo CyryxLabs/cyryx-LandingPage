@@ -21,6 +21,7 @@ import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
 import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
 import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
+import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
 import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
@@ -101,6 +102,12 @@ const SolutionsInternalAiAssistantsRoute =
   SolutionsInternalAiAssistantsRouteImport.update({
     id: '/internal-ai-assistants',
     path: '/internal-ai-assistants',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsCustomAiProductDevelopmentRoute =
+  SolutionsCustomAiProductDevelopmentRouteImport.update({
+    id: '/custom-ai-product-development',
+    path: '/custom-ai-product-development',
     getParentRoute: () => SolutionsRoute,
   } as any)
 const SolutionsAiWebsitesLeadSystemsRoute =
@@ -229,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
@@ -262,6 +270,7 @@ export interface FileRoutesByTo {
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers': typeof AnswersIndexRoute
@@ -296,6 +305,7 @@ export interface FileRoutesById {
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
@@ -331,6 +341,7 @@ export interface FileRouteTypes {
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/custom-ai-product-development'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers/'
@@ -364,6 +375,7 @@ export interface FileRouteTypes {
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/custom-ai-product-development'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers'
@@ -397,6 +409,7 @@ export interface FileRouteTypes {
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/custom-ai-product-development'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers/'
@@ -526,6 +539,13 @@ declare module '@tanstack/react-router' {
       path: '/internal-ai-assistants'
       fullPath: '/solutions/internal-ai-assistants'
       preLoaderRoute: typeof SolutionsInternalAiAssistantsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/custom-ai-product-development': {
+      id: '/solutions/custom-ai-product-development'
+      path: '/custom-ai-product-development'
+      fullPath: '/solutions/custom-ai-product-development'
+      preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
       parentRoute: typeof SolutionsRoute
     }
     '/solutions/ai-websites-lead-systems': {
@@ -678,12 +698,15 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
 
 interface SolutionsRouteChildren {
   SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
+  SolutionsCustomAiProductDevelopmentRoute: typeof SolutionsCustomAiProductDevelopmentRoute
   SolutionsInternalAiAssistantsRoute: typeof SolutionsInternalAiAssistantsRoute
   SolutionsWorkflowAutomationRoute: typeof SolutionsWorkflowAutomationRoute
 }
 
 const SolutionsRouteChildren: SolutionsRouteChildren = {
   SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
+  SolutionsCustomAiProductDevelopmentRoute:
+    SolutionsCustomAiProductDevelopmentRoute,
   SolutionsInternalAiAssistantsRoute: SolutionsInternalAiAssistantsRoute,
   SolutionsWorkflowAutomationRoute: SolutionsWorkflowAutomationRoute,
 }
