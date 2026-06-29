@@ -4,6 +4,11 @@ import { ArrowLeft, Download, ExternalLink, Github, Quote, X, Copy, Check, Shiel
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { getPublicationBySlug, type Publication } from "@/data/publications";
+import {
+  buildBreadcrumbJsonLd,
+  buildTechArticleJsonLd,
+  jsonLdScript,
+} from "@/components/cyryx/seo/seo";
 
 export const Route = createFileRoute("/research/$slug")({
   loader: ({ params }) => {
@@ -15,14 +20,41 @@ export const Route = createFileRoute("/research/$slug")({
     const pub = loaderData?.pub;
     const title = pub ? `${pub.title} — Cyryx Labs Research` : "Research — Cyryx Labs";
     const desc = pub ? pub.abstract.slice(0, 180) : "Cyryx Labs research publication.";
+    const path = pub ? `/research/${pub.slug}` : "/research";
+    const url = `https://cyryxlabs.com${path}`;
     return {
       meta: [
         { title },
         { name: "description", content: desc },
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "article" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: desc },
       ],
-      links: pub ? [{ rel: "canonical", href: `/research/${pub.slug}` }] : [],
+      links: pub ? [{ rel: "canonical", href: url }] : [],
+      scripts: pub
+        ? [
+            jsonLdScript(
+              buildBreadcrumbJsonLd([
+                { name: "Home", path: "/" },
+                { name: "Research", path: "/research" },
+                { name: pub.title, path },
+              ]),
+            ),
+            jsonLdScript(
+              buildTechArticleJsonLd({
+                headline: pub.title,
+                description: desc,
+                path,
+                datePublished: pub.date,
+                authors: pub.authors,
+              }),
+            ),
+          ]
+        : [],
     };
   },
   component: PaperPage,

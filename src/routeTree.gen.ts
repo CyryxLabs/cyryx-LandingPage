@@ -18,10 +18,22 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as AnswersIndexRouteImport } from './routes/answers.index'
+import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
+import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
+import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
+import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
+import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
+import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
+import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './routes/answers.what-is-goal-grounded-generation'
+import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
+import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
+import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
@@ -77,6 +89,46 @@ const ResearchIndexRoute = ResearchIndexRouteImport.update({
   path: '/research/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnswersIndexRoute = AnswersIndexRouteImport.update({
+  id: '/answers/',
+  path: '/answers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolutionsWorkflowAutomationRoute =
+  SolutionsWorkflowAutomationRouteImport.update({
+    id: '/workflow-automation',
+    path: '/workflow-automation',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsInternalAiAssistantsRoute =
+  SolutionsInternalAiAssistantsRouteImport.update({
+    id: '/internal-ai-assistants',
+    path: '/internal-ai-assistants',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsCustomAiProductDevelopmentRoute =
+  SolutionsCustomAiProductDevelopmentRouteImport.update({
+    id: '/custom-ai-product-development',
+    path: '/custom-ai-product-development',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiWebsitesLeadSystemsRoute =
+  SolutionsAiWebsitesLeadSystemsRouteImport.update({
+    id: '/ai-websites-lead-systems',
+    path: '/ai-websites-lead-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
+  id: '/ai-integrations',
+  path: '/ai-integrations',
+  getParentRoute: () => SolutionsRoute,
+} as any)
+const SolutionsAiGovernanceCostControlRoute =
+  SolutionsAiGovernanceCostControlRouteImport.update({
+    id: '/ai-governance-cost-control',
+    path: '/ai-governance-cost-control',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const ResearchSlugRoute = ResearchSlugRouteImport.update({
   id: '/research/$slug',
   path: '/research/$slug',
@@ -97,6 +149,36 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnswersWhatIsGovernedAiExecutionRoute =
+  AnswersWhatIsGovernedAiExecutionRouteImport.update({
+    id: '/answers/what-is-governed-ai-execution',
+    path: '/answers/what-is-governed-ai-execution',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersWhatIsGoalGroundedGenerationRoute =
+  AnswersWhatIsGoalGroundedGenerationRouteImport.update({
+    id: '/answers/what-is-goal-grounded-generation',
+    path: '/answers/what-is-goal-grounded-generation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersWhatAreCommandGatesInAiSystemsRoute =
+  AnswersWhatAreCommandGatesInAiSystemsRouteImport.update({
+    id: '/answers/what-are-command-gates-in-ai-systems',
+    path: '/answers/what-are-command-gates-in-ai-systems',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersHowToMeasureAiOutputQualityRoute =
+  AnswersHowToMeasureAiOutputQualityRouteImport.update({
+    id: '/answers/how-to-measure-ai-output-quality',
+    path: '/answers/how-to-measure-ai-output-quality',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersAiExecutionSystemVsAiAutomationRoute =
+  AnswersAiExecutionSystemVsAiAutomationRouteImport.update({
+    id: '/answers/ai-execution-system-vs-ai-automation',
+    path: '/answers/ai-execution-system-vs-ai-automation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -155,12 +237,24 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/solutions': typeof SolutionsRoute
+  '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
+  '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
+  '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
+  '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
+  '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
+  '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
+  '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
+  '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -179,12 +273,24 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/solutions': typeof SolutionsRoute
+  '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
+  '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
+  '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
+  '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
+  '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
+  '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
+  '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
+  '/answers': typeof AnswersIndexRoute
   '/research': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -204,12 +310,24 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/solutions': typeof SolutionsRoute
+  '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
+  '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
+  '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
+  '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
+  '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
+  '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
+  '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
+  '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -232,10 +350,22 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/ai-execution-system-vs-ai-automation'
+    | '/answers/how-to-measure-ai-output-quality'
+    | '/answers/what-are-command-gates-in-ai-systems'
+    | '/answers/what-is-goal-grounded-generation'
+    | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-governance-cost-control'
+    | '/solutions/ai-integrations'
+    | '/solutions/ai-websites-lead-systems'
+    | '/solutions/custom-ai-product-development'
+    | '/solutions/internal-ai-assistants'
+    | '/solutions/workflow-automation'
+    | '/answers/'
     | '/research/'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -256,10 +386,22 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/ai-execution-system-vs-ai-automation'
+    | '/answers/how-to-measure-ai-output-quality'
+    | '/answers/what-are-command-gates-in-ai-systems'
+    | '/answers/what-is-goal-grounded-generation'
+    | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-governance-cost-control'
+    | '/solutions/ai-integrations'
+    | '/solutions/ai-websites-lead-systems'
+    | '/solutions/custom-ai-product-development'
+    | '/solutions/internal-ai-assistants'
+    | '/solutions/workflow-automation'
+    | '/answers'
     | '/research'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -280,10 +422,22 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/ai-execution-system-vs-ai-automation'
+    | '/answers/how-to-measure-ai-output-quality'
+    | '/answers/what-are-command-gates-in-ai-systems'
+    | '/answers/what-is-goal-grounded-generation'
+    | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-governance-cost-control'
+    | '/solutions/ai-integrations'
+    | '/solutions/ai-websites-lead-systems'
+    | '/solutions/custom-ai-product-development'
+    | '/solutions/internal-ai-assistants'
+    | '/solutions/workflow-automation'
+    | '/answers/'
     | '/research/'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -303,11 +457,17 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SolutionsRoute: typeof SolutionsRoute
+  SolutionsRoute: typeof SolutionsRouteWithChildren
   UnsubscribeRoute: typeof UnsubscribeRoute
+  AnswersAiExecutionSystemVsAiAutomationRoute: typeof AnswersAiExecutionSystemVsAiAutomationRoute
+  AnswersHowToMeasureAiOutputQualityRoute: typeof AnswersHowToMeasureAiOutputQualityRoute
+  AnswersWhatAreCommandGatesInAiSystemsRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRoute
+  AnswersWhatIsGoalGroundedGenerationRoute: typeof AnswersWhatIsGoalGroundedGenerationRoute
+  AnswersWhatIsGovernedAiExecutionRoute: typeof AnswersWhatIsGovernedAiExecutionRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   NewsletterConfirmRoute: typeof NewsletterConfirmRoute
   ResearchSlugRoute: typeof ResearchSlugRoute
+  AnswersIndexRoute: typeof AnswersIndexRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
   ApiPublicCtaEventsRoute: typeof ApiPublicCtaEventsRoute
@@ -385,6 +545,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResearchIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/answers/': {
+      id: '/answers/'
+      path: '/answers'
+      fullPath: '/answers/'
+      preLoaderRoute: typeof AnswersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solutions/workflow-automation': {
+      id: '/solutions/workflow-automation'
+      path: '/workflow-automation'
+      fullPath: '/solutions/workflow-automation'
+      preLoaderRoute: typeof SolutionsWorkflowAutomationRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/internal-ai-assistants': {
+      id: '/solutions/internal-ai-assistants'
+      path: '/internal-ai-assistants'
+      fullPath: '/solutions/internal-ai-assistants'
+      preLoaderRoute: typeof SolutionsInternalAiAssistantsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/custom-ai-product-development': {
+      id: '/solutions/custom-ai-product-development'
+      path: '/custom-ai-product-development'
+      fullPath: '/solutions/custom-ai-product-development'
+      preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-websites-lead-systems': {
+      id: '/solutions/ai-websites-lead-systems'
+      path: '/ai-websites-lead-systems'
+      fullPath: '/solutions/ai-websites-lead-systems'
+      preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-integrations': {
+      id: '/solutions/ai-integrations'
+      path: '/ai-integrations'
+      fullPath: '/solutions/ai-integrations'
+      preLoaderRoute: typeof SolutionsAiIntegrationsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-governance-cost-control': {
+      id: '/solutions/ai-governance-cost-control'
+      path: '/ai-governance-cost-control'
+      fullPath: '/solutions/ai-governance-cost-control'
+      preLoaderRoute: typeof SolutionsAiGovernanceCostControlRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/research/$slug': {
       id: '/research/$slug'
       path: '/research/$slug'
@@ -411,6 +620,41 @@ declare module '@tanstack/react-router' {
       path: '/email/unsubscribe'
       fullPath: '/email/unsubscribe'
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/what-is-governed-ai-execution': {
+      id: '/answers/what-is-governed-ai-execution'
+      path: '/answers/what-is-governed-ai-execution'
+      fullPath: '/answers/what-is-governed-ai-execution'
+      preLoaderRoute: typeof AnswersWhatIsGovernedAiExecutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/what-is-goal-grounded-generation': {
+      id: '/answers/what-is-goal-grounded-generation'
+      path: '/answers/what-is-goal-grounded-generation'
+      fullPath: '/answers/what-is-goal-grounded-generation'
+      preLoaderRoute: typeof AnswersWhatIsGoalGroundedGenerationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/what-are-command-gates-in-ai-systems': {
+      id: '/answers/what-are-command-gates-in-ai-systems'
+      path: '/answers/what-are-command-gates-in-ai-systems'
+      fullPath: '/answers/what-are-command-gates-in-ai-systems'
+      preLoaderRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/how-to-measure-ai-output-quality': {
+      id: '/answers/how-to-measure-ai-output-quality'
+      path: '/answers/how-to-measure-ai-output-quality'
+      fullPath: '/answers/how-to-measure-ai-output-quality'
+      preLoaderRoute: typeof AnswersHowToMeasureAiOutputQualityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/ai-execution-system-vs-ai-automation': {
+      id: '/answers/ai-execution-system-vs-ai-automation'
+      path: '/answers/ai-execution-system-vs-ai-automation'
+      fullPath: '/answers/ai-execution-system-vs-ai-automation'
+      preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/suppression': {
@@ -491,6 +735,29 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
   ProductsRouteChildren,
 )
 
+interface SolutionsRouteChildren {
+  SolutionsAiGovernanceCostControlRoute: typeof SolutionsAiGovernanceCostControlRoute
+  SolutionsAiIntegrationsRoute: typeof SolutionsAiIntegrationsRoute
+  SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
+  SolutionsCustomAiProductDevelopmentRoute: typeof SolutionsCustomAiProductDevelopmentRoute
+  SolutionsInternalAiAssistantsRoute: typeof SolutionsInternalAiAssistantsRoute
+  SolutionsWorkflowAutomationRoute: typeof SolutionsWorkflowAutomationRoute
+}
+
+const SolutionsRouteChildren: SolutionsRouteChildren = {
+  SolutionsAiGovernanceCostControlRoute: SolutionsAiGovernanceCostControlRoute,
+  SolutionsAiIntegrationsRoute: SolutionsAiIntegrationsRoute,
+  SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
+  SolutionsCustomAiProductDevelopmentRoute:
+    SolutionsCustomAiProductDevelopmentRoute,
+  SolutionsInternalAiAssistantsRoute: SolutionsInternalAiAssistantsRoute,
+  SolutionsWorkflowAutomationRoute: SolutionsWorkflowAutomationRoute,
+}
+
+const SolutionsRouteWithChildren = SolutionsRoute._addFileChildren(
+  SolutionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CompanyRoute: CompanyRoute,
@@ -498,11 +765,21 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SolutionsRoute: SolutionsRoute,
+  SolutionsRoute: SolutionsRouteWithChildren,
   UnsubscribeRoute: UnsubscribeRoute,
+  AnswersAiExecutionSystemVsAiAutomationRoute:
+    AnswersAiExecutionSystemVsAiAutomationRoute,
+  AnswersHowToMeasureAiOutputQualityRoute:
+    AnswersHowToMeasureAiOutputQualityRoute,
+  AnswersWhatAreCommandGatesInAiSystemsRoute:
+    AnswersWhatAreCommandGatesInAiSystemsRoute,
+  AnswersWhatIsGoalGroundedGenerationRoute:
+    AnswersWhatIsGoalGroundedGenerationRoute,
+  AnswersWhatIsGovernedAiExecutionRoute: AnswersWhatIsGovernedAiExecutionRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   NewsletterConfirmRoute: NewsletterConfirmRoute,
   ResearchSlugRoute: ResearchSlugRoute,
+  AnswersIndexRoute: AnswersIndexRoute,
   ResearchIndexRoute: ResearchIndexRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
   ApiPublicCtaEventsRoute: ApiPublicCtaEventsRoute,
