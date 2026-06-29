@@ -5,6 +5,7 @@ import { CyryxMark, CyryxWordmark } from "./primitives/CyryxMark";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
+import { hasNewPublication } from "@/data/publications";
 
 export function MobileMenu({
   open,
@@ -107,8 +108,14 @@ export function MobileMenu({
               onClick={onClose}
               className="group flex min-h-[56px] items-baseline justify-between border-b border-[color-mix(in_oklab,var(--silver)_8%,transparent)] py-5"
             >
-              <span className="font-display text-3xl font-semibold text-silver-gradient">
+              <span className="font-display text-3xl font-semibold text-silver-gradient inline-flex items-center gap-2">
                 {l.label}
+                {l.label === "Research" && hasNewPublication() && (
+                  <span
+                    aria-label="New publication"
+                    className="h-2 w-2 rounded-full bg-[#0E5B57] shadow-[0_0_8px_#0E5B57]"
+                  />
+                )}
               </span>
               <span className="hud-label text-[var(--silver-dim)] group-hover:text-[var(--accent-glow)] transition-colors">
                 0{i + 1}
