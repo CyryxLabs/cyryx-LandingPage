@@ -24,6 +24,7 @@ import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-s
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
+import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './routes/answers.what-is-goal-grounded-generation'
 import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
 import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
@@ -112,6 +113,12 @@ const AnswersWhatIsGovernedAiExecutionRoute =
     path: '/answers/what-is-governed-ai-execution',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AnswersWhatIsGoalGroundedGenerationRoute =
+  AnswersWhatIsGoalGroundedGenerationRouteImport.update({
+    id: '/answers/what-is-goal-grounded-generation',
+    path: '/answers/what-is-goal-grounded-generation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AnswersWhatAreCommandGatesInAiSystemsRoute =
   AnswersWhatAreCommandGatesInAiSystemsRouteImport.update({
     id: '/answers/what-are-command-gates-in-ai-systems',
@@ -186,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
+  '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
@@ -214,6 +222,7 @@ export interface FileRoutesByTo {
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
+  '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
@@ -243,6 +252,7 @@ export interface FileRoutesById {
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
+  '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
@@ -273,6 +283,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/what-are-command-gates-in-ai-systems'
+    | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
@@ -301,6 +312,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/what-are-command-gates-in-ai-systems'
+    | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
@@ -329,6 +341,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/what-are-command-gates-in-ai-systems'
+    | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
@@ -358,6 +371,7 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   AnswersAiExecutionSystemVsAiAutomationRoute: typeof AnswersAiExecutionSystemVsAiAutomationRoute
   AnswersWhatAreCommandGatesInAiSystemsRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRoute
+  AnswersWhatIsGoalGroundedGenerationRoute: typeof AnswersWhatIsGoalGroundedGenerationRoute
   AnswersWhatIsGovernedAiExecutionRoute: typeof AnswersWhatIsGovernedAiExecutionRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   NewsletterConfirmRoute: typeof NewsletterConfirmRoute
@@ -482,6 +496,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswersWhatIsGovernedAiExecutionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/answers/what-is-goal-grounded-generation': {
+      id: '/answers/what-is-goal-grounded-generation'
+      path: '/answers/what-is-goal-grounded-generation'
+      fullPath: '/answers/what-is-goal-grounded-generation'
+      preLoaderRoute: typeof AnswersWhatIsGoalGroundedGenerationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/answers/what-are-command-gates-in-ai-systems': {
       id: '/answers/what-are-command-gates-in-ai-systems'
       path: '/answers/what-are-command-gates-in-ai-systems'
@@ -587,6 +608,8 @@ const rootRouteChildren: RootRouteChildren = {
     AnswersAiExecutionSystemVsAiAutomationRoute,
   AnswersWhatAreCommandGatesInAiSystemsRoute:
     AnswersWhatAreCommandGatesInAiSystemsRoute,
+  AnswersWhatIsGoalGroundedGenerationRoute:
+    AnswersWhatIsGoalGroundedGenerationRoute,
   AnswersWhatIsGovernedAiExecutionRoute: AnswersWhatIsGovernedAiExecutionRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   NewsletterConfirmRoute: NewsletterConfirmRoute,
