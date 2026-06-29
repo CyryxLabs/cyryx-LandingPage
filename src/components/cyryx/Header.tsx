@@ -13,7 +13,6 @@ const NAV = [
   { label: "MAAX Studio", href: "/products/maax-studio" },
   { label: "Solutions", href: "/solutions" },
   { label: "Research", href: "/research" },
-  { label: "Answers", href: "/answers" },
   { label: "Company", href: "/company" },
 ];
 
