@@ -13,6 +13,7 @@ const NAV = [
   { label: "Applied AI Lab", href: "#applied-lab" },
   { label: "MAAX Studio", href: "#maax" },
   { label: "MAAX Runtime", href: "#ecosystem" },
+  { label: "Research", href: "/research" },
 ];
 
 export function Header() {
