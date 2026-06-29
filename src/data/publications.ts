@@ -64,7 +64,7 @@ export const CGP_V1: Publication = {
   title: "CGP: Cyryx Governance Protocol for Agentic AI Execution",
   subtitle: "Version 1.0 — Technical Report CGP-2026-001",
   authors: ["Cyryx Labs LLC"],
-  affiliation: "Cyryx Labs LLC, Port Saint Lucie, FL, USA",
+  affiliation: "Cyryx Labs LLC, United States of America",
   date: "June 2026",
   publishedAt: "2026-06-15",
   version: "1.0",
