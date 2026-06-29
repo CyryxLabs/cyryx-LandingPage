@@ -132,6 +132,14 @@ function PaperHeader({ pub, onCite }: { pub: Publication; onCite: () => void }) 
               </a>
             </span>
           )}
+          {pub.conceptDoi && pub.conceptDoiUrl && (
+            <span>
+              Concept DOI (all versions):{" "}
+              <a href={pub.conceptDoiUrl} target="_blank" rel="noopener noreferrer" className="text-[#0E5B57] hover:text-white">
+                {pub.conceptDoi}
+              </a>
+            </span>
+          )}
           {pub.license && pub.licenseUrl && (
             <span>
               License:{" "}

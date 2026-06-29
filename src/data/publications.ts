@@ -43,6 +43,8 @@ export interface Publication {
   licenseUrl?: string;
   doi?: string;
   doiUrl?: string;
+  conceptDoi?: string;
+  conceptDoiUrl?: string;
   pdfUrl?: string;
   githubUrl?: string;
   contactEmail?: string;
@@ -69,8 +71,10 @@ export const CGP_V1: Publication = {
   documentId: "CGP-2026-001",
   license: "CC BY 4.0",
   licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
-  doi: "10.5281/zenodo.XXXXXXX",
-  doiUrl: "https://doi.org/10.5281/zenodo.XXXXXXX",
+  doi: "10.5281/zenodo.21045760",
+  doiUrl: "https://doi.org/10.5281/zenodo.21045760",
+  conceptDoi: "10.5281/zenodo.21045759",
+  conceptDoiUrl: "https://doi.org/10.5281/zenodo.21045759",
   pdfUrl: "/research/cgp-v1.pdf",
   githubUrl: "https://github.com/cyryxlabs/cgp",
   contactEmail: "cgp@cyryxlabs.com",
