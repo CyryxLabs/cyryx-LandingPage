@@ -43,6 +43,8 @@ export interface Publication {
   licenseUrl?: string;
   doi?: string;
   doiUrl?: string;
+  conceptDoi?: string;
+  conceptDoiUrl?: string;
   pdfUrl?: string;
   githubUrl?: string;
   contactEmail?: string;
