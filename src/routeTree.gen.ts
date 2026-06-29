@@ -19,6 +19,7 @@ import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
+import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
 import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
@@ -89,6 +90,12 @@ const AnswersIndexRoute = AnswersIndexRouteImport.update({
   path: '/answers/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SolutionsWorkflowAutomationRoute =
+  SolutionsWorkflowAutomationRouteImport.update({
+    id: '/workflow-automation',
+    path: '/workflow-automation',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const SolutionsAiWebsitesLeadSystemsRoute =
   SolutionsAiWebsitesLeadSystemsRouteImport.update({
     id: '/ai-websites-lead-systems',
@@ -215,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
@@ -246,6 +254,7 @@ export interface FileRoutesByTo {
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers': typeof AnswersIndexRoute
   '/research': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
@@ -278,6 +287,7 @@ export interface FileRoutesById {
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
@@ -311,6 +321,7 @@ export interface FileRouteTypes {
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/workflow-automation'
     | '/answers/'
     | '/research/'
     | '/api/public/contact'
@@ -342,6 +353,7 @@ export interface FileRouteTypes {
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/workflow-automation'
     | '/answers'
     | '/research'
     | '/api/public/contact'
@@ -373,6 +385,7 @@ export interface FileRouteTypes {
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/workflow-automation'
     | '/answers/'
     | '/research/'
     | '/api/public/contact'
@@ -487,6 +500,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/answers/'
       preLoaderRoute: typeof AnswersIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/solutions/workflow-automation': {
+      id: '/solutions/workflow-automation'
+      path: '/workflow-automation'
+      fullPath: '/solutions/workflow-automation'
+      preLoaderRoute: typeof SolutionsWorkflowAutomationRouteImport
+      parentRoute: typeof SolutionsRoute
     }
     '/solutions/ai-websites-lead-systems': {
       id: '/solutions/ai-websites-lead-systems'
@@ -638,10 +658,12 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
 
 interface SolutionsRouteChildren {
   SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
+  SolutionsWorkflowAutomationRoute: typeof SolutionsWorkflowAutomationRoute
 }
 
 const SolutionsRouteChildren: SolutionsRouteChildren = {
   SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
+  SolutionsWorkflowAutomationRoute: SolutionsWorkflowAutomationRoute,
 }
 
 const SolutionsRouteWithChildren = SolutionsRoute._addFileChildren(
