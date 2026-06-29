@@ -72,22 +72,23 @@ export function Hero() {
     >
       {/* Background */}
       <div aria-hidden className="cx-bg absolute inset-0 -z-10" data-hide-overlay={hideOverlay || undefined}>
-        {reducedMotion ? (
-          <img
-            src={hero1920.url}
-            srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
-            alt=""
-            fetchPriority="high"
-            loading="eager"
-            decoding="async"
-            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
-            width={1920}
-            height={1080}
-            data-no3d="1"
-            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
-            draggable={false}
-          />
-        ) : (
+        {/* Always-on poster image — instant LCP and fallback when reduced motion or video stalls */}
+        <img
+          src={hero1920.url}
+          srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
+          alt=""
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
+          width={1920}
+          height={1080}
+          data-no3d="1"
+          data-hero-poster
+          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          draggable={false}
+        />
+        {!reducedMotion && (
           <video
             ref={videoRef}
             src={heroVideo.url}
