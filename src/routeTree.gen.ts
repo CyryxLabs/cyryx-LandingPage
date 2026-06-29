@@ -24,6 +24,7 @@ import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-s
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
+import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
@@ -110,6 +111,12 @@ const AnswersWhatIsGovernedAiExecutionRoute =
     path: '/answers/what-is-governed-ai-execution',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AnswersAiExecutionSystemVsAiAutomationRoute =
+  AnswersAiExecutionSystemVsAiAutomationRouteImport.update({
+    id: '/answers/ai-execution-system-vs-ai-automation',
+    path: '/answers/ai-execution-system-vs-ai-automation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -170,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
@@ -196,6 +204,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
@@ -223,6 +232,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
@@ -277,6 +288,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
@@ -303,6 +315,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
+    | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
@@ -330,6 +343,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolutionsRoute: typeof SolutionsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  AnswersAiExecutionSystemVsAiAutomationRoute: typeof AnswersAiExecutionSystemVsAiAutomationRoute
   AnswersWhatIsGovernedAiExecutionRoute: typeof AnswersWhatIsGovernedAiExecutionRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   NewsletterConfirmRoute: typeof NewsletterConfirmRoute
@@ -454,6 +468,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswersWhatIsGovernedAiExecutionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/answers/ai-execution-system-vs-ai-automation': {
+      id: '/answers/ai-execution-system-vs-ai-automation'
+      path: '/answers/ai-execution-system-vs-ai-automation'
+      fullPath: '/answers/ai-execution-system-vs-ai-automation'
+      preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -541,6 +562,8 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolutionsRoute: SolutionsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  AnswersAiExecutionSystemVsAiAutomationRoute:
+    AnswersAiExecutionSystemVsAiAutomationRoute,
   AnswersWhatIsGovernedAiExecutionRoute: AnswersWhatIsGovernedAiExecutionRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   NewsletterConfirmRoute: NewsletterConfirmRoute,
