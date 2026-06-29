@@ -14,6 +14,8 @@ export function Hero() {
   const [debug, setDebug] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const parallax = { y: 0, scale: 1, progress: 0 };
 
   useEffect(() => {
@@ -24,6 +26,23 @@ export function Hero() {
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
+
+  // Pause video when offscreen to save CPU/battery
+  useEffect(() => {
+    if (typeof window === "undefined" || reducedMotion) return;
+    const v = videoRef.current;
+    const host = root.current;
+    if (!v || !host) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.05 },
+    );
+    io.observe(host);
+    return () => io.disconnect();
+  }, [reducedMotion]);
 
   // Enable debug via ?heroDebug=1 or pressing "D"
   useEffect(() => {
@@ -70,16 +89,21 @@ export function Hero() {
           />
         ) : (
           <video
+            ref={videoRef}
             src={heroVideo.url}
             poster={hero1920.url}
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
+            disablePictureInPicture
+            disableRemotePlayback
+            onLoadedData={() => setVideoReady(true)}
             aria-hidden="true"
             data-no3d="1"
-            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+            data-hero-video
+            className={`cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
           />
         )}
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
