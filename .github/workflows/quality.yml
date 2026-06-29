@@ -38,6 +38,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
+      - name: TypeScript typecheck
+        run: bun run typecheck
       - run: bunx playwright install --with-deps chromium
       - name: Validate forbidden-terms config + list active rules
         run: node scripts/validate-forbidden-terms.mjs

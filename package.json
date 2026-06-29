@@ -23,6 +23,7 @@
     "seo:post-deploy": "node scripts/post-deploy-verify-gsc.mjs",
     "compliance:self-check": "node scripts/compliance-self-check.mjs",
     "lint": "eslint .",
+    "typecheck": "tsgo --noEmit",
     "format": "prettier --write ."
   },
   "dependencies": {
