@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
@@ -71,12 +71,6 @@ function AnswersHub() {
         <ul className="mt-12 grid gap-4">
           {ANSWERS.map((a) => (
             <li key={a.slug}>
-              <Link
-                to="/answers/$"
-                params={{ _splat: a.slug }}
-                // fall back to raw <a> for predictable AEO crawling
-                preload={false}
-              />
               <a
                 href={`/answers/${a.slug}`}
                 className="group block rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_55%,transparent)] p-5 backdrop-blur-sm transition-colors hover:border-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)]"
