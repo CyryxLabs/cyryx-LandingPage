@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
+import { hasNewPublication } from "@/data/publications";
 
 const NAV = [
   { label: "Products", href: "#products" },
@@ -55,9 +56,16 @@ export function Header() {
               <a
                 key={item.label}
                 href={item.href}
-                className="hud-label text-[0.7rem] tracking-[0.18em] text-[var(--silver-dim)] hover:text-[var(--silver)] transition-colors relative py-2 whitespace-nowrap"
+                className="hud-label text-[0.7rem] tracking-[0.18em] text-[var(--silver-dim)] hover:text-[var(--silver)] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5"
               >
                 {item.label}
+                {item.label === "Research" && hasNewPublication() && (
+                  <span
+                    aria-label="New publication"
+                    title="New publication"
+                    className="h-1.5 w-1.5 rounded-full bg-[#0E5B57] shadow-[0_0_6px_#0E5B57]"
+                  />
+                )}
               </a>
             ))}
           </nav>
