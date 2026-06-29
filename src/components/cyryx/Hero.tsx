@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
+import heroVideo from "@/assets/cyryx-hero.mp4.asset.json";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
@@ -12,7 +13,17 @@ export function Hero() {
   const copy = getCopy(useCopyVariant()).hero;
   const [debug, setDebug] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const parallax = { y: 0, scale: 1, progress: 0 };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   // Enable debug via ?heroDebug=1 or pressing "D"
   useEffect(() => {
@@ -42,20 +53,35 @@ export function Hero() {
     >
       {/* Background */}
       <div aria-hidden className="cx-bg absolute inset-0 -z-10" data-hide-overlay={hideOverlay || undefined}>
-        <img
-          src={hero1920.url}
-          srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
-          alt=""
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
-          width={1920}
-          height={1080}
-          data-no3d="1"
-          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
-          draggable={false}
-        />
+        {reducedMotion ? (
+          <img
+            src={hero1920.url}
+            srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
+            alt=""
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
+            width={1920}
+            height={1080}
+            data-no3d="1"
+            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+            draggable={false}
+          />
+        ) : (
+          <video
+            src={heroVideo.url}
+            poster={hero1920.url}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            data-no3d="1"
+            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          />
+        )}
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
         <div
           className="cx-hero-overlay absolute inset-0 data-[hide=true]:hidden"
