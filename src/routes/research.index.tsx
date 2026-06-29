@@ -4,6 +4,10 @@ import { ArrowRight, Download, ExternalLink } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { PUBLICATIONS, type PublicationCategory } from "@/data/publications";
+import {
+  buildBreadcrumbJsonLd,
+  jsonLdScript,
+} from "@/components/cyryx/seo/seo";
 
 export const Route = createFileRoute("/research/")({
   head: () => ({
@@ -20,9 +24,17 @@ export const Route = createFileRoute("/research/")({
         content:
           "Technical frameworks, governance protocols, and applied research from Cyryx Labs.",
       },
-      { property: "og:url", content: "/research" },
+      { property: "og:url", content: "https://cyryxlabs.com/research" },
     ],
-    links: [{ rel: "canonical", href: "/research" }],
+    links: [{ rel: "canonical", href: "https://cyryxlabs.com/research" }],
+    scripts: [
+      jsonLdScript(
+        buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Research", path: "/research" },
+        ]),
+      ),
+    ],
   }),
   component: ResearchHub,
 });
