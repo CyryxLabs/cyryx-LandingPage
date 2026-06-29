@@ -18,6 +18,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
@@ -74,6 +75,11 @@ const IndexRoute = IndexRouteImport.update({
 const ResearchIndexRoute = ResearchIndexRouteImport.update({
   id: '/research/',
   path: '/research/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchSlugRoute = ResearchSlugRouteImport.update({
+  id: '/research/$slug',
+  path: '/research/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/research/$slug': typeof ResearchSlugRoute
   '/research/': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/research/$slug': typeof ResearchSlugRoute
   '/research': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/research/$slug': typeof ResearchSlugRoute
   '/research/': typeof ResearchIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
+    | '/research/$slug'
     | '/research/'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
+    | '/research/$slug'
     | '/research'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/newsletter/confirm'
     | '/products/maax-studio'
+    | '/research/$slug'
     | '/research/'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -295,6 +307,7 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   NewsletterConfirmRoute: typeof NewsletterConfirmRoute
+  ResearchSlugRoute: typeof ResearchSlugRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
   ApiPublicCtaEventsRoute: typeof ApiPublicCtaEventsRoute
@@ -370,6 +383,13 @@ declare module '@tanstack/react-router' {
       path: '/research'
       fullPath: '/research/'
       preLoaderRoute: typeof ResearchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research/$slug': {
+      id: '/research/$slug'
+      path: '/research/$slug'
+      fullPath: '/research/$slug'
+      preLoaderRoute: typeof ResearchSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products/maax-studio': {
@@ -482,6 +502,7 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   NewsletterConfirmRoute: NewsletterConfirmRoute,
+  ResearchSlugRoute: ResearchSlugRoute,
   ResearchIndexRoute: ResearchIndexRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
   ApiPublicCtaEventsRoute: ApiPublicCtaEventsRoute,
