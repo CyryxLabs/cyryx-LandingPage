@@ -10,10 +10,10 @@ import { trackCta } from "@/lib/track-cta";
 import { hasNewPublication } from "@/data/publications";
 
 const NAV = [
+  { label: "Company", href: "/company" },
   { label: "MAAX Studio", href: "/products/maax-studio" },
   { label: "Solutions", href: "/solutions" },
   { label: "Research", href: "/research" },
-  { label: "Company", href: "/company" },
 ];
 
 export function Header() {
