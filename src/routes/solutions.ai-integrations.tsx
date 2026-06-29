@@ -28,7 +28,6 @@ export const Route = createFileRoute("/solutions/ai-integrations")({
         }),
       ],
     ),
-  command: undefined,
   component: () => (
     <SolutionPage
       eyebrow="AI Integrations"

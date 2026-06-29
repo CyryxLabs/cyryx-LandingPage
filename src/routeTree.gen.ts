@@ -23,6 +23,7 @@ import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/soluti
 import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
 import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
 import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
+import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
@@ -116,6 +117,11 @@ const SolutionsAiWebsitesLeadSystemsRoute =
     path: '/ai-websites-lead-systems',
     getParentRoute: () => SolutionsRoute,
   } as any)
+const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
+  id: '/ai-integrations',
+  path: '/ai-integrations',
+  getParentRoute: () => SolutionsRoute,
+} as any)
 const ResearchSlugRoute = ResearchSlugRouteImport.update({
   id: '/research/$slug',
   path: '/research/$slug',
@@ -235,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
@@ -269,6 +276,7 @@ export interface FileRoutesByTo {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
@@ -304,6 +312,7 @@ export interface FileRoutesById {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
@@ -340,6 +349,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
     | '/solutions/internal-ai-assistants'
@@ -374,6 +384,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
     | '/solutions/internal-ai-assistants'
@@ -408,6 +419,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
     | '/solutions/internal-ai-assistants'
@@ -555,6 +567,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
       parentRoute: typeof SolutionsRoute
     }
+    '/solutions/ai-integrations': {
+      id: '/solutions/ai-integrations'
+      path: '/ai-integrations'
+      fullPath: '/solutions/ai-integrations'
+      preLoaderRoute: typeof SolutionsAiIntegrationsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/research/$slug': {
       id: '/research/$slug'
       path: '/research/$slug'
@@ -697,6 +716,7 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
 )
 
 interface SolutionsRouteChildren {
+  SolutionsAiIntegrationsRoute: typeof SolutionsAiIntegrationsRoute
   SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
   SolutionsCustomAiProductDevelopmentRoute: typeof SolutionsCustomAiProductDevelopmentRoute
   SolutionsInternalAiAssistantsRoute: typeof SolutionsInternalAiAssistantsRoute
@@ -704,6 +724,7 @@ interface SolutionsRouteChildren {
 }
 
 const SolutionsRouteChildren: SolutionsRouteChildren = {
+  SolutionsAiIntegrationsRoute: SolutionsAiIntegrationsRoute,
   SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
   SolutionsCustomAiProductDevelopmentRoute:
     SolutionsCustomAiProductDevelopmentRoute,
