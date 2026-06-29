@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
@@ -67,6 +67,11 @@ export const Route = createFileRoute("/solutions")({
 });
 
 function SolutionsHub() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // Parent route: render <Outlet /> for any /solutions/* child; render hub on exact /solutions.
+  if (pathname !== "/solutions" && pathname !== "/solutions/") {
+    return <Outlet />;
+  }
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
