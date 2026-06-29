@@ -24,6 +24,7 @@ import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solu
 import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
 import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
 import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
+import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
@@ -122,6 +123,12 @@ const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
   path: '/ai-integrations',
   getParentRoute: () => SolutionsRoute,
 } as any)
+const SolutionsAiGovernanceCostControlRoute =
+  SolutionsAiGovernanceCostControlRouteImport.update({
+    id: '/ai-governance-cost-control',
+    path: '/ai-governance-cost-control',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const ResearchSlugRoute = ResearchSlugRouteImport.update({
   id: '/research/$slug',
   path: '/research/$slug',
@@ -241,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
@@ -276,6 +284,7 @@ export interface FileRoutesByTo {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
@@ -312,6 +321,7 @@ export interface FileRoutesById {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
@@ -349,6 +359,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
@@ -384,6 +395,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
@@ -419,6 +431,7 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/maax-studio'
     | '/research/$slug'
+    | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
@@ -574,6 +587,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsAiIntegrationsRouteImport
       parentRoute: typeof SolutionsRoute
     }
+    '/solutions/ai-governance-cost-control': {
+      id: '/solutions/ai-governance-cost-control'
+      path: '/ai-governance-cost-control'
+      fullPath: '/solutions/ai-governance-cost-control'
+      preLoaderRoute: typeof SolutionsAiGovernanceCostControlRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/research/$slug': {
       id: '/research/$slug'
       path: '/research/$slug'
@@ -716,6 +736,7 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
 )
 
 interface SolutionsRouteChildren {
+  SolutionsAiGovernanceCostControlRoute: typeof SolutionsAiGovernanceCostControlRoute
   SolutionsAiIntegrationsRoute: typeof SolutionsAiIntegrationsRoute
   SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
   SolutionsCustomAiProductDevelopmentRoute: typeof SolutionsCustomAiProductDevelopmentRoute
@@ -724,6 +745,7 @@ interface SolutionsRouteChildren {
 }
 
 const SolutionsRouteChildren: SolutionsRouteChildren = {
+  SolutionsAiGovernanceCostControlRoute: SolutionsAiGovernanceCostControlRoute,
   SolutionsAiIntegrationsRoute: SolutionsAiIntegrationsRoute,
   SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
   SolutionsCustomAiProductDevelopmentRoute:
