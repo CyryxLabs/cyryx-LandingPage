@@ -14,6 +14,8 @@ export function Hero() {
   const [debug, setDebug] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const parallax = { y: 0, scale: 1, progress: 0 };
 
   useEffect(() => {
@@ -24,6 +26,23 @@ export function Hero() {
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
+
+  // Pause video when offscreen to save CPU/battery
+  useEffect(() => {
+    if (typeof window === "undefined" || reducedMotion) return;
+    const v = videoRef.current;
+    const host = root.current;
+    if (!v || !host) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.05 },
+    );
+    io.observe(host);
+    return () => io.disconnect();
+  }, [reducedMotion]);
 
   // Enable debug via ?heroDebug=1 or pressing "D"
   useEffect(() => {
@@ -53,33 +72,39 @@ export function Hero() {
     >
       {/* Background */}
       <div aria-hidden className="cx-bg absolute inset-0 -z-10" data-hide-overlay={hideOverlay || undefined}>
-        {reducedMotion ? (
-          <img
-            src={hero1920.url}
-            srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
-            alt=""
-            fetchPriority="high"
-            loading="eager"
-            decoding="async"
-            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
-            width={1920}
-            height={1080}
-            data-no3d="1"
-            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
-            draggable={false}
-          />
-        ) : (
+        {/* Always-on poster image — instant LCP and fallback when reduced motion or video stalls */}
+        <img
+          src={hero1920.url}
+          srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
+          alt=""
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
+          width={1920}
+          height={1080}
+          data-no3d="1"
+          data-hero-poster
+          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          draggable={false}
+        />
+        {!reducedMotion && (
           <video
+            ref={videoRef}
             src={heroVideo.url}
             poster={hero1920.url}
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
+            disablePictureInPicture
+            disableRemotePlayback
+            onLoadedData={() => setVideoReady(true)}
             aria-hidden="true"
             data-no3d="1"
-            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+            data-hero-video
+            className={`cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
           />
         )}
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
