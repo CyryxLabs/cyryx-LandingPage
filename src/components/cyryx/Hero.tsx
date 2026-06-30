@@ -3,6 +3,9 @@ import { ArrowUpRight } from "lucide-react";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
+import hero640Avif from "@/assets/cyryx-hero-monolith-v2-640.avif.asset.json";
+import hero1280Avif from "@/assets/cyryx-hero-monolith-v2-1280.avif.asset.json";
+import hero1920Avif from "@/assets/cyryx-hero-monolith-v2-1920.avif.asset.json";
 import heroVideo from "@/assets/cyryx-hero.mp4.asset.json";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
@@ -77,22 +80,33 @@ export function Hero() {
     >
       {/* Background */}
       <div aria-hidden className="cx-bg absolute inset-0 -z-10" data-hide-overlay={hideOverlay || undefined}>
-        {/* Always-on poster image — instant LCP and fallback when reduced motion or video stalls */}
-        <img
-          src={hero1920.url}
-          srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
-          alt=""
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
-          width={1920}
-          height={1080}
-          data-no3d="1"
-          data-hero-poster
-          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
-          draggable={false}
-        />
+        {/* Always-on poster image — instant LCP and fallback when reduced motion or video stalls.
+            AVIF first (smallest), WebP fallback for browsers without AVIF support. */}
+        <picture>
+          <source
+            type="image/avif"
+            srcSet={`${hero640Avif.url} 640w, ${hero1280Avif.url} 1280w, ${hero1920Avif.url} 1920w`}
+            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
+          />
+          <source
+            type="image/webp"
+            srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
+            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
+          />
+          <img
+            src={hero1920.url}
+            alt=""
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+            width={1920}
+            height={1080}
+            data-no3d="1"
+            data-hero-poster
+            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+            draggable={false}
+          />
+        </picture>
         {!reducedMotion && (
           <video
             ref={videoRef}
