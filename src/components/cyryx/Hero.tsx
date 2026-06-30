@@ -97,7 +97,6 @@ export function Hero() {
           <video
             ref={videoRef}
             src={videoInView ? heroVideo.url : undefined}
-            poster={hero1920.url}
             autoPlay
             muted
             loop
