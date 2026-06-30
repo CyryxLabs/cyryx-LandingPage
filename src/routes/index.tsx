@@ -22,30 +22,27 @@ import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
 
+const HOME_URL = "https://cyryxlabs.com/";
+const HOME_TITLE = "Cyryx Labs — AI Products & Execution Systems";
+const HOME_DESCRIPTION =
+  "Cyryx Labs builds proprietary AI products, governed agentic workflows, and execution infrastructure for enterprise AI operations.";
+const HOME_SOCIAL_IMAGE =
+  "https://storage.googleapis.com/gpt-engineer-file-uploads/pqDYh1E7STSD3pG3DZTBMfMwqsS2/social-images/social-1782497606213-ChatGPT_Image_Jun_25,_2026,_08_57_05_PM.webp";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cyryx Labs — AI Execution Systems for the Agentic Era" },
-      {
-        name: "description",
-        content:
-          "Cyryx Labs builds proprietary AI products, custom automation systems, and agentic workflows that turn AI into governed execution.",
-      },
-      { property: "og:title", content: "Cyryx Labs — AI Products & Execution Systems" },
-      {
-        property: "og:description",
-        content:
-          "Proprietary AI products, custom AI systems, and agentic workflows for the agentic era.",
-      },
+      { title: HOME_TITLE },
+      { name: "description", content: HOME_DESCRIPTION },
+      { property: "og:title", content: HOME_TITLE },
+      { property: "og:description", content: HOME_DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: HOME_URL },
+      { property: "og:image", content: HOME_SOCIAL_IMAGE },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Cyryx Labs — AI Products & Execution Systems" },
-      {
-        name: "twitter:description",
-        content:
-          "The execution layer for operational AI. AI products, agentic workflow systems, and governed execution infrastructure.",
-      },
+      { name: "twitter:title", content: HOME_TITLE },
+      { name: "twitter:description", content: HOME_DESCRIPTION },
+      { name: "twitter:image", content: HOME_SOCIAL_IMAGE },
       { name: "theme-color", content: "#050607" },
     ],
     links: [
@@ -57,7 +54,7 @@ export const Route = createFileRoute("/")({
         imageSizes: "(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px",
         fetchPriority: "high",
       },
-      { rel: "canonical", href: "/" },
+      { rel: "canonical", href: HOME_URL },
     ],
     scripts: [
       {
