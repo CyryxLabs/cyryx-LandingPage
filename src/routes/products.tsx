@@ -1,17 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { StubPage } from "@/components/cyryx/StubPage";
+import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+
+const PATH = "/products";
+const TITLE = "Products — Cyryx Labs";
+const DESC = "Proprietary AI products built by Cyryx Labs for the agentic era.";
 
 export const Route = createFileRoute("/products")({
-  head: () => ({
-    meta: [
-      { title: "Products — Cyryx Labs" },
-      { name: "description", content: "Proprietary AI products built by Cyryx Labs for the agentic era." },
-      { property: "og:title", content: "Products — Cyryx Labs" },
-      { property: "og:description", content: "Proprietary AI products for the agentic era." },
-      { property: "og:url", content: "/products" },
-    ],
-    links: [{ rel: "canonical", href: "/products" }],
-  }),
+  head: () =>
+    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Products", path: PATH },
+      ]),
+    ]),
   component: () => (
     <StubPage
       eyebrow="Cyryx Labs · Products"

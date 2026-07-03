@@ -12,6 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SitemapSolutionsDotxmlRouteImport } from './routes/sitemap-solutions[.]xml'
+import { Route as SitemapProductsDotxmlRouteImport } from './routes/sitemap-products[.]xml'
+import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
+import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -57,6 +61,26 @@ const SolutionsRoute = SolutionsRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapSolutionsDotxmlRoute = SitemapSolutionsDotxmlRouteImport.update({
+  id: '/sitemap-solutions.xml',
+  path: '/sitemap-solutions.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapProductsDotxmlRoute = SitemapProductsDotxmlRouteImport.update({
+  id: '/sitemap-products.xml',
+  path: '/sitemap-products.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
+  id: '/sitemap-index.xml',
+  path: '/sitemap-index.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapCompanyDotxmlRoute = SitemapCompanyDotxmlRouteImport.update({
+  id: '/sitemap-company.xml',
+  path: '/sitemap-company.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -236,6 +260,10 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
+  '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
+  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
+  '/sitemap-products.xml': typeof SitemapProductsDotxmlRoute
+  '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
@@ -272,6 +300,10 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
+  '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
+  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
+  '/sitemap-products.xml': typeof SitemapProductsDotxmlRoute
+  '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
@@ -309,6 +341,10 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
+  '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
+  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
+  '/sitemap-products.xml': typeof SitemapProductsDotxmlRoute
+  '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
   '/unsubscribe': typeof UnsubscribeRoute
@@ -347,6 +383,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/privacy'
     | '/products'
+    | '/sitemap-company.xml'
+    | '/sitemap-index.xml'
+    | '/sitemap-products.xml'
+    | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
@@ -383,6 +423,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/privacy'
     | '/products'
+    | '/sitemap-company.xml'
+    | '/sitemap-index.xml'
+    | '/sitemap-products.xml'
+    | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
@@ -419,6 +463,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/privacy'
     | '/products'
+    | '/sitemap-company.xml'
+    | '/sitemap-index.xml'
+    | '/sitemap-products.xml'
+    | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
     | '/unsubscribe'
@@ -456,6 +504,10 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
+  SitemapCompanyDotxmlRoute: typeof SitemapCompanyDotxmlRoute
+  SitemapIndexDotxmlRoute: typeof SitemapIndexDotxmlRoute
+  SitemapProductsDotxmlRoute: typeof SitemapProductsDotxmlRoute
+  SitemapSolutionsDotxmlRoute: typeof SitemapSolutionsDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolutionsRoute: typeof SolutionsRouteWithChildren
   UnsubscribeRoute: typeof UnsubscribeRoute
@@ -501,6 +553,34 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-solutions.xml': {
+      id: '/sitemap-solutions.xml'
+      path: '/sitemap-solutions.xml'
+      fullPath: '/sitemap-solutions.xml'
+      preLoaderRoute: typeof SitemapSolutionsDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-products.xml': {
+      id: '/sitemap-products.xml'
+      path: '/sitemap-products.xml'
+      fullPath: '/sitemap-products.xml'
+      preLoaderRoute: typeof SitemapProductsDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-index.xml': {
+      id: '/sitemap-index.xml'
+      path: '/sitemap-index.xml'
+      fullPath: '/sitemap-index.xml'
+      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-company.xml': {
+      id: '/sitemap-company.xml'
+      path: '/sitemap-company.xml'
+      fullPath: '/sitemap-company.xml'
+      preLoaderRoute: typeof SitemapCompanyDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -764,6 +844,10 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
+  SitemapCompanyDotxmlRoute: SitemapCompanyDotxmlRoute,
+  SitemapIndexDotxmlRoute: SitemapIndexDotxmlRoute,
+  SitemapProductsDotxmlRoute: SitemapProductsDotxmlRoute,
+  SitemapSolutionsDotxmlRoute: SitemapSolutionsDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolutionsRoute: SolutionsRouteWithChildren,
   UnsubscribeRoute: UnsubscribeRoute,

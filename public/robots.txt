@@ -29,3 +29,4 @@ User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://cyryxlabs.com/sitemap.xml
+Sitemap: https://cyryxlabs.com/sitemap-index.xml
