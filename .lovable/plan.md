@@ -1,52 +1,107 @@
-## Objetivo
-Eliminar 6 defeitos de credibilidade e deployar Copy v4 verbatim em cyryxlabs.com, sem redesign visual. Trabalho dividido em 4 fases sequenciais; cada fase é auto-contida e verificável antes da próxima.
+# Corrective Build — Copy v4 Deployment
 
-## Escopo confirmado
-- Editar: Hero, Header/Footer, ContactSection, MAAXStudioSpotlight, ProductEcosystem / CoreCapabilities / WhyCyryx / Ecosystem / MetricsBand / CapabilityStrip (remover ou reescrever), `__root.tsx` meta/OG, `index.tsx`, `contact.tsx`, `privacy.tsx`.
-- Criar: `src/routes/terms.tsx`, novo asset `cyryx-og.png` (1200×630, via imagegen premium + lovable-assets).
-- **Não** mexer: sistema de cores/tipografia, MonolithScene 3D, rotas `/solutions/*`, `/answers/*`, `/research/*`, `/products/*`, primitives (`BackgroundMonolith`, `HudLabel`, `GlassPanel`, etc.), integrações Supabase, testes existentes (serão atualizados só se quebrarem).
+P0 (trust leaks) já foi executado no turno anterior: strings PT removidas, `SYS_STATUS` deletado, socials vazios/dead links removidos, `/privacy` e `/terms` criados, OG image própria (`cyryxlabs.com/cyryx-og.png`). Este plano cobre P1 → P3.
 
-## Fase P0 — Trust leaks (~1 turno)
-1. **Português**: grep `arquivos|latência|latencia|qualidade|custo|abas` em `src/**` e substituir por captions inglesas do spec ("Files, agents, and gates" / "Tabs and minimap" / "Quality gates" / "Tokens, latency, and cost").
-2. **SYS_STATUS**: remover elemento e estilos terminal do `Footer.tsx`.
-3. **Dead links**: no `Footer.tsx` remover Documentation, Brand, Security e todos os ícones sociais vazios; apontar Privacy → `/privacy`, Terms → `/terms`. Varrer `href="#"` no repo → zerar.
-4. **OG image própria**: gerar `cyryx-og.png` (Onyx `#0A0A0A` + wordmark Orbitron "CYRYX LABS" + linha Emerald), subir via `lovable-assets`, atualizar `og:image` / `twitter:image` em `index.tsx` e remover a URL do `storage.googleapis.com`.
+## What ships
 
-## Fase P1 — Estrutura (~1 turno)
-5. Deletar `<Ecosystem />` do `index.tsx` (fica só "What We Build" via `CoreCapabilities`/`ProductEcosystem` — consolidar em uma única seção "What We Build").
-6. `MAAXStudioSpotlight.tsx`: reduzir a exatamente 5 pilares Copy v4 §7 (Mission-based execution, Project memory, Command Gates, Mission Ledger, Cost visibility) + status line "in active development" + CTA "Request early access". Remover Mission Engine, Atlas Engine, Operator System, Margin Governor, Continuity Engine, Delivery Package, Mission Control, MAAX Runtime da homepage.
-7. Deletar "Execution Signals" (`MetricsBand` ou equivalente) da homepage.
-8. Remover card "AI Websites & Lead Systems" da grid da home (rota `/solutions/ai-websites-lead-systems` permanece viva por ora; só sai da vitrine). Confirmar 6 cards conforme Copy v4 §4.
+### 1. Hero — reduzir a exatamente 4 elementos
+`src/components/cyryx/Hero.tsx` + `src/copy/v3.ts`:
+- H1: **"The execution layer for enterprise AI."**
+- Subhead: **"Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control."**
+- CTA 1: **Start a project** → `#contact`
+- CTA 2: **MAAX Studio →** → `#maax`
+- Remover: meta rail (`copy.hero.meta`), rail line (`copy.hero.rail`), eyebrow, badges, scroll cue text — hero contém só H1 + sub + 2 CTAs.
 
-## Fase P2 — Deploy Copy v4 verbatim (~1–2 turnos)
-9. `Hero.tsx`: substituir por exatamente 4 elementos (H1 + subhead + 2 CTAs). Remover eyebrow, badge strip, support line, ano de fundação, localização, `CapabilityStrip` se atuar como badge strip abaixo do hero.
-10. Ordem final da home: Problem → What We Build → Solutions → Engagement Model → **Security & Governance Posture (NOVA seção, 5 itens)** → MAAX Studio → Who We Work With → Why Cyryx Labs → Final CTA → Footer. Criar componente `SecurityPosture.tsx` para a nova seção. Reescrever textos das seções existentes verbatim do spec (sem parafrasear).
-11. `Footer.tsx`: descriptor line + nav (About/Solutions/MAAX Studio/Lab/Contact) + legal (Privacy/Terms) + "© 2026 Cyryx Labs". Sem LLC, sem localização, sem sociais, sem widgets.
-12. Grep e remover `Florida|Port Saint Lucie|USA` da copy renderizada (exceto `/privacy` e `/terms`). Grep `!` na copy da home → zero.
-13. Meta: title "Cyryx Labs — The Execution Layer for Enterprise AI", description ≤160 chars conforme spec.
-14. CTAs site-wide: apenas "Start a project" e "Request early access".
+### 2. Remoções na home
+`src/routes/index.tsx`:
+- Já removidos: `Ecosystem`, `MetricsBand`.
+- Remover também: `CapabilityStrip` (strip de 5 nós com taxonomia MAAX antiga), `ProductEcosystem` (será substituído por seção nova "What We Build"), `CoreCapabilities`, `WhyCyryx` (versão antiga), `AppliedAILab`, `WhoWeServe`, `ProcessTimeline`, `CommandLayerSection`, `CTASection` (versões antigas serão reescritas ou substituídas por seções v4).
 
-## Fase P3 — Legal (~1 turno)
-15. Reescrever `src/routes/privacy.tsx` com boilerplate SaaS+services adaptado: Cyryx Labs LLC, Florida governing law, St. Lucie County venue, email de contato do site.
-16. Criar `src/routes/terms.tsx` idem.
-17. Linkar Privacy/Terms do footer e da linha de consentimento do formulário de contato (`ContactSection.tsx`).
+### 3. Novas seções v4 (ordem: Problem → What We Build → Solutions → Engagement Model → Security & Governance → MAAX → Who We Work With → Why Cyryx → Final CTA)
+Criar em `src/components/cyryx/v4/`:
+- `Problem.tsx` — H2 "AI adoption has outpaced AI control." + 3 bullets (Unowned output / Unmeasured cost / Unmanaged autonomy).
+- `WhatWeBuild.tsx` — H2 "One discipline. Three units." + 3 cards (Products, Solutions, Applied AI Lab).
+- `Solutions.tsx` — H2 "Systems under contract. Not hours under retainer." + intro MSA + 6 cards no formato v4: título + outcome + single "Delivered with: a · b · c" (sem 3-field layout). Cards: AI Product Sprint, AI Workflow Automation, Internal AI Agents & Copilots, AI Knowledge Systems, AI Integrations & Infrastructure, AI Governance & Cost Control. CTA "Start a project".
+- `EngagementModel.tsx` — H2 "Fixed scope. Verifiable delivery. Full transfer." + 5 steps (Diagnostic, Scope, Build, Verification, Transfer).
+- `SecurityPosture.tsx` — H2 "Governance is architecture." + 5 items (Server-side boundaries, Least privilege, Human authority, Auditability, Conservative claims).
+- `WhoWeWorkWith.tsx` — H2 "Organizations that treat AI as infrastructure." + 4 bullets.
+- `WhyCyryx.tsx` (v4) — H2 "A lab, not an agency." + 4 pillars (Product discipline, Governance as baseline, Verifiable claims, Engineered for handover).
+- `FinalCTA.tsx` — H2 "From experimentation to governed execution." + descrição + 2 CTAs.
 
-## Validação final (antes de publicar)
-- `rg -n "arquivos|latência|latencia|qualidade|custo|abas|SYS_STATUS|href=\"#\""` → zero em código renderizado.
-- `rg -n "Florida|Port Saint Lucie"` → apenas em `/privacy` e `/terms`.
-- `rg -n "SOC|ISO 27001|HIPAA|compliant"` → zero.
-- Build (`bun run build`) + testes Playwright existentes; ajustar snapshots quebrados por copy nova (não pela estrutura).
-- Screenshot 375px e 1280px da home via Playwright: sem scroll horizontal, hero em 4 elementos, footer novo, sem SYS_STATUS.
-- `preview_ui--publish` com `website_info_status=added_or_updated` (title + description novos).
+### 4. MAAX Studio — reduzir aos 5 pilares
+`src/components/cyryx/MAAXStudioSpotlight.tsx`:
+- Eyebrow: `FLAGSHIP · IN DEVELOPMENT`
+- H2: "Governed autonomy for AI-native builders."
+- Parágrafo v4 exato.
+- 5 pilares: Mission-based execution, Project memory, Command Gates, Mission Ledger, Cost visibility.
+- Status: "MAAX Studio is in active development. Early access opens to a limited cohort."
+- CTA: **Request early access** → `#contact`.
+- Remover: Mission Engine, Atlas Engine, Operator System, Margin Governor, Continuity Engine, Delivery Package, Mission Control, MAAX Runtime.
 
-## Detalhes técnicos
-- **OG image**: gerada com `imagegen--generate_image` (model `premium`, 1200×630, prompt: dark Onyx background #0A0A0A, Orbitron wordmark "CYRYX LABS" centralizado, Emerald #0E5B57 accent line abaixo). Salva em `/tmp/cyryx-og.png`, uploaded via `lovable-assets create --file /tmp/cyryx-og.png --filename cyryx-og.png > src/assets/cyryx-og.png.asset.json`. Referenciada como `import ogAsset from "@/assets/cyryx-og.png.asset.json"` no `index.tsx` head — resolve na origem do próprio projeto via `/__l5e/assets-v1/…`. Observação: o spec pediu "sem CDN externo"; o CDN da Lovable é infraestrutura do próprio projeto (não third-party como `storage.googleapis.com`). Se o time exigir literalmente `/cyryx-og.png` servido pelo domínio, subimos como `public/cyryx-og.png`. **Confirmar preferência antes de gerar.**
-- **Testes**: `tests/accessibility/seo-metadata.spec.ts` e `jsonld-snapshot.spec.ts` provavelmente falharão com a nova copy → atualizo os expects/snapshots verbatim.
-- **Ecosystem**: componente `src/components/cyryx/Ecosystem.tsx` fica no repo mas some da home; opcionalmente removo o arquivo depois.
-- **Cache do Google**: snippet atualizado só aparece após recrawl (horas/dias); previews sociais precisam de força-refresh no debugger da rede (LinkedIn/Twitter/Facebook).
+### 5. Footer v4
+`src/components/cyryx/Footer.tsx`:
+- Linha 1: "Cyryx Labs — AI products and execution systems for the agentic era."
+- Nav: About · Solutions · MAAX Studio · Lab · Contact
+- Legal: Privacy Policy · Terms of Service
+- Linha 2: "© 2026 Cyryx Labs" (sem LLC, sem location, sem social, sem widgets).
 
-## Pontos de decisão (respondam antes de iniciar)
-1. **Faseamento**: OK executar P0→P1→P2→P3 em turnos separados (com aprovação entre fases) ou rodar tudo direto até P3 e só publicar no fim?
-2. **OG image**: (a) Lovable CDN (`/__l5e/assets-v1/…`, escala melhor, é a infra padrão), (b) `public/cyryx-og.png` servido literal do domínio (`https://cyryxlabs.com/cyryx-og.png`), ou (c) ambos.
-3. **Componentes obsoletos** (`Ecosystem.tsx`, `MetricsBand.tsx`, `CapabilityStrip.tsx` se removido do hero, cards de MAAX subsystems): deletar arquivos ou só desmontar da home?
-4. **Publicar**: publicar automaticamente ao fim do P3, ou aguardar comando explícito?
+### 6. Meta v4
+`src/routes/index.tsx`:
+- Title: **"Cyryx Labs — The Execution Layer for Enterprise AI"**
+- Description (≤160): **"AI products and execution systems — governed agents, automated workflows, and infrastructure engineered for accountability, auditability, and cost control."**
+- og:title/twitter:title, og:description/twitter:description atualizados; canonical + og:url mantêm `https://cyryxlabs.com/`.
+
+### 7. Contact form
+`src/components/cyryx/ContactSection.tsx`:
+- Consent line: link para `/privacy` (Privacy Policy).
+- Remover qualquer texto de location (Florida/Port Saint Lucie/USA) do formulário e headings.
+
+### 8. Legal pages
+- `src/routes/privacy.tsx`: já existe expandida no turno anterior — manter, garantir menção "Cyryx Labs LLC", "Florida", "St. Lucie County".
+- `src/routes/terms.tsx`: já existe com Cyryx Labs LLC / Florida / St. Lucie County.
+
+### 9. Global sweep
+- Grep e remover qualquer ocorrência remanescente de: "Florida", "Port Saint Lucie", "USA" fora de `/privacy` e `/terms`.
+- Grep e remover: SOC, ISO 27001, HIPAA, "compliant".
+- Grep `!` em copy visível — remover exclamações em headings/CTAs.
+- Grep `href="#"` — zero permitido.
+- Confirmar zero strings PT (`arquivos|latência|qualidade|custo|abas` — sensível a "custo" só em copy PT; "cost" em EN está ok).
+- Componentes obsoletos (`Ecosystem.tsx`, `MetricsBand.tsx`, `CapabilityStrip.tsx`, `CoreCapabilities.tsx`, `AppliedAILab.tsx`, `WhoWeServe.tsx`, `ProcessTimeline.tsx`, `CommandLayerSection.tsx`, `CTASection.tsx`, `WhyCyryx.tsx` antigo, `ProductEcosystem.tsx`, `MetricCard.tsx`): **manter os arquivos** (apenas remover dos imports/render em `index.tsx`) para preservar histórico e permitir reuso; posso deletar tudo depois se preferir.
+
+### 10. Validação
+- Playwright em 375px + 1280px: hero, Solutions (1-col no mobile), footer — sem horizontal scroll.
+- `bun run build` verde.
+- Grep automatizado das strings proibidas na saída build.
+
+## Structural details
+
+```
+src/components/cyryx/
+  v4/
+    Problem.tsx           (novo)
+    WhatWeBuild.tsx       (novo)
+    Solutions.tsx         (novo)
+    EngagementModel.tsx   (novo)
+    SecurityPosture.tsx   (novo)
+    WhoWeWorkWith.tsx     (novo)
+    WhyCyryx.tsx          (novo)
+    FinalCTA.tsx          (novo)
+  Hero.tsx                (reescrito: apenas H1+sub+2 CTAs)
+  MAAXStudioSpotlight.tsx (reduzido a 5 pilares)
+  Footer.tsx              (v4 layout)
+  ContactSection.tsx      (consent link)
+
+src/routes/index.tsx       (nova ordem de seções + meta v4)
+src/copy/v3.ts             (renomear internamente para v4 ou substituir strings do hero/maax)
+```
+
+## Publicação
+
+Após tudo verde: aguardar seu comando para chamar `publish` — ou incluir publish automático no final.
+
+## Decisões pendentes que quero confirmar antes de executar
+
+1. **Publicação**: publicar automaticamente ao fim, ou parar após build verde e aguardar seu OK?
+2. **Componentes obsoletos**: manter arquivos (sem uso) ou deletar de vez? Recomendo deletar após o build verde para não acumular dead code.
+3. **Cópia v4 dentro do sistema de "copy variants"**: substituo o conteúdo de `v3.ts` in-place (mais simples, quebra menos código) ou crio `v4.ts` e faço v4 ser o default? Recomendo substituir in-place — o sistema de variants não está sendo usado.
+4. **Contact form**: manter integração/envio existente ou você quer que eu revalide o fluxo server-side? (Escopo original diz "confirm server-side receipt"; posso testar mas não vou reescrever o backend.)
