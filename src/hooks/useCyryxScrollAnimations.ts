@@ -118,26 +118,8 @@ export function useCyryxScrollAnimations() {
 
     const mm = gsap.matchMedia();
 
-    // ── Split [data-hero-headline] into word spans for reveal ─
-    document.querySelectorAll<HTMLElement>("[data-hero-headline]").forEach((el) => {
-      if (el.dataset.split === "1") return;
-      const text = el.textContent ?? "";
-      el.textContent = "";
-      text.split(/(\s+)/).forEach((part) => {
-        if (/^\s+$/.test(part)) {
-          el.appendChild(document.createTextNode(part));
-        } else if (part.length) {
-          const outer = document.createElement("span");
-          outer.className = "cx-word-mask";
-          const inner = document.createElement("span");
-          inner.className = "cx-word";
-          inner.textContent = part;
-          outer.appendChild(inner);
-          el.appendChild(outer);
-        }
-      });
-      el.dataset.split = "1";
-    });
+    // Word-splitting removed: mutating the DOM outside React caused the hero
+    // headline to ghost/duplicate when Hero re-rendered mid-animation.
 
     // ── Universal reveals ────────────────────────────────────────
     const reveals = gsap.utils.toArray<HTMLElement>(".cx-reveal");

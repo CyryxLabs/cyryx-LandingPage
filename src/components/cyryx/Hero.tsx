@@ -212,7 +212,6 @@ export function Hero() {
             className="cx-hero-heading font-orbitron font-bold tracking-[0.01em] text-silver-gradient [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
           >
             <span
-              data-hero-headline
               data-hero-line
               className="cx-line cx-hero-title-line block text-chrome-gradient"
             >
