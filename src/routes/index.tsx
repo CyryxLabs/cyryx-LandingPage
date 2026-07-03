@@ -2,28 +2,27 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
 import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
-import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
-import { WhyCyryx } from "@/components/cyryx/WhyCyryx";
-import { CoreCapabilities } from "@/components/cyryx/CoreCapabilities";
-import { CommandLayerSection } from "@/components/cyryx/CommandLayerSection";
 import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
-import { ProductEcosystem } from "@/components/cyryx/ProductEcosystem";
-import { ProcessTimeline } from "@/components/cyryx/ProcessTimeline";
-import { CTASection } from "@/components/cyryx/CTASection";
-import { AppliedAILab } from "@/components/cyryx/AppliedAILab";
-import { WhoWeServe } from "@/components/cyryx/WhoWeServe";
 import { ContactSection } from "@/components/cyryx/ContactSection";
+import { Problem } from "@/components/cyryx/v4/Problem";
+import { WhatWeBuild } from "@/components/cyryx/v4/WhatWeBuild";
+import { Solutions } from "@/components/cyryx/v4/Solutions";
+import { EngagementModel } from "@/components/cyryx/v4/EngagementModel";
+import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
+import { WhoWeWorkWith } from "@/components/cyryx/v4/WhoWeWorkWith";
+import { WhyCyryxV4 } from "@/components/cyryx/v4/WhyCyryxV4";
+import { FinalCTA } from "@/components/cyryx/v4/FinalCTA";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
 
 const HOME_URL = "https://cyryxlabs.com/";
-const HOME_TITLE = "Cyryx Labs — AI Products & Execution Systems";
+const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
 const HOME_DESCRIPTION =
-  "Cyryx Labs builds proprietary AI products, governed agentic workflows, and execution infrastructure for enterprise AI operations.";
+  "AI products and execution systems — governed agents, automated workflows, and infrastructure engineered for accountability, auditability, and cost control.";
 const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
 
 export const Route = createFileRoute("/")({
@@ -86,7 +85,6 @@ export const Route = createFileRoute("/")({
                 "Agentic workflow systems",
                 "AI execution infrastructure",
                 "Governed autonomy",
-                "MAAX Runtime",
                 "MAAX Studio",
                 "Proprietary AI products",
               ],
@@ -103,32 +101,31 @@ export const Route = createFileRoute("/")({
               "@type": "WebPage",
               "@id": "https://cyryxlabs.com/#webpage",
               url: "https://cyryxlabs.com/",
-              name: "Cyryx Labs — AI Products & Execution Systems for the Agentic Era",
+              name: "Cyryx Labs — The Execution Layer for Enterprise AI",
               isPartOf: { "@id": "https://cyryxlabs.com/#website" },
               about: { "@id": "https://cyryxlabs.com/#organization" },
               description:
-                "Proprietary AI products, governed agentic workflows, and execution infrastructure for teams operationalizing AI.",
+                "AI products and execution systems — governed agents, automated workflows, and infrastructure engineered for accountability, auditability, and cost control.",
             },
             {
               "@type": "SoftwareApplication",
               "@id": "https://cyryxlabs.com/#maax-studio",
               name: "MAAX Studio",
-              alternateName: "MAAX Studio (Runtime-first)",
               applicationCategory: "DeveloperApplication",
               applicationSubCategory: "Agentic Execution Environment",
               operatingSystem: "macOS, Windows, Linux",
-              softwareRequirements: "MAAX Runtime",
               featureList: [
-                "Runtime-first agentic execution",
-                "Governed autonomy",
-                "Local-first execution context",
-                "Auditable workflow runtime",
+                "Mission-based execution",
+                "Project memory",
+                "Command Gates",
+                "Mission Ledger",
+                "Cost visibility",
               ],
               audience: { "@type": "Audience", audienceType: "Teams operationalizing AI" },
               creator: { "@id": "https://cyryxlabs.com/#organization" },
               publisher: { "@id": "https://cyryxlabs.com/#organization" },
               description:
-                "MAAX Studio is a runtime-first agentic execution environment for operational AI, powered by the MAAX Runtime.",
+                "MAAX Studio is a local-first agentic execution environment engineered for governed autonomy. In active development.",
               brand: { "@id": "https://cyryxlabs.com/#organization" },
               offers: { "@type": "Offer", availability: "https://schema.org/PreOrder", price: "0", priceCurrency: "USD" },
             },
@@ -168,16 +165,15 @@ function Index() {
           className="cx-core-line hidden lg:block"
         />
         <Hero />
-        <CapabilityStrip />
-        <WhyCyryx />
-        <CoreCapabilities />
-        <ProductEcosystem />
+        <Problem />
+        <WhatWeBuild />
+        <Solutions />
+        <EngagementModel />
+        <SecurityPosture />
         <MAAXStudioSpotlight />
-        <CommandLayerSection />
-        <AppliedAILab />
-        <ProcessTimeline />
-        <WhoWeServe />
-        <CTASection />
+        <WhoWeWorkWith />
+        <WhyCyryxV4 />
+        <FinalCTA />
         <ContactSection />
       </main>
       <Footer />

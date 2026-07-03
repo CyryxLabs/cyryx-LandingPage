@@ -18,7 +18,8 @@ export type CtaSection =
   | "mobile_menu"
   | "sticky"
   | "maax_spotlight"
-  | "final_cta";
+  | "final_cta"
+  | "solutions";
 
 export interface TrackCtaInput {
   cta: CtaName;

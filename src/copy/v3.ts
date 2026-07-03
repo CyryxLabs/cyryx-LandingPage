@@ -1,35 +1,33 @@
 import type { CopyDocument } from "./types";
 
 /**
- * v3 — current production copy. Add new variants by creating a sibling file
- * (e.g. v4.ts) and listing it in src/copy/index.ts. Visit `/?copy=v4` to opt
- * the current browser into the new variant; v3 stays the default for everyone
- * else (including search engines).
+ * v4 — Copy v4 (Final Enterprise Register). Kept under the `v3` export name
+ * for backward-compat with the copy variant registry.
  */
 export const v3: CopyDocument = {
   hero: {
-    headline: "Built to achieve. Not just to generate.",
+    headline: "The execution layer for enterprise AI.",
     sub:
-      "Cyryx Labs builds AI products, execution systems, and applied research for companies that measure AI by outcomes — not by output.",
-    meta: ["AI PRODUCTS", "EXECUTION SYSTEMS", "APPLIED RESEARCH", "GOAL-GROUNDED ARCHITECTURE"],
-    rail: ["Outcomes over output", "Verification over generation", "Systems over tools"],
-    ctaPrimary: "Start a Project",
-    ctaSecondary: "Explore MAAX Studio",
+      "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
+    meta: [],
+    rail: [],
+    ctaPrimary: "Start a project",
+    ctaSecondary: "MAAX Studio →",
   },
   header: {
-    cta: "Start a Project",
+    cta: "Start a project",
   },
   maaxSpotlight: {
-    eyebrow: "A new operating model for AI-assisted software development.",
-    cta: "Request Early Access",
+    eyebrow: "FLAGSHIP · IN DEVELOPMENT",
+    cta: "Request early access",
   },
   finalCta: {
-    headline: "Build AI systems that",
-    headlineAccent: "achieve objectives.",
+    headline: "From experimentation to",
+    headlineAccent: "governed execution.",
     body:
-      "Most AI produces output. Cyryx builds systems that verify outcomes. Whether you're building an AI product, automating a business workflow, deploying an internal assistant, or looking for early access to MAAX Studio — Cyryx Labs turns AI capability into measurable business results.",
-    ctaPrimary: "Start a Project",
-    ctaSecondary: "Request MAAX Studio Access",
-    tagline: "Built to achieve. Not just to generate.",
+      "Describe the workflow, the product, or the operational problem. We will tell you directly whether it warrants a system, what it requires, and what it costs.",
+    ctaPrimary: "Start a project",
+    ctaSecondary: "Request MAAX early access",
+    tagline: "AI products and execution systems for the agentic era.",
   },
 };

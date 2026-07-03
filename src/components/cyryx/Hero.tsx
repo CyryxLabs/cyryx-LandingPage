@@ -250,46 +250,7 @@ export function Hero() {
           </div>
           </div>
 
-        {/* Bottom meta rail */}
-        <div
-          aria-label="Cyryx platform pillars and operating posture"
-          role="group"
-          className="mt-20 flex flex-col gap-4 border-t border-white/10 pt-6 sm:mt-24"
-        >
-          <ul className="flex list-none flex-col gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8 md:gap-y-3">
-            {copy.meta.map((m) => (
-              <li
-                key={m}
-                className="cx-meta flex items-center font-mono text-[11px] uppercase tracking-[0.32em]"
-              >
-                <span aria-hidden="true" className="mr-3 text-[var(--accent-glow)]">/</span>
-                <span className="text-metal">{m}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="cx-meta flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center font-mono text-[10.5px] uppercase tracking-[0.3em]">
-            {copy.rail.map((item, i) => (
-              <span key={item} className="flex items-center gap-x-3">
-                {i > 0 && (
-                  <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-                )}
-                <span className="text-metal-dim">{item}</span>
-              </span>
-            ))}
-          </p>
         </div>
-        </div>
-      </div>
-
-      {/* Scroll cue */}
-      <div
-        aria-hidden="true"
-        className="cx-scroll pointer-events-none absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
-      >
-        <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-[var(--silver-dim)]">
-          Scroll
-        </span>
-        <span className="cx-scroll-dot h-6 w-px bg-gradient-to-b from-[var(--accent-glow)] to-transparent" />
       </div>
     </section>
   );
