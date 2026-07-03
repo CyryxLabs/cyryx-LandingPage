@@ -1,4 +1,4 @@
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 import { GlassPanel } from "./primitives/GlassPanel";
 import maaxDevices from "@/assets/cyryx-maax-devices.jpg";
@@ -7,17 +7,27 @@ import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
 
-const BULLETS = [
-  "Mission Engine — structured execution from objective to delivery",
-  "Atlas Engine — project knowledge graph and context intelligence",
-  "Operator System — specialized agents assigned by domain and role",
-  "Command Gates — quality, security, architecture, and cost validation",
-  "Margin Governor — cost estimation, tracking, and enforcement",
-  "Mission Ledger — audit trail of every decision, gate, and delivery",
-  "Continuity Engine — failure recovery with structured context capture",
-  "Delivery Package — every mission ends with evidence, not just output",
-  "Human review checkpoint before any delivery reaches you",
-  "Mission Control — visibility, structure, and human command at every step",
+const PILLARS: { title: string; body: string }[] = [
+  {
+    title: "Mission-based execution",
+    body: "Work runs as governed missions with explicit states and completion criteria.",
+  },
+  {
+    title: "Project memory",
+    body: "Context that compounds across a project's life, grounded in a structural graph of the codebase.",
+  },
+  {
+    title: "Command Gates",
+    body: "Diff review, security analysis, and configuration audit before changes land. Default-fail.",
+  },
+  {
+    title: "Mission Ledger",
+    body: "An auditable record of agent activity: actions, rationale, authority, cost.",
+  },
+  {
+    title: "Cost visibility",
+    body: "Token, latency, and spend telemetry at mission level — a control input, not a post-mortem.",
+  },
 ];
 
 function ProductPreview() {
@@ -48,7 +58,7 @@ export function MAAXStudioSpotlight() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div className="cx-reveal">
-            <HudLabel withDot>Flagship Product</HudLabel>
+            <HudLabel withDot>{copy.eyebrow}</HudLabel>
             <img
               src={maaxLogo.url}
               alt="MAAX Studio logo"
@@ -58,27 +68,28 @@ export function MAAXStudioSpotlight() {
               decoding="async"
               className="mt-5 block w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[520px] h-auto object-contain"
             />
-            <p className="mt-3 font-display text-base sm:text-lg text-[var(--accent-glow)]">
-              {copy.eyebrow}
-            </p>
+            <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
+              Governed autonomy for AI-native builders.
+            </h2>
             <p className="mt-6 max-w-xl text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-              Most AI tools treat software development as a conversation. MAAX
-              Studio treats it as a governed execution system. Every mission
-              runs under a defined objective, a project memory layer,
-              specialized operators, quality gates, cost tracking, and a human
-              review checkpoint before delivery. AI does the work. You control
-              the outcome.
+              MAAX Studio is being engineered as a local-first agentic execution
+              environment: autonomous agents operating under explicit human
+              command, with governance built into the runtime — not layered on
+              top.
             </p>
-            <ul className="mt-7 space-y-3">
-              {BULLETS.map((b) => (
-                <li key={b} className="flex items-start gap-3 text-sm text-[var(--silver)]">
-                  <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-sm border border-[color-mix(in_oklab,var(--accent-glow)_40%,transparent)]">
-                    <Check className="h-3 w-3 text-[var(--accent-glow)]" />
-                  </span>
-                  {b}
+            <ul className="mt-7 space-y-4">
+              {PILLARS.map((p) => (
+                <li key={p.title} className="text-sm text-[var(--silver)]">
+                  <span className="font-display uppercase tracking-[0.08em] text-[var(--silver)]">
+                    {p.title}.
+                  </span>{" "}
+                  <span className="text-[var(--silver-dim)]">{p.body}</span>
                 </li>
               ))}
             </ul>
+            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-glow)]">
+              MAAX Studio is in active development. Early access opens to a limited cohort.
+            </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <a
                 href="#contact"
