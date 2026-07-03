@@ -81,10 +81,10 @@ export function ProductEcosystem() {
             </div>
           </div>
           <figcaption className="mt-3 grid gap-1 text-[11px] text-[var(--silver-dim)] sm:hidden">
-            <span><span className="text-[var(--accent-glow)]">Explorer</span> · arquivos, agentes e gates</span>
-            <span><span className="text-[var(--accent-glow)]">Editor</span> · abas e minimap</span>
-            <span><span className="text-[var(--accent-glow)]">Execution Graph</span> · gates de qualidade</span>
-            <span><span className="text-[var(--accent-glow)]">Eval Terminal</span> · tokens, latência e custo</span>
+            <span><span className="text-[var(--accent-glow)]">Explorer</span> · Files, agents, and gates</span>
+            <span><span className="text-[var(--accent-glow)]">Editor</span> · Tabs and minimap</span>
+            <span><span className="text-[var(--accent-glow)]">Execution Graph</span> · Quality gates</span>
+            <span><span className="text-[var(--accent-glow)]">Eval Terminal</span> · Tokens, latency, and cost</span>
           </figcaption>
         </figure>
 

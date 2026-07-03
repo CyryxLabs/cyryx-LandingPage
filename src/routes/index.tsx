@@ -26,8 +26,7 @@ const HOME_URL = "https://cyryxlabs.com/";
 const HOME_TITLE = "Cyryx Labs — AI Products & Execution Systems";
 const HOME_DESCRIPTION =
   "Cyryx Labs builds proprietary AI products, governed agentic workflows, and execution infrastructure for enterprise AI operations.";
-const HOME_SOCIAL_IMAGE =
-  "https://storage.googleapis.com/gpt-engineer-file-uploads/pqDYh1E7STSD3pG3DZTBMfMwqsS2/social-images/social-1782497606213-ChatGPT_Image_Jun_25,_2026,_08_57_05_PM.webp";
+const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({

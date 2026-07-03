@@ -1,4 +1,4 @@
-import { Linkedin, Twitter, Youtube, Github, ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { CyryxWordmark } from "./primitives/CyryxMark";
 import { HudLabel } from "./primitives/HudLabel";
@@ -26,8 +26,6 @@ const COLUMNS = [
     title: "Resources",
     links: [
       { label: "Research", href: "/research" },
-      { label: "Documentation", href: "#" },
-      { label: "Brand", href: "#" },
       { label: "Early Access", href: "/contact" },
     ],
   },
@@ -164,46 +162,22 @@ export function Footer() {
               </form>
             )}
 
-            <div className="mt-6 flex items-center gap-2">
-              {[
-                { Icon: Linkedin, label: "LinkedIn" },
-                { Icon: Twitter, label: "X" },
-                { Icon: Youtube, label: "YouTube" },
-                { Icon: Github, label: "GitHub" },
-              ].map(({ Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  aria-disabled="true"
-                  tabIndex={-1}
-                  data-no-smooth-scroll="true"
-                  onClick={(e) => e.preventDefault()}
-                  className="grid h-11 w-11 place-items-center rounded-md border border-[color-mix(in_oklab,var(--silver)_12%,transparent)] text-[var(--silver-dim)] hover:text-[var(--accent-glow)] hover:border-[var(--accent-glow)] transition"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <span className="hud-label text-[var(--silver-dim)]">
-              Cyryx Labs — Built to achieve. Not just to generate.
-            </span>
-            <span className="inline-flex items-center gap-1.5 hud-label text-[var(--accent-glow)]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)] animate-pulse" />
-              SYS_STATUS: OPTIMAL
+              Cyryx Labs — AI products and execution systems for the agentic era.
             </span>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {["Privacy", "Terms", "Security"].map((l) => (
-              <a key={l} href="#" className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition">
-                {l}
-              </a>
-            ))}
+            <a href="/privacy" className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition">
+              Privacy Policy
+            </a>
+            <a href="/terms" className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition">
+              Terms of Service
+            </a>
           </div>
         </div>
       </div>
