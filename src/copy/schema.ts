@@ -21,13 +21,8 @@ export const CopyDocumentSchema = z.object({
   hero: z.object({
     headline: nonEmpty("hero.headline", 180),
     sub: nonEmpty("hero.sub", 400),
-    meta: z
-      .array(nonEmpty("hero.meta[]", 64))
-      .length(4, "hero.meta must have exactly 4 pills"),
-    rail: z
-      .array(nonEmpty("hero.rail[]", 64))
-      .min(2, "hero.rail needs at least 2 items")
-      .max(4, "hero.rail accepts up to 4 items"),
+    meta: z.array(nonEmpty("hero.meta[]", 64)).max(4, "hero.meta accepts up to 4 pills"),
+    rail: z.array(nonEmpty("hero.rail[]", 64)).max(4, "hero.rail accepts up to 4 items"),
     ctaPrimary: nonEmpty("hero.ctaPrimary", 48),
     ctaSecondary: nonEmpty("hero.ctaSecondary", 48),
   }),
