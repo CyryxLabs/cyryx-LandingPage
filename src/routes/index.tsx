@@ -14,8 +14,6 @@ import { ProcessTimeline } from "@/components/cyryx/ProcessTimeline";
 import { CTASection } from "@/components/cyryx/CTASection";
 import { AppliedAILab } from "@/components/cyryx/AppliedAILab";
 import { WhoWeServe } from "@/components/cyryx/WhoWeServe";
-import { Ecosystem } from "@/components/cyryx/Ecosystem";
-import { MetricsBand } from "@/components/cyryx/MetricsBand";
 import { ContactSection } from "@/components/cyryx/ContactSection";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
@@ -178,9 +176,7 @@ function Index() {
         <CommandLayerSection />
         <AppliedAILab />
         <ProcessTimeline />
-        <MetricsBand />
         <WhoWeServe />
-        <Ecosystem />
         <CTASection />
         <ContactSection />
       </main>
