@@ -2,28 +2,27 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
 import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
-import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
-import { WhyCyryx } from "@/components/cyryx/WhyCyryx";
-import { CoreCapabilities } from "@/components/cyryx/CoreCapabilities";
-import { CommandLayerSection } from "@/components/cyryx/CommandLayerSection";
 import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
-import { ProductEcosystem } from "@/components/cyryx/ProductEcosystem";
-import { ProcessTimeline } from "@/components/cyryx/ProcessTimeline";
-import { CTASection } from "@/components/cyryx/CTASection";
-import { AppliedAILab } from "@/components/cyryx/AppliedAILab";
-import { WhoWeServe } from "@/components/cyryx/WhoWeServe";
 import { ContactSection } from "@/components/cyryx/ContactSection";
+import { Problem } from "@/components/cyryx/v4/Problem";
+import { WhatWeBuild } from "@/components/cyryx/v4/WhatWeBuild";
+import { Solutions } from "@/components/cyryx/v4/Solutions";
+import { EngagementModel } from "@/components/cyryx/v4/EngagementModel";
+import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
+import { WhoWeWorkWith } from "@/components/cyryx/v4/WhoWeWorkWith";
+import { WhyCyryxV4 } from "@/components/cyryx/v4/WhyCyryxV4";
+import { FinalCTA } from "@/components/cyryx/v4/FinalCTA";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
 
 const HOME_URL = "https://cyryxlabs.com/";
-const HOME_TITLE = "Cyryx Labs — AI Products & Execution Systems";
+const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
 const HOME_DESCRIPTION =
-  "Cyryx Labs builds proprietary AI products, governed agentic workflows, and execution infrastructure for enterprise AI operations.";
+  "AI products and execution systems — governed agents, automated workflows, and infrastructure engineered for accountability, auditability, and cost control.";
 const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
 
 export const Route = createFileRoute("/")({
@@ -168,16 +167,15 @@ function Index() {
           className="cx-core-line hidden lg:block"
         />
         <Hero />
-        <CapabilityStrip />
-        <WhyCyryx />
-        <CoreCapabilities />
-        <ProductEcosystem />
+        <Problem />
+        <WhatWeBuild />
+        <Solutions />
+        <EngagementModel />
+        <SecurityPosture />
         <MAAXStudioSpotlight />
-        <CommandLayerSection />
-        <AppliedAILab />
-        <ProcessTimeline />
-        <WhoWeServe />
-        <CTASection />
+        <WhoWeWorkWith />
+        <WhyCyryxV4 />
+        <FinalCTA />
         <ContactSection />
       </main>
       <Footer />
