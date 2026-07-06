@@ -1,23 +1,80 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StubPage } from "@/components/cyryx/StubPage";
+import { Link } from "@tanstack/react-router";
+import { Header } from "@/components/cyryx/Header";
+import { Footer } from "@/components/cyryx/Footer";
+import { ContactSection } from "@/components/cyryx/ContactSection";
+import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
+import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+
+const PATH = "/contact";
+const TITLE = "Contact — Cyryx Labs";
+const DESC =
+  "Start a project with Cyryx Labs. Build AI products, deploy governed automation, and operationalize execution.";
+
+const SIGNALS = [
+  { k: "Response window", v: "One business day" },
+  { k: "Best fit", v: "MSA-signers and early-access builders" },
+  { k: "Engagement model", v: "Scoped, milestone-based, handover-ready" },
+  { k: "Delivered on", v: "MAAX Studio primitives" },
+];
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Cyryx Labs" },
-      { name: "description", content: "Start a project with Cyryx Labs. Build AI products, automate workflows, and operationalize execution." },
-      { property: "og:title", content: "Contact — Cyryx Labs" },
-      { property: "og:description", content: "Start a project with Cyryx Labs." },
-      { property: "og:url", content: "/contact" },
-    ],
-    links: [{ rel: "canonical", href: "/contact" }],
-  }),
-  component: () => (
-    <StubPage
-      eyebrow="Start a Project"
-      title="Let's build your AI system."
-      description="Use the inquiry form on the homepage to share your project scope, timeline, and outcome. A dedicated contact experience is coming soon — for now we read every inquiry submitted from the Cyryx Labs homepage."
-      status="Inquiries Open"
-    />
-  ),
+  head: () =>
+    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Contact", path: PATH },
+      ]),
+    ]),
+  component: ContactPage,
 });
+
+function ContactPage() {
+  return (
+    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
+      <Header />
+      <main className="relative">
+        <section className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 pt-32 pb-12 lg:pt-44">
+          <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
+            <Link to="/" className="hover:text-[var(--accent-glow)]">Home</Link>
+            <span className="mx-2 opacity-60">/</span>
+            <span className="text-[var(--silver)]">Contact</span>
+          </nav>
+
+          <div className="mt-6 grid gap-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+            <div>
+              <HudLabel withDot className="text-[var(--accent-glow)]">
+                Start a project
+              </HudLabel>
+              <h1 className="mt-4 font-display text-[40px] sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.02em] text-silver-gradient">
+                Let's build your AI system.
+              </h1>
+              <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
+                Share the outcome you're pursuing, the constraints that matter, and
+                who will own the system after delivery. We reply with scope, risk
+                posture, and a proposed engagement shape — not a sales sequence.
+              </p>
+            </div>
+
+            <aside className="glass-panel rounded-md p-6 lg:p-7">
+              <HudLabel>What to expect</HudLabel>
+              <dl className="mt-4 divide-y divide-[color-mix(in_oklab,var(--silver)_12%,transparent)]">
+                {SIGNALS.map((s) => (
+                  <div key={s.k} className="flex items-start justify-between gap-4 py-3">
+                    <dt className="text-xs uppercase tracking-[0.08em] text-[var(--silver-dim)]">
+                      {s.k}
+                    </dt>
+                    <dd className="text-right text-sm text-[var(--silver)]">{s.v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </aside>
+          </div>
+        </section>
+
+        <ContactSection />
+      </main>
+      <Footer />
+    </div>
+  );
+}
