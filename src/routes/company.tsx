@@ -6,6 +6,7 @@ import {
   buildBreadcrumbJsonLd,
   buildHead,
 } from "@/components/cyryx/seo/seo";
+import { START_PROJECT_HREF } from "@/lib/cta";
 
 const PATH = "/company";
 const TITLE = "Company — Cyryx Labs";
@@ -82,7 +83,7 @@ function CompanyPage() {
           </p>
           <div className="mt-6">
             <a
-              href="/#contact"
+              href={START_PROJECT_HREF}
               className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
             >
               Start a project
