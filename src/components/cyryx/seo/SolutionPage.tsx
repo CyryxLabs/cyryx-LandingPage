@@ -4,6 +4,7 @@ import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { HudLabel } from "../primitives/HudLabel";
 import { GlassPanel } from "../primitives/GlassPanel";
+import { START_PROJECT_HREF } from "@/lib/cta";
 
 export interface DeliverablePhase {
   phase: string;
@@ -232,7 +233,7 @@ export function SolutionPage(p: SolutionPageProps) {
           </Sec>
 
           <div className="mt-16 flex flex-wrap gap-3">
-            <a href="/#contact" className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label">
+            <a href={START_PROJECT_HREF} className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label">
               Start a project
               <span aria-hidden className="text-[var(--accent-glow)]">→</span>
             </a>
