@@ -38,5 +38,19 @@ for (const { path, label } of PAGES) {
       return bad;
     });
     expect(offenders, `unsuppressed animations under reduced motion: ${JSON.stringify(offenders)}`).toEqual([]);
+
+    // GSAP timelines/ScrollTriggers must not be initialized on these routes
+    // under reduced-motion. If gsap loads at all, its global registry should
+    // hold no active tweens or ScrollTrigger instances tied to this page.
+    const gsapState = await page.evaluate(() => {
+      const g = (window as unknown as { gsap?: { globalTimeline?: { getChildren?: () => unknown[] } } }).gsap;
+      const st = (window as unknown as { ScrollTrigger?: { getAll?: () => unknown[] } }).ScrollTrigger;
+      return {
+        tweens: g?.globalTimeline?.getChildren?.().length ?? 0,
+        scrollTriggers: st?.getAll?.().length ?? 0,
+      };
+    });
+    expect(gsapState.scrollTriggers, `${label}: ScrollTrigger active under reduced motion`).toBe(0);
+    expect(gsapState.tweens, `${label}: GSAP tweens active under reduced motion`).toBe(0);
   });
 }
