@@ -20,9 +20,9 @@ import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
 
 const HOME_URL = "https://cyryxlabs.com/";
-const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
+const HOME_TITLE = "Cyryx Labs — AI Products and Execution Systems for the Agentic Era";
 const HOME_DESCRIPTION =
-  "AI products and execution systems — governed agents, automated workflows, and infrastructure engineered for accountability, auditability, and cost control.";
+  "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from scattered AI experiments to structured, auditable operations.";
 const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
 
 export const Route = createFileRoute("/")({
@@ -101,11 +101,11 @@ export const Route = createFileRoute("/")({
               "@type": "WebPage",
               "@id": "https://cyryxlabs.com/#webpage",
               url: "https://cyryxlabs.com/",
-              name: "Cyryx Labs — The Execution Layer for Enterprise AI",
+              name: "Cyryx Labs — AI Products and Execution Systems for the Agentic Era",
               isPartOf: { "@id": "https://cyryxlabs.com/#website" },
               about: { "@id": "https://cyryxlabs.com/#organization" },
               description:
-                "AI products and execution systems — governed agents, automated workflows, and infrastructure engineered for accountability, auditability, and cost control.",
+                "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams operationalizing AI.",
             },
             {
               "@type": "SoftwareApplication",
