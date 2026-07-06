@@ -48,6 +48,7 @@ for (const { path, required } of PAGES) {
     expect(blocks.length, `no JSON-LD blocks on ${path}`).toBeGreaterThan(0);
 
     const graph: unknown[] = [];
+    const topLevelNodes: unknown[] = [];
     for (const raw of blocks) {
       let parsed: unknown;
       expect(() => {
@@ -55,9 +56,18 @@ for (const { path, required } of PAGES) {
       }, `invalid JSON-LD JSON on ${path}`).not.toThrow();
       if (parsed && typeof parsed === "object" && Array.isArray((parsed as { "@graph"?: unknown[] })["@graph"])) {
         graph.push(...(parsed as { "@graph": unknown[] })["@graph"]);
+        topLevelNodes.push(parsed);
       } else {
         graph.push(parsed);
+        topLevelNodes.push(parsed);
       }
+    }
+
+    // Every top-level JSON-LD block must declare @context.
+    for (const node of topLevelNodes) {
+      expect((node as Record<string, unknown>)["@context"], `${path}: top-level JSON-LD missing @context`).toBe(
+        "https://schema.org",
+      );
     }
 
     // schema.org sanity: every node must have @type and (where applicable) @context
@@ -112,9 +122,6 @@ for (const { path, required } of PAGES) {
         expect(typeof n.url).toBe("string");
         expect((n.publisher as Record<string, unknown>)?.["@type"]).toBe("Organization");
       }
-
-      // Every top-level node should declare @context.
-      expect(n["@context"], `${path}: node ${typeStr} missing @context`).toBe("https://schema.org");
     }
   });
 }
