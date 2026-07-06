@@ -5,6 +5,7 @@ import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import { START_PROJECT_HREF } from "@/lib/cta";
 
 const PATH = "/products";
 const TITLE = "Products — Cyryx Labs";
@@ -139,12 +140,12 @@ function ProductsPage() {
                 View solutions
                 <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-glow)]" />
               </Link>
-              <Link
-                to="/contact"
+              <a
+                href={START_PROJECT_HREF}
                 className="inline-flex items-center gap-2 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors px-3 h-11"
               >
                 Start a project
-              </Link>
+              </a>
             </div>
           </div>
         </section>
