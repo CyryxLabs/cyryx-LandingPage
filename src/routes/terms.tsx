@@ -60,8 +60,9 @@ function TermsPage() {
   const effective = "January 1, 2026";
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
+      <a href="#main-content" className="skip-link">Skip to content</a>
       <Header />
-      <main className="relative">
+      <main id="main-content" tabIndex={-1} className="relative focus:outline-none">
         <section className="relative pt-28 pb-10 lg:pt-40 lg:pb-14">
           <div className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
             <Breadcrumbs current="Terms of Service" />
