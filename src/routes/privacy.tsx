@@ -2,29 +2,23 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
+import { GlassPanel } from "@/components/cyryx/primitives/GlassPanel";
+import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 
+const PATH = "/privacy";
+const TITLE = "Privacy Policy — Cyryx Labs";
+const DESC =
+  "How Cyryx Labs collects, uses, and protects information from visitors and clients of cyryxlabs.com.";
 const LAST_UPDATED = "June 26, 2026";
 
 export const Route = createFileRoute("/privacy")({
-  head: () => ({
-    meta: [
-      { title: "Privacy Policy — Cyryx Labs" },
-      {
-        name: "description",
-        content:
-          "How Cyryx Labs collects, uses, and protects the information you share when contacting us or using cyryxlabs.com.",
-      },
-      { property: "og:title", content: "Privacy Policy — Cyryx Labs" },
-      {
-        property: "og:description",
-        content:
-          "How Cyryx Labs handles personal information, your rights, and how to contact us.",
-      },
-      { property: "og:url", content: "/privacy" },
-      { name: "robots", content: "index,follow" },
-    ],
-    links: [{ rel: "canonical", href: "/privacy" }],
-  }),
+  head: () =>
+    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Privacy Policy", path: PATH },
+      ]),
+    ]),
   component: PrivacyPage,
 });
 
