@@ -1,7 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
 import { GlassPanel } from "./primitives/GlassPanel";
-import maaxDevices from "@/assets/cyryx-maax-devices.jpg";
+import maaxDevices from "@/assets/cyryx-maax-devices-1200.jpg";
+import maaxDevices480Jpg from "@/assets/cyryx-maax-devices-480.jpg";
+import maaxDevices800Jpg from "@/assets/cyryx-maax-devices-800.jpg";
+import maaxDevices1200Jpg from "@/assets/cyryx-maax-devices-1200.jpg";
+import maaxDevices480Webp from "@/assets/cyryx-maax-devices-480.webp";
+import maaxDevices800Webp from "@/assets/cyryx-maax-devices-800.webp";
+import maaxDevices1200Webp from "@/assets/cyryx-maax-devices-1200.webp";
 import maaxLogo from "@/assets/cyryx-maax-visual.png.asset.json";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
@@ -33,15 +39,24 @@ const PILLARS: { title: string; body: string }[] = [
 function ProductPreview() {
   return (
     <GlassPanel glow className="overflow-hidden p-2 sm:p-3" data-macbook-figure>
-      <img
-        src={maaxDevices}
-        alt="MAAX Studio agentic IDE shown on an external monitor and MacBook side by side"
-        width={1600}
-        height={1200}
-        loading="lazy"
-        decoding="async"
-        className="block h-auto w-full rounded-md object-contain"
-      />
+      <picture>
+        <source
+          type="image/webp"
+          srcSet={`${maaxDevices480Webp} 480w, ${maaxDevices800Webp} 800w, ${maaxDevices1200Webp} 1200w`}
+          sizes="(min-width: 1024px) 560px, (min-width: 640px) 90vw, 100vw"
+        />
+        <img
+          src={maaxDevices}
+          srcSet={`${maaxDevices480Jpg} 480w, ${maaxDevices800Jpg} 800w, ${maaxDevices1200Jpg} 1200w`}
+          sizes="(min-width: 1024px) 560px, (min-width: 640px) 90vw, 100vw"
+          alt="MAAX Studio agentic IDE shown on an external monitor and MacBook side by side"
+          width={1200}
+          height={896}
+          loading="lazy"
+          decoding="async"
+          className="block h-auto w-full rounded-md object-contain"
+        />
+      </picture>
     </GlassPanel>
   );
 }
