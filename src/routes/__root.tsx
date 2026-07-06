@@ -109,10 +109,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "preload",
         as: "style",
         href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600..700&family=Inter:wght@400..500&family=Orbitron:wght@500..700&display=swap",
+        crossOrigin: "anonymous",
       },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600..700&family=Inter:wght@400..500&family=Orbitron:wght@500..700&display=swap",
+        crossOrigin: "anonymous",
+      },
+      // Preload the two hero-critical font files (Inter Tight 700 + Inter 400, latin subset).
+      // These gstatic URLs are content-addressed and stable across cache invalidations.
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "https://fonts.gstatic.com/s/intertight/v11/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjDw-qXCBFwuXzk6OjrbCe.woff2",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa15N-qhg.woff2",
+        crossOrigin: "anonymous",
       },
     ],
   }),

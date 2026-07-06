@@ -16,6 +16,8 @@ const PAGES: { path: string; required: string[] }[] = [
   { path: "/solutions/custom-ai-product-development", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/ai-integrations", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/ai-governance-cost-control", required: ["Service", "BreadcrumbList"] },
+  { path: "/privacy", required: ["PrivacyPolicy", "BreadcrumbList"] },
+  { path: "/terms", required: ["TermsOfService", "BreadcrumbList"] },
   { path: "/research", required: ["BreadcrumbList"] },
   { path: "/answers", required: ["BreadcrumbList"] },
   { path: "/answers/what-is-governed-ai-execution", required: ["FAQPage", "BreadcrumbList"] },
@@ -46,6 +48,7 @@ for (const { path, required } of PAGES) {
     expect(blocks.length, `no JSON-LD blocks on ${path}`).toBeGreaterThan(0);
 
     const graph: unknown[] = [];
+    const topLevelNodes: unknown[] = [];
     for (const raw of blocks) {
       let parsed: unknown;
       expect(() => {
@@ -53,9 +56,18 @@ for (const { path, required } of PAGES) {
       }, `invalid JSON-LD JSON on ${path}`).not.toThrow();
       if (parsed && typeof parsed === "object" && Array.isArray((parsed as { "@graph"?: unknown[] })["@graph"])) {
         graph.push(...(parsed as { "@graph": unknown[] })["@graph"]);
+        topLevelNodes.push(parsed);
       } else {
         graph.push(parsed);
+        topLevelNodes.push(parsed);
       }
+    }
+
+    // Every top-level JSON-LD block must declare @context.
+    for (const node of topLevelNodes) {
+      expect((node as Record<string, unknown>)["@context"], `${path}: top-level JSON-LD missing @context`).toBe(
+        "https://schema.org",
+      );
     }
 
     // schema.org sanity: every node must have @type and (where applicable) @context
@@ -67,6 +79,49 @@ for (const { path, required } of PAGES) {
     const types = collectTypes(graph);
     for (const req of required) {
       expect(types.has(req), `${path}: missing @type ${req} (found: ${[...types].join(",")})`).toBe(true);
+    }
+
+    // Schema-shape assertions: each node must declare @context and required
+    // fields for its type. Catches missing url/name/mainEntity mismatches.
+    for (const node of graph) {
+      const n = node as Record<string, unknown>;
+      const t = n["@type"];
+      const typeStr = typeof t === "string" ? t : Array.isArray(t) ? String(t[0]) : "";
+
+      if (typeStr === "BreadcrumbList") {
+        expect(Array.isArray(n.itemListElement), `${path}: BreadcrumbList.itemListElement not array`).toBe(true);
+        for (const item of n.itemListElement as Array<Record<string, unknown>>) {
+          expect(item["@type"], `${path}: breadcrumb item missing @type`).toBe("ListItem");
+          expect(typeof item.position, `${path}: breadcrumb position not number`).toBe("number");
+          expect(typeof item.name, `${path}: breadcrumb name not string`).toBe("string");
+          expect(typeof item.item === "string" && (item.item as string).startsWith("https://"), `${path}: breadcrumb item URL invalid`).toBe(true);
+        }
+      }
+
+      if (typeStr === "FAQPage") {
+        expect(Array.isArray(n.mainEntity), `${path}: FAQPage.mainEntity not array`).toBe(true);
+        for (const q of n.mainEntity as Array<Record<string, unknown>>) {
+          expect(q["@type"]).toBe("Question");
+          expect(typeof q.name).toBe("string");
+          const answer = q.acceptedAnswer as Record<string, unknown> | undefined;
+          expect(answer?.["@type"]).toBe("Answer");
+          expect(typeof answer?.text).toBe("string");
+        }
+      }
+
+      if (typeStr === "Service") {
+        expect(typeof n.name, `${path}: Service.name missing`).toBe("string");
+        expect(typeof n.description, `${path}: Service.description missing`).toBe("string");
+        expect(typeof n.url).toBe("string");
+        expect((n.provider as Record<string, unknown>)?.["@type"]).toBe("Organization");
+      }
+
+      if (typeStr === "PrivacyPolicy" || typeStr === "TermsOfService") {
+        expect(typeof n.name, `${path}: ${typeStr}.name missing`).toBe("string");
+        expect(typeof n.description, `${path}: ${typeStr}.description missing`).toBe("string");
+        expect(typeof n.url).toBe("string");
+        expect((n.publisher as Record<string, unknown>)?.["@type"]).toBe("Organization");
+      }
     }
   });
 }
