@@ -5,69 +5,81 @@ import { trackCta } from "@/lib/track-cta";
 const CARDS = [
   {
     n: "01",
-    title: "AI Product Sprint",
+    title: "AI Product Development",
     outcome:
-      "Concept to deployable AI product foundation: architecture, core workflows, model integration.",
+      "From idea to AI product. Design, build, and launch AI-powered products with clear architecture, focused scope, and scalable foundations.",
     delivered: [
-      "production structure from first commit",
-      "server-side secrets and permissions",
-      "full ownership transfer",
+      "product strategy",
+      "PRD & UX/UI architecture",
+      "MVP build & backend",
+      "AI integration, auth, payments, dashboards",
+      "deployment & launch readiness",
     ],
   },
   {
     n: "02",
-    title: "AI Workflow Automation",
+    title: "Agentic Workflow Automation",
     outcome:
-      "A high-cost process replaced by a governed workflow, with human approval at points of consequence.",
+      "Turn repetitive work into governed workflows. AI-powered workflows that route decisions, trigger actions, generate outputs, and keep humans in control where judgment matters.",
     delivered: [
-      "explicit state machine",
-      "deterministic fallbacks",
-      "audit logging",
-      "rollback procedure",
+      "workflow discovery & process mapping",
+      "agentic workflow architecture",
+      "API integrations",
+      "human approval points",
+      "logs, dashboards, governance controls",
     ],
   },
   {
     n: "03",
-    title: "Internal AI Agents & Copilots",
+    title: "Internal AI Copilots & Agents",
     outcome:
-      "Agents operating inside your business, within your data boundaries and permission model.",
+      "Agents that understand the business — connected to internal knowledge, tools, permissions, workflows, and operating rules.",
     delivered: [
-      "least-privilege access",
-      "approval gates on high-impact actions",
-      "complete activity records",
+      "knowledge base architecture",
+      "retrieval systems & tool access",
+      "permissions & guardrails",
+      "evaluation rubrics & usage logs",
+      "deployment and iteration plan",
     ],
   },
   {
     n: "04",
     title: "AI Knowledge Systems",
     outcome:
-      "Institutional knowledge converted into a permission-aware system people and agents can query with confidence.",
+      "Turn scattered information into operational intelligence — searchable, usable AI systems built from documents, processes, policies, and internal knowledge.",
     delivered: [
-      "structured ingestion",
-      "retrieval evaluated against defined accuracy criteria",
-      "access mirroring your permission structure",
+      "document ingestion",
+      "semantic search & knowledge graph",
+      "citations & versioning",
+      "access controls",
+      "knowledge workflow automation",
     ],
   },
   {
     n: "05",
     title: "AI Integrations & Infrastructure",
     outcome:
-      "AI capability connected to the systems you already run — without expanding your risk surface.",
+      "Connect AI to the systems that run the business — existing products, databases, dashboards, workflows, and internal operations.",
     delivered: [
-      "server-side integration layer",
-      "credentials never client-exposed",
-      "security review",
-      "interface contracts",
+      "model providers",
+      "databases, auth, payments",
+      "CRM & internal tools",
+      "workflow & communication platforms",
+      "repository & deployment systems",
     ],
   },
   {
     n: "06",
     title: "AI Governance & Cost Control",
     outcome:
-      "Authority over what your AI does and what it costs: policy, approval structure, spend attribution, evaluation.",
+      "AI with control, not chaos. Governance layers that make AI systems measurable, auditable, cost-aware, and safer to operate.",
     delivered: [
-      "workflow-level cost telemetry",
-      "policy enforced in infrastructure, not documentation",
+      "model routing & usage caps",
+      "cost tracking",
+      "approval flows & audit logs",
+      "evaluation rubrics",
+      "human-in-the-loop controls",
+      "security & permission boundaries",
     ],
   },
 ];
@@ -79,13 +91,13 @@ export function Solutions() {
         <div className="cx-reveal max-w-3xl">
           <HudLabel withDot>Solutions</HudLabel>
           <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
-            Systems under contract. Not hours under retainer.
+            AI solutions built for execution, not theater.
           </h2>
           <p className="mt-6 text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-            Every engagement runs under a Master Service Agreement: fixed
-            deliverables, acceptance criteria, warranty, and defined IP
-            ownership. The output is an operating system for a business
-            function — documented, auditable, yours.
+            Cyryx Solutions helps teams design, build, and deploy practical AI
+            systems that connect to real workflows, real data, and real
+            outcomes. We help companies move from scattered experimentation to
+            structured execution.
           </p>
         </div>
         <div className="cx-stagger mt-10 grid gap-4 sm:mt-14 md:grid-cols-2 lg:grid-cols-3">

@@ -12,17 +12,17 @@ import {
 export const Route = createFileRoute("/research/")({
   head: () => ({
     meta: [
-      { title: "Research & Publications — Cyryx Labs" },
+      { title: "Applied AI Lab — Cyryx Labs" },
       {
         name: "description",
         content:
-          "Technical frameworks, governance protocols, and applied research from Cyryx Labs — published openly for the community.",
+          "Cyryx Applied AI Lab develops the architectures, protocols, and evaluation models behind governed AI execution systems and productized AI infrastructure.",
       },
-      { property: "og:title", content: "Research & Publications — Cyryx Labs" },
+      { property: "og:title", content: "Applied AI Lab — Cyryx Labs" },
       {
         property: "og:description",
         content:
-          "Technical frameworks, governance protocols, and applied research from Cyryx Labs.",
+          "Applied research and architecture behind Cyryx products and client systems — agentic execution, context intelligence, governance, model routing, cost intelligence.",
       },
       { property: "og:url", content: "https://cyryxlabs.com/research" },
     ],

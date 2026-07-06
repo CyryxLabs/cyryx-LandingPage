@@ -8,7 +8,8 @@ import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 
 const PATH = "/products";
 const TITLE = "Products — Cyryx Labs";
-const DESC = "Proprietary AI products built by Cyryx Labs for the agentic era.";
+const DESC =
+  "Explore the Cyryx Labs product ecosystem, including MAAX Studio and future Cyryx systems built around governed execution.";
 
 const PRODUCTS = [
   {

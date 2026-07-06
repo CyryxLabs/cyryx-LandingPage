@@ -9,13 +9,13 @@ import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 const PATH = "/contact";
 const TITLE = "Contact — Cyryx Labs";
 const DESC =
-  "Start a project with Cyryx Labs. Build AI products, deploy governed automation, and operationalize execution.";
+  "Contact Cyryx Labs to build an AI product, automate a workflow, explore MAAX Studio, or design governed AI execution systems.";
 
 const SIGNALS = [
-  { k: "Response window", v: "One business day" },
-  { k: "Best fit", v: "MSA-signers and early-access builders" },
+  { k: "Best fit", v: "Founders, agencies, product teams, and operators building with AI" },
   { k: "Engagement model", v: "Scoped, milestone-based, handover-ready" },
-  { k: "Delivered on", v: "MAAX Studio primitives" },
+  { k: "Interests", v: "MAAX early access · Product · Automation · Agents · Knowledge · Governance" },
+  { k: "Delivered on", v: "MAAX Runtime primitives" },
 ];
 
 export const Route = createFileRoute("/contact")({

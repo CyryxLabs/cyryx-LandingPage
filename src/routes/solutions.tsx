@@ -10,8 +10,9 @@ import {
 } from "@/components/cyryx/seo/seo";
 
 const PATH = "/solutions";
-const TITLE = "Cyryx Solutions — Custom AI execution systems";
-const DESC = "Custom AI execution systems built on Cyryx governance primitives: AI websites, workflow automation, internal assistants, products, integrations, governance.";
+const TITLE = "AI Solutions — Cyryx Labs";
+const DESC =
+  "Cyryx Solutions designs and builds AI products, workflow automation, internal agents, knowledge systems, integrations, and governance layers for operational AI.";
 
 const OFFERINGS = [
   {

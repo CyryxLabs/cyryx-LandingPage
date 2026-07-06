@@ -8,8 +8,9 @@ import {
 } from "@/components/cyryx/seo/seo";
 
 const PATH = "/products/maax-studio";
-const TITLE = "MAAX Studio — Agentic execution OS · Cyryx Labs";
-const DESC = "MAAX Studio is the agentic execution OS from Cyryx Labs: missions, command gates, goal-grounded generation, mission ledgers, human-governed delivery.";
+const TITLE = "MAAX Studio — Agentic Execution OS for AI-Native Builders";
+const DESC =
+  "MAAX Studio is a local-first agentic software execution environment for AI-native builders, designed around missions, memory, operators, gates, ledgers, and human-governed delivery.";
 
 const softwareAppLd = {
   "@context": "https://schema.org",
