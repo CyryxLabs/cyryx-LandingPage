@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import { gsap } from "gsap";
 import { Link } from "@tanstack/react-router";
 import { CyryxMark, CyryxWordmark } from "./primitives/CyryxMark";
 import { useCopyVariant } from "@/lib/copy-variant";
@@ -25,35 +24,42 @@ export function MobileMenu({
 
   useEffect(() => {
     if (!open) return;
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(
-        panelRef.current,
-        { opacity: 0, y: -16 },
-        { opacity: 1, y: 0, duration: 0.35 },
-      )
-        .fromTo(
-          linksRef.current?.children ?? [],
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.4, stagger: 0.06 },
-          "-=0.1",
-        )
-        .fromTo(
-          ctaRef.current,
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.4 },
-          "-=0.1",
-        )
-        .fromTo(
-          closeRef.current,
-          { rotate: -45, opacity: 0 },
-          { rotate: 0, opacity: 1, duration: 0.4 },
-          0,
-        );
-    }, panelRef);
     document.body.style.overflow = "hidden";
+    let cancelled = false;
+    let ctx: { revert: () => void } | null = null;
+    // Dynamic import keeps GSAP out of the header's shared client bundle.
+    import("gsap").then(({ gsap }) => {
+      if (cancelled) return;
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        tl.fromTo(
+          panelRef.current,
+          { opacity: 0, y: -16 },
+          { opacity: 1, y: 0, duration: 0.35 },
+        )
+          .fromTo(
+            linksRef.current?.children ?? [],
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.4, stagger: 0.06 },
+            "-=0.1",
+          )
+          .fromTo(
+            ctaRef.current,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.4 },
+            "-=0.1",
+          )
+          .fromTo(
+            closeRef.current,
+            { rotate: -45, opacity: 0 },
+            { rotate: 0, opacity: 1, duration: 0.4 },
+            0,
+          );
+      }, panelRef);
+    });
     return () => {
-      ctx.revert();
+      cancelled = true;
+      ctx?.revert();
       document.body.style.overflow = "";
     };
   }, [open]);

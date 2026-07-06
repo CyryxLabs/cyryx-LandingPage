@@ -1,14 +1,8 @@
 import { useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { CyryxScrollDiagnosticPayload } from "@/types/cyryx-diagnostics";
-
-// Register only in the browser. Calling registerPlugin at module scope
-// during Cloudflare Workers SSR triggers "Disallowed operation called
-// within global scope" and blanks the page.
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+// GSAP + ScrollTrigger are dynamically imported inside the effect so the
+// ~50KB gzip motion runtime is code-split out of the initial page bundle
+// and only loaded on routes that actually use this hook (home).
 
 declare global {
   interface Window {
@@ -50,8 +44,17 @@ function readBreakpoint(width: number): CyryxScrollDiagnosticPayload["breakpoint
  */
 export function useCyryxScrollAnimations() {
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    let diagnosticsRaf = 0;
+    let cancelled = false;
+    let cleanup: (() => void) | null = null;
+
+    (async () => {
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
+      if (cancelled) return;
+      gsap.registerPlugin(ScrollTrigger);
+      let diagnosticsRaf = 0;
     const preExistingScrollTriggers = new Set(ScrollTrigger.getAll());
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lowPerf = document.documentElement.classList.contains("cx-low-perf");
@@ -467,7 +470,7 @@ export function useCyryxScrollAnimations() {
     });
     scheduleHeroDiagnostics();
 
-    return () => {
+    cleanup = () => {
       if (diagnosticsRaf) cancelAnimationFrame(diagnosticsRaf);
       window.clearTimeout(t1);
       window.clearTimeout(t2);
@@ -479,6 +482,12 @@ export function useCyryxScrollAnimations() {
       ScrollTrigger.getAll().forEach((t) => {
         if (!preExistingScrollTriggers.has(t)) t.kill();
       });
+    };
+    })();
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
     };
   }, []);
 }
