@@ -3,12 +3,17 @@ import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { GlassPanel } from "@/components/cyryx/primitives/GlassPanel";
-import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildHead,
+  buildLegalPageJsonLd,
+} from "@/components/cyryx/seo/seo";
 
 const PATH = "/terms";
 const TITLE = "Terms of Service — Cyryx Labs";
 const DESC =
   "Terms of Service governing use of the Cyryx Labs website and engagements with Cyryx Labs LLC.";
+const DATE_MODIFIED_ISO = "2026-06-26";
 
 export const Route = createFileRoute("/terms")({
   head: () =>
@@ -17,6 +22,13 @@ export const Route = createFileRoute("/terms")({
         { name: "Home", path: "/" },
         { name: "Terms of Service", path: PATH },
       ]),
+      buildLegalPageJsonLd({
+        name: TITLE,
+        description: DESC,
+        path: PATH,
+        dateModified: DATE_MODIFIED_ISO,
+        type: "TermsOfService",
+      }),
     ]),
   component: TermsPage,
 });

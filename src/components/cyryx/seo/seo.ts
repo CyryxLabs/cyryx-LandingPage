@@ -124,6 +124,30 @@ export function buildTechArticleJsonLd(input: {
   };
 }
 
+export function buildLegalPageJsonLd(input: {
+  name: string;
+  description: string;
+  path: string;
+  dateModified?: string;
+  type?: "PrivacyPolicy" | "TermsOfService" | "WebPage";
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": input.type ?? "WebPage",
+    name: input.name,
+    description: input.description,
+    url: `${BASE}${input.path}`,
+    inLanguage: "en",
+    isPartOf: { "@type": "WebSite", url: BASE, name: "Cyryx Labs" },
+    publisher: {
+      "@type": "Organization",
+      name: "Cyryx Labs",
+      url: BASE,
+    },
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
+  };
+}
+
 export function jsonLdScript(obj: unknown) {
   return { type: "application/ld+json", children: JSON.stringify(obj) };
 }

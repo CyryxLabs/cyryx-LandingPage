@@ -3,13 +3,18 @@ import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { GlassPanel } from "@/components/cyryx/primitives/GlassPanel";
-import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildHead,
+  buildLegalPageJsonLd,
+} from "@/components/cyryx/seo/seo";
 
 const PATH = "/privacy";
 const TITLE = "Privacy Policy — Cyryx Labs";
 const DESC =
   "How Cyryx Labs collects, uses, and protects information from visitors and clients of cyryxlabs.com.";
 const LAST_UPDATED = "June 26, 2026";
+const DATE_MODIFIED_ISO = "2026-06-26";
 
 export const Route = createFileRoute("/privacy")({
   head: () =>
@@ -18,6 +23,13 @@ export const Route = createFileRoute("/privacy")({
         { name: "Home", path: "/" },
         { name: "Privacy Policy", path: PATH },
       ]),
+      buildLegalPageJsonLd({
+        name: TITLE,
+        description: DESC,
+        path: PATH,
+        dateModified: DATE_MODIFIED_ISO,
+        type: "PrivacyPolicy",
+      }),
     ]),
   component: PrivacyPage,
 });
