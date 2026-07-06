@@ -19,7 +19,8 @@
         "categories:seo": ["error", { "minScore": "LH_SEO_MIN" }],
         "largest-contentful-paint": ["error", { "maxNumericValue": "LH_LCP_MAX_MOBILE" }],
         "cumulative-layout-shift": ["error", { "maxNumericValue": "LH_CLS_MAX" }],
-        "total-blocking-time": ["error", { "maxNumericValue": "LH_TBT_MAX_MOBILE" }]
+        "total-blocking-time": ["error", { "maxNumericValue": "LH_TBT_MAX_MOBILE" }],
+        "max-potential-fid": ["error", { "maxNumericValue": "LH_INP_MAX_MOBILE" }]
       }
     },
     "upload": { "target": "filesystem", "outputDir": "./lighthouse-report/mobile" }
