@@ -42,12 +42,9 @@ export function WhatWeBuild() {
             >
               <span className="hud-label text-[var(--accent-glow)]">{`0${i + 1}`}</span>
               <p className="mt-4 hud-label text-[var(--silver-dim)]">{u.tag}</p>
-              <h3 className="mt-3 font-display text-xl font-semibold uppercase tracking-wider text-[var(--silver)]">
-                {u.tag}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--silver)]">
+              <h3 className="mt-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--silver)]">
                 {u.title}
-              </p>
+              </h3>
               <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
                 {u.body}
               </p>

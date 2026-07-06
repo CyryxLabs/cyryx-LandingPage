@@ -13,12 +13,11 @@ export function FinalCTA() {
       <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-10 text-center">
         <HudLabel withDot>Get Started</HudLabel>
         <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
-          From experimentation to <span style={{ color: "var(--accent-glow)" }}>governed execution.</span>
+          Ready to turn AI into <span style={{ color: "var(--accent-glow)" }}>execution?</span>
         </h2>
         <p className="mt-6 text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-          Describe the workflow, the product, or the operational problem. We
-          will tell you directly whether it warrants a system, what it
-          requires, and what it costs.
+          Build your AI product, automate a workflow, or join the MAAX Studio
+          early access program.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           <a
@@ -38,9 +37,12 @@ export function FinalCTA() {
             }
             className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)] px-6 hud-label text-[var(--accent-glow)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] transition sm:w-auto"
           >
-            Request MAAX early access
+            Request access
           </a>
         </div>
+        <p className="mt-8 hud-label text-[var(--silver-dim)]">
+          From prompt chaos to governed AI execution.
+        </p>
       </div>
     </section>
   );
