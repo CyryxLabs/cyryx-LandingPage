@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { HudLabel } from "../primitives/HudLabel";
 import { trackCta } from "@/lib/track-cta";
+import { START_PROJECT_HREF } from "@/lib/cta";
 
 export function FinalCTA() {
   return (
@@ -21,9 +22,9 @@ export function FinalCTA() {
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           <a
-            href="#contact"
+            href={START_PROJECT_HREF}
             onClick={() =>
-              trackCta({ cta: "start_project", section: "final_cta", href: "#contact" })
+              trackCta({ cta: "start_project", section: "final_cta", href: START_PROJECT_HREF })
             }
             className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition sm:w-auto"
           >
