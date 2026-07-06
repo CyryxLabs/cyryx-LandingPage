@@ -8,6 +8,7 @@ import {
   buildHead,
   buildServiceJsonLd,
 } from "@/components/cyryx/seo/seo";
+import { START_PROJECT_HREF } from "@/lib/cta";
 
 const PATH = "/solutions";
 const TITLE = "AI Solutions — Cyryx Labs";
@@ -114,7 +115,7 @@ function SolutionsHub() {
 
         <div className="mt-12">
           <a
-            href="/#contact"
+            href={START_PROJECT_HREF}
             className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
             Start a project
