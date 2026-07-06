@@ -1,8 +1,31 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight } from "lucide-react";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { HudLabel } from "../primitives/HudLabel";
+import { GlassPanel } from "../primitives/GlassPanel";
+
+export interface DeliverablePhase {
+  phase: string;
+  duration: string;
+  scope: string;
+  outputs: string[];
+}
+
+export interface ArchitectureLayer {
+  name: string;
+  detail: string;
+}
+
+export interface KpiMetric {
+  metric: string;
+  detail: string;
+}
+
+export interface FaqItem {
+  q: string;
+  a: string;
+}
 
 export interface SolutionPageProps {
   eyebrow: string;
@@ -14,6 +37,14 @@ export interface SolutionPageProps {
   howWeWork: string[];
   outcomes: string[];
   relatedAnswers: { label: string; href: string }[];
+  // Optional deep-dive sections (rendered only when supplied).
+  challenges?: string[];
+  architecture?: ArchitectureLayer[];
+  deliverables?: DeliverablePhase[];
+  techStack?: string[];
+  kpis?: KpiMetric[];
+  faq?: FaqItem[];
+  engagementNote?: string;
 }
 
 export function SolutionPage(p: SolutionPageProps) {
@@ -60,6 +91,12 @@ export function SolutionPage(p: SolutionPageProps) {
             </ol>
           </Sec>
 
+          {p.challenges && p.challenges.length > 0 && (
+            <Sec heading="The failure modes we design against">
+              <List items={p.challenges} />
+            </Sec>
+          )}
+
           <Sec heading="Outcomes we optimize for">
             <ul className="mt-4 space-y-2">
               {p.outcomes.map((o, i) => (
@@ -71,6 +108,82 @@ export function SolutionPage(p: SolutionPageProps) {
             </ul>
           </Sec>
 
+          {p.architecture && p.architecture.length > 0 && (
+            <Sec heading="Reference architecture">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {p.architecture.map((layer) => (
+                  <GlassPanel key={layer.name} className="p-5">
+                    <div className="text-xs uppercase tracking-[0.14em] text-[var(--accent-glow)]">
+                      {layer.name}
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--silver-dim)]">
+                      {layer.detail}
+                    </p>
+                  </GlassPanel>
+                ))}
+              </div>
+            </Sec>
+          )}
+
+          {p.deliverables && p.deliverables.length > 0 && (
+            <Sec heading="Engagement phases and deliverables">
+              <ol className="mt-4 space-y-4">
+                {p.deliverables.map((d, i) => (
+                  <li key={i} className="rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_45%,transparent)] p-5">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <div className="hud-label text-[var(--silver)]">
+                        <span className="text-[var(--accent-glow)]">0{i + 1}</span> — {d.phase}
+                      </div>
+                      <div className="text-xs text-[var(--silver-dim)]">{d.duration}</div>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--silver-dim)]">{d.scope}</p>
+                    <ul className="mt-3 space-y-1.5">
+                      {d.outputs.map((o, j) => (
+                        <li key={j} className="flex items-start gap-2 text-sm text-[var(--silver-dim)]">
+                          <ChevronRight className="mt-1 h-3.5 w-3.5 shrink-0 text-[var(--accent-glow)]" />
+                          <span>{o}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ol>
+            </Sec>
+          )}
+
+          {p.techStack && p.techStack.length > 0 && (
+            <Sec heading="Stack we typically ship on">
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {p.techStack.map((t) => (
+                  <li
+                    key={t}
+                    className="rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_25%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_55%,transparent)] px-3 py-1.5 text-xs text-[var(--silver)]"
+                  >
+                    {t}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-xs text-[var(--silver-dim)]">
+                Stack choices are calibrated to the client's existing infrastructure — Cyryx is not tied to a specific vendor.
+              </p>
+            </Sec>
+          )}
+
+          {p.kpis && p.kpis.length > 0 && (
+            <Sec heading="How we measure success">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {p.kpis.map((k, i) => (
+                  <div key={i} className="rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_45%,transparent)] p-4">
+                    <div className="font-display text-sm font-semibold text-[var(--silver)]">
+                      {k.metric}
+                    </div>
+                    <p className="mt-1 text-sm leading-relaxed text-[var(--silver-dim)]">{k.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </Sec>
+          )}
+
           <Sec heading="Built on Cyryx infrastructure">
             <p className="mt-4 text-base leading-relaxed text-[var(--silver-dim)]">
               Every Cyryx Solutions engagement is built on the same primitives as our flagship{" "}
@@ -80,6 +193,30 @@ export function SolutionPage(p: SolutionPageProps) {
               command gates, goal-grounded generation, mission ledgers, and explicit human review checkpoints.
             </p>
           </Sec>
+
+          {p.faq && p.faq.length > 0 && (
+            <Sec heading="Questions decision-makers ask us">
+              <div className="mt-4 divide-y divide-[color-mix(in_oklab,var(--silver)_10%,transparent)] rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_40%,transparent)]">
+                {p.faq.map((f, i) => (
+                  <details key={i} className="group p-5" open={i === 0}>
+                    <summary className="cursor-pointer list-none text-sm font-medium text-[var(--silver)] hover:text-[var(--accent-glow)]">
+                      <span className="mr-2 text-[var(--accent-glow)]">Q.</span>
+                      {f.q}
+                    </summary>
+                    <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </Sec>
+          )}
+
+          {p.engagementNote && (
+            <Sec heading="Engagement model">
+              <p className="mt-4 text-base leading-relaxed text-[var(--silver-dim)]">
+                {p.engagementNote}
+              </p>
+            </Sec>
+          )}
 
           <Sec heading="Related answers">
             <ul className="mt-4 grid gap-2 sm:grid-cols-2">
