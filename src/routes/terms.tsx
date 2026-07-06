@@ -378,7 +378,7 @@ function Breadcrumbs({ current }: { current: string }) {
         <li aria-hidden="true" className="text-[var(--silver-dim)]/60">/</li>
         <li className="text-[var(--silver-dim)]/80">Legal</li>
         <li aria-hidden="true" className="text-[var(--silver-dim)]/60">/</li>
-        <li className="text-[var(--silver)]">{current}</li>
+        <li aria-current="page" className="text-[var(--silver)]">{current}</li>
       </ol>
     </nav>
   );
