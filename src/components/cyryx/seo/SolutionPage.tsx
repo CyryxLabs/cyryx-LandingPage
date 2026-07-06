@@ -50,15 +50,16 @@ export interface SolutionPageProps {
 export function SolutionPage(p: SolutionPageProps) {
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
+      <a href="#main-content" className="skip-link">Skip to content</a>
       <Header />
-      <main className="relative">
+      <main id="main-content" tabIndex={-1} className="relative focus:outline-none">
         <section className="mx-auto max-w-3xl px-5 sm:px-8 lg:px-12 pt-32 pb-24 lg:pt-44">
           <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
             <Link to="/" className="hover:text-[var(--accent-glow)]">Home</Link>
             <span className="mx-2 opacity-60">/</span>
             <Link to="/solutions" className="hover:text-[var(--accent-glow)]">Solutions</Link>
             <span className="mx-2 opacity-60">/</span>
-            <span className="text-[var(--silver)]">{p.eyebrow}</span>
+            <span aria-current="page" className="text-[var(--silver)]">{p.eyebrow}</span>
           </nav>
 
           <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
@@ -199,7 +200,7 @@ export function SolutionPage(p: SolutionPageProps) {
               <div className="mt-4 divide-y divide-[color-mix(in_oklab,var(--silver)_10%,transparent)] rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_40%,transparent)]">
                 {p.faq.map((f, i) => (
                   <details key={i} className="group p-5" open={i === 0}>
-                    <summary className="cursor-pointer list-none text-sm font-medium text-[var(--silver)] hover:text-[var(--accent-glow)]">
+                    <summary className="cursor-pointer list-none rounded-sm text-sm font-medium text-[var(--silver)] hover:text-[var(--accent-glow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--onyx)]">
                       <span className="mr-2 text-[var(--accent-glow)]">Q.</span>
                       {f.q}
                     </summary>
