@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState, useSearch } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import {
   LayoutDashboard,
@@ -11,6 +11,38 @@ import {
   Briefcase,
   LogOut,
 } from "lucide-react";
+
+const WINDOWS = [7, 30, 90] as const;
+
+function WsWindowPicker() {
+  const search = useSearch({ from: "/_authenticated/workspace" });
+  const navigate = useNavigate();
+  const current = search.w;
+  return (
+    <div className="flex items-center gap-1" role="group" aria-label="Period filter">
+      {WINDOWS.map((w) => (
+        <button
+          key={w}
+          type="button"
+          onClick={() =>
+            navigate({
+              to: ".",
+              search: (prev: any) => ({ ...prev, w }),
+              replace: true,
+            })
+          }
+          className={`h-8 px-2.5 rounded-md border hud-label text-[11px] transition-colors ${
+            current === w
+              ? "border-[var(--accent-glow)] text-[var(--accent-glow)]"
+              : "border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] text-[var(--silver-dim)] hover:text-[var(--silver)]"
+          }`}
+        >
+          {w}d
+        </button>
+      ))}
+    </div>
+  );
+}
 
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
 const NAV: NavItem[] = [
@@ -84,7 +116,10 @@ export function WorkspaceShell({
             </h1>
             {subtitle && <p className="mt-1 text-sm text-[var(--silver-dim)]">{subtitle}</p>}
           </div>
-          {actions}
+          <div className="flex flex-wrap items-center gap-3">
+            <WsWindowPicker />
+            {actions}
+          </div>
         </header>
 
         <nav className="lg:hidden flex gap-2 overflow-x-auto px-6 py-3 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] text-xs">
