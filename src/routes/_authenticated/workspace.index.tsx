@@ -2,11 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Header } from "@/components/cyryx/Header";
-import { Footer } from "@/components/cyryx/Footer";
-import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { supabase } from "@/integrations/supabase/client";
+import { WorkspaceShell } from "@/components/cyryx/workspace/WorkspaceShell";
 import {
   getAdminOverview,
   markContactHandled,
@@ -37,99 +35,62 @@ function WorkspaceHome() {
     queryFn: () => fetchOverview({ data: { windowDays } }),
   });
 
-  return (
-    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
-      <Header />
-      <main id="main-content" className="mx-auto max-w-6xl px-5 pt-32 pb-24 lg:pt-40">
-        <HudLabel withDot className="text-[var(--accent-glow)]">Cyryx Labs · Internal</HudLabel>
-        <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
-          <h1 className="font-display text-3xl sm:text-4xl font-semibold text-silver-gradient">
-            Internal console
-          </h1>
-          <div className="flex items-center gap-2 text-xs">
-            {[7, 30, 90].map((w) => (
-              <button
-                key={w}
-                type="button"
-                onClick={() => setWindowDays(w)}
-                className={`h-9 px-3 rounded-md border hud-label transition-colors ${
-                  windowDays === w
-                    ? "border-[var(--accent-glow)] text-[var(--accent-glow)]"
-                    : "border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] text-[var(--silver-dim)] hover:text-[var(--silver)]"
-                }`}
-              >
-                {w}d
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={() => refetch()}
-              className="h-9 px-3 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] hud-label text-[var(--silver-dim)] hover:text-[var(--silver)]"
-            >
-              {isFetching ? "Refreshing…" : "Refresh"}
-            </button>
-            <button
-              type="button"
-              onClick={async () => {
-                await supabase.auth.signOut();
-                window.location.href = "/auth";
-              }}
-              className="h-9 px-3 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] hud-label text-[var(--silver-dim)] hover:text-[var(--silver)]"
-            >
-              Sign out
-            </button>
-          </div>
-        </div>
-
-        <nav aria-label="Sections" className="mt-8 flex flex-wrap gap-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] pb-2">
-          {(["overview", "contacts", "newsletter", "cta"] as const).map((t) => (
-            <TabBtn key={t} active={tab === t} onClick={() => setTab(t)}>
-              {t === "overview" ? "Overview" : t === "cta" ? "CTA events" : t[0].toUpperCase() + t.slice(1)}
-            </TabBtn>
-          ))}
-          <Link
-            to="/workspace/careers"
-            className="ml-auto text-xs hud-label text-[var(--accent-glow)] hover:underline self-center"
-          >
-            Careers funnel →
-          </Link>
-        </nav>
-
-        <div className="mt-6 flex flex-wrap gap-2">
-          {[
-            { to: "/workspace/pipeline", label: "Pipeline" },
-            { to: "/workspace/products", label: "Products" },
-            { to: "/workspace/dev", label: "Development" },
-            { to: "/workspace/hr", label: "HR" },
-            { to: "/workspace/marketing", label: "Marketing" },
-            { to: "/workspace/finance", label: "Finance" },
-          ].map((m) => (
-            <Link
-              key={m.to}
-              to={m.to as any}
-              className="h-9 px-3 rounded-md border border-[var(--accent-glow)] hud-label text-xs text-[var(--accent-glow)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] flex items-center"
-            >
-              {m.label} →
-            </Link>
-          ))}
-        </div>
-
-        <WorkspaceKpis />
-
-        {error && (
-          <p role="alert" className="mt-8 text-sm text-[color:oklch(0.72_0.16_25)]">
-            {(error as Error).message || "Unable to load."}
-          </p>
-        )}
-        {isLoading && <p className="mt-8 text-sm text-[var(--silver-dim)]">Loading…</p>}
-
-        {data && tab === "overview" && <Overview data={data} />}
-        {data && tab === "contacts" && <ContactsTab rows={data.recentContacts} onChanged={() => refetch()} />}
-        {data && tab === "newsletter" && <NewsletterTab rows={data.recentSubscribers} />}
-        {data && tab === "cta" && <CtaTab data={data} />}
-      </main>
-      <Footer />
+  const actions = (
+    <div className="flex items-center gap-2 text-xs">
+      {[7, 30, 90].map((w) => (
+        <button
+          key={w}
+          type="button"
+          onClick={() => setWindowDays(w)}
+          className={`h-9 px-3 rounded-md border hud-label transition-colors ${
+            windowDays === w
+              ? "border-[var(--accent-glow)] text-[var(--accent-glow)]"
+              : "border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] text-[var(--silver-dim)] hover:text-[var(--silver)]"
+          }`}
+        >
+          {w}d
+        </button>
+      ))}
+      <button
+        type="button"
+        onClick={() => refetch()}
+        className="h-9 px-3 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] hud-label text-[var(--silver-dim)] hover:text-[var(--silver)]"
+      >
+        {isFetching ? "Refreshing…" : "Refresh"}
+      </button>
     </div>
+  );
+
+  return (
+    <WorkspaceShell title="Overview" subtitle="Business KPIs, contacts, subscribers and CTA activity" actions={actions}>
+      <WorkspaceKpis />
+
+      <nav aria-label="Sections" className="mt-8 flex flex-wrap gap-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] pb-2">
+        {(["overview", "contacts", "newsletter", "cta"] as const).map((t) => (
+          <TabBtn key={t} active={tab === t} onClick={() => setTab(t)}>
+            {t === "overview" ? "Site activity" : t === "cta" ? "CTA events" : t[0].toUpperCase() + t.slice(1)}
+          </TabBtn>
+        ))}
+        <Link
+          to="/workspace/careers"
+          className="ml-auto text-xs hud-label text-[var(--accent-glow)] hover:underline self-center"
+        >
+          Careers funnel →
+        </Link>
+      </nav>
+
+      {error && (
+        <p role="alert" className="mt-6 text-sm text-[color:oklch(0.72_0.16_25)]">
+          {(error as Error).message || "Unable to load."}
+        </p>
+      )}
+      {isLoading && <p className="mt-6 text-sm text-[var(--silver-dim)]">Loading…</p>}
+
+      {data && tab === "overview" && <Overview data={data} />}
+      {data && tab === "contacts" && <ContactsTab rows={data.recentContacts} onChanged={() => refetch()} />}
+      {data && tab === "newsletter" && <NewsletterTab rows={data.recentSubscribers} />}
+      {data && tab === "cta" && <CtaTab data={data} />}
+    </WorkspaceShell>
   );
 }
 
