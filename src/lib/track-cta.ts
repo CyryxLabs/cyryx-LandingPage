@@ -10,7 +10,10 @@ export type CtaName =
   | "start_project"
   | "request_early_access"
   | "request_maax_access"
-  | "explore_maax";
+  | "explore_maax"
+  | "careers_talent_network"
+  | "careers_email"
+  | "talent_network_signup";
 
 export type CtaSection =
   | "hero"
@@ -19,7 +22,9 @@ export type CtaSection =
   | "sticky"
   | "maax_spotlight"
   | "final_cta"
-  | "solutions";
+  | "solutions"
+  | "careers"
+  | "footer";
 
 export interface TrackCtaInput {
   cta: CtaName;
