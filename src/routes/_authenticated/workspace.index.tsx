@@ -5,7 +5,7 @@ import { useState } from "react";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { supabase } from "@/integrations/supabase/client";
 import { WorkspaceShell } from "@/components/cyryx/workspace/WorkspaceShell";
-import { WINDOWS, type WsTab, type WsWindow, type WorkspaceSearch } from "./workspace";
+import { type WsTab, type WorkspaceSearch } from "./workspace";
 import {
   getAdminOverview,
   markContactHandled,
@@ -28,8 +28,6 @@ export const Route = createFileRoute("/_authenticated/workspace/")({
 function WorkspaceHome() {
   const { w: windowDays, tab } = Route.useSearch();
   const navigate = useNavigate();
-  const setWindowDays = (w: WsWindow) =>
-    navigate({ to: "/workspace", search: (prev: WorkspaceSearch) => ({ ...prev, w }), replace: true });
   const setTab = (t: WsTab) =>
     navigate({ to: "/workspace", search: (prev: WorkspaceSearch) => ({ ...prev, tab: t }), replace: true });
   const fetchOverview = useServerFn(getAdminOverview);
@@ -39,29 +37,13 @@ function WorkspaceHome() {
   });
 
   const actions = (
-    <div className="flex items-center gap-2 text-xs">
-      {WINDOWS.map((w) => (
-        <button
-          key={w}
-          type="button"
-          onClick={() => setWindowDays(w)}
-          className={`h-9 px-3 rounded-md border hud-label transition-colors ${
-            windowDays === w
-              ? "border-[var(--accent-glow)] text-[var(--accent-glow)]"
-              : "border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] text-[var(--silver-dim)] hover:text-[var(--silver)]"
-          }`}
-        >
-          {w}d
-        </button>
-      ))}
-      <button
-        type="button"
-        onClick={() => refetch()}
-        className="h-9 px-3 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] hud-label text-[var(--silver-dim)] hover:text-[var(--silver)]"
-      >
-        {isFetching ? "Refreshing…" : "Refresh"}
-      </button>
-    </div>
+    <button
+      type="button"
+      onClick={() => refetch()}
+      className="h-9 px-3 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] hud-label text-xs text-[var(--silver-dim)] hover:text-[var(--silver)]"
+    >
+      {isFetching ? "Refreshing…" : "Refresh"}
+    </button>
   );
 
   return (
