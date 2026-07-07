@@ -21,6 +21,24 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  // Preserve workspace search params (?w, ?tab) through the auth round-trip.
+  function afterAuthTarget(): { to: "/workspace"; search: Record<string, string> } | { to: "/workspace/careers" } {
+    if (typeof window === "undefined") return { to: "/workspace/careers" };
+    const sp = new URLSearchParams(window.location.search);
+    const w = sp.get("w");
+    const tab = sp.get("tab");
+    if (w || tab) {
+      const search: Record<string, string> = {};
+      if (w) search.w = w;
+      if (tab) search.tab = tab;
+      return { to: "/workspace", search };
+    }
+    return { to: "/workspace/careers" };
+  }
+  function goPostAuth(replace = false) {
+    const target = afterAuthTarget();
+    navigate({ ...(target as any), replace });
+  }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<{
@@ -37,7 +55,7 @@ function AuthPage() {
     supabase.auth.getUser().then(({ data }) => {
       if (cancelled) return;
       if (data.user) {
-        navigate({ to: "/workspace/careers", replace: true });
+        goPostAuth(true);
         return;
       }
       setSessionChecked(true);
@@ -56,7 +74,7 @@ function AuthPage() {
     }
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session?.user) {
-        navigate({ to: "/workspace/careers", replace: true });
+        goPostAuth(true);
       }
     });
     return () => {
@@ -109,7 +127,7 @@ function AuthPage() {
           message: `Confirmation email sent to ${normalized}. Open the link from that inbox — this page will unlock automatically once verified.`,
         });
       }
-      navigate({ to: "/workspace/careers" });
+      goPostAuth(false);
       return;
     }
     const { error } = await supabase.auth.signInWithPassword({ email: normalized, password });
@@ -122,7 +140,7 @@ function AuthPage() {
           : error.message,
       });
     }
-    navigate({ to: "/workspace/careers" });
+    goPostAuth(false);
   }
 
   async function onForgotPassword() {
