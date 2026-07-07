@@ -15,7 +15,7 @@ const ROOT = "src/routes/__root.tsx";
 function extractRedirectScript(): string {
   const src = readFileSync(ROOT, "utf8");
   const match = src.match(
-    /__html:\s*"((?:[^"\\]|\\.)*workspace\\\.(?:[^"\\]|\\.)*)"/,
+    /__html:\s*"((?:[^"\\]|\\.)*workspace\\\\\.(?:[^"\\]|\\.)*)"/,
   );
   if (!match) throw new Error("workspace subdomain redirect script not found");
   // Unescape the JS string literal so it can be executed in the browser.
@@ -25,7 +25,7 @@ function extractRedirectScript(): string {
 
 test("root shell embeds the workspace subdomain redirect script", () => {
   const src = readFileSync(ROOT, "utf8");
-  expect(src, "must detect workspace. subdomain").toMatch(/workspace\\\./);
+  expect(src, "must detect workspace. subdomain").toMatch(/workspace\\\\\./);
   expect(src, "must redirect using location.replace to /workspace").toMatch(
     /location\.replace\(\s*['"]\/workspace/,
   );
