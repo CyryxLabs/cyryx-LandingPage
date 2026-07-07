@@ -134,6 +134,13 @@ function AuthPage() {
               >
                 {status.kind === "loading" ? "Signing in…" : "Sign in"}
               </button>
+              <button
+                type="button"
+                onClick={onForgotPassword}
+                className="block w-full text-center text-[11px] tracking-widest uppercase text-[var(--silver-dim)] hover:text-[var(--accent-glow)]"
+              >
+                Forgot password?
+              </button>
               {status.kind === "error" && (
                 <p role="alert" className="text-xs text-[color:oklch(0.72_0.16_25)]">
                   {status.message}
