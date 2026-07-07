@@ -26,6 +26,7 @@ for (const k of budgetKeys) {
 
 const steps = [
   ["Validate forbidden-terms", "bun", ["run", "quality:validate-terms"]],
+  ["Audit /admin link references", "bun", ["run", "quality:audit-admin-links"]],
   ["Build production bundle", "bun", ["run", "build"]],
   ["Playwright (a11y · content · SEO · bundle)", "bun", ["run", "test:a11y:ci"]],
   ["Lighthouse (mobile)", "bun", ["run", "quality:lhci:mobile"]],
