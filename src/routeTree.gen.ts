@@ -48,7 +48,12 @@ import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/em
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
+import { Route as AuthenticatedWorkspaceProductsRouteImport } from './routes/_authenticated/workspace.products'
 import { Route as AuthenticatedWorkspacePipelineRouteImport } from './routes/_authenticated/workspace.pipeline'
+import { Route as AuthenticatedWorkspaceMarketingRouteImport } from './routes/_authenticated/workspace.marketing'
+import { Route as AuthenticatedWorkspaceHrRouteImport } from './routes/_authenticated/workspace.hr'
+import { Route as AuthenticatedWorkspaceFinanceRouteImport } from './routes/_authenticated/workspace.finance'
+import { Route as AuthenticatedWorkspaceDevRouteImport } from './routes/_authenticated/workspace.dev'
 import { Route as AuthenticatedWorkspaceCareersRouteImport } from './routes/_authenticated/workspace.careers'
 import { Route as AuthenticatedWorkspaceSplatRouteImport } from './routes/_authenticated/workspace.$'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -264,10 +269,40 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   path: '/api/public/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedWorkspaceProductsRoute =
+  AuthenticatedWorkspaceProductsRouteImport.update({
+    id: '/workspace/products',
+    path: '/workspace/products',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedWorkspacePipelineRoute =
   AuthenticatedWorkspacePipelineRouteImport.update({
     id: '/workspace/pipeline',
     path: '/workspace/pipeline',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceMarketingRoute =
+  AuthenticatedWorkspaceMarketingRouteImport.update({
+    id: '/workspace/marketing',
+    path: '/workspace/marketing',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceHrRoute =
+  AuthenticatedWorkspaceHrRouteImport.update({
+    id: '/workspace/hr',
+    path: '/workspace/hr',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceFinanceRoute =
+  AuthenticatedWorkspaceFinanceRouteImport.update({
+    id: '/workspace/finance',
+    path: '/workspace/finance',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceDevRoute =
+  AuthenticatedWorkspaceDevRouteImport.update({
+    id: '/workspace/dev',
+    path: '/workspace/dev',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedWorkspaceCareersRoute =
@@ -360,7 +395,12 @@ export interface FileRoutesByFullPath {
   '/research/': typeof ResearchIndexRoute
   '/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
   '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
+  '/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
+  '/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
+  '/workspace/hr': typeof AuthenticatedWorkspaceHrRoute
+  '/workspace/marketing': typeof AuthenticatedWorkspaceMarketingRoute
   '/workspace/pipeline': typeof AuthenticatedWorkspacePipelineRoute
+  '/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
@@ -410,7 +450,12 @@ export interface FileRoutesByTo {
   '/research': typeof ResearchIndexRoute
   '/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
   '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
+  '/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
+  '/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
+  '/workspace/hr': typeof AuthenticatedWorkspaceHrRoute
+  '/workspace/marketing': typeof AuthenticatedWorkspaceMarketingRoute
   '/workspace/pipeline': typeof AuthenticatedWorkspacePipelineRoute
+  '/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
@@ -462,7 +507,12 @@ export interface FileRoutesById {
   '/research/': typeof ResearchIndexRoute
   '/_authenticated/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
   '/_authenticated/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
+  '/_authenticated/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
+  '/_authenticated/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
+  '/_authenticated/workspace/hr': typeof AuthenticatedWorkspaceHrRoute
+  '/_authenticated/workspace/marketing': typeof AuthenticatedWorkspaceMarketingRoute
   '/_authenticated/workspace/pipeline': typeof AuthenticatedWorkspacePipelineRoute
+  '/_authenticated/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
@@ -514,7 +564,12 @@ export interface FileRouteTypes {
     | '/research/'
     | '/workspace/$'
     | '/workspace/careers'
+    | '/workspace/dev'
+    | '/workspace/finance'
+    | '/workspace/hr'
+    | '/workspace/marketing'
     | '/workspace/pipeline'
+    | '/workspace/products'
     | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
@@ -564,7 +619,12 @@ export interface FileRouteTypes {
     | '/research'
     | '/workspace/$'
     | '/workspace/careers'
+    | '/workspace/dev'
+    | '/workspace/finance'
+    | '/workspace/hr'
+    | '/workspace/marketing'
     | '/workspace/pipeline'
+    | '/workspace/products'
     | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
@@ -615,7 +675,12 @@ export interface FileRouteTypes {
     | '/research/'
     | '/_authenticated/workspace/$'
     | '/_authenticated/workspace/careers'
+    | '/_authenticated/workspace/dev'
+    | '/_authenticated/workspace/finance'
+    | '/_authenticated/workspace/hr'
+    | '/_authenticated/workspace/marketing'
     | '/_authenticated/workspace/pipeline'
+    | '/_authenticated/workspace/products'
     | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
@@ -945,11 +1010,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/workspace/products': {
+      id: '/_authenticated/workspace/products'
+      path: '/workspace/products'
+      fullPath: '/workspace/products'
+      preLoaderRoute: typeof AuthenticatedWorkspaceProductsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/workspace/pipeline': {
       id: '/_authenticated/workspace/pipeline'
       path: '/workspace/pipeline'
       fullPath: '/workspace/pipeline'
       preLoaderRoute: typeof AuthenticatedWorkspacePipelineRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/workspace/marketing': {
+      id: '/_authenticated/workspace/marketing'
+      path: '/workspace/marketing'
+      fullPath: '/workspace/marketing'
+      preLoaderRoute: typeof AuthenticatedWorkspaceMarketingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/workspace/hr': {
+      id: '/_authenticated/workspace/hr'
+      path: '/workspace/hr'
+      fullPath: '/workspace/hr'
+      preLoaderRoute: typeof AuthenticatedWorkspaceHrRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/workspace/finance': {
+      id: '/_authenticated/workspace/finance'
+      path: '/workspace/finance'
+      fullPath: '/workspace/finance'
+      preLoaderRoute: typeof AuthenticatedWorkspaceFinanceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/workspace/dev': {
+      id: '/_authenticated/workspace/dev'
+      path: '/workspace/dev'
+      fullPath: '/workspace/dev'
+      preLoaderRoute: typeof AuthenticatedWorkspaceDevRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/workspace/careers': {
@@ -1021,14 +1121,24 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedWorkspaceSplatRoute: typeof AuthenticatedWorkspaceSplatRoute
   AuthenticatedWorkspaceCareersRoute: typeof AuthenticatedWorkspaceCareersRoute
+  AuthenticatedWorkspaceDevRoute: typeof AuthenticatedWorkspaceDevRoute
+  AuthenticatedWorkspaceFinanceRoute: typeof AuthenticatedWorkspaceFinanceRoute
+  AuthenticatedWorkspaceHrRoute: typeof AuthenticatedWorkspaceHrRoute
+  AuthenticatedWorkspaceMarketingRoute: typeof AuthenticatedWorkspaceMarketingRoute
   AuthenticatedWorkspacePipelineRoute: typeof AuthenticatedWorkspacePipelineRoute
+  AuthenticatedWorkspaceProductsRoute: typeof AuthenticatedWorkspaceProductsRoute
   AuthenticatedWorkspaceIndexRoute: typeof AuthenticatedWorkspaceIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedWorkspaceSplatRoute: AuthenticatedWorkspaceSplatRoute,
   AuthenticatedWorkspaceCareersRoute: AuthenticatedWorkspaceCareersRoute,
+  AuthenticatedWorkspaceDevRoute: AuthenticatedWorkspaceDevRoute,
+  AuthenticatedWorkspaceFinanceRoute: AuthenticatedWorkspaceFinanceRoute,
+  AuthenticatedWorkspaceHrRoute: AuthenticatedWorkspaceHrRoute,
+  AuthenticatedWorkspaceMarketingRoute: AuthenticatedWorkspaceMarketingRoute,
   AuthenticatedWorkspacePipelineRoute: AuthenticatedWorkspacePipelineRoute,
+  AuthenticatedWorkspaceProductsRoute: AuthenticatedWorkspaceProductsRoute,
   AuthenticatedWorkspaceIndexRoute: AuthenticatedWorkspaceIndexRoute,
 }
 
