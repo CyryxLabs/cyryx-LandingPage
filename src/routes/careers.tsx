@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useId, useState, type FormEvent } from "react";
+import { useId, useRef, useState, type FormEvent } from "react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { CONTACT_EMAIL } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
@@ -152,24 +152,50 @@ function CareersPage() {
   );
 }
 
+type FieldErrors = { email?: string; consent?: string; form?: string };
 type FormState =
   | { status: "idle" }
   | { status: "submitting" }
-  | { status: "error"; message: string }
+  | { status: "error"; errors: FieldErrors }
   | { status: "success" };
+
+// RFC 5322-ish practical check; matches HTML5 input[type=email] semantics closely.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function validate(email: string, consent: boolean): FieldErrors {
+  const errors: FieldErrors = {};
+  const trimmed = email.trim();
+  if (!trimmed) errors.email = "Please enter your email address.";
+  else if (trimmed.length > 255) errors.email = "Email is too long (255 characters max).";
+  else if (!EMAIL_RE.test(trimmed)) errors.email = "Enter a valid email like you@company.com.";
+  if (!consent) errors.consent = "Please confirm you agree to be contacted.";
+  return errors;
+}
 
 function TalentNetworkForm() {
   const emailId = useId();
   const consentId = useId();
+  const emailErrId = useId();
+  const consentErrId = useId();
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const [website, setWebsite] = useState(""); // honeypot
   const [state, setState] = useState<FormState>({ status: "idle" });
+  // Time-trap: forms submitted <1.2s after render are almost always bots.
+  const mountedAt = useRef<number>(Date.now());
+
+  const errors = state.status === "error" ? state.errors : {};
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!email || !consent) {
-      setState({ status: "error", message: "Please enter your email and confirm consent." });
+    const fieldErrors = validate(email, consent);
+    if (Object.keys(fieldErrors).length > 0) {
+      setState({ status: "error", errors: fieldErrors });
+      return;
+    }
+    // Silent honeypot: pretend success without hitting the endpoint.
+    if (website.length > 0 || Date.now() - mountedAt.current < 1200) {
+      setState({ status: "success" });
       return;
     }
     setState({ status: "submitting" });
@@ -178,7 +204,7 @@ function TalentNetworkForm() {
       const res = await fetch("/api/public/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, consent: true, website }),
+        body: JSON.stringify({ email: email.trim(), consent: true, website }),
       });
       if (!res.ok) throw new Error("Request failed");
       setState({ status: "success" });
@@ -187,7 +213,9 @@ function TalentNetworkForm() {
     } catch {
       setState({
         status: "error",
-        message: "We couldn't submit that. Please try again or email careers@cyryxlabs.com.",
+        errors: {
+          form: "We couldn't submit that. Please try again or email careers@cyryxlabs.com.",
+        },
       });
     }
   }
@@ -199,12 +227,30 @@ function TalentNetworkForm() {
         aria-live="polite"
         className="mt-8 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)] p-6"
       >
-        <div className="hud-label text-[var(--accent-glow)]">You&apos;re on the list</div>
-        <p className="mt-2 text-sm lg:text-base text-[var(--silver)]">
-          Check your inbox to confirm. We&apos;ll reach out from{" "}
-          <span className="text-[var(--accent-glow)]">{CAREERS_EMAIL}</span> when a role that
-          fits opens up.
-        </p>
+        <div className="flex items-start gap-3">
+          <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-[var(--accent-glow)]" aria-hidden />
+          <div>
+            <div className="hud-label text-[var(--accent-glow)]">Thanks — you&apos;re on the list</div>
+            <h3 className="mt-2 font-display text-xl font-semibold text-[var(--silver)]">
+              Your email was captured.
+            </h3>
+            <p className="mt-2 text-sm lg:text-base text-[var(--silver-dim)]">
+              Check your inbox to confirm your subscription. We&apos;ll reach out from{" "}
+              <span className="text-[var(--accent-glow)]">{CAREERS_EMAIL}</span> when a role
+              that fits opens up — no newsletter, no bulk mail.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                mountedAt.current = Date.now();
+                setState({ status: "idle" });
+              }}
+              className="mt-4 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors"
+            >
+              Add another email →
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -220,10 +266,19 @@ function TalentNetworkForm() {
           type="email"
           required
           autoComplete="email"
+          inputMode="email"
+          maxLength={255}
+          aria-invalid={errors.email ? true : undefined}
+          aria-describedby={errors.email ? emailErrId : undefined}
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (state.status === "error" && errors.email) {
+              setState({ status: "idle" });
+            }
+          }}
           placeholder="you@company.com"
-          className="flex-1 h-11 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_25%,transparent)] bg-[var(--onyx)] px-4 text-sm text-[var(--silver)] placeholder:text-[var(--silver-dim)] focus:outline-none focus:border-[var(--accent-glow)]"
+          className={cnField(!!errors.email)}
         />
         <button
           type="submit"
@@ -234,6 +289,11 @@ function TalentNetworkForm() {
           <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-glow)]" />
         </button>
       </div>
+      {errors.email && (
+        <p id={emailErrId} role="alert" className="mt-2 text-xs text-[color:oklch(0.72_0.16_25)]">
+          {errors.email}
+        </p>
+      )}
       {/* Honeypot */}
       <div aria-hidden="true" className="absolute -left-[10000px] h-0 w-0 overflow-hidden">
         <label htmlFor="cx-website">Website</label>
@@ -251,18 +311,38 @@ function TalentNetworkForm() {
           id={consentId}
           type="checkbox"
           checked={consent}
-          onChange={(e) => setConsent(e.target.checked)}
+          aria-invalid={errors.consent ? true : undefined}
+          aria-describedby={errors.consent ? consentErrId : undefined}
+          onChange={(e) => {
+            setConsent(e.target.checked);
+            if (state.status === "error" && errors.consent) {
+              setState({ status: "idle" });
+            }
+          }}
           className="mt-1 h-4 w-4 rounded border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[var(--onyx)] accent-[var(--accent-glow)]"
         />
         <label htmlFor={consentId} className="text-xs leading-relaxed text-[var(--silver-dim)]">
           I agree to be contacted about future Cyryx Labs roles that match my interests. No newsletter, no bulk mail.
         </label>
       </div>
-      {state.status === "error" && (
+      {errors.consent && (
+        <p id={consentErrId} role="alert" className="mt-2 text-xs text-[color:oklch(0.72_0.16_25)]">
+          {errors.consent}
+        </p>
+      )}
+      {errors.form && (
         <p role="alert" aria-live="assertive" className="mt-3 text-xs text-[color:oklch(0.72_0.16_25)]">
-          {state.message}
+          {errors.form}
         </p>
       )}
     </form>
   );
+}
+
+function cnField(hasError: boolean) {
+  const base =
+    "flex-1 h-11 rounded-md border bg-[var(--onyx)] px-4 text-sm text-[var(--silver)] placeholder:text-[var(--silver-dim)] focus:outline-none";
+  return hasError
+    ? `${base} border-[color:oklch(0.72_0.16_25)] focus:border-[color:oklch(0.72_0.16_25)]`
+    : `${base} border-[color-mix(in_oklab,var(--accent-glow)_25%,transparent)] focus:border-[var(--accent-glow)]`;
 }
