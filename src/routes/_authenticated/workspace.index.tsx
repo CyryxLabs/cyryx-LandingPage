@@ -7,7 +7,6 @@ import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
 import {
   getAdminOverview,
   markContactHandled,
