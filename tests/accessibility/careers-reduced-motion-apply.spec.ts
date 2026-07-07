@@ -61,3 +61,49 @@ test("Careers: Apply nav respects reduced motion (no GSAP)", async ({ page }) =>
   });
   expect(offenders, `unsuppressed animations: ${JSON.stringify(offenders)}`).toEqual([]);
 });
+
+test("Careers: keyboard Apply navigation moves focus into form under reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/careers", { waitUntil: "networkidle" });
+
+  const applyLink = page.locator('a[href^="#apply?role="]').first();
+  await applyLink.focus();
+  await expect(applyLink).toBeFocused();
+
+  // Activate via keyboard (Enter) — must behave the same as click.
+  await page.keyboard.press("Enter");
+
+  // Role is pre-selected.
+  const select = page.locator("#apply-role");
+  await expect(select).not.toHaveValue("");
+
+  // Focus should be reachable into the form via Tab without triggering
+  // any GSAP timelines. Tab a few times and verify focus lands inside #apply.
+  for (let i = 0; i < 8; i += 1) {
+    const insideForm = await page.evaluate(() =>
+      !!document.activeElement?.closest("#apply"),
+    );
+    if (insideForm) break;
+    await page.keyboard.press("Tab");
+  }
+  const finalInside = await page.evaluate(() =>
+    !!document.activeElement?.closest("#apply"),
+  );
+  expect(finalInside, "keyboard Tab should reach fields inside #apply").toBe(true);
+
+  // Still no GSAP activity after keyboard-driven navigation.
+  const gsapState = await page.evaluate(() => {
+    const g = (window as unknown as {
+      gsap?: { globalTimeline?: { getChildren?: () => unknown[] } };
+    }).gsap;
+    const st = (window as unknown as {
+      ScrollTrigger?: { getAll?: () => unknown[] };
+    }).ScrollTrigger;
+    return {
+      tweens: g?.globalTimeline?.getChildren?.().length ?? 0,
+      scrollTriggers: st?.getAll?.().length ?? 0,
+    };
+  });
+  expect(gsapState.scrollTriggers).toBe(0);
+  expect(gsapState.tweens).toBe(0);
+});
