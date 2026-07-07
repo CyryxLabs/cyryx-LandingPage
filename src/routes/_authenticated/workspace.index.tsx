@@ -7,6 +7,7 @@ import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 import {
   getAdminOverview,
   markContactHandled,
@@ -113,6 +114,8 @@ function WorkspaceHome() {
             </Link>
           ))}
         </div>
+
+        <WorkspaceKpis />
 
         {error && (
           <p role="alert" className="mt-8 text-sm text-[color:oklch(0.72_0.16_25)]">
