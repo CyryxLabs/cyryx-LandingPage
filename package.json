@@ -13,6 +13,8 @@
     "test:a11y:update-jsonld": "UPDATE_JSONLD_SNAPSHOT=1 playwright test --config=playwright.config.ts --grep \"JSON-LD\"",
     "test:a11y:ci": "A11Y_REPORT_DIR=a11y-report playwright test --config=playwright.config.ts",
     "quality:validate-terms": "node scripts/validate-forbidden-terms.mjs",
+    "quality:audit-admin-links": "node scripts/audit-admin-links.mjs",
+    "test:seed-admin": "node scripts/seed-test-admin.mjs",
     "quality:axe-sarif": "node scripts/axe-to-sarif.mjs a11y-report a11y-report/axe.sarif",
     "quality:lhci:mobile": "node scripts/render-lhci-config.mjs lighthouserc.mobile.json lhci.runtime.mobile.json && bunx @lhci/cli@0.14.x autorun --config=./lhci.runtime.mobile.json",
     "quality:lhci:desktop": "node scripts/render-lhci-config.mjs lighthouserc.desktop.json lhci.runtime.desktop.json && bunx @lhci/cli@0.14.x autorun --config=./lhci.runtime.desktop.json",
