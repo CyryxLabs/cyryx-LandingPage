@@ -108,3 +108,36 @@ test("script does NOT redirect when already on a /workspace path", async ({ page
   }, script);
   expect(result).toEqual([]);
 });
+
+test("script preserves ?w and ?tab on the workspace subdomain redirect", async ({ page }) => {
+  const script = extractRedirectScript();
+  await page.goto("data:text/html,<html><body>x</body></html>");
+  const result = await page.evaluate((snippet) => {
+    const calls: string[] = [];
+    const fakeLocation = {
+      hostname: "workspace.cyryxlabs.com",
+      pathname: "/",
+      search: "?w=90d&tab=overview",
+      hash: "",
+      replace: (url: string) => calls.push(url),
+    };
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+    new Function("window", `with(window){${snippet}}`)({ location: fakeLocation });
+    return calls;
+  }, script);
+  expect(result).toEqual(["/workspace?w=90d&tab=overview"]);
+});
+
+/**
+ * End-to-end: simulate a visitor landing on workspace.cyryxlabs.com/. The
+ * pre-hydration script rewrites that to /workspace, and because /workspace
+ * lives under the _authenticated layout, an unauthenticated visitor is
+ * redirected to /auth. We assert the full flow against the running dev
+ * server (subdomain detection is exercised in isolation above; here we
+ * hit /workspace directly to prove the downstream auth redirect works).
+ */
+test("unauthenticated visit to /workspace redirects to /auth", async ({ page }) => {
+  await page.goto("/workspace");
+  await page.waitForURL((url) => url.pathname === "/auth", { timeout: 10_000 });
+  expect(page.url()).toContain("/auth");
+});
