@@ -20,10 +20,12 @@ export type Database = {
           consent_given_at: string
           created_at: string
           email: string
+          handled_at: string | null
           id: string
           ip_hash: string | null
           message: string
           name: string
+          notes: string | null
           user_agent_hash: string | null
         }
         Insert: {
@@ -31,10 +33,12 @@ export type Database = {
           consent_given_at?: string
           created_at?: string
           email: string
+          handled_at?: string | null
           id?: string
           ip_hash?: string | null
           message: string
           name: string
+          notes?: string | null
           user_agent_hash?: string | null
         }
         Update: {
@@ -42,10 +46,12 @@ export type Database = {
           consent_given_at?: string
           created_at?: string
           email?: string
+          handled_at?: string | null
           id?: string
           ip_hash?: string | null
           message?: string
           name?: string
+          notes?: string | null
           user_agent_hash?: string | null
         }
         Relationships: []
