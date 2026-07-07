@@ -218,6 +218,30 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_events: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          ip_hash: string
+          ua_hash: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          ip_hash: string
+          ua_hash?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          ip_hash?: string
+          ua_hash?: string | null
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
