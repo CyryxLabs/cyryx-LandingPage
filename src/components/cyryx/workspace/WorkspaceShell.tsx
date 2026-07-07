@@ -1,5 +1,6 @@
 import { Link, useNavigate, useRouterState, useSearch } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { RecordDrawer } from "@/components/cyryx/workspace/drawer/RecordDrawer";
 import {
   LayoutDashboard,
   Kanban,
@@ -145,6 +146,7 @@ export function WorkspaceShell({
 
         <div className="px-6 py-8">{children}</div>
       </main>
+      <RecordDrawer />
     </div>
   );
 }
