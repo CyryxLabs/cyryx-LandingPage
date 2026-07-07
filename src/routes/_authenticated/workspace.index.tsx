@@ -95,6 +95,25 @@ function WorkspaceHome() {
           </Link>
         </nav>
 
+        <div className="mt-6 flex flex-wrap gap-2">
+          {[
+            { to: "/workspace/pipeline", label: "Pipeline" },
+            { to: "/workspace/products", label: "Products" },
+            { to: "/workspace/dev", label: "Development" },
+            { to: "/workspace/hr", label: "HR" },
+            { to: "/workspace/marketing", label: "Marketing" },
+            { to: "/workspace/finance", label: "Finance" },
+          ].map((m) => (
+            <Link
+              key={m.to}
+              to={m.to as any}
+              className="h-9 px-3 rounded-md border border-[var(--accent-glow)] hud-label text-xs text-[var(--accent-glow)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] flex items-center"
+            >
+              {m.label} →
+            </Link>
+          ))}
+        </div>
+
         {error && (
           <p role="alert" className="mt-8 text-sm text-[color:oklch(0.72_0.16_25)]">
             {(error as Error).message || "Unable to load."}
