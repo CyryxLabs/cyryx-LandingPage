@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { supabase } from "@/integrations/supabase/client";
 import { WorkspaceShell } from "@/components/cyryx/workspace/WorkspaceShell";
+import { WINDOWS, type WsTab } from "./workspace";
 import {
   getAdminOverview,
   markContactHandled,
@@ -24,11 +25,13 @@ export const Route = createFileRoute("/_authenticated/workspace/")({
   component: WorkspaceHome,
 });
 
-type Tab = "overview" | "contacts" | "newsletter" | "cta";
-
 function WorkspaceHome() {
-  const [windowDays, setWindowDays] = useState(30);
-  const [tab, setTab] = useState<Tab>("overview");
+  const { w: windowDays, tab } = Route.useSearch();
+  const navigate = useNavigate({ from: Route.fullPath });
+  const setWindowDays = (w: (typeof WINDOWS)[number]) =>
+    navigate({ search: (prev) => ({ ...prev, w }), replace: true });
+  const setTab = (t: WsTab) =>
+    navigate({ search: (prev) => ({ ...prev, tab: t }), replace: true });
   const fetchOverview = useServerFn(getAdminOverview);
   const { data, isLoading, error, refetch, isFetching } = useQuery<AdminOverview>({
     queryKey: ["workspace-overview", windowDays],
