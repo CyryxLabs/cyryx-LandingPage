@@ -14,6 +14,7 @@ const ENTRIES = [
   { path: "/answers/what-is-goal-grounded-generation", priority: "0.7", changefreq: "monthly" },
   { path: "/answers/how-to-measure-ai-output-quality", priority: "0.7", changefreq: "monthly" },
   { path: "/contact", priority: "0.6", changefreq: "monthly" },
+  { path: "/careers", priority: "0.6", changefreq: "monthly" },
   { path: "/privacy", priority: "0.3", changefreq: "yearly" },
   { path: "/terms", priority: "0.3", changefreq: "yearly" },
 ];

@@ -10,6 +10,7 @@ const ROUTES = [
   "/company",
   "/products",
   "/products/maax-studio",
+  "/products/lyra",
   "/solutions",
   "/solutions/ai-websites-lead-systems",
   "/solutions/workflow-automation",
@@ -20,6 +21,7 @@ const ROUTES = [
   "/privacy",
   "/terms",
   "/contact",
+  "/careers",
 ];
 
 const BASE = "https://cyryxlabs.com";

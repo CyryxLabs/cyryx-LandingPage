@@ -21,6 +21,7 @@ import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
+import { Route as CareersRouteImport } from './routes/careers'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
@@ -32,6 +33,7 @@ import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.
 import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as ProductsLyraRouteImport } from './routes/products.lyra'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
@@ -109,6 +111,11 @@ const CompanyRoute = CompanyRouteImport.update({
   path: '/company',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -167,6 +174,11 @@ const ResearchSlugRoute = ResearchSlugRouteImport.update({
 const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
   id: '/maax-studio',
   path: '/maax-studio',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const ProductsLyraRoute = ProductsLyraRouteImport.update({
+  id: '/lyra',
+  path: '/lyra',
   getParentRoute: () => ProductsRoute,
 } as any)
 const NewsletterConfirmRoute = NewsletterConfirmRouteImport.update({
@@ -262,6 +274,7 @@ const ApiPublicNewsletterConfirmRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
@@ -281,6 +294,7 @@ export interface FileRoutesByFullPath {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -303,6 +317,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
@@ -322,6 +337,7 @@ export interface FileRoutesByTo {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -345,6 +361,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
@@ -364,6 +381,7 @@ export interface FileRoutesById {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -388,6 +406,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/careers'
     | '/company'
     | '/contact'
     | '/privacy'
@@ -407,6 +426,7 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
+    | '/products/lyra'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -429,6 +449,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/careers'
     | '/company'
     | '/contact'
     | '/privacy'
@@ -448,6 +469,7 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
+    | '/products/lyra'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -470,6 +492,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/careers'
     | '/company'
     | '/contact'
     | '/privacy'
@@ -489,6 +512,7 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
+    | '/products/lyra'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -512,6 +536,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CareersRoute: typeof CareersRoute
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -631,6 +656,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompanyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -706,6 +738,13 @@ declare module '@tanstack/react-router' {
       path: '/maax-studio'
       fullPath: '/products/maax-studio'
       preLoaderRoute: typeof ProductsMaaxStudioRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/products/lyra': {
+      id: '/products/lyra'
+      path: '/lyra'
+      fullPath: '/products/lyra'
+      preLoaderRoute: typeof ProductsLyraRouteImport
       parentRoute: typeof ProductsRoute
     }
     '/newsletter/confirm': {
@@ -824,10 +863,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface ProductsRouteChildren {
+  ProductsLyraRoute: typeof ProductsLyraRoute
   ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
+  ProductsLyraRoute: ProductsLyraRoute,
   ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
 }
 
@@ -860,6 +901,7 @@ const SolutionsRouteWithChildren = SolutionsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CareersRoute: CareersRoute,
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
   PrivacyRoute: PrivacyRoute,
