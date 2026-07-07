@@ -39,14 +39,22 @@ function AdminUsersPage() {
 
   const [email, setEmail] = useState("");
   const [role, setRoleValue] = useState<AppRole>("admin");
-  const [flash, setFlash] = useState<{ kind: "ok" | "err"; msg: string } | null>(null);
+  const [w, setW] = useState("");
+  const [tab, setTab] = useState("");
+  const [flash, setFlash] = useState<{
+    kind: "ok" | "err";
+    msg: string;
+    link?: string | null;
+  } | null>(null);
 
   const inviteMutation = useMutation({
-    mutationFn: (args: { email: string; role: AppRole }) => invite({ data: args }),
+    mutationFn: (args: { email: string; role: AppRole; w?: string; tab?: string }) =>
+      invite({ data: args }),
     onSuccess: (res) => {
       setFlash({
         kind: "ok",
-        msg: `Invite sent to ${res.email}. Role: ${res.role}. Check inbox for magic link.`,
+        msg: `Invite sent to ${res.email}. Role: ${res.role}. Copy the link below to test the flow.`,
+        link: res.action_link ?? null,
       });
       setEmail("");
       qc.invalidateQueries({ queryKey: ["workspace-users"] });
@@ -64,9 +72,13 @@ function AdminUsersPage() {
   });
 
   const resendMutation = useMutation({
-    mutationFn: (args: { email: string }) => resend({ data: args }),
-    onSuccess: (_r, v) =>
-      setFlash({ kind: "ok", msg: `Magic link resent to ${v.email}.` }),
+    mutationFn: (args: { email: string; w?: string; tab?: string }) => resend({ data: args }),
+    onSuccess: (res, v) =>
+      setFlash({
+        kind: "ok",
+        msg: `Magic link resent to ${v.email}.`,
+        link: (res as any)?.action_link ?? null,
+      }),
     onError: (e: any) =>
       setFlash({ kind: "err", msg: e?.message || "Failed to resend link." }),
   });
@@ -74,7 +86,7 @@ function AdminUsersPage() {
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setFlash(null);
-    inviteMutation.mutate({ email, role });
+    inviteMutation.mutate({ email, role, w, tab });
   }
 
   const actions = (
@@ -124,6 +136,30 @@ function AdminUsersPage() {
               <option value="user">user</option>
             </select>
           </label>
+          <label>
+            <span className="block text-xs hud-label text-[var(--silver-dim)] mb-1">
+              w (optional)
+            </span>
+            <input
+              type="text"
+              value={w}
+              onChange={(e) => setW(e.target.value)}
+              placeholder="90d"
+              className="h-10 w-28 rounded-md bg-transparent border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] px-3 text-sm focus:outline-none focus:border-[var(--accent-glow)]"
+            />
+          </label>
+          <label>
+            <span className="block text-xs hud-label text-[var(--silver-dim)] mb-1">
+              tab (optional)
+            </span>
+            <input
+              type="text"
+              value={tab}
+              onChange={(e) => setTab(e.target.value)}
+              placeholder="overview"
+              className="h-10 w-32 rounded-md bg-transparent border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] px-3 text-sm focus:outline-none focus:border-[var(--accent-glow)]"
+            />
+          </label>
           <button
             type="submit"
             disabled={inviteMutation.isPending}
@@ -133,14 +169,34 @@ function AdminUsersPage() {
           </button>
         </form>
         {flash && (
-          <p
-            role="status"
-            className={`mt-3 text-sm ${
-              flash.kind === "ok" ? "text-emerald-400" : "text-[color:oklch(0.72_0.16_25)]"
-            }`}
-          >
-            {flash.msg}
-          </p>
+          <div role="status" className="mt-3 space-y-2">
+            <p
+              className={`text-sm ${
+                flash.kind === "ok" ? "text-emerald-400" : "text-[color:oklch(0.72_0.16_25)]"
+              }`}
+            >
+              {flash.msg}
+            </p>
+            {flash.link && (
+              <div className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_25%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_75%,transparent)] p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="hud-label text-[var(--silver-dim)] text-[10px]">
+                    Magic link (for testing)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => navigator.clipboard.writeText(flash.link!)}
+                    className="h-7 px-2 rounded border border-[var(--accent-glow)] hud-label text-[10px] text-[var(--accent-glow)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_12%,transparent)]"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <p className="mt-2 break-all font-mono text-xs text-[var(--silver-dim)]">
+                  {flash.link}
+                </p>
+              </div>
+            )}
+          </div>
         )}
       </section>
 
@@ -213,7 +269,9 @@ function AdminUsersPage() {
                             <button
                               type="button"
                               disabled={resendMutation.isPending}
-                              onClick={() => resendMutation.mutate({ email: u.email! })}
+                              onClick={() =>
+                                resendMutation.mutate({ email: u.email!, w, tab })
+                              }
                               className="h-8 px-3 rounded-md border border-[var(--accent-glow)] hud-label text-xs text-[var(--accent-glow)] hover:bg-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)]"
                             >
                               Resend magic link
