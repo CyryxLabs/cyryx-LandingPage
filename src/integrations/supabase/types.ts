@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      auth_domain_blocks: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          ip_hash: string | null
+          reason: string
+          user_agent_hash: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          reason: string
+          user_agent_hash?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          reason?: string
+          user_agent_hash?: string | null
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           company: string | null

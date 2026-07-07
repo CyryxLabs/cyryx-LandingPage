@@ -55,6 +55,8 @@ import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/l
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicNewsletterSubscribeRouteImport } from './routes/api/public/newsletter.subscribe'
 import { Route as ApiPublicNewsletterConfirmRouteImport } from './routes/api/public/newsletter.confirm'
+import { Route as ApiPublicAuthRecoverRouteImport } from './routes/api/public/auth.recover'
+import { Route as ApiPublicAuthDomainBlockRouteImport } from './routes/api/public/auth.domain-block'
 
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
@@ -303,6 +305,17 @@ const ApiPublicNewsletterConfirmRoute =
     path: '/api/public/newsletter/confirm',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicAuthRecoverRoute = ApiPublicAuthRecoverRouteImport.update({
+  id: '/api/public/auth/recover',
+  path: '/api/public/auth/recover',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAuthDomainBlockRoute =
+  ApiPublicAuthDomainBlockRouteImport.update({
+    id: '/api/public/auth/domain-block',
+    path: '/api/public/auth/domain-block',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -345,6 +358,8 @@ export interface FileRoutesByFullPath {
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/workspace/': typeof AuthenticatedWorkspaceIndexRoute
+  '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
+  '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -392,6 +407,8 @@ export interface FileRoutesByTo {
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/workspace': typeof AuthenticatedWorkspaceIndexRoute
+  '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
+  '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -441,6 +458,8 @@ export interface FileRoutesById {
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/_authenticated/workspace/': typeof AuthenticatedWorkspaceIndexRoute
+  '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
+  '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -490,6 +509,8 @@ export interface FileRouteTypes {
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
     | '/workspace/'
+    | '/api/public/auth/domain-block'
+    | '/api/public/auth/recover'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -537,6 +558,8 @@ export interface FileRouteTypes {
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
     | '/workspace'
+    | '/api/public/auth/domain-block'
+    | '/api/public/auth/recover'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -585,6 +608,8 @@ export interface FileRouteTypes {
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
     | '/_authenticated/workspace/'
+    | '/api/public/auth/domain-block'
+    | '/api/public/auth/recover'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -623,6 +648,8 @@ export interface RootRouteChildren {
   ApiPublicCtaEventsRoute: typeof ApiPublicCtaEventsRoute
   ApiPublicWebVitalsRoute: typeof ApiPublicWebVitalsRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ApiPublicAuthDomainBlockRoute: typeof ApiPublicAuthDomainBlockRoute
+  ApiPublicAuthRecoverRoute: typeof ApiPublicAuthRecoverRoute
   ApiPublicNewsletterConfirmRoute: typeof ApiPublicNewsletterConfirmRoute
   ApiPublicNewsletterSubscribeRoute: typeof ApiPublicNewsletterSubscribeRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -954,6 +981,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicNewsletterConfirmRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/auth/recover': {
+      id: '/api/public/auth/recover'
+      path: '/api/public/auth/recover'
+      fullPath: '/api/public/auth/recover'
+      preLoaderRoute: typeof ApiPublicAuthRecoverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/auth/domain-block': {
+      id: '/api/public/auth/domain-block'
+      path: '/api/public/auth/domain-block'
+      fullPath: '/api/public/auth/domain-block'
+      preLoaderRoute: typeof ApiPublicAuthDomainBlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1044,6 +1085,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicCtaEventsRoute: ApiPublicCtaEventsRoute,
   ApiPublicWebVitalsRoute: ApiPublicWebVitalsRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ApiPublicAuthDomainBlockRoute: ApiPublicAuthDomainBlockRoute,
+  ApiPublicAuthRecoverRoute: ApiPublicAuthRecoverRoute,
   ApiPublicNewsletterConfirmRoute: ApiPublicNewsletterConfirmRoute,
   ApiPublicNewsletterSubscribeRoute: ApiPublicNewsletterSubscribeRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
@@ -1053,3 +1096,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

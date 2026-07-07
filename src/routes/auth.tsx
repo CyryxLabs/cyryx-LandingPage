@@ -26,18 +26,45 @@ function AuthPage() {
   const [status, setStatus] = useState<{ kind: "idle" | "loading" | "error"; message?: string }>({
     kind: "idle",
   });
+  // Prevent any flash of the sign-in form (and any redirect flash to /workspace)
+  // while we resolve the current session.
+  const [sessionChecked, setSessionChecked] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/workspace/careers" });
+      if (cancelled) return;
+      if (data.user) {
+        navigate({ to: "/workspace/careers", replace: true });
+        return;
+      }
+      setSessionChecked(true);
     });
+    return () => {
+      cancelled = true;
+    };
   }, [navigate]);
 
   const DOMAIN_ERROR =
     "Invalid domain. Please use your @cyryxlabs.com company email to sign in.";
+  const HELP_MAILTO =
+    "mailto:it@cyryxlabs.com?subject=Workspace%20access%20request&body=I%20need%20access%20to%20the%20Cyryx%20Labs%20workspace.";
 
   function isCyryxEmail(value: string) {
     return /^[^\s@]+@cyryxlabs\.com$/i.test(value.trim());
+  }
+
+  async function recordBlockedAttempt(email: string, reason: "sign_in" | "password_recovery") {
+    try {
+      await fetch("/api/public/auth/domain-block", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, reason }),
+        keepalive: true,
+      });
+    } catch {
+      /* best-effort audit; do not surface network errors to the user */
+    }
   }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -45,6 +72,7 @@ function AuthPage() {
     const normalized = email.trim().toLowerCase();
     if (!isCyryxEmail(normalized)) {
       console.warn("[auth] blocked sign-in: invalid domain", { email: normalized });
+      void recordBlockedAttempt(normalized, "sign_in");
       return setStatus({ kind: "error", message: DOMAIN_ERROR });
     }
     setStatus({ kind: "loading" });
@@ -57,14 +85,33 @@ function AuthPage() {
     const normalized = email.trim().toLowerCase();
     if (!isCyryxEmail(normalized)) {
       console.warn("[auth] blocked password recovery: invalid domain", { email: normalized });
+      void recordBlockedAttempt(normalized, "password_recovery");
       return setStatus({ kind: "error", message: DOMAIN_ERROR });
     }
     setStatus({ kind: "loading" });
-    const { error } = await supabase.auth.resetPasswordForEmail(normalized, {
-      redirectTo: `${window.location.origin}/auth`,
+    // Route through the server so the domain rule is enforced even when the
+    // client is bypassed (crafted request / direct hit to the endpoint).
+    const res = await fetch("/api/public/auth/recover", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: normalized }),
     });
-    if (error) return setStatus({ kind: "error", message: error.message });
+    if (!res.ok) {
+      const payload = (await res.json().catch(() => ({}))) as { error?: string };
+      return setStatus({ kind: "error", message: payload.error ?? DOMAIN_ERROR });
+    }
     setStatus({ kind: "error", message: "If that account exists, a reset link is on its way." });
+  }
+
+  if (!sessionChecked) {
+    return (
+      <div
+        data-testid="auth-session-check"
+        className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver-dim)] flex items-center justify-center text-xs tracking-widest uppercase"
+      >
+        Checking session…
+      </div>
+    );
   }
 
   return (
@@ -142,9 +189,21 @@ function AuthPage() {
                 Forgot password?
               </button>
               {status.kind === "error" && (
-                <p role="alert" className="text-xs text-[color:oklch(0.72_0.16_25)]">
-                  {status.message}
-                </p>
+                <div role="alert" className="text-xs text-[color:oklch(0.72_0.16_25)] space-y-1">
+                  <p>{status.message}</p>
+                  {status.message?.startsWith("Invalid domain") && (
+                    <p className="text-[var(--silver-dim)]">
+                      Need access?{" "}
+                      <a
+                        href={HELP_MAILTO}
+                        className="underline hover:text-[var(--accent-glow)]"
+                      >
+                        Contact IT
+                      </a>
+                      .
+                    </p>
+                  )}
+                </div>
               )}
             </form>
           </div>
