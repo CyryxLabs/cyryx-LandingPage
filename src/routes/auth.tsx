@@ -127,7 +127,7 @@ function AuthPage() {
           message: `Confirmation email sent to ${normalized}. Open the link from that inbox — this page will unlock automatically once verified.`,
         });
       }
-      navigate({ to: "/workspace/careers" });
+      goPostAuth(false);
       return;
     }
     const { error } = await supabase.auth.signInWithPassword({ email: normalized, password });
