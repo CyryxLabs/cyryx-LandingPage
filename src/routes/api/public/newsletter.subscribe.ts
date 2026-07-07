@@ -41,7 +41,21 @@ export const Route = createFileRoute("/api/public/newsletter/subscribe")({
         const uaHash = userAgentHash(request);
 
         const rl = await checkRateLimit(supabaseAdmin as any, "newsletter_subscribers", ipHash, 3);
-        if (!rl.allowed) return Response.json(GENERIC_OK);
+        if (!rl.allowed) {
+          // Log the 429 so admins can graph rate-limit hits over time.
+          await supabaseAdmin
+            .from("rate_limit_events")
+            .insert({
+              endpoint: "/api/public/newsletter/subscribe",
+              ip_hash: ipHash,
+              ua_hash: uaHash,
+            })
+            .then(() => {}, () => {});
+          return new Response(JSON.stringify(GENERIC_OK), {
+            status: 429,
+            headers: { "Content-Type": "application/json", "Retry-After": "3600" },
+          });
+        }
 
         const normalized = email.toLowerCase();
 
