@@ -29,6 +29,7 @@ function AuthPage() {
   // Prevent any flash of the sign-in form (and any redirect flash to /workspace)
   // while we resolve the current session.
   const [sessionChecked, setSessionChecked] = useState(false);
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
 
   useEffect(() => {
     let cancelled = false;
@@ -76,6 +77,22 @@ function AuthPage() {
       return setStatus({ kind: "error", message: DOMAIN_ERROR });
     }
     setStatus({ kind: "loading" });
+    if (mode === "signup") {
+      const { data, error } = await supabase.auth.signUp({
+        email: normalized,
+        password,
+        options: { emailRedirectTo: `${window.location.origin}/auth` },
+      });
+      if (error) return setStatus({ kind: "error", message: error.message });
+      if (!data.session) {
+        return setStatus({
+          kind: "error",
+          message: "Account created. Check your inbox to confirm your email, then sign in.",
+        });
+      }
+      navigate({ to: "/workspace/careers" });
+      return;
+    }
     const { error } = await supabase.auth.signInWithPassword({ email: normalized, password });
     if (error) return setStatus({ kind: "error", message: error.message });
     navigate({ to: "/workspace/careers" });
@@ -167,7 +184,7 @@ function AuthPage() {
                 <span className="hud-label text-[var(--silver)]">Password</span>
                 <input
                   type="password"
-                  autoComplete="current-password"
+                  autoComplete={mode === "signup" ? "new-password" : "current-password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -179,7 +196,25 @@ function AuthPage() {
                 disabled={status.kind === "loading"}
                 className="cx-btn cx-liquid-glass inline-flex h-11 w-full items-center justify-center gap-2 rounded-md px-5 text-[var(--silver)] hud-label disabled:opacity-60"
               >
-                {status.kind === "loading" ? "Signing in…" : "Sign in"}
+                {status.kind === "loading"
+                  ? mode === "signup"
+                    ? "Creating account…"
+                    : "Signing in…"
+                  : mode === "signup"
+                    ? "Create account"
+                    : "Sign in"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setStatus({ kind: "idle" });
+                  setMode((m) => (m === "signin" ? "signup" : "signin"));
+                }}
+                className="block w-full text-center text-[11px] tracking-widest uppercase text-[var(--silver-dim)] hover:text-[var(--accent-glow)]"
+              >
+                {mode === "signin"
+                  ? "Need an account? Sign up"
+                  : "Have an account? Sign in"}
               </button>
               <button
                 type="button"
