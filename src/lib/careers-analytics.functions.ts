@@ -46,7 +46,7 @@ export const getCareersFunnel = createServerFn({ method: "GET" })
       filters: Record<string, string> = {},
       gteCol = "created_at",
     ): Promise<number> {
-      let q = supabaseAdmin
+      let q = (supabaseAdmin as any)
         .from(table)
         .select("id", { count: "exact", head: true })
         .gte(gteCol, since);
