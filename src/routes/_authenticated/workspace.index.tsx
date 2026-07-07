@@ -5,7 +5,7 @@ import { useState } from "react";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { supabase } from "@/integrations/supabase/client";
 import { WorkspaceShell } from "@/components/cyryx/workspace/WorkspaceShell";
-import { WINDOWS, type WsTab } from "./workspace";
+import { WINDOWS, type WsTab, type WsWindow, type WorkspaceSearch } from "./workspace";
 import {
   getAdminOverview,
   markContactHandled,
@@ -27,11 +27,11 @@ export const Route = createFileRoute("/_authenticated/workspace/")({
 
 function WorkspaceHome() {
   const { w: windowDays, tab } = Route.useSearch();
-  const navigate = useNavigate({ from: Route.fullPath });
-  const setWindowDays = (w: (typeof WINDOWS)[number]) =>
-    navigate({ search: (prev) => ({ ...prev, w }), replace: true });
+  const navigate = useNavigate();
+  const setWindowDays = (w: WsWindow) =>
+    navigate({ to: "/workspace", search: (prev: WorkspaceSearch) => ({ ...prev, w }), replace: true });
   const setTab = (t: WsTab) =>
-    navigate({ search: (prev) => ({ ...prev, tab: t }), replace: true });
+    navigate({ to: "/workspace", search: (prev: WorkspaceSearch) => ({ ...prev, tab: t }), replace: true });
   const fetchOverview = useServerFn(getAdminOverview);
   const { data, isLoading, error, refetch, isFetching } = useQuery<AdminOverview>({
     queryKey: ["workspace-overview", windowDays],
@@ -40,7 +40,7 @@ function WorkspaceHome() {
 
   const actions = (
     <div className="flex items-center gap-2 text-xs">
-      {[7, 30, 90].map((w) => (
+      {WINDOWS.map((w) => (
         <button
           key={w}
           type="button"
