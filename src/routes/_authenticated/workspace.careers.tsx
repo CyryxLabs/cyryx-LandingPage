@@ -9,12 +9,14 @@ import { buildHead } from "@/components/cyryx/seo/seo";
 import { getCareersFunnel, type CareersFunnel } from "@/lib/careers-analytics.functions";
 
 export const Route = createFileRoute("/_authenticated/workspace/careers")({
-  head: () =>
-    buildHead({
+  head: () => {
+    const h = buildHead({
       title: "Careers analytics — Cyryx Labs",
-      description: "Admin funnel view for talent-network signups.",
+      description: "Internal funnel view for talent-network signups.",
       path: "/workspace/careers",
-    }),
+    });
+    return { ...h, meta: [...h.meta, { name: "robots", content: "noindex, nofollow" }] };
+  },
   component: CareersAnalyticsPage,
 });
 

@@ -15,12 +15,14 @@ import {
 } from "@/lib/admin-overview.functions";
 
 export const Route = createFileRoute("/_authenticated/workspace/")({
-  head: () =>
-    buildHead({
+  head: () => {
+    const h = buildHead({
       title: "Internal console — Cyryx Labs",
       description: "Internal workspace dashboard.",
       path: "/workspace",
-    }),
+    });
+    return { ...h, meta: [...h.meta, { name: "robots", content: "noindex, nofollow" }] };
+  },
   component: WorkspaceHome,
 });
 
