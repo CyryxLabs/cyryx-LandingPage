@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell, WorkspaceCard, WsSelect } from "@/components/cyryx/workspace/WorkspaceShell";
 import { DataTable } from "@/components/cyryx/workspace/DataTable";
+import { drawerStore } from "@/lib/drawer-store";
 
 export const Route = createFileRoute("/_authenticated/workspace/dev")({
   head: () => {
@@ -157,7 +158,13 @@ function TaskBoard() {
                       onDragStart={(e) => e.dataTransfer.setData("text/task-id", t.id)}
                       className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] p-2.5 bg-white/[0.02] cursor-grab"
                     >
-                      <p className="text-sm">{t.title}</p>
+                      <button
+                        type="button"
+                        onClick={() => drawerStore.open({ entity_type: "pm_tasks", entity_id: t.id, label: t.title })}
+                        className="text-sm text-left hover:text-[var(--accent-glow)] transition-colors"
+                      >
+                        {t.title}
+                      </button>
                       <p className="text-[11px] text-[var(--silver-dim)] mt-1">{t.priority}</p>
                     </li>
                   ))}

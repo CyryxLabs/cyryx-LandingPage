@@ -2,6 +2,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { WorkspaceCard, WsButton, WsInput, WsSelect } from "./WorkspaceShell";
 import { useState } from "react";
+import { drawerStore } from "@/lib/drawer-store";
+import { PanelRightOpen } from "lucide-react";
 
 type FieldType = "text" | "number" | "select" | "date";
 export type FieldDef = {
@@ -101,8 +103,20 @@ export function DataTable({
                         : renderInput(f, row[f.key] ?? "", (v) => update(row.id, f.key, v), false)}
                     </td>
                   ))}
-                  <td className="px-3 py-2 text-right">
-                    <button onClick={() => remove(row.id)} className="text-[var(--silver-dim)] hover:text-red-400 text-xs" aria-label="Delete">×</button>
+                  <td className="px-3 py-2 text-right whitespace-nowrap">
+                    <button
+                      onClick={() => drawerStore.open({ entity_type: tableName, entity_id: row.id })}
+                      className="text-[var(--silver-dim)] hover:text-[var(--accent-glow)] px-1.5"
+                      aria-label="Open details"
+                      title="Open details"
+                    >
+                      <PanelRightOpen className="h-4 w-4 inline" />
+                    </button>
+                    <button
+                      onClick={() => remove(row.id)}
+                      className="text-[var(--silver-dim)] hover:text-red-400 text-xs px-1.5"
+                      aria-label="Delete"
+                    >×</button>
                   </td>
                 </tr>
               ))}
