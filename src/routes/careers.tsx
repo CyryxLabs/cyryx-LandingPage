@@ -7,6 +7,14 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { CONTACT_EMAIL } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const PATH = "/careers";
 const TITLE = "Careers — Cyryx Labs Talent Network";
@@ -181,6 +189,8 @@ function TalentNetworkForm() {
   const [consent, setConsent] = useState(false);
   const [website, setWebsite] = useState(""); // honeypot
   const [state, setState] = useState<FormState>({ status: "idle" });
+  const [successOpen, setSuccessOpen] = useState(false);
+  const openerRef = useRef<HTMLButtonElement>(null);
   // Time-trap: forms submitted <1.2s after render are almost always bots.
   const mountedAt = useRef<number>(Date.now());
 
@@ -196,6 +206,7 @@ function TalentNetworkForm() {
     // Silent honeypot: pretend success without hitting the endpoint.
     if (website.length > 0 || Date.now() - mountedAt.current < 1200) {
       setState({ status: "success" });
+      setSuccessOpen(true);
       return;
     }
     setState({ status: "submitting" });
@@ -206,56 +217,46 @@ function TalentNetworkForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), consent: true, website }),
       });
-      if (!res.ok) throw new Error("Request failed");
+      if (!res.ok) {
+        // Endpoint intentionally returns a generic 200 for duplicates / already-
+        // subscribed emails to prevent email enumeration, so non-OK is a real
+        // failure. Handle common statuses with specific, friendly copy.
+        let message =
+          "We couldn't submit that. Please try again or email careers@cyryxlabs.com.";
+        if (res.status === 429) {
+          message =
+            "Too many attempts from your network. Please wait a minute and try again.";
+        } else if (res.status === 413) {
+          message = "That email address is too long. Please shorten it and retry.";
+        } else if (res.status >= 500) {
+          message =
+            "Our signup service is temporarily unavailable. Please try again shortly or email careers@cyryxlabs.com.";
+        } else if (res.status === 400) {
+          message =
+            "That email doesn't look valid. Please check the address and try again.";
+        }
+        setState({ status: "error", errors: { form: message } });
+        return;
+      }
       setState({ status: "success" });
+      setSuccessOpen(true);
       setEmail("");
       setConsent(false);
     } catch {
       setState({
         status: "error",
         errors: {
-          form: "We couldn't submit that. Please try again or email careers@cyryxlabs.com.",
+          form:
+            typeof navigator !== "undefined" && navigator.onLine === false
+              ? "You appear to be offline. Please check your connection and try again."
+              : "We couldn't reach the signup service. Please try again or email careers@cyryxlabs.com.",
         },
       });
     }
   }
 
-  if (state.status === "success") {
-    return (
-      <div
-        role="status"
-        aria-live="polite"
-        className="mt-8 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)] p-6"
-      >
-        <div className="flex items-start gap-3">
-          <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-[var(--accent-glow)]" aria-hidden />
-          <div>
-            <div className="hud-label text-[var(--accent-glow)]">Thanks — you&apos;re on the list</div>
-            <h3 className="mt-2 font-display text-xl font-semibold text-[var(--silver)]">
-              Your email was captured.
-            </h3>
-            <p className="mt-2 text-sm lg:text-base text-[var(--silver-dim)]">
-              Check your inbox to confirm your subscription. We&apos;ll reach out from{" "}
-              <span className="text-[var(--accent-glow)]">{CAREERS_EMAIL}</span> when a role
-              that fits opens up — no newsletter, no bulk mail.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                mountedAt.current = Date.now();
-                setState({ status: "idle" });
-              }}
-              className="mt-4 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors"
-            >
-              Add another email →
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
+    <>
     <form onSubmit={onSubmit} noValidate className="mt-8 max-w-xl">
       <label htmlFor={emailId} className="hud-label text-[var(--silver)]">
         Join the talent network
@@ -281,6 +282,7 @@ function TalentNetworkForm() {
           className={cnField(!!errors.email)}
         />
         <button
+          ref={openerRef}
           type="submit"
           disabled={state.status === "submitting"}
           className="cx-btn cx-liquid-glass inline-flex items-center justify-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label disabled:opacity-60"
@@ -336,6 +338,49 @@ function TalentNetworkForm() {
         </p>
       )}
     </form>
+
+    <Dialog
+      open={successOpen}
+      onOpenChange={(open) => {
+        setSuccessOpen(open);
+        if (!open) {
+          mountedAt.current = Date.now();
+          setState({ status: "idle" });
+          // Radix returns focus to the opener automatically, but reset for safety.
+          window.requestAnimationFrame(() => openerRef.current?.focus());
+        }
+      }}
+    >
+      <DialogContent className="border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[var(--graphite)] text-[var(--silver)]">
+        <DialogHeader>
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="h-6 w-6 text-[var(--accent-glow)]" aria-hidden />
+            <DialogTitle className="font-display text-xl text-[var(--silver)]">
+              Check your inbox to confirm
+            </DialogTitle>
+          </div>
+          <DialogDescription className="mt-2 text-sm lg:text-base text-[var(--silver-dim)]">
+            Your email was captured. We just sent a confirmation link to complete
+            your double opt-in. Click the link in that email to finish joining the
+            talent network — until you confirm, you won&apos;t receive anything.
+          </DialogDescription>
+        </DialogHeader>
+        <p className="text-xs text-[var(--silver-dim)]">
+          Confirmations come from <span className="text-[var(--accent-glow)]">{CAREERS_EMAIL}</span>.
+          If you don&apos;t see it within a few minutes, check spam or promotions.
+        </p>
+        <DialogFooter>
+          <button
+            type="button"
+            onClick={() => setSuccessOpen(false)}
+            className="cx-btn cx-liquid-glass inline-flex items-center justify-center gap-2 h-10 px-4 rounded-md text-[var(--silver)] hud-label"
+          >
+            Got it
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
 
