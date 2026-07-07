@@ -356,6 +356,239 @@ export type Database = {
         }
         Relationships: []
       }
+      ws_campaigns: {
+        Row: {
+          budget_usd: number | null
+          channel: string | null
+          created_at: string
+          id: string
+          leads: number | null
+          name: string
+          notes: string | null
+          spent_usd: number | null
+          status: Database["public"]["Enums"]["campaign_status"]
+          updated_at: string
+        }
+        Insert: {
+          budget_usd?: number | null
+          channel?: string | null
+          created_at?: string
+          id?: string
+          leads?: number | null
+          name: string
+          notes?: string | null
+          spent_usd?: number | null
+          status?: Database["public"]["Enums"]["campaign_status"]
+          updated_at?: string
+        }
+        Update: {
+          budget_usd?: number | null
+          channel?: string | null
+          created_at?: string
+          id?: string
+          leads?: number | null
+          name?: string
+          notes?: string | null
+          spent_usd?: number | null
+          status?: Database["public"]["Enums"]["campaign_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ws_candidates: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          role: string | null
+          source: string | null
+          stage: Database["public"]["Enums"]["candidate_stage"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          role?: string | null
+          source?: string | null
+          stage?: Database["public"]["Enums"]["candidate_stage"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          role?: string | null
+          source?: string | null
+          stage?: Database["public"]["Enums"]["candidate_stage"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ws_deals: {
+        Row: {
+          company: string | null
+          contact_email: string | null
+          created_at: string
+          expected_close_date: string | null
+          id: string
+          notes: string | null
+          owner_email: string | null
+          stage: Database["public"]["Enums"]["deal_stage"]
+          title: string
+          updated_at: string
+          value_usd: number | null
+        }
+        Insert: {
+          company?: string | null
+          contact_email?: string | null
+          created_at?: string
+          expected_close_date?: string | null
+          id?: string
+          notes?: string | null
+          owner_email?: string | null
+          stage?: Database["public"]["Enums"]["deal_stage"]
+          title: string
+          updated_at?: string
+          value_usd?: number | null
+        }
+        Update: {
+          company?: string | null
+          contact_email?: string | null
+          created_at?: string
+          expected_close_date?: string | null
+          id?: string
+          notes?: string | null
+          owner_email?: string | null
+          stage?: Database["public"]["Enums"]["deal_stage"]
+          title?: string
+          updated_at?: string
+          value_usd?: number | null
+        }
+        Relationships: []
+      }
+      ws_dev_tasks: {
+        Row: {
+          assignee_email: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          priority: Database["public"]["Enums"]["task_priority"]
+          product_id: string | null
+          status: Database["public"]["Enums"]["task_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assignee_email?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          priority?: Database["public"]["Enums"]["task_priority"]
+          product_id?: string | null
+          status?: Database["public"]["Enums"]["task_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assignee_email?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          priority?: Database["public"]["Enums"]["task_priority"]
+          product_id?: string | null
+          status?: Database["public"]["Enums"]["task_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ws_dev_tasks_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "ws_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ws_finance_metrics: {
+        Row: {
+          cash_usd: number | null
+          created_at: string
+          expenses_usd: number | null
+          id: string
+          month: string
+          mrr_usd: number | null
+          new_revenue_usd: number | null
+          notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          cash_usd?: number | null
+          created_at?: string
+          expenses_usd?: number | null
+          id?: string
+          month: string
+          mrr_usd?: number | null
+          new_revenue_usd?: number | null
+          notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cash_usd?: number | null
+          created_at?: string
+          expenses_usd?: number | null
+          id?: string
+          month?: string
+          mrr_usd?: number | null
+          new_revenue_usd?: number | null
+          notes?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ws_products: {
+        Row: {
+          created_at: string
+          description: string | null
+          health: number | null
+          id: string
+          name: string
+          owner_email: string | null
+          roadmap_note: string | null
+          status: Database["public"]["Enums"]["product_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          health?: number | null
+          id?: string
+          name: string
+          owner_email?: string | null
+          roadmap_note?: string | null
+          status?: Database["public"]["Enums"]["product_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          health?: number | null
+          id?: string
+          name?: string
+          owner_email?: string | null
+          roadmap_note?: string | null
+          status?: Database["public"]["Enums"]["product_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -390,7 +623,25 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      campaign_status: "planned" | "running" | "paused" | "completed"
+      candidate_stage:
+        | "applied"
+        | "screening"
+        | "interview"
+        | "offer"
+        | "hired"
+        | "rejected"
+      deal_stage:
+        | "lead"
+        | "qualified"
+        | "proposal"
+        | "negotiation"
+        | "won"
+        | "lost"
       newsletter_status: "pending" | "confirmed" | "unsubscribed"
+      product_status: "idea" | "building" | "beta" | "live" | "sunset"
+      task_priority: "low" | "medium" | "high" | "urgent"
+      task_status: "backlog" | "todo" | "in_progress" | "review" | "done"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -519,7 +770,27 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      campaign_status: ["planned", "running", "paused", "completed"],
+      candidate_stage: [
+        "applied",
+        "screening",
+        "interview",
+        "offer",
+        "hired",
+        "rejected",
+      ],
+      deal_stage: [
+        "lead",
+        "qualified",
+        "proposal",
+        "negotiation",
+        "won",
+        "lost",
+      ],
       newsletter_status: ["pending", "confirmed", "unsubscribed"],
+      product_status: ["idea", "building", "beta", "live", "sunset"],
+      task_priority: ["low", "medium", "high", "urgent"],
+      task_status: ["backlog", "todo", "in_progress", "review", "done"],
     },
   },
 } as const
