@@ -14,7 +14,7 @@ import {
   type ContactRow,
 } from "@/lib/admin-overview.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/")({
+export const Route = createFileRoute("/_authenticated/workspace/")({
   head: () =>
     buildHead({
       title: "Internal console — Cyryx Labs",

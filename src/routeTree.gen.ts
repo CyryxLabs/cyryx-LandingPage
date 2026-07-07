@@ -43,12 +43,12 @@ import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './route
 import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
 import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
 import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
-import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedWorkspaceIndexRouteImport } from './routes/_authenticated/workspace.index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
-import { Route as AuthenticatedAdminCareersRouteImport } from './routes/_authenticated/admin.careers'
+import { Route as AuthenticatedWorkspaceCareersRouteImport } from './routes/_authenticated/workspace.careers'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -234,11 +234,12 @@ const AnswersAiExecutionSystemVsAiAutomationRoute =
     path: '/answers/ai-execution-system-vs-ai-automation',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
+const AuthenticatedWorkspaceIndexRoute =
+  AuthenticatedWorkspaceIndexRouteImport.update({
+    id: '/workspace/',
+    path: '/workspace/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -259,10 +260,10 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   path: '/api/public/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminCareersRoute =
-  AuthenticatedAdminCareersRouteImport.update({
-    id: '/admin/careers',
-    path: '/admin/careers',
+const AuthenticatedWorkspaceCareersRoute =
+  AuthenticatedWorkspaceCareersRouteImport.update({
+    id: '/workspace/careers',
+    path: '/workspace/careers',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const LovableEmailTransactionalSendRoute =
@@ -330,12 +331,12 @@ export interface FileRoutesByFullPath {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
-  '/admin/careers': typeof AuthenticatedAdminCareersRoute
+  '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/workspace/': typeof AuthenticatedWorkspaceIndexRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -376,12 +377,12 @@ export interface FileRoutesByTo {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers': typeof AnswersIndexRoute
   '/research': typeof ResearchIndexRoute
-  '/admin/careers': typeof AuthenticatedAdminCareersRoute
+  '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/workspace': typeof AuthenticatedWorkspaceIndexRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -424,12 +425,12 @@ export interface FileRoutesById {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
-  '/_authenticated/admin/careers': typeof AuthenticatedAdminCareersRoute
+  '/_authenticated/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/workspace/': typeof AuthenticatedWorkspaceIndexRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -472,12 +473,12 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers/'
     | '/research/'
-    | '/admin/careers'
+    | '/workspace/careers'
     | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
-    | '/admin/'
+    | '/workspace/'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -518,12 +519,12 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers'
     | '/research'
-    | '/admin/careers'
+    | '/workspace/careers'
     | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
-    | '/admin'
+    | '/workspace'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -565,12 +566,12 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers/'
     | '/research/'
-    | '/_authenticated/admin/careers'
+    | '/_authenticated/workspace/careers'
     | '/api/public/contact'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
-    | '/_authenticated/admin/'
+    | '/_authenticated/workspace/'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -856,11 +857,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin/': {
-      id: '/_authenticated/admin/'
-      path: '/admin'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+    '/_authenticated/workspace/': {
+      id: '/_authenticated/workspace/'
+      path: '/workspace'
+      fullPath: '/workspace/'
+      preLoaderRoute: typeof AuthenticatedWorkspaceIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/lovable/email/suppression': {
@@ -891,11 +892,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin/careers': {
-      id: '/_authenticated/admin/careers'
-      path: '/admin/careers'
-      fullPath: '/admin/careers'
-      preLoaderRoute: typeof AuthenticatedAdminCareersRouteImport
+    '/_authenticated/workspace/careers': {
+      id: '/_authenticated/workspace/careers'
+      path: '/workspace/careers'
+      fullPath: '/workspace/careers'
+      preLoaderRoute: typeof AuthenticatedWorkspaceCareersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/lovable/email/transactional/send': {
@@ -937,13 +938,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminCareersRoute: typeof AuthenticatedAdminCareersRoute
-  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedWorkspaceCareersRoute: typeof AuthenticatedWorkspaceCareersRoute
+  AuthenticatedWorkspaceIndexRoute: typeof AuthenticatedWorkspaceIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminCareersRoute: AuthenticatedAdminCareersRoute,
-  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedWorkspaceCareersRoute: AuthenticatedWorkspaceCareersRoute,
+  AuthenticatedWorkspaceIndexRoute: AuthenticatedWorkspaceIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

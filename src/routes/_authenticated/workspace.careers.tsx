@@ -8,7 +8,7 @@ import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { getCareersFunnel, type CareersFunnel } from "@/lib/careers-analytics.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/careers")({
+export const Route = createFileRoute("/_authenticated/workspace/careers")({
   head: () =>
     buildHead({
       title: "Careers analytics — Cyryx Labs",
