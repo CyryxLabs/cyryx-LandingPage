@@ -9,6 +9,9 @@ const PAGES = [
   { path: "/solutions/workflow-automation", label: "SolutionPage" },
   { path: "/privacy", label: "Privacy" },
   { path: "/terms", label: "Terms" },
+  { path: "/careers", label: "Careers" },
+  { path: "/products/maax-studio", label: "MAAXStudio" },
+  { path: "/products/lyra", label: "Lyra" },
 ];
 
 for (const { path, label } of PAGES) {
