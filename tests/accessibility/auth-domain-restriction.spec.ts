@@ -101,7 +101,10 @@ test.describe("/auth domain restriction", () => {
   // server-side recovery route must reject any non-@cyryxlabs.com email.
   test("server-side recovery endpoint rejects non-cyryxlabs domains", async ({ request }) => {
     for (const email of ["attacker@evil.com", "user@sub.cyryxlabs.com", "user@cyryxlabs.co"]) {
-      const res = await request.post("/api/public/auth/recover", { data: { email } });
+      const res = await request.post("/api/public/auth/recover", {
+        data: { email },
+        headers: { "x-forwarded-for": `10.99.${Math.floor(Math.random() * 250)}.1` },
+      });
       expect(res.status(), `expected 403 for ${email}, got ${res.status()}`).toBe(403);
       const body = await res.json();
       expect(body.error).toMatch(/@cyryxlabs\.com/);
@@ -112,7 +115,10 @@ test.describe("/auth domain restriction", () => {
     request,
   }) => {
     for (const email of ["ok@cyryxlabs.com", "Ok.User+tag@Cyryxlabs.COM"]) {
-      const res = await request.post("/api/public/auth/recover", { data: { email } });
+      const res = await request.post("/api/public/auth/recover", {
+        data: { email },
+        headers: { "x-forwarded-for": `10.99.${Math.floor(Math.random() * 250)}.1` },
+      });
       expect(res.status(), `expected 200 for ${email}, got ${res.status()}`).toBe(200);
       const body = await res.json();
       expect(body.ok).toBe(true);
