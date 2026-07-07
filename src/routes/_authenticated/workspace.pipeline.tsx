@@ -30,6 +30,7 @@ function PipelinePage() {
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
   const [value, setValue] = useState("");
+  const [dragOver, setDragOver] = useState<Stage | null>(null);
 
   async function addDeal(e: React.FormEvent) {
     e.preventDefault();
@@ -72,14 +73,32 @@ function PipelinePage() {
           const rows = data.filter((d) => d.stage === stage);
           const total = rows.reduce((s, d) => s + Number(d.value_usd ?? 0), 0);
           return (
-            <WorkspaceCard key={stage} className="p-3">
+            <WorkspaceCard
+              key={stage}
+              className={`p-3 transition-colors ${dragOver === stage ? "bg-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] border-[var(--accent-glow)]" : ""}`}
+            >
+              <div
+                onDragOver={(e) => { e.preventDefault(); setDragOver(stage); }}
+                onDragLeave={() => setDragOver((s) => (s === stage ? null : s))}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const id = e.dataTransfer.getData("text/deal-id");
+                  setDragOver(null);
+                  if (id) moveStage(id, stage);
+                }}
+              >
               <div className="flex items-center justify-between mb-3">
                 <p className="hud-label text-[var(--accent-glow)]">{stage}</p>
                 <span className="text-xs text-[var(--silver-dim)]">{rows.length} · ${total.toLocaleString()}</span>
               </div>
               <ul className="space-y-2">
                 {rows.map((d) => (
-                  <li key={d.id} className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] p-2.5 bg-white/[0.02]">
+                  <li
+                    key={d.id}
+                    draggable
+                    onDragStart={(e) => e.dataTransfer.setData("text/deal-id", d.id)}
+                    className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] p-2.5 bg-white/[0.02] cursor-grab active:cursor-grabbing"
+                  >
                     <p className="font-medium text-sm">{d.title}</p>
                     <p className="text-xs text-[var(--silver-dim)]">
                       {d.company || "—"} · ${Number(d.value_usd ?? 0).toLocaleString()}
@@ -96,8 +115,9 @@ function PipelinePage() {
                     </div>
                   </li>
                 ))}
-                {rows.length === 0 && <li className="text-xs text-[var(--silver-dim)] italic px-1">Empty</li>}
+                {rows.length === 0 && <li className="text-xs text-[var(--silver-dim)] italic px-1 py-6 text-center">Drop here</li>}
               </ul>
+              </div>
             </WorkspaceCard>
           );
         })}
