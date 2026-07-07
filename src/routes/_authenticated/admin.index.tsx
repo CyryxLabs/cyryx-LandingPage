@@ -86,7 +86,7 @@ function AdminHome() {
             </TabBtn>
           ))}
           <Link
-            to="/_authenticated/admin/careers"
+            to="/admin/careers"
             className="ml-auto text-xs hud-label text-[var(--accent-glow)] hover:underline self-center"
           >
             Careers funnel →
