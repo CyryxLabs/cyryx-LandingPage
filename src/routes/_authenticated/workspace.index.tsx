@@ -328,22 +328,25 @@ function WorkspaceKpis() {
   const { data } = useQuery({
     queryKey: ["workspace-kpis"],
     queryFn: async () => {
-      const [deals, dev, prods, fin] = await Promise.all([
-        supabase.from("ws_deals").select("stage,value_usd"),
-        supabase.from("ws_dev_tasks").select("status"),
-        supabase.from("ws_products").select("status"),
-        supabase.from("ws_finance_metrics").select("mrr_usd,month").order("month", { ascending: false }).limit(1),
+      const [deals, tasks, subs] = await Promise.all([
+        supabase.from("crm_deals").select("status,value"),
+        supabase.from("pm_tasks").select("status"),
+        supabase.from("fin_subscriptions").select("mrr,status"),
       ]);
-      const dealRows = deals.data ?? [];
+      const dealRows = (deals.data ?? []) as Array<{ status: string; value: number | string }>;
       const openPipeline = dealRows
-        .filter((d: any) => !["won", "lost"].includes(d.stage))
-        .reduce((s: number, d: any) => s + Number(d.value_usd ?? 0), 0);
+        .filter((d) => d.status === "open")
+        .reduce((s, d) => s + Number(d.value ?? 0), 0);
       const wonValue = dealRows
-        .filter((d: any) => d.stage === "won")
-        .reduce((s: number, d: any) => s + Number(d.value_usd ?? 0), 0);
-      const openTasks = (dev.data ?? []).filter((t: any) => !["done"].includes(t.status)).length;
-      const liveProducts = (prods.data ?? []).filter((p: any) => ["live", "beta"].includes(p.status)).length;
-      const mrr = Number((fin.data ?? [])[0]?.mrr_usd ?? 0);
+        .filter((d) => d.status === "won")
+        .reduce((s, d) => s + Number(d.value ?? 0), 0);
+      const openTasks = (tasks.data ?? []).filter(
+        (t: any) => !["done", "canceled"].includes(t.status),
+      ).length;
+      const liveProducts = 0;
+      const mrr = (subs.data ?? [])
+        .filter((s: any) => ["active", "trial"].includes(s.status))
+        .reduce((sum: number, s: any) => sum + Number(s.mrr ?? 0), 0);
       return { openPipeline, wonValue, openTasks, liveProducts, mrr };
     },
   });
