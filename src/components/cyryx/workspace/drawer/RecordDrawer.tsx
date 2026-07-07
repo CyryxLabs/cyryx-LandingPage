@@ -4,9 +4,11 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { supabase } from "@/integrations/supabase/client";
 import { drawerStore, useDrawerTarget } from "@/lib/drawer-store";
 import { WsButton } from "@/components/cyryx/workspace/WorkspaceShell";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Paperclip, Trash2, Download, Upload } from "lucide-react";
+import { uploadAttachment, getAttachmentUrl, deleteAttachment, formatBytes } from "@/lib/attachments";
+import { useRef } from "react";
 
-const TABS = ["overview", "comments", "watchers", "activity"] as const;
+const TABS = ["overview", "comments", "attachments", "watchers", "activity"] as const;
 type Tab = (typeof TABS)[number];
 
 const TITLE_KEYS = ["title", "full_name", "name", "subject", "code"];
@@ -89,6 +91,7 @@ function DrawerBody({
       <div className="flex-1 overflow-y-auto px-6 py-5">
         {tab === "overview" && <OverviewPane row={row} loading={rowQ.isLoading} />}
         {tab === "comments" && <CommentsPane target={target} />}
+        {tab === "attachments" && <AttachmentsPane target={target} />}
         {tab === "watchers" && <WatchersPane target={target} />}
         {tab === "activity" && <ActivityPane target={target} />}
       </div>
