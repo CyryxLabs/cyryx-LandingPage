@@ -56,6 +56,7 @@ import { Route as AuthenticatedWorkspaceHrRouteImport } from './routes/_authenti
 import { Route as AuthenticatedWorkspaceFinanceRouteImport } from './routes/_authenticated/workspace.finance'
 import { Route as AuthenticatedWorkspaceDevRouteImport } from './routes/_authenticated/workspace.dev'
 import { Route as AuthenticatedWorkspaceCareersRouteImport } from './routes/_authenticated/workspace.careers'
+import { Route as AuthenticatedWorkspaceAdminRouteImport } from './routes/_authenticated/workspace.admin'
 import { Route as AuthenticatedWorkspaceSplatRouteImport } from './routes/_authenticated/workspace.$'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -317,6 +318,12 @@ const AuthenticatedWorkspaceCareersRoute =
     path: '/careers',
     getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
+const AuthenticatedWorkspaceAdminRoute =
+  AuthenticatedWorkspaceAdminRouteImport.update({
+    id: '/admin',
+    path: '/admin',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
+  } as any)
 const AuthenticatedWorkspaceSplatRoute =
   AuthenticatedWorkspaceSplatRouteImport.update({
     id: '/$',
@@ -401,6 +408,7 @@ export interface FileRoutesByFullPath {
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
+  '/workspace/admin': typeof AuthenticatedWorkspaceAdminRoute
   '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
   '/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
@@ -456,6 +464,7 @@ export interface FileRoutesByTo {
   '/answers': typeof AnswersIndexRoute
   '/research': typeof ResearchIndexRoute
   '/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
+  '/workspace/admin': typeof AuthenticatedWorkspaceAdminRoute
   '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
   '/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
@@ -514,6 +523,7 @@ export interface FileRoutesById {
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/_authenticated/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
+  '/_authenticated/workspace/admin': typeof AuthenticatedWorkspaceAdminRoute
   '/_authenticated/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/_authenticated/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
   '/_authenticated/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
@@ -572,6 +582,7 @@ export interface FileRouteTypes {
     | '/answers/'
     | '/research/'
     | '/workspace/$'
+    | '/workspace/admin'
     | '/workspace/careers'
     | '/workspace/dev'
     | '/workspace/finance'
@@ -627,6 +638,7 @@ export interface FileRouteTypes {
     | '/answers'
     | '/research'
     | '/workspace/$'
+    | '/workspace/admin'
     | '/workspace/careers'
     | '/workspace/dev'
     | '/workspace/finance'
@@ -684,6 +696,7 @@ export interface FileRouteTypes {
     | '/answers/'
     | '/research/'
     | '/_authenticated/workspace/$'
+    | '/_authenticated/workspace/admin'
     | '/_authenticated/workspace/careers'
     | '/_authenticated/workspace/dev'
     | '/_authenticated/workspace/finance'
@@ -1076,6 +1089,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWorkspaceCareersRouteImport
       parentRoute: typeof AuthenticatedWorkspaceRoute
     }
+    '/_authenticated/workspace/admin': {
+      id: '/_authenticated/workspace/admin'
+      path: '/admin'
+      fullPath: '/workspace/admin'
+      preLoaderRoute: typeof AuthenticatedWorkspaceAdminRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
+    }
     '/_authenticated/workspace/$': {
       id: '/_authenticated/workspace/$'
       path: '/$'
@@ -1137,6 +1157,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedWorkspaceRouteChildren {
   AuthenticatedWorkspaceSplatRoute: typeof AuthenticatedWorkspaceSplatRoute
+  AuthenticatedWorkspaceAdminRoute: typeof AuthenticatedWorkspaceAdminRoute
   AuthenticatedWorkspaceCareersRoute: typeof AuthenticatedWorkspaceCareersRoute
   AuthenticatedWorkspaceDevRoute: typeof AuthenticatedWorkspaceDevRoute
   AuthenticatedWorkspaceFinanceRoute: typeof AuthenticatedWorkspaceFinanceRoute
@@ -1150,6 +1171,7 @@ interface AuthenticatedWorkspaceRouteChildren {
 const AuthenticatedWorkspaceRouteChildren: AuthenticatedWorkspaceRouteChildren =
   {
     AuthenticatedWorkspaceSplatRoute: AuthenticatedWorkspaceSplatRoute,
+    AuthenticatedWorkspaceAdminRoute: AuthenticatedWorkspaceAdminRoute,
     AuthenticatedWorkspaceCareersRoute: AuthenticatedWorkspaceCareersRoute,
     AuthenticatedWorkspaceDevRoute: AuthenticatedWorkspaceDevRoute,
     AuthenticatedWorkspaceFinanceRoute: AuthenticatedWorkspaceFinanceRoute,

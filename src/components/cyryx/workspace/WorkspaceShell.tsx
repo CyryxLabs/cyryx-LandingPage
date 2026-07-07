@@ -9,6 +9,7 @@ import {
   Megaphone,
   LineChart,
   Briefcase,
+  ShieldCheck,
   LogOut,
 } from "lucide-react";
 
@@ -54,6 +55,7 @@ const NAV: NavItem[] = [
   { to: "/workspace/marketing", label: "Marketing", icon: Megaphone },
   { to: "/workspace/finance", label: "Finance", icon: LineChart },
   { to: "/workspace/careers", label: "Careers funnel", icon: Briefcase },
+  { to: "/workspace/admin", label: "Admin", icon: ShieldCheck },
 ];
 
 export function WorkspaceShell({
