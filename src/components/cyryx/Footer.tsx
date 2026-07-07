@@ -44,7 +44,7 @@ const COLUMNS: Column[] = [
     title: "Company",
     items: [
       { label: "About", href: "/company" },
-      { label: "Careers", href: "/careers", badge: "Hiring" },
+      { label: "Careers", href: "/careers", badge: "Talent network" },
       { label: "Contact", href: `mailto:${CONTACT_EMAIL}` },
       { label: "Press", href: `mailto:press@cyryxlabs.com` },
     ],
