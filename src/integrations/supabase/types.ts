@@ -1056,6 +1056,170 @@ export type Database = {
           },
         ]
       }
+      mkt_campaigns: {
+        Row: {
+          budget: number | null
+          channel_id: string | null
+          created_at: string
+          end_at: string | null
+          goal: string | null
+          id: string
+          name: string
+          notes: string | null
+          owner_id: string | null
+          spend: number | null
+          start_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          budget?: number | null
+          channel_id?: string | null
+          created_at?: string
+          end_at?: string | null
+          goal?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          owner_id?: string | null
+          spend?: number | null
+          start_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: number | null
+          channel_id?: string | null
+          created_at?: string
+          end_at?: string | null
+          goal?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          owner_id?: string | null
+          spend?: number | null
+          start_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mkt_campaigns_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "mkt_channels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mkt_channels: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          kind: string
+          name: string
+          notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          kind?: string
+          name: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          kind?: string
+          name?: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      mkt_leads: {
+        Row: {
+          campaign_id: string | null
+          channel_id: string | null
+          contact_id: string | null
+          converted_at: string | null
+          created_at: string
+          deal_id: string | null
+          first_touch_at: string
+          id: string
+          notes: string | null
+          source: string | null
+          updated_at: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          channel_id?: string | null
+          contact_id?: string | null
+          converted_at?: string | null
+          created_at?: string
+          deal_id?: string | null
+          first_touch_at?: string
+          id?: string
+          notes?: string | null
+          source?: string | null
+          updated_at?: string
+        }
+        Update: {
+          campaign_id?: string | null
+          channel_id?: string | null
+          contact_id?: string | null
+          converted_at?: string | null
+          created_at?: string
+          deal_id?: string | null
+          first_touch_at?: string
+          id?: string
+          notes?: string | null
+          source?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mkt_leads_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "mkt_attribution_v"
+            referencedColumns: ["campaign_id"]
+          },
+          {
+            foreignKeyName: "mkt_leads_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "mkt_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mkt_leads_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "mkt_channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mkt_leads_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mkt_leads_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "crm_deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       newsletter_subscribers: {
         Row: {
           confirm_token: string | null
@@ -1591,7 +1755,31 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      mkt_attribution_v: {
+        Row: {
+          budget: number | null
+          campaign_id: string | null
+          campaign_name: string | null
+          channel_id: string | null
+          channel_name: string | null
+          deals_count: number | null
+          leads_count: number | null
+          pipeline_value: number | null
+          spend: number | null
+          status: string | null
+          won_deals: number | null
+          won_value: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mkt_campaigns_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "mkt_channels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       delete_email: {

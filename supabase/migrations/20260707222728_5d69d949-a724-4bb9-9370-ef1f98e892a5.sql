@@ -1,0 +1,1 @@
+ALTER VIEW public.mkt_attribution_v SET (security_invoker = true);
