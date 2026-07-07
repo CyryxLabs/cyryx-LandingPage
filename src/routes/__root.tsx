@@ -180,6 +180,14 @@ function RootShell({ children }: { children: ReactNode }) {
               "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var h=window.location.hash;if(h){history.replaceState(null,'',window.location.pathname+window.location.search);}window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});}catch(e){}})();",
           }}
         />
+        {/* Subdomain routing: workspace.<domain> serves the internal console.
+            Redirect pre-hydration so the landing page never flashes. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var h=window.location.hostname||'';if(/^workspace\\./i.test(h)){var p=window.location.pathname;if(p==='/'||p===''){window.location.replace('/workspace'+window.location.search+window.location.hash);}}}catch(e){}})();",
+          }}
+        />
       </head>
       <body>
         {children}
