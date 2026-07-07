@@ -65,9 +65,11 @@ export const listWorkspaceUsers = createServerFn({ method: "GET" })
 
 export const inviteWorkspaceUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((raw: { email: string; role: AppRole }) => ({
+  .inputValidator((raw: { email: string; role: AppRole; w?: string; tab?: string }) => ({
     email: String(raw.email ?? ""),
     role: (raw.role === "admin" ? "admin" : "user") as AppRole,
+    w: raw.w ? String(raw.w) : "",
+    tab: raw.tab ? String(raw.tab) : "",
   }))
   .handler(async ({ data, context }) => {
     await assertAdmin(context as any);
@@ -82,21 +84,34 @@ export const inviteWorkspaceUser = createServerFn({ method: "POST" })
     let user = list.users.find((u) => u.email?.toLowerCase() === email);
 
     const origin = process.env.APP_URL || "https://workspace.cyryxlabs.com";
-    const redirectTo = `${origin}/auth`;
+    const qs = new URLSearchParams();
+    if (data.w) qs.set("w", data.w);
+    if (data.tab) qs.set("tab", data.tab);
+    const suffix = qs.toString() ? `?${qs.toString()}` : "";
+    const redirectTo = `${origin}/auth${suffix}`;
+    let action_link: string | null = null;
 
     if (!user) {
       const { data: invited, error: inviteErr } =
         await supabaseAdmin.auth.admin.inviteUserByEmail(email, { redirectTo });
       if (inviteErr) throw new Error(inviteErr.message);
       user = invited.user;
+      // Also generate an action link so the admin can copy it for testing.
+      const { data: linkData } = await supabaseAdmin.auth.admin.generateLink({
+        type: "invite",
+        email,
+        options: { redirectTo },
+      });
+      action_link = linkData?.properties?.action_link ?? null;
     } else {
       // Existing user: send a magic link so they can sign in immediately.
-      const { error: linkErr } = await supabaseAdmin.auth.admin.generateLink({
+      const { data: linkData, error: linkErr } = await supabaseAdmin.auth.admin.generateLink({
         type: "magiclink",
         email,
         options: { redirectTo },
       });
       if (linkErr) throw new Error(linkErr.message);
+      action_link = linkData?.properties?.action_link ?? null;
     }
 
     // Assign role.
@@ -105,7 +120,7 @@ export const inviteWorkspaceUser = createServerFn({ method: "POST" })
       .upsert({ user_id: user!.id, role: data.role }, { onConflict: "user_id,role" });
     if (roleErr) throw new Error(roleErr.message);
 
-    return { ok: true, user_id: user!.id, email, role: data.role };
+    return { ok: true, user_id: user!.id, email, role: data.role, action_link };
   });
 
 export const setWorkspaceUserRole = createServerFn({ method: "POST" })
@@ -147,17 +162,25 @@ export const setWorkspaceUserRole = createServerFn({ method: "POST" })
 
 export const resendMagicLink = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((raw: { email: string }) => ({ email: String(raw.email ?? "") }))
+  .inputValidator((raw: { email: string; w?: string; tab?: string }) => ({
+    email: String(raw.email ?? ""),
+    w: raw.w ? String(raw.w) : "",
+    tab: raw.tab ? String(raw.tab) : "",
+  }))
   .handler(async ({ data, context }) => {
     await assertAdmin(context as any);
     const email = normalizeEmail(data.email);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const origin = process.env.APP_URL || "https://workspace.cyryxlabs.com";
-    const { error } = await supabaseAdmin.auth.admin.generateLink({
+    const qs = new URLSearchParams();
+    if (data.w) qs.set("w", data.w);
+    if (data.tab) qs.set("tab", data.tab);
+    const suffix = qs.toString() ? `?${qs.toString()}` : "";
+    const { data: linkData, error } = await supabaseAdmin.auth.admin.generateLink({
       type: "magiclink",
       email,
-      options: { redirectTo: `${origin}/auth` },
+      options: { redirectTo: `${origin}/auth${suffix}` },
     });
     if (error) throw new Error(error.message);
-    return { ok: true };
+    return { ok: true, action_link: linkData?.properties?.action_link ?? null };
   });
