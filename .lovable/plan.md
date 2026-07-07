@@ -1,107 +1,83 @@
-# Corrective Build — Copy v4 Deployment
 
-P0 (trust leaks) já foi executado no turno anterior: strings PT removidas, `SYS_STATUS` deletado, socials vazios/dead links removidos, `/privacy` e `/terms` criados, OG image própria (`cyryxlabs.com/cyryx-og.png`). Este plano cobre P1 → P3.
+# Cyryx Command Workspace — plano de implementação
 
-## What ships
+O PRD descreve um sistema operacional interno completo (15 módulos, permissões, IA-ready, MVP/V1.5/V2). A base já existe: schema novo (CRM, PM, HR, Finance), auth `@cyryxlabs.com`, admin, kanban, DataTables. Faltam os pontos que você listou nas últimas mensagens. Proponho entregar em 5 fases pequenas e testáveis, cada uma independente.
 
-### 1. Hero — reduzir a exatamente 4 elementos
-`src/components/cyryx/Hero.tsx` + `src/copy/v3.ts`:
-- H1: **"The execution layer for enterprise AI."**
-- Subhead: **"Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control."**
-- CTA 1: **Start a project** → `#contact`
-- CTA 2: **MAAX Studio →** → `#maax`
-- Remover: meta rail (`copy.hero.meta`), rail line (`copy.hero.rail`), eyebrow, badges, scroll cue text — hero contém só H1 + sub + 2 CTAs.
+## Fase 1 — Drawer universal (deals, tarefas, candidatos)
+- Componente `RecordDrawer` (Sheet lateral, design system Cyryx: `--onyx`, `--accent-glow`, glass panel).
+- Abas: **Overview** (campos editáveis) · **Comments** · **Attachments** · **Watchers** · **Activity**.
+- Comentários em `ws_comments` (polimórfico `entity_type` + `entity_id`).
+- Watchers em `pm_task_watchers` para tasks; para deals/candidatos, estender `ws_watchers` genérico (migration curta).
+- Activity log lê `ws_activity_log`; triggers já registram INSERT/UPDATE/DELETE nas tabelas principais.
+- Integração: linhas dos DataTables e cards do kanban abrem o drawer no clique.
 
-### 2. Remoções na home
-`src/routes/index.tsx`:
-- Já removidos: `Ecosystem`, `MetricsBand`.
-- Remover também: `CapabilityStrip` (strip de 5 nós com taxonomia MAAX antiga), `ProductEcosystem` (será substituído por seção nova "What We Build"), `CoreCapabilities`, `WhyCyryx` (versão antiga), `AppliedAILab`, `WhoWeServe`, `ProcessTimeline`, `CommandLayerSection`, `CTASection` (versões antigas serão reescritas ou substituídas por seções v4).
+## Fase 2 — Notificações reais no header
+- `NotificationsBell` no `WorkspaceShell` (badge + dropdown glass).
+- Query em `ws_notifications` (unread first, top 20).
+- Realtime via `supabase.channel('ws_notifications').on('postgres_changes', filter: user_id=me)`.
+- Ações: marcar lida, marcar todas, deep-link para entidade.
+- Triggers de servidor: novo comentário → notifica watchers; atribuição de task → notifica assignee.
 
-### 3. Novas seções v4 (ordem: Problem → What We Build → Solutions → Engagement Model → Security & Governance → MAAX → Who We Work With → Why Cyryx → Final CTA)
-Criar em `src/components/cyryx/v4/`:
-- `Problem.tsx` — H2 "AI adoption has outpaced AI control." + 3 bullets (Unowned output / Unmeasured cost / Unmanaged autonomy).
-- `WhatWeBuild.tsx` — H2 "One discipline. Three units." + 3 cards (Products, Solutions, Applied AI Lab).
-- `Solutions.tsx` — H2 "Systems under contract. Not hours under retainer." + intro MSA + 6 cards no formato v4: título + outcome + single "Delivered with: a · b · c" (sem 3-field layout). Cards: AI Product Sprint, AI Workflow Automation, Internal AI Agents & Copilots, AI Knowledge Systems, AI Integrations & Infrastructure, AI Governance & Cost Control. CTA "Start a project".
-- `EngagementModel.tsx` — H2 "Fixed scope. Verifiable delivery. Full transfer." + 5 steps (Diagnostic, Scope, Build, Verification, Transfer).
-- `SecurityPosture.tsx` — H2 "Governance is architecture." + 5 items (Server-side boundaries, Least privilege, Human authority, Auditability, Conservative claims).
-- `WhoWeWorkWith.tsx` — H2 "Organizations that treat AI as infrastructure." + 4 bullets.
-- `WhyCyryx.tsx` (v4) — H2 "A lab, not an agency." + 4 pillars (Product discipline, Governance as baseline, Verifiable claims, Engineered for handover).
-- `FinalCTA.tsx` — H2 "From experimentation to governed execution." + descrição + 2 CTAs.
+## Fase 3 — Storage e anexos
+- Bucket **workspace-attachments** (privado) via `storage_create_bucket`.
+- RLS em `storage.objects`: `authenticated` pode `SELECT/INSERT/DELETE` quando `bucket_id='workspace-attachments'` (path próprio) e admin acessa tudo.
+- Uso na tabela `ws_attachments` (já existe): guarda `bucket_path`, `file_name`, `size`, `mime`, `uploaded_by`.
+- UI: aba Attachments do drawer com upload drag-and-drop + preview + signed URL para download.
 
-### 4. MAAX Studio — reduzir aos 5 pilares
-`src/components/cyryx/MAAXStudioSpotlight.tsx`:
-- Eyebrow: `FLAGSHIP · IN DEVELOPMENT`
-- H2: "Governed autonomy for AI-native builders."
-- Parágrafo v4 exato.
-- 5 pilares: Mission-based execution, Project memory, Command Gates, Mission Ledger, Cost visibility.
-- Status: "MAAX Studio is in active development. Early access opens to a limited cohort."
-- CTA: **Request early access** → `#contact`.
-- Remover: Mission Engine, Atlas Engine, Operator System, Margin Governor, Continuity Engine, Delivery Package, Mission Control, MAAX Runtime.
+## Fase 4 — Módulo Marketing (campanhas, canais, attribution)
+- Migration:
+  - `mkt_channels` (name, kind: paid/organic/referral/outbound, active)
+  - `mkt_campaigns` (name, channel_id, status, start_at, end_at, budget, spend, goal)
+  - `mkt_leads` (source_campaign_id, contact_id → `crm_contacts`, deal_id → `crm_deals`, first_touch_at, converted_at)
+- Rota `/workspace/marketing`: tabs Campanhas · Canais · Attribution.
+- Attribution: view materializada juntando `mkt_leads` × `crm_deals` (first-touch e last-touch, MRR gerado).
 
-### 5. Footer v4
-`src/components/cyryx/Footer.tsx`:
-- Linha 1: "Cyryx Labs — AI products and execution systems for the agentic era."
-- Nav: About · Solutions · MAAX Studio · Lab · Contact
-- Legal: Privacy Policy · Terms of Service
-- Linha 2: "© 2026 Cyryx Labs" (sem LLC, sem location, sem social, sem widgets).
+## Fase 5 — Dashboards por departamento
+- Charts com `recharts` (leve, já compatível).
+- **Overview**: MRR trend, receita 90d, pipeline value por stage, tasks concluídas/semana.
+- **CRM**: pipeline por stage, win rate, ciclo médio (dias).
+- **Dev**: throughput (tasks done/semana), burn-down de sprint ativo, tasks por status.
+- **HR**: candidatos por stage, tempo médio contratação, headcount por depto.
+- **Finance**: MRR/ARR, burn, runway, receita vs despesa (12m).
+- **Marketing**: CAC por canal, leads → deals, ROI campanha.
 
-### 6. Meta v4
-`src/routes/index.tsx`:
-- Title: **"Cyryx Labs — The Execution Layer for Enterprise AI"**
-- Description (≤160): **"AI products and execution systems — governed agents, automated workflows, and infrastructure engineered for accountability, auditability, and cost control."**
-- og:title/twitter:title, og:description/twitter:description atualizados; canonical + og:url mantêm `https://cyryxlabs.com/`.
+## Detalhes técnicos
 
-### 7. Contact form
-`src/components/cyryx/ContactSection.tsx`:
-- Consent line: link para `/privacy` (Privacy Policy).
-- Remover qualquer texto de location (Florida/Port Saint Lucie/USA) do formulário e headings.
+**Novas migrations**
+- `ws_watchers` (polimórfico) + RLS.
+- Bucket `workspace-attachments` + policies em `storage.objects`.
+- Tabelas `mkt_channels`, `mkt_campaigns`, `mkt_leads` + RLS + triggers `updated_at`.
+- Trigger `notify_watchers_on_comment()` insere em `ws_notifications`.
+- Trigger `notify_assignee_on_task_change()` idem.
+- View `mkt_attribution_v` (first/last touch).
 
-### 8. Legal pages
-- `src/routes/privacy.tsx`: já existe expandida no turno anterior — manter, garantir menção "Cyryx Labs LLC", "Florida", "St. Lucie County".
-- `src/routes/terms.tsx`: já existe com Cyryx Labs LLC / Florida / St. Lucie County.
+**Frontend**
+- `src/components/cyryx/workspace/drawer/RecordDrawer.tsx` + subcomponents (`CommentsPane`, `AttachmentsPane`, `WatchersPane`, `ActivityPane`).
+- `src/components/cyryx/workspace/NotificationsBell.tsx` (montado no `WorkspaceShell`).
+- `src/lib/attachments.ts` (helpers signed URL / upload).
+- `src/routes/_authenticated/workspace.marketing.tsx` substituído (deixa de ser stub).
+- `src/components/cyryx/workspace/charts/*` (`MRRChart`, `PipelineFunnel`, `Throughput`, etc.).
 
-### 9. Global sweep
-- Grep e remover qualquer ocorrência remanescente de: "Florida", "Port Saint Lucie", "USA" fora de `/privacy` e `/terms`.
-- Grep e remover: SOC, ISO 27001, HIPAA, "compliant".
-- Grep `!` em copy visível — remover exclamações em headings/CTAs.
-- Grep `href="#"` — zero permitido.
-- Confirmar zero strings PT (`arquivos|latência|qualidade|custo|abas` — sensível a "custo" só em copy PT; "cost" em EN está ok).
-- Componentes obsoletos (`Ecosystem.tsx`, `MetricsBand.tsx`, `CapabilityStrip.tsx`, `CoreCapabilities.tsx`, `AppliedAILab.tsx`, `WhoWeServe.tsx`, `ProcessTimeline.tsx`, `CommandLayerSection.tsx`, `CTASection.tsx`, `WhyCyryx.tsx` antigo, `ProductEcosystem.tsx`, `MetricCard.tsx`): **manter os arquivos** (apenas remover dos imports/render em `index.tsx`) para preservar histórico e permitir reuso; posso deletar tudo depois se preferir.
+**Server functions**
+- `workspace-drawer.functions.ts`: `getRecord`, `postComment`, `toggleWatcher`, `listActivity`.
+- `attachments.functions.ts`: `createSignedUpload`, `listAttachments`, `deleteAttachment`.
+- `notifications.functions.ts`: `listNotifications`, `markRead`, `markAllRead`.
+- `marketing.functions.ts`: CRUD leve + attribution rollup.
+- `dashboards.functions.ts`: agregações server-side por depto e janela `w`.
 
-### 10. Validação
-- Playwright em 375px + 1280px: hero, Solutions (1-col no mobile), footer — sem horizontal scroll.
-- `bun run build` verde.
-- Grep automatizado das strings proibidas na saída build.
+**Design system**
+- Reutiliza `WorkspaceCard`, `WsButton`, `WsInput`, `HudLabel`, `GlassPanel`, `cx-liquid-glass`, tokens `--accent-glow` / `--silver`. Sem cores hardcoded.
 
-## Structural details
+## Ordem de execução
 
-```
-src/components/cyryx/
-  v4/
-    Problem.tsx           (novo)
-    WhatWeBuild.tsx       (novo)
-    Solutions.tsx         (novo)
-    EngagementModel.tsx   (novo)
-    SecurityPosture.tsx   (novo)
-    WhoWeWorkWith.tsx     (novo)
-    WhyCyryx.tsx          (novo)
-    FinalCTA.tsx          (novo)
-  Hero.tsx                (reescrito: apenas H1+sub+2 CTAs)
-  MAAXStudioSpotlight.tsx (reduzido a 5 pilares)
-  Footer.tsx              (v4 layout)
-  ContactSection.tsx      (consent link)
+Recomendo entregar **uma fase por turno** (nesta ordem) — cada uma toca <10 arquivos, tem migração aprovável separada e mantém build verde:
 
-src/routes/index.tsx       (nova ordem de seções + meta v4)
-src/copy/v3.ts             (renomear internamente para v4 ou substituir strings do hero/maax)
+```text
+1. Fase 1: Drawer universal + comments/watchers/activity
+2. Fase 2: Notificações realtime
+3. Fase 3: Storage bucket + anexos
+4. Fase 4: Módulo Marketing
+5. Fase 5: Dashboards por departamento
 ```
 
-## Publicação
-
-Após tudo verde: aguardar seu comando para chamar `publish` — ou incluir publish automático no final.
-
-## Decisões pendentes que quero confirmar antes de executar
-
-1. **Publicação**: publicar automaticamente ao fim, ou parar após build verde e aguardar seu OK?
-2. **Componentes obsoletos**: manter arquivos (sem uso) ou deletar de vez? Recomendo deletar após o build verde para não acumular dead code.
-3. **Cópia v4 dentro do sistema de "copy variants"**: substituo o conteúdo de `v3.ts` in-place (mais simples, quebra menos código) ou crio `v4.ts` e faço v4 ser o default? Recomendo substituir in-place — o sistema de variants não está sendo usado.
-4. **Contact form**: manter integração/envio existente ou você quer que eu revalide o fluxo server-side? (Escopo original diz "confirm server-side receipt"; posso testar mas não vou reescrever o backend.)
+Confirme se essa ordem serve, ou reordene. Assim que aprovar, começo pela **Fase 1**.
