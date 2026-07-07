@@ -15,7 +15,7 @@ const COLUMNS: Column[] = [
     title: "Products",
     items: [
       { label: "MAAX Studio", href: "/products/maax-studio", badge: "Early access" },
-      { label: "Lyra", href: `mailto:${CONTACT_EMAIL}?subject=Lyra%20early%20access`, badge: "Coming soon" },
+      { label: "Lyra", href: "/products/lyra", badge: "Coming soon" },
       { label: "All products", href: "/products" },
     ],
   },
@@ -44,7 +44,7 @@ const COLUMNS: Column[] = [
     title: "Company",
     items: [
       { label: "About", href: "/company" },
-      { label: "Careers", href: `mailto:careers@cyryxlabs.com?subject=Careers%20at%20Cyryx%20Labs`, badge: "Hiring" },
+      { label: "Careers", href: "/careers", badge: "Hiring" },
       { label: "Contact", href: `mailto:${CONTACT_EMAIL}` },
       { label: "Press", href: `mailto:press@cyryxlabs.com` },
     ],

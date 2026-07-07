@@ -33,6 +33,7 @@ import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.
 import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as ProductsLyraRouteImport } from './routes/products.lyra'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
@@ -175,6 +176,11 @@ const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
   path: '/maax-studio',
   getParentRoute: () => ProductsRoute,
 } as any)
+const ProductsLyraRoute = ProductsLyraRouteImport.update({
+  id: '/lyra',
+  path: '/lyra',
+  getParentRoute: () => ProductsRoute,
+} as any)
 const NewsletterConfirmRoute = NewsletterConfirmRouteImport.update({
   id: '/newsletter/confirm',
   path: '/newsletter/confirm',
@@ -288,6 +294,7 @@ export interface FileRoutesByFullPath {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -330,6 +337,7 @@ export interface FileRoutesByTo {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -373,6 +381,7 @@ export interface FileRoutesById {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -417,6 +426,7 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
+    | '/products/lyra'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -459,6 +469,7 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
+    | '/products/lyra'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -501,6 +512,7 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/email/unsubscribe'
     | '/newsletter/confirm'
+    | '/products/lyra'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -728,6 +740,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsMaaxStudioRouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/products/lyra': {
+      id: '/products/lyra'
+      path: '/lyra'
+      fullPath: '/products/lyra'
+      preLoaderRoute: typeof ProductsLyraRouteImport
+      parentRoute: typeof ProductsRoute
+    }
     '/newsletter/confirm': {
       id: '/newsletter/confirm'
       path: '/newsletter/confirm'
@@ -844,10 +863,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface ProductsRouteChildren {
+  ProductsLyraRoute: typeof ProductsLyraRoute
   ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
+  ProductsLyraRoute: ProductsLyraRoute,
   ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
 }
 
