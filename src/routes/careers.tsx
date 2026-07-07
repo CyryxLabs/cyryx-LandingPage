@@ -253,7 +253,11 @@ function ApplicationForm() {
       </p>
 
       {submitted ? (
-        <div className="mt-6 rounded-sm border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] p-4 text-sm text-[var(--silver)]">
+        <div
+          role="status"
+          aria-live="polite"
+          className="mt-6 rounded-sm border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] p-4 text-sm text-[var(--silver)]"
+        >
           Your email draft is opening now. If nothing happened, write to{" "}
           <a className="text-[var(--accent-glow)]" href={`mailto:${RECIPIENTS}`}>
             {CAREERS_EMAIL}
@@ -262,6 +266,16 @@ function ApplicationForm() {
         </div>
       ) : (
         <form className="mt-6 grid gap-4 sm:grid-cols-2" onSubmit={onSubmit} noValidate>
+          <div
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            className="sr-only sm:col-span-2"
+          >
+            {Object.values(errors).filter(Boolean).length > 0
+              ? `Form has ${Object.values(errors).filter(Boolean).length} error${Object.values(errors).filter(Boolean).length === 1 ? "" : "s"}. ${Object.values(errors).filter(Boolean).join(". ")}`
+              : ""}
+          </div>
           <div>
             <label htmlFor="apply-name" className={labelCls}>Name</label>
             <input
@@ -271,8 +285,10 @@ function ApplicationForm() {
               onChange={(e) => update("name", e.target.value)}
               autoComplete="name"
               required
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "apply-name-err" : undefined}
             />
-            {errors.name && <p className={errCls}>{errors.name}</p>}
+            {errors.name && <p id="apply-name-err" role="alert" className={errCls}>{errors.name}</p>}
           </div>
           <div>
             <label htmlFor="apply-email" className={labelCls}>Email</label>
@@ -284,8 +300,10 @@ function ApplicationForm() {
               onChange={(e) => update("email", e.target.value)}
               autoComplete="email"
               required
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "apply-email-err" : undefined}
             />
-            {errors.email && <p className={errCls}>{errors.email}</p>}
+            {errors.email && <p id="apply-email-err" role="alert" className={errCls}>{errors.email}</p>}
           </div>
           <div>
             <label htmlFor="apply-role" className={labelCls}>Role</label>
@@ -294,12 +312,14 @@ function ApplicationForm() {
               className={fieldCls}
               value={values.role}
               onChange={(e) => update("role", e.target.value)}
+              aria-invalid={!!errors.role}
+              aria-describedby={errors.role ? "apply-role-err" : undefined}
             >
               {roleOptions.map((r) => (
                 <option key={r} value={r}>{r}</option>
               ))}
             </select>
-            {errors.role && <p className={errCls}>{errors.role}</p>}
+            {errors.role && <p id="apply-role-err" role="alert" className={errCls}>{errors.role}</p>}
           </div>
           <div>
             <label htmlFor="apply-location" className={labelCls}>Location / time zone</label>
@@ -329,8 +349,10 @@ function ApplicationForm() {
               value={values.message}
               onChange={(e) => update("message", e.target.value)}
               required
+              aria-invalid={!!errors.message}
+              aria-describedby={errors.message ? "apply-message-err" : undefined}
             />
-            {errors.message && <p className={errCls}>{errors.message}</p>}
+            {errors.message && <p id="apply-message-err" role="alert" className={errCls}>{errors.message}</p>}
           </div>
 
           {/* Honeypot */}
@@ -359,7 +381,7 @@ function ApplicationForm() {
               evaluate my application.
             </label>
           </div>
-          {errors.consent && <p className={`sm:col-span-2 ${errCls}`}>{errors.consent}</p>}
+          {errors.consent && <p role="alert" className={`sm:col-span-2 ${errCls}`}>{errors.consent}</p>}
 
           <div className="sm:col-span-2 flex flex-wrap items-center gap-3">
             <button
