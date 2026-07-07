@@ -1,6 +1,7 @@
 import { Link, useNavigate, useRouterState, useSearch } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { RecordDrawer } from "@/components/cyryx/workspace/drawer/RecordDrawer";
+import { NotificationsBell } from "@/components/cyryx/workspace/NotificationsBell";
 import {
   LayoutDashboard,
   Kanban,
@@ -121,6 +122,7 @@ export function WorkspaceShell({
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <WsWindowPicker />
+            <NotificationsBell />
             {actions}
           </div>
         </header>
