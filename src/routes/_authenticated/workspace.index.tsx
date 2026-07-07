@@ -366,13 +366,30 @@ function WorkspaceKpis() {
     },
   });
   const fmt = (n: number) => `$${n.toLocaleString()}`;
+  const cards: Array<{ label: string; value: number; caption: string; to: string; tone?: "warn" | "muted" }> = [
+    { label: "MRR", value: data?.mrr ?? 0, caption: fmt(data?.mrr ?? 0), to: "/workspace/finance" },
+    { label: "Pipeline open", value: data?.openPipeline ?? 0, caption: fmt(data?.openPipeline ?? 0), to: "/workspace/pipeline" },
+    { label: "Won (all time)", value: data?.wonValue ?? 0, caption: fmt(data?.wonValue ?? 0), to: "/workspace/pipeline" },
+    { label: "Tasks open", value: data?.openTasks ?? 0, caption: "Dev backlog + in progress", to: "/workspace/dev", tone: data && data.openTasks > 0 ? "warn" : "muted" },
+    { label: "Products live", value: data?.liveProducts ?? 0, caption: "Live + beta", to: "/workspace/products" },
+  ];
   return (
     <section aria-label="Business KPIs" className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-      <Stat label="MRR" value={data?.mrr ?? 0} caption={fmt(data?.mrr ?? 0)} />
-      <Stat label="Pipeline open" value={data?.openPipeline ?? 0} caption={fmt(data?.openPipeline ?? 0)} />
-      <Stat label="Won (all time)" value={data?.wonValue ?? 0} caption={fmt(data?.wonValue ?? 0)} />
-      <Stat label="Tasks open" value={data?.openTasks ?? 0} caption="Dev backlog + in progress" tone={data && data.openTasks > 0 ? "warn" : "muted"} />
-      <Stat label="Products live" value={data?.liveProducts ?? 0} caption="Live + beta" />
+      {cards.map((c) => (
+        <Link
+          key={c.label}
+          to={c.to as any}
+          className="group rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] p-4 hover:border-[var(--accent-glow)] hover:bg-white/[0.02] transition-colors"
+          aria-label={`${c.label} — open ${c.to}`}
+        >
+          <p className="hud-label text-[var(--silver-dim)] flex items-center justify-between">
+            {c.label}
+            <span className="text-[var(--accent-glow)] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+          </p>
+          <p className={`mt-2 font-display text-3xl ${c.tone === "warn" ? "text-amber-400" : "text-[var(--silver)]"}`}>{c.value}</p>
+          <p className="mt-1 text-xs text-[var(--silver-dim)]">{c.caption}</p>
+        </Link>
+      ))}
     </section>
   );
 }
