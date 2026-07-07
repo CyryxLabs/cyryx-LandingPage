@@ -35,8 +35,15 @@ function AuthPage() {
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const normalized = email.trim().toLowerCase();
+    if (!normalized.endsWith("@cyryxlabs.com")) {
+      return setStatus({
+        kind: "error",
+        message: "Access restricted to @cyryxlabs.com accounts.",
+      });
+    }
     setStatus({ kind: "loading" });
-    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    const { error } = await supabase.auth.signInWithPassword({ email: normalized, password });
     if (error) return setStatus({ kind: "error", message: error.message });
     navigate({ to: "/workspace/careers" });
   }
