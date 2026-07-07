@@ -20,7 +20,6 @@ export const Route = createFileRoute("/_authenticated/admin/")({
       title: "Internal console — Cyryx Labs",
       description: "Internal admin dashboard.",
       path: "/admin",
-      noindex: true,
     }),
   component: AdminHome,
 });
