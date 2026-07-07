@@ -12,7 +12,8 @@ import {
   LogOut,
 } from "lucide-react";
 
-const NAV = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const NAV: NavItem[] = [
   { to: "/workspace", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/workspace/pipeline", label: "Pipeline", icon: Kanban },
   { to: "/workspace/products", label: "Products", icon: Package },
@@ -21,7 +22,7 @@ const NAV = [
   { to: "/workspace/marketing", label: "Marketing", icon: Megaphone },
   { to: "/workspace/finance", label: "Finance", icon: LineChart },
   { to: "/workspace/careers", label: "Careers funnel", icon: Briefcase },
-] as const;
+];
 
 export function WorkspaceShell({
   title,
@@ -49,7 +50,7 @@ export function WorkspaceShell({
             return (
               <Link
                 key={item.to}
-                to={item.to}
+                to={item.to as any}
                 className={`flex items-center gap-2 rounded-md px-3 py-2 transition-colors ${
                   active
                     ? "bg-[color-mix(in_oklab,var(--accent-glow)_12%,transparent)] text-[var(--accent-glow)]"
@@ -92,7 +93,7 @@ export function WorkspaceShell({
             return (
               <Link
                 key={item.to}
-                to={item.to}
+                to={item.to as any}
                 className={`shrink-0 rounded-md px-3 py-1.5 hud-label ${
                   active
                     ? "bg-[color-mix(in_oklab,var(--accent-glow)_12%,transparent)] text-[var(--accent-glow)]"
