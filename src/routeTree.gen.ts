@@ -43,6 +43,7 @@ import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './route
 import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
 import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
 import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
+import { Route as AuthenticatedWorkspaceRouteImport } from './routes/_authenticated/workspace'
 import { Route as AuthenticatedWorkspaceIndexRouteImport } from './routes/_authenticated/workspace.index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
@@ -243,11 +244,16 @@ const AnswersAiExecutionSystemVsAiAutomationRoute =
     path: '/answers/ai-execution-system-vs-ai-automation',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedWorkspaceRoute = AuthenticatedWorkspaceRouteImport.update({
+  id: '/workspace',
+  path: '/workspace',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedWorkspaceIndexRoute =
   AuthenticatedWorkspaceIndexRouteImport.update({
-    id: '/workspace/',
-    path: '/workspace/',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
@@ -271,51 +277,51 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
 } as any)
 const AuthenticatedWorkspaceProductsRoute =
   AuthenticatedWorkspaceProductsRouteImport.update({
-    id: '/workspace/products',
-    path: '/workspace/products',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const AuthenticatedWorkspacePipelineRoute =
   AuthenticatedWorkspacePipelineRouteImport.update({
-    id: '/workspace/pipeline',
-    path: '/workspace/pipeline',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/pipeline',
+    path: '/pipeline',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const AuthenticatedWorkspaceMarketingRoute =
   AuthenticatedWorkspaceMarketingRouteImport.update({
-    id: '/workspace/marketing',
-    path: '/workspace/marketing',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/marketing',
+    path: '/marketing',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const AuthenticatedWorkspaceHrRoute =
   AuthenticatedWorkspaceHrRouteImport.update({
-    id: '/workspace/hr',
-    path: '/workspace/hr',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/hr',
+    path: '/hr',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const AuthenticatedWorkspaceFinanceRoute =
   AuthenticatedWorkspaceFinanceRouteImport.update({
-    id: '/workspace/finance',
-    path: '/workspace/finance',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/finance',
+    path: '/finance',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const AuthenticatedWorkspaceDevRoute =
   AuthenticatedWorkspaceDevRouteImport.update({
-    id: '/workspace/dev',
-    path: '/workspace/dev',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/dev',
+    path: '/dev',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const AuthenticatedWorkspaceCareersRoute =
   AuthenticatedWorkspaceCareersRouteImport.update({
-    id: '/workspace/careers',
-    path: '/workspace/careers',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/careers',
+    path: '/careers',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const AuthenticatedWorkspaceSplatRoute =
   AuthenticatedWorkspaceSplatRouteImport.update({
-    id: '/workspace/$',
-    path: '/workspace/$',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/$',
+    path: '/$',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
@@ -375,6 +381,7 @@ export interface FileRoutesByFullPath {
   '/solutions': typeof SolutionsRouteWithChildren
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/workspace': typeof AuthenticatedWorkspaceRouteWithChildren
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
@@ -487,6 +494,7 @@ export interface FileRoutesById {
   '/solutions': typeof SolutionsRouteWithChildren
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/_authenticated/workspace': typeof AuthenticatedWorkspaceRouteWithChildren
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
@@ -544,6 +552,7 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/terms'
     | '/unsubscribe'
+    | '/workspace'
     | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/how-to-measure-ai-output-quality'
     | '/answers/what-are-command-gates-in-ai-systems'
@@ -655,6 +664,7 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/terms'
     | '/unsubscribe'
+    | '/_authenticated/workspace'
     | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/how-to-measure-ai-output-quality'
     | '/answers/what-are-command-gates-in-ai-systems'
@@ -975,12 +985,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/workspace': {
+      id: '/_authenticated/workspace'
+      path: '/workspace'
+      fullPath: '/workspace'
+      preLoaderRoute: typeof AuthenticatedWorkspaceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/workspace/': {
       id: '/_authenticated/workspace/'
-      path: '/workspace'
+      path: '/'
       fullPath: '/workspace/'
       preLoaderRoute: typeof AuthenticatedWorkspaceIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
@@ -1012,59 +1029,59 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/workspace/products': {
       id: '/_authenticated/workspace/products'
-      path: '/workspace/products'
+      path: '/products'
       fullPath: '/workspace/products'
       preLoaderRoute: typeof AuthenticatedWorkspaceProductsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/_authenticated/workspace/pipeline': {
       id: '/_authenticated/workspace/pipeline'
-      path: '/workspace/pipeline'
+      path: '/pipeline'
       fullPath: '/workspace/pipeline'
       preLoaderRoute: typeof AuthenticatedWorkspacePipelineRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/_authenticated/workspace/marketing': {
       id: '/_authenticated/workspace/marketing'
-      path: '/workspace/marketing'
+      path: '/marketing'
       fullPath: '/workspace/marketing'
       preLoaderRoute: typeof AuthenticatedWorkspaceMarketingRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/_authenticated/workspace/hr': {
       id: '/_authenticated/workspace/hr'
-      path: '/workspace/hr'
+      path: '/hr'
       fullPath: '/workspace/hr'
       preLoaderRoute: typeof AuthenticatedWorkspaceHrRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/_authenticated/workspace/finance': {
       id: '/_authenticated/workspace/finance'
-      path: '/workspace/finance'
+      path: '/finance'
       fullPath: '/workspace/finance'
       preLoaderRoute: typeof AuthenticatedWorkspaceFinanceRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/_authenticated/workspace/dev': {
       id: '/_authenticated/workspace/dev'
-      path: '/workspace/dev'
+      path: '/dev'
       fullPath: '/workspace/dev'
       preLoaderRoute: typeof AuthenticatedWorkspaceDevRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/_authenticated/workspace/careers': {
       id: '/_authenticated/workspace/careers'
-      path: '/workspace/careers'
+      path: '/careers'
       fullPath: '/workspace/careers'
       preLoaderRoute: typeof AuthenticatedWorkspaceCareersRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/_authenticated/workspace/$': {
       id: '/_authenticated/workspace/$'
-      path: '/workspace/$'
+      path: '/$'
       fullPath: '/workspace/$'
       preLoaderRoute: typeof AuthenticatedWorkspaceSplatRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
@@ -1118,7 +1135,7 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthenticatedRouteRouteChildren {
+interface AuthenticatedWorkspaceRouteChildren {
   AuthenticatedWorkspaceSplatRoute: typeof AuthenticatedWorkspaceSplatRoute
   AuthenticatedWorkspaceCareersRoute: typeof AuthenticatedWorkspaceCareersRoute
   AuthenticatedWorkspaceDevRoute: typeof AuthenticatedWorkspaceDevRoute
@@ -1130,16 +1147,30 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedWorkspaceIndexRoute: typeof AuthenticatedWorkspaceIndexRoute
 }
 
+const AuthenticatedWorkspaceRouteChildren: AuthenticatedWorkspaceRouteChildren =
+  {
+    AuthenticatedWorkspaceSplatRoute: AuthenticatedWorkspaceSplatRoute,
+    AuthenticatedWorkspaceCareersRoute: AuthenticatedWorkspaceCareersRoute,
+    AuthenticatedWorkspaceDevRoute: AuthenticatedWorkspaceDevRoute,
+    AuthenticatedWorkspaceFinanceRoute: AuthenticatedWorkspaceFinanceRoute,
+    AuthenticatedWorkspaceHrRoute: AuthenticatedWorkspaceHrRoute,
+    AuthenticatedWorkspaceMarketingRoute: AuthenticatedWorkspaceMarketingRoute,
+    AuthenticatedWorkspacePipelineRoute: AuthenticatedWorkspacePipelineRoute,
+    AuthenticatedWorkspaceProductsRoute: AuthenticatedWorkspaceProductsRoute,
+    AuthenticatedWorkspaceIndexRoute: AuthenticatedWorkspaceIndexRoute,
+  }
+
+const AuthenticatedWorkspaceRouteWithChildren =
+  AuthenticatedWorkspaceRoute._addFileChildren(
+    AuthenticatedWorkspaceRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedWorkspaceRoute: typeof AuthenticatedWorkspaceRouteWithChildren
+}
+
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedWorkspaceSplatRoute: AuthenticatedWorkspaceSplatRoute,
-  AuthenticatedWorkspaceCareersRoute: AuthenticatedWorkspaceCareersRoute,
-  AuthenticatedWorkspaceDevRoute: AuthenticatedWorkspaceDevRoute,
-  AuthenticatedWorkspaceFinanceRoute: AuthenticatedWorkspaceFinanceRoute,
-  AuthenticatedWorkspaceHrRoute: AuthenticatedWorkspaceHrRoute,
-  AuthenticatedWorkspaceMarketingRoute: AuthenticatedWorkspaceMarketingRoute,
-  AuthenticatedWorkspacePipelineRoute: AuthenticatedWorkspacePipelineRoute,
-  AuthenticatedWorkspaceProductsRoute: AuthenticatedWorkspaceProductsRoute,
-  AuthenticatedWorkspaceIndexRoute: AuthenticatedWorkspaceIndexRoute,
+  AuthenticatedWorkspaceRoute: AuthenticatedWorkspaceRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
