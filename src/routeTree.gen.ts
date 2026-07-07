@@ -49,6 +49,7 @@ import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 import { Route as AuthenticatedWorkspaceCareersRouteImport } from './routes/_authenticated/workspace.careers'
+import { Route as AuthenticatedWorkspaceSplatRouteImport } from './routes/_authenticated/workspace.$'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -266,6 +267,12 @@ const AuthenticatedWorkspaceCareersRoute =
     path: '/workspace/careers',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedWorkspaceSplatRoute =
+  AuthenticatedWorkspaceSplatRouteImport.update({
+    id: '/workspace/$',
+    path: '/workspace/$',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -331,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
+  '/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
   '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -377,6 +385,7 @@ export interface FileRoutesByTo {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers': typeof AnswersIndexRoute
   '/research': typeof ResearchIndexRoute
+  '/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
   '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -425,6 +434,7 @@ export interface FileRoutesById {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
+  '/_authenticated/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
   '/_authenticated/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
@@ -473,6 +483,7 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers/'
     | '/research/'
+    | '/workspace/$'
     | '/workspace/careers'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -519,6 +530,7 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers'
     | '/research'
+    | '/workspace/$'
     | '/workspace/careers'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -566,6 +578,7 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers/'
     | '/research/'
+    | '/_authenticated/workspace/$'
     | '/_authenticated/workspace/careers'
     | '/api/public/contact'
     | '/api/public/cta-events'
@@ -899,6 +912,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWorkspaceCareersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/workspace/$': {
+      id: '/_authenticated/workspace/$'
+      path: '/workspace/$'
+      fullPath: '/workspace/$'
+      preLoaderRoute: typeof AuthenticatedWorkspaceSplatRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -938,11 +958,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedWorkspaceSplatRoute: typeof AuthenticatedWorkspaceSplatRoute
   AuthenticatedWorkspaceCareersRoute: typeof AuthenticatedWorkspaceCareersRoute
   AuthenticatedWorkspaceIndexRoute: typeof AuthenticatedWorkspaceIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedWorkspaceSplatRoute: AuthenticatedWorkspaceSplatRoute,
   AuthenticatedWorkspaceCareersRoute: AuthenticatedWorkspaceCareersRoute,
   AuthenticatedWorkspaceIndexRoute: AuthenticatedWorkspaceIndexRoute,
 }
