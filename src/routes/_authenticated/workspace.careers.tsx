@@ -8,12 +8,12 @@ import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { getCareersFunnel, type CareersFunnel } from "@/lib/careers-analytics.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/careers")({
+export const Route = createFileRoute("/_authenticated/workspace/careers")({
   head: () =>
     buildHead({
       title: "Careers analytics — Cyryx Labs",
       description: "Admin funnel view for talent-network signups.",
-      path: "/admin/careers",
+      path: "/workspace/careers",
     }),
   component: CareersAnalyticsPage,
 });
@@ -30,7 +30,7 @@ function CareersAnalyticsPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" className="mx-auto max-w-6xl px-5 pt-32 pb-24 lg:pt-40">
-        <HudLabel withDot className="text-[var(--accent-glow)]">Cyryx Labs · Admin · Careers</HudLabel>
+        <HudLabel withDot className="text-[var(--accent-glow)]">Cyryx Labs · Workspace · Careers</HudLabel>
         <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
           <h1 className="font-display text-3xl sm:text-4xl font-semibold text-silver-gradient">
             Talent network funnel

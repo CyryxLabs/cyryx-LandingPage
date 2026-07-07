@@ -26,7 +26,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/admin/careers" });
+      if (data.user) navigate({ to: "/workspace/careers" });
     });
   }, [navigate]);
 
@@ -35,7 +35,7 @@ function AuthPage() {
     setStatus({ kind: "loading" });
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (error) return setStatus({ kind: "error", message: error.message });
-    navigate({ to: "/admin/careers" });
+    navigate({ to: "/workspace/careers" });
   }
 
   return (

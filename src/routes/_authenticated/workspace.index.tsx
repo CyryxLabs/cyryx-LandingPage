@@ -14,24 +14,24 @@ import {
   type ContactRow,
 } from "@/lib/admin-overview.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/")({
+export const Route = createFileRoute("/_authenticated/workspace/")({
   head: () =>
     buildHead({
       title: "Internal console — Cyryx Labs",
-      description: "Internal admin dashboard.",
-      path: "/admin",
+      description: "Internal workspace dashboard.",
+      path: "/workspace",
     }),
-  component: AdminHome,
+  component: WorkspaceHome,
 });
 
 type Tab = "overview" | "contacts" | "newsletter" | "cta";
 
-function AdminHome() {
+function WorkspaceHome() {
   const [windowDays, setWindowDays] = useState(30);
   const [tab, setTab] = useState<Tab>("overview");
   const fetchOverview = useServerFn(getAdminOverview);
   const { data, isLoading, error, refetch, isFetching } = useQuery<AdminOverview>({
-    queryKey: ["admin-overview", windowDays],
+    queryKey: ["workspace-overview", windowDays],
     queryFn: () => fetchOverview({ data: { windowDays } }),
   });
 
@@ -86,7 +86,7 @@ function AdminHome() {
             </TabBtn>
           ))}
           <Link
-            to="/admin/careers"
+            to="/workspace/careers"
             className="ml-auto text-xs hud-label text-[var(--accent-glow)] hover:underline self-center"
           >
             Careers funnel →
@@ -173,7 +173,7 @@ function ContactsTab({ rows, onChanged }: { rows: ContactRow[]; onChanged: () =>
   const mutation = useMutation({
     mutationFn: (args: { id: string; handled: boolean; notes: string | null }) => mark({ data: args }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin-overview"] });
+      qc.invalidateQueries({ queryKey: ["workspace-overview"] });
       onChanged();
     },
   });
