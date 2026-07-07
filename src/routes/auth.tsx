@@ -23,9 +23,10 @@ function AuthPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState<{ kind: "idle" | "loading" | "error"; message?: string }>({
-    kind: "idle",
-  });
+  const [status, setStatus] = useState<{
+    kind: "idle" | "loading" | "error" | "info" | "success";
+    message?: string;
+  }>({ kind: "idle" });
   // Prevent any flash of the sign-in form (and any redirect flash to /workspace)
   // while we resolve the current session.
   const [sessionChecked, setSessionChecked] = useState(false);
@@ -41,8 +42,26 @@ function AuthPage() {
       }
       setSessionChecked(true);
     });
+    // Detect confirmation-link return (Supabase parses the URL hash and
+    // creates a session automatically → SIGNED_IN fires).
+    const hash = typeof window !== "undefined" ? window.location.hash : "";
+    if (/type=(signup|magiclink|recovery|invite)/.test(hash)) {
+      setStatus({ kind: "info", message: "Confirming your email…" });
+    } else if (/error=/.test(hash) || /error_description=/.test(hash)) {
+      const desc = new URLSearchParams(hash.replace(/^#/, "")).get("error_description");
+      setStatus({
+        kind: "error",
+        message: desc ? decodeURIComponent(desc) : "Email verification failed. Request a new link.",
+      });
+    }
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session?.user) {
+        navigate({ to: "/workspace/careers", replace: true });
+      }
+    });
     return () => {
       cancelled = true;
+      sub.subscription.unsubscribe();
     };
   }, [navigate]);
 
@@ -86,15 +105,23 @@ function AuthPage() {
       if (error) return setStatus({ kind: "error", message: error.message });
       if (!data.session) {
         return setStatus({
-          kind: "error",
-          message: "Account created. Check your inbox to confirm your email, then sign in.",
+          kind: "info",
+          message: `Confirmation email sent to ${normalized}. Open the link from that inbox — this page will unlock automatically once verified.`,
         });
       }
       navigate({ to: "/workspace/careers" });
       return;
     }
     const { error } = await supabase.auth.signInWithPassword({ email: normalized, password });
-    if (error) return setStatus({ kind: "error", message: error.message });
+    if (error) {
+      const isUnconfirmed = /confirm|not.*confirmed|email.*not/i.test(error.message);
+      return setStatus({
+        kind: "error",
+        message: isUnconfirmed
+          ? "Your email isn't confirmed yet. Check your inbox for the verification link, or click 'Forgot password?' to resend."
+          : error.message,
+      });
+    }
     navigate({ to: "/workspace/careers" });
   }
 
@@ -223,8 +250,19 @@ function AuthPage() {
               >
                 Forgot password?
               </button>
-              {status.kind === "error" && (
-                <div role="alert" className="text-xs text-[color:oklch(0.72_0.16_25)] space-y-1">
+              {(status.kind === "error" ||
+                status.kind === "info" ||
+                status.kind === "success") && (
+                <div
+                  role={status.kind === "error" ? "alert" : "status"}
+                  className={`text-xs space-y-1 ${
+                    status.kind === "error"
+                      ? "text-[color:oklch(0.72_0.16_25)]"
+                      : status.kind === "success"
+                        ? "text-emerald-400"
+                        : "text-[var(--accent-glow)]"
+                  }`}
+                >
                   <p>{status.message}</p>
                   {status.message?.startsWith("Invalid domain") && (
                     <p className="text-[var(--silver-dim)]">
