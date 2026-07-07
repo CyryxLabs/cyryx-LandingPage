@@ -275,6 +275,135 @@ function WatchersPane({ target }: { target: { entity_type: string; entity_id: st
 
 type Activity = { id: string; action: string; actor_id: string | null; changes: any; created_at: string };
 
+type Attachment = {
+  id: string;
+  file_name: string;
+  file_path: string;
+  content_type: string | null;
+  size_bytes: number | null;
+  uploaded_by: string;
+  created_at: string;
+};
+
+function AttachmentsPane({ target }: { target: { entity_type: string; entity_id: string } }) {
+  const qc = useQueryClient();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const key = ["ws_attachments", target.entity_type, target.entity_id];
+  const q = useQuery({
+    queryKey: key,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("ws_attachments")
+        .select("id, file_name, file_path, content_type, size_bytes, uploaded_by, created_at")
+        .eq("entity_type", target.entity_type)
+        .eq("entity_id", target.entity_id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as Attachment[];
+    },
+  });
+
+  async function onFiles(files: FileList | null) {
+    if (!files || !files.length) return;
+    setBusy(true);
+    try {
+      for (const f of Array.from(files)) {
+        await uploadAttachment(target.entity_type, target.entity_id, f);
+      }
+      qc.invalidateQueries({ queryKey: key });
+    } catch (e: any) {
+      alert(e.message ?? "Upload failed");
+    } finally {
+      setBusy(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  }
+
+  async function onDownload(a: Attachment) {
+    try {
+      const url = await getAttachmentUrl(a.file_path);
+      window.open(url, "_blank", "noopener");
+    } catch (e: any) {
+      alert(e.message ?? "Failed to generate link");
+    }
+  }
+
+  async function onDelete(a: Attachment) {
+    if (!confirm(`Delete "${a.file_name}"?`)) return;
+    try {
+      await deleteAttachment(a.id, a.file_path);
+      qc.invalidateQueries({ queryKey: key });
+    } catch (e: any) {
+      alert(e.message ?? "Delete failed");
+    }
+  }
+
+  const rows = q.data ?? [];
+  return (
+    <div className="space-y-4">
+      <label
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          onFiles(e.dataTransfer.files);
+        }}
+        className="flex flex-col items-center justify-center gap-2 py-6 rounded-md border border-dashed border-[color-mix(in_oklab,var(--accent-glow)_25%,transparent)] cursor-pointer hover:border-[var(--accent-glow)] transition-colors"
+      >
+        <Upload className="h-5 w-5 text-[var(--accent-glow)]" />
+        <span className="hud-label text-[11px] text-[var(--silver-dim)]">
+          {busy ? "Uploading…" : "Drop files or click to upload"}
+        </span>
+        <input
+          ref={inputRef}
+          type="file"
+          multiple
+          hidden
+          onChange={(e) => onFiles(e.target.files)}
+          disabled={busy}
+        />
+      </label>
+
+      {q.isLoading && <p className="text-sm text-[var(--silver-dim)]">Loading…</p>}
+      <ul className="space-y-1.5">
+        {rows.map((a) => (
+          <li
+            key={a.id}
+            className="flex items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] bg-white/[0.02] px-3 py-2"
+          >
+            <Paperclip className="h-3.5 w-3.5 text-[var(--accent-glow)] shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="text-sm text-[var(--silver)] truncate">{a.file_name}</p>
+              <p className="text-[10px] text-[var(--silver-dim)]">
+                {formatBytes(a.size_bytes)} · {new Date(a.created_at).toLocaleDateString()}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => onDownload(a)}
+              className="h-7 w-7 flex items-center justify-center rounded text-[var(--silver-dim)] hover:text-[var(--accent-glow)]"
+              aria-label="Download"
+            >
+              <Download className="h-3.5 w-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onDelete(a)}
+              className="h-7 w-7 flex items-center justify-center rounded text-[var(--silver-dim)] hover:text-red-400"
+              aria-label="Delete"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </li>
+        ))}
+        {rows.length === 0 && !q.isLoading && (
+          <li className="text-xs text-[var(--silver-dim)] italic text-center py-4">No attachments yet.</li>
+        )}
+      </ul>
+    </div>
+  );
+}
+
 function ActivityPane({ target }: { target: { entity_type: string; entity_id: string } }) {
   const q = useQuery({
     queryKey: ["ws_activity_log", target.entity_type, target.entity_id],
