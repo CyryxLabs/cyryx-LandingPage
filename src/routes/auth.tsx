@@ -7,12 +7,14 @@ import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildHead } from "@/components/cyryx/seo/seo";
 
 export const Route = createFileRoute("/auth")({
-  head: () =>
-    buildHead({
+  head: () => {
+    const h = buildHead({
       title: "Sign in — Cyryx Labs",
-      description: "Admin sign-in for Cyryx Labs internal tools.",
+      description: "Sign-in for Cyryx Labs internal tools.",
       path: "/auth",
-    }),
+    });
+    return { ...h, meta: [...h.meta, { name: "robots", content: "noindex, nofollow" }] };
+  },
   component: AuthPage,
 });
 
