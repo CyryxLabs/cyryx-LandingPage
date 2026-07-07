@@ -33,19 +33,38 @@ function AuthPage() {
     });
   }, [navigate]);
 
+  const DOMAIN_ERROR =
+    "Invalid domain. Please use your @cyryxlabs.com company email to sign in.";
+
+  function isCyryxEmail(value: string) {
+    return /^[^\s@]+@cyryxlabs\.com$/i.test(value.trim());
+  }
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const normalized = email.trim().toLowerCase();
-    if (!normalized.endsWith("@cyryxlabs.com")) {
-      return setStatus({
-        kind: "error",
-        message: "Access restricted to @cyryxlabs.com accounts.",
-      });
+    if (!isCyryxEmail(normalized)) {
+      console.warn("[auth] blocked sign-in: invalid domain", { email: normalized });
+      return setStatus({ kind: "error", message: DOMAIN_ERROR });
     }
     setStatus({ kind: "loading" });
     const { error } = await supabase.auth.signInWithPassword({ email: normalized, password });
     if (error) return setStatus({ kind: "error", message: error.message });
     navigate({ to: "/workspace/careers" });
+  }
+
+  async function onForgotPassword() {
+    const normalized = email.trim().toLowerCase();
+    if (!isCyryxEmail(normalized)) {
+      console.warn("[auth] blocked password recovery: invalid domain", { email: normalized });
+      return setStatus({ kind: "error", message: DOMAIN_ERROR });
+    }
+    setStatus({ kind: "loading" });
+    const { error } = await supabase.auth.resetPasswordForEmail(normalized, {
+      redirectTo: `${window.location.origin}/auth`,
+    });
+    if (error) return setStatus({ kind: "error", message: error.message });
+    setStatus({ kind: "error", message: "If that account exists, a reset link is on its way." });
   }
 
   return (
