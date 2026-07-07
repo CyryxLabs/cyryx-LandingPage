@@ -6,6 +6,7 @@ const BASE_URL = "https://cyryxlabs.com";
 const ENTRIES = [
   { path: "/products", priority: "0.8" },
   { path: "/products/maax-studio", priority: "0.9" },
+  { path: "/products/lyra", priority: "0.7" },
 ];
 
 export const Route = createFileRoute("/sitemap-products.xml")({
