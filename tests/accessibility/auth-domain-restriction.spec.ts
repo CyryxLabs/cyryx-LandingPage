@@ -21,10 +21,12 @@ test.describe("/auth domain restriction", () => {
         if (m.type() === "warning") consoleWarnings.push(m.text());
       });
 
-      await page.goto("/auth");
-      await page.getByLabel("Email").fill(email);
-      await page.getByLabel("Password").fill("whatever-Passw0rd!");
-      await page.getByRole("button", { name: "Sign in" }).click();
+      await page.goto("/auth", { waitUntil: "networkidle" });
+      const emailField = page.getByLabel("Email");
+      const passwordField = page.getByLabel("Password");
+      await emailField.pressSequentially(email);
+      await passwordField.pressSequentially("whatever-Passw0rd!");
+      await passwordField.press("Enter");
 
       const alert = page.getByRole("alert");
       await expect(alert).toBeVisible();
@@ -39,8 +41,8 @@ test.describe("/auth domain restriction", () => {
         if (m.type() === "warning") consoleWarnings.push(m.text());
       });
 
-      await page.goto("/auth");
-      await page.getByLabel("Email").fill(email);
+      await page.goto("/auth", { waitUntil: "networkidle" });
+      await page.getByLabel("Email").pressSequentially(email);
       await page.getByRole("button", { name: "Forgot password?" }).click();
 
       const alert = page.getByRole("alert");
