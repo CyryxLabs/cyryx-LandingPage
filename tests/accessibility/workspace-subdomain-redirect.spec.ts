@@ -141,3 +141,56 @@ test("unauthenticated visit to /workspace redirects to /auth", async ({ page }) 
   await page.waitForURL((url) => url.pathname === "/auth", { timeout: 10_000 });
   expect(page.url()).toContain("/auth");
 });
+
+/**
+ * End-to-end: an already-authenticated visitor landing on
+ * workspace.cyryxlabs.com/?w=90d&tab=overview must be sent straight to
+ * /workspace with ?w and ?tab preserved, without bouncing through /auth.
+ *
+ * The subdomain rewrite itself is inline JS (proven above). Here we
+ * exercise the post-rewrite auth flow against the running dev server:
+ * inject the managed Supabase session into localStorage/cookies, then
+ * navigate directly to /workspace?w=90d&tab=overview and assert the URL.
+ *
+ * Skips when the sandbox has no Supabase session available (LOVABLE_BROWSER_
+ * env vars only exist inside authenticated Lovable browser runs).
+ */
+test("authenticated visit to /workspace?w=90d&tab=overview stays on /workspace with params", async ({
+  page,
+  context,
+}) => {
+  const storageKey = process.env.LOVABLE_BROWSER_SUPABASE_STORAGE_KEY;
+  const sessionJson = process.env.LOVABLE_BROWSER_SUPABASE_SESSION_JSON;
+  const cookiesJson = process.env.LOVABLE_BROWSER_SUPABASE_COOKIES_JSON;
+  test.skip(
+    !storageKey || !sessionJson,
+    "No managed Supabase session available in this sandbox",
+  );
+
+  if (cookiesJson) {
+    const cookies = (JSON.parse(cookiesJson) as Array<Record<string, unknown>>).map((c) => ({
+      ...c,
+      url: "http://127.0.0.1:4175",
+    }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await context.addCookies(cookies as any);
+  }
+
+  // Establish the localhost origin before writing to its localStorage.
+  await page.goto("/");
+  await page.evaluate(
+    ({ k, v }) => window.localStorage.setItem(k, v),
+    { k: storageKey!, v: sessionJson! },
+  );
+
+  await page.goto("/workspace?w=90d&tab=overview");
+  // Wait for the authenticated layout to resolve (either stays on /workspace
+  // or, on failure, bounces to /auth).
+  await page.waitForLoadState("networkidle");
+
+  const url = new URL(page.url());
+  expect(url.pathname).toMatch(/^\/workspace(\/|$)/);
+  expect(url.pathname).not.toBe("/auth");
+  expect(url.searchParams.get("w")).toBe("90d");
+  expect(url.searchParams.get("tab")).toBe("overview");
+});
