@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell, WorkspaceCard, WsButton, WsInput, WsSelect } from "@/components/cyryx/workspace/WorkspaceShell";
+import { drawerStore } from "@/lib/drawer-store";
 
 type Stage = { id: string; name: string; position: number; is_won: boolean; is_lost: boolean };
 type Deal = {
@@ -128,7 +129,13 @@ function PipelinePage() {
                     onDragStart={(e) => e.dataTransfer.setData("text/deal-id", d.id)}
                     className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] p-2.5 bg-white/[0.02] cursor-grab active:cursor-grabbing"
                   >
-                    <p className="font-medium text-sm">{d.title}</p>
+                    <button
+                      type="button"
+                      onClick={() => drawerStore.open({ entity_type: "crm_deals", entity_id: d.id, label: d.title })}
+                      className="font-medium text-sm text-left hover:text-[var(--accent-glow)] transition-colors"
+                    >
+                      {d.title}
+                    </button>
                     <p className="text-xs text-[var(--silver-dim)]">
                       ${Number(d.value ?? 0).toLocaleString()} {d.currency}
                     </p>
