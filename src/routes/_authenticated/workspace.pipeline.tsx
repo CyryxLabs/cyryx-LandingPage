@@ -5,8 +5,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell, WorkspaceCard, WsButton, WsInput, WsSelect } from "@/components/cyryx/workspace/WorkspaceShell";
 
-const STAGES = ["lead", "qualified", "proposal", "negotiation", "won", "lost"] as const;
-type Stage = (typeof STAGES)[number];
+type Stage = { id: string; name: string; position: number; is_won: boolean; is_lost: boolean };
+type Deal = {
+  id: string;
+  title: string;
+  stage_id: string;
+  value: number | string;
+  currency: string;
+  status: string;
+  company_id: string | null;
+  contact_id: string | null;
+  pipeline_id: string;
+  expected_close_date: string | null;
+};
 
 export const Route = createFileRoute("/_authenticated/workspace/pipeline")({
   head: () => {
@@ -18,77 +29,95 @@ export const Route = createFileRoute("/_authenticated/workspace/pipeline")({
 
 function PipelinePage() {
   const qc = useQueryClient();
-  const { data = [], isLoading } = useQuery({
-    queryKey: ["ws_deals"],
+  const stagesQ = useQuery({
+    queryKey: ["crm_stages"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("ws_deals").select("*").order("updated_at", { ascending: false });
+      const { data, error } = await (supabase as any)
+        .from("crm_stages").select("*").order("position", { ascending: true });
       if (error) throw error;
-      return data ?? [];
+      return (data ?? []) as Stage[];
     },
   });
+  const dealsQ = useQuery({
+    queryKey: ["crm_deals"],
+    queryFn: async () => {
+      const { data, error } = await (supabase as any)
+        .from("crm_deals").select("*").order("updated_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as Deal[];
+    },
+  });
+  const stages = stagesQ.data ?? [];
+  const deals = dealsQ.data ?? [];
 
   const [title, setTitle] = useState("");
-  const [company, setCompany] = useState("");
   const [value, setValue] = useState("");
-  const [dragOver, setDragOver] = useState<Stage | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
 
   async function addDeal(e: React.FormEvent) {
     e.preventDefault();
-    if (!title.trim()) return;
-    await supabase.from("ws_deals").insert({ title, company: company || null, value_usd: Number(value) || 0 });
-    setTitle(""); setCompany(""); setValue("");
-    qc.invalidateQueries({ queryKey: ["ws_deals"] });
+    if (!title.trim() || stages.length === 0) return;
+    const first = stages[0];
+    await (supabase as any).from("crm_deals").insert({
+      title,
+      value: Number(value) || 0,
+      currency: "USD",
+      pipeline_id: first ? (await (supabase as any).from("crm_pipelines").select("id").limit(1).single()).data?.id : null,
+      stage_id: first.id,
+    });
+    setTitle(""); setValue("");
+    qc.invalidateQueries({ queryKey: ["crm_deals"] });
   }
 
   async function moveStage(id: string, stage: Stage) {
-    await supabase.from("ws_deals").update({ stage }).eq("id", id);
-    qc.invalidateQueries({ queryKey: ["ws_deals"] });
+    const status = stage.is_won ? "won" : stage.is_lost ? "lost" : "open";
+    await (supabase as any).from("crm_deals").update({ stage_id: stage.id, status }).eq("id", id);
+    qc.invalidateQueries({ queryKey: ["crm_deals"] });
   }
 
   async function removeDeal(id: string) {
     if (!confirm("Delete deal?")) return;
-    await supabase.from("ws_deals").delete().eq("id", id);
-    qc.invalidateQueries({ queryKey: ["ws_deals"] });
+    await (supabase as any).from("crm_deals").delete().eq("id", id);
+    qc.invalidateQueries({ queryKey: ["crm_deals"] });
   }
 
-  const totalOpen = data.filter((d) => !["won", "lost"].includes(d.stage)).reduce((s, d) => s + Number(d.value_usd ?? 0), 0);
-  const totalWon = data.filter((d) => d.stage === "won").reduce((s, d) => s + Number(d.value_usd ?? 0), 0);
+  const totalOpen = deals.filter((d) => d.status === "open").reduce((s, d) => s + Number(d.value ?? 0), 0);
+  const totalWon = deals.filter((d) => d.status === "won").reduce((s, d) => s + Number(d.value ?? 0), 0);
 
   return (
     <WorkspaceShell
       title="Pipeline"
-      subtitle={`${data.length} deals · $${totalOpen.toLocaleString()} open · $${totalWon.toLocaleString()} won`}
+      subtitle={`${deals.length} deals · $${totalOpen.toLocaleString()} open · $${totalWon.toLocaleString()} won`}
     >
       <form onSubmit={addDeal} className="flex flex-wrap gap-2 mb-6">
         <WsInput placeholder="Deal title" value={title} onChange={(e) => setTitle(e.target.value)} required className="flex-1 min-w-[200px]" />
-        <WsInput placeholder="Company" value={company} onChange={(e) => setCompany(e.target.value)} className="min-w-[160px]" />
         <WsInput placeholder="Value (USD)" type="number" value={value} onChange={(e) => setValue(e.target.value)} className="w-32" />
         <WsButton type="submit" variant="primary">Add deal</WsButton>
       </form>
 
-      {isLoading && <p className="text-sm text-[var(--silver-dim)]">Loading…</p>}
+      {(stagesQ.isLoading || dealsQ.isLoading) && <p className="text-sm text-[var(--silver-dim)]">Loading…</p>}
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {STAGES.map((stage) => {
-          const rows = data.filter((d) => d.stage === stage);
-          const total = rows.reduce((s, d) => s + Number(d.value_usd ?? 0), 0);
+        {stages.map((stage) => {
+          const rows = deals.filter((d) => d.stage_id === stage.id);
+          const total = rows.reduce((s, d) => s + Number(d.value ?? 0), 0);
           return (
             <WorkspaceCard
-              key={stage}
-              className={`p-3 transition-colors ${dragOver === stage ? "bg-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] border-[var(--accent-glow)]" : ""}`}
+              key={stage.id}
+              className={`p-3 transition-colors ${dragOverId === stage.id ? "bg-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] border-[var(--accent-glow)]" : ""}`}
             >
               <div
-                onDragOver={(e) => { e.preventDefault(); setDragOver(stage); }}
-                onDragLeave={() => setDragOver((s) => (s === stage ? null : s))}
+                onDragOver={(e) => { e.preventDefault(); setDragOverId(stage.id); }}
+                onDragLeave={() => setDragOverId((s) => (s === stage.id ? null : s))}
                 onDrop={(e) => {
                   e.preventDefault();
                   const id = e.dataTransfer.getData("text/deal-id");
-                  setDragOver(null);
+                  setDragOverId(null);
                   if (id) moveStage(id, stage);
                 }}
               >
               <div className="flex items-center justify-between mb-3">
-                <p className="hud-label text-[var(--accent-glow)]">{stage}</p>
+                <p className="hud-label text-[var(--accent-glow)]">{stage.name}</p>
                 <span className="text-xs text-[var(--silver-dim)]">{rows.length} · ${total.toLocaleString()}</span>
               </div>
               <ul className="space-y-2">
@@ -101,11 +130,18 @@ function PipelinePage() {
                   >
                     <p className="font-medium text-sm">{d.title}</p>
                     <p className="text-xs text-[var(--silver-dim)]">
-                      {d.company || "—"} · ${Number(d.value_usd ?? 0).toLocaleString()}
+                      ${Number(d.value ?? 0).toLocaleString()} {d.currency}
                     </p>
                     <div className="mt-2 flex gap-1.5">
-                      <WsSelect value={d.stage} onChange={(e) => moveStage(d.id, e.target.value as Stage)} className="flex-1 h-7 text-xs">
-                        {STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
+                      <WsSelect
+                        value={d.stage_id}
+                        onChange={(e) => {
+                          const s = stages.find((x) => x.id === e.target.value);
+                          if (s) moveStage(d.id, s);
+                        }}
+                        className="flex-1 h-7 text-xs"
+                      >
+                        {stages.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
                       </WsSelect>
                       <button
                         onClick={() => removeDeal(d.id)}
