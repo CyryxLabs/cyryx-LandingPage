@@ -500,28 +500,43 @@ function MarketingDashboard({ range, setRange }: PaneProps) {
     ["mkt_leads", "mkt_campaigns", "crm_deals"],
     [["dash-marketing", range], ["mkt_attribution_v"]],
   );
+  const [channelFilter, setChannelFilter] = useState<string>("");
+  const [campaignFilter, setCampaignFilter] = useState<string>("");
   const q = useQuery({
     queryKey: ["dash-marketing", range],
     queryFn: async () => {
       const { data } = await (supabase as any)
         .from("mkt_attribution_v")
         .select("*");
-      const byChannel = new Map<string, { channel: string; leads: number; won_value: number; spend: number }>();
-      for (const r of data ?? []) {
+      return { rows: (data ?? []) as any[] };
+    },
+  });
+  const { rows, byChannel, top, channels, campaigns } = useMemo(() => {
+    const all = q.data?.rows ?? [];
+    const filtered = all.filter((r: any) =>
+      (!channelFilter || r.channel_name === channelFilter) &&
+      (!campaignFilter || r.campaign_id === campaignFilter),
+    );
+    const map = new Map<string, { channel: string; leads: number; won_value: number; spend: number }>();
+    for (const r of filtered) {
         const key = r.channel_name ?? "—";
-        const cur = byChannel.get(key) ?? { channel: key, leads: 0, won_value: 0, spend: 0 };
+      const cur = map.get(key) ?? { channel: key, leads: 0, won_value: 0, spend: 0 };
         cur.leads += Number(r.leads_count ?? 0);
         cur.won_value += Number(r.won_value ?? 0);
         cur.spend += Number(r.spend ?? 0);
-        byChannel.set(key, cur);
-      }
-      return { byChannel: Array.from(byChannel.values()), top: (data ?? []).slice(0, 8) };
-    },
-  });
-  const rows = q.data?.byChannel ?? [];
+      map.set(key, cur);
+    }
+    return {
+      rows: filtered,
+      byChannel: Array.from(map.values()),
+      top: filtered.slice(0, 8),
+      channels: Array.from(new Set(all.map((r: any) => r.channel_name).filter(Boolean))) as string[],
+      campaigns: all.map((r: any) => ({ id: r.campaign_id as string, name: r.campaign_name as string })),
+    };
+  }, [q.data, channelFilter, campaignFilter]);
   const openCampaign = (idx?: number) => {
     if (idx == null) return;
-    const r = q.data?.top?.[idx];
+    const r = top[idx];
     if (r?.campaign_id) drawerStore.open({ entity_type: "mkt_campaigns", entity_id: r.campaign_id, label: r.campaign_name });
   };
   return (
@@ -529,12 +544,22 @@ function MarketingDashboard({ range, setRange }: PaneProps) {
       <DashboardToolbar
         range={range}
         setRange={setRange}
-        onExport={() => downloadCSV(`marketing-attribution-${range}.csv`, q.data?.top ?? [])}
+        onExport={() => downloadCSV(`marketing-attribution-${range}.csv`, rows)}
+        extra={
+          <SegmentSelects
+            selects={[
+              { label: "Channel", value: channelFilter, onChange: setChannelFilter,
+                options: channels.map((c) => ({ value: c, label: c })) },
+              { label: "Campaign", value: campaignFilter, onChange: setCampaignFilter,
+                options: campaigns.map((c) => ({ value: c.id, label: c.name })) },
+            ]}
+          />
+        }
       />
       <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="Leads by channel">
         <ResponsiveContainer>
-          <BarChart data={rows} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+          <BarChart data={byChannel} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="channel" stroke={AXIS} fontSize={11} />
             <YAxis stroke={AXIS} fontSize={11} />
@@ -545,7 +570,7 @@ function MarketingDashboard({ range, setRange }: PaneProps) {
       </ChartCard>
       <ChartCard title="Won revenue vs spend by channel" subtitle="Click a bar to open top campaign">
         <ResponsiveContainer>
-          <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={(s: any) => openCampaign(s?.activeTooltipIndex)}>
+          <BarChart data={byChannel} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={(s: any) => openCampaign(s?.activeTooltipIndex)}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="channel" stroke={AXIS} fontSize={11} />
             <YAxis stroke={AXIS} fontSize={11} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
