@@ -5,7 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell, WorkspaceCard, WsButton } from "@/components/cyryx/workspace/WorkspaceShell";
 import { DataTable } from "@/components/cyryx/workspace/DataTable";
-import { DeptDashboard } from "@/components/cyryx/workspace/DeptDashboard";
+import { DeptDashboard, downloadCSV } from "@/components/cyryx/workspace/DeptDashboard";
+import { drawerStore } from "@/lib/drawer-store";
 import { reconcileAttribution } from "@/lib/attribution";
 
 export const Route = createFileRoute("/_authenticated/workspace/marketing")({
@@ -96,6 +97,7 @@ function AttributionTable() {
   const qc = useQueryClient();
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [lastResult, setLastResult] = useState<{ at: string; scanned: number; marked_won: number; cleared: number } | null>(null);
   const { data = [], isLoading } = useQuery({
     queryKey: ["mkt_attribution_v"],
     queryFn: async () => {
@@ -114,6 +116,7 @@ function AttributionTable() {
     try {
       const r = await reconcileAttribution();
       setMsg(`Scanned ${r.scanned} · marked won ${r.marked_won} · cleared ${r.cleared}`);
+      setLastResult({ at: new Date().toISOString(), ...r });
       qc.invalidateQueries({ queryKey: ["mkt_attribution_v"] });
       qc.invalidateQueries({ queryKey: ["mkt_leads"] });
     } catch (e: any) {
@@ -132,9 +135,26 @@ function AttributionTable() {
         <p className="text-xs text-[var(--silver-dim)]">
           {msg ?? "Sync mkt_leads.converted_at with current CRM deal stage."}
         </p>
-        <WsButton onClick={onReconcile} disabled={busy} variant="primary">
-          {busy ? "Reconciling…" : "Reconcile attribution"}
-        </WsButton>
+        <div className="flex gap-2">
+          <WsButton
+            onClick={() => downloadCSV(`attribution-${new Date().toISOString().slice(0,10)}.csv`, data)}
+            disabled={!data.length}
+          >
+            Export CSV
+          </WsButton>
+          <WsButton
+            onClick={() => {
+              if (lastResult) downloadCSV(`reconcile-${lastResult.at.slice(0,10)}.csv`, [lastResult]);
+            }}
+            disabled={!lastResult}
+          >
+            Export result
+          </WsButton>
+          <WsButton onClick={() => window.print()}>Print / PDF</WsButton>
+          <WsButton onClick={onReconcile} disabled={busy} variant="primary">
+            {busy ? "Reconciling…" : "Reconcile attribution"}
+          </WsButton>
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -163,8 +183,12 @@ function AttributionTable() {
             {data.map((r: any) => {
               const roi = r.spend > 0 ? ((Number(r.won_value) - Number(r.spend)) / Number(r.spend)) * 100 : null;
               return (
-                <tr key={r.campaign_id} className="border-t border-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)]">
-                  <td className="px-3 py-2">{r.campaign_name}</td>
+                <tr
+                  key={r.campaign_id}
+                  onClick={() => drawerStore.open({ entity_type: "mkt_campaigns", entity_id: r.campaign_id, label: r.campaign_name })}
+                  className="border-t border-[color-mix(in_oklab,var(--accent-glow)_8%,transparent)] cursor-pointer hover:bg-white/[0.03]"
+                >
+                  <td className="px-3 py-2 text-[var(--accent-glow)]">{r.campaign_name}</td>
                   <td className="px-3 py-2 text-[var(--silver-dim)]">{r.channel_name ?? "—"}</td>
                   <td className="px-3 py-2 text-[var(--silver-dim)]">{r.status}</td>
                   <td className="px-3 py-2 text-right">{fmt(Number(r.budget))}</td>
