@@ -68,17 +68,23 @@ export function downloadCSV(name: string, rows: Record<string, unknown>[]) {
   URL.revokeObjectURL(url);
 }
 
-function useRealtimeInvalidate(tables: string[], keys: string[][]) {
+function useRealtimeInvalidate(tables: string[], keys: string[][], debounceMs = 750) {
   const qc = useQueryClient();
   useEffect(() => {
     const channel = supabase.channel(`dash-${tables.join("-")}`);
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const flush = () => {
+      timer = null;
+      keys.forEach((k) => qc.invalidateQueries({ queryKey: k }));
+    };
     tables.forEach((t) =>
       channel.on("postgres_changes", { event: "*", schema: "public", table: t }, () => {
-        keys.forEach((k) => qc.invalidateQueries({ queryKey: k }));
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(flush, debounceMs);
       }),
     );
     channel.subscribe();
-    return () => { supabase.removeChannel(channel); };
+    return () => { if (timer) clearTimeout(timer); supabase.removeChannel(channel); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
