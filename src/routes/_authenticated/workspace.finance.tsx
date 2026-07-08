@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell, WorkspaceCard } from "@/components/cyryx/workspace/WorkspaceShell";
 import { DataTable } from "@/components/cyryx/workspace/DataTable";
+import { DeptDashboard } from "@/components/cyryx/workspace/DeptDashboard";
 
 export const Route = createFileRoute("/_authenticated/workspace/finance")({
   head: () => {
@@ -37,6 +38,11 @@ function FinancePage() {
         ))}
       </nav>
       {tab === "overview" && <FinanceOverview />}
+      {tab === "overview" && (
+        <div className="mt-6">
+          <DeptDashboard kind="finance" />
+        </div>
+      )}
       {tab === "transactions" && (
         <DataTable
           tableName="fin_transactions"
