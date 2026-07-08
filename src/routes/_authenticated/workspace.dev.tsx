@@ -6,6 +6,7 @@ import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell, WorkspaceCard, WsSelect } from "@/components/cyryx/workspace/WorkspaceShell";
 import { DataTable } from "@/components/cyryx/workspace/DataTable";
 import { drawerStore } from "@/lib/drawer-store";
+import { DeptDashboard } from "@/components/cyryx/workspace/DeptDashboard";
 
 export const Route = createFileRoute("/_authenticated/workspace/dev")({
   head: () => {
@@ -15,13 +16,13 @@ export const Route = createFileRoute("/_authenticated/workspace/dev")({
   component: DevPage,
 });
 
-const TABS = ["board", "projects", "tasks", "sprints"] as const;
+const TABS = ["dashboard", "board", "projects", "tasks", "sprints"] as const;
 type Tab = (typeof TABS)[number];
 const STATUSES = ["backlog", "todo", "in_progress", "in_review", "done", "canceled"] as const;
 type Status = (typeof STATUSES)[number];
 
 function DevPage() {
-  const [tab, setTab] = useState<Tab>("board");
+  const [tab, setTab] = useState<Tab>("dashboard");
   return (
     <WorkspaceShell title="Development" subtitle="Projects, sprints, tasks & kanban">
       <nav className="mb-6 flex flex-wrap gap-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] pb-2">
@@ -39,6 +40,7 @@ function DevPage() {
           </button>
         ))}
       </nav>
+      {tab === "dashboard" && <DeptDashboard kind="dev" />}
       {tab === "board" && <TaskBoard />}
       {tab === "projects" && (
         <DataTable
