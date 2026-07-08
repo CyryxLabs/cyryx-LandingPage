@@ -1,18 +1,41 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { z } from "zod";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell, WorkspaceCard, WsButton } from "@/components/cyryx/workspace/WorkspaceShell";
 import { DataTable } from "@/components/cyryx/workspace/DataTable";
-import { DeptDashboard, downloadCSV, rangeBounds, type Range } from "@/components/cyryx/workspace/DeptDashboard";
+import { DeptDashboard, downloadCSV } from "@/components/cyryx/workspace/DeptDashboard";
+import { rangeBounds, isRange, type Range } from "@/lib/dashboard-range";
 import { drawerStore } from "@/lib/drawer-store";
-import { reconcileAttribution, type ReconcileResult } from "@/lib/attribution";
+import { reconcileAttribution, summarizeDiff, type ReconcileResult } from "@/lib/attribution";
 
 export const Route = createFileRoute("/_authenticated/workspace/marketing")({
   head: () => {
     const h = buildHead({ title: "Marketing · Cyryx", description: "Campaigns, channels and attribution", path: "/workspace/marketing" });
     return { ...h, meta: [...h.meta, { name: "robots", content: "noindex, nofollow" }] };
+  },
+  validateSearch: (s: Record<string, unknown>) => {
+    const str = (v: unknown) => (typeof v === "string" ? v : undefined);
+    const num = (v: unknown) => {
+      const n = typeof v === "string" ? parseInt(v, 10) : typeof v === "number" ? v : NaN;
+      return Number.isFinite(n) && n >= 0 ? n : undefined;
+    };
+    const t = str(s.tab);
+    const r = str(s.range);
+    return {
+      tab: (["dashboard","campaigns","channels","leads","attribution"].includes(t ?? "") ? t : undefined) as
+        | "dashboard" | "campaigns" | "channels" | "leads" | "attribution" | undefined,
+      range: isRange(r) ? r : undefined,
+      ch: str(s.ch),
+      cp: str(s.cp),
+      own: str(s.own),
+      st: str(s.st),
+      aq: str(s.aq),
+      ap: num(s.ap),
+    };
   },
   component: MarketingPage,
 });
@@ -21,7 +44,11 @@ const TABS = ["dashboard", "campaigns", "channels", "leads", "attribution"] as c
 type Tab = (typeof TABS)[number];
 
 function MarketingPage() {
-  const [tab, setTab] = useState<Tab>("dashboard");
+  const search = Route.useSearch();
+  const navigate = useNavigate({ from: Route.fullPath });
+  const tab: Tab = (search.tab as Tab) ?? "dashboard";
+  const setTab = (t: Tab) =>
+    navigate({ search: (prev) => ({ ...prev, tab: t === "dashboard" ? undefined : t }), replace: true });
   return (
     <WorkspaceShell title="Marketing" subtitle="Campaigns, channels and lead attribution">
       <nav className="mb-6 flex flex-wrap gap-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] pb-2">
