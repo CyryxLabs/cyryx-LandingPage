@@ -1,5 +1,47 @@
 import { supabase } from "@/integrations/supabase/client";
 
+// Pure helper: derives display counters + deltas from a ReconcileResult.
+// Extracted so it can be unit-tested independently of Supabase / React.
+export type DiffSummary = {
+  changes: number;
+  markedWon: number;
+  cleared: number;
+  netLeads: number;
+  affectedLeads: number;
+  affectedDeals: number;
+  pipelineDelta: number;
+  revenueDelta: number;
+  pipelinePct: number | null;
+  revenuePct: number | null;
+};
+
+export function summarizeDiff(result: {
+  diff: { action: "marked_won" | "cleared" }[];
+  marked_won: number;
+  cleared: number;
+  affected_lead_ids: string[];
+  affected_deal_ids: string[];
+  pipeline_before: number;
+  pipeline_after: number;
+  revenue_before: number;
+  revenue_after: number;
+}): DiffSummary {
+  const pipelineDelta = result.pipeline_after - result.pipeline_before;
+  const revenueDelta = result.revenue_after - result.revenue_before;
+  return {
+    changes: result.diff.length,
+    markedWon: result.marked_won,
+    cleared: result.cleared,
+    netLeads: result.marked_won - result.cleared,
+    affectedLeads: result.affected_lead_ids.length,
+    affectedDeals: result.affected_deal_ids.length,
+    pipelineDelta,
+    revenueDelta,
+    pipelinePct: result.pipeline_before > 0 ? (pipelineDelta / result.pipeline_before) * 100 : null,
+    revenuePct: result.revenue_before > 0 ? (revenueDelta / result.revenue_before) * 100 : null,
+  };
+}
+
 export type ReconcileDiffEntry = {
   lead_id: string;
   deal_id: string;
