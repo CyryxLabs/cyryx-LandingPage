@@ -68,17 +68,23 @@ export function downloadCSV(name: string, rows: Record<string, unknown>[]) {
   URL.revokeObjectURL(url);
 }
 
-function useRealtimeInvalidate(tables: string[], keys: string[][]) {
+function useRealtimeInvalidate(tables: string[], keys: string[][], debounceMs = 750) {
   const qc = useQueryClient();
   useEffect(() => {
     const channel = supabase.channel(`dash-${tables.join("-")}`);
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const flush = () => {
+      timer = null;
+      keys.forEach((k) => qc.invalidateQueries({ queryKey: k }));
+    };
     tables.forEach((t) =>
       channel.on("postgres_changes", { event: "*", schema: "public", table: t }, () => {
-        keys.forEach((k) => qc.invalidateQueries({ queryKey: k }));
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(flush, debounceMs);
       }),
     );
     channel.subscribe();
-    return () => { supabase.removeChannel(channel); };
+    return () => { if (timer) clearTimeout(timer); supabase.removeChannel(channel); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
@@ -142,6 +148,30 @@ function ChartCard({ title, subtitle, children }: { title: string; subtitle?: st
       </div>
       <div className="h-56">{children}</div>
     </WorkspaceCard>
+  );
+}
+
+function SegmentSelects({
+  selects,
+}: {
+  selects: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }[];
+}) {
+  return (
+    <>
+      {selects.map((s) => (
+        <select
+          key={s.label}
+          value={s.value}
+          onChange={(e) => s.onChange(e.target.value)}
+          className="h-8 px-2 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] bg-transparent hud-label text-[11px] text-[var(--silver-dim)]"
+        >
+          <option value="">All {s.label.toLowerCase()}</option>
+          {s.options.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+      ))}
+    </>
   );
 }
 
@@ -251,16 +281,28 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
   useRealtimeInvalidate(["crm_deals", "crm_stages"], [["dash-pipeline", range]]);
   const navigate = useNavigate();
   const { start } = useMemo(() => rangeBounds(range), [range]);
+  const [stageFilter, setStageFilter] = useState<string>("");
+  const [ownerFilter, setOwnerFilter] = useState<string>("");
   const q = useQuery({
     queryKey: ["dash-pipeline", range],
     queryFn: async () => {
       const [stages, deals] = await Promise.all([
         (supabase as any).from("crm_stages").select("id,name,position,is_won,is_lost").order("position"),
-        (supabase as any).from("crm_deals").select("stage_id,value,updated_at,created_at")
+        (supabase as any).from("crm_deals").select("stage_id,value,updated_at,created_at,owner_id")
           .gte("updated_at", new Date(start).toISOString()),
       ]);
-      const byStage = (stages.data ?? []).map((s: any) => {
-        const ds = (deals.data ?? []).filter((d: any) => d.stage_id === s.id);
+      const owners = Array.from(new Set((deals.data ?? []).map((d: any) => d.owner_id).filter(Boolean)));
+      return { stages: stages.data ?? [], deals: deals.data ?? [], owners };
+    },
+  });
+  const view = useMemo(() => {
+    const stages = q.data?.stages ?? [];
+    const deals = (q.data?.deals ?? []).filter((d: any) =>
+      (!stageFilter || d.stage_id === stageFilter) &&
+      (!ownerFilter || d.owner_id === ownerFilter),
+    );
+    const byStage = stages.map((s: any) => {
+      const ds = deals.filter((d: any) => d.stage_id === s.id);
         return {
           stage: s.name,
           count: ds.length,
@@ -273,9 +315,8 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
       const lost = byStage.filter((s: any) => s.is_lost).reduce((a: number, s: any) => a + s.count, 0);
       const winRate = won + lost > 0 ? (won / (won + lost)) * 100 : 0;
       return { byStage, winRate };
-    },
-  });
-  const rows = q.data?.byStage ?? [];
+  }, [q.data, stageFilter, ownerFilter]);
+  const rows = view.byStage;
   const drill = () => navigate({ to: "/workspace/pipeline" });
   return (
     <section className="print:block">
@@ -283,6 +324,16 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
         range={range}
         setRange={setRange}
         onExport={() => downloadCSV(`pipeline-${range}.csv`, rows)}
+        extra={
+          <SegmentSelects
+            selects={[
+              { label: "Stage", value: stageFilter, onChange: setStageFilter,
+                options: (q.data?.stages ?? []).map((s: any) => ({ value: s.id, label: s.name })) },
+              { label: "Owner", value: ownerFilter, onChange: setOwnerFilter,
+                options: ((q.data?.owners ?? []) as string[]).map((o) => ({ value: o, label: o.slice(0, 8) })) },
+            ]}
+          />
+        }
       />
       <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="Pipeline by stage" subtitle="Deal value">
@@ -296,7 +347,7 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
-      <ChartCard title="Deals per stage" subtitle={`Win rate ${(q.data?.winRate ?? 0).toFixed(0)}%`}>
+      <ChartCard title="Deals per stage" subtitle={`Win rate ${view.winRate.toFixed(0)}%`}>
         <ResponsiveContainer>
           <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={drill}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
@@ -449,28 +500,43 @@ function MarketingDashboard({ range, setRange }: PaneProps) {
     ["mkt_leads", "mkt_campaigns", "crm_deals"],
     [["dash-marketing", range], ["mkt_attribution_v"]],
   );
+  const [channelFilter, setChannelFilter] = useState<string>("");
+  const [campaignFilter, setCampaignFilter] = useState<string>("");
   const q = useQuery({
     queryKey: ["dash-marketing", range],
     queryFn: async () => {
       const { data } = await (supabase as any)
         .from("mkt_attribution_v")
         .select("*");
-      const byChannel = new Map<string, { channel: string; leads: number; won_value: number; spend: number }>();
-      for (const r of data ?? []) {
+      return { rows: (data ?? []) as any[] };
+    },
+  });
+  const { rows, byChannel, top, channels, campaigns } = useMemo(() => {
+    const all = q.data?.rows ?? [];
+    const filtered = all.filter((r: any) =>
+      (!channelFilter || r.channel_name === channelFilter) &&
+      (!campaignFilter || r.campaign_id === campaignFilter),
+    );
+    const map = new Map<string, { channel: string; leads: number; won_value: number; spend: number }>();
+    for (const r of filtered) {
         const key = r.channel_name ?? "—";
-        const cur = byChannel.get(key) ?? { channel: key, leads: 0, won_value: 0, spend: 0 };
+      const cur = map.get(key) ?? { channel: key, leads: 0, won_value: 0, spend: 0 };
         cur.leads += Number(r.leads_count ?? 0);
         cur.won_value += Number(r.won_value ?? 0);
         cur.spend += Number(r.spend ?? 0);
-        byChannel.set(key, cur);
-      }
-      return { byChannel: Array.from(byChannel.values()), top: (data ?? []).slice(0, 8) };
-    },
-  });
-  const rows = q.data?.byChannel ?? [];
+      map.set(key, cur);
+    }
+    return {
+      rows: filtered,
+      byChannel: Array.from(map.values()),
+      top: filtered.slice(0, 8),
+      channels: Array.from(new Set(all.map((r: any) => r.channel_name).filter(Boolean))) as string[],
+      campaigns: all.map((r: any) => ({ id: r.campaign_id as string, name: r.campaign_name as string })),
+    };
+  }, [q.data, channelFilter, campaignFilter]);
   const openCampaign = (idx?: number) => {
     if (idx == null) return;
-    const r = q.data?.top?.[idx];
+    const r = top[idx];
     if (r?.campaign_id) drawerStore.open({ entity_type: "mkt_campaigns", entity_id: r.campaign_id, label: r.campaign_name });
   };
   return (
@@ -478,12 +544,22 @@ function MarketingDashboard({ range, setRange }: PaneProps) {
       <DashboardToolbar
         range={range}
         setRange={setRange}
-        onExport={() => downloadCSV(`marketing-attribution-${range}.csv`, q.data?.top ?? [])}
+        onExport={() => downloadCSV(`marketing-attribution-${range}.csv`, rows)}
+        extra={
+          <SegmentSelects
+            selects={[
+              { label: "Channel", value: channelFilter, onChange: setChannelFilter,
+                options: channels.map((c) => ({ value: c, label: c })) },
+              { label: "Campaign", value: campaignFilter, onChange: setCampaignFilter,
+                options: campaigns.map((c) => ({ value: c.id, label: c.name })) },
+            ]}
+          />
+        }
       />
       <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="Leads by channel">
         <ResponsiveContainer>
-          <BarChart data={rows} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+          <BarChart data={byChannel} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="channel" stroke={AXIS} fontSize={11} />
             <YAxis stroke={AXIS} fontSize={11} />
@@ -494,7 +570,7 @@ function MarketingDashboard({ range, setRange }: PaneProps) {
       </ChartCard>
       <ChartCard title="Won revenue vs spend by channel" subtitle="Click a bar to open top campaign">
         <ResponsiveContainer>
-          <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={(s: any) => openCampaign(s?.activeTooltipIndex)}>
+          <BarChart data={byChannel} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={(s: any) => openCampaign(s?.activeTooltipIndex)}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="channel" stroke={AXIS} fontSize={11} />
             <YAxis stroke={AXIS} fontSize={11} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />

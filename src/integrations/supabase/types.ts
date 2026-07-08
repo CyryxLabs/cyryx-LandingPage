@@ -1056,6 +1056,66 @@ export type Database = {
           },
         ]
       }
+      mkt_attribution_audit: {
+        Row: {
+          affected_deal_ids: string[]
+          affected_lead_ids: string[]
+          cleared: number
+          diff: Json
+          id: string
+          marked_won: number
+          notes: string | null
+          pipeline_after: number
+          pipeline_before: number
+          ran_at: string
+          ran_by: string | null
+          range_end: string | null
+          range_key: string | null
+          range_start: string | null
+          revenue_after: number
+          revenue_before: number
+          scanned: number
+        }
+        Insert: {
+          affected_deal_ids?: string[]
+          affected_lead_ids?: string[]
+          cleared?: number
+          diff?: Json
+          id?: string
+          marked_won?: number
+          notes?: string | null
+          pipeline_after?: number
+          pipeline_before?: number
+          ran_at?: string
+          ran_by?: string | null
+          range_end?: string | null
+          range_key?: string | null
+          range_start?: string | null
+          revenue_after?: number
+          revenue_before?: number
+          scanned?: number
+        }
+        Update: {
+          affected_deal_ids?: string[]
+          affected_lead_ids?: string[]
+          cleared?: number
+          diff?: Json
+          id?: string
+          marked_won?: number
+          notes?: string | null
+          pipeline_after?: number
+          pipeline_before?: number
+          ran_at?: string
+          ran_by?: string | null
+          range_end?: string | null
+          range_key?: string | null
+          range_start?: string | null
+          revenue_after?: number
+          revenue_before?: number
+          scanned?: number
+        }
+        Relationships: []
+      }
       mkt_campaigns: {
         Row: {
           budget: number | null
