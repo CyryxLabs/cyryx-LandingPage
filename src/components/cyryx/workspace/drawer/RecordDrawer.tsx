@@ -460,12 +460,23 @@ type CampaignLead = {
 type CampaignDeal = { id: string; title: string; value: number | string; status: string; stage_id: string; updated_at: string };
 
 function CampaignTimelinePane({ campaignId }: { campaignId: string }) {
+  const [range, setRange] = useState<"mtd" | "30d" | "90d" | "ytd">("30d");
+  const [source, setSource] = useState("");
+  const [status, setStatus] = useState("");
+  const [ownerId, setOwnerId] = useState("");
+  const [stageId, setStageId] = useState("");
+  const rangeStart = (() => {
+    const now = new Date();
+    if (range === "mtd") return new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    if (range === "ytd") return new Date(now.getFullYear(), 0, 1).getTime();
+    return Date.now() - (range === "30d" ? 30 : 90) * 864e5;
+  })();
   const q = useQuery({
     queryKey: ["mkt-campaign-timeline", campaignId],
     queryFn: async () => {
       const leadsRes = await supabase
         .from("mkt_leads")
-        .select("id, source, first_touch_at, converted_at, contact_id, deal_id")
+        .select("id, source, first_touch_at, converted_at, contact_id, deal_id, channel_id")
         .eq("campaign_id", campaignId);
       if (leadsRes.error) throw leadsRes.error;
       const leads = (leadsRes.data ?? []) as CampaignLead[];
@@ -474,31 +485,73 @@ function CampaignTimelinePane({ campaignId }: { campaignId: string }) {
       if (dealIds.length) {
         const dealsRes = await supabase
           .from("crm_deals")
-          .select("id, title, value, status, stage_id, updated_at")
+          .select("id, title, value, status, stage_id, updated_at, owner_id")
           .in("id", dealIds);
         if (dealsRes.error) throw dealsRes.error;
         deals = (dealsRes.data ?? []) as CampaignDeal[];
       }
-      const dealMap = new Map(deals.map((d) => [d.id, d]));
-      const events = leads.flatMap((l) => {
-        const items: { at: string; kind: "touch" | "converted" | "deal"; label: string; sub?: string }[] = [];
-        if (l.first_touch_at) items.push({ at: l.first_touch_at, kind: "touch", label: `Lead touch · ${l.source ?? "—"}` });
-        if (l.converted_at) items.push({ at: l.converted_at, kind: "converted", label: "Converted to deal" });
-        const d = l.deal_id ? dealMap.get(l.deal_id) : null;
-        if (d) items.push({ at: d.updated_at, kind: "deal", label: `Deal · ${d.status}`, sub: `${d.title} · $${Number(d.value ?? 0).toLocaleString()}` });
-        return items;
-      }).sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
-      const pipeline = deals.filter((d) => d.status !== "won" && d.status !== "lost").reduce((a, d) => a + Number(d.value ?? 0), 0);
-      const won = deals.filter((d) => d.status === "won").reduce((a, d) => a + Number(d.value ?? 0), 0);
-      return { events, pipeline, won, leadsCount: leads.length, convertedCount: leads.filter((l) => l.converted_at).length };
+      return { leads, deals };
     },
   });
   if (q.isLoading) return <p className="text-sm text-[var(--silver-dim)]">Loading…</p>;
-  const d = q.data;
-  if (!d) return null;
+  const raw = q.data;
+  if (!raw) return null;
+  const dealMap = new Map(raw.deals.map((d: any) => [d.id, d]));
+  // Apply filters preserving range
+  const filteredLeads = raw.leads.filter((l: any) => {
+    if (source && l.source !== source) return false;
+    const dl: any = l.deal_id ? dealMap.get(l.deal_id) : null;
+    if (status && (!dl || dl.status !== status)) return false;
+    if (ownerId && (!dl || dl.owner_id !== ownerId)) return false;
+    if (stageId && (!dl || dl.stage_id !== stageId)) return false;
+    const t = l.first_touch_at ? new Date(l.first_touch_at).getTime() : (dl?.updated_at ? new Date(dl.updated_at).getTime() : 0);
+    if (t && t < rangeStart) return false;
+    return true;
+  });
+  const filteredDeals = raw.deals.filter((dl: any) => filteredLeads.some((l: any) => l.deal_id === dl.id));
+  const events = filteredLeads.flatMap((l: any) => {
+        const items: { at: string; kind: "touch" | "converted" | "deal"; label: string; sub?: string }[] = [];
+        if (l.first_touch_at) items.push({ at: l.first_touch_at, kind: "touch", label: `Lead touch · ${l.source ?? "—"}` });
+        if (l.converted_at) items.push({ at: l.converted_at, kind: "converted", label: "Converted to deal" });
+        const d: any = l.deal_id ? dealMap.get(l.deal_id) : null;
+        if (d) items.push({ at: d.updated_at, kind: "deal", label: `Deal · ${d.status}`, sub: `${d.title} · $${Number(d.value ?? 0).toLocaleString()}` });
+        return items;
+      }).sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+  const pipeline = filteredDeals.filter((d: any) => d.status !== "won" && d.status !== "lost").reduce((a: number, d: any) => a + Number(d.value ?? 0), 0);
+  const won = filteredDeals.filter((d: any) => d.status === "won").reduce((a: number, d: any) => a + Number(d.value ?? 0), 0);
+  const d = { events, pipeline, won, leadsCount: filteredLeads.length, convertedCount: filteredLeads.filter((l: any) => l.converted_at).length };
+  const sources = Array.from(new Set(raw.leads.map((l: any) => l.source).filter(Boolean))) as string[];
+  const statuses = Array.from(new Set(raw.deals.map((dl: any) => dl.status).filter(Boolean))) as string[];
+  const owners = Array.from(new Set(raw.deals.map((dl: any) => dl.owner_id).filter(Boolean))) as string[];
+  const stages = Array.from(new Set(raw.deals.map((dl: any) => dl.stage_id).filter(Boolean))) as string[];
   const fmt = (v: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(v || 0);
+  const sel = "h-7 px-1.5 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] bg-transparent hud-label text-[10px] text-[var(--silver-dim)]";
   return (
     <div className="space-y-5">
+      <div className="flex flex-wrap gap-1.5">
+        {(["mtd","30d","90d","ytd"] as const).map((r) => (
+          <button key={r} onClick={() => setRange(r)}
+            className={`px-2 py-0.5 rounded hud-label text-[10px] ${range === r ? "bg-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] text-[var(--accent-glow)]" : "text-[var(--silver-dim)] hover:text-[var(--silver)]"}`}>
+            {r.toUpperCase()}
+          </button>
+        ))}
+        <select value={source} onChange={(e) => setSource(e.target.value)} className={sel}>
+          <option value="">All source (channel)</option>
+          {sources.map((s) => <option key={s} value={s}>{s}</option>)}
+        </select>
+        <select value={ownerId} onChange={(e) => setOwnerId(e.target.value)} className={sel}>
+          <option value="">All owner</option>
+          {owners.map((s) => <option key={s} value={s}>{s.slice(0, 8)}</option>)}
+        </select>
+        <select value={stageId} onChange={(e) => setStageId(e.target.value)} className={sel}>
+          <option value="">All stage</option>
+          {stages.map((s) => <option key={s} value={s}>{s.slice(0, 8)}</option>)}
+        </select>
+        <select value={status} onChange={(e) => setStatus(e.target.value)} className={sel}>
+          <option value="">All status</option>
+          {statuses.map((s) => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </div>
       <div className="grid grid-cols-2 gap-2">
         {[
           { label: "Leads", value: d.leadsCount },
