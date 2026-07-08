@@ -15,29 +15,13 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { WorkspaceCard } from "@/components/cyryx/workspace/WorkspaceShell";
 import { drawerStore } from "@/lib/drawer-store";
+import { rangeBounds as sharedRangeBounds, rangeLabel as sharedRangeLabel, RANGE_OPTIONS as SHARED_RANGE_OPTIONS, type Range as SharedRange } from "@/lib/dashboard-range";
 
 type Kind = "finance" | "pipeline" | "dev" | "hr" | "marketing";
-export type Range = "mtd" | "30d" | "90d" | "ytd";
-
-const RANGE_OPTIONS: { key: Range; label: string }[] = [
-  { key: "mtd", label: "MTD" },
-  { key: "30d", label: "30d" },
-  { key: "90d", label: "90d" },
-  { key: "ytd", label: "YTD" },
-];
-
-export function rangeBounds(range: Range): { start: number; end: number } {
-  const now = new Date();
-  const end = Date.now();
-  if (range === "mtd") return { start: new Date(now.getFullYear(), now.getMonth(), 1).getTime(), end };
-  if (range === "ytd") return { start: new Date(now.getFullYear(), 0, 1).getTime(), end };
-  const days = range === "30d" ? 30 : 90;
-  return { start: end - days * 864e5, end };
-}
-
-export function rangeLabel(range: Range): string {
-  return RANGE_OPTIONS.find((r) => r.key === range)?.label ?? range;
-}
+export type Range = SharedRange;
+const RANGE_OPTIONS = SHARED_RANGE_OPTIONS;
+export const rangeBounds = sharedRangeBounds;
+export const rangeLabel = sharedRangeLabel;
 
 const AXIS = "color-mix(in oklab, var(--silver) 55%, transparent)";
 const GRID = "color-mix(in oklab, var(--accent-glow) 15%, transparent)";
