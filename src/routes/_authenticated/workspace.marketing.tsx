@@ -551,6 +551,51 @@ function PrintSummary({
         </section>
       )}
 
+      {result && result.diff.length > 0 && (() => {
+        const byCampaign = new Map<string, { marked_won: number; cleared: number; deal_value_delta: number; lead_ids: string[]; deal_ids: string[] }>();
+        for (const d of result.diff) {
+          const key = d.campaign_id ?? "—";
+          const cur = byCampaign.get(key) ?? { marked_won: 0, cleared: 0, deal_value_delta: 0, lead_ids: [], deal_ids: [] };
+          if (d.action === "marked_won") { cur.marked_won++; cur.deal_value_delta += d.deal_value; }
+          else { cur.cleared++; cur.deal_value_delta -= d.deal_value; }
+          cur.lead_ids.push(d.lead_id);
+          if (!cur.deal_ids.includes(d.deal_id)) cur.deal_ids.push(d.deal_id);
+          byCampaign.set(key, cur);
+        }
+        const nameById = new Map<string, string>();
+        for (const r of attribution) nameById.set(r.campaign_id, r.campaign_name);
+        const rows = Array.from(byCampaign.entries()).map(([cid, v]) => ({ campaign_id: cid, name: nameById.get(cid) ?? cid.slice(0, 8), ...v }));
+        return (
+          <section className="mb-6 break-before-page">
+            <h2 className="text-sm font-bold mb-2">Per-campaign impact (before → after)</h2>
+            <table className="w-full text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-black">
+                  <th className="text-left py-1">Campaign</th>
+                  <th className="text-right py-1">Marked won</th>
+                  <th className="text-right py-1">Cleared</th>
+                  <th className="text-right py-1">Revenue Δ</th>
+                  <th className="text-right py-1">Leads affected</th>
+                  <th className="text-right py-1">Deals affected</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.campaign_id} className="border-b border-gray-300">
+                    <td className="py-1">{r.name}</td>
+                    <td className="py-1 text-right">{r.marked_won}</td>
+                    <td className="py-1 text-right">{r.cleared}</td>
+                    <td className="py-1 text-right">{fmtMoney(r.deal_value_delta)}</td>
+                    <td className="py-1 text-right">{r.lead_ids.length}</td>
+                    <td className="py-1 text-right">{r.deal_ids.length}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        );
+      })()}
+
       <section className="break-before-page">
         <h2 className="text-sm font-bold mb-2">Annex · Attribution by campaign</h2>
         <table className="w-full text-xs border-collapse">
@@ -580,6 +625,24 @@ function PrintSummary({
           </tbody>
         </table>
       </section>
+
+      {result && (result.affected_lead_ids.length > 0 || result.affected_deal_ids.length > 0) && (
+        <section className="mt-6 break-inside-avoid">
+          <h2 className="text-sm font-bold mb-2">Affected IDs</h2>
+          <div className="grid grid-cols-2 gap-3 text-[10px] font-mono break-all">
+            <div>
+              <p className="font-bold mb-1 font-sans">Leads ({result.affected_lead_ids.length})</p>
+              {result.affected_lead_ids.join(", ")}
+            </div>
+            <div>
+              <p className="font-bold mb-1 font-sans">Deals ({result.affected_deal_ids.length})</p>
+              {result.affected_deal_ids.join(", ")}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <p className="mt-6 text-[9px] text-gray-500">Range totals by stage aggregated from mkt_attribution_v for the selected range · Cyryx Labs</p>
     </div>
   );
 }
