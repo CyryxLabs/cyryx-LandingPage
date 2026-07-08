@@ -471,10 +471,12 @@ function ReconcileDiffPanel({ result, range }: { result: ReconcileResult; range:
 }
 
 function AuditLogPanel({
-  rows, total, page, pageSize, onPage, q, onQ,
+  rows, total, page, pageSize, onPage, q, onQ, onExportAllCSV, onExportPDF,
 }: {
   rows: any[]; total: number; page: number; pageSize: number;
   onPage: (p: number) => void; q: string; onQ: (v: string) => void;
+  onExportAllCSV: () => void | Promise<void>;
+  onExportPDF: () => void | Promise<void>;
 }) {
   const from = total === 0 ? 0 : page * pageSize + 1;
   const to = Math.min(total, (page + 1) * pageSize);
@@ -497,6 +499,8 @@ function AuditLogPanel({
           <WsButton onClick={() => onPage(page - 1)} disabled={!hasPrev}>Prev</WsButton>
           <WsButton onClick={() => onPage(page + 1)} disabled={!hasNext}>Next</WsButton>
           <WsButton onClick={() => downloadCSV(`attribution-audit-p${page + 1}.csv`, rows)} disabled={!rows.length}>Export page</WsButton>
+          <WsButton onClick={() => onExportAllCSV()} disabled={total === 0}>Export CSV (all)</WsButton>
+          <WsButton onClick={() => onExportPDF()} disabled={total === 0}>Export PDF</WsButton>
         </div>
       </div>
       <div className="overflow-x-auto">
