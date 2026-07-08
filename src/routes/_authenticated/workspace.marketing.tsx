@@ -125,14 +125,23 @@ function fmtMoney(v: number) {
 
 function AttributionTable() {
   const qc = useQueryClient();
+  const search = Route.useSearch();
+  const navigate = useNavigate({ from: Route.fullPath });
+  const patchSearch = (patch: Record<string, unknown>) =>
+    navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }), replace: true });
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
-  const [range, setRange] = useState<Range>("30d");
+  const range: Range = (search.range as Range) ?? "30d";
+  const setRange = (r: Range) => patchSearch({ range: r === "30d" ? undefined : r });
   const [lastResult, setLastResult] = useState<ReconcileResult | null>(null);
-  const [chFilter, setChFilter] = useState("");
-  const [cpFilter, setCpFilter] = useState("");
-  const [ownFilter, setOwnFilter] = useState("");
-  const [stFilter, setStFilter] = useState("");
+  const chFilter = search.ch ?? "";
+  const cpFilter = search.cp ?? "";
+  const ownFilter = search.own ?? "";
+  const stFilter = search.st ?? "";
+  const setChFilter = (v: string) => patchSearch({ ch: v || undefined });
+  const setCpFilter = (v: string) => patchSearch({ cp: v || undefined });
+  const setOwnFilter = (v: string) => patchSearch({ own: v || undefined });
+  const setStFilter = (v: string) => patchSearch({ st: v || undefined });
   const { data = [], isLoading } = useQuery({
     queryKey: ["mkt_attribution_v"],
     queryFn: async () => {
@@ -176,15 +185,20 @@ function AttributionTable() {
     };
   }, [data, campaignsMeta]);
 
-  const [auditPage, setAuditPage] = useState(0);
-  const [auditQ, setAuditQ] = useState("");
+  const auditPage = search.ap ?? 0;
+  const auditQ = search.aq ?? "";
+  const setAuditPage = (p: number) => patchSearch({ ap: p > 0 ? p : undefined });
+  const setAuditQ = (v: string) => patchSearch({ aq: v || undefined, ap: undefined });
   const AUDIT_PAGE = 20;
+  const auditBounds = useMemo(() => rangeBounds(range), [range]);
   const { data: auditRes } = useQuery({
     queryKey: ["mkt_attribution_audit", auditPage, auditQ, range],
     queryFn: async () => {
       let query = (supabase as any)
         .from("mkt_attribution_audit")
         .select("id,ran_at,ran_by,range_key,scanned,marked_won,cleared,pipeline_before,pipeline_after,revenue_before,revenue_after,affected_lead_ids,affected_deal_ids", { count: "exact" })
+        .gte("ran_at", new Date(auditBounds.start).toISOString())
+        .lte("ran_at", new Date(auditBounds.end).toISOString())
         .order("ran_at", { ascending: false });
       if (auditQ.trim()) query = query.ilike("range_key", `%${auditQ.trim()}%`);
       const from = auditPage * AUDIT_PAGE;
@@ -195,6 +209,43 @@ function AttributionTable() {
   });
   const audit = auditRes?.rows ?? [];
   const auditTotal = auditRes?.count ?? 0;
+
+  async function fetchAllAudit(): Promise<any[]> {
+    let query = (supabase as any)
+      .from("mkt_attribution_audit")
+      .select("id,ran_at,ran_by,range_key,scanned,marked_won,cleared,pipeline_before,pipeline_after,revenue_before,revenue_after,affected_lead_ids,affected_deal_ids")
+      .gte("ran_at", new Date(auditBounds.start).toISOString())
+      .lte("ran_at", new Date(auditBounds.end).toISOString())
+      .order("ran_at", { ascending: false });
+    if (auditQ.trim()) query = query.ilike("range_key", `%${auditQ.trim()}%`);
+    const { data, error } = await query;
+    if (error) throw error;
+    return (data ?? []) as any[];
+  }
+
+  async function exportAuditCSVAll() {
+    const rows = await fetchAllAudit();
+    downloadCSV(`attribution-audit-${range}-all.csv`, rows);
+  }
+
+  async function exportAuditPDF() {
+    const rows = await fetchAllAudit();
+    const win = window.open("", "_blank", "width=900,height=700");
+    if (!win) return;
+    const totalPipelineDelta = rows.reduce((a, r) => a + (Number(r.pipeline_after) - Number(r.pipeline_before)), 0);
+    const totalRevenueDelta = rows.reduce((a, r) => a + (Number(r.revenue_after) - Number(r.revenue_before)), 0);
+    const totalScanned = rows.reduce((a, r) => a + Number(r.scanned || 0), 0);
+    const totalWon = rows.reduce((a, r) => a + Number(r.marked_won || 0), 0);
+    const totalCleared = rows.reduce((a, r) => a + Number(r.cleared || 0), 0);
+    const fm = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n || 0);
+    const trs = rows.map((r) => {
+      const pd = Number(r.pipeline_after) - Number(r.pipeline_before);
+      const rd = Number(r.revenue_after) - Number(r.revenue_before);
+      return `<tr><td>${new Date(r.ran_at).toLocaleString()}</td><td>${r.range_key ?? "—"}</td><td style="text-align:right">${r.scanned}</td><td style="text-align:right">${r.marked_won}</td><td style="text-align:right">${r.cleared}</td><td style="text-align:right">${fm(pd)}</td><td style="text-align:right">${fm(rd)}</td><td style="text-align:right">${(r.affected_deal_ids ?? []).length}</td></tr>`;
+    }).join("");
+    win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Attribution audit ${range}</title><style>body{font:12px system-ui,sans-serif;padding:24px;color:#111}h1{margin:0 0 4px}h2{font-size:13px;margin:20px 0 8px}table{width:100%;border-collapse:collapse}th,td{padding:4px 6px;border-bottom:1px solid #ddd}thead th{border-bottom:2px solid #000;text-align:left}.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}.kpi{border:1px solid #000;padding:6px}.kpi p{margin:0}.k-l{font-size:9px;text-transform:uppercase;letter-spacing:.05em}.k-v{font-size:14px;font-weight:700}.meta{font-size:11px;color:#444}.filters{font-size:11px;color:#444;margin-top:4px}</style></head><body><h1>Cyryx Labs · Attribution audit log</h1><p class="meta">Range ${range.toUpperCase()} · Generated ${new Date().toLocaleString()} · ${rows.length} runs</p><p class="filters">Search: ${auditQ ? `"${auditQ}"` : "—"} · Filters (channel/campaign/owner/stage): ${[chFilter,cpFilter,ownFilter,stFilter].filter(Boolean).join(" · ") || "—"}</p><div class="kpis"><div class="kpi"><p class="k-l">Scanned</p><p class="k-v">${totalScanned}</p></div><div class="kpi"><p class="k-l">Marked won</p><p class="k-v">${totalWon}</p></div><div class="kpi"><p class="k-l">Cleared</p><p class="k-v">${totalCleared}</p></div><div class="kpi"><p class="k-l">Pipeline Δ</p><p class="k-v">${fm(totalPipelineDelta)}</p></div><div class="kpi"><p class="k-l">Revenue Δ</p><p class="k-v">${fm(totalRevenueDelta)}</p></div></div><h2>Runs</h2><table><thead><tr><th>Ran at</th><th>Range</th><th style="text-align:right">Scanned</th><th style="text-align:right">Won</th><th style="text-align:right">Cleared</th><th style="text-align:right">Pipeline Δ</th><th style="text-align:right">Revenue Δ</th><th style="text-align:right">Deals</th></tr></thead><tbody>${trs || `<tr><td colspan="8" style="text-align:center;padding:20px">No runs in range.</td></tr>`}</tbody></table><script>window.onload=()=>setTimeout(()=>window.print(),150)</script></body></html>`);
+    win.document.close();
+  }
 
   async function onReconcile() {
     setBusy(true);
@@ -334,7 +385,9 @@ function AttributionTable() {
       pageSize={AUDIT_PAGE}
       onPage={setAuditPage}
       q={auditQ}
-      onQ={(v) => { setAuditQ(v); setAuditPage(0); }}
+      onQ={(v) => { setAuditQ(v); }}
+      onExportAllCSV={exportAuditCSVAll}
+      onExportPDF={exportAuditPDF}
     />
     <PrintSummary result={lastResult} attribution={filtered} range={range} />
     </div>
