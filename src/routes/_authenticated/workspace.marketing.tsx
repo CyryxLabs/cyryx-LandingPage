@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { buildHead } from "@/components/cyryx/seo/seo";
-import { WorkspaceShell, WorkspaceCard } from "@/components/cyryx/workspace/WorkspaceShell";
+import { WorkspaceShell, WorkspaceCard, WsButton } from "@/components/cyryx/workspace/WorkspaceShell";
 import { DataTable } from "@/components/cyryx/workspace/DataTable";
+import { DeptDashboard } from "@/components/cyryx/workspace/DeptDashboard";
+import { reconcileAttribution } from "@/lib/attribution";
 
 export const Route = createFileRoute("/_authenticated/workspace/marketing")({
   head: () => {
@@ -14,11 +16,11 @@ export const Route = createFileRoute("/_authenticated/workspace/marketing")({
   component: MarketingPage,
 });
 
-const TABS = ["campaigns", "channels", "leads", "attribution"] as const;
+const TABS = ["dashboard", "campaigns", "channels", "leads", "attribution"] as const;
 type Tab = (typeof TABS)[number];
 
 function MarketingPage() {
-  const [tab, setTab] = useState<Tab>("campaigns");
+  const [tab, setTab] = useState<Tab>("dashboard");
   return (
     <WorkspaceShell title="Marketing" subtitle="Campaigns, channels and lead attribution">
       <nav className="mb-6 flex flex-wrap gap-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] pb-2">
@@ -36,6 +38,8 @@ function MarketingPage() {
           </button>
         ))}
       </nav>
+
+      {tab === "dashboard" && <DeptDashboard kind="marketing" />}
 
       {tab === "campaigns" && (
         <DataTable
@@ -89,6 +93,9 @@ function MarketingPage() {
 }
 
 function AttributionTable() {
+  const qc = useQueryClient();
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
   const { data = [], isLoading } = useQuery({
     queryKey: ["mkt_attribution_v"],
     queryFn: async () => {
@@ -101,11 +108,34 @@ function AttributionTable() {
     },
   });
 
+  async function onReconcile() {
+    setBusy(true);
+    setMsg(null);
+    try {
+      const r = await reconcileAttribution();
+      setMsg(`Scanned ${r.scanned} · marked won ${r.marked_won} · cleared ${r.cleared}`);
+      qc.invalidateQueries({ queryKey: ["mkt_attribution_v"] });
+      qc.invalidateQueries({ queryKey: ["mkt_leads"] });
+    } catch (e: any) {
+      setMsg(e.message ?? "Reconcile failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   const fmt = (v: number) =>
     new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(v || 0);
 
   return (
     <WorkspaceCard>
+      <div className="flex items-center justify-between px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)]">
+        <p className="text-xs text-[var(--silver-dim)]">
+          {msg ?? "Sync mkt_leads.converted_at with current CRM deal stage."}
+        </p>
+        <WsButton onClick={onReconcile} disabled={busy} variant="primary">
+          {busy ? "Reconciling…" : "Reconcile attribution"}
+        </WsButton>
+      </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>

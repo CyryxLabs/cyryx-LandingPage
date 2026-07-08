@@ -3,6 +3,7 @@ import { useState } from "react";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell } from "@/components/cyryx/workspace/WorkspaceShell";
 import { DataTable } from "@/components/cyryx/workspace/DataTable";
+import { DeptDashboard } from "@/components/cyryx/workspace/DeptDashboard";
 
 export const Route = createFileRoute("/_authenticated/workspace/hr")({
   head: () => {
@@ -12,11 +13,11 @@ export const Route = createFileRoute("/_authenticated/workspace/hr")({
   component: HRPage,
 });
 
-const TABS = ["candidates", "openings", "employees", "departments", "timeoff"] as const;
+const TABS = ["dashboard", "candidates", "openings", "employees", "departments", "timeoff"] as const;
 type Tab = (typeof TABS)[number];
 
 function HRPage() {
-  const [tab, setTab] = useState<Tab>("candidates");
+  const [tab, setTab] = useState<Tab>("dashboard");
   return (
     <WorkspaceShell title="HR" subtitle="Hiring, people, departments & time off">
       <nav className="mb-6 flex flex-wrap gap-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] pb-2">
@@ -35,6 +36,7 @@ function HRPage() {
         ))}
       </nav>
 
+      {tab === "dashboard" && <DeptDashboard kind="hr" />}
       {tab === "candidates" && (
         <DataTable
           tableName="hr_candidates"

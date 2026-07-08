@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { buildHead } from "@/components/cyryx/seo/seo";
 import { WorkspaceShell, WorkspaceCard, WsButton, WsInput, WsSelect } from "@/components/cyryx/workspace/WorkspaceShell";
 import { drawerStore } from "@/lib/drawer-store";
+import { DeptDashboard } from "@/components/cyryx/workspace/DeptDashboard";
 
 type Stage = { id: string; name: string; position: number; is_won: boolean; is_lost: boolean };
 type Deal = {
@@ -95,6 +96,10 @@ function PipelinePage() {
         <WsInput placeholder="Value (USD)" type="number" value={value} onChange={(e) => setValue(e.target.value)} className="w-32" />
         <WsButton type="submit" variant="primary">Add deal</WsButton>
       </form>
+
+      <div className="mb-6">
+        <DeptDashboard kind="pipeline" />
+      </div>
 
       {(stagesQ.isLoading || dealsQ.isLoading) && <p className="text-sm text-[var(--silver-dim)]">Loading…</p>}
 
