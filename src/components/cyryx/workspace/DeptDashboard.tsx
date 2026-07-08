@@ -151,6 +151,30 @@ function ChartCard({ title, subtitle, children }: { title: string; subtitle?: st
   );
 }
 
+function SegmentSelects({
+  selects,
+}: {
+  selects: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }[];
+}) {
+  return (
+    <>
+      {selects.map((s) => (
+        <select
+          key={s.label}
+          value={s.value}
+          onChange={(e) => s.onChange(e.target.value)}
+          className="h-8 px-2 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] bg-transparent hud-label text-[11px] text-[var(--silver-dim)]"
+        >
+          <option value="">All {s.label.toLowerCase()}</option>
+          {s.options.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+      ))}
+    </>
+  );
+}
+
 export function DeptDashboard({ kind, defaultRange = "30d" }: { kind: Kind; defaultRange?: Range }) {
   const [range, setRange] = useState<Range>(defaultRange);
   if (kind === "finance") return <FinanceDashboard range={range} setRange={setRange} />;
@@ -306,7 +330,7 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
               { label: "Stage", value: stageFilter, onChange: setStageFilter,
                 options: (q.data?.stages ?? []).map((s: any) => ({ value: s.id, label: s.name })) },
               { label: "Owner", value: ownerFilter, onChange: setOwnerFilter,
-                options: (q.data?.owners ?? []).map((o: string) => ({ value: o, label: o.slice(0, 8) })) },
+                options: ((q.data?.owners ?? []) as string[]).map((o) => ({ value: o, label: o.slice(0, 8) })) },
             ]}
           />
         }
