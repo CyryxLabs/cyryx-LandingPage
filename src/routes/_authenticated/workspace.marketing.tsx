@@ -103,6 +103,10 @@ function AttributionTable() {
   const [msg, setMsg] = useState<string | null>(null);
   const [range, setRange] = useState<Range>("30d");
   const [lastResult, setLastResult] = useState<ReconcileResult | null>(null);
+  const [chFilter, setChFilter] = useState("");
+  const [cpFilter, setCpFilter] = useState("");
+  const [ownFilter, setOwnFilter] = useState("");
+  const [stFilter, setStFilter] = useState("");
   const { data = [], isLoading } = useQuery({
     queryKey: ["mkt_attribution_v"],
     queryFn: async () => {
@@ -114,19 +118,57 @@ function AttributionTable() {
       return data ?? [];
     },
   });
-
-  const { data: audit = [] } = useQuery({
-    queryKey: ["mkt_attribution_audit"],
+  const { data: campaignsMeta = [] } = useQuery({
+    queryKey: ["mkt_campaigns_meta"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
-        .from("mkt_attribution_audit")
-        .select("id,ran_at,ran_by,range_key,scanned,marked_won,cleared,pipeline_before,pipeline_after,revenue_before,revenue_after,affected_lead_ids,affected_deal_ids")
-        .order("ran_at", { ascending: false })
-        .limit(20);
-      if (error) throw error;
+      const { data } = await (supabase as any).from("mkt_campaigns").select("id,owner_id");
       return data ?? [];
     },
   });
+  const ownerById = useMemo(() => {
+    const m = new Map<string, string>();
+    (campaignsMeta as any[]).forEach((c) => { if (c.owner_id) m.set(c.id, c.owner_id); });
+    return m;
+  }, [campaignsMeta]);
+
+  const filtered = useMemo(() => {
+    return (data as any[]).filter((r) =>
+      (!chFilter || r.channel_name === chFilter) &&
+      (!cpFilter || r.campaign_id === cpFilter) &&
+      (!ownFilter || ownerById.get(r.campaign_id) === ownFilter) &&
+      (!stFilter || r.status === stFilter),
+    );
+  }, [data, chFilter, cpFilter, ownFilter, stFilter, ownerById]);
+
+  const filterOptions = useMemo(() => {
+    const rows = data as any[];
+    return {
+      channels: Array.from(new Set(rows.map((r) => r.channel_name).filter(Boolean))) as string[],
+      campaigns: rows.map((r) => ({ id: r.campaign_id as string, name: r.campaign_name as string })),
+      owners: Array.from(new Set((campaignsMeta as any[]).map((c) => c.owner_id).filter(Boolean))) as string[],
+      statuses: Array.from(new Set(rows.map((r) => r.status).filter(Boolean))) as string[],
+    };
+  }, [data, campaignsMeta]);
+
+  const [auditPage, setAuditPage] = useState(0);
+  const [auditQ, setAuditQ] = useState("");
+  const AUDIT_PAGE = 20;
+  const { data: auditRes } = useQuery({
+    queryKey: ["mkt_attribution_audit", auditPage, auditQ, range],
+    queryFn: async () => {
+      let query = (supabase as any)
+        .from("mkt_attribution_audit")
+        .select("id,ran_at,ran_by,range_key,scanned,marked_won,cleared,pipeline_before,pipeline_after,revenue_before,revenue_after,affected_lead_ids,affected_deal_ids", { count: "exact" })
+        .order("ran_at", { ascending: false });
+      if (auditQ.trim()) query = query.ilike("range_key", `%${auditQ.trim()}%`);
+      const from = auditPage * AUDIT_PAGE;
+      const { data, error, count } = await query.range(from, from + AUDIT_PAGE - 1);
+      if (error) throw error;
+      return { rows: (data ?? []) as any[], count: count ?? 0 };
+    },
+  });
+  const audit = auditRes?.rows ?? [];
+  const auditTotal = auditRes?.count ?? 0;
 
   async function onReconcile() {
     setBusy(true);
@@ -143,6 +185,7 @@ function AttributionTable() {
       qc.invalidateQueries({ queryKey: ["mkt_attribution_v"] });
       qc.invalidateQueries({ queryKey: ["mkt_leads"] });
       qc.invalidateQueries({ queryKey: ["mkt_attribution_audit"] });
+      setAuditPage(0);
     } catch (e: any) {
       setMsg(e.message ?? "Reconcile failed");
     } finally {
@@ -173,8 +216,8 @@ function AttributionTable() {
         </div>
         <div className="flex gap-2">
           <WsButton
-            onClick={() => downloadCSV(`attribution-${new Date().toISOString().slice(0,10)}.csv`, data)}
-            disabled={!data.length}
+            onClick={() => downloadCSV(`attribution-${new Date().toISOString().slice(0,10)}.csv`, filtered)}
+            disabled={!filtered.length}
           >
             Export CSV
           </WsButton>
@@ -191,6 +234,18 @@ function AttributionTable() {
             {busy ? "Reconciling…" : "Reconcile attribution"}
           </WsButton>
         </div>
+      </div>
+      <div className="flex flex-wrap gap-2 px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)]">
+        <FilterSelect label="Channel" value={chFilter} onChange={setChFilter} options={filterOptions.channels.map((v) => ({ value: v, label: v }))} />
+        <FilterSelect label="Campaign" value={cpFilter} onChange={setCpFilter} options={filterOptions.campaigns.map((c) => ({ value: c.id, label: c.name }))} />
+        <FilterSelect label="Owner" value={ownFilter} onChange={setOwnFilter} options={filterOptions.owners.map((v) => ({ value: v, label: v.slice(0, 8) }))} />
+        <FilterSelect label="Stage" value={stFilter} onChange={setStFilter} options={filterOptions.statuses.map((v) => ({ value: v, label: v }))} />
+        {(chFilter || cpFilter || ownFilter || stFilter) && (
+          <button
+            onClick={() => { setChFilter(""); setCpFilter(""); setOwnFilter(""); setStFilter(""); }}
+            className="hud-label text-[11px] text-[var(--silver-dim)] hover:text-[var(--silver)] underline"
+          >Clear</button>
+        )}
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -213,10 +268,10 @@ function AttributionTable() {
             {isLoading && (
               <tr><td colSpan={11} className="px-3 py-6 text-center text-xs text-[var(--silver-dim)]">Loading…</td></tr>
             )}
-            {!isLoading && data.length === 0 && (
+            {!isLoading && filtered.length === 0 && (
               <tr><td colSpan={11} className="px-3 py-8 text-center text-xs text-[var(--silver-dim)]">No campaigns yet.</td></tr>
             )}
-            {data.map((r: any) => {
+            {filtered.map((r: any) => {
               const roi = r.spend > 0 ? ((Number(r.won_value) - Number(r.spend)) / Number(r.spend)) * 100 : null;
               return (
                 <tr
@@ -245,10 +300,33 @@ function AttributionTable() {
       </div>
     </WorkspaceCard>
 
-    {lastResult && <ReconcileDiffPanel result={lastResult} />}
-    <AuditLogPanel rows={audit as any[]} />
-    <PrintSummary result={lastResult} attribution={data as any[]} range={range} />
+    {lastResult && <ReconcileDiffPanel result={lastResult} range={range} />}
+    <AuditLogPanel
+      rows={audit}
+      total={auditTotal}
+      page={auditPage}
+      pageSize={AUDIT_PAGE}
+      onPage={setAuditPage}
+      q={auditQ}
+      onQ={(v) => { setAuditQ(v); setAuditPage(0); }}
+    />
+    <PrintSummary result={lastResult} attribution={filtered} range={range} />
     </div>
+  );
+}
+
+function FilterSelect({
+  label, value, onChange, options,
+}: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="h-8 px-2 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] bg-transparent hud-label text-[11px] text-[var(--silver-dim)]"
+    >
+      <option value="">All {label.toLowerCase()}</option>
+      {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+    </select>
   );
 }
 
