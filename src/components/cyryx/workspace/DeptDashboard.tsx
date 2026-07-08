@@ -257,16 +257,28 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
   useRealtimeInvalidate(["crm_deals", "crm_stages"], [["dash-pipeline", range]]);
   const navigate = useNavigate();
   const { start } = useMemo(() => rangeBounds(range), [range]);
+  const [stageFilter, setStageFilter] = useState<string>("");
+  const [ownerFilter, setOwnerFilter] = useState<string>("");
   const q = useQuery({
     queryKey: ["dash-pipeline", range],
     queryFn: async () => {
       const [stages, deals] = await Promise.all([
         (supabase as any).from("crm_stages").select("id,name,position,is_won,is_lost").order("position"),
-        (supabase as any).from("crm_deals").select("stage_id,value,updated_at,created_at")
+        (supabase as any).from("crm_deals").select("stage_id,value,updated_at,created_at,owner_id")
           .gte("updated_at", new Date(start).toISOString()),
       ]);
-      const byStage = (stages.data ?? []).map((s: any) => {
-        const ds = (deals.data ?? []).filter((d: any) => d.stage_id === s.id);
+      const owners = Array.from(new Set((deals.data ?? []).map((d: any) => d.owner_id).filter(Boolean)));
+      return { stages: stages.data ?? [], deals: deals.data ?? [], owners };
+    },
+  });
+  const view = useMemo(() => {
+    const stages = q.data?.stages ?? [];
+    const deals = (q.data?.deals ?? []).filter((d: any) =>
+      (!stageFilter || d.stage_id === stageFilter) &&
+      (!ownerFilter || d.owner_id === ownerFilter),
+    );
+    const byStage = stages.map((s: any) => {
+      const ds = deals.filter((d: any) => d.stage_id === s.id);
         return {
           stage: s.name,
           count: ds.length,
@@ -279,9 +291,8 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
       const lost = byStage.filter((s: any) => s.is_lost).reduce((a: number, s: any) => a + s.count, 0);
       const winRate = won + lost > 0 ? (won / (won + lost)) * 100 : 0;
       return { byStage, winRate };
-    },
-  });
-  const rows = q.data?.byStage ?? [];
+  }, [q.data, stageFilter, ownerFilter]);
+  const rows = view.byStage;
   const drill = () => navigate({ to: "/workspace/pipeline" });
   return (
     <section className="print:block">
@@ -289,6 +300,16 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
         range={range}
         setRange={setRange}
         onExport={() => downloadCSV(`pipeline-${range}.csv`, rows)}
+        extra={
+          <SegmentSelects
+            selects={[
+              { label: "Stage", value: stageFilter, onChange: setStageFilter,
+                options: (q.data?.stages ?? []).map((s: any) => ({ value: s.id, label: s.name })) },
+              { label: "Owner", value: ownerFilter, onChange: setOwnerFilter,
+                options: (q.data?.owners ?? []).map((o: string) => ({ value: o, label: o.slice(0, 8) })) },
+            ]}
+          />
+        }
       />
       <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="Pipeline by stage" subtitle="Deal value">
@@ -302,7 +323,7 @@ function PipelineDashboard({ range, setRange }: PaneProps) {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
-      <ChartCard title="Deals per stage" subtitle={`Win rate ${(q.data?.winRate ?? 0).toFixed(0)}%`}>
+      <ChartCard title="Deals per stage" subtitle={`Win rate ${view.winRate.toFixed(0)}%`}>
         <ResponsiveContainer>
           <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={drill}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
