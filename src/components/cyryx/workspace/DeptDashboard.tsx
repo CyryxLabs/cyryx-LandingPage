@@ -1,4 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import {
   ResponsiveContainer,
   LineChart,
@@ -12,8 +14,30 @@ import {
 } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
 import { WorkspaceCard } from "@/components/cyryx/workspace/WorkspaceShell";
+import { drawerStore } from "@/lib/drawer-store";
 
 type Kind = "finance" | "pipeline" | "dev" | "hr" | "marketing";
+export type Range = "mtd" | "30d" | "90d" | "ytd";
+
+const RANGE_OPTIONS: { key: Range; label: string }[] = [
+  { key: "mtd", label: "MTD" },
+  { key: "30d", label: "30d" },
+  { key: "90d", label: "90d" },
+  { key: "ytd", label: "YTD" },
+];
+
+export function rangeBounds(range: Range): { start: number; end: number } {
+  const now = new Date();
+  const end = Date.now();
+  if (range === "mtd") return { start: new Date(now.getFullYear(), now.getMonth(), 1).getTime(), end };
+  if (range === "ytd") return { start: new Date(now.getFullYear(), 0, 1).getTime(), end };
+  const days = range === "30d" ? 30 : 90;
+  return { start: end - days * 864e5, end };
+}
+
+export function rangeLabel(range: Range): string {
+  return RANGE_OPTIONS.find((r) => r.key === range)?.label ?? range;
+}
 
 const AXIS = "color-mix(in oklab, var(--silver) 55%, transparent)";
 const GRID = "color-mix(in oklab, var(--accent-glow) 15%, transparent)";
@@ -21,6 +45,92 @@ const ACCENT = "var(--accent-glow)";
 
 function fmtMoney(n: number) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n || 0);
+}
+
+function toCSV(rows: Record<string, unknown>[]): string {
+  if (!rows.length) return "";
+  const cols = Array.from(new Set(rows.flatMap((r) => Object.keys(r))));
+  const esc = (v: unknown) => {
+    const s = v == null ? "" : String(v);
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  return [cols.join(","), ...rows.map((r) => cols.map((c) => esc(r[c])).join(","))].join("\n");
+}
+
+export function downloadCSV(name: string, rows: Record<string, unknown>[]) {
+  const csv = toCSV(rows);
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function useRealtimeInvalidate(tables: string[], keys: string[][]) {
+  const qc = useQueryClient();
+  useEffect(() => {
+    const channel = supabase.channel(`dash-${tables.join("-")}`);
+    tables.forEach((t) =>
+      channel.on("postgres_changes", { event: "*", schema: "public", table: t }, () => {
+        keys.forEach((k) => qc.invalidateQueries({ queryKey: k }));
+      }),
+    );
+    channel.subscribe();
+    return () => { supabase.removeChannel(channel); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+}
+
+function DashboardToolbar({
+  range,
+  setRange,
+  onExport,
+  extra,
+}: {
+  range: Range;
+  setRange: (r: Range) => void;
+  onExport: () => void;
+  extra?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2 mb-4">
+      <div className="flex gap-0.5 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] p-0.5">
+        {RANGE_OPTIONS.map((r) => (
+          <button
+            key={r.key}
+            type="button"
+            onClick={() => setRange(r.key)}
+            className={`px-2.5 py-1 rounded hud-label text-[11px] transition-colors ${
+              range === r.key
+                ? "bg-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] text-[var(--accent-glow)]"
+                : "text-[var(--silver-dim)] hover:text-[var(--silver)]"
+            }`}
+          >
+            {r.label}
+          </button>
+        ))}
+      </div>
+      <div className="ml-auto flex gap-1">
+        <button
+          type="button"
+          onClick={onExport}
+          className="h-8 px-3 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] hud-label text-[11px] text-[var(--silver-dim)] hover:text-[var(--silver)]"
+        >
+          Export CSV
+        </button>
+        <button
+          type="button"
+          onClick={() => window.print()}
+          className="h-8 px-3 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] hud-label text-[11px] text-[var(--silver-dim)] hover:text-[var(--silver)]"
+        >
+          Print / PDF
+        </button>
+        {extra}
+      </div>
+    </div>
+  );
 }
 
 function ChartCard({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
@@ -35,13 +145,16 @@ function ChartCard({ title, subtitle, children }: { title: string; subtitle?: st
   );
 }
 
-export function DeptDashboard({ kind }: { kind: Kind }) {
-  if (kind === "finance") return <FinanceDashboard />;
-  if (kind === "pipeline") return <PipelineDashboard />;
-  if (kind === "dev") return <DevDashboard />;
-  if (kind === "hr") return <HRDashboard />;
-  return <MarketingDashboard />;
+export function DeptDashboard({ kind, defaultRange = "30d" }: { kind: Kind; defaultRange?: Range }) {
+  const [range, setRange] = useState<Range>(defaultRange);
+  if (kind === "finance") return <FinanceDashboard range={range} setRange={setRange} />;
+  if (kind === "pipeline") return <PipelineDashboard range={range} setRange={setRange} />;
+  if (kind === "dev") return <DevDashboard range={range} setRange={setRange} />;
+  if (kind === "hr") return <HRDashboard range={range} setRange={setRange} />;
+  return <MarketingDashboard range={range} setRange={setRange} />;
 }
+
+type PaneProps = { range: Range; setRange: (r: Range) => void };
 
 function useMonthlyBuckets(months = 12) {
   const now = new Date();
