@@ -410,14 +410,11 @@ function FilterSelect({
 }
 
 function ReconcileDiffPanel({ result, range }: { result: ReconcileResult; range: Range }) {
-  const pDelta = result.pipeline_after - result.pipeline_before;
-  const rDelta = result.revenue_after - result.revenue_before;
-  const pPct = result.pipeline_before > 0 ? (pDelta / result.pipeline_before) * 100 : null;
-  const rPct = result.revenue_before > 0 ? (rDelta / result.revenue_before) * 100 : null;
-  const netLeads = result.marked_won - result.cleared;
-  const summary = result.diff.length === 0
+  const s = summarizeDiff(result);
+  const { pipelineDelta: pDelta, revenueDelta: rDelta, pipelinePct: pPct, revenuePct: rPct, netLeads } = s;
+  const summary = s.changes === 0
     ? `No changes: attribution is already in sync with CRM for range ${range.toUpperCase()}.`
-    : `In range ${range.toUpperCase()}, ${result.diff.length} lead${result.diff.length === 1 ? "" : "s"} across ${result.affected_deal_ids.length} deal${result.affected_deal_ids.length === 1 ? "" : "s"} changed attribution — ${result.marked_won} marked won, ${result.cleared} cleared (net ${netLeads >= 0 ? "+" : ""}${netLeads} converted). Pipeline moved ${fmtMoney(pDelta)}${pPct !== null ? ` (${pPct >= 0 ? "+" : ""}${pPct.toFixed(1)}%)` : ""} and revenue moved ${fmtMoney(rDelta)}${rPct !== null ? ` (${rPct >= 0 ? "+" : ""}${rPct.toFixed(1)}%)` : ""}.`;
+    : `In range ${range.toUpperCase()}, ${s.changes} lead${s.changes === 1 ? "" : "s"} across ${s.affectedDeals} deal${s.affectedDeals === 1 ? "" : "s"} changed attribution — ${s.markedWon} marked won, ${s.cleared} cleared (net ${netLeads >= 0 ? "+" : ""}${netLeads} converted). Pipeline moved ${fmtMoney(pDelta)}${pPct !== null ? ` (${pPct >= 0 ? "+" : ""}${pPct.toFixed(1)}%)` : ""} and revenue moved ${fmtMoney(rDelta)}${rPct !== null ? ` (${rPct >= 0 ? "+" : ""}${rPct.toFixed(1)}%)` : ""}.`;
   return (
     <WorkspaceCard>
       <div className="px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)]">
