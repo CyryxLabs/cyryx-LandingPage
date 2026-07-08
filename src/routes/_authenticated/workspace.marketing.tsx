@@ -103,6 +103,10 @@ function AttributionTable() {
   const [msg, setMsg] = useState<string | null>(null);
   const [range, setRange] = useState<Range>("30d");
   const [lastResult, setLastResult] = useState<ReconcileResult | null>(null);
+  const [chFilter, setChFilter] = useState("");
+  const [cpFilter, setCpFilter] = useState("");
+  const [ownFilter, setOwnFilter] = useState("");
+  const [stFilter, setStFilter] = useState("");
   const { data = [], isLoading } = useQuery({
     queryKey: ["mkt_attribution_v"],
     queryFn: async () => {
@@ -114,19 +118,57 @@ function AttributionTable() {
       return data ?? [];
     },
   });
-
-  const { data: audit = [] } = useQuery({
-    queryKey: ["mkt_attribution_audit"],
+  const { data: campaignsMeta = [] } = useQuery({
+    queryKey: ["mkt_campaigns_meta"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
-        .from("mkt_attribution_audit")
-        .select("id,ran_at,ran_by,range_key,scanned,marked_won,cleared,pipeline_before,pipeline_after,revenue_before,revenue_after,affected_lead_ids,affected_deal_ids")
-        .order("ran_at", { ascending: false })
-        .limit(20);
-      if (error) throw error;
+      const { data } = await (supabase as any).from("mkt_campaigns").select("id,owner_id");
       return data ?? [];
     },
   });
+  const ownerById = useMemo(() => {
+    const m = new Map<string, string>();
+    (campaignsMeta as any[]).forEach((c) => { if (c.owner_id) m.set(c.id, c.owner_id); });
+    return m;
+  }, [campaignsMeta]);
+
+  const filtered = useMemo(() => {
+    return (data as any[]).filter((r) =>
+      (!chFilter || r.channel_name === chFilter) &&
+      (!cpFilter || r.campaign_id === cpFilter) &&
+      (!ownFilter || ownerById.get(r.campaign_id) === ownFilter) &&
+      (!stFilter || r.status === stFilter),
+    );
+  }, [data, chFilter, cpFilter, ownFilter, stFilter, ownerById]);
+
+  const filterOptions = useMemo(() => {
+    const rows = data as any[];
+    return {
+      channels: Array.from(new Set(rows.map((r) => r.channel_name).filter(Boolean))) as string[],
+      campaigns: rows.map((r) => ({ id: r.campaign_id as string, name: r.campaign_name as string })),
+      owners: Array.from(new Set((campaignsMeta as any[]).map((c) => c.owner_id).filter(Boolean))) as string[],
+      statuses: Array.from(new Set(rows.map((r) => r.status).filter(Boolean))) as string[],
+    };
+  }, [data, campaignsMeta]);
+
+  const [auditPage, setAuditPage] = useState(0);
+  const [auditQ, setAuditQ] = useState("");
+  const AUDIT_PAGE = 20;
+  const { data: auditRes } = useQuery({
+    queryKey: ["mkt_attribution_audit", auditPage, auditQ, range],
+    queryFn: async () => {
+      let query = (supabase as any)
+        .from("mkt_attribution_audit")
+        .select("id,ran_at,ran_by,range_key,scanned,marked_won,cleared,pipeline_before,pipeline_after,revenue_before,revenue_after,affected_lead_ids,affected_deal_ids", { count: "exact" })
+        .order("ran_at", { ascending: false });
+      if (auditQ.trim()) query = query.ilike("range_key", `%${auditQ.trim()}%`);
+      const from = auditPage * AUDIT_PAGE;
+      const { data, error, count } = await query.range(from, from + AUDIT_PAGE - 1);
+      if (error) throw error;
+      return { rows: (data ?? []) as any[], count: count ?? 0 };
+    },
+  });
+  const audit = auditRes?.rows ?? [];
+  const auditTotal = auditRes?.count ?? 0;
 
   async function onReconcile() {
     setBusy(true);
@@ -143,6 +185,7 @@ function AttributionTable() {
       qc.invalidateQueries({ queryKey: ["mkt_attribution_v"] });
       qc.invalidateQueries({ queryKey: ["mkt_leads"] });
       qc.invalidateQueries({ queryKey: ["mkt_attribution_audit"] });
+      setAuditPage(0);
     } catch (e: any) {
       setMsg(e.message ?? "Reconcile failed");
     } finally {
@@ -173,8 +216,8 @@ function AttributionTable() {
         </div>
         <div className="flex gap-2">
           <WsButton
-            onClick={() => downloadCSV(`attribution-${new Date().toISOString().slice(0,10)}.csv`, data)}
-            disabled={!data.length}
+            onClick={() => downloadCSV(`attribution-${new Date().toISOString().slice(0,10)}.csv`, filtered)}
+            disabled={!filtered.length}
           >
             Export CSV
           </WsButton>
@@ -191,6 +234,18 @@ function AttributionTable() {
             {busy ? "Reconciling…" : "Reconcile attribution"}
           </WsButton>
         </div>
+      </div>
+      <div className="flex flex-wrap gap-2 px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)]">
+        <FilterSelect label="Channel" value={chFilter} onChange={setChFilter} options={filterOptions.channels.map((v) => ({ value: v, label: v }))} />
+        <FilterSelect label="Campaign" value={cpFilter} onChange={setCpFilter} options={filterOptions.campaigns.map((c) => ({ value: c.id, label: c.name }))} />
+        <FilterSelect label="Owner" value={ownFilter} onChange={setOwnFilter} options={filterOptions.owners.map((v) => ({ value: v, label: v.slice(0, 8) }))} />
+        <FilterSelect label="Stage" value={stFilter} onChange={setStFilter} options={filterOptions.statuses.map((v) => ({ value: v, label: v }))} />
+        {(chFilter || cpFilter || ownFilter || stFilter) && (
+          <button
+            onClick={() => { setChFilter(""); setCpFilter(""); setOwnFilter(""); setStFilter(""); }}
+            className="hud-label text-[11px] text-[var(--silver-dim)] hover:text-[var(--silver)] underline"
+          >Clear</button>
+        )}
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -213,10 +268,10 @@ function AttributionTable() {
             {isLoading && (
               <tr><td colSpan={11} className="px-3 py-6 text-center text-xs text-[var(--silver-dim)]">Loading…</td></tr>
             )}
-            {!isLoading && data.length === 0 && (
+            {!isLoading && filtered.length === 0 && (
               <tr><td colSpan={11} className="px-3 py-8 text-center text-xs text-[var(--silver-dim)]">No campaigns yet.</td></tr>
             )}
-            {data.map((r: any) => {
+            {filtered.map((r: any) => {
               const roi = r.spend > 0 ? ((Number(r.won_value) - Number(r.spend)) / Number(r.spend)) * 100 : null;
               return (
                 <tr
@@ -245,22 +300,52 @@ function AttributionTable() {
       </div>
     </WorkspaceCard>
 
-    {lastResult && <ReconcileDiffPanel result={lastResult} />}
-    <AuditLogPanel rows={audit as any[]} />
-    <PrintSummary result={lastResult} attribution={data as any[]} range={range} />
+    {lastResult && <ReconcileDiffPanel result={lastResult} range={range} />}
+    <AuditLogPanel
+      rows={audit}
+      total={auditTotal}
+      page={auditPage}
+      pageSize={AUDIT_PAGE}
+      onPage={setAuditPage}
+      q={auditQ}
+      onQ={(v) => { setAuditQ(v); setAuditPage(0); }}
+    />
+    <PrintSummary result={lastResult} attribution={filtered} range={range} />
     </div>
   );
 }
 
-function ReconcileDiffPanel({ result }: { result: ReconcileResult }) {
+function FilterSelect({
+  label, value, onChange, options,
+}: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="h-8 px-2 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] bg-transparent hud-label text-[11px] text-[var(--silver-dim)]"
+    >
+      <option value="">All {label.toLowerCase()}</option>
+      {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+    </select>
+  );
+}
+
+function ReconcileDiffPanel({ result, range }: { result: ReconcileResult; range: Range }) {
   const pDelta = result.pipeline_after - result.pipeline_before;
   const rDelta = result.revenue_after - result.revenue_before;
+  const pPct = result.pipeline_before > 0 ? (pDelta / result.pipeline_before) * 100 : null;
+  const rPct = result.revenue_before > 0 ? (rDelta / result.revenue_before) * 100 : null;
+  const netLeads = result.marked_won - result.cleared;
+  const summary = result.diff.length === 0
+    ? `No changes: attribution is already in sync with CRM for range ${range.toUpperCase()}.`
+    : `In range ${range.toUpperCase()}, ${result.diff.length} lead${result.diff.length === 1 ? "" : "s"} across ${result.affected_deal_ids.length} deal${result.affected_deal_ids.length === 1 ? "" : "s"} changed attribution — ${result.marked_won} marked won, ${result.cleared} cleared (net ${netLeads >= 0 ? "+" : ""}${netLeads} converted). Pipeline moved ${fmtMoney(pDelta)}${pPct !== null ? ` (${pPct >= 0 ? "+" : ""}${pPct.toFixed(1)}%)` : ""} and revenue moved ${fmtMoney(rDelta)}${rPct !== null ? ` (${rPct >= 0 ? "+" : ""}${rPct.toFixed(1)}%)` : ""}.`;
   return (
     <WorkspaceCard>
       <div className="px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)]">
         <p className="hud-label text-[10px] text-[var(--silver-dim)]">
           Reconciliation diff · {new Date(result.ran_at).toLocaleString()} · range {result.range_key ?? "—"}
         </p>
+        <p className="text-xs text-[var(--silver)] mt-1">{summary}</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-3 text-sm">
         <Kpi label="Scanned" value={String(result.scanned)} />
@@ -306,12 +391,34 @@ function ReconcileDiffPanel({ result }: { result: ReconcileResult }) {
   );
 }
 
-function AuditLogPanel({ rows }: { rows: any[] }) {
+function AuditLogPanel({
+  rows, total, page, pageSize, onPage, q, onQ,
+}: {
+  rows: any[]; total: number; page: number; pageSize: number;
+  onPage: (p: number) => void; q: string; onQ: (v: string) => void;
+}) {
+  const from = total === 0 ? 0 : page * pageSize + 1;
+  const to = Math.min(total, (page + 1) * pageSize);
+  const hasPrev = page > 0;
+  const hasNext = to < total;
   return (
     <WorkspaceCard>
-      <div className="px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] flex justify-between items-center">
-        <p className="hud-label text-[10px] text-[var(--silver-dim)]">Audit log · last {rows.length} runs</p>
-        <WsButton onClick={() => downloadCSV(`attribution-audit.csv`, rows)} disabled={!rows.length}>Export</WsButton>
+      <div className="px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] flex flex-wrap justify-between items-center gap-2">
+        <p className="hud-label text-[10px] text-[var(--silver-dim)]">
+          Audit log · showing {from}–{to} of {total}
+        </p>
+        <div className="flex gap-2 items-center">
+          <input
+            type="text"
+            value={q}
+            onChange={(e) => onQ(e.target.value)}
+            placeholder="Search range (mtd, 30d…)"
+            className="h-8 px-2 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] bg-transparent text-xs text-[var(--silver)] placeholder:text-[var(--silver-dim)]"
+          />
+          <WsButton onClick={() => onPage(page - 1)} disabled={!hasPrev}>Prev</WsButton>
+          <WsButton onClick={() => onPage(page + 1)} disabled={!hasNext}>Next</WsButton>
+          <WsButton onClick={() => downloadCSV(`attribution-audit-p${page + 1}.csv`, rows)} disabled={!rows.length}>Export page</WsButton>
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
@@ -444,6 +551,51 @@ function PrintSummary({
         </section>
       )}
 
+      {result && result.diff.length > 0 && (() => {
+        const byCampaign = new Map<string, { marked_won: number; cleared: number; deal_value_delta: number; lead_ids: string[]; deal_ids: string[] }>();
+        for (const d of result.diff) {
+          const key = d.campaign_id ?? "—";
+          const cur = byCampaign.get(key) ?? { marked_won: 0, cleared: 0, deal_value_delta: 0, lead_ids: [], deal_ids: [] };
+          if (d.action === "marked_won") { cur.marked_won++; cur.deal_value_delta += d.deal_value; }
+          else { cur.cleared++; cur.deal_value_delta -= d.deal_value; }
+          cur.lead_ids.push(d.lead_id);
+          if (!cur.deal_ids.includes(d.deal_id)) cur.deal_ids.push(d.deal_id);
+          byCampaign.set(key, cur);
+        }
+        const nameById = new Map<string, string>();
+        for (const r of attribution) nameById.set(r.campaign_id, r.campaign_name);
+        const rows = Array.from(byCampaign.entries()).map(([cid, v]) => ({ campaign_id: cid, name: nameById.get(cid) ?? cid.slice(0, 8), ...v }));
+        return (
+          <section className="mb-6 break-before-page">
+            <h2 className="text-sm font-bold mb-2">Per-campaign impact (before → after)</h2>
+            <table className="w-full text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-black">
+                  <th className="text-left py-1">Campaign</th>
+                  <th className="text-right py-1">Marked won</th>
+                  <th className="text-right py-1">Cleared</th>
+                  <th className="text-right py-1">Revenue Δ</th>
+                  <th className="text-right py-1">Leads affected</th>
+                  <th className="text-right py-1">Deals affected</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.campaign_id} className="border-b border-gray-300">
+                    <td className="py-1">{r.name}</td>
+                    <td className="py-1 text-right">{r.marked_won}</td>
+                    <td className="py-1 text-right">{r.cleared}</td>
+                    <td className="py-1 text-right">{fmtMoney(r.deal_value_delta)}</td>
+                    <td className="py-1 text-right">{r.lead_ids.length}</td>
+                    <td className="py-1 text-right">{r.deal_ids.length}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        );
+      })()}
+
       <section className="break-before-page">
         <h2 className="text-sm font-bold mb-2">Annex · Attribution by campaign</h2>
         <table className="w-full text-xs border-collapse">
@@ -473,6 +625,24 @@ function PrintSummary({
           </tbody>
         </table>
       </section>
+
+      {result && (result.affected_lead_ids.length > 0 || result.affected_deal_ids.length > 0) && (
+        <section className="mt-6 break-inside-avoid">
+          <h2 className="text-sm font-bold mb-2">Affected IDs</h2>
+          <div className="grid grid-cols-2 gap-3 text-[10px] font-mono break-all">
+            <div>
+              <p className="font-bold mb-1 font-sans">Leads ({result.affected_lead_ids.length})</p>
+              {result.affected_lead_ids.join(", ")}
+            </div>
+            <div>
+              <p className="font-bold mb-1 font-sans">Deals ({result.affected_deal_ids.length})</p>
+              {result.affected_deal_ids.join(", ")}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <p className="mt-6 text-[9px] text-gray-500">Range totals by stage aggregated from mkt_attribution_v for the selected range · Cyryx Labs</p>
     </div>
   );
 }
