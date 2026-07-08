@@ -330,15 +330,22 @@ function FilterSelect({
   );
 }
 
-function ReconcileDiffPanel({ result }: { result: ReconcileResult }) {
+function ReconcileDiffPanel({ result, range }: { result: ReconcileResult; range: Range }) {
   const pDelta = result.pipeline_after - result.pipeline_before;
   const rDelta = result.revenue_after - result.revenue_before;
+  const pPct = result.pipeline_before > 0 ? (pDelta / result.pipeline_before) * 100 : null;
+  const rPct = result.revenue_before > 0 ? (rDelta / result.revenue_before) * 100 : null;
+  const netLeads = result.marked_won - result.cleared;
+  const summary = result.diff.length === 0
+    ? `No changes: attribution is already in sync with CRM for range ${range.toUpperCase()}.`
+    : `In range ${range.toUpperCase()}, ${result.diff.length} lead${result.diff.length === 1 ? "" : "s"} across ${result.affected_deal_ids.length} deal${result.affected_deal_ids.length === 1 ? "" : "s"} changed attribution — ${result.marked_won} marked won, ${result.cleared} cleared (net ${netLeads >= 0 ? "+" : ""}${netLeads} converted). Pipeline moved ${fmtMoney(pDelta)}${pPct !== null ? ` (${pPct >= 0 ? "+" : ""}${pPct.toFixed(1)}%)` : ""} and revenue moved ${fmtMoney(rDelta)}${rPct !== null ? ` (${rPct >= 0 ? "+" : ""}${rPct.toFixed(1)}%)` : ""}.`;
   return (
     <WorkspaceCard>
       <div className="px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)]">
         <p className="hud-label text-[10px] text-[var(--silver-dim)]">
           Reconciliation diff · {new Date(result.ran_at).toLocaleString()} · range {result.range_key ?? "—"}
         </p>
+        <p className="text-xs text-[var(--silver)] mt-1">{summary}</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-3 text-sm">
         <Kpi label="Scanned" value={String(result.scanned)} />
@@ -384,12 +391,34 @@ function ReconcileDiffPanel({ result }: { result: ReconcileResult }) {
   );
 }
 
-function AuditLogPanel({ rows }: { rows: any[] }) {
+function AuditLogPanel({
+  rows, total, page, pageSize, onPage, q, onQ,
+}: {
+  rows: any[]; total: number; page: number; pageSize: number;
+  onPage: (p: number) => void; q: string; onQ: (v: string) => void;
+}) {
+  const from = total === 0 ? 0 : page * pageSize + 1;
+  const to = Math.min(total, (page + 1) * pageSize);
+  const hasPrev = page > 0;
+  const hasNext = to < total;
   return (
     <WorkspaceCard>
-      <div className="px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] flex justify-between items-center">
-        <p className="hud-label text-[10px] text-[var(--silver-dim)]">Audit log · last {rows.length} runs</p>
-        <WsButton onClick={() => downloadCSV(`attribution-audit.csv`, rows)} disabled={!rows.length}>Export</WsButton>
+      <div className="px-3 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)] flex flex-wrap justify-between items-center gap-2">
+        <p className="hud-label text-[10px] text-[var(--silver-dim)]">
+          Audit log · showing {from}–{to} of {total}
+        </p>
+        <div className="flex gap-2 items-center">
+          <input
+            type="text"
+            value={q}
+            onChange={(e) => onQ(e.target.value)}
+            placeholder="Search range (mtd, 30d…)"
+            className="h-8 px-2 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)] bg-transparent text-xs text-[var(--silver)] placeholder:text-[var(--silver-dim)]"
+          />
+          <WsButton onClick={() => onPage(page - 1)} disabled={!hasPrev}>Prev</WsButton>
+          <WsButton onClick={() => onPage(page + 1)} disabled={!hasNext}>Next</WsButton>
+          <WsButton onClick={() => downloadCSV(`attribution-audit-p${page + 1}.csv`, rows)} disabled={!rows.length}>Export page</WsButton>
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
