@@ -172,13 +172,16 @@ function useMonthlyBuckets(months = 12) {
   return buckets;
 }
 
-function FinanceDashboard() {
+function FinanceDashboard({ range, setRange }: PaneProps) {
+  useRealtimeInvalidate(["fin_transactions", "fin_subscriptions", "fin_invoices"], [["dash-finance", range]]);
   const buckets = useMonthlyBuckets(12);
+  const { start, end } = useMemo(() => rangeBounds(range), [range]);
   const q = useQuery({
-    queryKey: ["dash-finance"],
+    queryKey: ["dash-finance", range],
     queryFn: async () => {
       const [tx, subs] = await Promise.all([
-        (supabase as any).from("fin_transactions").select("amount,kind,occurred_on"),
+        (supabase as any).from("fin_transactions").select("amount,kind,occurred_on")
+          .gte("occurred_on", new Date(start).toISOString().slice(0, 10)),
         (supabase as any).from("fin_subscriptions").select("mrr,status,started_at,canceled_at"),
       ]);
       const rows = buckets.map((b) => {
@@ -201,8 +204,21 @@ function FinanceDashboard() {
     },
   });
   const data = q.data ?? [];
+  const inRangeTotals = useMemo(() => {
+    const inRange = data.filter((d: any, i: number) => buckets[i]?.end > start && buckets[i]?.start < end);
+    return {
+      revenue: inRange.reduce((a: number, r: any) => a + r.revenue, 0),
+      expenses: inRange.reduce((a: number, r: any) => a + r.expenses, 0),
+    };
+  }, [data, buckets, start, end]);
   return (
-    <section className="grid gap-4 md:grid-cols-2">
+    <section className="print:block">
+      <DashboardToolbar
+        range={range}
+        setRange={setRange}
+        onExport={() => downloadCSV(`finance-${range}.csv`, data)}
+      />
+      <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="MRR trend" subtitle="Active + trial subscriptions">
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
@@ -214,7 +230,7 @@ function FinanceDashboard() {
           </LineChart>
         </ResponsiveContainer>
       </ChartCard>
-      <ChartCard title="Revenue vs Expenses" subtitle="Monthly, last 12 months">
+      <ChartCard title="Revenue vs Expenses" subtitle={`Range ${rangeLabel(range)} · Rev ${fmtMoney(inRangeTotals.revenue)} · Exp ${fmtMoney(inRangeTotals.expenses)}`}>
         <ResponsiveContainer>
           <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
@@ -226,17 +242,22 @@ function FinanceDashboard() {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
+      </div>
     </section>
   );
 }
 
-function PipelineDashboard() {
+function PipelineDashboard({ range, setRange }: PaneProps) {
+  useRealtimeInvalidate(["crm_deals", "crm_stages"], [["dash-pipeline", range]]);
+  const navigate = useNavigate();
+  const { start } = useMemo(() => rangeBounds(range), [range]);
   const q = useQuery({
-    queryKey: ["dash-pipeline"],
+    queryKey: ["dash-pipeline", range],
     queryFn: async () => {
       const [stages, deals] = await Promise.all([
         (supabase as any).from("crm_stages").select("id,name,position,is_won,is_lost").order("position"),
-        (supabase as any).from("crm_deals").select("stage_id,value,updated_at,created_at"),
+        (supabase as any).from("crm_deals").select("stage_id,value,updated_at,created_at")
+          .gte("updated_at", new Date(start).toISOString()),
       ]);
       const byStage = (stages.data ?? []).map((s: any) => {
         const ds = (deals.data ?? []).filter((d: any) => d.stage_id === s.id);
@@ -255,49 +276,62 @@ function PipelineDashboard() {
     },
   });
   const rows = q.data?.byStage ?? [];
+  const drill = () => navigate({ to: "/workspace/pipeline" });
   return (
-    <section className="grid gap-4 md:grid-cols-2">
+    <section className="print:block">
+      <DashboardToolbar
+        range={range}
+        setRange={setRange}
+        onExport={() => downloadCSV(`pipeline-${range}.csv`, rows)}
+      />
+      <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="Pipeline by stage" subtitle="Deal value">
         <ResponsiveContainer>
-          <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
+          <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={drill}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="stage" stroke={AXIS} fontSize={11} />
             <YAxis stroke={AXIS} fontSize={11} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
             <Tooltip formatter={(v: number) => fmtMoney(v)} contentStyle={{ background: "#0a0a0a", border: `1px solid ${GRID}` }} />
-            <Bar dataKey="value" fill={ACCENT} />
+            <Bar dataKey="value" fill={ACCENT} cursor="pointer" />
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
       <ChartCard title="Deals per stage" subtitle={`Win rate ${(q.data?.winRate ?? 0).toFixed(0)}%`}>
         <ResponsiveContainer>
-          <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
+          <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={drill}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="stage" stroke={AXIS} fontSize={11} />
             <YAxis stroke={AXIS} fontSize={11} />
             <Tooltip contentStyle={{ background: "#0a0a0a", border: `1px solid ${GRID}` }} />
-            <Bar dataKey="count" fill="color-mix(in oklab, var(--accent-glow) 70%, transparent)" />
+            <Bar dataKey="count" fill="color-mix(in oklab, var(--accent-glow) 70%, transparent)" cursor="pointer" />
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
+      </div>
     </section>
   );
 }
 
-function DevDashboard() {
+function DevDashboard({ range, setRange }: PaneProps) {
+  useRealtimeInvalidate(["pm_tasks"], [["dash-dev", range]]);
+  const navigate = useNavigate();
+  const { start } = useMemo(() => rangeBounds(range), [range]);
   const q = useQuery({
-    queryKey: ["dash-dev"],
+    queryKey: ["dash-dev", range],
     queryFn: async () => {
       const { data } = await (supabase as any)
         .from("pm_tasks")
-        .select("status,updated_at,created_at");
+        .select("id,title,status,updated_at,created_at")
+        .gte("updated_at", new Date(start).toISOString());
       const now = Date.now();
       const weeks: { week: string; done: number; created: number }[] = [];
-      for (let i = 11; i >= 0; i--) {
+      const spanWeeks = Math.max(4, Math.min(26, Math.ceil((now - start) / (7 * 864e5))));
+      for (let i = spanWeeks - 1; i >= 0; i--) {
         const end = now - i * 7 * 864e5;
-        const start = end - 7 * 864e5;
+        const wStart = end - 7 * 864e5;
         const label = new Date(end).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-        const done = (data ?? []).filter((t: any) => t.status === "done" && new Date(t.updated_at).getTime() >= start && new Date(t.updated_at).getTime() < end).length;
-        const created = (data ?? []).filter((t: any) => new Date(t.created_at).getTime() >= start && new Date(t.created_at).getTime() < end).length;
+        const done = (data ?? []).filter((t: any) => t.status === "done" && new Date(t.updated_at).getTime() >= wStart && new Date(t.updated_at).getTime() < end).length;
+        const created = (data ?? []).filter((t: any) => new Date(t.created_at).getTime() >= wStart && new Date(t.created_at).getTime() < end).length;
         weeks.push({ week: label, done, created });
       }
       const byStatus = ["backlog", "todo", "in_progress", "in_review", "done", "canceled"].map((s) => ({
@@ -307,8 +341,15 @@ function DevDashboard() {
       return { weeks, byStatus };
     },
   });
+  const drill = () => navigate({ to: "/workspace/dev" });
   return (
-    <section className="grid gap-4 md:grid-cols-2">
+    <section className="print:block">
+      <DashboardToolbar
+        range={range}
+        setRange={setRange}
+        onExport={() => downloadCSV(`dev-${range}.csv`, q.data?.weeks ?? [])}
+      />
+      <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="Throughput" subtitle="Tasks created vs done / week">
         <ResponsiveContainer>
           <LineChart data={q.data?.weeks ?? []} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
@@ -323,56 +364,67 @@ function DevDashboard() {
       </ChartCard>
       <ChartCard title="Tasks by status">
         <ResponsiveContainer>
-          <BarChart data={q.data?.byStatus ?? []} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+          <BarChart data={q.data?.byStatus ?? []} margin={{ top: 5, right: 10, left: -20, bottom: 0 }} onClick={drill}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="status" stroke={AXIS} fontSize={10} />
             <YAxis stroke={AXIS} fontSize={11} />
             <Tooltip contentStyle={{ background: "#0a0a0a", border: `1px solid ${GRID}` }} />
-            <Bar dataKey="count" fill={ACCENT} />
+            <Bar dataKey="count" fill={ACCENT} cursor="pointer" />
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
+      </div>
     </section>
   );
 }
 
-function HRDashboard() {
+function HRDashboard({ range, setRange }: PaneProps) {
+  useRealtimeInvalidate(["hr_candidates"], [["dash-hr", range]]);
+  const navigate = useNavigate();
+  const { start } = useMemo(() => rangeBounds(range), [range]);
   const q = useQuery({
-    queryKey: ["dash-hr"],
+    queryKey: ["dash-hr", range],
     queryFn: async () => {
       const { data } = await (supabase as any)
         .from("hr_candidates")
-        .select("stage,applied_at");
+        .select("stage,applied_at")
+        .gte("applied_at", new Date(start).toISOString());
       const stages = ["applied", "screening", "interview", "offer", "hired", "rejected", "withdrawn"];
       const byStage = stages.map((s) => ({
         stage: s,
         count: (data ?? []).filter((c: any) => c.stage === s).length,
       }));
-      const now = Date.now();
       const months: { month: string; applied: number }[] = [];
       for (let i = 5; i >= 0; i--) {
         const d = new Date();
         d.setMonth(d.getMonth() - i, 1);
-        const start = d.getTime();
-        const end = new Date(d.getFullYear(), d.getMonth() + 1, 1).getTime();
+        const mStart = d.getTime();
+        const mEnd = new Date(d.getFullYear(), d.getMonth() + 1, 1).getTime();
         months.push({
           month: d.toLocaleDateString(undefined, { month: "short" }),
-          applied: (data ?? []).filter((c: any) => c.applied_at && new Date(c.applied_at).getTime() >= start && new Date(c.applied_at).getTime() < end).length,
+          applied: (data ?? []).filter((c: any) => c.applied_at && new Date(c.applied_at).getTime() >= mStart && new Date(c.applied_at).getTime() < mEnd).length,
         });
       }
       return { byStage, months };
     },
   });
+  const drill = () => navigate({ to: "/workspace/hr" });
   return (
-    <section className="grid gap-4 md:grid-cols-2">
+    <section className="print:block">
+      <DashboardToolbar
+        range={range}
+        setRange={setRange}
+        onExport={() => downloadCSV(`hr-${range}.csv`, q.data?.byStage ?? [])}
+      />
+      <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="Candidates by stage">
         <ResponsiveContainer>
-          <BarChart data={q.data?.byStage ?? []} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+          <BarChart data={q.data?.byStage ?? []} margin={{ top: 5, right: 10, left: -20, bottom: 0 }} onClick={drill}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="stage" stroke={AXIS} fontSize={10} />
             <YAxis stroke={AXIS} fontSize={11} />
             <Tooltip contentStyle={{ background: "#0a0a0a", border: `1px solid ${GRID}` }} />
-            <Bar dataKey="count" fill={ACCENT} />
+            <Bar dataKey="count" fill={ACCENT} cursor="pointer" />
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
@@ -387,13 +439,18 @@ function HRDashboard() {
           </LineChart>
         </ResponsiveContainer>
       </ChartCard>
+      </div>
     </section>
   );
 }
 
-function MarketingDashboard() {
+function MarketingDashboard({ range, setRange }: PaneProps) {
+  useRealtimeInvalidate(
+    ["mkt_leads", "mkt_campaigns", "crm_deals"],
+    [["dash-marketing", range], ["mkt_attribution_v"]],
+  );
   const q = useQuery({
-    queryKey: ["dash-marketing"],
+    queryKey: ["dash-marketing", range],
     queryFn: async () => {
       const { data } = await (supabase as any)
         .from("mkt_attribution_v")
@@ -410,11 +467,23 @@ function MarketingDashboard() {
       return { byChannel: Array.from(byChannel.values()), top: (data ?? []).slice(0, 8) };
     },
   });
+  const rows = q.data?.byChannel ?? [];
+  const openCampaign = (idx?: number) => {
+    if (idx == null) return;
+    const r = q.data?.top?.[idx];
+    if (r?.campaign_id) drawerStore.open({ entity_type: "mkt_campaigns", entity_id: r.campaign_id, label: r.campaign_name });
+  };
   return (
-    <section className="grid gap-4 md:grid-cols-2">
+    <section className="print:block">
+      <DashboardToolbar
+        range={range}
+        setRange={setRange}
+        onExport={() => downloadCSV(`marketing-attribution-${range}.csv`, q.data?.top ?? [])}
+      />
+      <div className="grid gap-4 md:grid-cols-2">
       <ChartCard title="Leads by channel">
         <ResponsiveContainer>
-          <BarChart data={q.data?.byChannel ?? []} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+          <BarChart data={rows} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="channel" stroke={AXIS} fontSize={11} />
             <YAxis stroke={AXIS} fontSize={11} />
@@ -423,18 +492,19 @@ function MarketingDashboard() {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
-      <ChartCard title="Won revenue vs spend by channel">
+      <ChartCard title="Won revenue vs spend by channel" subtitle="Click a bar to open top campaign">
         <ResponsiveContainer>
-          <BarChart data={q.data?.byChannel ?? []} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
+          <BarChart data={rows} margin={{ top: 5, right: 10, left: -10, bottom: 0 }} onClick={(s: any) => openCampaign(s?.activeTooltipIndex)}>
             <CartesianGrid stroke={GRID} strokeDasharray="3 3" />
             <XAxis dataKey="channel" stroke={AXIS} fontSize={11} />
             <YAxis stroke={AXIS} fontSize={11} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
             <Tooltip formatter={(v: number) => fmtMoney(v)} contentStyle={{ background: "#0a0a0a", border: `1px solid ${GRID}` }} />
-            <Bar dataKey="won_value" fill={ACCENT} />
+            <Bar dataKey="won_value" fill={ACCENT} cursor="pointer" />
             <Bar dataKey="spend" fill="color-mix(in oklab, var(--silver) 40%, transparent)" />
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
+      </div>
     </section>
   );
 }
