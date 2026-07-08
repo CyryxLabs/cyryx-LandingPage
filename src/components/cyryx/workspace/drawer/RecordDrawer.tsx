@@ -448,3 +448,86 @@ function ActivityPane({ target }: { target: { entity_type: string; entity_id: st
     </ol>
   );
 }
+
+type CampaignLead = {
+  id: string;
+  source: string | null;
+  first_touch_at: string | null;
+  converted_at: string | null;
+  contact_id: string | null;
+  deal_id: string | null;
+};
+type CampaignDeal = { id: string; title: string; value: number | string; status: string; stage_id: string; updated_at: string };
+
+function CampaignTimelinePane({ campaignId }: { campaignId: string }) {
+  const q = useQuery({
+    queryKey: ["mkt-campaign-timeline", campaignId],
+    queryFn: async () => {
+      const leadsRes = await supabase
+        .from("mkt_leads")
+        .select("id, source, first_touch_at, converted_at, contact_id, deal_id")
+        .eq("campaign_id", campaignId);
+      if (leadsRes.error) throw leadsRes.error;
+      const leads = (leadsRes.data ?? []) as CampaignLead[];
+      const dealIds = Array.from(new Set(leads.map((l) => l.deal_id).filter((v): v is string => !!v)));
+      let deals: CampaignDeal[] = [];
+      if (dealIds.length) {
+        const dealsRes = await supabase
+          .from("crm_deals")
+          .select("id, title, value, status, stage_id, updated_at")
+          .in("id", dealIds);
+        if (dealsRes.error) throw dealsRes.error;
+        deals = (dealsRes.data ?? []) as CampaignDeal[];
+      }
+      const dealMap = new Map(deals.map((d) => [d.id, d]));
+      const events = leads.flatMap((l) => {
+        const items: { at: string; kind: "touch" | "converted" | "deal"; label: string; sub?: string }[] = [];
+        if (l.first_touch_at) items.push({ at: l.first_touch_at, kind: "touch", label: `Lead touch · ${l.source ?? "—"}` });
+        if (l.converted_at) items.push({ at: l.converted_at, kind: "converted", label: "Converted to deal" });
+        const d = l.deal_id ? dealMap.get(l.deal_id) : null;
+        if (d) items.push({ at: d.updated_at, kind: "deal", label: `Deal · ${d.status}`, sub: `${d.title} · $${Number(d.value ?? 0).toLocaleString()}` });
+        return items;
+      }).sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+      const pipeline = deals.filter((d) => d.status !== "won" && d.status !== "lost").reduce((a, d) => a + Number(d.value ?? 0), 0);
+      const won = deals.filter((d) => d.status === "won").reduce((a, d) => a + Number(d.value ?? 0), 0);
+      return { events, pipeline, won, leadsCount: leads.length, convertedCount: leads.filter((l) => l.converted_at).length };
+    },
+  });
+  if (q.isLoading) return <p className="text-sm text-[var(--silver-dim)]">Loading…</p>;
+  const d = q.data;
+  if (!d) return null;
+  const fmt = (v: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(v || 0);
+  return (
+    <div className="space-y-5">
+      <div className="grid grid-cols-2 gap-2">
+        {[
+          { label: "Leads", value: d.leadsCount },
+          { label: "Converted", value: d.convertedCount },
+          { label: "Pipeline", value: fmt(d.pipeline) },
+          { label: "Won", value: fmt(d.won) },
+        ].map((k) => (
+          <div key={k.label} className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_12%,transparent)] p-3">
+            <p className="hud-label text-[10px] text-[var(--silver-dim)]">{k.label}</p>
+            <p className="font-display text-lg text-[var(--silver)] mt-1">{k.value}</p>
+          </div>
+        ))}
+      </div>
+      {d.events.length === 0 ? (
+        <p className="text-xs text-[var(--silver-dim)] italic text-center py-6">No attribution events yet.</p>
+      ) : (
+        <ol className="space-y-3">
+          {d.events.map((e, i) => (
+            <li key={i} className="relative pl-4 border-l border-[color-mix(in_oklab,var(--accent-glow)_20%,transparent)]">
+              <span className={`absolute -left-[5px] top-1.5 h-2 w-2 rounded-full ${e.kind === "converted" || e.kind === "deal" ? "bg-[var(--accent-glow)] shadow-[0_0_6px_var(--accent-glow)]" : "bg-[color-mix(in_oklab,var(--silver)_50%,transparent)]"}`} />
+              <div className="flex items-center justify-between">
+                <span className="hud-label text-[10px] text-[var(--accent-glow)]">{e.label}</span>
+                <time className="text-[10px] text-[var(--silver-dim)]">{new Date(e.at).toLocaleString()}</time>
+              </div>
+              {e.sub && <p className="text-xs text-[var(--silver-dim)] mt-0.5">{e.sub}</p>}
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}
