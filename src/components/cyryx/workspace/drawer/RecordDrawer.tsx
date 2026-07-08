@@ -8,8 +8,8 @@ import { Eye, EyeOff, Paperclip, Trash2, Download, Upload } from "lucide-react";
 import { uploadAttachment, getAttachmentUrl, deleteAttachment, formatBytes } from "@/lib/attachments";
 import { useRef } from "react";
 
-const TABS = ["overview", "comments", "attachments", "watchers", "activity"] as const;
-type Tab = (typeof TABS)[number];
+const BASE_TABS = ["overview", "comments", "attachments", "watchers", "activity"] as const;
+type Tab = (typeof BASE_TABS)[number] | "timeline";
 
 const TITLE_KEYS = ["title", "full_name", "name", "subject", "code"];
 
@@ -47,6 +47,10 @@ function DrawerBody({
   tab: Tab;
   setTab: (t: Tab) => void;
 }) {
+  const isCampaign = target.entity_type === "mkt_campaigns";
+  const tabs: Tab[] = isCampaign
+    ? ["overview", "timeline", "comments", "attachments", "watchers", "activity"]
+    : [...BASE_TABS];
   const rowQ = useQuery({
     queryKey: ["drawer", target.entity_type, target.entity_id],
     queryFn: async () => {
@@ -73,7 +77,7 @@ function DrawerBody({
       </SheetHeader>
 
       <nav className="flex gap-1 px-4 py-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_10%,transparent)]">
-        {TABS.map((t) => (
+        {tabs.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -90,6 +94,7 @@ function DrawerBody({
 
       <div className="flex-1 overflow-y-auto px-6 py-5">
         {tab === "overview" && <OverviewPane row={row} loading={rowQ.isLoading} />}
+        {tab === "timeline" && isCampaign && <CampaignTimelinePane campaignId={target.entity_id} />}
         {tab === "comments" && <CommentsPane target={target} />}
         {tab === "attachments" && <AttachmentsPane target={target} />}
         {tab === "watchers" && <WatchersPane target={target} />}
