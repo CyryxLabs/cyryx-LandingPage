@@ -15,7 +15,7 @@ const COLUMNS: Column[] = [
     title: "Products",
     items: [
       { label: "MAAX Studio", href: "/products/maax-studio", badge: "Early access" },
-      { label: "Lyra", href: "/products/lyra", badge: "Coming soon" },
+      { label: "Lyra", href: "/lyra", badge: "Model" },
       { label: "All products", href: "/products" },
     ],
   },

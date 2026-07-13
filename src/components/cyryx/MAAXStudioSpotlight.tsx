@@ -1,5 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { HudLabel } from "./primitives/HudLabel";
+import lyraIcon from "@/assets/lyra-icon-512.webp";
 import { GlassPanel } from "./primitives/GlassPanel";
 import maaxDevices from "@/assets/cyryx-maax-devices-1200.jpg";
 import maaxDevices480Jpg from "@/assets/cyryx-maax-devices-480.jpg";
@@ -112,6 +114,32 @@ export function MAAXStudioSpotlight() {
 
           <div className="cx-reveal">
             <ProductPreview />
+            <Link
+              to="/lyra"
+              onClick={() =>
+                trackCta({ cta: "maax_powered_by_lyra", section: "maax_spotlight", href: "/lyra" })
+              }
+              className="group mt-5 flex items-center gap-4 rounded-md border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_65%,transparent)] p-4 transition-colors hover:border-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)]"
+            >
+              <img
+                src={lyraIcon}
+                alt=""
+                width={512}
+                height={512}
+                loading="lazy"
+                decoding="async"
+                className="h-12 w-12 shrink-0 rounded-lg"
+              />
+              <span className="flex-1 text-sm leading-relaxed text-[var(--silver-dim)]">
+                <span className="font-display uppercase tracking-[0.08em] text-[var(--silver)]">
+                  Powered by Lyra.
+                </span>{" "}
+                The governed AI model at its core.
+              </span>
+              <span className="inline-flex items-center gap-2 hud-label text-[var(--accent-glow)] transition-all group-hover:gap-3">
+                Learn more <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              </span>
+            </Link>
           </div>
         </div>
       </div>
