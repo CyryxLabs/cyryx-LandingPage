@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
@@ -57,6 +57,11 @@ export const Route = createFileRoute("/products")({
 });
 
 function ProductsPage() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // Parent route: render <Outlet /> for any /products/* child; render hub on exact /products.
+  if (pathname !== "/products" && pathname !== "/products/") {
+    return <Outlet />;
+  }
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />

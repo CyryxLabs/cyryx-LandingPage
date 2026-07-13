@@ -13,6 +13,7 @@ import { EngagementModel } from "@/components/cyryx/v4/EngagementModel";
 import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
 import { WhoWeWorkWith } from "@/components/cyryx/v4/WhoWeWorkWith";
 import { WhyCyryxV4 } from "@/components/cyryx/v4/WhyCyryxV4";
+import { ResearchBand } from "@/components/cyryx/v4/ResearchBand";
 import { FinalCTA } from "@/components/cyryx/v4/FinalCTA";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
@@ -173,6 +174,7 @@ function Index() {
         <MAAXStudioSpotlight />
         <WhoWeWorkWith />
         <WhyCyryxV4 />
+        <ResearchBand />
         <FinalCTA />
         <ContactSection />
       </main>

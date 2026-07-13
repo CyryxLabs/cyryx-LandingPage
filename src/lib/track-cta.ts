@@ -13,7 +13,9 @@ export type CtaName =
   | "explore_maax"
   | "careers_talent_network"
   | "careers_email"
-  | "talent_network_signup";
+  | "talent_network_signup"
+  | "view_research"
+  | "read_cgp";
 
 export type CtaSection =
   | "hero"
@@ -24,7 +26,8 @@ export type CtaSection =
   | "final_cta"
   | "solutions"
   | "careers"
-  | "footer";
+  | "footer"
+  | "research_band";
 
 export interface TrackCtaInput {
   cta: CtaName;

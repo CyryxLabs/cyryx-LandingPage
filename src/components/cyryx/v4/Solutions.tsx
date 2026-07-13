@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { HudLabel } from "../primitives/HudLabel";
 import { trackCta } from "@/lib/track-cta";
@@ -7,121 +8,76 @@ const CARDS = [
   {
     n: "01",
     title: "AI Product Development",
-    outcome:
-      "From idea to AI product. Design, build, and launch AI-powered products with clear architecture, focused scope, and scalable foundations.",
-    delivered: [
-      "product strategy",
-      "PRD & UX/UI architecture",
-      "MVP build & backend",
-      "AI integration, auth, payments, dashboards",
-      "deployment & launch readiness",
-    ],
+    outcome: "From concept to deployable AI product foundation.",
+    href: "/solutions/custom-ai-product-development",
   },
   {
     n: "02",
-    title: "Agentic Workflow Automation",
-    outcome:
-      "Turn repetitive work into governed workflows. AI-powered workflows that route decisions, trigger actions, generate outputs, and keep humans in control where judgment matters.",
-    delivered: [
-      "workflow discovery & process mapping",
-      "agentic workflow architecture",
-      "API integrations",
-      "human approval points",
-      "logs, dashboards, governance controls",
-    ],
+    title: "Workflow Automation",
+    outcome: "High-cost processes replaced by governed workflows.",
+    href: "/solutions/workflow-automation",
   },
   {
     n: "03",
-    title: "Internal AI Copilots & Agents",
-    outcome:
-      "Agents that understand the business — connected to internal knowledge, tools, permissions, workflows, and operating rules.",
-    delivered: [
-      "knowledge base architecture",
-      "retrieval systems & tool access",
-      "permissions & guardrails",
-      "evaluation rubrics & usage logs",
-      "deployment and iteration plan",
-    ],
+    title: "Internal AI Agents & Copilots",
+    outcome: "Agents operating inside your data and permission model.",
+    href: "/solutions/internal-ai-assistants",
   },
   {
     n: "04",
-    title: "AI Knowledge Systems",
-    outcome:
-      "Turn scattered information into operational intelligence — searchable, usable AI systems built from documents, processes, policies, and internal knowledge.",
-    delivered: [
-      "document ingestion",
-      "semantic search & knowledge graph",
-      "citations & versioning",
-      "access controls",
-      "knowledge workflow automation",
-    ],
+    title: "AI Websites & Lead Systems",
+    outcome: "AI-native intake, qualification, and routing.",
+    href: "/solutions/ai-websites-lead-systems",
   },
   {
     n: "05",
     title: "AI Integrations & Infrastructure",
-    outcome:
-      "Connect AI to the systems that run the business — existing products, databases, dashboards, workflows, and internal operations.",
-    delivered: [
-      "model providers",
-      "databases, auth, payments",
-      "CRM & internal tools",
-      "workflow & communication platforms",
-      "repository & deployment systems",
-    ],
+    outcome: "AI connected to your systems without expanding risk.",
+    href: "/solutions/ai-integrations",
   },
   {
     n: "06",
     title: "AI Governance & Cost Control",
-    outcome:
-      "AI with control, not chaos. Governance layers that make AI systems measurable, auditable, cost-aware, and safer to operate.",
-    delivered: [
-      "model routing & usage caps",
-      "cost tracking",
-      "approval flows & audit logs",
-      "evaluation rubrics",
-      "human-in-the-loop controls",
-      "security & permission boundaries",
-    ],
+    outcome: "Authority over what your AI does and what it costs.",
+    href: "/solutions/ai-governance-cost-control",
   },
 ];
 
 export function Solutions() {
   return (
-    <section id="solutions" className="relative py-14 sm:py-20 lg:py-28">
+    <section id="solutions" className="relative py-20 sm:py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="cx-reveal max-w-3xl">
           <HudLabel withDot>Solutions</HudLabel>
-          <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
-            AI solutions built for execution, not theater.
+          <h2 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold uppercase leading-[1.02] tracking-tight text-silver-gradient">
+            Systems under contract. Not hours under retainer.
           </h2>
-          <p className="mt-6 text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-            Cyryx Solutions helps teams design, build, and deploy practical AI
-            systems that connect to real workflows, real data, and real
-            outcomes. We help companies move from scattered experimentation to
-            structured execution.
+          <p className="mt-8 max-w-2xl text-base sm:text-lg leading-relaxed text-[var(--silver-dim)]">
+            Fixed deliverables, acceptance criteria, and full IP transfer — every engagement under a
+            Master Service Agreement.
           </p>
         </div>
-        <div className="cx-stagger mt-10 grid gap-4 sm:mt-14 md:grid-cols-2 lg:grid-cols-3">
+        <div className="cx-stagger mt-14 grid gap-5 sm:mt-20 md:grid-cols-2 lg:grid-cols-3">
           {CARDS.map((c) => (
-            <article
+            <Link
               key={c.title}
-              className="cx-stagger-item glass-panel flex flex-col rounded-md p-6"
+              to={c.href}
+              className="cx-stagger-item glass-panel group flex flex-col rounded-md p-7 transition-colors hover:bg-[color-mix(in_oklab,var(--graphite)_80%,transparent)]"
             >
               <span className="hud-label text-[var(--accent-glow)]">{c.n}</span>
               <h3 className="mt-4 font-display text-lg font-semibold uppercase tracking-wider text-[var(--silver)]">
                 {c.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-[var(--silver-dim)]">
                 {c.outcome}
               </p>
-              <p className="mt-4 text-[13px] leading-relaxed text-[var(--silver-dim)]">
-                <span className="hud-label text-[var(--silver)]">Delivered with:</span>{" "}
-                {c.delivered.join(" · ")}
-              </p>
-            </article>
+              <span className="mt-5 inline-flex items-center gap-2 hud-label text-[var(--accent-glow)] group-hover:gap-3 transition-all">
+                Explore <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              </span>
+            </Link>
           ))}
         </div>
-        <div className="mt-10 flex justify-center">
+        <div className="mt-14 flex justify-center">
           <a
             href={START_PROJECT_HREF}
             onClick={() =>
