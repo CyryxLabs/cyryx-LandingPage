@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { ContactSchema, CONTACT_INTERESTS } from "./contact.schema";
+import { ContactSchema } from "./contact.schema";
 export { ContactSchema } from "./contact.schema";
 export type { ContactInput } from "./contact.schema";
 
@@ -12,12 +12,6 @@ export const submitContact = createServerFn({ method: "POST" })
     }
     const submittedAt = new Date().toISOString();
     const normalizedEmail = data.email.toLowerCase();
-    const interestLabel = CONTACT_INTERESTS[data.interest];
-    // Interest travels inside the message as a structured prefix so it reaches
-    // the existing contact_submissions table and email templates without a
-    // schema migration.
-    const messageWithIntent =
-      data.interest === "project" ? data.message : `[${interestLabel}] ${data.message}`;
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
       const { enqueueInternalEmail } = await import("@/lib/email/send-internal.server");
@@ -25,7 +19,7 @@ export const submitContact = createServerFn({ method: "POST" })
         name: data.name,
         email: normalizedEmail,
         company: data.company || null,
-        message: messageWithIntent,
+        message: data.message,
       });
       await Promise.all([
         enqueueInternalEmail({
@@ -34,8 +28,7 @@ export const submitContact = createServerFn({ method: "POST" })
             name: data.name,
             email: normalizedEmail,
             company: data.company || "",
-            message: messageWithIntent,
-            interest: interestLabel,
+            message: data.message,
             submittedAt,
           },
           idempotencyKey: `contact-notify-fn-${submittedAt}`,

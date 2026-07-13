@@ -125,23 +125,15 @@ export function useCyryxScrollAnimations() {
     // headline to ghost/duplicate when Hero re-rendered mid-animation.
 
     // ── Universal reveals ────────────────────────────────────────
-    // Desktop/tablet get a 3D perspective rise (rotationX settles to 0 as the
-    // block enters the viewport); mobile keeps the cheap fade/slide. No
-    // pinning anywhere — the breakpoint spec forbids it on mobile.
-    const enable3d = window.matchMedia("(min-width: 768px)").matches;
     const reveals = gsap.utils.toArray<HTMLElement>(".cx-reveal");
     reveals.forEach((el) => {
       gsap.fromTo(el, {
         opacity: 0,
-        y: enable3d ? 44 : 24,
-        rotationX: enable3d ? 9 : 0,
-        transformPerspective: enable3d ? 1000 : 0,
-        transformOrigin: "center bottom",
+        y: 24,
       }, {
         opacity: 1,
         y: 0,
-        rotationX: 0,
-        duration: enable3d ? 1.1 : 0.9,
+        duration: 0.9,
         ease: "power3.out",
         immediateRender: false,
         scrollTrigger: {
@@ -158,17 +150,13 @@ export function useCyryxScrollAnimations() {
       if (!items.length) return;
       gsap.fromTo(items, {
         opacity: 0,
-        y: enable3d ? 36 : 20,
-        rotationX: enable3d ? 12 : 0,
-        transformPerspective: enable3d ? 900 : 0,
-        transformOrigin: "center bottom",
+        y: 20,
       }, {
         opacity: 1,
         y: 0,
-        rotationX: 0,
-        duration: enable3d ? 0.9 : 0.7,
+        duration: 0.7,
         ease: "power2.out",
-        stagger: enable3d ? 0.08 : 0.06,
+        stagger: 0.06,
         immediateRender: false,
         scrollTrigger: {
           trigger: group,
@@ -177,33 +165,6 @@ export function useCyryxScrollAnimations() {
         },
       });
     });
-
-    // ── 3D scrub on showcase figures (desktop/tablet only) ─────
-    // The MAAX device figure tilts out of perspective and settles flat as it
-    // crosses the viewport — scroll-linked (scrub), no pinning.
-    if (enable3d) {
-      gsap.utils.toArray<HTMLElement>("[data-macbook-figure]").forEach((fig) => {
-        gsap.fromTo(fig, {
-          rotationX: 10,
-          rotationY: -4,
-          scale: 0.97,
-          transformPerspective: 1200,
-          transformOrigin: "center center",
-        }, {
-          rotationX: 0,
-          rotationY: 0,
-          scale: 1,
-          ease: "none",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: fig,
-            start: "top bottom",
-            end: "center center",
-            scrub: 0.5,
-          },
-        });
-      });
-    }
 
     // ── Count-up metrics ─────────────────────────────────────────
     gsap.utils.toArray<HTMLElement>("[data-countup]").forEach((el) => {

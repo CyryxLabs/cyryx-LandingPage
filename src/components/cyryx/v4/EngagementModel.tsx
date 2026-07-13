@@ -4,7 +4,7 @@ const STEPS = [
   {
     n: "01",
     title: "Diagnostic",
-    body: "Workflow, risk, unit economics — before any proposal.",
+    body: "Workflow, data topology, risk surface, unit economics — before any proposal. If the system isn't worth building, we say so.",
   },
   {
     n: "02",
@@ -14,27 +14,27 @@ const STEPS = [
   {
     n: "03",
     title: "Build",
-    body: "Production discipline from day one.",
+    body: "Production discipline from day one: server-side security, audit logging, human approval on consequential actions.",
   },
   {
     n: "04",
     title: "Verification",
-    body: "Every claim testable by design.",
+    body: "Every system ships with evaluation criteria. Claims are testable by design.",
   },
   {
     n: "05",
     title: "Transfer",
-    body: "Documentation, training, ownership.",
+    body: "Documentation, training, ownership. We engineer for your independence.",
   },
 ];
 
 export function EngagementModel() {
   return (
-    <section id="engagement" className="relative py-20 sm:py-28 lg:py-40 bg-[var(--graphite)]">
+    <section id="engagement" className="relative py-14 sm:py-20 lg:py-28 bg-[var(--graphite)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="cx-reveal max-w-3xl">
           <HudLabel withDot>Engagement Model</HudLabel>
-          <h2 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold uppercase leading-[1.02] tracking-tight text-silver-gradient">
+          <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
             Fixed scope. Verifiable delivery. Full transfer.
           </h2>
         </div>

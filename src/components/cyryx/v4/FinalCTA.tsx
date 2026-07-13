@@ -5,7 +5,7 @@ import { START_PROJECT_HREF } from "@/lib/cta";
 
 export function FinalCTA() {
   return (
-    <section id="final-cta" className="relative py-20 sm:py-28 lg:py-40 bg-[var(--graphite)]">
+    <section id="final-cta" className="relative py-14 sm:py-20 lg:py-28 bg-[var(--graphite)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -13,7 +13,7 @@ export function FinalCTA() {
       />
       <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-10 text-center">
         <HudLabel withDot>Get Started</HudLabel>
-        <h2 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold uppercase leading-[1.02] tracking-tight text-silver-gradient">
+        <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
           Ready to turn AI into <span style={{ color: "var(--accent-glow)" }}>execution?</span>
         </h2>
         <p className="mt-6 text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
