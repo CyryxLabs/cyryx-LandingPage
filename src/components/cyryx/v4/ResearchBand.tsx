@@ -8,7 +8,7 @@ const FRAMEWORKS = ["EU AI Act", "NIST AI RMF", "ISO/IEC 42001"];
 
 export function ResearchBand() {
   return (
-    <section id="research" className="relative py-14 sm:py-20 lg:py-28 bg-[var(--graphite)]">
+    <section id="research" className="relative py-20 sm:py-28 lg:py-40 bg-[var(--graphite)]">
       <div
         aria-hidden
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] to-transparent"

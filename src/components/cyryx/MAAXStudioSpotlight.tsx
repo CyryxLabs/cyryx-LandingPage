@@ -15,13 +15,11 @@ import { trackCta } from "@/lib/track-cta";
 import { setContactIntent } from "@/lib/contact-intent";
 
 const PILLARS: { title: string; body: string }[] = [
-  { title: "Turn goals into structured missions", body: "Objectives resolve into stages, dependencies, evidence, and delivery outcomes." },
-  { title: "Maintain persistent project memory", body: "Context that compounds across a project's life — not reset every session." },
-  { title: "Map project context through an Atlas-style layer", body: "Structural retrieval built for precision, not volume." },
-  { title: "Activate specialized operator cells and command units", body: "Reusable execution units for product, architecture, runtime, QA, security, and release work." },
-  { title: "Validate output through Command Gates", body: "Quality, security, architecture, and cost gates before changes land. Default-fail." },
-  { title: "Track mission activity through ledgers and decision memory", body: "An auditable record of agent activity: actions, rationale, authority, cost." },
-  { title: "Keep humans in command of consequential delivery", body: "Autonomy is granted, bounded, and revocable — never assumed." },
+  { title: "Mission-based execution", body: "Work runs as governed missions with explicit completion criteria." },
+  { title: "Project memory", body: "Context that compounds across a project's life — not reset every session." },
+  { title: "Command Gates", body: "Quality, security, and cost gates before changes land. Default-fail." },
+  { title: "Mission Ledger", body: "An auditable record of agent activity: actions, authority, cost." },
+  { title: "Human authority", body: "Autonomy is granted, bounded, and revocable — never assumed." },
 ];
 
 function ProductPreview() {
@@ -52,7 +50,7 @@ function ProductPreview() {
 export function MAAXStudioSpotlight() {
   const copy = getCopy(useCopyVariant()).maaxSpotlight;
   return (
-    <section id="maax" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--graphite)]">
+    <section id="maax" className="relative py-20 sm:py-28 lg:py-40 bg-[var(--graphite)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -74,13 +72,10 @@ export function MAAXStudioSpotlight() {
             <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
             The agentic execution OS for AI-native builders.
             </h2>
-            <p className="mt-6 max-w-xl text-[15px] sm:text-base leading-relaxed text-[var(--silver-dim)]">
-            MAAX Studio is Cyryx Labs' flagship product — a local-first
-            agentic software execution environment for founders, agencies,
-            and product teams building with AI. Not a prompt wrapper. Not a
-            coding sidebar. Not a plugin. A runtime-first system for
-            coordinating software work through missions, memory, operators,
-            gates, and human-governed delivery.
+            <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-[var(--silver-dim)]">
+              A local-first agentic execution environment: autonomous agents
+              under explicit human command, with governance built into the
+              MAAX Runtime — not layered on top.
             </p>
             <ul className="mt-7 space-y-4">
               {PILLARS.map((p) => (
