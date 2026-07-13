@@ -12,6 +12,7 @@ import maaxLogo from "@/assets/cyryx-maax-visual.png.asset.json";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
+import { setContactIntent } from "@/lib/contact-intent";
 
 const PILLARS: { title: string; body: string }[] = [
   { title: "Turn goals into structured missions", body: "Objectives resolve into stages, dependencies, evidence, and delivery outcomes." },
@@ -98,13 +99,14 @@ export function MAAXStudioSpotlight() {
               <a
                 href="#contact"
                 aria-label={`${copy.cta} — open contact form`}
-                onClick={() =>
+                onClick={() => {
+                  setContactIntent("maax-early-access");
                   trackCta({
                     cta: "request_early_access",
                     section: "maax_spotlight",
                     href: "#contact",
-                  })
-                }
+                  });
+                }}
                 className="inline-flex h-12 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
               >
                 {copy.cta}

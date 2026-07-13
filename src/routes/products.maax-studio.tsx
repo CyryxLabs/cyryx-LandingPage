@@ -9,6 +9,7 @@ import {
   buildFaqJsonLd,
   buildHead,
 } from "@/components/cyryx/seo/seo";
+import { setContactIntent } from "@/lib/contact-intent";
 
 const PATH = "/products/maax-studio";
 const TITLE = "MAAX Studio — Agentic Execution OS for AI-Native Builders";
@@ -287,6 +288,7 @@ function MaaxStudioPage() {
         <div className="mt-12 flex flex-wrap gap-3">
           <a
             href="/#contact"
+            onClick={() => setContactIntent("maax-early-access")}
             className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
             Request early access
