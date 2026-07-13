@@ -25,11 +25,11 @@ const ITEMS = [
 
 export function SecurityPosture() {
   return (
-    <section id="security" className="relative py-20 sm:py-28 lg:py-40">
+    <section id="security" className="relative py-14 sm:py-20 lg:py-28">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-10">
         <div className="cx-reveal">
           <HudLabel withDot>Security & Governance</HudLabel>
-          <h2 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold uppercase leading-[1.02] tracking-tight text-silver-gradient">
+          <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
             Governance is architecture.
           </h2>
         </div>

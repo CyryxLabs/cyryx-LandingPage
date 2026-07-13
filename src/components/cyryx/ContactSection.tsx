@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
@@ -6,8 +6,6 @@ import { toast } from "sonner";
 import { HudLabel } from "./primitives/HudLabel";
 import { GlassPanel } from "./primitives/GlassPanel";
 import { submitContact } from "@/lib/contact.functions";
-import { CONTACT_INTERESTS, type ContactInterest } from "@/lib/contact.schema";
-import { CONTACT_INTENT_EVENT, getContactIntent } from "@/lib/contact-intent";
 
 const FormSchema = z.object({
   name: z.string().trim().min(1, "Required").max(100),
@@ -28,21 +26,7 @@ export function ContactSection() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [messageLen, setMessageLen] = useState(0);
   const [consent, setConsent] = useState(false);
-  const [interest, setInterest] = useState<ContactInterest>("project");
   const successRef = useRef<HTMLDivElement | null>(null);
-
-  // Preselect the interest when a CTA (e.g. "Request Early Access") sent the
-  // visitor here — via sessionStorage on mount, via window event afterwards.
-  useEffect(() => {
-    const stored = getContactIntent();
-    if (stored) setInterest(stored);
-    const onIntent = (e: Event) => {
-      const detail = (e as CustomEvent<ContactInterest>).detail;
-      if (detail) setInterest(detail);
-    };
-    window.addEventListener(CONTACT_INTENT_EVENT, onIntent);
-    return () => window.removeEventListener(CONTACT_INTENT_EVENT, onIntent);
-  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,7 +43,6 @@ export function ContactSection() {
       company: String(fd.get("company") ?? ""),
       message: String(fd.get("message") ?? ""),
       consent: fd.get("consent") === "on",
-      interest,
     };
     const parsed = FormSchema.safeParse(raw);
     if (!parsed.success) {
@@ -176,26 +159,6 @@ export function ContactSection() {
                 onValidate={validateField}
                 liveValidate={!!errors.company}
               />
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="interest" className="hud-label text-[var(--silver)]">
-                  I'm interested in
-                </label>
-                <select
-                  id="interest"
-                  name="interest"
-                  value={interest}
-                  onChange={(e) => setInterest(e.currentTarget.value as ContactInterest)}
-                  className="block h-12 w-full cursor-pointer rounded-md border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_55%,transparent)] px-4 text-[15px] text-[var(--silver)] outline-none transition focus:border-[var(--accent-glow)] focus:ring-2 focus:ring-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)]"
-                >
-                  {(Object.entries(CONTACT_INTERESTS) as [ContactInterest, string][]).map(
-                    ([value, label]) => (
-                      <option key={value} value={value} className="bg-[var(--onyx)]">
-                        {label}
-                      </option>
-                    ),
-                  )}
-                </select>
-              </div>
               <Field
                 as="textarea"
                 label="Message"

@@ -8,7 +8,7 @@ export const v3: CopyDocument = {
   hero: {
     headline: "The execution layer for operational AI.",
     sub:
-      "AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability and cost control.",
+      "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from scattered AI experiments to structured, auditable operations.",
     meta: [],
     rail: [],
     ctaPrimary: "Explore MAAX Studio",

@@ -19,6 +19,7 @@ import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.
 import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as LyraRouteImport } from './routes/lyra'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as CareersRouteImport } from './routes/careers'
@@ -114,6 +115,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LyraRoute = LyraRouteImport.update({
+  id: '/lyra',
+  path: '/lyra',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -378,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/lyra': typeof LyraRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -435,6 +442,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/lyra': typeof LyraRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -493,6 +501,7 @@ export interface FileRoutesById {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/lyra': typeof LyraRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -552,6 +561,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/lyra'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -609,6 +619,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/lyra'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -666,6 +677,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/lyra'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -725,6 +737,7 @@ export interface RootRouteChildren {
   CareersRoute: typeof CareersRoute
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
+  LyraRoute: typeof LyraRoute
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SitemapCompanyDotxmlRoute: typeof SitemapCompanyDotxmlRoute
@@ -828,6 +841,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lyra': {
+      id: '/lyra'
+      path: '/lyra'
+      fullPath: '/lyra'
+      preLoaderRoute: typeof LyraRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -1242,6 +1262,7 @@ const rootRouteChildren: RootRouteChildren = {
   CareersRoute: CareersRoute,
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
+  LyraRoute: LyraRoute,
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SitemapCompanyDotxmlRoute: SitemapCompanyDotxmlRoute,
@@ -1281,3 +1302,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

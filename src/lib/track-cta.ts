@@ -14,8 +14,10 @@ export type CtaName =
   | "careers_talent_network"
   | "careers_email"
   | "talent_network_signup"
-  | "view_research"
-  | "read_cgp";
+  | "lyra_hero_cta"
+  | "lyra_maax_click"
+  | "lyra_faq_open"
+  | "lyra_footer_cta";
 
 export type CtaSection =
   | "hero"
@@ -27,7 +29,7 @@ export type CtaSection =
   | "solutions"
   | "careers"
   | "footer"
-  | "research_band";
+  | "lyra";
 
 export interface TrackCtaInput {
   cta: CtaName;

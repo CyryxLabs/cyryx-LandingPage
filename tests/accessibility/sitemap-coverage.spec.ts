@@ -15,6 +15,7 @@ const EXCLUDED = new Set<string>([
   "unsubscribe.tsx",
   "newsletter.confirm.tsx",
   "research.$slug.tsx", // dynamic — covered by sitemap-research generator
+  "products.lyra.tsx", // 301 redirect to /lyra — canonical page is lyra.tsx
 ]);
 
 function fileToPath(name: string): string | null {
