@@ -151,13 +151,31 @@ function LyraPage() {
             <span className="text-[var(--silver)]">Lyra</span>
           </nav>
 
-          {/* Hero */}
-          <section className="relative mt-16 flex flex-col items-center text-center">
+          {/* Hero — asymmetric split */}
+          <section className="relative mt-14 lg:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             <div
               aria-hidden
-              className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-[420px] w-[420px] rounded-full bg-[var(--accent-glow)] opacity-[0.08] blur-3xl"
+              className="pointer-events-none absolute -top-24 -left-24 h-[520px] w-[520px] rounded-full bg-[var(--accent-glow)] opacity-[0.06] blur-3xl"
             />
-            <div className="relative">
+            <div className="relative lg:col-span-7 order-2 lg:order-1">
+              <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--accent-glow)]">
+                <span className="h-px w-8 bg-[var(--accent-glow)]" />
+                Lyra · REV_0.1 · In Development
+              </div>
+              <h1 className="mt-8 font-display text-[44px] sm:text-6xl lg:text-[80px] font-light leading-[0.98] tracking-[-0.03em] text-[var(--silver)]">
+                The governed AI model at the core of{" "}
+                <span className="font-semibold text-silver-gradient">MAAX Studio</span>.
+              </h1>
+              <p className="mt-8 max-w-xl text-base lg:text-lg text-[var(--silver-dim)] leading-relaxed">
+                Cyryx Labs' proprietary model — built to execute real work under
+                human command. Local, sovereign, and honest about what it knows.
+              </p>
+            </div>
+            <div className="relative lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 m-auto h-[280px] w-[280px] lg:h-[360px] lg:w-[360px] rounded-full bg-[var(--accent-glow)] opacity-[0.10] blur-3xl"
+              />
               <img
                 src={LYRA_LOCKUP_URL}
                 alt="Lyra — Native Intelligence Layer"
@@ -166,31 +184,21 @@ function LyraPage() {
                 fetchPriority="high"
                 decoding="async"
                 loading="eager"
-                className="mx-auto h-48 w-auto sm:h-64 lg:h-80 select-none"
+                className="relative h-56 w-auto sm:h-64 lg:h-[360px] select-none"
                 draggable={false}
               />
-              <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-8 font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)] border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] px-2 py-1">
-                REV_0.1 · IN DEV
-              </div>
             </div>
 
-            <h1 className="mt-10 max-w-4xl font-display text-[40px] sm:text-6xl lg:text-7xl font-light leading-[1.02] tracking-[-0.02em] text-[var(--silver)]">
-              The governed AI model at the core of{" "}
-              <span className="font-bold text-silver-gradient">MAAX Studio</span>.
-            </h1>
-            <p className="mt-8 max-w-xl text-base lg:text-lg text-[var(--silver-dim)] leading-relaxed">
-              Cyryx Labs' proprietary model — built to execute real work under
-              human command. Local, sovereign, and honest about what it knows.
-            </p>
-            <p className="mt-4 max-w-2xl text-sm lg:text-base text-[var(--silver-dim)] leading-relaxed">
-              Most AI models are built to answer. Lyra is built to execute —
-              inside a system of gates, evidence, and human command. Its
-              identity, safety doctrine, and operating conduct are trained into
-              the model itself, not applied as instructions that can be
-              stripped away. Volatile facts live in governed context, where
-              they can change without retraining the model.
-            </p>
-            <div className="mt-12 flex flex-col sm:flex-row gap-4">
+            <div className="relative lg:col-span-12 order-3 border-t border-[color-mix(in_oklab,var(--silver)_10%,transparent)] pt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+              <p className="lg:col-span-8 max-w-3xl text-sm lg:text-[15px] text-[var(--silver-dim)] leading-relaxed">
+                Most AI models are built to answer. Lyra is built to execute —
+                inside a system of gates, evidence, and human command. Its
+                identity, safety doctrine, and operating conduct are trained
+                into the model itself, not applied as instructions that can be
+                stripped away. Volatile facts live in governed context, where
+                they can change without retraining the model.
+              </p>
+              <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch">
               <a
                 href={LYRA_MAILTO}
                 onClick={() =>
@@ -200,17 +208,18 @@ function LyraPage() {
                     href: LYRA_MAILTO,
                   })
                 }
-                className="inline-flex items-center justify-center gap-2 px-10 h-12 bg-[var(--accent-glow)] text-[var(--onyx)] font-mono font-bold uppercase tracking-[0.2em] text-[11px] shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
+                  className="inline-flex items-center justify-center gap-2 px-8 h-12 bg-[var(--accent-glow)] text-[var(--onyx)] font-mono font-bold uppercase tracking-[0.2em] text-[11px] shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
               >
                 Request Early Access
                 <ArrowRight className="h-3.5 w-3.5" />
               </a>
               <Link
                 to="/products/maax-studio"
-                className="inline-flex items-center justify-center gap-2 px-10 h-12 border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] text-[var(--silver)] font-mono font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-[color-mix(in_oklab,var(--silver)_6%,transparent)] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-8 h-12 border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] text-[var(--silver)] font-mono font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-[color-mix(in_oklab,var(--silver)_6%,transparent)] transition-colors"
               >
                 See MAAX Studio
               </Link>
+            </div>
             </div>
           </section>
 
