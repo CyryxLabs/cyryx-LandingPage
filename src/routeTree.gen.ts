@@ -20,6 +20,7 @@ import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.
 import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as EngagementModelRouteImport } from './routes/engagement-model'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as CareersRouteImport } from './routes/careers'
@@ -120,6 +121,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EngagementModelRoute = EngagementModelRouteImport.update({
+  id: '/engagement-model',
+  path: '/engagement-model',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -384,6 +390,7 @@ export interface FileRoutesByFullPath {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/engagement-model': typeof EngagementModelRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -442,6 +449,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/engagement-model': typeof EngagementModelRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -501,6 +509,7 @@ export interface FileRoutesById {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/engagement-model': typeof EngagementModelRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -561,6 +570,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/engagement-model'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -619,6 +629,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/engagement-model'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -677,6 +688,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/engagement-model'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -737,6 +749,7 @@ export interface RootRouteChildren {
   CareersRoute: typeof CareersRoute
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
+  EngagementModelRoute: typeof EngagementModelRoute
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SitemapCompanyDotxmlRoute: typeof SitemapCompanyDotxmlRoute
@@ -848,6 +861,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/engagement-model': {
+      id: '/engagement-model'
+      path: '/engagement-model'
+      fullPath: '/engagement-model'
+      preLoaderRoute: typeof EngagementModelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -1262,6 +1282,7 @@ const rootRouteChildren: RootRouteChildren = {
   CareersRoute: CareersRoute,
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
+  EngagementModelRoute: EngagementModelRoute,
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SitemapCompanyDotxmlRoute: SitemapCompanyDotxmlRoute,
