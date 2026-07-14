@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StartRouteImport } from './routes/start'
 import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SitemapSolutionsDotxmlRouteImport } from './routes/sitemap-solutions[.]xml'
@@ -19,6 +20,8 @@ import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.
 import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ManagedOperationsRouteImport } from './routes/managed-operations'
+import { Route as EngagementModelRouteImport } from './routes/engagement-model'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as CareersRouteImport } from './routes/careers'
@@ -29,8 +32,12 @@ import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
 import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
 import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
+import { Route as SolutionsGovernanceOptimizationRouteImport } from './routes/solutions.governance-optimization'
+import { Route as SolutionsDigitalWebSystemsRouteImport } from './routes/solutions.digital-web-systems'
 import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
+import { Route as SolutionsAppliedAiSystemsRouteImport } from './routes/solutions.applied-ai-systems'
 import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
+import { Route as SolutionsAiProductEngineeringRouteImport } from './routes/solutions.ai-product-engineering'
 import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
 import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
@@ -76,6 +83,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StartRoute = StartRouteImport.update({
+  id: '/start',
+  path: '/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
   path: '/solutions',
@@ -114,6 +126,16 @@ const ProductsRoute = ProductsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManagedOperationsRoute = ManagedOperationsRouteImport.update({
+  id: '/managed-operations',
+  path: '/managed-operations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EngagementModelRoute = EngagementModelRouteImport.update({
+  id: '/engagement-model',
+  path: '/engagement-model',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -167,16 +189,40 @@ const SolutionsInternalAiAssistantsRoute =
     path: '/internal-ai-assistants',
     getParentRoute: () => SolutionsRoute,
   } as any)
+const SolutionsGovernanceOptimizationRoute =
+  SolutionsGovernanceOptimizationRouteImport.update({
+    id: '/governance-optimization',
+    path: '/governance-optimization',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsDigitalWebSystemsRoute =
+  SolutionsDigitalWebSystemsRouteImport.update({
+    id: '/digital-web-systems',
+    path: '/digital-web-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const SolutionsCustomAiProductDevelopmentRoute =
   SolutionsCustomAiProductDevelopmentRouteImport.update({
     id: '/custom-ai-product-development',
     path: '/custom-ai-product-development',
     getParentRoute: () => SolutionsRoute,
   } as any)
+const SolutionsAppliedAiSystemsRoute =
+  SolutionsAppliedAiSystemsRouteImport.update({
+    id: '/applied-ai-systems',
+    path: '/applied-ai-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const SolutionsAiWebsitesLeadSystemsRoute =
   SolutionsAiWebsitesLeadSystemsRouteImport.update({
     id: '/ai-websites-lead-systems',
     path: '/ai-websites-lead-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiProductEngineeringRoute =
+  SolutionsAiProductEngineeringRouteImport.update({
+    id: '/ai-product-engineering',
+    path: '/ai-product-engineering',
     getParentRoute: () => SolutionsRoute,
   } as any)
 const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
@@ -378,6 +424,8 @@ export interface FileRoutesByFullPath {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/engagement-model': typeof EngagementModelRoute
+  '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -386,6 +434,7 @@ export interface FileRoutesByFullPath {
   '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/workspace': typeof AuthenticatedWorkspaceRouteWithChildren
@@ -401,8 +450,12 @@ export interface FileRoutesByFullPath {
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
+  '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
@@ -435,6 +488,8 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/engagement-model': typeof EngagementModelRoute
+  '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -443,6 +498,7 @@ export interface FileRoutesByTo {
   '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
@@ -457,8 +513,12 @@ export interface FileRoutesByTo {
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
+  '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers': typeof AnswersIndexRoute
@@ -493,6 +553,8 @@ export interface FileRoutesById {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/engagement-model': typeof EngagementModelRoute
+  '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -501,6 +563,7 @@ export interface FileRoutesById {
   '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/_authenticated/workspace': typeof AuthenticatedWorkspaceRouteWithChildren
@@ -516,8 +579,12 @@ export interface FileRoutesById {
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
+  '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
@@ -552,6 +619,8 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/engagement-model'
+    | '/managed-operations'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -560,6 +629,7 @@ export interface FileRouteTypes {
     | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
+    | '/start'
     | '/terms'
     | '/unsubscribe'
     | '/workspace'
@@ -575,8 +645,12 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
+    | '/solutions/ai-product-engineering'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/digital-web-systems'
+    | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers/'
@@ -609,6 +683,8 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/engagement-model'
+    | '/managed-operations'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -617,6 +693,7 @@ export interface FileRouteTypes {
     | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
+    | '/start'
     | '/terms'
     | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
@@ -631,8 +708,12 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
+    | '/solutions/ai-product-engineering'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/digital-web-systems'
+    | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers'
@@ -666,6 +747,8 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/engagement-model'
+    | '/managed-operations'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -674,6 +757,7 @@ export interface FileRouteTypes {
     | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
+    | '/start'
     | '/terms'
     | '/unsubscribe'
     | '/_authenticated/workspace'
@@ -689,8 +773,12 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
+    | '/solutions/ai-product-engineering'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/digital-web-systems'
+    | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers/'
@@ -725,6 +813,8 @@ export interface RootRouteChildren {
   CareersRoute: typeof CareersRoute
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
+  EngagementModelRoute: typeof EngagementModelRoute
+  ManagedOperationsRoute: typeof ManagedOperationsRoute
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SitemapCompanyDotxmlRoute: typeof SitemapCompanyDotxmlRoute
@@ -733,6 +823,7 @@ export interface RootRouteChildren {
   SitemapSolutionsDotxmlRoute: typeof SitemapSolutionsDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolutionsRoute: typeof SolutionsRouteWithChildren
+  StartRoute: typeof StartRoute
   TermsRoute: typeof TermsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   AnswersAiExecutionSystemVsAiAutomationRoute: typeof AnswersAiExecutionSystemVsAiAutomationRoute
@@ -772,6 +863,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/start': {
+      id: '/start'
+      path: '/start'
+      fullPath: '/start'
+      preLoaderRoute: typeof StartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/solutions': {
@@ -828,6 +926,20 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/managed-operations': {
+      id: '/managed-operations'
+      path: '/managed-operations'
+      fullPath: '/managed-operations'
+      preLoaderRoute: typeof ManagedOperationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/engagement-model': {
+      id: '/engagement-model'
+      path: '/engagement-model'
+      fullPath: '/engagement-model'
+      preLoaderRoute: typeof EngagementModelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -900,6 +1012,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsInternalAiAssistantsRouteImport
       parentRoute: typeof SolutionsRoute
     }
+    '/solutions/governance-optimization': {
+      id: '/solutions/governance-optimization'
+      path: '/governance-optimization'
+      fullPath: '/solutions/governance-optimization'
+      preLoaderRoute: typeof SolutionsGovernanceOptimizationRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/digital-web-systems': {
+      id: '/solutions/digital-web-systems'
+      path: '/digital-web-systems'
+      fullPath: '/solutions/digital-web-systems'
+      preLoaderRoute: typeof SolutionsDigitalWebSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/solutions/custom-ai-product-development': {
       id: '/solutions/custom-ai-product-development'
       path: '/custom-ai-product-development'
@@ -907,11 +1033,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
       parentRoute: typeof SolutionsRoute
     }
+    '/solutions/applied-ai-systems': {
+      id: '/solutions/applied-ai-systems'
+      path: '/applied-ai-systems'
+      fullPath: '/solutions/applied-ai-systems'
+      preLoaderRoute: typeof SolutionsAppliedAiSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/solutions/ai-websites-lead-systems': {
       id: '/solutions/ai-websites-lead-systems'
       path: '/ai-websites-lead-systems'
       fullPath: '/solutions/ai-websites-lead-systems'
       preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-product-engineering': {
+      id: '/solutions/ai-product-engineering'
+      path: '/ai-product-engineering'
+      fullPath: '/solutions/ai-product-engineering'
+      preLoaderRoute: typeof SolutionsAiProductEngineeringRouteImport
       parentRoute: typeof SolutionsRoute
     }
     '/solutions/ai-integrations': {
@@ -1215,8 +1355,12 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
 interface SolutionsRouteChildren {
   SolutionsAiGovernanceCostControlRoute: typeof SolutionsAiGovernanceCostControlRoute
   SolutionsAiIntegrationsRoute: typeof SolutionsAiIntegrationsRoute
+  SolutionsAiProductEngineeringRoute: typeof SolutionsAiProductEngineeringRoute
   SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
+  SolutionsAppliedAiSystemsRoute: typeof SolutionsAppliedAiSystemsRoute
   SolutionsCustomAiProductDevelopmentRoute: typeof SolutionsCustomAiProductDevelopmentRoute
+  SolutionsDigitalWebSystemsRoute: typeof SolutionsDigitalWebSystemsRoute
+  SolutionsGovernanceOptimizationRoute: typeof SolutionsGovernanceOptimizationRoute
   SolutionsInternalAiAssistantsRoute: typeof SolutionsInternalAiAssistantsRoute
   SolutionsWorkflowAutomationRoute: typeof SolutionsWorkflowAutomationRoute
 }
@@ -1224,9 +1368,13 @@ interface SolutionsRouteChildren {
 const SolutionsRouteChildren: SolutionsRouteChildren = {
   SolutionsAiGovernanceCostControlRoute: SolutionsAiGovernanceCostControlRoute,
   SolutionsAiIntegrationsRoute: SolutionsAiIntegrationsRoute,
+  SolutionsAiProductEngineeringRoute: SolutionsAiProductEngineeringRoute,
   SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
+  SolutionsAppliedAiSystemsRoute: SolutionsAppliedAiSystemsRoute,
   SolutionsCustomAiProductDevelopmentRoute:
     SolutionsCustomAiProductDevelopmentRoute,
+  SolutionsDigitalWebSystemsRoute: SolutionsDigitalWebSystemsRoute,
+  SolutionsGovernanceOptimizationRoute: SolutionsGovernanceOptimizationRoute,
   SolutionsInternalAiAssistantsRoute: SolutionsInternalAiAssistantsRoute,
   SolutionsWorkflowAutomationRoute: SolutionsWorkflowAutomationRoute,
 }
@@ -1242,6 +1390,8 @@ const rootRouteChildren: RootRouteChildren = {
   CareersRoute: CareersRoute,
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
+  EngagementModelRoute: EngagementModelRoute,
+  ManagedOperationsRoute: ManagedOperationsRoute,
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SitemapCompanyDotxmlRoute: SitemapCompanyDotxmlRoute,
@@ -1250,6 +1400,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapSolutionsDotxmlRoute: SitemapSolutionsDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolutionsRoute: SolutionsRouteWithChildren,
+  StartRoute: StartRoute,
   TermsRoute: TermsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   AnswersAiExecutionSystemVsAiAutomationRoute:
@@ -1281,13 +1432,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

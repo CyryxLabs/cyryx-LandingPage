@@ -11,7 +11,7 @@ import { hasNewPublication } from "@/data/publications";
 
 const NAV = [
   { label: "Company", href: "/company" },
-  { label: "MAAX Studio", href: "/products/maax-studio" },
+  { label: "Products", href: "/products" },
   { label: "Solutions", href: "/solutions" },
   { label: "Research", href: "/research" },
 ];
@@ -78,9 +78,9 @@ export function Header() {
           </nav>
 
           <Link
-            to="/contact"
+            to="/start"
             aria-label={headerCta}
-            onClick={() => trackCta({ cta: "start_project", section: "header", href: "/contact" })}
+            onClick={() => trackCta({ cta: "start_project", section: "header", href: "/start" })}
             className="cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
             {headerCta}

@@ -15,7 +15,9 @@ export type CtaName =
   | "careers_email"
   | "talent_network_signup"
   | "view_research"
-  | "read_cgp";
+  | "read_cgp"
+  | "qualification_form_submitted"
+  | "qualification_form_error";
 
 export type CtaSection =
   | "hero"
@@ -27,17 +29,20 @@ export type CtaSection =
   | "solutions"
   | "careers"
   | "footer"
-  | "research_band";
+  | "research_band"
+  | "start";
 
 export interface TrackCtaInput {
   cta: CtaName;
   section: CtaSection;
   href?: string;
+  /** Non-PII metadata (project type, investment band, timeline, decision status). */
+  metadata?: Record<string, string | number | boolean | null | undefined>;
 }
 
 const ENDPOINT = "/api/public/cta-events";
 
-export function trackCta({ cta, section, href }: TrackCtaInput): void {
+export function trackCta({ cta, section, href, metadata }: TrackCtaInput): void {
   if (typeof window === "undefined") return;
   try {
     const body = JSON.stringify({
@@ -47,6 +52,7 @@ export function trackCta({ cta, section, href }: TrackCtaInput): void {
       href: href ?? null,
       variant: getActiveCopyVariant(),
       referrer: document.referrer || null,
+      metadata: metadata ?? null,
     });
     const ok =
       typeof navigator.sendBeacon === "function" &&

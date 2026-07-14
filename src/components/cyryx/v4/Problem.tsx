@@ -3,15 +3,19 @@ import { HudLabel } from "../primitives/HudLabel";
 const ITEMS = [
   {
     title: "Unowned output.",
-    body: "Work no one can trace, explain, or defend when it fails.",
+    body: "Work is created without a reliable record of who approved it, what informed it, or who is responsible when it fails.",
   },
   {
     title: "Unmeasured cost.",
-    body: "Spend that scales with usage, not value.",
+    body: "Usage grows without a clear relationship between spend, workflow, and business value.",
   },
   {
     title: "Unmanaged autonomy.",
-    body: "Capability without approval structures or records.",
+    body: "Capability is introduced without permission boundaries, approval gates, fallback, or revocation.",
+  },
+  {
+    title: "Disconnected operations.",
+    body: "Websites, forms, inboxes, spreadsheets, CRMs, and AI tools operate without a unified execution model.",
   },
 ];
 
@@ -29,7 +33,7 @@ export function Problem() {
             ownership, review gates, and measurable cost.
           </p>
         </div>
-        <ul className="cx-stagger mt-14 grid gap-5 sm:mt-20 sm:grid-cols-3">
+        <ul className="cx-stagger mt-14 grid gap-5 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
           {ITEMS.map((i) => (
             <li key={i.title} className="cx-stagger-item glass-panel rounded-md p-7 lg:p-8">
               <p className="font-display text-xl uppercase tracking-[0.04em] text-[var(--silver)]">
