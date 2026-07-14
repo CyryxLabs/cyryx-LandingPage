@@ -10,11 +10,13 @@ import {
 } from "@/components/cyryx/seo/seo";
 import { CONTACT_EMAIL, START_PROJECT_HREF } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
+import lyraOgAsset from "@/assets/lyra-og-1200x630.jpg.asset.json";
 
 const PATH = "/products/lyra";
 const TITLE = "Lyra — Governed AI Model for Enterprise | Cyryx Labs";
 const DESC =
   "Lyra is Cyryx Labs' proprietary AI model — governed, local-first, and honest about evidence. Built to execute real work under human command.";
+const LYRA_OG_IMAGE = `https://cyryxlabs.com${lyraOgAsset.url}`;
 const LYRA_EMAIL = `${CONTACT_EMAIL}?subject=${encodeURIComponent(
   "Lyra enterprise early access",
 )}`;
@@ -73,7 +75,9 @@ const FAQS = [
 
 export const Route = createFileRoute("/products/lyra")({
   head: () =>
-    buildHead({ title: TITLE, description: DESC, path: PATH, ogType: "product" }, [
+    buildHead(
+      { title: TITLE, description: DESC, path: PATH, ogType: "product", image: LYRA_OG_IMAGE },
+      [
       buildBreadcrumbJsonLd([
         { name: "Home", path: "/" },
         { name: "Products", path: "/products" },
@@ -88,6 +92,7 @@ export const Route = createFileRoute("/products/lyra")({
         url: CANONICAL_URL,
         description: DESC,
         softwareVersion: "early-access",
+        image: LYRA_OG_IMAGE,
         offers: {
           "@type": "Offer",
           availability: "https://schema.org/PreOrder",
@@ -102,7 +107,8 @@ export const Route = createFileRoute("/products/lyra")({
         },
       },
       buildFaqJsonLd(FAQS),
-    ]),
+      ],
+    ),
   component: LyraPage,
 });
 
