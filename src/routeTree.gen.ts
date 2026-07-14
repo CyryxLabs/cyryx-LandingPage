@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StartRouteImport } from './routes/start'
 import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SitemapSolutionsDotxmlRouteImport } from './routes/sitemap-solutions[.]xml'
@@ -74,6 +75,11 @@ const UnsubscribeRoute = UnsubscribeRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartRoute = StartRouteImport.update({
+  id: '/start',
+  path: '/start',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SolutionsRoute = SolutionsRouteImport.update({
@@ -386,6 +392,7 @@ export interface FileRoutesByFullPath {
   '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/workspace': typeof AuthenticatedWorkspaceRouteWithChildren
@@ -443,6 +450,7 @@ export interface FileRoutesByTo {
   '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
@@ -501,6 +509,7 @@ export interface FileRoutesById {
   '/sitemap-solutions.xml': typeof SitemapSolutionsDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRouteWithChildren
+  '/start': typeof StartRoute
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/_authenticated/workspace': typeof AuthenticatedWorkspaceRouteWithChildren
@@ -560,6 +569,7 @@ export interface FileRouteTypes {
     | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
+    | '/start'
     | '/terms'
     | '/unsubscribe'
     | '/workspace'
@@ -617,6 +627,7 @@ export interface FileRouteTypes {
     | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
+    | '/start'
     | '/terms'
     | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
@@ -674,6 +685,7 @@ export interface FileRouteTypes {
     | '/sitemap-solutions.xml'
     | '/sitemap.xml'
     | '/solutions'
+    | '/start'
     | '/terms'
     | '/unsubscribe'
     | '/_authenticated/workspace'
@@ -733,6 +745,7 @@ export interface RootRouteChildren {
   SitemapSolutionsDotxmlRoute: typeof SitemapSolutionsDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolutionsRoute: typeof SolutionsRouteWithChildren
+  StartRoute: typeof StartRoute
   TermsRoute: typeof TermsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   AnswersAiExecutionSystemVsAiAutomationRoute: typeof AnswersAiExecutionSystemVsAiAutomationRoute
@@ -772,6 +785,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/start': {
+      id: '/start'
+      path: '/start'
+      fullPath: '/start'
+      preLoaderRoute: typeof StartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/solutions': {
@@ -1250,6 +1270,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapSolutionsDotxmlRoute: SitemapSolutionsDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolutionsRoute: SolutionsRouteWithChildren,
+  StartRoute: StartRoute,
   TermsRoute: TermsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   AnswersAiExecutionSystemVsAiAutomationRoute:
