@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
+import { HudGrid } from "@/components/cyryx/primitives/HudGrid";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { START_PROJECT_HREF } from "@/lib/cta";
 
@@ -66,16 +67,26 @@ function ProductsPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main className="relative">
-        <section className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 pt-32 pb-16 lg:pt-44">
-          <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="hover:text-[var(--accent-glow)]">Home</Link>
-            <span className="mx-2 opacity-60">/</span>
+        <HudGrid />
+        <section className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 pt-32 pb-16 lg:pt-40">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--silver-dim)]"
+          >
+            <span className="text-[var(--accent-glow)]">[00]</span>
+            <Link to="/" className="hover:text-[var(--silver)] transition-colors">
+              Home
+            </Link>
+            <span className="opacity-40">/</span>
             <span className="text-[var(--silver)]">Products</span>
           </nav>
-          <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
-            Cyryx Labs · Products
-          </HudLabel>
-          <h1 className="mt-4 max-w-3xl font-display text-[40px] sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.02em] text-silver-gradient">
+          <div className="mt-10 flex items-center gap-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-[var(--accent-glow)]">
+              § Cyryx Labs · Products
+            </span>
+            <div className="flex-1 h-px bg-[color-mix(in_oklab,var(--silver)_12%,transparent)]" />
+          </div>
+          <h1 className="mt-6 max-w-3xl font-display text-[40px] sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.02em] text-silver-gradient">
             Proprietary systems for the agentic era.
           </h1>
           <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
@@ -85,15 +96,17 @@ function ProductsPage() {
           </p>
         </section>
 
-        <section className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 pb-24 lg:pb-32">
-          <div className="grid gap-6 lg:grid-cols-2">
-            {PRODUCTS.map((p) => (
+        <section className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 pb-24 lg:pb-32">
+          <div className="grid gap-px lg:grid-cols-2 bg-[color-mix(in_oklab,var(--silver)_12%,transparent)] border border-[color-mix(in_oklab,var(--silver)_12%,transparent)]">
+            {PRODUCTS.map((p, i) => (
               <article
                 key={p.name}
-                className="glass-panel flex flex-col rounded-md p-8 lg:p-10"
+                className="bg-[var(--onyx)] flex flex-col p-8 lg:p-12 hover:bg-[color-mix(in_oklab,var(--graphite)_60%,var(--onyx))] transition-colors"
               >
-                <HudLabel className="text-[var(--accent-glow)]">{p.eyebrow}</HudLabel>
-                <h2 className="mt-4 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--silver)]">
+                <div className="font-mono text-[10px] tracking-[0.25em] text-[var(--accent-glow)]">
+                  {String(i + 1).padStart(2, "0")} // {p.eyebrow.toUpperCase()}
+                </div>
+                <h2 className="mt-6 font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[var(--silver)]">
                   {p.name}
                 </h2>
                 <p className="mt-2 text-[15px] leading-relaxed text-[var(--silver)]">
@@ -113,11 +126,13 @@ function ProductsPage() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8 flex items-center justify-between gap-4 border-t border-[color-mix(in_oklab,var(--silver)_12%,transparent)] pt-6">
-                  <span className="hud-label text-[var(--silver-dim)]">{p.status}</span>
+                <div className="mt-auto pt-10 flex items-center justify-between gap-4 border-t border-[color-mix(in_oklab,var(--silver)_10%,transparent)]">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--silver-dim)] mt-6">
+                    {p.status}
+                  </span>
                   <Link
                     to={p.href}
-                    className="inline-flex items-center gap-2 hud-label text-[var(--accent-glow)] hover:opacity-80 transition-opacity"
+                    className="mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--accent-glow)] hover:opacity-80 transition-opacity"
                   >
                     {p.cta}
                     <ArrowRight className="h-3.5 w-3.5" />
