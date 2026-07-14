@@ -20,6 +20,7 @@ import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.
 import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ManagedOperationsRouteImport } from './routes/managed-operations'
 import { Route as EngagementModelRouteImport } from './routes/engagement-model'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
@@ -121,6 +122,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManagedOperationsRoute = ManagedOperationsRouteImport.update({
+  id: '/managed-operations',
+  path: '/managed-operations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EngagementModelRoute = EngagementModelRouteImport.update({
@@ -391,6 +397,7 @@ export interface FileRoutesByFullPath {
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
   '/engagement-model': typeof EngagementModelRoute
+  '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -450,6 +457,7 @@ export interface FileRoutesByTo {
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
   '/engagement-model': typeof EngagementModelRoute
+  '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -510,6 +518,7 @@ export interface FileRoutesById {
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
   '/engagement-model': typeof EngagementModelRoute
+  '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/sitemap-company.xml': typeof SitemapCompanyDotxmlRoute
@@ -571,6 +580,7 @@ export interface FileRouteTypes {
     | '/company'
     | '/contact'
     | '/engagement-model'
+    | '/managed-operations'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -630,6 +640,7 @@ export interface FileRouteTypes {
     | '/company'
     | '/contact'
     | '/engagement-model'
+    | '/managed-operations'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -689,6 +700,7 @@ export interface FileRouteTypes {
     | '/company'
     | '/contact'
     | '/engagement-model'
+    | '/managed-operations'
     | '/privacy'
     | '/products'
     | '/sitemap-company.xml'
@@ -750,6 +762,7 @@ export interface RootRouteChildren {
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
   EngagementModelRoute: typeof EngagementModelRoute
+  ManagedOperationsRoute: typeof ManagedOperationsRoute
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SitemapCompanyDotxmlRoute: typeof SitemapCompanyDotxmlRoute
@@ -861,6 +874,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/managed-operations': {
+      id: '/managed-operations'
+      path: '/managed-operations'
+      fullPath: '/managed-operations'
+      preLoaderRoute: typeof ManagedOperationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/engagement-model': {
@@ -1283,6 +1303,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
   EngagementModelRoute: EngagementModelRoute,
+  ManagedOperationsRoute: ManagedOperationsRoute,
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SitemapCompanyDotxmlRoute: SitemapCompanyDotxmlRoute,
