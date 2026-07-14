@@ -185,7 +185,7 @@ function LyraPage() {
                   fetchPriority="high"
                   decoding="async"
                   loading="eager"
-                  className="relative h-full w-full object-contain select-none"
+                  className="relative h-full w-full object-contain select-none [mix-blend-mode:screen]"
                   draggable={false}
                 />
                 <div className="mt-4 text-center font-mono text-[9px] uppercase tracking-[0.4em] text-[var(--silver-dim)]">
