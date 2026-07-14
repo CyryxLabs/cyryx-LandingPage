@@ -1,31 +1,12 @@
 import { HudLabel } from "../primitives/HudLabel";
 
 const STEPS = [
-  {
-    n: "01",
-    title: "Diagnostic",
-    body: "Workflow, risk, unit economics — before any proposal.",
-  },
-  {
-    n: "02",
-    title: "Scope",
-    body: "Deliverables, acceptance criteria, timeline, price — fixed in writing.",
-  },
-  {
-    n: "03",
-    title: "Build",
-    body: "Production discipline from day one.",
-  },
-  {
-    n: "04",
-    title: "Verification",
-    body: "Every claim testable by design.",
-  },
-  {
-    n: "05",
-    title: "Transfer",
-    body: "Documentation, training, ownership.",
-  },
+  { n: "01", title: "Diagnose", body: "Workflow, systems, data, risk, ownership, economic case — before any proposal." },
+  { n: "02", title: "Scope", body: "Deliverables, exclusions, acceptance criteria, timeline, price — fixed in writing." },
+  { n: "03", title: "Build", body: "Production discipline, controlled access, documented decisions, observability, fallback." },
+  { n: "04", title: "Verify", body: "Material claims and system behavior tested against written acceptance criteria." },
+  { n: "05", title: "Transfer", body: "Documentation, training, account ownership, access records, operational control." },
+  { n: "06", title: "Operate", body: "When selected, managed coverage under defined systems, response windows, and exclusions." },
 ];
 
 export function EngagementModel() {
@@ -38,7 +19,7 @@ export function EngagementModel() {
             Fixed scope. Verifiable delivery. Full transfer.
           </h2>
         </div>
-        <ol className="cx-stagger mt-10 grid gap-4 sm:mt-14 md:grid-cols-2 lg:grid-cols-5">
+        <ol className="cx-stagger mt-10 grid gap-4 sm:mt-14 md:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((s) => (
             <li key={s.title} className="cx-stagger-item glass-panel rounded-md p-6">
               <span className="hud-label text-[var(--accent-glow)]">{s.n}</span>
