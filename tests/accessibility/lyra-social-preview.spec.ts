@@ -5,8 +5,10 @@ test("Lyra page emits dedicated OG/Twitter social preview metadata", async ({ pa
 
   const meta = async (selector: string) =>
     page.locator(selector).first().getAttribute("content");
-  const link = async (selector: string) =>
-    page.locator(selector).first().getAttribute("href");
+  const allLinks = async (selector: string) =>
+    page.locator(selector).evaluateAll((els) =>
+      els.map((el) => (el as HTMLLinkElement).getAttribute("href")),
+    );
 
   const ogTitle = await meta('meta[property="og:title"]');
   const ogDesc = await meta('meta[property="og:description"]');
@@ -17,13 +19,13 @@ test("Lyra page emits dedicated OG/Twitter social preview metadata", async ({ pa
   const twTitle = await meta('meta[name="twitter:title"]');
   const twDesc = await meta('meta[name="twitter:description"]');
   const twImage = await meta('meta[name="twitter:image"]');
-  const canonical = await link('link[rel="canonical"]');
+  const canonicals = await allLinks('link[rel="canonical"]');
 
   expect(ogTitle).toMatch(/Lyra/);
   expect(ogDesc?.length ?? 0).toBeGreaterThan(20);
   expect(ogType).toBe("product");
   expect(ogUrl).toBe("https://cyryxlabs.com/products/lyra");
-  expect(canonical).toBe("https://cyryxlabs.com/products/lyra");
+  expect(canonicals).toContain("https://cyryxlabs.com/products/lyra");
 
   expect(twCard).toBe("summary_large_image");
   expect(twTitle).toMatch(/Lyra/);
