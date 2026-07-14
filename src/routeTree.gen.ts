@@ -32,6 +32,7 @@ import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
 import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
 import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
+import { Route as SolutionsDigitalWebSystemsRouteImport } from './routes/solutions.digital-web-systems'
 import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
 import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
 import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
@@ -183,6 +184,12 @@ const SolutionsInternalAiAssistantsRoute =
   SolutionsInternalAiAssistantsRouteImport.update({
     id: '/internal-ai-assistants',
     path: '/internal-ai-assistants',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsDigitalWebSystemsRoute =
+  SolutionsDigitalWebSystemsRouteImport.update({
+    id: '/digital-web-systems',
+    path: '/digital-web-systems',
     getParentRoute: () => SolutionsRoute,
   } as any)
 const SolutionsCustomAiProductDevelopmentRoute =
@@ -424,6 +431,7 @@ export interface FileRoutesByFullPath {
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
@@ -483,6 +491,7 @@ export interface FileRoutesByTo {
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers': typeof AnswersIndexRoute
@@ -545,6 +554,7 @@ export interface FileRoutesById {
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
@@ -607,6 +617,7 @@ export interface FileRouteTypes {
     | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/digital-web-systems'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers/'
@@ -666,6 +677,7 @@ export interface FileRouteTypes {
     | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/digital-web-systems'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers'
@@ -727,6 +739,7 @@ export interface FileRouteTypes {
     | '/solutions/ai-integrations'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/digital-web-systems'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers/'
@@ -958,6 +971,13 @@ declare module '@tanstack/react-router' {
       path: '/internal-ai-assistants'
       fullPath: '/solutions/internal-ai-assistants'
       preLoaderRoute: typeof SolutionsInternalAiAssistantsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/digital-web-systems': {
+      id: '/solutions/digital-web-systems'
+      path: '/digital-web-systems'
+      fullPath: '/solutions/digital-web-systems'
+      preLoaderRoute: typeof SolutionsDigitalWebSystemsRouteImport
       parentRoute: typeof SolutionsRoute
     }
     '/solutions/custom-ai-product-development': {
@@ -1277,6 +1297,7 @@ interface SolutionsRouteChildren {
   SolutionsAiIntegrationsRoute: typeof SolutionsAiIntegrationsRoute
   SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
   SolutionsCustomAiProductDevelopmentRoute: typeof SolutionsCustomAiProductDevelopmentRoute
+  SolutionsDigitalWebSystemsRoute: typeof SolutionsDigitalWebSystemsRoute
   SolutionsInternalAiAssistantsRoute: typeof SolutionsInternalAiAssistantsRoute
   SolutionsWorkflowAutomationRoute: typeof SolutionsWorkflowAutomationRoute
 }
@@ -1287,6 +1308,7 @@ const SolutionsRouteChildren: SolutionsRouteChildren = {
   SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
   SolutionsCustomAiProductDevelopmentRoute:
     SolutionsCustomAiProductDevelopmentRoute,
+  SolutionsDigitalWebSystemsRoute: SolutionsDigitalWebSystemsRoute,
   SolutionsInternalAiAssistantsRoute: SolutionsInternalAiAssistantsRoute,
   SolutionsWorkflowAutomationRoute: SolutionsWorkflowAutomationRoute,
 }
