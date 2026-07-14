@@ -140,6 +140,17 @@ function LyraPage() {
             <span className="mx-2 opacity-60">/</span>
             <span className="text-[var(--silver)]">Lyra</span>
           </nav>
+          <img
+            src={LYRA_LOCKUP_URL}
+            alt="Lyra — Native Intelligence Layer"
+            width={480}
+            height={480}
+            fetchPriority="high"
+            decoding="async"
+            loading="eager"
+            className="mt-6 h-40 w-auto sm:h-48 lg:h-56 select-none"
+            draggable={false}
+          />
           <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
             Cyryx Labs · Lyra · In active development
           </HudLabel>
