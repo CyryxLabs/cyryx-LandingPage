@@ -17,6 +17,11 @@ const DESC =
 
 const OFFERINGS = [
   {
+    slug: "digital-web-systems",
+    name: "Digital & Web Systems",
+    blurb: "Conversion-ready websites and connected digital systems — the credible foundation before automation and AI.",
+  },
+  {
     slug: "ai-websites-lead-systems",
     name: "AI websites & lead systems",
     blurb: "AI-native websites with structured intake, governed conversations, and qualified routing.",
