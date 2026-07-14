@@ -32,9 +32,12 @@ import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
 import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
 import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
+import { Route as SolutionsGovernanceOptimizationRouteImport } from './routes/solutions.governance-optimization'
 import { Route as SolutionsDigitalWebSystemsRouteImport } from './routes/solutions.digital-web-systems'
 import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
+import { Route as SolutionsAppliedAiSystemsRouteImport } from './routes/solutions.applied-ai-systems'
 import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
+import { Route as SolutionsAiProductEngineeringRouteImport } from './routes/solutions.ai-product-engineering'
 import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
 import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
@@ -186,6 +189,12 @@ const SolutionsInternalAiAssistantsRoute =
     path: '/internal-ai-assistants',
     getParentRoute: () => SolutionsRoute,
   } as any)
+const SolutionsGovernanceOptimizationRoute =
+  SolutionsGovernanceOptimizationRouteImport.update({
+    id: '/governance-optimization',
+    path: '/governance-optimization',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const SolutionsDigitalWebSystemsRoute =
   SolutionsDigitalWebSystemsRouteImport.update({
     id: '/digital-web-systems',
@@ -198,10 +207,22 @@ const SolutionsCustomAiProductDevelopmentRoute =
     path: '/custom-ai-product-development',
     getParentRoute: () => SolutionsRoute,
   } as any)
+const SolutionsAppliedAiSystemsRoute =
+  SolutionsAppliedAiSystemsRouteImport.update({
+    id: '/applied-ai-systems',
+    path: '/applied-ai-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const SolutionsAiWebsitesLeadSystemsRoute =
   SolutionsAiWebsitesLeadSystemsRouteImport.update({
     id: '/ai-websites-lead-systems',
     path: '/ai-websites-lead-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiProductEngineeringRoute =
+  SolutionsAiProductEngineeringRouteImport.update({
+    id: '/ai-product-engineering',
+    path: '/ai-product-engineering',
     getParentRoute: () => SolutionsRoute,
   } as any)
 const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
@@ -429,9 +450,12 @@ export interface FileRoutesByFullPath {
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
+  '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
@@ -489,9 +513,12 @@ export interface FileRoutesByTo {
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
+  '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers': typeof AnswersIndexRoute
@@ -552,9 +579,12 @@ export interface FileRoutesById {
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
+  '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
+  '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
   '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
+  '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
@@ -615,9 +645,12 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
+    | '/solutions/ai-product-engineering'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
     | '/solutions/digital-web-systems'
+    | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers/'
@@ -675,9 +708,12 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
+    | '/solutions/ai-product-engineering'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
     | '/solutions/digital-web-systems'
+    | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers'
@@ -737,9 +773,12 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
+    | '/solutions/ai-product-engineering'
     | '/solutions/ai-websites-lead-systems'
+    | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
     | '/solutions/digital-web-systems'
+    | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
     | '/solutions/workflow-automation'
     | '/answers/'
@@ -973,6 +1012,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsInternalAiAssistantsRouteImport
       parentRoute: typeof SolutionsRoute
     }
+    '/solutions/governance-optimization': {
+      id: '/solutions/governance-optimization'
+      path: '/governance-optimization'
+      fullPath: '/solutions/governance-optimization'
+      preLoaderRoute: typeof SolutionsGovernanceOptimizationRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/solutions/digital-web-systems': {
       id: '/solutions/digital-web-systems'
       path: '/digital-web-systems'
@@ -987,11 +1033,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
       parentRoute: typeof SolutionsRoute
     }
+    '/solutions/applied-ai-systems': {
+      id: '/solutions/applied-ai-systems'
+      path: '/applied-ai-systems'
+      fullPath: '/solutions/applied-ai-systems'
+      preLoaderRoute: typeof SolutionsAppliedAiSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/solutions/ai-websites-lead-systems': {
       id: '/solutions/ai-websites-lead-systems'
       path: '/ai-websites-lead-systems'
       fullPath: '/solutions/ai-websites-lead-systems'
       preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-product-engineering': {
+      id: '/solutions/ai-product-engineering'
+      path: '/ai-product-engineering'
+      fullPath: '/solutions/ai-product-engineering'
+      preLoaderRoute: typeof SolutionsAiProductEngineeringRouteImport
       parentRoute: typeof SolutionsRoute
     }
     '/solutions/ai-integrations': {
@@ -1295,9 +1355,12 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
 interface SolutionsRouteChildren {
   SolutionsAiGovernanceCostControlRoute: typeof SolutionsAiGovernanceCostControlRoute
   SolutionsAiIntegrationsRoute: typeof SolutionsAiIntegrationsRoute
+  SolutionsAiProductEngineeringRoute: typeof SolutionsAiProductEngineeringRoute
   SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
+  SolutionsAppliedAiSystemsRoute: typeof SolutionsAppliedAiSystemsRoute
   SolutionsCustomAiProductDevelopmentRoute: typeof SolutionsCustomAiProductDevelopmentRoute
   SolutionsDigitalWebSystemsRoute: typeof SolutionsDigitalWebSystemsRoute
+  SolutionsGovernanceOptimizationRoute: typeof SolutionsGovernanceOptimizationRoute
   SolutionsInternalAiAssistantsRoute: typeof SolutionsInternalAiAssistantsRoute
   SolutionsWorkflowAutomationRoute: typeof SolutionsWorkflowAutomationRoute
 }
@@ -1305,10 +1368,13 @@ interface SolutionsRouteChildren {
 const SolutionsRouteChildren: SolutionsRouteChildren = {
   SolutionsAiGovernanceCostControlRoute: SolutionsAiGovernanceCostControlRoute,
   SolutionsAiIntegrationsRoute: SolutionsAiIntegrationsRoute,
+  SolutionsAiProductEngineeringRoute: SolutionsAiProductEngineeringRoute,
   SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
+  SolutionsAppliedAiSystemsRoute: SolutionsAppliedAiSystemsRoute,
   SolutionsCustomAiProductDevelopmentRoute:
     SolutionsCustomAiProductDevelopmentRoute,
   SolutionsDigitalWebSystemsRoute: SolutionsDigitalWebSystemsRoute,
+  SolutionsGovernanceOptimizationRoute: SolutionsGovernanceOptimizationRoute,
   SolutionsInternalAiAssistantsRoute: SolutionsInternalAiAssistantsRoute,
   SolutionsWorkflowAutomationRoute: SolutionsWorkflowAutomationRoute,
 }
