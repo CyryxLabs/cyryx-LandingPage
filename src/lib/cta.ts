@@ -5,19 +5,11 @@
  */
 export const CONTACT_EMAIL = "contact@cyryxlabs.com";
 
-export const START_PROJECT_HREF = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+// Canonical project-qualification entry point. Every "Start a project"
+// CTA on the site routes here. The mailto fallback is kept for legacy
+// consumers that import it explicitly.
+export const START_PROJECT_HREF = "/start";
+
+export const START_PROJECT_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
   "Start a project with Cyryx Labs",
-)}&body=${encodeURIComponent(
-  [
-    "Hi Cyryx team,",
-    "",
-    "I'd like to start a project. Here are a few details:",
-    "",
-    "• Company:",
-    "• Use case / problem to solve:",
-    "• Timeline:",
-    "• Anything else we should know:",
-    "",
-    "Thanks,",
-  ].join("\n"),
 )}`;
