@@ -44,3 +44,43 @@ test.describe("Consent + legal anchors render", () => {
     await expect(consent.locator('a[href^="mailto:"]')).toHaveCount(1);
   });
 });
+
+test.describe("Hero — approved copy lock", () => {
+  const APPROVED = {
+    headline: "The execution layer for enterprise AI.",
+    sub:
+      "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
+    ctaPrimary: "Start a project",
+    ctaSecondary: "MAAX Studio →",
+  } as const;
+
+  test("v3 hero copy matches the approved source of truth exactly", () => {
+    const hero = getCopy("v3").hero;
+    expect(hero.headline).toBe(APPROVED.headline);
+    expect(hero.sub).toBe(APPROVED.sub);
+    expect(hero.ctaPrimary).toBe(APPROVED.ctaPrimary);
+    expect(hero.ctaSecondary).toBe(APPROVED.ctaSecondary);
+  });
+
+  test("v3 hero does not contain the forbidden 'business AI' variant", () => {
+    const hero = getCopy("v3").hero;
+    const forbidden = "The execution layer for business AI.";
+    expect(hero.headline).not.toBe(forbidden);
+    expect(hero.sub).not.toContain(forbidden);
+  });
+
+  test("hero renders approved headline, sub, and CTA labels with correct destinations", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const hero = page.locator("section[data-hero]");
+    await expect(hero).toBeVisible();
+    await expect(page.locator("#hero-heading")).toHaveText(APPROVED.headline);
+    await expect(hero).toContainText(APPROVED.sub);
+    const primary = hero.getByRole("link", { name: /Start a Project with Cyryx Labs/i });
+    await expect(primary).toHaveAttribute("href", "#contact");
+    await expect(primary).toContainText(APPROVED.ctaPrimary);
+    const secondary = hero.getByRole("link", { name: /Explore MAAX Studio/i });
+    await expect(secondary).toHaveAttribute("href", "#maax");
+    await expect(secondary).toContainText(APPROVED.ctaSecondary);
+    await expect(hero).not.toContainText("The execution layer for business AI.");
+  });
+});
