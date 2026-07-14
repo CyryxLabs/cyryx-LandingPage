@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
-import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
+import { HudGrid } from "@/components/cyryx/primitives/HudGrid";
 import { ArrowRight } from "lucide-react";
 import {
   buildBreadcrumbJsonLd,
@@ -132,196 +132,220 @@ function LyraPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" className="relative">
-        <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pt-32 pb-16 lg:pt-44">
-          <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="hover:text-[var(--accent-glow)]">Home</Link>
-            <span className="mx-2 opacity-60">/</span>
-            <Link to="/products" className="hover:text-[var(--accent-glow)]">Products</Link>
-            <span className="mx-2 opacity-60">/</span>
+        <HudGrid />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 pt-32 lg:pt-40 pb-24">
+          {/* Breadcrumb / HUD */}
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--silver-dim)]"
+          >
+            <span className="text-[var(--accent-glow)]">[01]</span>
+            <Link to="/" className="hover:text-[var(--silver)] transition-colors">
+              Home
+            </Link>
+            <span className="opacity-40">/</span>
+            <Link to="/products" className="hover:text-[var(--silver)] transition-colors">
+              Products
+            </Link>
+            <span className="opacity-40">/</span>
             <span className="text-[var(--silver)]">Lyra</span>
           </nav>
-          <img
-            src={LYRA_LOCKUP_URL}
-            alt="Lyra — Native Intelligence Layer"
-            width={480}
-            height={480}
-            fetchPriority="high"
-            decoding="async"
-            loading="eager"
-            className="mt-6 h-40 w-auto sm:h-48 lg:h-56 select-none"
-            draggable={false}
-          />
-          <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
-            Cyryx Labs · Lyra · In active development
-          </HudLabel>
-          <h1 className="mt-4 max-w-3xl font-display text-[40px] sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.02em] text-silver-gradient">
-            Lyra. The governed AI model at the core of MAAX Studio.
-          </h1>
-          <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Cyryx Labs' proprietary model — built to execute real work under
-            human command. Local, sovereign, and honest about what it knows.
-          </p>
-          <p className="mt-4 max-w-2xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
-            Most AI models are built to answer. Lyra is built to execute —
-            inside a system of gates, evidence, and human command. Its
-            identity, safety doctrine, and operating conduct are trained into
-            the model itself, not applied as instructions that can be stripped
-            away. Volatile facts live in governed context, where they can
-            change without retraining the model.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href={LYRA_MAILTO}
-              onClick={() =>
-                trackCta({
-                  cta: "lyra_early_access",
-                  section: "lyra_hero",
-                  href: LYRA_MAILTO,
-                })
-              }
-              className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
-            >
-              Request enterprise early access
-              <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-glow)]" />
-            </a>
-            <Link
-              to="/products/maax-studio"
-              className="inline-flex items-center gap-2 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors px-3 h-11"
-            >
-              See MAAX Studio
-            </Link>
-          </div>
-        </section>
 
-        <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-16">
-          <HudLabel className="text-[var(--accent-glow)]">Pillars</HudLabel>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {PILLARS.map((p) => (
-              <article key={p.name} className="glass-panel rounded-md p-6">
-                <h2 className="font-display text-xl font-semibold tracking-tight text-[var(--silver)]">
-                  {p.name}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                  {p.copy}
-                </p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-16">
-          <HudLabel className="text-[var(--accent-glow)]">Lyra × MAAX Studio</HudLabel>
-          <h2 className="mt-4 max-w-2xl font-display text-2xl sm:text-3xl font-semibold tracking-[-0.01em] text-[var(--silver)]">
-            One command layer. Your choice of engine.
-          </h2>
-          <p className="mt-6 max-w-3xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
-            Lyra is the sovereign engine of MAAX Studio — the governed agentic
-            IDE. MAAX is engine-agnostic by design: Lyra provides local,
-            governed, zero-marginal-cost execution, and frontier models can be
-            attached when a mission demands maximum capability.
-          </p>
-        </section>
-
-        <section
-          id="faq"
-          className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-16"
-          aria-labelledby="lyra-faq-heading"
-        >
-          <HudLabel className="text-[var(--accent-glow)]">FAQ</HudLabel>
-          <h2
-            id="lyra-faq-heading"
-            className="mt-4 max-w-2xl font-display text-2xl sm:text-3xl font-semibold tracking-[-0.01em] text-[var(--silver)]"
-          >
-            Enterprise questions, answered.
-          </h2>
-          <dl className="mt-8 grid gap-4 md:grid-cols-2">
-            {FAQS.map((item) => (
-              <div key={item.q} className="glass-panel rounded-md p-6">
-                <dt className="font-display text-lg font-semibold tracking-tight text-[var(--silver)]">
-                  {item.q}
-                </dt>
-                <dd className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                  {item.a}
-                </dd>
+          {/* Hero */}
+          <section className="relative mt-16 flex flex-col items-center text-center">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-[420px] w-[420px] rounded-full bg-[var(--accent-glow)] opacity-[0.08] blur-3xl"
+            />
+            <div className="relative">
+              <img
+                src={LYRA_LOCKUP_URL}
+                alt="Lyra — Native Intelligence Layer"
+                width={480}
+                height={480}
+                fetchPriority="high"
+                decoding="async"
+                loading="eager"
+                className="mx-auto h-48 w-auto sm:h-64 lg:h-80 select-none"
+                draggable={false}
+              />
+              <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-8 font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)] border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] px-2 py-1">
+                REV_0.1 · IN DEV
               </div>
-            ))}
-          </dl>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href={LYRA_MAILTO}
-              onClick={() =>
-                trackCta({
-                  cta: "lyra_early_access",
-                  section: "lyra_faq",
-                  href: LYRA_MAILTO,
-                })
-              }
-              className="inline-flex h-11 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-5 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
-            >
-              Request enterprise early access
-              <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-            <Link
-              to={START_PROJECT_HREF}
-              onClick={() =>
-                trackCta({
-                  cta: "start_project",
-                  section: "lyra_faq",
-                  href: START_PROJECT_HREF,
-                })
-              }
-              className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
-            >
-              Start a project
-              <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-glow)]" />
-            </Link>
-          </div>
-        </section>
+            </div>
 
-        <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-24 lg:pb-32">
-          <HudLabel className="text-[var(--accent-glow)]">Access</HudLabel>
-          <p className="mt-4 max-w-3xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
-            Lyra is in active development, available today through early
-            access with MAAX Studio. Direct access to Lyra may open as the
-            model matures.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href={LYRA_MAILTO}
-              onClick={() =>
-                trackCta({
-                  cta: "lyra_early_access",
-                  section: "lyra_access",
-                  href: LYRA_MAILTO,
-                })
-              }
-              className="inline-flex h-11 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-5 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
-            >
-              Request enterprise early access
-              <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-            <Link
-              to={START_PROJECT_HREF}
-              onClick={() =>
-                trackCta({
-                  cta: "start_project",
-                  section: "lyra_access",
-                  href: START_PROJECT_HREF,
-                })
-              }
-              className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
-            >
-              Start a project
-              <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-glow)]" />
-            </Link>
-            <Link
-              to="/products/maax-studio"
-              className="inline-flex items-center gap-2 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors px-3 h-11"
-            >
-              See MAAX Studio
-            </Link>
+            <h1 className="mt-10 max-w-4xl font-display text-[40px] sm:text-6xl lg:text-7xl font-light leading-[1.02] tracking-[-0.02em] text-[var(--silver)]">
+              The governed AI model at the core of{" "}
+              <span className="font-bold text-silver-gradient">MAAX Studio</span>.
+            </h1>
+            <p className="mt-8 max-w-xl text-base lg:text-lg text-[var(--silver-dim)] leading-relaxed">
+              Cyryx Labs' proprietary model — built to execute real work under
+              human command. Local, sovereign, and honest about what it knows.
+            </p>
+            <p className="mt-4 max-w-2xl text-sm lg:text-base text-[var(--silver-dim)] leading-relaxed">
+              Most AI models are built to answer. Lyra is built to execute —
+              inside a system of gates, evidence, and human command. Its
+              identity, safety doctrine, and operating conduct are trained into
+              the model itself, not applied as instructions that can be
+              stripped away. Volatile facts live in governed context, where
+              they can change without retraining the model.
+            </p>
+            <div className="mt-12 flex flex-col sm:flex-row gap-4">
+              <a
+                href={LYRA_MAILTO}
+                onClick={() =>
+                  trackCta({
+                    cta: "lyra_early_access",
+                    section: "lyra_hero",
+                    href: LYRA_MAILTO,
+                  })
+                }
+                className="inline-flex items-center justify-center gap-2 px-10 h-12 bg-[var(--accent-glow)] text-[var(--onyx)] font-mono font-bold uppercase tracking-[0.2em] text-[11px] shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
+              >
+                Request Early Access
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+              <Link
+                to="/products/maax-studio"
+                className="inline-flex items-center justify-center gap-2 px-10 h-12 border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] text-[var(--silver)] font-mono font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-[color-mix(in_oklab,var(--silver)_6%,transparent)] transition-colors"
+              >
+                See MAAX Studio
+              </Link>
+            </div>
+          </section>
+
+          {/* Pillars — hairline grid */}
+          <section className="mt-32 lg:mt-40">
+            <div className="mb-10 flex items-center gap-4">
+              <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-[var(--accent-glow)]">
+                § Pillars
+              </span>
+              <div className="flex-1 h-px bg-[color-mix(in_oklab,var(--silver)_12%,transparent)]" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[color-mix(in_oklab,var(--silver)_12%,transparent)] border border-[color-mix(in_oklab,var(--silver)_12%,transparent)]">
+              {PILLARS.map((p, i) => (
+                <article
+                  key={p.name}
+                  className="bg-[var(--onyx)] p-8 lg:p-10 flex flex-col gap-6 hover:bg-[color-mix(in_oklab,var(--graphite)_60%,var(--onyx))] transition-colors"
+                >
+                  <div className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
+                    {String(i + 1).padStart(2, "0")} // {p.name.split(" ")[0].toUpperCase()}
+                  </div>
+                  <h2 className="font-display text-xl lg:text-2xl font-semibold tracking-tight text-[var(--silver)] leading-tight">
+                    {p.name}
+                  </h2>
+                  <p className="text-sm leading-relaxed text-[var(--silver-dim)]">
+                    {p.copy}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* Lyra × MAAX band */}
+          <section className="relative mt-32 lg:mt-40 h-72 flex items-center justify-center overflow-hidden border-y border-[color-mix(in_oklab,var(--silver)_12%,transparent)]">
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--onyx)] via-[var(--graphite)] to-[var(--onyx)] opacity-70" />
+            <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-12 px-6 text-center">
+              <div className="font-display text-3xl lg:text-4xl font-bold tracking-tight text-[var(--silver)]">
+                LYRA
+              </div>
+              <div className="h-px w-16 md:w-24 bg-[var(--accent-glow)]" />
+              <div className="font-display text-3xl lg:text-4xl font-light tracking-[0.25em] uppercase text-[color-mix(in_oklab,var(--silver)_55%,transparent)]">
+                MAAX STUDIO
+              </div>
+            </div>
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[9px] tracking-[0.4em] text-[var(--silver-dim)] uppercase whitespace-nowrap">
+              One command layer · Sovereign engine · Engine-agnostic runtime
+            </div>
+          </section>
+          <div className="mt-10 mx-auto max-w-3xl text-center">
+            <p className="text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
+              Lyra is the sovereign engine of MAAX Studio — the governed
+              agentic IDE. MAAX is engine-agnostic by design: Lyra provides
+              local, governed, zero-marginal-cost execution, and frontier
+              models can be attached when a mission demands maximum capability.
+            </p>
           </div>
-        </section>
+
+          {/* FAQ — editorial 2-col */}
+          <section
+            id="faq"
+            className="mt-32 lg:mt-40 mx-auto max-w-5xl"
+            aria-labelledby="lyra-faq-heading"
+          >
+            <div className="mb-14 flex items-center gap-4">
+              <span
+                id="lyra-faq-heading"
+                className="font-mono text-[10px] uppercase tracking-[0.4em] text-[var(--accent-glow)]"
+              >
+                § Common Inquiries
+              </span>
+              <div className="flex-1 h-px bg-[color-mix(in_oklab,var(--silver)_12%,transparent)]" />
+            </div>
+            <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+              {FAQS.map((item, i) => (
+                <div key={item.q} className="space-y-4 border-t border-[color-mix(in_oklab,var(--silver)_10%,transparent)] pt-6">
+                  <div className="font-mono text-[10px] tracking-[0.25em] text-[var(--accent-glow)]">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                  <dt className="font-display text-lg font-bold uppercase tracking-wide text-[var(--silver)]">
+                    {item.q}
+                  </dt>
+                  <dd className="text-sm leading-relaxed text-[var(--silver-dim)]">
+                    {item.a}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          {/* Access — monumental */}
+          <section className="mt-32 lg:mt-40 border-t border-[color-mix(in_oklab,var(--silver)_12%,transparent)] pt-24 pb-32 text-center">
+            <div className="mb-6 font-mono text-[10px] uppercase tracking-[0.4em] text-[var(--accent-glow)]">
+              § Secure Authorization Required
+            </div>
+            <h2 className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-[-0.03em] text-silver-gradient">
+              GET ACCESS
+            </h2>
+            <p className="mt-8 mx-auto max-w-2xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
+              Lyra is in active development, available today through early
+              access with MAAX Studio. Direct access to Lyra may open as the
+              model matures.
+            </p>
+            <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4">
+              <a
+                href={LYRA_MAILTO}
+                onClick={() =>
+                  trackCta({
+                    cta: "lyra_early_access",
+                    section: "lyra_access",
+                    href: LYRA_MAILTO,
+                  })
+                }
+                className="group relative inline-flex items-center justify-center"
+              >
+                <div className="absolute inset-0 bg-[var(--accent-glow)] blur-xl opacity-20 group-hover:opacity-40 transition-opacity" />
+                <div className="relative inline-flex items-center gap-2 px-12 h-14 border border-[var(--accent-glow)] text-[var(--accent-glow)] font-mono font-bold uppercase tracking-[0.3em] text-[11px] hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)] transition-all duration-300">
+                  Request Early Access
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </div>
+              </a>
+              <Link
+                to={START_PROJECT_HREF}
+                onClick={() =>
+                  trackCta({
+                    cta: "start_project",
+                    section: "lyra_access",
+                    href: START_PROJECT_HREF,
+                  })
+                }
+                className="inline-flex items-center justify-center gap-2 px-10 h-14 border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] text-[var(--silver)] font-mono font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-[color-mix(in_oklab,var(--silver)_6%,transparent)] transition-colors"
+              >
+                Start a Project
+              </Link>
+            </div>
+          </section>
+        </div>
       </main>
       <Footer />
     </div>
