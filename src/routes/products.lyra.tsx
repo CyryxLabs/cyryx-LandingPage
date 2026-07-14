@@ -7,75 +7,31 @@ import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { CONTACT_EMAIL } from "@/lib/cta";
 
 const PATH = "/products/lyra";
-const TITLE = "Lyra — Cyryx Labs' Proprietary Model Family for Governed Execution";
+const TITLE = "Lyra — The Governed AI Model at the Core of MAAX Studio";
 const DESC =
-  "Lyra is the Cyryx Labs model family powering MAAX Studio and Cyryx Solutions — tuned for agentic execution, command gates, and auditable enterprise workloads.";
+  "Lyra is Cyryx Labs' proprietary model — built to execute real work under human command. Local, sovereign, and honest about what it knows. In active development.";
 const LYRA_EMAIL = `${CONTACT_EMAIL}?subject=${encodeURIComponent("Lyra early access")}`;
 
-const MODEL_FAMILY = [
+const PILLARS = [
   {
-    name: "Lyra Core",
-    role: "General execution model",
+    name: "Governed by design",
     copy:
-      "Balanced reasoning and tool-use model for day-to-day MAAX Studio missions, operator chains, and Cyryx Solutions workflows.",
+      "Lyra's rules of conduct live in the model, not in a prompt. It declines unverified claims, protects data by default, and stays within approved scope — because that is what it was trained to do.",
   },
   {
-    name: "Lyra Pro",
-    role: "Long-horizon agentic runs",
+    name: "Local-first sovereignty",
     copy:
-      "Higher-context variant tuned for multi-step missions, deep evaluator loops, and complex governance graphs across long sessions.",
+      "Lyra is built to run in your environment. Your code, your data, and your work stay on your machine by default — not sent to someone else's servers.",
   },
   {
-    name: "Lyra Guard",
-    role: "Policy & evaluator model",
+    name: "Honest about evidence",
     copy:
-      "Specialised smaller model that powers command gates, structural checks, and evaluator scoring inside the MAAX Runtime.",
-  },
-];
-
-const SURFACES = [
-  {
-    label: "MAAX Studio",
-    copy: "Default model behind missions, operators, gates, and the evaluation terminal.",
+      "Lyra answers from sources it can point to. It won't invent a citation, fake a tool it doesn't have, or dress a guess as a fact. When it doesn't have grounded information, it says so.",
   },
   {
-    label: "Cyryx Solutions",
-    copy: "Used inside custom AI systems we ship to clients — assistants, workflow automations, and integrations.",
-  },
-  {
-    label: "Hosted Lyra API",
-    copy: "A governed HTTPS endpoint on lyra.cyryxlabs.com for teams that want Lyra directly in their own stack.",
-  },
-  {
-    label: "Self-hosted deployment",
-    copy: "Private deployment for regulated environments that need Lyra inside their own perimeter.",
-  },
-];
-
-const ROADMAP = [
-  {
-    phase: "Now",
-    label: "Research preview",
-    items: [
-      "Internal training on governed-execution corpora",
-      "Evaluator harness for agentic reliability",
-    ],
-  },
-  {
-    phase: "Next",
-    label: "Design partners",
-    items: [
-      "Closed access for MAAX Studio customers",
-      "Enterprise-grade audit and policy hooks",
-    ],
-  },
-  {
-    phase: "Later",
-    label: "General availability",
-    items: [
-      "Hosted API on lyra.cyryxlabs.com",
-      "Self-hosted deployment for regulated environments",
-    ],
+    name: "Verifiable by discipline",
+    copy:
+      "Every Lyra release passes a dual-pass evaluation — its behavior tested with and without instructions — and is promoted only after a human reads the raw results. Versioned, auditable, every time.",
   },
 ];
 
@@ -105,23 +61,22 @@ function LyraPage() {
             <span className="text-[var(--silver)]">Lyra</span>
           </nav>
           <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
-            Cyryx Labs · Lyra · Coming soon
+            Cyryx Labs · Lyra · In active development
           </HudLabel>
           <h1 className="mt-4 max-w-3xl font-display text-[40px] sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.02em] text-silver-gradient">
-            Lyra. The Cyryx model family for governed execution.
+            Lyra. The governed AI model at the core of MAAX Studio.
           </h1>
           <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Lyra is the proprietary model layer of the Cyryx stack — a family
-            of models trained and evaluated against the same command gates,
-            mission ledgers, and evidence graphs our customers ship with.
-            Reliability, auditability, and cost control are first-class
-            training signals, not afterthoughts.
+            Cyryx Labs' proprietary model — built to execute real work under
+            human command. Local, sovereign, and honest about what it knows.
           </p>
           <p className="mt-4 max-w-2xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
-            Lyra powers MAAX Studio out of the box and is embedded across
-            Cyryx Solutions engagements. It is designed for enterprise
-            execution — not open-ended chat — with structured tool-use,
-            policy-aware generation, and evaluator-friendly outputs.
+            Most AI models are built to answer. Lyra is built to execute —
+            inside a system of gates, evidence, and human command. Its
+            identity, safety doctrine, and operating conduct are trained into
+            the model itself, not applied as instructions that can be stripped
+            away. Volatile facts live in governed context, where they can
+            change without retraining the model.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
@@ -141,16 +96,15 @@ function LyraPage() {
         </section>
 
         <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-16">
-          <HudLabel className="text-[var(--accent-glow)]">Model family</HudLabel>
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            {MODEL_FAMILY.map((m) => (
-              <article key={m.name} className="glass-panel rounded-md p-6">
-                <div className="hud-label text-[var(--accent-glow)]">{m.role}</div>
-                <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-[var(--silver)]">
-                  {m.name}
+          <HudLabel className="text-[var(--accent-glow)]">Pillars</HudLabel>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {PILLARS.map((p) => (
+              <article key={p.name} className="glass-panel rounded-md p-6">
+                <h2 className="font-display text-xl font-semibold tracking-tight text-[var(--silver)]">
+                  {p.name}
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                  {m.copy}
+                  {p.copy}
                 </p>
               </article>
             ))}
@@ -158,63 +112,34 @@ function LyraPage() {
         </section>
 
         <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-16">
-          <HudLabel className="text-[var(--accent-glow)]">Where Lyra runs</HudLabel>
+          <HudLabel className="text-[var(--accent-glow)]">Lyra × MAAX Studio</HudLabel>
           <h2 className="mt-4 max-w-2xl font-display text-2xl sm:text-3xl font-semibold tracking-[-0.01em] text-[var(--silver)]">
-            One model family. Multiple governed surfaces.
+            One command layer. Your choice of engine.
           </h2>
-          <dl className="mt-6 grid gap-4 sm:grid-cols-2">
-            {SURFACES.map((s) => (
-              <div key={s.label} className="glass-panel rounded-md p-6">
-                <dt className="hud-label text-[var(--accent-glow)]">{s.label}</dt>
-                <dd className="mt-2 text-sm leading-relaxed text-[var(--silver-dim)]">
-                  {s.copy}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-
-        <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-16">
-          <HudLabel className="text-[var(--accent-glow)]">Operational positioning</HudLabel>
-          <div className="mt-6 grid gap-6 lg:grid-cols-2">
-            <p className="text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
-              Lyra is not a general-purpose consumer assistant. It is built to
-              operate inside governed pipelines: goal-grounded generation,
-              command gates, evaluator scoring, and human review checkpoints
-              are part of how the model is trained and served.
-            </p>
-            <p className="text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
-              For teams moving from scattered AI experiments to structured
-              operations, Lyra is the model layer beneath that shift —
-              consistent behaviour across missions, transparent evidence for
-              every step, and predictable cost and latency envelopes.
-            </p>
-          </div>
+          <p className="mt-6 max-w-3xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
+            Lyra is the sovereign engine of MAAX Studio — the governed agentic
+            IDE. MAAX is engine-agnostic by design: Lyra provides local,
+            governed, zero-marginal-cost execution, and frontier models can be
+            attached when a mission demands maximum capability.
+          </p>
         </section>
 
         <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-24 lg:pb-32">
-          <HudLabel className="text-[var(--accent-glow)]">Roadmap</HudLabel>
-          <ol className="mt-6 grid gap-4 lg:grid-cols-3">
-            {ROADMAP.map((r) => (
-              <li key={r.phase} className="glass-panel rounded-md p-6">
-                <div className="hud-label text-[var(--accent-glow)]">{r.phase}</div>
-                <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-[var(--silver)]">
-                  {r.label}
-                </h2>
-                <ul className="mt-4 space-y-2 text-sm text-[var(--silver-dim)]">
-                  {r.items.map((i) => (
-                    <li key={i} className="flex gap-2">
-                      <span
-                        aria-hidden
-                        className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--accent-glow)]"
-                      />
-                      <span>{i}</span>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ol>
+          <HudLabel className="text-[var(--accent-glow)]">Access</HudLabel>
+          <p className="mt-4 max-w-3xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
+            Lyra is in active development, available today through early
+            access with MAAX Studio. Direct access to Lyra may open as the
+            model matures.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={`mailto:${LYRA_EMAIL}`}
+              className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
+            >
+              Request early access
+              <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-glow)]" />
+            </a>
+          </div>
         </section>
       </main>
       <Footer />
