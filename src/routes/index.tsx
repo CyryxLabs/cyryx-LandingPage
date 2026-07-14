@@ -68,7 +68,7 @@ export const Route = createFileRoute("/")({
               url: "https://cyryxlabs.com/",
               description:
                 "Cyryx Labs is an AI product and systems company building proprietary AI products, governed agentic workflow systems, and execution infrastructure.",
-              slogan: "The execution layer for operational AI.",
+              slogan: "The execution layer for enterprise AI.",
               foundingDate: "2024",
               industry: "Artificial Intelligence",
               areaServed: "Worldwide",
