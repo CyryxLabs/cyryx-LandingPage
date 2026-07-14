@@ -11,12 +11,14 @@ import {
 import { CONTACT_EMAIL, START_PROJECT_HREF } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
 import lyraOgAsset from "@/assets/lyra-og-1200x630.jpg.asset.json";
+import lyraLockupAsset from "@/assets/lyra-lockup.png.asset.json";
 
 const PATH = "/products/lyra";
 const TITLE = "Lyra — Governed AI Model for Enterprise | Cyryx Labs";
 const DESC =
   "Lyra is Cyryx Labs' proprietary AI model — governed, local-first, and honest about evidence. Built to execute real work under human command.";
 const LYRA_OG_IMAGE = `https://cyryxlabs.com${lyraOgAsset.url}`;
+const LYRA_LOCKUP_URL = lyraLockupAsset.url;
 const LYRA_EMAIL = `${CONTACT_EMAIL}?subject=${encodeURIComponent(
   "Lyra enterprise early access",
 )}`;
@@ -74,8 +76,8 @@ const FAQS = [
 ];
 
 export const Route = createFileRoute("/products/lyra")({
-  head: () =>
-    buildHead(
+  head: () => {
+    const head = buildHead(
       { title: TITLE, description: DESC, path: PATH, ogType: "product", image: LYRA_OG_IMAGE },
       [
       buildBreadcrumbJsonLd([
@@ -108,7 +110,20 @@ export const Route = createFileRoute("/products/lyra")({
       },
       buildFaqJsonLd(FAQS),
       ],
-    ),
+    );
+    return {
+      ...head,
+      links: [
+        ...(head.links ?? []),
+        {
+          rel: "preload",
+          as: "image",
+          href: LYRA_LOCKUP_URL,
+          fetchpriority: "high",
+        },
+      ],
+    };
+  },
   component: LyraPage,
 });
 
@@ -125,6 +140,17 @@ function LyraPage() {
             <span className="mx-2 opacity-60">/</span>
             <span className="text-[var(--silver)]">Lyra</span>
           </nav>
+          <img
+            src={LYRA_LOCKUP_URL}
+            alt="Lyra — Native Intelligence Layer"
+            width={480}
+            height={480}
+            fetchPriority="high"
+            decoding="async"
+            loading="eager"
+            className="mt-6 h-40 w-auto sm:h-48 lg:h-56 select-none"
+            draggable={false}
+          />
           <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
             Cyryx Labs · Lyra · In active development
           </HudLabel>
