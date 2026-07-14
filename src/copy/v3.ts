@@ -6,13 +6,13 @@ import type { CopyDocument } from "./types";
  */
 export const v3: CopyDocument = {
   hero: {
-    headline: "The execution layer for operational AI.",
+    headline: "The execution layer for enterprise AI.",
     sub:
-      "AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability and cost control.",
+      "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
     meta: [],
     rail: [],
-    ctaPrimary: "Explore MAAX Studio",
-    ctaSecondary: "Start a project",
+    ctaPrimary: "Start a project",
+    ctaSecondary: "MAAX Studio →",
   },
   header: {
     cta: "Start a project",
