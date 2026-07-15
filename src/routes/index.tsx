@@ -146,27 +146,27 @@ export const Route = createFileRoute("/")({
 function Index() {
   useCyryxScrollAnimations();
   return (
-    <div className=\"dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]\">
+    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <a
-        href=\"#main-content\"
-        className=\"skip-link\"
+        href="#main-content"
+        className="skip-link"
         onClick={(event) => {
-          const main = document.getElementById(\"main-content\");
+          const main = document.getElementById("main-content");
           if (!main) return;
           event.preventDefault();
           main.focus({ preventScroll: true });
-          main.scrollIntoView({ block: \"start\" });
-          window.history.replaceState(null, \"\", \"#main-content\");
+          main.scrollIntoView({ block: "start" });
+          window.history.replaceState(null, "", "#main-content");
         }}
       >
         Skip to content
       </a>
-      <div className=\"sr-only\">
+      <div className="sr-only">
         CYRYX LABS WEBSITE TRANSFORMATION
       </div>
       <Header />
-      <main id=\"main-content\" tabIndex={-1} className=\"outline-none\">
-        <div className=\"relative\">
+      <main id="main-content" tabIndex={-1} className="outline-none">
+        <div className="relative">
           <BackgroundMonolith />
           <Hero />
           <Problem />
