@@ -42,7 +42,7 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
           className="ml-0.5 h-3 w-3 text-[var(--silver-dim)] transition-transform duration-150 group-data-[state=open]:rotate-180 motion-reduce:transition-none motion-reduce:transform-none" 
           aria-hidden="true" 
         />
-      </NavigationMenuTrigger>
+      </NavigationMenuPrimitive.Trigger>
       
       <NavigationMenuContent className="motion-reduce:animate-none">
         <div className={cn(
