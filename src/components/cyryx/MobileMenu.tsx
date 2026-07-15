@@ -45,6 +45,7 @@ export function MobileMenu({
   useEffect(() => {
     if (!open) return;
     document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
     
     let cancelled = false;
     let ctx: { revert: () => void } | null = null;
@@ -75,6 +76,7 @@ export function MobileMenu({
       cancelled = true;
       ctx?.revert();
       document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     };
   }, [open]);
 
@@ -137,7 +139,7 @@ export function MobileMenu({
       role="dialog"
       aria-modal="true"
       aria-label="Main navigation"
-      className="cx-liquid-glass fixed inset-0 z-[60] rounded-none border-none lg:hidden overflow-y-auto"
+      className="cx-liquid-glass fixed inset-0 z-[60] rounded-none border-none lg:hidden overflow-y-auto overflow-x-hidden w-full max-w-[100vw]"
       style={{
         background:
           "linear-gradient(135deg, color-mix(in oklab, var(--onyx) 88%, transparent) 0%, color-mix(in oklab, var(--onyx) 78%, transparent) 100%)",
@@ -177,26 +179,28 @@ export function MobileMenu({
                   <AccordionTrigger 
                     className={cn(
                       "hud-label text-[var(--silver)] hover:text-white py-5 min-h-[44px]",
-                      isActive && "text-[var(--accent-glow)]"
+                      isActive && "text-[var(--accent-glow)]",
+                      expandedGroup === group.id && "text-white"
                     )}
                   >
                     {group.label}
                   </AccordionTrigger>
-                  <AccordionContent className="flex flex-col gap-2 pl-4">
-                    {group.children.map((child) => {
-                      const isChildActive = isNavigationItemActive(child.href, pathname);
+                  <AccordionContent className="flex flex-col gap-0.5 pb-2">
+                    {group.children.map((item) => {
+                      const isItemActive = isNavigationItemActive(pathname, item.href);
                       return (
                         <Link
-                          key={child.label}
-                          to={child.href}
+                          key={item.href}
+                          to={item.href}
                           onClick={onClose}
-                          aria-current={isChildActive ? "page" : undefined}
                           className={cn(
-                            "flex min-h-[44px] items-center text-[var(--silver)] transition-colors hover:text-white",
-                            isChildActive && "text-[var(--accent-glow)] font-medium"
+                            "flex items-center min-h-[44px] px-4 py-3 rounded-md transition-colors",
+                            "text-[var(--silver)] hover:text-white hover:bg-[color-mix(in_oklab,var(--silver)_5%,transparent)]",
+                            isItemActive && "text-[var(--accent-glow)] font-medium"
                           )}
+                          aria-current={isItemActive ? "page" : undefined}
                         >
-                          {child.label}
+                          <span className="hud-label text-sm uppercase tracking-wider">{item.label}</span>
                         </Link>
                       );
                     })}
