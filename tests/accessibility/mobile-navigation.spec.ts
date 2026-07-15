@@ -202,12 +202,28 @@ test.describe("Mobile Navigation Accessibility", () => {
   test("31. 320px horizontal overflow absent", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.getByRole("button", { name: /open menu/i }).click();
+    await page.waitForTimeout(500); // Wait for potential layout shifts or animations
     
     const overflow = await page.evaluate(() => {
       const scrollWidth = document.documentElement.scrollWidth;
       const clientWidth = document.documentElement.clientWidth;
-      // Allow 1px subpixel tolerance
-      return scrollWidth > clientWidth + 1;
+      const bodyScrollWidth = document.body.scrollWidth;
+      const bodyClientWidth = document.body.clientWidth;
+      
+      const hasOverflow = scrollWidth > clientWidth + 1 || bodyScrollWidth > bodyClientWidth + 1;
+      
+      if (hasOverflow) {
+        // Find which element is causing it
+        const all = document.querySelectorAll('*');
+        const problematic: string[] = [];
+        all.forEach(el => {
+          if (el.clientWidth > clientWidth) {
+            problematic.push(`${el.tagName}.${el.className}`);
+          }
+        });
+        console.log('Overflowing elements:', problematic);
+      }
+      return hasOverflow;
     });
     expect(overflow).toBe(false);
   });
