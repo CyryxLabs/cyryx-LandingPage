@@ -93,8 +93,11 @@ test.describe('Navigation Model', () => {
     expect(isNavigationItemActive('/products/maax-studio', '/products')).toBe(false);
 
     // At /research/article
+    // Section 11 implies "Research" child is active on descendants, 
+    // UNLESS it overlaps with another child like "Answers".
     expect(isNavigationItemActive('/research/article', '/research')).toBe(true);
     expect(isNavigationItemActive('/research/article', '/answers')).toBe(false);
+
 
     // At /careers
     expect(isNavigationItemActive('/careers', '/careers')).toBe(true);
