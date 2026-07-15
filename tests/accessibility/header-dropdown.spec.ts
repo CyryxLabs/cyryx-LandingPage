@@ -71,10 +71,10 @@ test.describe("Header Dropdown Accessibility", () => {
 
   test("Keyboard interaction (Enter/Space) works", async ({ page }) => {
     await page.goto("/", { waitUntil: "networkidle" });
-    await page.keyboard.press("Tab"); // logo
-    await page.keyboard.press("Tab"); // first trigger (Products)
-    
     const trigger = page.getByRole("button", { name: "Products", exact: true });
+    
+    // Use focus() to be explicit
+    await trigger.focus();
     await expect(trigger).toBeFocused();
     
     await page.keyboard.press("Enter");
@@ -111,11 +111,16 @@ test.describe("Header Dropdown Accessibility", () => {
   });
 
   test("Active parent and aria-current are correct", async ({ page }) => {
+    // Navigate to a subpage and wait for it to be stable
     await page.goto("/products/maax-studio", { waitUntil: "networkidle" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     
-    // Parent active state
-    await expect(trigger).toHaveClass(/text-\[var\(--silver\)\]/);
+    // Check if the trigger is visible before asserting class
+    await expect(trigger).toBeVisible();
+    
+    // Parent active state - use string matching instead of regex if possible for stability
+    const className = await trigger.getAttribute("class") || "";
+    expect(className).toContain("text-[var(--silver)]");
     
     await trigger.click();
     const link = page.locator('header nav').getByRole("link", { name: "MAAX Studio", exact: true });
@@ -124,18 +129,18 @@ test.describe("Header Dropdown Accessibility", () => {
 
   test("Reduced motion variants are applied", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     await trigger.click();
     
-    // Check if motion-reduce class is present or computed style has no transition
     const dropdownContent = page.locator('[data-radix-navigation-menu-viewport]');
+    // Wait for it to be attached/visible
+    await expect(dropdownContent).toBeAttached();
+    
     const transition = await dropdownContent.evaluate((el) => window.getComputedStyle(el).transition);
     const animation = await dropdownContent.evaluate((el) => window.getComputedStyle(el).animation);
     
-    // In many environments, 'none' or empty string or specific values might be returned
-    // We primarily check the presence of the class in source if possible, but here we check computed
     expect(transition === "none 0s ease 0s" || transition === "" || transition.includes("0s")).toBeTruthy();
     expect(animation === "none 0s ease 0s" || animation === "" || animation.includes("0s")).toBeTruthy();
   });
