@@ -10,33 +10,26 @@ import { DeptDashboard, downloadCSV } from "@/components/cyryx/workspace/DeptDas
 import { rangeBounds, isRange, type Range } from "@/lib/dashboard-range";
 import { drawerStore } from "@/lib/drawer-store";
 import { reconcileAttribution, summarizeDiff, type ReconcileResult } from "@/lib/attribution";
+import { z } from "zod";
+import { zodValidator } from "@tanstack/zod-adapter";
+
+const marketingSearchSchema = z.object({
+  mktTab: z.enum(["dashboard", "campaigns", "channels", "leads", "attribution"]).optional(),
+  range: z.string().refine(isRange).optional(),
+  ch: z.string().optional(),
+  cp: z.string().optional(),
+  own: z.string().optional(),
+  st: z.string().optional(),
+  aq: z.string().optional(),
+  ap: z.coerce.number().min(0).optional(),
+});
 
 export const Route = createFileRoute("/_authenticated/workspace/marketing")({
   head: () => {
     const h = buildHead({ title: "Marketing · Cyryx", description: "Campaigns, channels and attribution", path: "/workspace/marketing" });
     return { ...h, meta: [...h.meta, { name: "robots", content: "noindex, nofollow" }] };
   },
-  validateSearch: (s: Record<string, unknown>) => {
-    const str = (v: unknown) => (typeof v === "string" ? v : undefined);
-    const num = (v: unknown) => {
-      const n = typeof v === "string" ? parseInt(v, 10) : typeof v === "number" ? v : NaN;
-      return Number.isFinite(n) && n >= 0 ? n : undefined;
-    };
-    const mktT = str(s.mktTab) || str(s.tab); // Legacy fallback
-    const r = str(s.range);
-    return {
-      mktTab: (["dashboard", "campaigns", "channels", "leads", "attribution"].includes(mktT ?? "")
-        ? mktT
-        : undefined) as "dashboard" | "campaigns" | "channels" | "leads" | "attribution" | undefined,
-      range: isRange(r) ? r : undefined,
-      ch: str(s.ch),
-      cp: str(s.cp),
-      own: str(s.own),
-      st: str(s.st),
-      aq: str(s.aq),
-      ap: num(s.ap),
-    };
-  },
+  validateSearch: zodValidator(marketingSearchSchema),
   component: MarketingPage,
 });
 
@@ -49,10 +42,9 @@ function MarketingPage() {
   const tab: Tab = (search.mktTab as Tab) ?? "dashboard";
   const setTab = (t: Tab) =>
     navigate({
-      search: (prev: Record<string, unknown>) => ({
+      search: (prev: any) => ({
         ...prev,
         mktTab: t === "dashboard" ? undefined : t,
-        tab: undefined, // Clear legacy key on new navigation
       }),
       replace: true,
     });
