@@ -46,9 +46,16 @@ type Tab = (typeof TABS)[number];
 function MarketingPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
-  const tab: Tab = (search.tab as Tab) ?? "dashboard";
+  const tab: Tab = (search.mktTab as Tab) ?? "dashboard";
   const setTab = (t: Tab) =>
-    navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, tab: t === "dashboard" ? undefined : t }), replace: true });
+    navigate({
+      search: (prev: Record<string, unknown>) => ({
+        ...prev,
+        mktTab: t === "dashboard" ? undefined : t,
+        tab: undefined, // Clear legacy key on new navigation
+      }),
+      replace: true,
+    });
   return (
     <WorkspaceShell title="Marketing" subtitle="Campaigns, channels and lead attribution">
       <nav className="mb-6 flex flex-wrap gap-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] pb-2">
