@@ -29,7 +29,7 @@ function WorkspaceHome() {
   const { w: windowDays, tab } = Route.useSearch();
   const navigate = useNavigate();
   const setTab = (t: WsTab) =>
-    navigate({ to: "/workspace", search: (prev: WorkspaceSearch) => ({ ...prev, tab: t }), replace: true });
+    navigate({ to: "/workspace", search: (prev) => ({ ...prev, tab: t }), replace: true });
   const fetchOverview = useServerFn(getAdminOverview);
   const { data, isLoading, error, refetch, isFetching } = useQuery<AdminOverview>({
     queryKey: ["workspace-overview", windowDays],
