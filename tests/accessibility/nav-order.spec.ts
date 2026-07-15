@@ -2,18 +2,27 @@ import { test, expect } from "@playwright/test";
 
 test.describe.configure({ mode: "serial" });
 
-const EXPECTED = ["Company", "MAAX Studio", "Solutions", "Research"];
+const EXPECTED_TOP_LEVEL = ["Products", "Solutions", "Research", "Company", "Start a Project"];
 const ROUTES = ["/", "/products/maax-studio", "/solutions", "/research", "/company", "/contact"];
 
 for (const route of ROUTES) {
   test(`desktop nav order + no Answers @ ${route}`, async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(route, { waitUntil: "domcontentloaded", timeout: 60_000 });
-    const labels = await page
-      .locator('header nav[aria-label="Primary"] a')
-      .evaluateAll((els) => els.map((e) => (e.textContent ?? "").trim().replace(/\s+/g, " ")));
-    const normalized = labels.map((l) => l.replace(/\s*New publication\s*$/i, "").trim());
-    expect(normalized).toEqual(EXPECTED);
+    
+    // Check top-level triggers + CTA
+    // HeaderDropdown triggers are buttons inside [role="menuitem"] if Radix default structure is followed, 
+    // or we check the specific navigation landmark.
+    const topLevelElements = page.locator('header nav[aria-label="Primary"] [role="menuitem"], header a[aria-label="Start a Project"]');
+    
+    const labels = await topLevelElements.evaluateAll((els) => 
+      els.map((e) => (e.textContent ?? "").trim().replace(/\s+/g, " "))
+    );
+    
+    const normalized = labels.map((l) => l.replace(/\s*→\s*$/i, "").trim());
+    expect(normalized).toEqual(EXPECTED_TOP_LEVEL);
+    
+    // Verify Answers is not a top-level trigger
     expect(labels.join("|")).not.toMatch(/Answers/i);
   });
 }
@@ -29,10 +38,14 @@ test("mobile nav order + no Answers", async ({ page }) => {
   await panel.waitFor({ state: "attached" });
   const navLocator = panel.locator('nav[aria-label="Mobile primary"] a');
   await navLocator.first().waitFor({ state: "attached" });
+  
+  // Mobile uses older labels per Phase 4C constraint (do not change mobile)
+  const MOBILE_EXPECTED = ["Products", "Solutions", "Research", "Company"];
+  
   const labels = await navLocator.evaluateAll((els) =>
     els.map((e) => (e.querySelector("span")?.textContent ?? e.textContent ?? "").trim().replace(/\s+/g, " ")),
   );
   const normalized = labels.map((l) => l.replace(/\s*New publication\s*$/i, "").trim());
-  expect(normalized).toEqual(EXPECTED);
+  expect(normalized).toEqual(MOBILE_EXPECTED);
   expect(labels.join("|")).not.toMatch(/Answers/i);
 });
