@@ -42,6 +42,7 @@ export function Header() {
   useEffect(() => {
     if (prevPathname.current !== pathname) {
       setOpenGroup("");
+      setMenuOpen(false); // Close mobile menu on route change
       prevPathname.current = pathname;
     }
   }, [pathname]);
@@ -104,9 +105,11 @@ export function Header() {
 
           <button
             type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open menu"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
+            aria-controls="cyryx-mobile-navigation"
+            aria-haspopup="dialog"
             className="cx-btn cx-liquid-glass lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)]"
           >
             <Menu className="h-5 w-5" />
@@ -114,17 +117,11 @@ export function Header() {
         </div>
       </header>
 
-      {/* MobileMenu remains restricted from modification in Phase 4C */}
       <MobileMenu 
         open={menuOpen} 
         onClose={() => setMenuOpen(false)} 
-        links={[
-          { label: "Products", href: "/products" },
-          { label: "Solutions", href: "/solutions" },
-          { label: "Research", href: "/research" },
-          { label: "Company", href: "/company" }
-        ]} 
       />
     </>
   );
 }
+
