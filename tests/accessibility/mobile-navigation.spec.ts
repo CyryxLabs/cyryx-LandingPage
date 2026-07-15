@@ -204,7 +204,8 @@ test.describe("Mobile Navigation Accessibility", () => {
     await page.goto("/");
     await page.waitForLoadState("networkidle");
     await page.getByRole("button", { name: /open menu/i }).click();
-    await page.waitForTimeout(500);
+    // Wait for the menu to be fully rendered and layout settled
+    await expect(page.locator("#cyryx-mobile-navigation")).toBeVisible();
     
     const overflow = await page.evaluate(() => {
       // Check the specific menu element instead of document
