@@ -121,13 +121,13 @@ export function isNavigationItemActive(pathname: string, href: string): boolean 
   const isOverview = [
     '/products', 
     '/solutions', 
-    '/research', 
     '/company'
   ].includes(itemHref);
 
   if (isOverview) {
     return path === itemHref;
   }
+
 
   // Regular children and other items use segment-safe boundary matching.
   return matchesPathBoundary(path, itemHref);

@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { CyryxWordmark } from "./primitives/CyryxMark";
 import { MobileMenu } from "./MobileMenu";
+import { HeaderDropdown } from "./HeaderDropdown";
 import { cn } from "@/lib/utils";
-import { useCopyVariant } from "@/lib/copy-variant";
-import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
-import { hasNewPublication } from "@/data/publications";
-
-const NAV = [
-  { label: "Company", href: "/company" },
-  { label: "Products", href: "/products" },
-  { label: "Solutions", href: "/solutions" },
-  { label: "Research", href: "/research" },
-];
+import {
+  NavigationMenu,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+import {
+  PRIMARY_NAVIGATION,
+  PRIMARY_NAVIGATION_CTA,
+  getActiveNavigationGroup,
+  isPrimaryNavigationCTAActive,
+} from "@/lib/navigation";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const headerCta = getCopy(useCopyVariant()).header.cta;
+  const { location } = useRouterState();
+  const pathname = location.pathname;
+  const activeGroupId = getActiveNavigationGroup(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -48,42 +51,34 @@ export function Header() {
           </Link>
 
           <nav
-            className="hidden lg:flex items-center gap-7 xl:gap-8"
+            className="hidden lg:flex items-center"
             aria-label="Primary"
           >
-            {NAV.map((item) => (
-              <Link
-                key={item.label}
-                to={item.href}
-                activeOptions={{ exact: item.href === "/" }}
-                activeProps={{
-                  className:
-                    "hud-label text-[0.7rem] tracking-[0.18em] text-[var(--silver)] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5 after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]",
-                }}
-                inactiveProps={{
-                  className:
-                    "hud-label text-[0.7rem] tracking-[0.18em] text-[var(--silver-dim)] hover:text-[var(--silver)] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5",
-                }}
-              >
-                {item.label}
-                {item.label === "Research" && hasNewPublication() && (
-                  <span
-                    aria-label="New publication"
-                    title="New publication"
-                    className="h-1.5 w-1.5 rounded-full bg-[#0E5B57] shadow-[0_0_6px_#0E5B57]"
+            <NavigationMenu>
+              <NavigationMenuList className="gap-7 xl:gap-8">
+                {PRIMARY_NAVIGATION.map((group) => (
+                  <HeaderDropdown
+                    key={group.id}
+                    group={group}
+                    isActive={activeGroupId === group.id}
                   />
-                )}
-              </Link>
-            ))}
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
           </nav>
 
           <Link
-            to="/start"
-            aria-label={headerCta}
-            onClick={() => trackCta({ cta: "start_project", section: "header", href: "/start" })}
-            className="cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
+            to={PRIMARY_NAVIGATION_CTA.href}
+            aria-label={PRIMARY_NAVIGATION_CTA.label}
+            onClick={() => trackCta({ cta: "start_project", section: "header", href: PRIMARY_NAVIGATION_CTA.href })}
+            className={cn(
+              "cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md hud-label text-[var(--silver)] transition-colors relative",
+              isPrimaryNavigationCTAActive(pathname)
+                ? "after:absolute after:left-2 after:right-2 after:-bottom-1 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]"
+                : "hover:text-white"
+            )}
           >
-            {headerCta}
+            {PRIMARY_NAVIGATION_CTA.label}
             <span aria-hidden className="text-[var(--accent-glow)]">→</span>
           </Link>
 
@@ -99,7 +94,17 @@ export function Header() {
         </div>
       </header>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} links={NAV} />
+      {/* MobileMenu remains restricted from modification in Phase 4C */}
+      <MobileMenu 
+        open={menuOpen} 
+        onClose={() => setMenuOpen(false)} 
+        links={[
+          { label: "Products", href: "/products" },
+          { label: "Solutions", href: "/solutions" },
+          { label: "Research", href: "/research" },
+          { label: "Company", href: "/company" }
+        ]} 
+      />
     </>
   );
 }
