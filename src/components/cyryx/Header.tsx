@@ -9,17 +9,23 @@ import { trackCta } from "@/lib/track-cta";
 import {
   NavigationMenu,
   NavigationMenuList,
+  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
+
 import {
   PRIMARY_NAVIGATION,
   PRIMARY_NAVIGATION_CTA,
   getActiveNavigationGroup,
   isPrimaryNavigationCTAActive,
+  NavigationGroupId,
 } from "@/lib/navigation";
+import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
+
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string>("");
   const { location } = useRouterState();
   const pathname = location.pathname;
   const activeGroupId = getActiveNavigationGroup(pathname);
@@ -30,6 +36,15 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Explicit route-change closing
+  useEffect(() => {
+    setOpenGroup("");
+
+
+  }, [pathname]);
+
+  const handleClose = () => setOpenGroup("");
 
   return (
     <>
@@ -54,18 +69,21 @@ export function Header() {
             className="hidden lg:flex items-center"
             aria-label="Primary"
           >
-            <NavigationMenu>
+            <NavigationMenu value={openGroup} onValueChange={setOpenGroup}>
               <NavigationMenuList className="gap-7 xl:gap-8">
                 {PRIMARY_NAVIGATION.map((group) => (
                   <HeaderDropdown
                     key={group.id}
                     group={group}
                     isActive={activeGroupId === group.id}
+                    onClose={handleClose}
                   />
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
+
           </nav>
+
 
           <Link
             to={PRIMARY_NAVIGATION_CTA.href}

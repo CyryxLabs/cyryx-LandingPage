@@ -13,7 +13,7 @@ for (const route of ROUTES) {
     // Check top-level triggers + CTA
     // HeaderDropdown triggers are buttons inside [role="menuitem"] if Radix default structure is followed, 
     // or we check the specific navigation landmark.
-    const topLevelElements = page.locator('header nav[aria-label="Primary"] [role="menuitem"], header a[aria-label="Start a Project"]');
+    const topLevelElements = page.locator('header nav[aria-label="Primary"] button[data-radix-collection-item], header a[aria-label="Start a Project"]');
     
     const labels = await topLevelElements.evaluateAll((els) => 
       els.map((e) => (e.textContent ?? "").trim().replace(/\s+/g, " "))

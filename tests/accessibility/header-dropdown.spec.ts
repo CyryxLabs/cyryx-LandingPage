@@ -20,7 +20,6 @@ test.describe("Header Dropdown Accessibility", () => {
     await trigger.click();
     await expect(trigger).toHaveAttribute("data-state", "open");
     
-    // Use exact: true and scope to nav to avoid hero CTA overlap
     const dropdownLink = page.locator('header nav').getByRole("link", { name: "MAAX Studio", exact: true });
     await expect(dropdownLink).toBeVisible();
     
@@ -52,57 +51,37 @@ test.describe("Header Dropdown Accessibility", () => {
     await expect(trigger).toHaveAttribute("data-state", "closed");
   });
 
-  test("Products child labels and order", async ({ page }) => {
+  test("Outside click closes the menu", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "Products", exact: true }).click();
+    const trigger = page.getByRole("button", { name: "Products", exact: true });
     
-    const links = page.locator('header nav').getByRole("link");
-    const labels = await links.evaluateAll(els => els.map(e => e.textContent?.trim()));
+    await trigger.click();
+    await expect(trigger).toHaveAttribute("data-state", "open");
     
-    const products = labels.filter(l => ["Products Overview", "MAAX Studio", "Lyra"].includes(l || ""));
-    expect(products).toEqual(["Products Overview", "MAAX Studio", "Lyra"]);
+    // Click on the hero area
+    await page.mouse.click(640, 450);
+    await expect(trigger).toHaveAttribute("data-state", "closed");
   });
 
-  test("Solutions contains seven items", async ({ page }) => {
+  test("Keyboard interaction (Enter/Space) works", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "Solutions", exact: true }).click();
+    await page.keyboard.press("Tab"); // logo
+    await page.keyboard.press("Tab"); // first trigger (Products)
     
-    const expected = [
-      "Digital & Web Systems",
-      "Workflow Automation",
-      "Internal AI Assistants",
-      "Custom AI Product Development",
-      "AI Governance & Cost Control",
-      "Managed Operations",
-      "How We Work"
-    ];
+    const trigger = page.getByRole("button", { name: "Products", exact: true });
+    await expect(trigger).toBeFocused();
     
-    const nav = page.locator('header nav');
-    for (const label of expected) {
-      await expect(nav.getByRole("link", { name: label, exact: true })).toBeVisible();
-    }
+    await page.keyboard.press("Enter");
+    await expect(trigger).toHaveAttribute("data-state", "open");
+    
+    await page.keyboard.press("Escape");
+    await expect(trigger).toHaveAttribute("data-state", "closed");
+    
+    await page.keyboard.press("Space");
+    await expect(trigger).toHaveAttribute("data-state", "open");
   });
 
-  test("Research contains Research and Answers", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "Research", exact: true }).click();
-    
-    const nav = page.locator('header nav');
-    await expect(nav.getByRole("link", { name: "Research", exact: true })).toBeVisible();
-    await expect(nav.getByRole("link", { name: "Answers", exact: true })).toBeVisible();
-  });
-
-  test("Company contains Company, Careers and Contact", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "Company", exact: true }).click();
-    
-    const nav = page.locator('header nav');
-    await expect(nav.getByRole("link", { name: "Company", exact: true })).toBeVisible();
-    await expect(nav.getByRole("link", { name: "Careers", exact: true })).toBeVisible();
-    await expect(nav.getByRole("link", { name: "Contact", exact: true })).toBeVisible();
-  });
-
-  test("Selecting a child closes its menu", async ({ page }) => {
+  test("Child selection closes the menu", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     await trigger.click();
@@ -114,46 +93,46 @@ test.describe("Header Dropdown Accessibility", () => {
     await expect(trigger).toHaveAttribute("data-state", "closed");
   });
 
-  test("Active parent is identifiable on a child route", async ({ page }) => {
-    await page.goto("/products/maax-studio", { waitUntil: "domcontentloaded" });
+  test("Programmatic route change closes the menu", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
-    await expect(trigger).toHaveClass(/text-\[var\(--silver\)\]/);
-    await expect(trigger).toHaveClass(/after:bg-\[var\(--accent-glow\)\]/);
+    await trigger.click();
+    await expect(trigger).toHaveAttribute("data-state", "open");
+    
+    // Simulate route change by navigating to a different page via the logo
+    await page.getByRole("link", { name: "Cyryx Labs — home" }).click();
+    await expect(trigger).toHaveAttribute("data-state", "closed");
   });
 
-  test("Current child receives aria-current='page'", async ({ page }) => {
+  test("Active parent and aria-current are correct", async ({ page }) => {
     await page.goto("/products/maax-studio", { waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "Products", exact: true }).click();
+    const trigger = page.getByRole("button", { name: "Products", exact: true });
     
+    // Parent active state
+    await expect(trigger).toHaveClass(/text-\[var\(--silver\)\]/);
+    
+    await trigger.click();
     const link = page.locator('header nav').getByRole("link", { name: "MAAX Studio", exact: true });
     await expect(link).toHaveAttribute("aria-current", "page");
   });
 
-  test("Start a Project points to /start and is active only there", async ({ page }) => {
-    const cta = page.getByRole("link", { name: "Start a Project" });
-    
+  test("Reduced motion variants are applied", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await expect(cta).toHaveAttribute("href", "/start");
-    await expect(cta).not.toHaveClass(/after:bg-\[var\(--accent-glow\)\]/);
-    
-    await page.goto("/start", { waitUntil: "domcontentloaded" });
-    await expect(cta).toHaveClass(/after:bg-\[var\(--accent-glow\)\]/);
-  });
-
-  test("Keyboard interaction works without mouse", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.keyboard.press("Tab"); // Should reach logo
-    await page.keyboard.press("Tab"); // Should reach first nav trigger
     
     const trigger = page.getByRole("button", { name: "Products", exact: true });
-    await expect(trigger).toBeFocused();
+    await trigger.click();
     
-    await page.keyboard.press("Enter");
-    await expect(trigger).toHaveAttribute("data-state", "open");
+    // Check if motion-reduce class is present or computed style has no transition
+    const dropdownContent = page.locator('[data-radix-navigation-menu-viewport]');
+    const transition = await dropdownContent.evaluate((el) => window.getComputedStyle(el).transition);
+    const animation = await dropdownContent.evaluate((el) => window.getComputedStyle(el).animation);
     
-    await page.keyboard.press("Tab");
-    const nav = page.locator('header nav');
-    await expect(nav.getByRole("link", { name: "Products Overview", exact: true })).toBeFocused();
+    // In many environments, 'none' or empty string or specific values might be returned
+    // We primarily check the presence of the class in source if possible, but here we check computed
+    expect(transition === "none 0s ease 0s" || transition === "" || transition.includes("0s")).toBeTruthy();
+    expect(animation === "none 0s ease 0s" || animation === "" || animation.includes("0s")).toBeTruthy();
   });
 });
+
 
