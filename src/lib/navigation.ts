@@ -112,5 +112,15 @@ export function isNavigationItemActive(pathname: string, href: string): boolean 
   const path = normalizePathname(pathname);
   const itemHref = normalizePathname(href);
   
+  // Overview routes like /products or /solutions or /research
+  // must NOT be active for their children (e.g. /products/lyra).
+  // They only activate on exact match.
+  const isOverview = ['/products', '/solutions', '/research', '/company'].includes(itemHref);
+  
+  if (isOverview) {
+    return path === itemHref;
+  }
+
   return matchesPathBoundary(path, itemHref);
 }
+
