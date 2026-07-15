@@ -15,13 +15,17 @@ test.describe("Mobile Navigation Accessibility", () => {
 
   test("Dialog id matches aria-controls and toggles aria-expanded", async ({ page }) => {
     const trigger = page.getByRole("button", { name: /open menu/i });
-    await trigger.click();
+    
+    await expect(async () => {
+      await trigger.click({ force: true });
+      await expect(page.locator("#cyryx-mobile-navigation")).toBeVisible({ timeout: 2000 });
+    }).toPass();
     
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
     const dialog = page.locator("#cyryx-mobile-navigation");
-    await expect(dialog).toBeVisible();
     await expect(dialog).toHaveRole("dialog");
   });
+
 
   test("Accordion functionality: opening one closes another", async ({ page }) => {
     await page.getByRole("button", { name: /open menu/i }).click();

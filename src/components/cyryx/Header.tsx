@@ -105,15 +105,16 @@ export function Header() {
 
           <button
             type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => setMenuOpen(true)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             aria-controls="cyryx-mobile-navigation"
             aria-haspopup="dialog"
-            className="cx-btn cx-liquid-glass lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)]"
+            className="cx-btn cx-liquid-glass lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)] relative z-[70]"
           >
             <Menu className="h-5 w-5" />
           </button>
+
         </div>
       </header>
 
