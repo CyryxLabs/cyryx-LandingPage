@@ -204,7 +204,10 @@ test.describe("Mobile Navigation Accessibility", () => {
     await page.getByRole("button", { name: /open menu/i }).click();
     
     const overflow = await page.evaluate(() => {
-      return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+      const scrollWidth = document.documentElement.scrollWidth;
+      const clientWidth = document.documentElement.clientWidth;
+      // Allow 1px subpixel tolerance
+      return scrollWidth > clientWidth + 1;
     });
     expect(overflow).toBe(false);
   });
