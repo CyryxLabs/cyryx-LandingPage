@@ -110,7 +110,7 @@ export function Header() {
             aria-expanded={menuOpen}
             aria-controls="cyryx-mobile-navigation"
             aria-haspopup="dialog"
-            className="cx-btn cx-liquid-glass lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)] relative z-[70]"
+            className="cx-btn cx-liquid-glass lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)] relative z-[70] transition-colors"
           >
             <Menu className="h-5 w-5" />
           </button>
