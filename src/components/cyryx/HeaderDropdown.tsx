@@ -29,6 +29,8 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
 
 
       <NavigationMenuTrigger
+        value={group.id}
+
         className={cn(
           "hud-label h-auto bg-transparent p-0 text-[0.7rem] tracking-[0.18em] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5 focus:bg-transparent hover:bg-transparent data-[state=open]:bg-transparent outline-none ring-offset-0 focus-visible:ring-0",
           isActive
