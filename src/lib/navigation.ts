@@ -112,15 +112,20 @@ export function isNavigationItemActive(pathname: string, href: string): boolean 
   const path = normalizePathname(pathname);
   const itemHref = normalizePathname(href);
   
-  // Overview routes like /products or /solutions or /research
-  // must NOT be active for their children (e.g. /products/lyra).
-  // They only activate on exact match.
-  const isOverview = ['/products', '/solutions', '/research', '/company'].includes(itemHref);
-  
-  if (isOverview) {
-    return path === itemHref;
+  // Rule from Section 11:
+  // - "Exact match activates the child."
+  // - "A nested route beneath the child may activate it."
+  // - "Special handling is required for overview routes."
+  // 
+  // For Products Overview (/products) specifically:
+  // It is active ONLY at exactly /products.
+  // At /products/lyra, Lyra is active but Products Overview is NOT.
+  if (itemHref === '/products') {
+    return path === '/products';
   }
 
+  // Other overview routes or children follow segment-safe matching
   return matchesPathBoundary(path, itemHref);
 }
+
 
