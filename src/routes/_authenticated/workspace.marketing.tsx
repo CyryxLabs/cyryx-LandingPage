@@ -42,10 +42,9 @@ function MarketingPage() {
   const tab: Tab = (search.mktTab as Tab) ?? "dashboard";
   const setTab = (t: Tab) =>
     navigate({
-      search: (prev: Record<string, unknown>) => ({
+      search: (prev) => ({
         ...prev,
         mktTab: t === "dashboard" ? undefined : t,
-        tab: undefined, // Clear legacy key on new navigation
       }),
       replace: true,
     });
