@@ -161,9 +161,6 @@ function Index() {
       >
         Skip to content
       </a>
-      <div className="sr-only">
-        CYRYX LABS WEBSITE TRANSFORMATION
-      </div>
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
         <div className="relative">
