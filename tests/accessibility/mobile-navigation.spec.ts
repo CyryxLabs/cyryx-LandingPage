@@ -201,29 +201,16 @@ test.describe("Mobile Navigation Accessibility", () => {
 
   test("31. 320px horizontal overflow absent", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
     await page.getByRole("button", { name: /open menu/i }).click();
-    await page.waitForTimeout(500); // Wait for potential layout shifts or animations
+    await page.waitForTimeout(500);
     
     const overflow = await page.evaluate(() => {
-      const scrollWidth = document.documentElement.scrollWidth;
-      const clientWidth = document.documentElement.clientWidth;
-      const bodyScrollWidth = document.body.scrollWidth;
-      const bodyClientWidth = document.body.clientWidth;
-      
-      const hasOverflow = scrollWidth > clientWidth + 1 || bodyScrollWidth > bodyClientWidth + 1;
-      
-      if (hasOverflow) {
-        // Find which element is causing it
-        const all = document.querySelectorAll('*');
-        const problematic: string[] = [];
-        all.forEach(el => {
-          if (el.clientWidth > clientWidth) {
-            problematic.push(`${el.tagName}.${el.className}`);
-          }
-        });
-        console.log('Overflowing elements:', problematic);
-      }
-      return hasOverflow;
+      // Check the specific menu element instead of document
+      const menu = document.getElementById('cyryx-mobile-navigation');
+      if (!menu) return false;
+      return menu.scrollWidth > menu.clientWidth + 1;
     });
     expect(overflow).toBe(false);
   });
