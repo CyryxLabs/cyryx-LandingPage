@@ -24,7 +24,7 @@ export type WorkspaceSearch = z.infer<typeof workspaceSearchSchema>;
 export const Route = createFileRoute("/_authenticated/workspace")({
   validateSearch: (search) => workspaceSearchSchema.parse(search),
   search: {
-    middlewares: [retainSearchParams(["w", "tab"])],
+    middlewares: [retainSearchParams(["w", "tab"]) as any],
   },
   component: () => <Outlet />,
 });
