@@ -139,7 +139,7 @@ export function MobileMenu({
       role="dialog"
       aria-modal="true"
       aria-label="Main navigation"
-      className="cx-liquid-glass fixed inset-0 z-[60] rounded-none border-none lg:hidden overflow-y-auto overflow-x-hidden"
+      className="cx-liquid-glass fixed inset-0 z-[60] rounded-none border-none lg:hidden overflow-y-auto overflow-x-hidden w-full max-w-[100vw]"
       style={{
         background:
           "linear-gradient(135deg, color-mix(in oklab, var(--onyx) 88%, transparent) 0%, color-mix(in oklab, var(--onyx) 78%, transparent) 100%)",
