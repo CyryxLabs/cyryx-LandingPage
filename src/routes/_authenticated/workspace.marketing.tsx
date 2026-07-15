@@ -22,11 +22,12 @@ export const Route = createFileRoute("/_authenticated/workspace/marketing")({
       const n = typeof v === "string" ? parseInt(v, 10) : typeof v === "number" ? v : NaN;
       return Number.isFinite(n) && n >= 0 ? n : undefined;
     };
-    const t = str(s.tab);
+    const mktT = str(s.mktTab) || str(s.tab); // Legacy fallback
     const r = str(s.range);
     return {
-      tab: (["dashboard","campaigns","channels","leads","attribution"].includes(t ?? "") ? t : undefined) as
-        | "dashboard" | "campaigns" | "channels" | "leads" | "attribution" | undefined,
+      mktTab: (["dashboard", "campaigns", "channels", "leads", "attribution"].includes(mktT ?? "")
+        ? mktT
+        : undefined) as "dashboard" | "campaigns" | "channels" | "leads" | "attribution" | undefined,
       range: isRange(r) ? r : undefined,
       ch: str(s.ch),
       cp: str(s.cp),
@@ -45,9 +46,16 @@ type Tab = (typeof TABS)[number];
 function MarketingPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
-  const tab: Tab = (search.tab as Tab) ?? "dashboard";
+  const tab: Tab = (search.mktTab as Tab) ?? "dashboard";
   const setTab = (t: Tab) =>
-    navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, tab: t === "dashboard" ? undefined : t }), replace: true });
+    navigate({
+      search: (prev: Record<string, unknown>) => ({
+        ...prev,
+        mktTab: t === "dashboard" ? undefined : t,
+        tab: undefined, // Clear legacy key on new navigation
+      }),
+      replace: true,
+    });
   return (
     <WorkspaceShell title="Marketing" subtitle="Campaigns, channels and lead attribution">
       <nav className="mb-6 flex flex-wrap gap-2 border-b border-[color-mix(in_oklab,var(--accent-glow)_15%,transparent)] pb-2">
@@ -128,7 +136,10 @@ function AttributionTable() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const patchSearch = (patch: Record<string, unknown>) =>
-    navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }), replace: true });
+    navigate({
+      search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }),
+      replace: true,
+    });
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const range: Range = (search.range as Range) ?? "30d";
