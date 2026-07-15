@@ -21,7 +21,7 @@ import {
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [openGroup, setOpenGroup] = useState<string | undefined>(undefined);
+  const [openGroup, setOpenGroup] = useState<string>("");
   const { location } = useRouterState();
   const pathname = location.pathname;
   const activeGroupId = getActiveNavigationGroup(pathname);
@@ -35,11 +35,12 @@ export function Header() {
 
   // Explicit route-change closing
   useEffect(() => {
-    setOpenGroup(undefined);
+    setOpenGroup("");
+
 
   }, [pathname]);
 
-  const handleClose = () => setOpenGroup(undefined);
+  const handleClose = () => setOpenGroup("");
 
   return (
     <>
