@@ -136,7 +136,10 @@ function AttributionTable() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const patchSearch = (patch: Record<string, unknown>) =>
-    navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }), replace: true });
+    navigate({
+      search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }),
+      replace: true,
+    });
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const range: Range = (search.range as Range) ?? "30d";
