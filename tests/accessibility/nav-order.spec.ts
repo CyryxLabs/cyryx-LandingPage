@@ -30,22 +30,35 @@ for (const route of ROUTES) {
 test("mobile nav order + no Answers", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto("/", { waitUntil: "domcontentloaded", timeout: 60_000 });
-  await page.waitForLoadState("networkidle");
+  
   const openBtn = page.getByRole("button", { name: /open menu/i });
   await expect(openBtn).toBeVisible();
-  await openBtn.click();
-  const panel = page.locator('[role="dialog"][aria-label="Main navigation"]');
-  await panel.waitFor({ state: "attached" });
-  const navLocator = panel.locator('nav[aria-label="Mobile primary"] a');
-  await navLocator.first().waitFor({ state: "attached" });
   
-  // Mobile uses older labels per Phase 4C constraint (do not change mobile)
-  const MOBILE_EXPECTED = ["Products", "Solutions", "Research", "Company"];
+  // Try to click until the dialog is visible (handling hydration/GSAP race)
+  await expect(async () => {
+    await openBtn.click();
+    await expect(page.locator("#cyryx-mobile-navigation")).toBeVisible({ timeout: 2000 });
+  }).toPass();
   
-  const labels = await navLocator.evaluateAll((els) =>
-    els.map((e) => (e.querySelector("span")?.textContent ?? e.textContent ?? "").trim().replace(/\s+/g, " ")),
+  const dialog = page.locator("#cyryx-mobile-navigation");
+  
+  // Accordion triggers for groups
+  const triggers = dialog.locator('nav[aria-label="Mobile primary"] button[data-state]');
+  const groupLabels = await triggers.evaluateAll((els) => 
+    els.map((e) => e.textContent?.trim().replace(/\s+/g, " ") ?? "")
   );
-  const normalized = labels.map((l) => l.replace(/\s*New publication\s*$/i, "").trim());
-  expect(normalized).toEqual(MOBILE_EXPECTED);
-  expect(labels.join("|")).not.toMatch(/Answers/i);
+  
+  const EXPECTED_GROUPS = ["Products", "Solutions", "Research", "Company"];
+  expect(groupLabels).toEqual(EXPECTED_GROUPS);
+  
+  // CTA
+  const cta = dialog.locator('a[href="/start"]');
+  await expect(cta).toBeVisible();
+  const ctaText = (await cta.textContent())?.trim().replace(/\s*→\s*$/i, "") ?? "";
+  expect(ctaText).toBe("Start a Project");
+  
+  // Verify Answers is not a group trigger
+  expect(groupLabels.join("|")).not.toMatch(/Answers/i);
 });
+
+
