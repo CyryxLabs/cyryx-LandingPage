@@ -6,7 +6,7 @@ test.describe("Header Dropdown Accessibility", () => {
   });
 
   test("Four top-level group triggers render", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     const triggers = ["Products", "Solutions", "Research", "Company"];
     for (const name of triggers) {
       await expect(page.getByRole("button", { name, exact: true })).toBeVisible();
@@ -14,57 +14,63 @@ test.describe("Header Dropdown Accessibility", () => {
   });
 
   test("Products opens and closes by click", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     
+    // Check initial state
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    
     await trigger.click();
-    await expect(trigger).toHaveAttribute("data-state", "open");
+    
+    // Expect visible content and accessible state
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
     
     const dropdownLink = page.locator('header nav').getByRole("link", { name: "MAAX Studio", exact: true });
     await expect(dropdownLink).toBeVisible();
     
     await trigger.click();
-    await expect(trigger).toHaveAttribute("data-state", "closed");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    await expect(dropdownLink).not.toBeVisible();
   });
 
   test("Opening Solutions closes Products", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     const pTrigger = page.getByRole("button", { name: "Products", exact: true });
     const sTrigger = page.getByRole("button", { name: "Solutions", exact: true });
     
     await pTrigger.click();
-    await expect(pTrigger).toHaveAttribute("data-state", "open");
+    await expect(pTrigger).toHaveAttribute("aria-expanded", "true");
     
     await sTrigger.click();
-    await expect(sTrigger).toHaveAttribute("data-state", "open");
-    await expect(pTrigger).toHaveAttribute("data-state", "closed");
+    await expect(sTrigger).toHaveAttribute("aria-expanded", "true");
+    await expect(pTrigger).toHaveAttribute("aria-expanded", "false");
   });
 
   test("Escape closes the open menu", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     
     await trigger.click();
-    await expect(trigger).toHaveAttribute("data-state", "open");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
     
     await page.keyboard.press("Escape");
-    await expect(trigger).toHaveAttribute("data-state", "closed");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
   test("Outside click closes the menu", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     
     await trigger.click();
-    await expect(trigger).toHaveAttribute("data-state", "open");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
     
     // Click on the hero area
     await page.mouse.click(640, 450);
-    await expect(trigger).toHaveAttribute("data-state", "closed");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
   test("Keyboard interaction (Enter/Space) works", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     await page.keyboard.press("Tab"); // logo
     await page.keyboard.press("Tab"); // first trigger (Products)
     
@@ -72,17 +78,17 @@ test.describe("Header Dropdown Accessibility", () => {
     await expect(trigger).toBeFocused();
     
     await page.keyboard.press("Enter");
-    await expect(trigger).toHaveAttribute("data-state", "open");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
     
     await page.keyboard.press("Escape");
-    await expect(trigger).toHaveAttribute("data-state", "closed");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
     
     await page.keyboard.press("Space");
-    await expect(trigger).toHaveAttribute("data-state", "open");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
   });
 
   test("Child selection closes the menu", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     await trigger.click();
     
@@ -90,22 +96,22 @@ test.describe("Header Dropdown Accessibility", () => {
     await link.click();
     
     await expect(page).toHaveURL(/\/products\/maax-studio/);
-    await expect(trigger).toHaveAttribute("data-state", "closed");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
   test("Programmatic route change closes the menu", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "networkidle" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     await trigger.click();
-    await expect(trigger).toHaveAttribute("data-state", "open");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
     
     // Simulate route change by navigating to a different page via the logo
     await page.getByRole("link", { name: "Cyryx Labs — home" }).click();
-    await expect(trigger).toHaveAttribute("data-state", "closed");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
   test("Active parent and aria-current are correct", async ({ page }) => {
-    await page.goto("/products/maax-studio", { waitUntil: "domcontentloaded" });
+    await page.goto("/products/maax-studio", { waitUntil: "networkidle" });
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     
     // Parent active state

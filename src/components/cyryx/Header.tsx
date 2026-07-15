@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { Menu } from "lucide-react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useLocation } from "@tanstack/react-router";
 import { CyryxWordmark } from "./primitives/CyryxMark";
 import { MobileMenu } from "./MobileMenu";
 import { HeaderDropdown } from "./HeaderDropdown";
@@ -26,9 +26,10 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string>("");
-  const { location } = useRouterState();
-  const pathname = location.pathname;
-  const activeGroupId = getActiveNavigationGroup(pathname);
+  const location = useLocation();
+  const pathname = useMemo(() => location.pathname, [location.pathname]);
+  const activeGroupId = useMemo(() => getActiveNavigationGroup(pathname), [pathname]);
+  const prevPathname = useRef(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -39,9 +40,10 @@ export function Header() {
 
   // Explicit route-change closing
   useEffect(() => {
-    setOpenGroup("");
-
-
+    if (prevPathname.current !== pathname) {
+      setOpenGroup("");
+      prevPathname.current = pathname;
+    }
   }, [pathname]);
 
   const handleClose = () => setOpenGroup("");
