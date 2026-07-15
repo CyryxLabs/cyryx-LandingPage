@@ -42,7 +42,7 @@ function MarketingPage() {
   const tab: Tab = (search.mktTab as Tab) ?? "dashboard";
   const setTab = (t: Tab) =>
     navigate({
-      search: (prev) => ({
+      search: (prev: any) => ({
         ...prev,
         mktTab: t === "dashboard" ? undefined : t,
       }),
