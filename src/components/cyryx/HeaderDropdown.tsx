@@ -26,7 +26,7 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
 
   return (
     <NavigationMenuItem value={group.id}>
-      <NavigationMenuTrigger
+      <NavigationMenuPrimitive.Trigger
 
 
         className={cn(
