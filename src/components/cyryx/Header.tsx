@@ -17,6 +17,8 @@ import {
   isPrimaryNavigationCTAActive,
   NavigationGroupId,
 } from "@/lib/navigation";
+import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
+
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -65,7 +67,7 @@ export function Header() {
             className="hidden lg:flex items-center"
             aria-label="Primary"
           >
-            <NavigationMenu value={openGroup} onValueChange={setOpenGroup}>
+            <NavigationMenuPrimitive.Root value={openGroup} onValueChange={setOpenGroup} className="relative z-10 flex max-w-max flex-1 items-center justify-center">
               <NavigationMenuList className="gap-7 xl:gap-8">
                 {PRIMARY_NAVIGATION.map((group) => (
                   <HeaderDropdown
@@ -76,8 +78,10 @@ export function Header() {
                   />
                 ))}
               </NavigationMenuList>
-            </NavigationMenu>
+              <NavigationMenuViewport />
+            </NavigationMenuPrimitive.Root>
           </nav>
+
 
           <Link
             to={PRIMARY_NAVIGATION_CTA.href}
