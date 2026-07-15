@@ -22,11 +22,12 @@ export const Route = createFileRoute("/_authenticated/workspace/marketing")({
       const n = typeof v === "string" ? parseInt(v, 10) : typeof v === "number" ? v : NaN;
       return Number.isFinite(n) && n >= 0 ? n : undefined;
     };
-    const t = str(s.tab);
+    const mktT = str(s.mktTab) || str(s.tab); // Legacy fallback
     const r = str(s.range);
     return {
-      tab: (["dashboard","campaigns","channels","leads","attribution"].includes(t ?? "") ? t : undefined) as
-        | "dashboard" | "campaigns" | "channels" | "leads" | "attribution" | undefined,
+      mktTab: (["dashboard", "campaigns", "channels", "leads", "attribution"].includes(mktT ?? "")
+        ? mktT
+        : undefined) as "dashboard" | "campaigns" | "channels" | "leads" | "attribution" | undefined,
       range: isRange(r) ? r : undefined,
       ch: str(s.ch),
       cp: str(s.cp),
