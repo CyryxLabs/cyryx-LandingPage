@@ -4,7 +4,10 @@
     "@id": "https://cyryxlabs.com/#organization",
     "name": "Cyryx Labs",
     "legalName": "Cyryx Labs",
-    "alternateName": ["Cyryx", "Cyryx AI"],
+    "alternateName": [
+      "Cyryx",
+      "Cyryx AI"
+    ],
     "url": "https://cyryxlabs.com/",
     "slogan": "The execution layer for enterprise AI.",
     "foundingDate": "2024",
@@ -17,7 +20,6 @@
       "Agentic workflow systems",
       "AI execution infrastructure",
       "Governed autonomy",
-      "MAAX Runtime",
       "MAAX Studio",
       "Proprietary AI products"
     ]
@@ -26,16 +28,15 @@
     "@type": "SoftwareApplication",
     "@id": "https://cyryxlabs.com/#maax-studio",
     "name": "MAAX Studio",
-    "alternateName": "MAAX Studio (Runtime-first)",
     "applicationCategory": "DeveloperApplication",
     "applicationSubCategory": "Agentic Execution Environment",
     "operatingSystem": "macOS, Windows, Linux",
-    "softwareRequirements": "MAAX Runtime",
     "featureList": [
-      "Runtime-first agentic execution",
-      "Governed autonomy",
-      "Local-first execution context",
-      "Auditable workflow runtime"
+      "Mission-based execution",
+      "Project memory",
+      "Command Gates",
+      "Mission Ledger",
+      "Cost visibility"
     ]
   }
 }
