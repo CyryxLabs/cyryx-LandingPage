@@ -28,7 +28,7 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
 
   return (
     <NavigationMenuItem value={group.id}>
-      <NavigationMenuPrimitive.Trigger
+      <NavigationMenuTrigger
 
 
         className={cn(
@@ -44,7 +44,7 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
           className="ml-0.5 h-3 w-3 text-[var(--silver-dim)] transition-transform duration-150 group-data-[state=open]:rotate-180 motion-reduce:transition-none motion-reduce:transform-none" 
           aria-hidden="true" 
         />
-      </NavigationMenuPrimitive.Trigger>
+      </NavigationMenuTrigger>
       
       <NavigationMenuContent className="motion-reduce:animate-none">
         <div className={cn(

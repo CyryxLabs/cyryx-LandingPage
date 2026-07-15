@@ -69,7 +69,7 @@ export function Header() {
             className="hidden lg:flex items-center"
             aria-label="Primary"
           >
-            <NavigationMenuPrimitive.Root value={openGroup} onValueChange={setOpenGroup} className="relative z-10 flex max-w-max flex-1 items-center justify-center">
+            <NavigationMenu value={openGroup} onValueChange={setOpenGroup}>
               <NavigationMenuList className="gap-7 xl:gap-8">
                 {PRIMARY_NAVIGATION.map((group) => (
                   <HeaderDropdown
@@ -80,8 +80,8 @@ export function Header() {
                   />
                 ))}
               </NavigationMenuList>
-              <NavigationMenuViewport />
-            </NavigationMenuPrimitive.Root>
+            </NavigationMenu>
+
           </nav>
 
 
