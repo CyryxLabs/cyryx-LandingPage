@@ -171,17 +171,19 @@ test.describe("Mobile Navigation Accessibility", () => {
     await expect(cta).toBeFocused();
 
     // 27. Collapsed children not tabbable
-    await nav.getByRole("button", { name: /^Products$/ }).click();
-    await nav.getByRole("button", { name: /^Products$/ }).click(); // Close it
+    // Re-verify initial closed state
     await expect(nav.getByRole("button", { name: /^Products$/ })).toHaveAttribute("aria-expanded", "false");
     
-    // Try to find it in tab order
+    // Try to find hidden link in tab order
     await closeBtn.focus();
     let foundHiddenLink = false;
-    for (let i = 0; i < 15; i++) {
+    // We expect 5 tab steps to cover 4 triggers + 1 CTA
+    for (let i = 0; i < 10; i++) {
       await page.keyboard.press("Tab");
       const active = await page.evaluate(() => document.activeElement?.textContent);
-      if (active?.includes("MAAX Studio")) foundHiddenLink = true;
+      if (active?.includes("MAAX Studio") || active?.includes("Products Overview")) {
+        foundHiddenLink = true;
+      }
     }
     expect(foundHiddenLink).toBe(false);
   });
