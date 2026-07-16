@@ -27,9 +27,9 @@ const CANONICAL_URL = `https://cyryxlabs.com${PATH}`;
 
 const PILLARS = [
   {
-    name: "Governed by design",
+    name: "Private, model-agnostic",
     copy:
-      "Lyra's rules of conduct live in the model, not in a prompt. It declines unverified claims, protects data by default, and stays within approved scope — because that is what it was trained to do.",
+      "Lyra's rules of conduct live in the model, not in a prompt. It declines unverified claims, protects data by default, and stays within approved scope.",
   },
   {
     name: "Local-first sovereignty",
