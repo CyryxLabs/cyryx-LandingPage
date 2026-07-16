@@ -46,7 +46,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "When will new roles open?",
-    a: "We expect to open the next roles across applied AI, product engineering, research, and solutions over the coming quarters. There is no fixed calendar — we hire against real work, not headcount targets.",
+    a: "We expect to open the next roles across Applied Research, Product Engineering, and Cyryx Solutions over the coming quarters. There is no fixed calendar — we hire against real work, not headcount targets.",
   },
   {
     q: "How will I be contacted when a relevant role opens?",
