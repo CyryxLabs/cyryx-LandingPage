@@ -2,12 +2,8 @@ import { cn } from "@/lib/utils";
 
 export function SkipLink() {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const target = document.getElementById("main-content");
-    if (target) {
-      target.focus({ preventScroll: false });
-      target.scrollIntoView({ behavior: 'auto', block: 'start' });
-    }
+    // Standard link behavior (href="#main-content") handles the focus shift
+    // to elements with tabIndex={-1} in modern browsers.
   };
 
   return (
