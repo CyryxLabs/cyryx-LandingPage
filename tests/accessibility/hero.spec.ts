@@ -213,16 +213,21 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
     expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
     for (const line of metrics.lineRects) {
       expect(line.overflow).toBe("visible");
-      // Approved Hero uses tracking-[0.01em] (letter-spacing ≈ fontSize * 0.01).
-      // Normalize "normal" (which computes as 0px) to a numeric value for comparison.
-      const computedLetterSpacing =
-        line.letterSpacing === "normal" ? 0 : parseFloat(line.letterSpacing);
-      const expectedLetterSpacing = line.fontSize * 0.02;
+      // Exact authored CSS ratios: letter-spacing 0.012em-0.02em, line-height 1.1-1.14
+      // We derive the expected values based on viewport-specific constants or ratios.
+      const letterSpacingRatio = metrics.viewportWidth < 768 ? 0.012 : 0.02;
+      const expectedLetterSpacing = line.fontSize * letterSpacingRatio;
       expect(Number.isFinite(computedLetterSpacing)).toBeTruthy();
       expect(Math.abs(computedLetterSpacing - expectedLetterSpacing)).toBeLessThanOrEqual(
-        Math.max(1.0, line.fontSize * 0.005),
+        Math.max(0.05, line.fontSize * 0.003),
       );
-      expect(line.lineHeight).toBeGreaterThan(line.fontSize * 1.05);
+
+      const lineHeightRatio = metrics.viewportWidth < 768 ? 1.14 : 1.1;
+      const expectedLineHeight = line.fontSize * lineHeightRatio;
+      expect(Math.abs(line.lineHeight - expectedLineHeight)).toBeLessThanOrEqual(
+        Math.max(0.1, line.fontSize * 0.005),
+      );
+
       const expectedPaddingBottom = line.fontSize * 0.08;
       expect(Math.abs(line.paddingBottom - expectedPaddingBottom)).toBeLessThanOrEqual(
         Math.max(0.05, line.fontSize * 0.003),
