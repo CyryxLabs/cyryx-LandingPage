@@ -127,7 +127,6 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await expect(page.locator(".skip-link")).toBeFocused();
 
   await page.keyboard.press("Enter");
-  await page.waitForTimeout(100); // Small wait for React event loop
   await expect(page.locator("#main-content")).toBeFocused();
 
   const visited: string[] = [];
