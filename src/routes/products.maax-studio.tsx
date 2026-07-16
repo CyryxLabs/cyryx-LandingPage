@@ -281,7 +281,7 @@ function MaaxStudioPage() {
 
         <Sec heading="Status">
           <p>
-            MAAX Studio is in active development at <Link to="/" className="text-[var(--accent-glow)] hover:underline">Cyryx Labs</Link>. Early access engagements are coordinated through <Link to="/solutions" className="text-[var(--accent-glow)] hover:underline">Cyryx Solutions</Link>. The underlying frameworks are published openly by the <Link to="/research" className="text-[var(--accent-glow)] hover:underline">Cyryx Applied AI Lab</Link>.
+            MAAX Studio is in active development at <Link to="/" className="text-[var(--accent-glow)] hover:underline">Cyryx Labs</Link>. Early access engagements are coordinated through <Link to="/solutions" className="text-[var(--accent-glow)] hover:underline">Cyryx Solutions</Link>. The underlying frameworks and protocols are published openly by <Link to="/research" className="text-[var(--accent-glow)] hover:underline">Applied Research</Link>.
           </p>
         </Sec>
 
