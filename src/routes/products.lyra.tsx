@@ -14,7 +14,7 @@ import lyraOgAsset from "@/assets/lyra-og-1200x630.jpg.asset.json";
 import lyraMarkAsset from "@/assets/lyra-mark.png.asset.json";
 
 const PATH = "/products/lyra";
-const TITLE = "Lyra — Private AI Intelligence | Cyryx Labs";
+const TITLE = "Lyra — Private AI Execution Runtime | Cyryx Labs";
 const DESC =
   "Lyra is Cyryx Labs' private, model-agnostic intelligence and execution runtime. Built to execute real work under human command.";
 const LYRA_OG_IMAGE = `https://cyryxlabs.com${lyraOgAsset.url}`;
