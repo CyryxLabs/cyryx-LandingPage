@@ -5,8 +5,8 @@ export function SkipLink() {
     e.preventDefault();
     const target = document.getElementById("main-content");
     if (target) {
-      target.focus();
-      target.scrollIntoView();
+      target.focus({ preventScroll: false });
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
   };
 
