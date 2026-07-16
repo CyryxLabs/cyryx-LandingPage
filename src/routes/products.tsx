@@ -15,6 +15,36 @@ const DESC =
 
 const PRODUCTS = [
   {
+    eyebrow: "Enterprise · In development",
+    name: "Praxis OS",
+    tagline: "Operational intelligence and execution platform for enterprise.",
+    description:
+      "A unified operating layer for governed AI execution, mission management, and operational audit — the command center for organizations running at scale.",
+    bullets: [
+      "Enterprise-wide mission management and goal tracking",
+      "Unified governance and policy enforcement through command gates",
+      "Cross-departmental operational audit and mission ledgers",
+    ],
+    href: "/products/praxis-os",
+    cta: "Explore Praxis OS",
+    status: "In development",
+  },
+  {
+    eyebrow: "Native Engine · In development",
+    name: "Lyra",
+    tagline: "Governed, local-first AI model for enterprise.",
+    description:
+      "The sovereign intelligence layer engineered for accountability and honesty — trained to execute under command, not just to answer.",
+    bullets: [
+      "Governance trained into the model weights, not just prompts",
+      "Local-first sovereignty for data privacy and security",
+      "Evidence-grounded execution with verifiable citations",
+    ],
+    href: "/products/lyra",
+    cta: "Explore Lyra",
+    status: "Enterprise early access",
+  },
+  {
     eyebrow: "Flagship · In development",
     name: "MAAX Studio",
     tagline: "Agentic execution environment for AI-native builders.",
@@ -28,21 +58,6 @@ const PRODUCTS = [
     href: "/products/maax-studio",
     cta: "Explore MAAX Studio",
     status: "Pre-release · early access",
-  },
-  {
-    eyebrow: "Research program",
-    name: "Cyryx Applied AI Lab",
-    tagline: "Applied research feeding every product and engagement.",
-    description:
-      "Publications, evaluation harnesses, and reference implementations that make our claims about governed AI execution verifiable.",
-    bullets: [
-      "Evaluator design and regression suites for agentic systems",
-      "Reference architectures for command gates and mission ledgers",
-      "Public write-ups of methods used in Cyryx deliveries",
-    ],
-    href: "/research",
-    cta: "Read the research",
-    status: "Publishing",
   },
 ];
 
