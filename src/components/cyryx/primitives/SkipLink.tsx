@@ -1,9 +1,28 @@
 import { cn } from "@/lib/utils";
 
 export function SkipLink() {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById("main-content");
+    if (target) {
+      target.focus();
+      target.scrollIntoView();
+    }
+  };
+
   return (
     <a
       href="#main-content"
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          const target = document.getElementById("main-content");
+          if (target) {
+            target.focus();
+            target.scrollIntoView();
+          }
+        }
+      }}
       className={cn(
         "skip-link",
         "sr-only focus:not-sr-only",
