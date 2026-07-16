@@ -12,13 +12,13 @@ import {
 export const Route = createFileRoute("/research/")({
   head: () => ({
     meta: [
-      { title: "Applied AI Lab — Cyryx Labs" },
+      { title: "Applied Research — Cyryx Labs" },
       {
         name: "description",
         content:
-          "Cyryx Applied AI Lab develops the architectures, protocols, and evaluation models behind governed AI execution systems and productized AI infrastructure.",
+          "Cyryx Applied Research develops the architectures, protocols, and evaluation models behind governed AI execution systems and productized AI infrastructure.",
       },
-      { property: "og:title", content: "Applied AI Lab — Cyryx Labs" },
+      { property: "og:title", content: "Applied Research — Cyryx Labs" },
       {
         property: "og:description",
         content:
