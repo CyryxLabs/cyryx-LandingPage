@@ -71,7 +71,7 @@ export function Hero() {
   }, [debug]);
 
   return (
-    <><a href="#main-content" className="skip-link sr-only focus:not-sr-only fixed left-4 top-4 z-[100] bg-white text-black p-2">Skip to content</a><section
+    <section
       ref={root}
       id="top"
       data-hero
