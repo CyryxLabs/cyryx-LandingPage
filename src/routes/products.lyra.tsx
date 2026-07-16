@@ -163,8 +163,8 @@ function LyraPage() {
                 Lyra · REV_0.1 · In Development
               </div>
               <h1 className="mt-6 sm:mt-8 font-display text-[clamp(2.25rem,7vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em] text-[var(--silver)]">
-                The governed AI model at the core of{" "}
-                <span className="font-semibold text-silver-gradient">MAAX Studio</span>.
+                The sovereign engine of{" "}
+                <span className="font-semibold text-silver-gradient">Praxis OS</span>.
               </h1>
               <p className="mt-6 sm:mt-8 max-w-[52ch] text-[15px] sm:text-base lg:text-lg text-[var(--silver-dim)] leading-relaxed">
                 Cyryx Labs' proprietary model — built to execute real work under
