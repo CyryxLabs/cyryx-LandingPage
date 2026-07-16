@@ -14,9 +14,9 @@ import lyraOgAsset from "@/assets/lyra-og-1200x630.jpg.asset.json";
 import lyraMarkAsset from "@/assets/lyra-mark.png.asset.json";
 
 const PATH = "/products/lyra";
-const TITLE = "Lyra — Governed AI Model for Enterprise | Cyryx Labs";
+const TITLE = "Lyra — Private AI Intelligence | Cyryx Labs";
 const DESC =
-  "Lyra is Cyryx Labs' local-first agentic model — governed, local-first, and honest about evidence. Built to execute real work under human command.";
+  "Lyra is Cyryx Labs' private, model-agnostic intelligence and execution runtime. Built to execute real work under human command.";
 const LYRA_OG_IMAGE = `https://cyryxlabs.com${lyraOgAsset.url}`;
 const LYRA_MARK_URL = lyraMarkAsset.url;
 const LYRA_EMAIL = `${CONTACT_EMAIL}?subject=${encodeURIComponent(
