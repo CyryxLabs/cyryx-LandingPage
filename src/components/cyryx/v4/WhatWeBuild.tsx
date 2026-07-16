@@ -6,7 +6,7 @@ const UNITS = [
   {
     tag: "Products",
     title: "Proprietary AI products.",
-    body: "systems, MAAX Studio, and Lyra — governed autonomy built into the runtime.",
+    body: "MAAX Studio and Lyra — governed autonomy built into the runtime.",
     href: "/products",
   },
   {
