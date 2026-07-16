@@ -79,15 +79,17 @@ export const Route = createFileRoute("/")({
                 "https://github.com/cyryxlabs",
               ],
               makesOffer: [
+                { "@type": "Offer", name: "Praxis OS", itemOffered: { "@id": "https://cyryxlabs.com/#praxis-os" } },
                 { "@type": "Offer", name: "MAAX Studio", itemOffered: { "@id": "https://cyryxlabs.com/#maax-studio" } },
+                { "@type": "Offer", name: "Lyra", itemOffered: { "@id": "https://cyryxlabs.com/#lyra" } },
               ],
               knowsAbout: [
-                "Operational AI",
-                "Agentic workflow systems",
+                "Enterprise operational intelligence",
+                "Agentic software execution",
+                "Governed AI models",
                 "AI execution infrastructure",
-                "Governed autonomy",
-                "MAAX Studio",
-                "Proprietary AI products",
+                "Mission management",
+                "Command gates",
               ],
               logo: {
                 "@type": "ImageObject",
