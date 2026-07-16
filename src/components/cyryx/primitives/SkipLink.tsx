@@ -1,10 +1,6 @@
 import { cn } from "@/lib/utils";
 
 export function SkipLink() {
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Standard link behavior (href="#main-content") handles the focus shift
-    // to elements with tabIndex={-1} in modern browsers.
-  };
 
   return (
     <a
