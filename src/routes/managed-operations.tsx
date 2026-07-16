@@ -57,7 +57,7 @@ function ManagedOpsPage() {
             Operate systems, not tickets.
           </h1>
           <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Managed coverage for websites, workflows, and AI systems delivered under defined scope, exclusions, and response windows. Not an unlimited retainer.
+            Managed coverage for websites, workflows, and AI systems built on the Praxis OS and MAAX Studio architectures. Delivered under defined scope, exclusions, and response windows. Not an unlimited retainer.
           </p>
           <p className="mt-4 max-w-2xl text-sm text-[var(--silver-dim)]">
             Managed AI Operations starts at $2,500 per month. Enterprise coverage is custom scope.

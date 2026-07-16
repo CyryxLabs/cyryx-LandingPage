@@ -163,8 +163,8 @@ function LyraPage() {
                 Lyra · REV_0.1 · In Development
               </div>
               <h1 className="mt-6 sm:mt-8 font-display text-[clamp(2.25rem,7vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em] text-[var(--silver)]">
-                The governed AI model at the core of{" "}
-                <span className="font-semibold text-silver-gradient">MAAX Studio</span>.
+                The sovereign engine of{" "}
+                <span className="font-semibold text-silver-gradient">Praxis OS</span>.
               </h1>
               <p className="mt-6 sm:mt-8 max-w-[52ch] text-[15px] sm:text-base lg:text-lg text-[var(--silver-dim)] leading-relaxed">
                 Cyryx Labs' proprietary model — built to execute real work under
@@ -200,8 +200,8 @@ function LyraPage() {
                 inside a system of gates, evidence, and human command. Its
                 identity, safety doctrine, and operating conduct are trained
                 into the model itself, not applied as instructions that can be
-                stripped away. Volatile facts live in governed context, where
-                they can change without retraining the model.
+                stripped away. Lyra is the proprietary model at the core of
+                Praxis OS and MAAX Studio.
               </p>
               <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch">
               <a
@@ -274,10 +274,11 @@ function LyraPage() {
           </section>
           <div className="mt-8 sm:mt-10 mx-auto max-w-[62ch] text-center">
             <p className="text-sm sm:text-[15px] leading-relaxed text-[var(--silver-dim)]">
-              Lyra is the sovereign engine of MAAX Studio — the governed
-              agentic IDE. MAAX is engine-agnostic by design: Lyra provides
-              local, governed, zero-marginal-cost execution, and frontier
-              models can be attached when a mission demands maximum capability.
+              Lyra is the sovereign engine of Praxis OS and MAAX Studio — 
+              the governed agentic IDE. Praxis OS is engine-agnostic by design: 
+              Lyra provides local, governed, zero-marginal-cost execution, 
+              and frontier models can be attached when a mission demands 
+              maximum capability.
             </p>
           </div>
 
@@ -323,8 +324,8 @@ function LyraPage() {
             </h2>
             <p className="mt-6 sm:mt-8 mx-auto max-w-[58ch] text-sm sm:text-[15px] leading-relaxed text-[var(--silver-dim)]">
               Lyra is in active development, available today through early
-              access with MAAX Studio. Direct access to Lyra may open as the
-              model matures.
+              access with MAAX Studio and Praxis OS. Direct access to Lyra may
+              open as the model matures.
             </p>
             <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row justify-center gap-4">
               <a

@@ -31,7 +31,7 @@ const TALENT_NETWORK_MAILTO = `mailto:${CAREERS_EMAIL}?subject=${encodeURICompon
     "",
     "• Name:",
     "• Location / time zone:",
-    "• Area of interest (applied AI, product engineering, research, solutions):",
+    "• Area of interest (Applied Research, Product Engineering, Cyryx Solutions):",
     "• LinkedIn / GitHub / portfolio:",
     "• Short intro:",
     "",
@@ -46,7 +46,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "When will new roles open?",
-    a: "We expect to open the next roles across applied AI, product engineering, research, and solutions over the coming quarters. There is no fixed calendar — we hire against real work, not headcount targets.",
+    a: "We expect to open the next roles across Applied Research, Product Engineering, and Cyryx Solutions over the coming quarters. There is no fixed calendar — we hire against real work, not headcount targets.",
   },
   {
     q: "How will I be contacted when a relevant role opens?",
@@ -100,7 +100,7 @@ function CareersPage() {
             </h2>
             <p className="mt-3 max-w-2xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
               Cyryx Labs is not actively hiring at the moment. New positions
-              across applied AI, product engineering, research, and solutions
+              across Applied Research, Product Engineering, and Cyryx Solutions
               will open as the team grows.
             </p>
             <p className="mt-3 max-w-2xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">

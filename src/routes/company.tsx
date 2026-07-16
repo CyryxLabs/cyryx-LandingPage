@@ -41,20 +41,23 @@ function CompanyPage() {
 
         <Section heading="What we do">
           <p>
-            We design and ship software. The work happens across four entities that share one architecture and one operating model:
+            We design and ship software. The work happens across five core units that share one architecture and one operating model:
           </p>
-          <ul className="mt-4 space-y-3 text-base leading-relaxed text-[var(--silver-dim)]">
+          <ul className="mt-4 space-y-4 text-base leading-relaxed text-[var(--silver-dim)]">
             <li>
-              <strong className="text-[var(--silver)]"><Link to="/products/maax-studio" className="hover:text-[var(--accent-glow)]">MAAX Studio</Link></strong> — our flagship product. A governed execution environment for agentic AI workflows, built around missions, command gates, and mission ledgers.
+              <strong className="text-[var(--silver)]">Praxis OS</strong> — our enterprise operational intelligence and execution platform. In development.
             </li>
             <li>
-              <strong className="text-[var(--silver)]">MAAX Runtime</strong> — the execution architecture beneath MAAX Studio. It coordinates agents, gates, context resolution, and evaluation.
+              <strong className="text-[var(--silver)]"><Link to="/products/maax-studio" className="hover:text-[var(--accent-glow)]">MAAX Studio</Link></strong> — a local-first agentic software execution environment for AI-native builders.
             </li>
             <li>
-              <strong className="text-[var(--silver)]"><Link to="/solutions" className="hover:text-[var(--accent-glow)]">Cyryx Solutions</Link></strong> — our implementation layer. Custom AI systems built for clients on the same governance primitives as MAAX.
+              <strong className="text-[var(--silver)]"><Link to="/products/lyra" className="hover:text-[var(--accent-glow)]">Lyra</Link></strong> — our proprietary AI model: governed, local-first, and the sovereign engine of MAAX Studio.
             </li>
             <li>
-              <strong className="text-[var(--silver)]"><Link to="/research" className="hover:text-[var(--accent-glow)]">Cyryx Applied AI Lab</Link></strong> — our research practice. Frameworks and technical reports, published openly.
+              <strong className="text-[var(--silver)]"><Link to="/solutions" className="hover:text-[var(--accent-glow)]">Cyryx Solutions</Link></strong> — our commercial implementation layer. Custom AI systems built on the same governance primitives as our products.
+            </li>
+            <li>
+              <strong className="text-[var(--silver)]"><Link to="/research" className="hover:text-[var(--accent-glow)]">Applied Research</Link></strong> — our engineering and research discipline. Protocols and evaluations published openly via the Applied AI Lab.
             </li>
           </ul>
         </Section>

@@ -12,13 +12,13 @@ import {
 export const Route = createFileRoute("/research/")({
   head: () => ({
     meta: [
-      { title: "Applied AI Lab — Cyryx Labs" },
+      { title: "Applied Research — Cyryx Labs" },
       {
         name: "description",
         content:
-          "Cyryx Applied AI Lab develops the architectures, protocols, and evaluation models behind governed AI execution systems and productized AI infrastructure.",
+          "Cyryx Applied Research develops the architectures, protocols, and evaluation models behind governed AI execution systems and productized AI infrastructure.",
       },
-      { property: "og:title", content: "Applied AI Lab — Cyryx Labs" },
+      { property: "og:title", content: "Applied Research — Cyryx Labs" },
       {
         property: "og:description",
         content:
@@ -62,7 +62,7 @@ function ResearchHub() {
         {/* Hero */}
         <section className="mx-auto max-w-7xl px-6 pb-12">
           <p className="font-[Inter] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#0E5B57]">
-            Cyryx Labs · Applied AI Research
+            Cyryx Labs · Applied Research
           </p>
           <h1 className="mt-4 font-[Orbitron] text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
             Research &amp; Publications

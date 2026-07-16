@@ -46,7 +46,7 @@ function EngagementModelPage() {
             Fixed scope. Verifiable delivery. Full transfer.
           </h1>
           <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Every Cyryx engagement is built around a bounded problem, an accountable owner, and a verifiable outcome. Nothing is delivered by presentation.
+            Every Cyryx engagement is built around a bounded problem, an accountable owner, and a verifiable outcome. Every system is built on the same architecture as Praxis OS and MAAX Studio.
           </p>
         </section>
 
