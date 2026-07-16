@@ -160,18 +160,19 @@ function LyraPage() {
             <div className="relative lg:col-span-7 order-2 lg:order-1">
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--accent-glow)]">
                 <span className="h-px w-6 sm:w-8 bg-[var(--accent-glow)]" />
-                Lyra · REV_0.1 · In Development
+                Lyra · REV_0.1 · Private development
               </div>
               <h1 className="mt-6 sm:mt-8 font-display text-[clamp(2.25rem,7vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em] text-[var(--silver)]">
                 The sovereign engine of{" "}
                 <span className="font-semibold text-silver-gradient">Operational AI</span>.
               </h1>
               <p className="mt-6 sm:mt-8 max-w-[52ch] text-[15px] sm:text-base lg:text-lg text-[var(--silver-dim)] leading-relaxed">
-                Cyryx Labs' proprietary model — built to execute real work under
+                Cyryx Labs' private, model-agnostic intelligence and execution runtime — built to execute real work under
                 human command. Local, sovereign, and honest about what it knows.
               </p>
             </div>
             <div className="relative lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end">
+
               <div className="relative aspect-square w-40 sm:w-52 lg:w-[320px] xl:w-[360px]">
                 <div
                   aria-hidden
