@@ -22,6 +22,7 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
     label: 'Products',
     children: [
       { label: 'Products Overview', href: '/products' },
+      { label: 'Praxis OS', href: '/products/praxis-os' },
       { label: 'MAAX Studio', href: '/products/maax-studio' },
       { label: 'Lyra', href: '/products/lyra' },
     ] as const,
