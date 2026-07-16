@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SkipLink } from "@/components/cyryx/primitives/SkipLink";
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
 import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
