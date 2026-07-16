@@ -138,7 +138,7 @@ export const Route = createFileRoute("/")({
                               "@id": "https://cyryxlabs.com/#maax-studio",
                               "name": "MAAX Studio",
                               "applicationCategory": "DeveloperApplication",
-                              "applicationSubCategory": "Agentic Execution Environment",
+                              "applicationSubCategory": "Private AI Execution Runtime",
                               "operatingSystem": "macOS, Windows, Linux",
                               "featureList": [
                                         "Mission-based execution",
