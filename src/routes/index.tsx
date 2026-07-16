@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SkipLink } from "@/components/cyryx/primitives/SkipLink";
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
 import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
@@ -174,10 +175,11 @@ function IndexPage() {
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">
+      <SkipLink />
       <BackgroundMonolith />
       <StickyMobileCTA />
       <Header />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero />
         <Problem />
         <MAAXStudioSpotlight />

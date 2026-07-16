@@ -26,11 +26,20 @@ test.describe("Copy variants — shape validation", () => {
     expect(CopyDocumentSchema.safeParse(broken).success).toBe(false);
   });
 
-  test("schema rejects wrong hero.meta length (layout-sensitive)", () => {
+  test("schema allows 0 to 4 hero.meta items (contract-driven)", () => {
     const copy = getCopy("v3");
-    const broken = { ...copy, hero: { ...copy.hero, meta: ["only", "three", "items"] } };
-    const r = CopyDocumentSchema.safeParse(broken);
-    expect(r.success).toBe(false);
+    
+    // Test 0 items (current v3 state)
+    expect(CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: [] } }).success).toBe(true);
+    
+    // Test 3 items (previously rejected)
+    expect(CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: ["one", "two", "three"] } }).success).toBe(true);
+    
+    // Test 4 items (limit)
+    expect(CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: ["a", "b", "c", "d"] } }).success).toBe(true);
+    
+    // Test 5 items (should fail)
+    expect(CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: ["a", "b", "c", "d", "e"] } }).success).toBe(false);
   });
 });
 
