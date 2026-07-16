@@ -1,0 +1,17 @@
+src/components/cyryx/v4/WhatWeBuild.tsx:    body: "Praxis OS, MAAX Studio, and Lyra — governed autonomy built into the runtime.",
+src/routes/company.tsx:              <strong className="text-[var(--silver)]">Praxis OS</strong> — our enterprise operational intelligence and execution platform. In development.
+src/routes/company.tsx:              <strong className="text-[var(--silver)]"><Link to="/products/lyra" className="hover:text-[var(--accent-glow)]">Lyra</Link></strong> — our proprietary AI model: governed, local-first, and the sovereign engine of MAAX Studio.
+src/routes/engagement-model.tsx:            Every Cyryx engagement is built around a bounded problem, an accountable owner, and a verifiable outcome. Every system is built on the same architecture as Praxis OS and MAAX Studio.
+src/routes/managed-operations.tsx:            Managed coverage for websites, workflows, and AI systems built on the Praxis OS and MAAX Studio architectures. Delivered under defined scope, exclusions, and response windows. Not an unlimited retainer.
+src/routes/products.lyra.tsx:  "Lyra is Cyryx Labs' proprietary AI model — governed, local-first, and honest about evidence. Built to execute real work under human command.";
+src/routes/products.lyra.tsx:    a: "Lyra is Cyryx Labs' proprietary AI model, purpose-built to execute real work inside a system of command gates, evidence, and human authority. Its identity, safety doctrine, and operating conduct are trained into the model itself — not layered as prompts that can be stripped away.",
+src/routes/products.lyra.tsx:                <span className="font-semibold text-silver-gradient">Praxis OS</span>.
+src/routes/products.lyra.tsx:                Praxis OS and MAAX Studio.
+src/routes/products.lyra.tsx:              Lyra is the sovereign engine of Praxis OS and MAAX Studio — 
+src/routes/products.lyra.tsx:              the governed agentic IDE. Praxis OS is engine-agnostic by design: 
+src/routes/products.lyra.tsx:              access with MAAX Studio and Praxis OS. Direct access to Lyra may
+src/routes/products.maax-studio.tsx:            A local-first agentic software execution environment for AI-native builders. It is a key component of <strong className="text-[var(--silver)]">Praxis OS</strong>, our enterprise operational intelligence and execution platform.
+src/routes/products.tsx:    name: "Praxis OS",
+src/routes/products.tsx:    href: "/products/praxis-os",
+src/routes/products.tsx:    cta: "Explore Praxis OS",
+src/routes/index.tsx:                              "description": "Lyra is Cyryx Labs' proprietary AI model \u2014 governed, local-first, and honest about evidence.",

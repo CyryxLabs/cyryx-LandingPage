@@ -7,8 +7,7 @@ import type { CopyDocument } from "./types";
 export const v3: CopyDocument = {
   hero: {
     headline: "The execution layer for enterprise AI.",
-    sub:
-      "Cyryx Labs builds AI products and execution systems — including Praxis OS, MAAX Studio, and Lyra — engineered for accountability, auditability, and cost control.",
+    sub: "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
     meta: [],
     rail: [],
     ctaPrimary: "Start a project",
