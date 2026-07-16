@@ -41,7 +41,6 @@ import { Route as SolutionsAiProductEngineeringRouteImport } from './routes/solu
 import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
 import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
-import { Route as ProductsPraxisOsRouteImport } from './routes/products.praxis-os'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
 import { Route as ProductsLyraRouteImport } from './routes/products.lyra'
 import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
@@ -241,11 +240,6 @@ const ResearchSlugRoute = ResearchSlugRouteImport.update({
   id: '/research/$slug',
   path: '/research/$slug',
   getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsPraxisOsRoute = ProductsPraxisOsRouteImport.update({
-  id: '/praxis-os',
-  path: '/praxis-os',
-  getParentRoute: () => ProductsRoute,
 } as any)
 const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
   id: '/maax-studio',
@@ -453,7 +447,6 @@ export interface FileRoutesByFullPath {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
-  '/products/praxis-os': typeof ProductsPraxisOsRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
@@ -517,7 +510,6 @@ export interface FileRoutesByTo {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
-  '/products/praxis-os': typeof ProductsPraxisOsRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
@@ -584,7 +576,6 @@ export interface FileRoutesById {
   '/newsletter/confirm': typeof NewsletterConfirmRoute
   '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
-  '/products/praxis-os': typeof ProductsPraxisOsRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
@@ -651,7 +642,6 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/lyra'
     | '/products/maax-studio'
-    | '/products/praxis-os'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
@@ -715,7 +705,6 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/lyra'
     | '/products/maax-studio'
-    | '/products/praxis-os'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
@@ -781,7 +770,6 @@ export interface FileRouteTypes {
     | '/newsletter/confirm'
     | '/products/lyra'
     | '/products/maax-studio'
-    | '/products/praxis-os'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
@@ -1087,13 +1075,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResearchSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/praxis-os': {
-      id: '/products/praxis-os'
-      path: '/praxis-os'
-      fullPath: '/products/praxis-os'
-      preLoaderRoute: typeof ProductsPraxisOsRouteImport
-      parentRoute: typeof ProductsRoute
-    }
     '/products/maax-studio': {
       id: '/products/maax-studio'
       path: '/maax-studio'
@@ -1360,13 +1341,11 @@ const AuthenticatedRouteRouteWithChildren =
 interface ProductsRouteChildren {
   ProductsLyraRoute: typeof ProductsLyraRoute
   ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
-  ProductsPraxisOsRoute: typeof ProductsPraxisOsRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
   ProductsLyraRoute: ProductsLyraRoute,
   ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
-  ProductsPraxisOsRoute: ProductsPraxisOsRoute,
 }
 
 const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
