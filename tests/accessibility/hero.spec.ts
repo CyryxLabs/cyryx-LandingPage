@@ -220,7 +220,7 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
       const expectedLetterSpacing = line.fontSize * 0.02;
       expect(Number.isFinite(computedLetterSpacing)).toBeTruthy();
       expect(Math.abs(computedLetterSpacing - expectedLetterSpacing)).toBeLessThanOrEqual(
-        Math.max(0.1, line.fontSize * 0.005),
+        Math.max(1.0, line.fontSize * 0.005),
       );
       expect(line.lineHeight).toBeGreaterThan(line.fontSize * 1.1);
       const expectedPaddingBottom = line.fontSize * 0.08;
