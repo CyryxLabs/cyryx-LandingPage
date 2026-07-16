@@ -140,7 +140,27 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
     );
   }
 
-  expect(visited.some((label) => label.includes("Initialize a Cyryx AI system"))).toBeTruthy();
+  const primaryLabel = "Start a Project with Cyryx Labs";
+  const secondaryLabel = "Explore MAAX Studio — flagship product";
+  expect(
+    visited.some((label) => label.includes(primaryLabel)),
+    `Expected keyboard focus to reach primary Hero CTA labelled "${primaryLabel}". Visited: ${JSON.stringify(visited)}`,
+  ).toBeTruthy();
+  expect(
+    visited.some((label) => label.includes(secondaryLabel)),
+    `Expected keyboard focus to reach secondary Hero CTA labelled "${secondaryLabel}". Visited: ${JSON.stringify(visited)}`,
+  ).toBeTruthy();
+
+  const primaryHref = await page
+    .locator(`section[data-hero] a[aria-label="${primaryLabel}"]`)
+    .getAttribute("href");
+  expect(primaryHref).toBe("#contact");
+
+  const secondaryHref = await page
+    .locator(`section[data-hero] a[aria-label="${secondaryLabel}"]`)
+    .getAttribute("href");
+  expect(secondaryHref).toBe("#maax");
+
   expect(new Set(visited).size).toBeGreaterThan(1);
 });
 
@@ -193,7 +213,15 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
     expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
     for (const line of metrics.lineRects) {
       expect(line.overflow).toBe("visible");
-      expect(line.letterSpacing).toBe("normal");
+      // Approved Hero uses tracking-[0.01em] (letter-spacing ≈ fontSize * 0.01).
+      // Normalize "normal" (which computes as 0px) to a numeric value for comparison.
+      const computedLetterSpacing =
+        line.letterSpacing === "normal" ? 0 : parseFloat(line.letterSpacing);
+      const expectedLetterSpacing = line.fontSize * 0.01;
+      expect(Number.isFinite(computedLetterSpacing)).toBeTruthy();
+      expect(Math.abs(computedLetterSpacing - expectedLetterSpacing)).toBeLessThanOrEqual(
+        Math.max(0.05, line.fontSize * 0.003),
+      );
       expect(line.lineHeight).toBeGreaterThan(line.fontSize * 1.1);
       expect(line.paddingBottom).toBeGreaterThan(line.fontSize * 0.16);
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
@@ -211,7 +239,25 @@ test("Forced-colors keeps Hero text and focus indicators system-readable", async
   expect(headlineColor).not.toBe("rgba(0, 0, 0, 0)");
   expect(textFill).not.toBe("rgba(0, 0, 0, 0)");
 
-  await page.locator('section[data-hero] a[href="#cta"]').focus();
-  const outlineStyle = await page.locator('section[data-hero] a[href="#cta"]').evaluate((el) => getComputedStyle(el).outlineStyle);
-  expect(outlineStyle).not.toBe("none");
+  const primaryAnchor = page.locator('section[data-hero] a[href="#contact"]').first();
+  await expect(primaryAnchor).toBeVisible();
+  await primaryAnchor.focus();
+  const focusIndicator = await primaryAnchor.evaluate((el) => {
+    const style = getComputedStyle(el);
+    return {
+      outlineStyle: style.outlineStyle,
+      outlineWidth: parseFloat(style.outlineWidth) || 0,
+      boxShadow: style.boxShadow,
+    };
+  });
+  const hasVisibleIndicator =
+    (focusIndicator.outlineStyle !== "none" && focusIndicator.outlineWidth > 0) ||
+    (focusIndicator.boxShadow && focusIndicator.boxShadow !== "none");
+  expect(
+    hasVisibleIndicator,
+    `Expected system-readable focus indicator on primary Hero CTA; received ${JSON.stringify(focusIndicator)}`,
+  ).toBeTruthy();
+
+  const secondaryAnchor = page.locator('section[data-hero] a[href="#maax"]').first();
+  await expect(secondaryAnchor).toBeVisible();
 });
