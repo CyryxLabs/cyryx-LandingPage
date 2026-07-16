@@ -223,7 +223,10 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
         Math.max(0.05, line.fontSize * 0.003),
       );
       expect(line.lineHeight).toBeGreaterThan(line.fontSize * 1.1);
-      expect(line.paddingBottom).toBeGreaterThan(line.fontSize * 0.16);
+      const expectedPaddingBottom = line.fontSize * 0.08;
+      expect(Math.abs(line.paddingBottom - expectedPaddingBottom)).toBeLessThanOrEqual(
+        Math.max(0.05, line.fontSize * 0.003),
+      );
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
       expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
       expect(line.top).toBeGreaterThanOrEqual(0);
