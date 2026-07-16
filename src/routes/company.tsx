@@ -45,7 +45,7 @@ function CompanyPage() {
           </p>
           <ul className="mt-4 space-y-4 text-base leading-relaxed text-[var(--silver-dim)]">
             <li>
-              <strong className="text-[var(--silver)]">our enterprise operational intelligence and execution platform</strong> — our enterprise operational intelligence and execution platform. In development.
+              <strong className="text-[var(--silver)]">Operational AI</strong> — our enterprise operational intelligence and execution platform. In development.
             </li>
             <li>
               <strong className="text-[var(--silver)]"><Link to="/products/maax-studio" className="hover:text-[var(--accent-glow)]">MAAX Studio</Link></strong> — a local-first agentic software execution environment for AI-native builders.

@@ -8,8 +8,8 @@ export const v3: CopyDocument = {
   hero: {
     headline: "The execution layer for enterprise AI.",
     sub: "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
-    meta: ["Enterprise Governance", "Agentic Workflows", "Execution Infrastructure", "Auditable ROI"],
-    rail: ["MAAX Runtime", "Lyra Core", "Command Gates", "Mission Ledger"],
+    meta: [],
+    rail: [],
     ctaPrimary: "Start a project",
     ctaSecondary: "MAAX Studio →",
   },
