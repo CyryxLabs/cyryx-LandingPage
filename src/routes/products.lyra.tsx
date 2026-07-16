@@ -201,7 +201,7 @@ function LyraPage() {
                 identity, safety doctrine, and operating conduct are trained
                 into the model itself, not applied as instructions that can be
                 stripped away. Lyra is the proprietary model at the core of
-                our enterprise operational intelligence and execution platform and MAAX Studio.
+                Operational AI and MAAX Studio.
               </p>
               <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch">
               <a
