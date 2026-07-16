@@ -88,7 +88,7 @@ function SolutionsHub() {
           Custom AI systems built for execution, not hype.
         </h1>
         <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-          Cyryx Solutions is the implementation layer of Cyryx Labs. Every engagement is built on the same governance primitives as our flagship products <Link to="/products/praxis-os" className="text-[var(--accent-glow)] hover:underline">Praxis OS</Link> and <Link to="/products/maax-studio" className="text-[var(--accent-glow)] hover:underline">MAAX Studio</Link>, and informed by ongoing work in <Link to="/research" className="text-[var(--accent-glow)] hover:underline">Applied Research</Link>: missions, command gates, goal-grounded generation, and mission ledgers.
+          Cyryx Solutions is the implementation layer of Cyryx Labs. Every engagement is built on the same governance primitives as our flagship products <Link to="/products/maax-studio" className="text-[var(--accent-glow)] hover:underline">MAAX Studio</Link>, and informed by ongoing work in <Link to="/research" className="text-[var(--accent-glow)] hover:underline">Applied Research</Link>: missions, command gates, goal-grounded generation, and mission ledgers.
         </p>
 
         <ul className="mt-12 grid gap-4 sm:grid-cols-2">
