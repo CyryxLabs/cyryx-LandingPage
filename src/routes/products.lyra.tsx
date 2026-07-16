@@ -324,7 +324,7 @@ function LyraPage() {
             </h2>
             <p className="mt-6 sm:mt-8 mx-auto max-w-[58ch] text-sm sm:text-[15px] leading-relaxed text-[var(--silver-dim)]">
               Lyra is in active development, available today through early
-              access with MAAX Studio and our enterprise operational intelligence and execution platform. Direct access to Lyra may
+              access with MAAX Studio and Operational AI. Direct access to Lyra may
               open as the model matures.
             </p>
             <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row justify-center gap-4">
