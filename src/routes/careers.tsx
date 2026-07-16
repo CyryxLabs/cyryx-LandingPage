@@ -31,7 +31,7 @@ const TALENT_NETWORK_MAILTO = `mailto:${CAREERS_EMAIL}?subject=${encodeURICompon
     "",
     "• Name:",
     "• Location / time zone:",
-    "• Area of interest (applied AI, product engineering, research, solutions):",
+    "• Area of interest (Applied Research, Product Engineering, Cyryx Solutions):",
     "• LinkedIn / GitHub / portfolio:",
     "• Short intro:",
     "",
