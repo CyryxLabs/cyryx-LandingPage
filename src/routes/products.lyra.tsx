@@ -200,8 +200,8 @@ function LyraPage() {
                 inside a system of gates, evidence, and human command. Its
                 identity, safety doctrine, and operating conduct are trained
                 into the model itself, not applied as instructions that can be
-                stripped away. Volatile facts live in governed context, where
-                they can change without retraining the model.
+                stripped away. Lyra is the proprietary model at the core of
+                Praxis OS and MAAX Studio.
               </p>
               <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch">
               <a
