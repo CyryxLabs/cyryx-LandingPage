@@ -15,6 +15,7 @@ const DESC =
 
 const PRODUCTS = [
   {
+    name: "Operational AI",
     eyebrow: "Enterprise · In development",
     tagline: "Operational intelligence and execution platform for enterprise.",
     description:
