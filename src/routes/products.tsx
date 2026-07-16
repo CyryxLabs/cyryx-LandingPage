@@ -16,7 +16,6 @@ const DESC =
 const PRODUCTS = [
   {
     eyebrow: "Enterprise · In development",
-    name: "Praxis OS",
     tagline: "Operational intelligence and execution platform for enterprise.",
     description:
       "A unified operating layer for governed AI execution, mission management, and operational audit — the command center for organizations running at scale.",
@@ -25,8 +24,6 @@ const PRODUCTS = [
       "Unified governance and policy enforcement through command gates",
       "Cross-departmental operational audit and mission ledgers",
     ],
-    href: "/products/praxis-os",
-    cta: "Explore Praxis OS",
     status: "In development",
   },
   {

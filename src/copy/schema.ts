@@ -21,8 +21,8 @@ export const CopyDocumentSchema = z.object({
   hero: z.object({
     headline: nonEmpty("hero.headline", 180),
     sub: nonEmpty("hero.sub", 400),
-    meta: z.array(nonEmpty("hero.meta[]", 64)).max(4, "hero.meta accepts up to 4 pills"),
-    rail: z.array(nonEmpty("hero.rail[]", 64)).max(4, "hero.rail accepts up to 4 items"),
+    meta: z.array(nonEmpty("hero.meta[]", 64)).length(4, "hero.meta MUST contain exactly 4 pills for balanced layout"),
+    rail: z.array(nonEmpty("hero.rail[]", 64)).length(4, "hero.rail MUST contain exactly 4 items for balanced layout"),
     ctaPrimary: nonEmpty("hero.ctaPrimary", 48),
     ctaSecondary: nonEmpty("hero.ctaSecondary", 48),
   }),
@@ -76,7 +76,7 @@ export function assertCopy(input: unknown, variantId: string): CopyDocument {
     .map((i) => `  - ${i.path}: ${i.message}`)
     .join("\n");
   const msg = `[copy] variant "${variantId}" failed validation:\n${summary}`;
-  if (import.meta.env.DEV) throw new Error(msg);
+  if (import.meta.env?.DEV) throw new Error(msg);
   console.error(msg);
   // best-effort: return as-is so the caller's fallback path can take over
   return input as CopyDocument;

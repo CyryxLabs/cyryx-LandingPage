@@ -16,7 +16,7 @@ import lyraMarkAsset from "@/assets/lyra-mark.png.asset.json";
 const PATH = "/products/lyra";
 const TITLE = "Lyra — Governed AI Model for Enterprise | Cyryx Labs";
 const DESC =
-  "Lyra is Cyryx Labs' proprietary AI model — governed, local-first, and honest about evidence. Built to execute real work under human command.";
+  "Lyra is Cyryx Labs' local-first agentic model — governed, local-first, and honest about evidence. Built to execute real work under human command.";
 const LYRA_OG_IMAGE = `https://cyryxlabs.com${lyraOgAsset.url}`;
 const LYRA_MARK_URL = lyraMarkAsset.url;
 const LYRA_EMAIL = `${CONTACT_EMAIL}?subject=${encodeURIComponent(
@@ -51,7 +51,7 @@ const PILLARS = [
 const FAQS = [
   {
     q: "What is Lyra?",
-    a: "Lyra is Cyryx Labs' proprietary AI model, purpose-built to execute real work inside a system of command gates, evidence, and human authority. Its identity, safety doctrine, and operating conduct are trained into the model itself — not layered as prompts that can be stripped away.",
+    a: "Lyra is Cyryx Labs' local-first agentic model, purpose-built to execute real work inside a system of command gates, evidence, and human authority. Its identity, safety doctrine, and operating conduct are trained into the model itself — not layered as prompts that can be stripped away.",
   },
   {
     q: "How is Lyra different from a frontier chat model?",
@@ -164,7 +164,7 @@ function LyraPage() {
               </div>
               <h1 className="mt-6 sm:mt-8 font-display text-[clamp(2.25rem,7vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em] text-[var(--silver)]">
                 The sovereign engine of{" "}
-                <span className="font-semibold text-silver-gradient">Praxis OS</span>.
+                <span className="font-semibold text-silver-gradient">our enterprise operational intelligence and execution platform</span>.
               </h1>
               <p className="mt-6 sm:mt-8 max-w-[52ch] text-[15px] sm:text-base lg:text-lg text-[var(--silver-dim)] leading-relaxed">
                 Cyryx Labs' proprietary model — built to execute real work under
@@ -201,7 +201,7 @@ function LyraPage() {
                 identity, safety doctrine, and operating conduct are trained
                 into the model itself, not applied as instructions that can be
                 stripped away. Lyra is the proprietary model at the core of
-                Praxis OS and MAAX Studio.
+                our enterprise operational intelligence and execution platform and MAAX Studio.
               </p>
               <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch">
               <a
@@ -274,8 +274,8 @@ function LyraPage() {
           </section>
           <div className="mt-8 sm:mt-10 mx-auto max-w-[62ch] text-center">
             <p className="text-sm sm:text-[15px] leading-relaxed text-[var(--silver-dim)]">
-              Lyra is the sovereign engine of Praxis OS and MAAX Studio — 
-              the governed agentic IDE. Praxis OS is engine-agnostic by design: 
+              Lyra is the sovereign engine of our enterprise operational intelligence and execution platform and MAAX Studio — 
+              the governed agentic IDE. our enterprise operational intelligence and execution platform is engine-agnostic by design: 
               Lyra provides local, governed, zero-marginal-cost execution, 
               and frontier models can be attached when a mission demands 
               maximum capability.
@@ -324,7 +324,7 @@ function LyraPage() {
             </h2>
             <p className="mt-6 sm:mt-8 mx-auto max-w-[58ch] text-sm sm:text-[15px] leading-relaxed text-[var(--silver-dim)]">
               Lyra is in active development, available today through early
-              access with MAAX Studio and Praxis OS. Direct access to Lyra may
+              access with MAAX Studio and our enterprise operational intelligence and execution platform. Direct access to Lyra may
               open as the model matures.
             </p>
             <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row justify-center gap-4">
