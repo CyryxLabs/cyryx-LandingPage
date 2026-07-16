@@ -16,10 +16,11 @@ export function SkipLink() {
       onClick={handleClick}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
           const target = document.getElementById("main-content");
           if (target) {
-            target.focus();
-            target.scrollIntoView();
+            target.focus({ preventScroll: false });
+            target.scrollIntoView({ behavior: 'auto', block: 'start' });
           }
         }
       }}
