@@ -214,7 +214,8 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
     for (const line of metrics.lineRects) {
       expect(line.overflow).toBe("visible");
       // Exact authored CSS ratios: letter-spacing 0.012em-0.02em, line-height 1.1-1.14
-      // We derive the expected values based on viewport-specific constants or ratios.
+      const computedLetterSpacing =
+        line.letterSpacing === "normal" ? 0 : parseFloat(line.letterSpacing);
       const letterSpacingRatio = metrics.viewportWidth < 768 ? 0.012 : 0.02;
       const expectedLetterSpacing = line.fontSize * letterSpacingRatio;
       expect(Number.isFinite(computedLetterSpacing)).toBeTruthy();
