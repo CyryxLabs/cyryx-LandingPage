@@ -100,7 +100,7 @@ function CareersPage() {
             </h2>
             <p className="mt-3 max-w-2xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
               Cyryx Labs is not actively hiring at the moment. New positions
-              across applied AI, product engineering, research, and solutions
+              across Applied Research, Product Engineering, and Cyryx Solutions
               will open as the team grows.
             </p>
             <p className="mt-3 max-w-2xl text-sm lg:text-base leading-relaxed text-[var(--silver-dim)]">
