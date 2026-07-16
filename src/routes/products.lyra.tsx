@@ -274,8 +274,8 @@ function LyraPage() {
           </section>
           <div className="mt-8 sm:mt-10 mx-auto max-w-[62ch] text-center">
             <p className="text-sm sm:text-[15px] leading-relaxed text-[var(--silver-dim)]">
-              Lyra is the sovereign engine of our enterprise operational intelligence and execution platform and MAAX Studio — 
-              the governed agentic IDE. our enterprise operational intelligence and execution platform is engine-agnostic by design: 
+              Lyra is the sovereign engine of Operational AI and MAAX Studio — 
+              the governed agentic IDE. Operational AI is engine-agnostic by design: 
               Lyra provides local, governed, zero-marginal-cost execution, 
               and frontier models can be attached when a mission demands 
               maximum capability.
