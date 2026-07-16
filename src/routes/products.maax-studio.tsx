@@ -131,7 +131,7 @@ function MaaxStudioPage() {
 
         <Sec heading="What MAAX Studio is">
           <p>
-            A local-first agentic software execution environment for AI-native builders. It is a key component of <strong className="text-[var(--silver)]">Praxis OS</strong>, our enterprise operational intelligence and execution platform.
+            A local-first agentic software execution environment for AI-native builders. It is a key component of <strong className="text-[var(--silver)]">our enterprise operational intelligence and execution platform</strong>, our enterprise operational intelligence and execution platform.
           </p>
         </Sec>
 

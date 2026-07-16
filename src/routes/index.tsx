@@ -191,7 +191,7 @@ export const Route = createFileRoute("/")({
                               "publisher": {
                                         "@id": "https://cyryxlabs.com/#organization"
                               },
-                              "description": "Lyra is Cyryx Labs' proprietary AI model \u2014 governed, local-first, and honest about evidence.",
+                              "description": "Lyra is Cyryx Labs' local-first agentic model \u2014 governed, local-first, and honest about evidence.",
                               "brand": {
                                         "@id": "https://cyryxlabs.com/#organization"
                               },

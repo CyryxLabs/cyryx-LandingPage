@@ -45,13 +45,13 @@ function CompanyPage() {
           </p>
           <ul className="mt-4 space-y-4 text-base leading-relaxed text-[var(--silver-dim)]">
             <li>
-              <strong className="text-[var(--silver)]">Praxis OS</strong> — our enterprise operational intelligence and execution platform. In development.
+              <strong className="text-[var(--silver)]">our enterprise operational intelligence and execution platform</strong> — our enterprise operational intelligence and execution platform. In development.
             </li>
             <li>
               <strong className="text-[var(--silver)]"><Link to="/products/maax-studio" className="hover:text-[var(--accent-glow)]">MAAX Studio</Link></strong> — a local-first agentic software execution environment for AI-native builders.
             </li>
             <li>
-              <strong className="text-[var(--silver)]"><Link to="/products/lyra" className="hover:text-[var(--accent-glow)]">Lyra</Link></strong> — our proprietary AI model: governed, local-first, and the sovereign engine of MAAX Studio.
+              <strong className="text-[var(--silver)]"><Link to="/products/lyra" className="hover:text-[var(--accent-glow)]">Lyra</Link></strong> — our local-first agentic model: governed, local-first, and the sovereign engine of MAAX Studio.
             </li>
             <li>
               <strong className="text-[var(--silver)]"><Link to="/solutions" className="hover:text-[var(--accent-glow)]">Cyryx Solutions</Link></strong> — our commercial implementation layer. Custom AI systems built on the same governance primitives as our products.
