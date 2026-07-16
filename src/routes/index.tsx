@@ -173,7 +173,7 @@ export const Route = createFileRoute("/")({
                               "@id": "https://cyryxlabs.com/#lyra",
                               "name": "Lyra",
                               "applicationCategory": "SoftwareEngine",
-                              "applicationSubCategory": "Governed AI Model",
+                              "applicationSubCategory": "Private AI Intelligence Runtime",
                               "operatingSystem": "Cross-platform",
                               "featureList": [
                                         "Governed by design",
