@@ -127,7 +127,7 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await expect(page.locator(".skip-link")).toBeFocused();
 
   await page.keyboard.press("Enter");
-  await expect(page.locator("#main-content")).toBeFocused();
+  console.log("Active element after Enter:", await page.evaluate(() => document.activeElement.id)); await expect(page.locator("#main-content")).toBeFocused();
 
   const visited: string[] = [];
   for (let i = 0; i < 4; i += 1) {
