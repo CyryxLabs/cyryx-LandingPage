@@ -87,13 +87,6 @@ export const Route = createFileRoute("/")({
                                                   "itemOffered": {
                                                             "@id": "https://cyryxlabs.com/#maax-studio"
                                                   }
-                                        },
-                                        {
-                                                  "@type": "Offer",
-                                                  "name": "Lyra",
-                                                  "itemOffered": {
-                                                            "@id": "https://cyryxlabs.com/#lyra"
-                                                  }
                                         }
                               ],
                               "knowsAbout": [
@@ -124,7 +117,7 @@ export const Route = createFileRoute("/")({
                               "@type": "WebPage",
                               "@id": "https://cyryxlabs.com/#webpage",
                               "url": "https://cyryxlabs.com/",
-                              "name": "Cyryx Labs \u2014 AI Products and Execution Systems for the Agentic Era",
+                              "name": "Cyryx Labs — AI Products and Execution Systems for the Agentic Era",
                               "isPartOf": {
                                         "@id": "https://cyryxlabs.com/#website"
                               },
@@ -167,87 +160,38 @@ export const Route = createFileRoute("/")({
                                         "price": "0",
                                         "priceCurrency": "USD"
                               }
-                    },
-                    {
-                              "@type": "SoftwareApplication",
-                              "@id": "https://cyryxlabs.com/#lyra",
-                              "name": "Lyra",
-                              "applicationCategory": "SoftwareEngine",
-                              "applicationSubCategory": "Private AI Intelligence Runtime",
-                              "operatingSystem": "Cross-platform",
-                              "featureList": [
-                                        "Governed by design",
-                                        "Local-first sovereignty",
-                                        "Honest about evidence",
-                                        "Verifiable release cycle"
-                              ],
-                              "audience": {
-                                        "@type": "Audience",
-                                        "audienceType": "Enterprise developers"
-                              },
-                              "creator": {
-                                        "@id": "https://cyryxlabs.com/#organization"
-                              },
-                              "publisher": {
-                                        "@id": "https://cyryxlabs.com/#organization"
-                              },
-                              "description": "Lyra is Cyryx Labs' local-first agentic model \u2014 governed, local-first, and honest about evidence.",
-                              "brand": {
-                                        "@id": "https://cyryxlabs.com/#organization"
-                              },
-                              "offers": {
-                                        "@type": "Offer",
-                                        "availability": "https://schema.org/PreOrder",
-                                        "price": "0",
-                                        "priceCurrency": "USD"
-                              }
                     }
           ]
-}),
+        }),
       },
     ],
   }),
-  component: Index,
+  component: IndexPage,
 });
 
-function Index() {
+function IndexPage() {
   useCyryxScrollAnimations();
+
   return (
-    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
-      <a
-        href="#main-content"
-        className="skip-link"
-        onClick={(event) => {
-          const main = document.getElementById("main-content");
-          if (!main) return;
-          event.preventDefault();
-          main.focus({ preventScroll: true });
-          main.scrollIntoView({ block: "start" });
-          window.history.replaceState(null, "", "#main-content");
-        }}
-      >
-        Skip to content
-      </a>
+    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">
+      <BackgroundMonolith />
+      <StickyMobileCTA />
       <Header />
-      <main id="main-content" tabIndex={-1} className="outline-none">
-        <div className="relative">
-          <BackgroundMonolith />
-          <Hero />
-          <Problem />
-          <WhatWeBuild />
-          <Solutions />
-          <ResearchBand />
-          <EngagementModel />
-          <WhoWeWorkWith />
-          <SecurityPosture />
-          <WhyCyryxV4 />
-          <MAAXStudioSpotlight />
-          <ContactSection />
-          <FinalCTA />
-        </div>
+      <main id="main-content">
+        <Hero />
+        <Problem />
+        <MAAXStudioSpotlight />
+        <WhatWeBuild />
+        <Solutions />
+        <EngagementModel />
+        <SecurityPosture />
+        <WhoWeWorkWith />
+        <WhyCyryxV4 />
+        <ResearchBand />
+        <ContactSection />
+        <FinalCTA />
       </main>
       <Footer />
-      <StickyMobileCTA />
     </div>
   );
 }
