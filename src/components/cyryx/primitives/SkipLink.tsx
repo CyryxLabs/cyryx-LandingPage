@@ -9,17 +9,6 @@ export function SkipLink() {
   return (
     <a
       href="#main-content"
-      onClick={handleClick}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          const target = document.getElementById("main-content");
-          if (target) {
-            target.focus({ preventScroll: false });
-            target.scrollIntoView({ behavior: 'auto', block: 'start' });
-          }
-        }
-      }}
       className={cn(
         "skip-link",
         "sr-only focus:not-sr-only",
