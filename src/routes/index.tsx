@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Header } from "@/components/cyryx/Header";
