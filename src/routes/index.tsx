@@ -1,4 +1,3 @@
-/** PHASE 5C-V0A-R2.4-R0.2A FOUNDER-VERIFIED — PUBLIC BASELINE GREEN — PHASE 5C-1A PLAN MODE AUTHORIZED. */
 import { useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
