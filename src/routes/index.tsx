@@ -1,5 +1,6 @@
+import { useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { SkipLink } from "@/components/cyryx/primitives/SkipLink";
+
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
 import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
@@ -173,13 +174,32 @@ export const Route = createFileRoute("/")({
 function IndexPage() {
   useCyryxScrollAnimations();
 
+  const handleSkipToContent = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = document.getElementById("main-content");
+    if (target) {
+      e.preventDefault();
+      // Update URL fragment without triggering route navigation
+      window.history.replaceState(null, "", "#main-content");
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+    }
+  }, []);
+
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">
-      <SkipLink />
+      <a
+        href="#main-content"
+        onClick={handleSkipToContent}
+        className="skip-link sr-only focus:not-sr-only fixed left-4 top-4 z-[100] inline-flex h-11 items-center justify-center rounded-md px-5 bg-[var(--accent-glow)] text-[var(--onyx)] font-semibold shadow-[0_0_20px_var(--accent-glow)] outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      >
+
+        Skip to content
+      </a>
       <BackgroundMonolith />
       <StickyMobileCTA />
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
+
         <Hero />
         <Problem />
         <MAAXStudioSpotlight />
