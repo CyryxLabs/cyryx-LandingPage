@@ -1,3 +1,4 @@
+PHASE 5C-V0A-R2.4 — BASELINE STATE LOCK AND RELEASE GATE PASS...AWAITING FOUNDER FINAL APPROVAL.
 import { useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
