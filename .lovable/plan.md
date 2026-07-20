@@ -1,69 +1,67 @@
-# Phase 3B — JSON-LD Terminology Alignment
+# Migração para Vercel — Hosting + CI/CD
 
-## Objective
-Replace the outdated slogan `The execution layer for operational AI.` with the approved `The execution layer for enterprise AI.` in exactly two files. Structured-data only; no visible copy, hero, routes, nav, sitemap, or metadata changes.
+Objetivo: mover a hospedagem do site (TanStack Start SSR) e o pipeline de deploy para a **Vercel**, usando o **GitHub como fonte de verdade**. Backend Supabase permanece **inalterado** (banco, auth, RLS, storage, edge functions, cron, pgmq, e-mail). Domínio `cyryxlabs.com` permanece no Lovable **por enquanto** — a Vercel será exercitada primeiro sob um preview URL da própria Vercel.
 
-## Pre-change verification (already confirmed via file context)
-- `src/routes/index.tsx` — Organization JSON-LD node contains `slogan: "The execution layer for operational AI.",`
-- `tests/accessibility/__snapshots__/jsonld.snapshot.json` — Organization block contains `"slogan": "The execution layer for operational AI.",`
-- Hero copy in `src/components/cyryx/Hero.tsx` / `src/copy/v3.ts` already uses "enterprise AI" (per Phase 1/3A lock) — will not be touched.
+## Contradição a resolver antes de executar
 
-## Authorized edits (exactly two, minimal textual)
+Sua resposta de escopo marcou "Tudo, incluindo Supabase próprio", mas o texto do motivo diz "O projeto Supabase existente deve permanecer inalterado". Este plano assume **Supabase inalterado** (a leitura mais segura e alinhada com "baixo downtime + rollback"). Se realmente quiser um Supabase próprio, é outro projeto (export schema + dados + RLS + pgmq + vault + rewiring do `functions.email_queue_dispatch` cron) e eu revisito o plano.
 
-### Edit 1 — `src/routes/index.tsx`
-Inside the Organization node of the `@graph` JSON-LD:
-- Before: `slogan: "The execution layer for operational AI.",`
-- After:  `slogan: "The execution layer for enterprise AI.",`
+## Restrições reais desta stack
 
-No other property, ordering, formatting, or node changes.
+1. `SUPABASE_SERVICE_ROLE_KEY` e `SUPABASE_DB_URL` **não são acessíveis** enquanto o Supabase estiver sob Lovable Cloud. Nenhum server function que hoje usa `supabaseAdmin` conseguirá rodar na Vercel sem essa chave. Ou você extrai a chave (fora da minha capacidade — precisa suporte Lovable), ou aceita que essas rotas continuem sendo servidas pelo deploy Lovable, ou migra Supabase para conta própria.
+2. O cron `email_queue_dispatch` chama `https://project--e1cd0bf6-…lovable.app/lovable/email/queue/process`. Enquanto o app Lovable continuar publicado, isso segue funcionando. Se um dia despublicar o Lovable, tem que reapontar esse `net.http_post` para o domínio Vercel — via `supabase--migration`.
+3. Auth callbacks (`redirect_uri`) precisam incluir os novos domínios Vercel de preview/prod, senão o OAuth do Google quebra nos previews.
+4. TanStack Start roda na Vercel via preset Nitro (`vercel`) — a config atual (Cloudflare Workers) precisa ser trocada.
 
-### Edit 2 — `tests/accessibility/__snapshots__/jsonld.snapshot.json`
-In the `Organization` object:
-- Before: `"slogan": "The execution layer for operational AI.",`
-- After:  `"slogan": "The execution layer for enterprise AI.",`
+## Etapas
 
-No other snapshot keys or values change. No snapshot regeneration.
+### 1. GitHub como fonte de verdade
+- Conectar o projeto Lovable ao GitHub (Plus (+) → GitHub → Create repository), se ainda não estiver.
+- Confirmar que o branch `main` reflete o baseline atual (`ff9021b`-alinhado em `src/routes/index.tsx`).
 
-## Explicit non-changes
-No modification to: JSON-LD @type / @id / name / description / url / sameAs / knowsAbout / makesOffer / SoftwareApplication / WebSite / WebPage nodes; meta/OG/Twitter/canonical; hero component, copy, tests; routes, redirects, navigation, sitemap, robots; styles, assets, deps, lockfiles, generated route files; `.lovable/plan.md`. No global replace of "operational AI".
+### 2. Ajustes de código para rodar na Vercel
+- `vite.config.ts`: trocar o preset do TanStack Start de Cloudflare para `vercel` (Nitro deploy target).
+- Revisar servidor: `createServerFn` handlers que hoje dependem de `SUPABASE_SERVICE_ROLE_KEY` — marcar cada um e decidir (permanecer no Lovable, ou aguardar chave).
+- `src/routes/api/public/*`: confirmar que webhooks/cron que ficarão na Vercel expõem URL estável (Vercel dá `*.vercel.app` + custom depois).
+- Adicionar `vercel.json` mínimo se necessário (SSR já é auto-detectado pelo preset).
 
-## Validation
+### 3. Variáveis de ambiente na Vercel
+Provisionar nos três escopos (Production / Preview / Development):
+- `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID` — copiadas do `.env` do projeto.
+- `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_PROJECT_ID` — idem (server-side).
+- `LOVABLE_API_KEY` — se o Lovable AI Gateway continuar em uso a partir da Vercel, precisa provisionar manualmente (hoje é injetada pelo Lovable).
+- `GOOGLE_SEARCH_CONSOLE_API_KEY` — copiar se rotas server-side dependem dela.
+- `SUPABASE_SERVICE_ROLE_KEY` — **pendência bloqueante** para rotas admin (ver Restrição 1).
 
-### Textual assertions
-- `rg -n "enterprise AI" src/routes/index.tsx` → matches slogan line.
-- `rg -n "operational AI" src/routes/index.tsx` → zero matches within the Organization JSON-LD block (and file overall).
-- `rg -n "enterprise AI" tests/accessibility/__snapshots__/jsonld.snapshot.json` → matches slogan.
-- `rg -n "operational AI" tests/accessibility/__snapshots__/jsonld.snapshot.json` → zero matches.
+### 4. Deploy inicial na Vercel (sem tocar em DNS)
+- Import do repo GitHub na Vercel; framework auto-detect (Vite / TanStack Start).
+- Primeiro deploy roda em `<project>.vercel.app`.
+- Smoke test: home, `/products/lyra`, `/solutions`, auth flow, formulários, JSON-LD, Hero.
 
-### Untouched-file assertions
-Confirm no diff in:
-- `src/components/cyryx/Hero.tsx`
-- `src/copy/v3.ts`
-- `tests/accessibility/copy-validation.spec.ts`
-- `tests/accessibility/hero.spec.ts`
-- `tests/accessibility/hero-video.spec.ts`
-- `tests/accessibility/hero-video-lazy.spec.ts`
+### 5. Auth & OAuth
+- Adicionar as URLs Vercel (`*.vercel.app` de production + branch) à lista de Redirect URLs do Supabase Auth (via `supabase--configure_social_auth`, no momento certo).
+- Manter `cyryxlabs.com` na lista.
 
-### Changed-file set assertion
-Only `src/routes/index.tsx` and `tests/accessibility/__snapshots__/jsonld.snapshot.json` appear as modified. If any generated file (e.g. `src/routeTree.gen.ts`) is auto-touched by tooling, halt and report before proceeding.
+### 6. Corte de tráfego (fase posterior — não neste plano)
+- Enquanto DNS permanece no Lovable, os dois deploys coexistem. Isso **é** o rollback: se a Vercel falhar, o tráfego continua no Lovable sem mudança.
+- Corte real de DNS entra em plano separado quando você aprovar.
 
-## Tests
+## Detalhes técnicos
 
-1. `bun run tsgo` — typecheck.
-2. `bunx playwright test tests/accessibility/jsonld-snapshot.spec.ts` — targeted snapshot suite (validates Organization slogan snapshot equality).
+- Preset Nitro: `tanstackStart({ target: 'vercel' })` em `vite.config.ts`.
+- Server functions com `requireSupabaseAuth` continuam funcionando com chave publishable — sem bloqueio.
+- Server functions com `supabaseAdmin` (ex.: qualquer coisa que use `client.server.ts`) — bloqueadas até resolver Restrição 1.
+- `src/routeTree.gen.ts` é regenerado pelo plugin no build da Vercel; nada a fazer.
+- O `.env` do projeto Lovable tem apenas as chaves publicáveis; não expõe service role. Correto para o cliente, insuficiente para portar rotas admin.
 
-`tests/accessibility/jsonld-pages.spec.ts` will be run only if the snapshot suite indicates a shared dependency. Playwright browsers will not be installed; if unavailable, report `NOT EXECUTED — ENVIRONMENT LIMITATION` without further changes.
+## O que NÃO faz parte deste plano
+- Não move DNS.
+- Não migra dados do Supabase.
+- Não altera Hero, copy, layouts, SEO, JSON-LD, formulários ou assets.
+- Não despublica o Lovable.
+- Não altera `supabase/config.toml` nem migrations.
 
-No snapshot regeneration commands. No `UPDATE_JSONLD_SNAPSHOT=1`. No test edits to force pass.
-
-## Change control
-No commit, push, publish, deploy, branch, or PR. Phase 4 not started.
-
-## Evidence report (delivered after execution)
-19-item Phase 3B Evidence Report per spec, ending exactly with:
-
-`PHASE 3B COMPLETE — JSON-LD TERMINOLOGY ALIGNED — AWAITING FOUNDER APPROVAL FOR PHASE 4.`
-
-## Risks
-- Playwright browser binary may be unavailable in sandbox → test reported as `NOT EXECUTED — ENVIRONMENT LIMITATION`; source correctness still verified via `rg` textual checks.
-- Route-tree code-splitter may re-touch `src/routeTree.gen.ts` on typecheck; if so, disclosed in evidence report as an unexpected generated-file touch (no manual edit performed).
+## Decisões que preciso de você antes de sair do Plan Mode
+1. Confirma que Supabase fica **inalterado no Lovable Cloud** (respondendo à contradição acima).
+2. Como quer tratar as rotas que dependem de `SUPABASE_SERVICE_ROLE_KEY`? (a) mantê-las servidas pelo Lovable em paralelo; (b) parar de usá-las temporariamente; (c) escalar com suporte Lovable para obter a chave.
+3. Autoriza eu conectar o GitHub agora (se ainda não conectado) e trocar o preset de deploy no `vite.config.ts` como primeiro passo em Build Mode?
