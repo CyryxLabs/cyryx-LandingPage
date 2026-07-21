@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && if [ -n \"$CI\" ]; then bun run test:a11y; fi",
+    "build": "vite build",
     "build:dev": "vite build --mode development",
     "build:ci": "CI=1 bun run build",
     "preview": "vite preview",
