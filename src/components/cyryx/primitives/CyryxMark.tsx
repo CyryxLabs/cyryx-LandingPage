@@ -1,9 +1,9 @@
-import markAsset from "@/assets/cyryx-mark.png.asset.json";
-import wordmarkAsset from "@/assets/cyryx-logo-n2.png.asset.json";
+import markAsset from "@/assets/cyryx-brand-mark.png";
+import wordmarkAsset from "@/assets/cyryx-brand-wordmark.png";
 
 /**
- * Official Cyryx brand marks. Header wordmark uses the recut transparent
- * chrome artwork supplied by the brand owner (no white matte box).
+ * Official Cyryx brand marks, deterministically cropped from the transparent
+ * master artwork supplied by the brand owner.
  */
 export function CyryxMark({
   size = 28,
@@ -12,9 +12,9 @@ export function CyryxMark({
 }: { size?: number; className?: string; priority?: boolean }) {
   return (
     <img
-      src={markAsset.url}
-      width={size}
-      height={size}
+      src={markAsset}
+      width={320}
+      height={512}
       alt=""
       aria-hidden
       data-no3d="1"
@@ -34,17 +34,17 @@ export function CyryxWordmark({
 }: { className?: string; priority?: boolean }) {
   return (
     <img
-      src={wordmarkAsset.url}
+      src={wordmarkAsset}
       alt="Cyryx Labs"
       data-no3d="1"
-      width={1920}
-      height={640}
+      width={1200}
+      height={296}
       draggable={false}
       decoding="async"
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : "auto"}
-      className={`block w-auto object-contain align-middle select-none opacity-90 ${className || "h-7"}`}
-      style={{ background: "transparent", aspectRatio: "1920 / 640" }}
+      className={`block w-auto object-contain align-middle select-none ${className || "h-7"}`}
+      style={{ background: "transparent", aspectRatio: "1200 / 296" }}
     />
   );
 }

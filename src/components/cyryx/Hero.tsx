@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
-import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
-import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
-import hero640Avif from "@/assets/cyryx-hero-monolith-v2-640.avif.asset.json";
-import hero1280Avif from "@/assets/cyryx-hero-monolith-v2-1280.avif.asset.json";
-import hero1920Avif from "@/assets/cyryx-hero-monolith-v2-1920.avif.asset.json";
-import heroVideo from "@/assets/cyryx-hero.mp4.asset.json";
+import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
+import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
+
+const HERO_VIDEO_MOBILE = "/media/cyryx-hero-720.mp4";
+const HERO_VIDEO_DESKTOP = "/media/cyryx-hero-1080.mp4";
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -18,7 +16,6 @@ export function Hero() {
   const [hideOverlay, setHideOverlay] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
-  const [videoInView, setVideoInView] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const parallax = { y: 0, scale: 1, progress: 0 };
 
@@ -40,7 +37,6 @@ export function Hero() {
       ([entry]) => {
         const v = videoRef.current;
         if (entry.isIntersecting) {
-          setVideoInView(true); // mounts src for the first time
           v?.play().catch(() => {});
         } else {
           v?.pause();
@@ -80,21 +76,15 @@ export function Hero() {
     >
       {/* Background */}
       <div aria-hidden className="cx-bg absolute inset-0 -z-10" data-hide-overlay={hideOverlay || undefined}>
-        {/* Always-on poster image — instant LCP and fallback when reduced motion or video stalls.
-            AVIF first (smallest), WebP fallback for browsers without AVIF support. */}
+        {/* Always-on local poster — instant LCP and fallback when reduced motion or video stalls. */}
         <picture>
           <source
-            type="image/avif"
-            srcSet={`${hero640Avif.url} 640w, ${hero1280Avif.url} 1280w, ${hero1920Avif.url} 1920w`}
-            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
-          />
-          <source
             type="image/webp"
-            srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
-            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
+            srcSet={`${heroPoster960} 960w, ${heroPoster1920} 1920w`}
+            sizes="100vw"
           />
           <img
-            src={hero1920.url}
+            src={heroPoster1920}
             alt=""
             fetchPriority="high"
             loading="eager"
@@ -110,7 +100,6 @@ export function Hero() {
         {!reducedMotion && (
           <video
             ref={videoRef}
-            src={videoInView ? heroVideo.url : undefined}
             autoPlay
             muted
             loop
@@ -123,7 +112,10 @@ export function Hero() {
             data-no3d="1"
             data-hero-video
             className={`cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
-          />
+          >
+            <source media="(max-width: 767px)" src={HERO_VIDEO_MOBILE} type="video/mp4" />
+            <source src={HERO_VIDEO_DESKTOP} type="video/mp4" />
+          </video>
         )}
         {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
         <div

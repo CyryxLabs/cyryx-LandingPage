@@ -18,9 +18,9 @@ import { WhyCyryxV4 } from "@/components/cyryx/v4/WhyCyryxV4";
 import { ResearchBand } from "@/components/cyryx/v4/ResearchBand";
 import { FinalCTA } from "@/components/cyryx/v4/FinalCTA";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
-import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
-import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
-import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
+import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
+import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
+import brandMark from "@/assets/cyryx-brand-mark.png";
 
 const HOME_URL = "https://cyryxlabs.com/";
 const HOME_TITLE = "Cyryx Labs — AI Products and Execution Systems for the Agentic Era";
@@ -48,9 +48,9 @@ export const Route = createFileRoute("/")({
       {
         rel: "preload",
         as: "image",
-        href: hero1920.url,
-        imageSrcSet: `${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`,
-        imageSizes: "(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px",
+        href: heroPoster1920,
+        imageSrcSet: `${heroPoster960} 960w, ${heroPoster1920} 1920w`,
+        imageSizes: "100vw",
         fetchPriority: "high",
       },
       { rel: "canonical", href: HOME_URL },
@@ -101,8 +101,8 @@ export const Route = createFileRoute("/")({
                               ],
                               "logo": {
                                         "@type": "ImageObject",
-                                        "url": "https://cyryxlabs.com/cyryx-mark.png",
-                                        "width": "512",
+                                        "url": new URL(brandMark, HOME_URL).href,
+                                        "width": "320",
                                         "height": "512"
                               }
                     },
