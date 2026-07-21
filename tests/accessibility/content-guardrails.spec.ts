@@ -21,15 +21,20 @@ test("Source code is free of forbidden terms", async () => {
 test("Rendered landing page is free of forbidden terms", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
   const text = await page.evaluate(() => document.body.innerText);
-  const offenders = FORBIDDEN_PATTERNS.filter(({ pattern }) => pattern.test(text)).map((p) => p.label);
+  const offenders = FORBIDDEN_PATTERNS.filter(({ pattern }) => pattern.test(text)).map(
+    (p) => p.label,
+  );
   expect(offenders, offenders.join(", ")).toEqual([]);
 });
 
-test("MAAX naming is consistent (Runtime + Studio, never 'plugin')", async ({ page }) => {
+test("Public product naming is consistent (MAAX Studio + Lyra, no Runtime framing)", async ({
+  page,
+}) => {
   await page.goto("/", { waitUntil: "networkidle" });
   const text = await page.evaluate(() => document.body.innerText);
   expect(text).toMatch(/MAAX Studio/);
-  expect(text).toMatch(/MAAX Runtime/);
+  expect(text).toMatch(/Lyra/);
+  expect(text).not.toMatch(/MAAX Runtime/);
   // MAAX Studio must never be described as a plugin/extension
   expect(text).not.toMatch(/MAAX Studio[^.]{0,80}\bplug-?in\b/i);
   expect(text).not.toMatch(/MAAX Studio[^.]{0,80}\bextension\b/i);

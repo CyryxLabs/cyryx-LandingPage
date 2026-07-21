@@ -1,23 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StubPage } from "@/components/cyryx/StubPage";
+import { SolutionsHubPage } from "@/components/cyryx/enterprise/EnterprisePages";
 
 export const Route = createFileRoute("/solutions")({
   head: () => ({
     meta: [
-      { title: "Solutions — Custom AI Systems · Cyryx Labs" },
-      { name: "description", content: "Custom AI systems, agentic workflows, internal copilots, integrations, and governance layers for businesses ready to operationalize AI." },
+      { title: "Solutions — Advisory, Engineering & Operations · Cyryx Labs" },
+      {
+        name: "description",
+        content:
+          "AI advisory, digital systems, workflow automation, internal assistants, custom AI products, governance, and managed operations from Cyryx Labs.",
+      },
       { property: "og:title", content: "Solutions — Cyryx Labs" },
-      { property: "og:description", content: "Custom AI systems built for execution, not hype." },
-      { property: "og:url", content: "/solutions" },
+      {
+        property: "og:description",
+        content: "From strategic direction to operated digital and AI systems.",
+      },
+      { property: "og:url", content: "https://cyryxlabs.com/solutions" },
     ],
-    links: [{ rel: "canonical", href: "/solutions" }],
+    links: [{ rel: "canonical", href: "https://cyryxlabs.com/solutions" }],
   }),
-  component: () => (
-    <StubPage
-      eyebrow="Cyryx Solutions"
-      title="AI systems built for execution, not hype."
-      description="We design, build, and deploy AI products, agentic workflows, internal copilots, knowledge systems, integrations, and governance layers that connect to real workflows, real data, and real operational outcomes. Dedicated solutions site coming soon."
-      status="Engagements Open"
-    />
-  ),
+  component: SolutionsHubPage,
 });

@@ -1,23 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StubPage } from "@/components/cyryx/StubPage";
+import { ProductsHubPage } from "@/components/cyryx/enterprise/EnterprisePages";
 
 export const Route = createFileRoute("/products")({
   head: () => ({
     meta: [
       { title: "Products — Cyryx Labs" },
-      { name: "description", content: "Proprietary AI products built by Cyryx Labs for the agentic era." },
+      {
+        name: "description",
+        content:
+          "MAAX Studio and Lyra: two Cyryx products addressing different layers of controlled AI execution.",
+      },
       { property: "og:title", content: "Products — Cyryx Labs" },
-      { property: "og:description", content: "Proprietary AI products for the agentic era." },
-      { property: "og:url", content: "/products" },
+      {
+        property: "og:description",
+        content: "MAAX Studio and Lyra, with transparent product maturity.",
+      },
+      { property: "og:url", content: "https://cyryxlabs.com/products" },
     ],
-    links: [{ rel: "canonical", href: "/products" }],
+    links: [{ rel: "canonical", href: "https://cyryxlabs.com/products" }],
   }),
-  component: () => (
-    <StubPage
-      eyebrow="Cyryx Labs · Products"
-      title="Proprietary AI products for the agentic era."
-      description="MAAX Studio and the Cyryx Applied AI Lab — proprietary execution systems developed inside Cyryx Labs for teams operationalizing AI."
-      status="Catalog Expanding"
-    />
-  ),
+  component: ProductsHubPage,
 });

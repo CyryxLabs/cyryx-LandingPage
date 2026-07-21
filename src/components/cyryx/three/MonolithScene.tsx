@@ -21,7 +21,6 @@ function PerfLogger({ active }: { active: boolean }) {
     frames.current++;
     const now = performance.now();
     if (now - last.current >= 1000) {
-      // eslint-disable-next-line no-console
       console.debug(
         `[MonolithScene] fps=${frames.current} dpr=${gl.getPixelRatio().toFixed(2)} loop=${active ? "always" : "demand"}`,
       );
@@ -41,8 +40,7 @@ function StaticMonolithFallback() {
         style={{
           width: "min(180px, 38%)",
           aspectRatio: "1 / 3.1",
-          background:
-            "linear-gradient(180deg,#0b1316 0%,#05080a 50%,#0b1316 100%)",
+          background: "linear-gradient(180deg,#0b1316 0%,#05080a 50%,#0b1316 100%)",
           border: "1px solid color-mix(in oklab, var(--silver) 16%, transparent)",
           borderRadius: "6px",
           boxShadow:
@@ -53,8 +51,7 @@ function StaticMonolithFallback() {
           className="absolute left-1/2 top-[8%] h-[72%] -translate-x-1/2"
           style={{
             width: "3px",
-            background:
-              "linear-gradient(180deg,transparent,var(--accent-glow),transparent)",
+            background: "linear-gradient(180deg,transparent,var(--accent-glow),transparent)",
             boxShadow: "0 0 14px 1px color-mix(in oklab,var(--accent-glow) 60%,transparent)",
           }}
         />
@@ -112,32 +109,19 @@ function Monolith() {
       {/* Front engraved teal core line */}
       <mesh ref={core} position={[0, 0, 0.162]}>
         <boxGeometry args={[0.045, 2.6, 0.005]} />
-        <meshStandardMaterial
-          color="#00E6D0"
-          emissive="#00E6D0"
-          emissiveIntensity={1.6}
-        />
+        <meshStandardMaterial color="#00E6D0" emissive="#00E6D0" emissiveIntensity={1.6} />
       </mesh>
 
       {/* Teal halo ring around the base */}
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, -1.95, 0]}>
         <torusGeometry args={[0.95, 0.012, 16, 96]} />
-        <meshStandardMaterial
-          color="#00E6D0"
-          emissive="#00E6D0"
-          emissiveIntensity={1.2}
-        />
+        <meshStandardMaterial color="#00E6D0" emissive="#00E6D0" emissiveIntensity={1.2} />
       </mesh>
 
       {/* Soft underlight disc */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.99, 0]}>
         <ringGeometry args={[0.4, 1.6, 64]} />
-        <meshBasicMaterial
-          color="#00E6D0"
-          transparent
-          opacity={0.06}
-          side={THREE.DoubleSide}
-        />
+        <meshBasicMaterial color="#00E6D0" transparent opacity={0.06} side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
@@ -168,13 +152,7 @@ function OrbitDust() {
 
   return (
     <points ref={ref} geometry={geo.current!}>
-      <pointsMaterial
-        size={0.014}
-        color="#7ff5e6"
-        transparent
-        opacity={0.35}
-        sizeAttenuation
-      />
+      <pointsMaterial size={0.014} color="#7ff5e6" transparent opacity={0.35} sizeAttenuation />
     </points>
   );
 }
@@ -210,11 +188,10 @@ export function MonolithScene({ className = "" }: { className?: string }) {
     return () => io.disconnect();
   }, []);
 
-  const isMobile =
-    typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
   const dprCap: [number, number] = isMobile ? [1, 1.25] : [1, 1.75];
   const loopActive = !reduce && visible;
-  const isDev = typeof import.meta !== "undefined" && (import.meta as any).env?.DEV;
+  const isDev = import.meta.env.DEV;
 
   if (!webgl) {
     return (
@@ -227,33 +204,45 @@ export function MonolithScene({ className = "" }: { className?: string }) {
   return (
     <div ref={hostRef} className={className} aria-hidden>
       {mounted && (
-      <Canvas
-        dpr={dprCap}
-        frameloop={loopActive ? "always" : "demand"}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        onCreated={({ gl }) => {
-          gl.setClearColor(0x000000, 0);
-        }}
-        camera={{ position: [0, 0.1, 5.6], fov: 32 }}
-      >
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.18} />
-          <directionalLight position={[3, 4, 5]} intensity={0.45} color="#a8c4c8" />
-          <pointLight position={[-2.4, -1.2, 2.2]} intensity={0.7} distance={6} decay={2} color="#00E6D0" />
-          <pointLight position={[2.2, 2.4, 1.6]} intensity={0.4} distance={6} decay={2} color="#5fb4b8" />
+        <Canvas
+          dpr={dprCap}
+          frameloop={loopActive ? "always" : "demand"}
+          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+          onCreated={({ gl }) => {
+            gl.setClearColor(0x000000, 0);
+          }}
+          camera={{ position: [0, 0.1, 5.6], fov: 32 }}
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.18} />
+            <directionalLight position={[3, 4, 5]} intensity={0.45} color="#a8c4c8" />
+            <pointLight
+              position={[-2.4, -1.2, 2.2]}
+              intensity={0.7}
+              distance={6}
+              decay={2}
+              color="#00E6D0"
+            />
+            <pointLight
+              position={[2.2, 2.4, 1.6]}
+              intensity={0.4}
+              distance={6}
+              decay={2}
+              color="#5fb4b8"
+            />
 
-          {reduce ? (
-            <Monolith />
-          ) : (
-            <Float speed={1.1} rotationIntensity={0.25} floatIntensity={0.45}>
+            {reduce ? (
               <Monolith />
-            </Float>
-          )}
+            ) : (
+              <Float speed={1.1} rotationIntensity={0.25} floatIntensity={0.45}>
+                <Monolith />
+              </Float>
+            )}
 
-          {!reduce && <OrbitDust />}
-          {isDev && <PerfLogger active={loopActive} />}
-        </Suspense>
-      </Canvas>
+            {!reduce && <OrbitDust />}
+            {isDev && <PerfLogger active={loopActive} />}
+          </Suspense>
+        </Canvas>
       )}
       {!mounted && <StaticMonolithFallback />}
     </div>

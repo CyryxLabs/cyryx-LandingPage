@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./enterprise.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -69,15 +70,15 @@
   --radius: 0.625rem;
 
   /* Brand palette (oklch approximations of brief hex values) */
-  --onyx: oklch(0.07 0 0);              /* #0A0A0A */
-  --graphite: oklch(0.13 0.004 240);    /* #121417 */
-  --charcoal: oklch(0.18 0.005 240);    /* #1B1E22 */
-  --deep-space: oklch(0.22 0.006 240);  /* #23272B */
-  --silver: oklch(0.82 0.004 240);      /* #C7C9CC */
+  --onyx: oklch(0.07 0 0); /* #0A0A0A */
+  --graphite: oklch(0.13 0.004 240); /* #121417 */
+  --charcoal: oklch(0.18 0.005 240); /* #1B1E22 */
+  --deep-space: oklch(0.22 0.006 240); /* #23272B */
+  --silver: oklch(0.82 0.004 240); /* #C7C9CC */
   --silver-dim: oklch(0.62 0.005 240);
-  --teal: oklch(0.34 0.06 195);         /* #0D3B3B */
+  --teal: oklch(0.34 0.06 195); /* #0D3B3B */
   --emerald-accent: oklch(0.45 0.09 188); /* #0E5B57 */
-  --accent-glow: oklch(0.82 0.16 188);  /* #00E6D0 */
+  --accent-glow: oklch(0.82 0.16 188); /* #00E6D0 */
 
   /* Semantic tokens (dark only) */
   --background: var(--onyx);
@@ -125,11 +126,14 @@
     color-mix(in oklab, var(--graphite) 95%, transparent) 100%
   );
   --shadow-glow-teal: 0 0 48px -8px color-mix(in oklab, var(--accent-glow) 35%, transparent);
-  --shadow-panel: 0 1px 0 0 color-mix(in oklab, var(--silver) 6%, transparent) inset,
+  --shadow-panel:
+    0 1px 0 0 color-mix(in oklab, var(--silver) 6%, transparent) inset,
     0 24px 60px -24px oklch(0 0 0 / 0.7);
 }
 
-.dark { color-scheme: dark; }
+.dark {
+  color-scheme: dark;
+}
 
 @layer base {
   html {
@@ -171,7 +175,10 @@
     color: var(--silver);
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.01em;
   }
@@ -193,8 +200,11 @@
     inset 0 1px 0 0 color-mix(in oklab, #fff 22%, transparent),
     inset 0 -1px 0 0 color-mix(in oklab, #000 30%, transparent),
     0 12px 32px -16px color-mix(in oklab, #000 70%, transparent);
-  transition: border-color 0.25s ease, background 0.25s ease,
-    box-shadow 0.25s ease, transform 0.15s ease;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
   &:hover {
     border-color: color-mix(in oklab, var(--accent-glow) 55%, transparent);
     background: linear-gradient(
@@ -228,7 +238,11 @@ html.cx-low-perf .glass-panel {
 @utility grid-floor {
   background-image:
     linear-gradient(color-mix(in oklab, var(--accent-glow) 8%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in oklab, var(--accent-glow) 8%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--accent-glow) 8%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 70%);
@@ -262,8 +276,7 @@ html.cx-low-perf .glass-panel {
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.06))
-    drop-shadow(0 2px 14px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.06)) drop-shadow(0 2px 14px rgba(0, 0, 0, 0.45));
 }
 
 /* Brandboard chrome — polished metallic finish for hero/display headings.
@@ -281,8 +294,7 @@ html.cx-low-perf .glass-panel {
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.08))
-    drop-shadow(0 2px 18px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.08)) drop-shadow(0 2px 18px rgba(0, 0, 0, 0.55));
 }
 
 /* Hero headline sizing: tuned to keep tall/descender glyphs visible from
@@ -381,8 +393,12 @@ html.cx-low-perf .glass-panel {
 .cx-cta {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  transition: transform 0.15s ease, filter 0.2s ease, border-color 0.2s ease,
-    color 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    filter 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 .cx-cta:active {
   transform: translateY(1px) scale(0.995);
@@ -490,8 +506,11 @@ html.cx-low-perf *::after {
     inset 0 1px 0 0 color-mix(in oklab, #fff 22%, transparent),
     inset 0 -1px 0 0 color-mix(in oklab, #000 30%, transparent),
     0 12px 32px -16px color-mix(in oklab, #000 70%, transparent);
-  transition: border-color 0.25s ease, background 0.25s ease,
-    box-shadow 0.25s ease, transform 0.15s ease;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
   &:hover {
     border-color: color-mix(in oklab, var(--accent-glow) 55%, transparent);
     background: linear-gradient(
@@ -515,16 +534,20 @@ html.cx-low-perf .cx-liquid-glass {
 @utility cx-btn {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  transition: transform 0.15s ease, filter 0.2s ease, border-color 0.2s ease,
-    color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    filter 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
   &:hover {
     filter: brightness(1.05);
   }
   &:focus-visible {
     outline: 2px solid var(--accent-glow);
     outline-offset: 3px;
-    box-shadow: 0 0 0 4px
-      color-mix(in oklab, var(--accent-glow) 30%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent-glow) 30%, transparent);
   }
   &:active {
     transform: translateY(1px) scale(0.99);
@@ -687,12 +710,7 @@ html.cx-low-perf .cx-liquid-glass {
 }
 
 @utility teal-core-line {
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    var(--accent-glow) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(180deg, transparent 0%, var(--accent-glow) 50%, transparent 100%);
   box-shadow: 0 0 24px 2px color-mix(in oklab, var(--accent-glow) 60%, transparent);
 }
 
@@ -741,9 +759,11 @@ html.cx-low-perf .cx-liquid-glass {
     linear-gradient(to bottom, var(--accent-glow) 8px, transparent 8px) top left/1px 12px no-repeat,
     linear-gradient(to left, var(--accent-glow) 8px, transparent 8px) top right/12px 1px no-repeat,
     linear-gradient(to bottom, var(--accent-glow) 8px, transparent 8px) top right/1px 12px no-repeat,
-    linear-gradient(to right, var(--accent-glow) 8px, transparent 8px) bottom left/12px 1px no-repeat,
+    linear-gradient(to right, var(--accent-glow) 8px, transparent 8px) bottom left/12px 1px
+      no-repeat,
     linear-gradient(to top, var(--accent-glow) 8px, transparent 8px) bottom left/1px 12px no-repeat,
-    linear-gradient(to left, var(--accent-glow) 8px, transparent 8px) bottom right/12px 1px no-repeat,
+    linear-gradient(to left, var(--accent-glow) 8px, transparent 8px) bottom right/12px 1px
+      no-repeat,
     linear-gradient(to top, var(--accent-glow) 8px, transparent 8px) bottom right/1px 12px no-repeat;
   opacity: 0.55;
 }
@@ -766,11 +786,23 @@ html.cx-low-perf .cx-liquid-glass {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cx-reveal { opacity: 1; transform: none; }
-  html { scroll-behavior: auto; }
-  .cx-word { transform: none !important; }
-  [data-tilt] { transform: none !important; transition: none !important; }
-  *, *::before, *::after {
+  .cx-reveal {
+    opacity: 1;
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .cx-word {
+    transform: none !important;
+  }
+  [data-tilt] {
+    transform: none !important;
+    transition: none !important;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -802,7 +834,10 @@ html.cx-low-perf .cx-liquid-glass {
 /* 3D tilt cards. */
 [data-tilt] {
   transform-style: preserve-3d;
-  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.3s ease;
 }
 
 /* Performance: skip rendering/layout for off-screen sections below the hero.
@@ -829,7 +864,8 @@ main > section:not([data-hero]) {
   right: 0;
   bottom: 0;
   z-index: 40;
-  padding: 0.625rem max(env(safe-area-inset-right), 0.875rem) max(env(safe-area-inset-bottom), 0.625rem) max(env(safe-area-inset-left), 0.875rem);
+  padding: 0.625rem max(env(safe-area-inset-right), 0.875rem)
+    max(env(safe-area-inset-bottom), 0.625rem) max(env(safe-area-inset-left), 0.875rem);
   background: color-mix(in oklab, var(--onyx) 88%, transparent);
   border-top: 1px solid color-mix(in oklab, var(--accent-glow) 22%, transparent);
   backdrop-filter: blur(14px);

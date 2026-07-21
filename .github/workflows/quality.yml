@@ -36,12 +36,18 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bunx playwright install --with-deps chromium
       - name: Validate forbidden-terms config + list active rules
         run: node scripts/validate-forbidden-terms.mjs
       - name: Build production bundle (for bundle scan)
+        env:
+          NITRO_PRESET: vercel
+          VERCEL: "1"
         run: bun run build
       - name: Run Playwright suite (a11y · content · SEO · bundle scan)
         env:

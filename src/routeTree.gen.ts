@@ -9,18 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StartRouteImport } from './routes/start'
 import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ResearchRouteImport } from './routes/research'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as HowWeWorkRouteImport } from './routes/how-we-work'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
+import { Route as CareersRouteImport } from './routes/careers'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as SolutionsSlugRouteImport } from './routes/solutions_.$slug'
+import { Route as ProductsMaaxStudioRouteImport } from './routes/products_.maax-studio'
+import { Route as ProductsLyraRouteImport } from './routes/products_.lyra'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
 
+const StartRoute = StartRouteImport.update({
+  id: '/start',
+  path: '/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
   path: '/solutions',
@@ -46,6 +56,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HowWeWorkRoute = HowWeWorkRouteImport.update({
+  id: '/how-we-work',
+  path: '/how-we-work',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -56,15 +71,30 @@ const CompanyRoute = CompanyRouteImport.update({
   path: '/company',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SolutionsSlugRoute = SolutionsSlugRouteImport.update({
+  id: '/solutions_/$slug',
+  path: '/solutions/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
-  id: '/maax-studio',
-  path: '/maax-studio',
-  getParentRoute: () => ProductsRoute,
+  id: '/products_/maax-studio',
+  path: '/products/maax-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsLyraRoute = ProductsLyraRouteImport.update({
+  id: '/products_/lyra',
+  path: '/products/lyra',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
   id: '/api/public/web-vitals',
@@ -79,41 +109,56 @@ const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/how-we-work': typeof HowWeWorkRoute
   '/privacy': typeof PrivacyRoute
-  '/products': typeof ProductsRouteWithChildren
+  '/products': typeof ProductsRoute
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
+  '/start': typeof StartRoute
+  '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/solutions/$slug': typeof SolutionsSlugRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/how-we-work': typeof HowWeWorkRoute
   '/privacy': typeof PrivacyRoute
-  '/products': typeof ProductsRouteWithChildren
+  '/products': typeof ProductsRoute
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
+  '/start': typeof StartRoute
+  '/products/lyra': typeof ProductsLyraRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/solutions/$slug': typeof SolutionsSlugRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/how-we-work': typeof HowWeWorkRoute
   '/privacy': typeof PrivacyRoute
-  '/products': typeof ProductsRouteWithChildren
+  '/products': typeof ProductsRoute
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
-  '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/start': typeof StartRoute
+  '/products_/lyra': typeof ProductsLyraRoute
+  '/products_/maax-studio': typeof ProductsMaaxStudioRoute
+  '/solutions_/$slug': typeof SolutionsSlugRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
 }
@@ -121,59 +166,87 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/careers'
     | '/company'
     | '/contact'
+    | '/how-we-work'
     | '/privacy'
     | '/products'
     | '/research'
     | '/sitemap.xml'
     | '/solutions'
+    | '/start'
+    | '/products/lyra'
     | '/products/maax-studio'
+    | '/solutions/$slug'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/careers'
     | '/company'
     | '/contact'
+    | '/how-we-work'
     | '/privacy'
     | '/products'
     | '/research'
     | '/sitemap.xml'
     | '/solutions'
+    | '/start'
+    | '/products/lyra'
     | '/products/maax-studio'
+    | '/solutions/$slug'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
   id:
     | '__root__'
     | '/'
+    | '/careers'
     | '/company'
     | '/contact'
+    | '/how-we-work'
     | '/privacy'
     | '/products'
     | '/research'
     | '/sitemap.xml'
     | '/solutions'
-    | '/products/maax-studio'
+    | '/start'
+    | '/products_/lyra'
+    | '/products_/maax-studio'
+    | '/solutions_/$slug'
     | '/api/public/cta-events'
     | '/api/public/web-vitals'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CareersRoute: typeof CareersRoute
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
+  HowWeWorkRoute: typeof HowWeWorkRoute
   PrivacyRoute: typeof PrivacyRoute
-  ProductsRoute: typeof ProductsRouteWithChildren
+  ProductsRoute: typeof ProductsRoute
   ResearchRoute: typeof ResearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolutionsRoute: typeof SolutionsRoute
+  StartRoute: typeof StartRoute
+  ProductsLyraRoute: typeof ProductsLyraRoute
+  ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
+  SolutionsSlugRoute: typeof SolutionsSlugRoute
   ApiPublicCtaEventsRoute: typeof ApiPublicCtaEventsRoute
   ApiPublicWebVitalsRoute: typeof ApiPublicWebVitalsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/start': {
+      id: '/start'
+      path: '/start'
+      fullPath: '/start'
+      preLoaderRoute: typeof StartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/solutions': {
       id: '/solutions'
       path: '/solutions'
@@ -209,6 +282,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/how-we-work': {
+      id: '/how-we-work'
+      path: '/how-we-work'
+      fullPath: '/how-we-work'
+      preLoaderRoute: typeof HowWeWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -223,6 +303,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompanyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -230,12 +317,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/maax-studio': {
-      id: '/products/maax-studio'
-      path: '/maax-studio'
+    '/solutions_/$slug': {
+      id: '/solutions_/$slug'
+      path: '/solutions/$slug'
+      fullPath: '/solutions/$slug'
+      preLoaderRoute: typeof SolutionsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products_/maax-studio': {
+      id: '/products_/maax-studio'
+      path: '/products/maax-studio'
       fullPath: '/products/maax-studio'
       preLoaderRoute: typeof ProductsMaaxStudioRouteImport
-      parentRoute: typeof ProductsRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/products_/lyra': {
+      id: '/products_/lyra'
+      path: '/products/lyra'
+      fullPath: '/products/lyra'
+      preLoaderRoute: typeof ProductsLyraRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/web-vitals': {
       id: '/api/public/web-vitals'
@@ -254,27 +355,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface ProductsRouteChildren {
-  ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
-}
-
-const ProductsRouteChildren: ProductsRouteChildren = {
-  ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
-}
-
-const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
-  ProductsRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CareersRoute: CareersRoute,
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
+  HowWeWorkRoute: HowWeWorkRoute,
   PrivacyRoute: PrivacyRoute,
-  ProductsRoute: ProductsRouteWithChildren,
+  ProductsRoute: ProductsRoute,
   ResearchRoute: ResearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolutionsRoute: SolutionsRoute,
+  StartRoute: StartRoute,
+  ProductsLyraRoute: ProductsLyraRoute,
+  ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
+  SolutionsSlugRoute: SolutionsSlugRoute,
   ApiPublicCtaEventsRoute: ApiPublicCtaEventsRoute,
   ApiPublicWebVitalsRoute: ApiPublicWebVitalsRoute,
 }

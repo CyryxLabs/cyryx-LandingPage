@@ -43,9 +43,12 @@ const seen = new Set();
 (parsed.terms ?? []).forEach((t, i) => {
   const where = `terms[${i}]`;
   if (!t || typeof t !== "object") return errors.push(`${where} must be an object`);
-  if (typeof t.label !== "string" || !t.label.trim()) errors.push(`${where}.label must be a non-empty string`);
-  if (typeof t.pattern !== "string" || !t.pattern) errors.push(`${where}.pattern must be a non-empty string`);
-  if (t.flags != null && typeof t.flags !== "string") errors.push(`${where}.flags must be a string`);
+  if (typeof t.label !== "string" || !t.label.trim())
+    errors.push(`${where}.label must be a non-empty string`);
+  if (typeof t.pattern !== "string" || !t.pattern)
+    errors.push(`${where}.pattern must be a non-empty string`);
+  if (t.flags != null && typeof t.flags !== "string")
+    errors.push(`${where}.flags must be a string`);
   try {
     new RegExp(t.pattern, t.flags ?? "");
   } catch (err) {
@@ -67,10 +70,20 @@ for (const t of parsed.terms) {
 // Optional: when a build directory is present, report which compiled files match
 // each pattern (or explicitly state no matches). This makes the validator's
 // output actionable BEFORE the bundle-scan test reports a failure.
-const scanGlobs = [".output/**/*.{html,js,mjs,css}", "dist/**/*.{html,js,mjs,css}"];
+// Match the browser-delivered scope enforced by bundle-scan.spec.ts. Generated
+// CSS may legitimately contain numeric percentages and server dependency
+// bundles may contain unrelated library symbols; neither is a public claim.
+const scanGlobs = [
+  ".output*/public/**/*.{html,js,mjs}",
+  ".vercel/output/static/**/*.{html,js,mjs}",
+  ".vercel/output/functions/**/_ssr/**/*.{js,mjs}",
+  "dist/**/*.{html,js,mjs}",
+];
 const files = await globby(scanGlobs);
 if (files.length === 0) {
-  console.log(`\nℹ️  No compiled bundles found (looked under .output/ and dist/). Skipping match preview.`);
+  console.log(
+    `\nℹ️  No compiled bundles found (looked under .output*/, .vercel/output, and dist/). Skipping match preview.`,
+  );
   process.exit(0);
 }
 
@@ -78,10 +91,8 @@ console.log(`\n🔍 Scanning ${files.length} compiled file(s) for active pattern
 const contents = files.map((f) => [f, readFileSync(f, "utf8")]);
 let anyMatch = false;
 for (const t of parsed.terms) {
-  const re = new RegExp(t.pattern, (t.flags ?? "").includes("g") ? t.flags : (t.flags ?? "") + "g");
-  const matches = contents
-    .filter(([, c]) => re.test(c))
-    .map(([f]) => f);
+  const flags = (t.flags ?? "").replace("g", "");
+  const matches = contents.filter(([, c]) => new RegExp(t.pattern, flags).test(c)).map(([f]) => f);
   const preview = `/${t.pattern}/${t.flags ?? ""}`;
   if (matches.length === 0) {
     console.log(`   ✓ ${t.label.padEnd(28)} ${preview} — no matches`);
@@ -92,6 +103,8 @@ for (const t of parsed.terms) {
   }
 }
 if (anyMatch) {
-  console.error(`\n❌ Forbidden terms present in compiled output. See bundle-scan test for assertion details.`);
+  console.error(
+    `\n❌ Forbidden terms present in compiled output. See bundle-scan test for assertion details.`,
+  );
   process.exit(1);
 }

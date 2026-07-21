@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
@@ -26,7 +26,10 @@ export function ContactSection() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [messageLen, setMessageLen] = useState(0);
   const [consent, setConsent] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const successRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => setHydrated(true), []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -63,7 +66,7 @@ export function ContactSection() {
       (e.target as HTMLFormElement).reset();
       setMessageLen(0);
       setConsent(false);
-      toast.success("Message sent — we'll reply within 24h.");
+      toast.success("Message sent — expect an initial response within one business day.");
       requestAnimationFrame(() => {
         successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       });
@@ -78,21 +81,24 @@ export function ContactSection() {
   return (
     <section id="contact" className="relative py-14 sm:py-20 lg:py-32">
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-10">
-        <div className="cx-reveal text-center">
+        <div className="text-center">
           <HudLabel withDot>Contact</HudLabel>
           <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] text-silver-gradient">
             Tell us what <span style={{ color: "var(--accent-glow)" }}>you're building.</span>
           </h2>
           <p className="mt-4 text-[15px] sm:text-base text-[var(--silver-dim)]">
-            We'll tell you whether we can help, and how. We typically reply within 24h.
+            We&apos;ll review the context and tell you whether we can help. You can expect an
+            initial response within one business day.
           </p>
         </div>
 
-        <GlassPanel liquid className="mt-8 p-5 sm:mt-10 sm:p-8 cx-reveal">
+        <GlassPanel liquid className="mt-8 p-5 sm:mt-10 sm:p-8">
           {status === "success" ? (
             <div ref={successRef} className="flex flex-col items-center gap-3 py-10 text-center">
               <CheckCircle2 className="h-10 w-10 text-[var(--accent-glow)]" />
-              <h3 className="font-display text-xl uppercase text-[var(--silver)]">Message received</h3>
+              <h3 className="font-display text-xl uppercase text-[var(--silver)]">
+                Message received
+              </h3>
               <p className="text-sm text-[var(--silver-dim)]">
                 Thanks — we'll be in touch shortly.
               </p>
@@ -108,6 +114,7 @@ export function ContactSection() {
             <form
               onSubmit={handleSubmit}
               noValidate
+              data-hydrated={hydrated ? "true" : "false"}
               className="flex flex-col gap-5"
               aria-describedby="contact-form-help"
             >
@@ -118,13 +125,7 @@ export function ContactSection() {
               {/* Honeypot — visually hidden, off-screen, autocomplete off. */}
               <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
                 <label htmlFor="website">Leave this field empty</label>
-                <input
-                  id="website"
-                  type="text"
-                  name="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
+                <input id="website" type="text" name="website" tabIndex={-1} autoComplete="off" />
               </div>
 
               <Field
@@ -143,7 +144,7 @@ export function ContactSection() {
                 type="email"
                 inputMode="email"
                 placeholder="you@company.com"
-                help="We'll reply here within 24h."
+                help="We'll send the initial response here within one business day."
                 error={errors.email}
                 autoComplete="email"
                 onValidate={validateField}
@@ -204,8 +205,7 @@ export function ContactSection() {
                     className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-[color-mix(in_oklab,var(--silver)_30%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_55%,transparent)] accent-[var(--accent-glow)] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)]"
                   />
                   <span>
-                    I agree to be contacted by Cyryx Labs about this inquiry and
-                    acknowledge the{" "}
+                    I agree to be contacted by Cyryx Labs about this inquiry and acknowledge the{" "}
                     <a
                       href="/privacy"
                       target="_blank"
@@ -263,9 +263,7 @@ export function ContactSection() {
   );
 
   function validateField(name: keyof Errors, value: string) {
-    const schema = (
-      FormSchema.shape as Record<string, z.ZodTypeAny>
-    )[name as string];
+    const schema = (FormSchema.shape as Record<string, z.ZodTypeAny>)[name as string];
     if (!schema) return;
     const r = schema.safeParse(value);
     setErrors((prev) => ({
@@ -316,9 +314,7 @@ function Field({
     ? "border-[color-mix(in_oklab,var(--destructive,#ef4444)_60%,transparent)] focus:ring-[color-mix(in_oklab,var(--destructive,#ef4444)_35%,transparent)]"
     : "border-[color-mix(in_oklab,var(--silver)_14%,transparent)]";
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const v = e.currentTarget.value;
     onInputChange?.(v);
     if (liveValidate) onValidate?.(name, v);
@@ -327,10 +323,7 @@ function Field({
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-baseline justify-between gap-3">
-        <label
-          htmlFor={name}
-          className="hud-label text-[var(--silver)]"
-        >
+        <label htmlFor={name} className="hud-label text-[var(--silver)]">
           {label}
         </label>
         {optional && (

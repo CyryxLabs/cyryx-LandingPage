@@ -1,50 +1,45 @@
-import { Linkedin, Twitter, Youtube, Github, ArrowRight } from "lucide-react";
-import { CyryxWordmark } from "./primitives/CyryxMark";
+import { Linkedin, Github, ArrowUpRight } from "lucide-react";
+import { CyryxMark } from "./primitives/CyryxMark";
 import { HudLabel } from "./primitives/HudLabel";
+import { productNavigation, solutionNavigation } from "./navigation";
 
 const COLUMNS = [
   {
-    title: "Company",
+    title: "Explore",
     links: [
-      { label: "About", href: "/company" },
-      { label: "Products", href: "/products" },
       { label: "Solutions", href: "/solutions" },
-      { label: "Applied AI Lab", href: "/research" },
+      { label: "Products", href: "/products" },
+      { label: "How we work", href: "/how-we-work" },
+      { label: "Research", href: "/research" },
+      { label: "Company", href: "/company" },
+      { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
     ],
   },
   {
-    title: "Products",
-    links: [
-      { label: "MAAX Studio", href: "/products/maax-studio" },
-      { label: "Applied AI Lab", href: "/research" },
-      { label: "Solutions", href: "/solutions" },
-    ],
+    title: "Solutions",
+    links: solutionNavigation,
   },
   {
-    title: "Resources",
-    links: [
-      { label: "Research", href: "/research" },
-      { label: "Documentation", href: "#" },
-      { label: "Brand", href: "#" },
-      { label: "Early Access", href: "/contact" },
-    ],
+    title: "Products",
+    links: productNavigation,
   },
 ];
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] bg-[var(--graphite)]">
+    <footer className="cx-brand-chrome relative border-t border-white/10 bg-[var(--onyx)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-12 pb-[max(env(safe-area-inset-bottom),3rem)] lg:py-20">
-        <div className="cx-stagger grid gap-10 lg:grid-cols-[1.3fr_2.2fr_1.5fr]">
+        <div className="cx-stagger grid gap-12 lg:grid-cols-[1fr_2.5fr]">
           {/* Brand */}
           <div className="cx-stagger-item">
-            <CyryxWordmark className="h-10" />
+            <CyryxMark size={72} />
             <p className="mt-5 text-sm leading-relaxed text-[var(--silver-dim)] max-w-xs">
-              AI products, execution systems, and applied research.
+              An AI lab and systems company for organizations moving from strategy to controlled
+              execution.
             </p>
             <p className="mt-6 font-display text-sm tracking-[0.32em] uppercase text-[var(--silver-dim)]">
-              Built to achieve. <span className="text-[var(--accent-glow)]">Not just to generate.</span>
+              Advise. Build. Operate.
             </p>
             <p className="mt-8 text-xs text-[var(--silver-dim)]">
               &copy; 2026 Cyryx Labs. All rights reserved.
@@ -52,14 +47,17 @@ export function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="cx-stagger-item grid grid-cols-1 sm:grid-cols-3 gap-8">
+          <div className="cx-stagger-item grid grid-cols-2 gap-8 md:grid-cols-3">
             {COLUMNS.map((col) => (
               <div key={col.title}>
                 <HudLabel>{col.title}</HudLabel>
                 <ul className="mt-4 space-y-3">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <a href={l.href} className="text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors">
+                      <a
+                        href={l.href}
+                        className="text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors"
+                      >
                         {l.label}
                       </a>
                     </li>
@@ -68,73 +66,41 @@ export function Footer() {
               </div>
             ))}
           </div>
-
-          {/* Newsletter */}
-          <div className="cx-stagger-item">
-            <HudLabel>Stay Connected</HudLabel>
-            <p className="mt-4 text-sm text-[var(--silver-dim)]">
-              Get updates on our latest systems, research, and launches.
-            </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="mt-5 flex items-stretch gap-0 rounded-md border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] focus-within:border-[var(--accent-glow)] focus-within:shadow-[var(--shadow-glow-teal)] transition-all"
-            >
-              <label htmlFor="newsletter-email" className="sr-only">Email address</label>
-              <input
-                id="newsletter-email"
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 min-w-0 bg-transparent px-4 py-3 text-sm text-[var(--silver)] placeholder:text-[var(--silver-dim)] outline-none"
-              />
-              <button
-                type="submit"
-                aria-label="Subscribe"
-                className="grid w-12 place-items-center bg-[color-mix(in_oklab,var(--accent-glow)_14%,transparent)] hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)] text-[var(--accent-glow)] transition"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </form>
-
-            <div className="mt-6 flex items-center gap-2">
-              {[
-                { Icon: Linkedin, label: "LinkedIn" },
-                { Icon: Twitter, label: "X" },
-                { Icon: Youtube, label: "YouTube" },
-                { Icon: Github, label: "GitHub" },
-              ].map(({ Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  aria-disabled="true"
-                  tabIndex={-1}
-                  data-no-smooth-scroll="true"
-                  onClick={(e) => e.preventDefault()}
-                  className="grid h-11 w-11 place-items-center rounded-md border border-[color-mix(in_oklab,var(--silver)_12%,transparent)] text-[var(--silver-dim)] hover:text-[var(--accent-glow)] hover:border-[var(--accent-glow)] transition"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
-          </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <span className="hud-label text-[var(--silver-dim)]">
-              Cyryx Labs — Built to achieve. Not just to generate.
-            </span>
-            <span className="inline-flex items-center gap-1.5 hud-label text-[var(--accent-glow)]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)] animate-pulse" />
-              SYS_STATUS: OPTIMAL
+              Cyryx Labs — The execution layer for enterprise AI.
             </span>
           </div>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {["Privacy", "Terms", "Security"].map((l) => (
-              <a key={l} href="#" className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition">
-                {l}
-              </a>
-            ))}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a
+              href="/privacy"
+              className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition"
+            >
+              Privacy
+            </a>
+            <a
+              href="mailto:contact@cyryxlabs.com"
+              className="inline-flex items-center gap-2 hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition"
+            >
+              Email <ArrowUpRight size={13} />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/cyryx-labs"
+              aria-label="Cyryx Labs on LinkedIn"
+              className="text-[var(--silver-dim)] hover:text-[var(--silver)]"
+            >
+              <Linkedin size={17} />
+            </a>
+            <a
+              href="https://github.com/cyryxlabs"
+              aria-label="Cyryx Labs on GitHub"
+              className="text-[var(--silver-dim)] hover:text-[var(--silver)]"
+            >
+              <Github size={17} />
+            </a>
           </div>
         </div>
       </div>

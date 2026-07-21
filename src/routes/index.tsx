@@ -1,57 +1,38 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
 import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
-import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
-import { PerfToggle } from "@/components/cyryx/PerfToggle";
-import { DiagnosticsOverlay } from "@/components/cyryx/DiagnosticsOverlay";
+import { EnterpriseHomepage } from "@/components/cyryx/enterprise/EnterpriseHomepage";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
 import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
 import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
 
-// Below-the-fold: code-split to shrink the initial mobile bundle.
-const WhyCyryx = lazy(() => import("@/components/cyryx/WhyCyryx").then(m => ({ default: m.WhyCyryx })));
-const CoreCapabilities = lazy(() => import("@/components/cyryx/CoreCapabilities").then(m => ({ default: m.CoreCapabilities })));
-const CommandLayerSection = lazy(() => import("@/components/cyryx/CommandLayerSection").then(m => ({ default: m.CommandLayerSection })));
-const MAAXStudioSpotlight = lazy(() => import("@/components/cyryx/MAAXStudioSpotlight").then(m => ({ default: m.MAAXStudioSpotlight })));
-const ProductEcosystem = lazy(() => import("@/components/cyryx/ProductEcosystem").then(m => ({ default: m.ProductEcosystem })));
-const ProcessTimeline = lazy(() => import("@/components/cyryx/ProcessTimeline").then(m => ({ default: m.ProcessTimeline })));
-const CTASection = lazy(() => import("@/components/cyryx/CTASection").then(m => ({ default: m.CTASection })));
-const AppliedAILab = lazy(() => import("@/components/cyryx/AppliedAILab").then(m => ({ default: m.AppliedAILab })));
-const WhoWeServe = lazy(() => import("@/components/cyryx/WhoWeServe").then(m => ({ default: m.WhoWeServe })));
-const Ecosystem = lazy(() => import("@/components/cyryx/Ecosystem").then(m => ({ default: m.Ecosystem })));
-const MetricsBand = lazy(() => import("@/components/cyryx/MetricsBand").then(m => ({ default: m.MetricsBand })));
-const ContactSection = lazy(() => import("@/components/cyryx/ContactSection").then(m => ({ default: m.ContactSection })));
-
-const SectionFallback = () => <div aria-hidden style={{ minHeight: 480 }} />;
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cyryx Labs — AI Execution Systems for the Agentic Era" },
+      { title: "Cyryx Labs — The execution layer for enterprise AI" },
       {
         name: "description",
         content:
-          "Cyryx Labs builds proprietary AI products, custom automation systems, and agentic workflows that turn AI into governed execution.",
+          "Cyryx Labs advises, builds, and operates digital and AI systems for organizations moving from strategy to controlled execution.",
       },
-      { property: "og:title", content: "Cyryx Labs — AI Products & Execution Systems" },
+      { property: "og:title", content: "Cyryx Labs — Enterprise AI execution systems" },
       {
         property: "og:description",
         content:
-          "Proprietary AI products, custom AI systems, and agentic workflows for the agentic era.",
+          "Advisory, digital systems, AI products, and operational infrastructure engineered for controlled execution.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: "https://cyryxlabs.com/" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Cyryx Labs — AI Products & Execution Systems" },
+      { name: "twitter:title", content: "Cyryx Labs — The execution layer for enterprise AI" },
       {
         name: "twitter:description",
         content:
-          "The execution layer for operational AI. AI products, agentic workflow systems, and governed execution infrastructure.",
+          "Advisory, digital systems, AI products, and operational infrastructure for controlled execution.",
       },
       { name: "theme-color", content: "#050607" },
     ],
@@ -64,7 +45,7 @@ export const Route = createFileRoute("/")({
         imageSizes: "(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px",
         fetchPriority: "high",
       },
-      { rel: "canonical", href: "/" },
+      { rel: "canonical", href: "https://cyryxlabs.com/" },
     ],
     scripts: [
       {
@@ -80,8 +61,8 @@ export const Route = createFileRoute("/")({
               alternateName: ["Cyryx", "Cyryx AI"],
               url: "https://cyryxlabs.com/",
               description:
-                "Cyryx Labs is an AI product and systems company building proprietary AI products, governed agentic workflow systems, and execution infrastructure.",
-              slogan: "The execution layer for operational AI.",
+                "Cyryx Labs is an AI lab and systems company that advises, builds, and operates digital and AI systems for organizations moving from strategy to controlled execution.",
+              slogan: "The execution layer for enterprise AI.",
               foundingDate: "2024",
               industry: "Artificial Intelligence",
               areaServed: "Worldwide",
@@ -92,16 +73,21 @@ export const Route = createFileRoute("/")({
                 "https://github.com/cyryxlabs",
               ],
               makesOffer: [
-                { "@type": "Offer", name: "MAAX Studio", itemOffered: { "@id": "https://cyryxlabs.com/#maax-studio" } },
+                {
+                  "@type": "Offer",
+                  name: "MAAX Studio",
+                  itemOffered: { "@id": "https://cyryxlabs.com/#maax-studio" },
+                },
               ],
               knowsAbout: [
                 "Operational AI",
                 "Agentic workflow systems",
                 "AI execution infrastructure",
                 "Governed autonomy",
-                "MAAX Runtime",
                 "MAAX Studio",
-                "Proprietary AI products",
+                "AI strategy and advisory",
+                "Workflow automation",
+                "AI governance and cost control",
               ],
             },
             {
@@ -116,34 +102,31 @@ export const Route = createFileRoute("/")({
               "@type": "WebPage",
               "@id": "https://cyryxlabs.com/#webpage",
               url: "https://cyryxlabs.com/",
-              name: "Cyryx Labs — AI Products & Execution Systems for the Agentic Era",
+              name: "Cyryx Labs — The execution layer for enterprise AI",
               isPartOf: { "@id": "https://cyryxlabs.com/#website" },
               about: { "@id": "https://cyryxlabs.com/#organization" },
               description:
-                "Proprietary AI products, governed agentic workflows, and execution infrastructure for teams operationalizing AI.",
+                "Advisory, digital systems, AI products, and operational infrastructure for controlled execution.",
             },
             {
               "@type": "SoftwareApplication",
               "@id": "https://cyryxlabs.com/#maax-studio",
               name: "MAAX Studio",
-              alternateName: "MAAX Studio (Runtime-first)",
               applicationCategory: "DeveloperApplication",
               applicationSubCategory: "Agentic Execution Environment",
               operatingSystem: "macOS, Windows, Linux",
-              softwareRequirements: "MAAX Runtime",
               featureList: [
-                "Runtime-first agentic execution",
-                "Governed autonomy",
-                "Local-first execution context",
-                "Auditable workflow runtime",
+                "Mission coordination",
+                "Agent coordination",
+                "Project context",
+                "Review and controlled execution",
               ],
-              audience: { "@type": "Audience", audienceType: "Teams operationalizing AI" },
+              audience: { "@type": "Audience", audienceType: "Software teams" },
               creator: { "@id": "https://cyryxlabs.com/#organization" },
               publisher: { "@id": "https://cyryxlabs.com/#organization" },
               description:
-                "MAAX Studio is a runtime-first agentic execution environment for operational AI, powered by the MAAX Runtime.",
+                "MAAX Studio is an agentic software execution environment in active development.",
               brand: { "@id": "https://cyryxlabs.com/#organization" },
-              offers: { "@type": "Offer", availability: "https://schema.org/PreOrder", price: "0", priceCurrency: "USD" },
             },
           ],
         }),
@@ -173,34 +156,17 @@ function Index() {
       </a>
       <Header />
       <BackgroundMonolith />
-      <main id="main-content" role="main" tabIndex={-1} className="relative z-10 focus:outline-none">
-        {/* Continuous teal core line drawn by scroll (desktop only) */}
-        <span
-          aria-hidden
-          data-core-line
-          className="cx-core-line hidden lg:block"
-        />
+      <main
+        id="main-content"
+        role="main"
+        tabIndex={-1}
+        className="relative z-10 focus:outline-none"
+      >
         <Hero />
-        <CapabilityStrip />
-        <Suspense fallback={<SectionFallback />}>
-          <WhyCyryx />
-          <CoreCapabilities />
-          <ProductEcosystem />
-          <MAAXStudioSpotlight />
-          <CommandLayerSection />
-          <AppliedAILab />
-          <ProcessTimeline />
-          <MetricsBand />
-          <WhoWeServe />
-          <Ecosystem />
-          <CTASection />
-          <ContactSection />
-        </Suspense>
+        <EnterpriseHomepage />
       </main>
       <Footer />
       <StickyMobileCTA />
-      <PerfToggle />
-      <DiagnosticsOverlay />
     </div>
   );
 }

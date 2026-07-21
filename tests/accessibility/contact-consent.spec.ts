@@ -5,6 +5,7 @@ test.describe("Contact form consent — client", () => {
   test("submit is disabled until consent is checked and shows specific error", async ({ page }) => {
     await page.goto("/");
     await page.locator("#contact").scrollIntoViewIfNeeded();
+    await expect(page.locator('form[data-hydrated="true"]')).toBeVisible();
 
     await page.locator('input[name="name"]').fill("Ada Lovelace");
     await page.locator('input[name="email"]').fill("ada@example.com");

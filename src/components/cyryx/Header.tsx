@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
-import { CyryxWordmark } from "./primitives/CyryxMark";
+import { CyryxMark } from "./primitives/CyryxMark";
 import { MobileMenu } from "./MobileMenu";
 import { cn } from "@/lib/utils";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
-
-const NAV = [
-  { label: "Products", href: "#products" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Applied AI Lab", href: "#applied-lab" },
-  { label: "MAAX Studio", href: "#maax" },
-  { label: "MAAX Runtime", href: "#ecosystem" },
-];
+import { primaryNavigation } from "./navigation";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const headerCta = getCopy(useCopyVariant()).header.cta;
 
   useEffect(() => {
+    setHydrated(true);
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -31,7 +26,7 @@ export function Header() {
     <>
       <header
         className={cn(
-          "cx-liquid-glass fixed inset-x-0 top-0 z-50 rounded-none border-x-0 border-t-0 transition-all duration-300",
+          "cx-brand-chrome cx-liquid-glass fixed inset-x-0 top-0 z-50 rounded-none border-x-0 border-t-0 transition-all duration-300",
           scrolled
             ? "shadow-[0_1px_0_0_color-mix(in_oklab,var(--accent-glow)_18%,transparent)]"
             : "shadow-none",
@@ -39,18 +34,15 @@ export function Header() {
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:h-24 lg:px-10">
           <a
-            href="#top"
+            href="/"
             className="-mx-1 inline-flex h-12 min-w-0 shrink-0 items-center px-1 lg:h-16"
             aria-label="Cyryx Labs — home"
           >
-            <CyryxWordmark priority className="h-10 lg:h-14" />
+            <CyryxMark size={44} priority />
           </a>
 
-          <nav
-            className="hidden lg:flex items-center gap-7 xl:gap-8"
-            aria-label="Primary"
-          >
-            {NAV.map((item) => (
+          <nav className="hidden lg:flex items-center gap-7 xl:gap-8" aria-label="Primary">
+            {primaryNavigation.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
@@ -62,20 +54,24 @@ export function Header() {
           </nav>
 
           <a
-            href="#contact"
+            href="/#contact"
             aria-label={headerCta}
             onClick={() => trackCta({ cta: "start_project", section: "header", href: "#contact" })}
             className="cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
           >
             {headerCta}
-            <span aria-hidden className="text-[var(--accent-glow)]">→</span>
+            <span aria-hidden className="text-[var(--accent-glow)]">
+              →
+            </span>
           </a>
 
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
+            data-hydrated={hydrated ? "true" : "false"}
             aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
             className="cx-btn cx-liquid-glass lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)]"
           >
             <Menu className="h-5 w-5" />
@@ -83,7 +79,7 @@ export function Header() {
         </div>
       </header>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} links={NAV} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} links={primaryNavigation} />
     </>
   );
 }

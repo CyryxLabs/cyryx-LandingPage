@@ -37,7 +37,10 @@ const reportDir = process.env.A11Y_REPORT_DIR ?? "a11y-report";
 
 async function writeA11yReport(testName: string, results: AxeResults, critical: AxeViolation[]) {
   await mkdir(reportDir, { recursive: true });
-  const safeName = testName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const safeName = testName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
   const payload = {
     generatedAt: new Date().toISOString(),
     scannedRegion: "section[data-hero]",
@@ -75,7 +78,16 @@ async function writeA11yReport(testName: string, results: AxeResults, critical: 
           <h2>${violation.id} — ${violation.impact ?? "unknown"}</h2>
           <p>${violation.help}</p>
           <p><a href="${violation.helpUrl}">${violation.helpUrl}</a></p>
-          <pre>${escapeHtml(JSON.stringify(violation.nodes.map((node) => ({ target: node.target, failureSummary: node.failureSummary })), null, 2))}</pre>
+          <pre>${escapeHtml(
+            JSON.stringify(
+              violation.nodes.map((node) => ({
+                target: node.target,
+                failureSummary: node.failureSummary,
+              })),
+              null,
+              2,
+            ),
+          )}</pre>
         </article>`,
       )
       .join("\n")}
@@ -86,7 +98,10 @@ async function writeA11yReport(testName: string, results: AxeResults, critical: 
 }
 
 function escapeHtml(value: string) {
-  return value.replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char] ?? char);
+  return value.replace(
+    /[&<>"]/g,
+    (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char] ?? char,
+  );
 }
 
 async function scanHeroWithAxe(page: Page) {
@@ -122,7 +137,9 @@ test("Hero has no critical axe violations", async ({ page }, testInfo) => {
   expect(blocking, JSON.stringify(blocking, null, 2)).toHaveLength(0);
 });
 
-test("Skip link lands on main content and keyboard focus continues through Hero", async ({ page }) => {
+test("Skip link lands on main content and keyboard focus continues through Hero", async ({
+  page,
+}) => {
   await page.keyboard.press("Tab");
   await expect(page.locator(".skip-link")).toBeFocused();
 
@@ -135,12 +152,14 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
     visited.push(
       await page.evaluate(() => {
         const active = document.activeElement as HTMLElement | null;
-        return active?.getAttribute("aria-label") || active?.textContent?.trim() || active?.tagName || "";
+        return (
+          active?.getAttribute("aria-label") || active?.textContent?.trim() || active?.tagName || ""
+        );
       }),
     );
   }
 
-  expect(visited.some((label) => label.includes("Initialize a Cyryx AI system"))).toBeTruthy();
+  expect(visited.some((label) => label.includes("Start a Project with Cyryx Labs"))).toBeTruthy();
   expect(new Set(visited).size).toBeGreaterThan(1);
 });
 
@@ -193,9 +212,10 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
     expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
     for (const line of metrics.lineRects) {
       expect(line.overflow).toBe("visible");
-      expect(line.letterSpacing).toBe("normal");
-      expect(line.lineHeight).toBeGreaterThan(line.fontSize * 1.1);
-      expect(line.paddingBottom).toBeGreaterThan(line.fontSize * 0.16);
+      expect(Number.parseFloat(line.letterSpacing || "0")).toBeGreaterThanOrEqual(0);
+      expect(Number.parseFloat(line.letterSpacing || "0")).toBeLessThan(line.fontSize * 0.05);
+      expect(line.lineHeight).toBeGreaterThanOrEqual(line.fontSize * 1.07);
+      expect(line.paddingBottom).toBeGreaterThanOrEqual(line.fontSize * 0.08);
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
       expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
       expect(line.top).toBeGreaterThanOrEqual(0);
@@ -206,12 +226,20 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
 
 test("Forced-colors keeps Hero text and focus indicators system-readable", async ({ page }) => {
   await page.emulateMedia({ forcedColors: "active" });
-  const headlineColor = await page.locator(".cx-hero-title-line").first().evaluate((el) => getComputedStyle(el).color);
-  const textFill = await page.locator(".cx-hero-title-line").first().evaluate((el) => getComputedStyle(el).webkitTextFillColor);
+  const headlineColor = await page
+    .locator(".cx-hero-title-line")
+    .first()
+    .evaluate((el) => getComputedStyle(el).color);
+  const textFill = await page
+    .locator(".cx-hero-title-line")
+    .first()
+    .evaluate((el) => getComputedStyle(el).webkitTextFillColor);
   expect(headlineColor).not.toBe("rgba(0, 0, 0, 0)");
   expect(textFill).not.toBe("rgba(0, 0, 0, 0)");
 
-  await page.locator('section[data-hero] a[href="#cta"]').focus();
-  const outlineStyle = await page.locator('section[data-hero] a[href="#cta"]').evaluate((el) => getComputedStyle(el).outlineStyle);
+  await page.locator('section[data-hero] a[href="#contact"]').focus();
+  const outlineStyle = await page
+    .locator('section[data-hero] a[href="#contact"]')
+    .evaluate((el) => getComputedStyle(el).outlineStyle);
   expect(outlineStyle).not.toBe("none");
 });

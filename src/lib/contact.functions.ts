@@ -4,7 +4,7 @@ export { ContactSchema } from "./contact.schema";
 export type { ContactInput } from "./contact.schema";
 
 export const submitContact = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => ContactSchema.parse(input))
+  .validator((input: unknown) => ContactSchema.parse(input))
   .handler(async ({ data }) => {
     // Silent drop for bots that filled the honeypot.
     if (data.website && data.website.length > 0) {

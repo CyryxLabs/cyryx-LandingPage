@@ -1,13 +1,13 @@
 import { expect, test } from "@playwright/test";
 
 const EXPECTED = {
-  title: /Cyryx Labs.*(AI Products|Execution Systems)/i,
-  description: /Cyryx Labs.*(proprietary AI products|agentic|governed execution)/i,
+  title: /Cyryx Labs.*enterprise AI/i,
+  description: /Cyryx Labs.*advises, builds, and operates.*controlled execution/i,
   ogTitle: /Cyryx Labs/,
-  ogDescription: /(Proprietary AI products|agentic|execution)/i,
+  ogDescription: /(Advisory|digital systems).*controlled execution/i,
   ogUrl: /\/$/,
   twitterTitle: /Cyryx Labs/,
-  twitterDescription: /(execution|operational AI|agentic)/i,
+  twitterDescription: /(Advisory|digital systems).*controlled execution/i,
 };
 
 test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async ({ page }) => {
@@ -23,13 +23,30 @@ test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async 
   expect(await meta('meta[property="og:description"]')).toMatch(EXPECTED.ogDescription);
   expect(await meta('meta[property="og:type"]')).toBe("website");
   expect(await meta('meta[property="og:url"]')).toMatch(EXPECTED.ogUrl);
+  expect(await meta('meta[property="og:image"]')).toBe("https://cyryxlabs.com/og.png");
+  expect(await meta('meta[property="og:image:width"]')).toBe("1200");
+  expect(await meta('meta[property="og:image:height"]')).toBe("630");
   expect(await meta('meta[name="twitter:card"]')).toBe("summary_large_image");
   expect(await meta('meta[name="twitter:title"]')).toMatch(EXPECTED.twitterTitle);
   expect(await meta('meta[name="twitter:description"]')).toMatch(EXPECTED.twitterDescription);
+  expect(await meta('meta[name="twitter:image"]')).toBe("https://cyryxlabs.com/og.png");
   expect(await link('link[rel="canonical"]')).toMatch(/\/$/);
+
+  const socialCard = await page.evaluate(
+    () =>
+      new Promise<{ width: number; height: number }>((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve({ width: image.naturalWidth, height: image.naturalHeight });
+        image.onerror = () => reject(new Error("The social card did not load"));
+        image.src = "/og.png";
+      }),
+  );
+  expect(socialCard).toEqual({ width: 1200, height: 630 });
 });
 
-test("JSON-LD schema.org graph exposes Organization, WebSite, WebPage, MAAX Studio", async ({ page }) => {
+test("JSON-LD schema.org graph exposes Organization, WebSite, WebPage, MAAX Studio", async ({
+  page,
+}) => {
   await page.goto("/", { waitUntil: "networkidle" });
   const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
   expect(blocks.length).toBeGreaterThan(0);

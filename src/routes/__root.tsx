@@ -10,7 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { reportClientError } from "../lib/client-error-reporting";
 import { initWebVitals } from "../lib/web-vitals";
 import { syncCopyVariantToDocument } from "../lib/copy-variant";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
@@ -42,7 +42,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    reportClientError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (
@@ -81,20 +81,39 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { httpEquiv: "Cache-Control", content: "no-store, no-cache, must-revalidate" },
-      { httpEquiv: "Pragma", content: "no-cache" },
-      { title: "Cyryx Labs — AI Execution Systems" },
-      { name: "description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Cyryx Labs — AI Execution Systems" },
-      { property: "og:description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
+      { title: "Cyryx Labs — The execution layer for enterprise AI" },
+      {
+        name: "description",
+        content:
+          "Cyryx Labs advises, builds, and operates digital and AI systems for organizations moving from strategy to controlled execution.",
+      },
+      { name: "author", content: "Cyryx Labs" },
+      { property: "og:title", content: "Cyryx Labs — The execution layer for enterprise AI" },
+      {
+        property: "og:description",
+        content:
+          "Advisory, digital systems, AI products, and operational infrastructure engineered for controlled execution.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Cyryx Labs — AI Execution Systems" },
-      { name: "twitter:description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/pqDYh1E7STSD3pG3DZTBMfMwqsS2/social-images/social-1782497606213-ChatGPT_Image_Jun_25,_2026,_08_57_05_PM.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/pqDYh1E7STSD3pG3DZTBMfMwqsS2/social-images/social-1782497606213-ChatGPT_Image_Jun_25,_2026,_08_57_05_PM.webp" },
+      { property: "og:image", content: "https://cyryxlabs.com/og.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "Cyryx Labs — The execution layer for enterprise AI",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Cyryx Labs — The execution layer for enterprise AI" },
+      {
+        name: "twitter:description",
+        content:
+          "Advisory, digital systems, AI products, and operational infrastructure for controlled execution.",
+      },
+      { name: "twitter:image", content: "https://cyryxlabs.com/og.png" },
+      {
+        name: "twitter:image:alt",
+        content: "Cyryx Labs — The execution layer for enterprise AI",
+      },
     ],
     links: [
       {
@@ -115,11 +134,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "preload",
         as: "style",
-        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500&family=Orbitron:wght@500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@600;700&display=swap",
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500&family=Orbitron:wght@500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@600;700&display=swap",
       },
     ],
   }),

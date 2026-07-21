@@ -32,8 +32,9 @@ export const Route = createFileRoute("/api/public/cta-events")({
         if (!parsed.success) {
           return new Response("Invalid payload", { status: 400, headers: CORS });
         }
-        const url = process.env.SUPABASE_URL;
-        const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+        const url = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
+        const key =
+          process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
         if (!url || !key) {
           return new Response("Backend unavailable", { status: 503, headers: CORS });
         }

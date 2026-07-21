@@ -1,4 +1,3 @@
-import markAsset from "@/assets/cyryx-mark.png.asset.json";
 import wordmarkAsset from "@/assets/cyryx-logo-n2.png.asset.json";
 
 /**
@@ -9,10 +8,14 @@ export function CyryxMark({
   size = 28,
   className = "",
   priority = false,
-}: { size?: number; className?: string; priority?: boolean }) {
+}: {
+  size?: number;
+  className?: string;
+  priority?: boolean;
+}) {
   return (
     <img
-      src={markAsset.url}
+      src="/favicon.ico"
       width={size}
       height={size}
       alt=""
@@ -31,7 +34,10 @@ export function CyryxMark({
 export function CyryxWordmark({
   className = "",
   priority = false,
-}: { className?: string; priority?: boolean }) {
+}: {
+  className?: string;
+  priority?: boolean;
+}) {
   return (
     <img
       src={wordmarkAsset.url}

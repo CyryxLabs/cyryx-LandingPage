@@ -1,23 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StubPage } from "@/components/cyryx/StubPage";
+import { ContactPage } from "@/components/cyryx/enterprise/EnterprisePages";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact — Cyryx Labs" },
-      { name: "description", content: "Start a project with Cyryx Labs. Build AI products, automate workflows, and operationalize execution." },
+      {
+        name: "description",
+        content:
+          "Contact Cyryx Labs for company, product, research, privacy, talent, or project inquiries.",
+      },
       { property: "og:title", content: "Contact — Cyryx Labs" },
       { property: "og:description", content: "Start a project with Cyryx Labs." },
-      { property: "og:url", content: "/contact" },
+      { property: "og:url", content: "https://cyryxlabs.com/contact" },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: "https://cyryxlabs.com/contact" }],
   }),
-  component: () => (
-    <StubPage
-      eyebrow="Start a Project"
-      title="Let's build your AI system."
-      description="Use the inquiry form on the homepage to share your project scope, timeline, and outcome. A dedicated contact experience is coming soon — for now we read every inquiry submitted from the Cyryx Labs homepage."
-      status="Inquiries Open"
-    />
-  ),
+  component: ContactPage,
 });
