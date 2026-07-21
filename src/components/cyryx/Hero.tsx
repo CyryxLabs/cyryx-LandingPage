@@ -37,7 +37,10 @@ export function Hero() {
       ([entry]) => {
         const v = videoRef.current;
         if (entry.isIntersecting) {
-          v?.play().catch(() => {});
+          if (v?.readyState && v.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+            setVideoReady(true);
+          }
+          v?.play().then(() => setVideoReady(true)).catch(() => {});
         } else {
           v?.pause();
         }
@@ -108,6 +111,8 @@ export function Hero() {
             disablePictureInPicture
             disableRemotePlayback
             onLoadedData={() => setVideoReady(true)}
+            onCanPlay={() => setVideoReady(true)}
+            onPlaying={() => setVideoReady(true)}
             aria-hidden="true"
             data-no3d="1"
             data-hero-video
