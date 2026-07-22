@@ -11,6 +11,7 @@ export type CtaName =
   | "request_early_access"
   | "request_maax_access"
   | "explore_maax"
+  | "see_delivery"
   | "careers_talent_network"
   | "careers_email"
   | "talent_network_signup"
@@ -27,6 +28,7 @@ export type CtaSection =
   | "sticky"
   | "maax_spotlight"
   | "final_cta"
+  | "paths"
   | "solutions"
   | "careers"
   | "footer"
@@ -60,10 +62,7 @@ export function trackCta({ cta, section, href, metadata }: TrackCtaInput): void 
     });
     const ok =
       typeof navigator.sendBeacon === "function" &&
-      navigator.sendBeacon(
-        ENDPOINT,
-        new Blob([body], { type: "application/json" }),
-      );
+      navigator.sendBeacon(ENDPOINT, new Blob([body], { type: "application/json" }));
     if (!ok) {
       void fetch(ENDPOINT, {
         method: "POST",

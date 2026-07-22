@@ -4,10 +4,7 @@ import { ArrowRight, Download, ExternalLink } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { PUBLICATIONS, type PublicationCategory } from "@/data/publications";
-import {
-  buildBreadcrumbJsonLd,
-  jsonLdScript,
-} from "@/components/cyryx/seo/seo";
+import { buildBreadcrumbJsonLd, jsonLdScript } from "@/components/cyryx/seo/seo";
 
 export const Route = createFileRoute("/research/")({
   head: () => ({
@@ -64,7 +61,7 @@ function ResearchHub() {
           <p className="font-[Inter] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#0E5B57]">
             Cyryx Labs · Applied Research
           </p>
-          <h1 className="mt-4 font-[Orbitron] text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+          <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-[-0.03em] text-white sm:text-4xl lg:text-5xl">
             Research &amp; Publications
           </h1>
           <p className="mt-4 max-w-2xl font-[Inter] text-base leading-relaxed text-[#C7C9CC]">
@@ -135,7 +132,7 @@ function PublicationCard({ pub }: { pub: (typeof PUBLICATIONS)[number] }) {
         </span>
       </div>
 
-      <h2 className="mt-4 font-[Orbitron] text-base font-semibold leading-snug text-white">
+      <h2 className="mt-4 font-display text-base font-semibold leading-snug text-white">
         {pub.title}
       </h2>
 

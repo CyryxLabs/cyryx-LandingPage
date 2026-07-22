@@ -28,12 +28,14 @@ export function ContactSection() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [messageLen, setMessageLen] = useState(0);
   const [consent, setConsent] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const [interest, setInterest] = useState<ContactInterest>("project");
   const successRef = useRef<HTMLDivElement | null>(null);
 
   // Preselect the interest when a CTA (e.g. "Request Early Access") sent the
   // visitor here — via sessionStorage on mount, via window event afterwards.
   useEffect(() => {
+    setHydrated(true);
     const stored = getContactIntent();
     if (stored) setInterest(stored);
     const onIntent = (e: Event) => {
@@ -80,7 +82,7 @@ export function ContactSection() {
       (e.target as HTMLFormElement).reset();
       setMessageLen(0);
       setConsent(false);
-      toast.success("Message sent — we'll reply within 24h.");
+      toast.success("Message sent — we'll review it and follow up.");
       requestAnimationFrame(() => {
         successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       });
@@ -93,15 +95,17 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="relative py-14 sm:py-20 lg:py-32">
-      <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-10">
+    <section id="contact" className="relative py-24 sm:py-32 lg:py-40">
+      <div className="mx-auto max-w-3xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal text-center">
-          <HudLabel withDot>Contact</HudLabel>
-          <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] text-silver-gradient">
-            Tell us what <span style={{ color: "var(--accent-glow)" }}>you're building.</span>
+          <HudLabel withDot>Start with the business constraint</HudLabel>
+          <h2 className="mt-7 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
+            Find out whether the opportunity is worth building.
           </h2>
-          <p className="mt-4 text-[15px] sm:text-base text-[var(--silver-dim)]">
-            We'll tell you whether we can help, and how. We typically reply within 24h.
+          <p className="mx-auto mt-7 max-w-2xl text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base">
+            Describe the workflow, product opportunity, or operational constraint. We will respond
+            with fit, the clearest next step, or a direct no — before anyone commits to the wrong
+            build.
           </p>
         </div>
 
@@ -109,7 +113,7 @@ export function ContactSection() {
           {status === "success" ? (
             <div ref={successRef} className="flex flex-col items-center gap-3 py-10 text-center">
               <CheckCircle2 className="h-10 w-10 text-[var(--accent-glow)]" />
-              <h3 className="font-display text-xl uppercase text-[var(--silver)]">Message received</h3>
+              <h3 className="font-display text-xl text-[var(--silver)]">Message received</h3>
               <p className="text-sm text-[var(--silver-dim)]">
                 Thanks — we'll be in touch shortly.
               </p>
@@ -135,13 +139,7 @@ export function ContactSection() {
               {/* Honeypot — visually hidden, off-screen, autocomplete off. */}
               <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
                 <label htmlFor="website">Leave this field empty</label>
-                <input
-                  id="website"
-                  type="text"
-                  name="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
+                <input id="website" type="text" name="website" tabIndex={-1} autoComplete="off" />
               </div>
 
               <Field
@@ -160,7 +158,7 @@ export function ContactSection() {
                 type="email"
                 inputMode="email"
                 placeholder="you@company.com"
-                help="We'll reply here within 24h."
+                help="We'll use this address to follow up on your inquiry."
                 error={errors.email}
                 autoComplete="email"
                 onValidate={validateField}
@@ -228,6 +226,7 @@ export function ContactSection() {
                     id="consent"
                     name="consent"
                     type="checkbox"
+                    disabled={!hydrated}
                     checked={consent}
                     onChange={(e) => {
                       setConsent(e.currentTarget.checked);
@@ -241,8 +240,7 @@ export function ContactSection() {
                     className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-[color-mix(in_oklab,var(--silver)_30%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_55%,transparent)] accent-[var(--accent-glow)] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)]"
                   />
                   <span>
-                    I agree to be contacted by Cyryx Labs about this inquiry and
-                    acknowledge the{" "}
+                    I agree to be contacted by Cyryx Labs about this inquiry and acknowledge the{" "}
                     <a
                       href="/privacy"
                       target="_blank"
@@ -277,8 +275,8 @@ export function ContactSection() {
 
               <button
                 type="submit"
-                disabled={status === "loading" || !consent}
-                aria-disabled={status === "loading" || !consent}
+                disabled={!hydrated || status === "loading" || !consent}
+                aria-disabled={!hydrated || status === "loading" || !consent}
                 title={!consent ? "Accept the Privacy Policy to enable sending" : undefined}
                 className="cx-btn cx-cta cx-cta-primary cx-liquid-glass mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md px-6 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] sm:w-auto sm:self-start"
               >
@@ -300,9 +298,7 @@ export function ContactSection() {
   );
 
   function validateField(name: keyof Errors, value: string) {
-    const schema = (
-      FormSchema.shape as Record<string, z.ZodTypeAny>
-    )[name as string];
+    const schema = (FormSchema.shape as Record<string, z.ZodTypeAny>)[name as string];
     if (!schema) return;
     const r = schema.safeParse(value);
     setErrors((prev) => ({
@@ -353,9 +349,7 @@ function Field({
     ? "border-[color-mix(in_oklab,var(--destructive,#ef4444)_60%,transparent)] focus:ring-[color-mix(in_oklab,var(--destructive,#ef4444)_35%,transparent)]"
     : "border-[color-mix(in_oklab,var(--silver)_14%,transparent)]";
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const v = e.currentTarget.value;
     onInputChange?.(v);
     if (liveValidate) onValidate?.(name, v);
@@ -364,10 +358,7 @@ function Field({
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-baseline justify-between gap-3">
-        <label
-          htmlFor={name}
-          className="hud-label text-[var(--silver)]"
-        >
+        <label htmlFor={name} className="hud-label text-[var(--silver)]">
           {label}
         </label>
         {optional && (

@@ -10,22 +10,16 @@ import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
 import { ContactSection } from "@/components/cyryx/ContactSection";
 import { Problem } from "@/components/cyryx/v4/Problem";
 import { WhatWeBuild } from "@/components/cyryx/v4/WhatWeBuild";
-import { Solutions } from "@/components/cyryx/v4/Solutions";
-import { EngagementModel } from "@/components/cyryx/v4/EngagementModel";
 import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
-import { WhoWeWorkWith } from "@/components/cyryx/v4/WhoWeWorkWith";
-import { WhyCyryxV4 } from "@/components/cyryx/v4/WhyCyryxV4";
-import { ResearchBand } from "@/components/cyryx/v4/ResearchBand";
-import { FinalCTA } from "@/components/cyryx/v4/FinalCTA";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
 import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
 import brandMark from "@/assets/cyryx-brand-mark.png";
 
 const HOME_URL = "https://cyryxlabs.com/";
-const HOME_TITLE = "Cyryx Labs — AI Products and Execution Systems for the Agentic Era";
+const HOME_TITLE = "Cyryx Labs — AI Systems Your Business Can Run";
 const HOME_DESCRIPTION =
-  "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from scattered AI experiments to structured, auditable operations.";
+  "Cyryx Labs takes high-value AI initiatives from strategy to production, building governed products and workflows that teams can operate and own.";
 const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
 
 export const Route = createFileRoute("/")({
@@ -61,109 +55,109 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@graph": [
-                    {
-                              "@type": "Organization",
-                              "@id": "https://cyryxlabs.com/#organization",
-                              "name": "Cyryx Labs",
-                              "legalName": "Cyryx Labs",
-                              "alternateName": [
-                                        "Cyryx",
-                                        "Cyryx AI"
-                              ],
-                              "url": "https://cyryxlabs.com/",
-                              "description": "Cyryx Labs is an AI product and systems company building proprietary AI products, governed agentic workflow systems, and execution infrastructure.",
-                              "slogan": "The execution layer for enterprise AI.",
-                              "foundingDate": "2024",
-                              "industry": "Artificial Intelligence",
-                              "areaServed": "Worldwide",
-                              "email": "contact@cyryxlabs.com",
-                              "sameAs": [
-                                        "https://www.linkedin.com/company/cyryx-labs",
-                                        "https://x.com/cyryxlabs",
-                                        "https://github.com/cyryxlabs"
-                              ],
-                              "makesOffer": [
-                                        {
-                                                  "@type": "Offer",
-                                                  "name": "MAAX Studio",
-                                                  "itemOffered": {
-                                                            "@id": "https://cyryxlabs.com/#maax-studio"
-                                                  }
-                                        }
-                              ],
-                              "knowsAbout": [
-                                        "Operational AI",
-                                        "Agentic workflow systems",
-                                        "AI execution infrastructure",
-                                        "Governed autonomy",
-                                        "MAAX Studio",
-                                        "Proprietary AI products"
-                              ],
-                              "logo": {
-                                        "@type": "ImageObject",
-                                        "url": new URL(brandMark, HOME_URL).href,
-                                        "width": "320",
-                                        "height": "512"
-                              }
-                    },
-                    {
-                              "@type": "WebSite",
-                              "@id": "https://cyryxlabs.com/#website",
-                              "url": "https://cyryxlabs.com/",
-                              "name": "Cyryx Labs",
-                              "publisher": {
-                                        "@id": "https://cyryxlabs.com/#organization"
-                              }
-                    },
-                    {
-                              "@type": "WebPage",
-                              "@id": "https://cyryxlabs.com/#webpage",
-                              "url": "https://cyryxlabs.com/",
-                              "name": "Cyryx Labs — AI Products and Execution Systems for the Agentic Era",
-                              "isPartOf": {
-                                        "@id": "https://cyryxlabs.com/#website"
-                              },
-                              "about": {
-                                        "@id": "https://cyryxlabs.com/#organization"
-                              },
-                              "description": "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams operationalizing AI."
-                    },
-                    {
-                              "@type": "SoftwareApplication",
-                              "@id": "https://cyryxlabs.com/#maax-studio",
-                              "name": "MAAX Studio",
-                              "applicationCategory": "DeveloperApplication",
-                              "applicationSubCategory": "Agentic Execution Environment",
-                              "operatingSystem": "macOS, Windows, Linux",
-                              "featureList": [
-                                        "Mission-based execution",
-                                        "Project memory",
-                                        "Command Gates",
-                                        "Mission Ledger",
-                                        "Cost visibility"
-                              ],
-                              "audience": {
-                                        "@type": "Audience",
-                                        "audienceType": "AI-native builders"
-                              },
-                              "creator": {
-                                        "@id": "https://cyryxlabs.com/#organization"
-                              },
-                              "publisher": {
-                                        "@id": "https://cyryxlabs.com/#organization"
-                              },
-                              "description": "MAAX Studio is a local-first agentic software execution environment engineered for governed autonomy.",
-                              "brand": {
-                                        "@id": "https://cyryxlabs.com/#organization"
-                              },
-                              "offers": {
-                                        "@type": "Offer",
-                                        "availability": "https://schema.org/PreOrder",
-                                        "price": "0",
-                                        "priceCurrency": "USD"
-                              }
-                    }
-          ]
+            {
+              "@type": "Organization",
+              "@id": "https://cyryxlabs.com/#organization",
+              name: "Cyryx Labs",
+              legalName: "Cyryx Labs",
+              alternateName: ["Cyryx", "Cyryx AI"],
+              url: "https://cyryxlabs.com/",
+              description:
+                "Cyryx Labs is an AI product and systems company building proprietary AI products, governed agentic workflow systems, and execution infrastructure.",
+              slogan: "The command layer for AI-native builders.",
+              foundingDate: "2024",
+              industry: "Artificial Intelligence",
+              areaServed: "Worldwide",
+              email: "contact@cyryxlabs.com",
+              sameAs: [
+                "https://www.linkedin.com/company/cyryx-labs",
+                "https://x.com/cyryxlabs",
+                "https://github.com/cyryxlabs",
+              ],
+              makesOffer: [
+                {
+                  "@type": "Offer",
+                  name: "MAAX Studio",
+                  itemOffered: {
+                    "@id": "https://cyryxlabs.com/#maax-studio",
+                  },
+                },
+              ],
+              knowsAbout: [
+                "Operational AI",
+                "Agentic workflow systems",
+                "AI execution infrastructure",
+                "Governed autonomy",
+                "MAAX Studio",
+                "Proprietary AI products",
+              ],
+              logo: {
+                "@type": "ImageObject",
+                url: new URL(brandMark, HOME_URL).href,
+                width: "320",
+                height: "512",
+              },
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://cyryxlabs.com/#website",
+              url: "https://cyryxlabs.com/",
+              name: "Cyryx Labs",
+              publisher: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://cyryxlabs.com/#webpage",
+              url: "https://cyryxlabs.com/",
+              name: "Cyryx Labs — AI Systems Your Business Can Run",
+              isPartOf: {
+                "@id": "https://cyryxlabs.com/#website",
+              },
+              about: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
+              description:
+                "Cyryx Labs takes AI initiatives from strategy to production, building governed products and workflow systems that client teams can operate and own.",
+            },
+            {
+              "@type": "SoftwareApplication",
+              "@id": "https://cyryxlabs.com/#maax-studio",
+              name: "MAAX Studio",
+              applicationCategory: "DeveloperApplication",
+              applicationSubCategory: "Agentic Execution Environment",
+              operatingSystem: "macOS, Windows, Linux",
+              featureList: [
+                "Mission-based execution",
+                "Project memory",
+                "Command Gates",
+                "Mission Ledger",
+                "Cost visibility",
+              ],
+              audience: {
+                "@type": "Audience",
+                audienceType: "AI-native builders",
+              },
+              creator: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
+              publisher: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
+              description:
+                "MAAX Studio is a local-first agentic software execution environment engineered for governed autonomy.",
+              brand: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
+              offers: {
+                "@type": "Offer",
+                availability: "https://schema.org/PreOrder",
+                price: "0",
+                priceCurrency: "USD",
+              },
+            },
+          ],
         }),
       },
     ],
@@ -198,19 +192,12 @@ function IndexPage() {
       <StickyMobileCTA />
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
-
         <Hero />
         <Problem />
-        <MAAXStudioSpotlight />
         <WhatWeBuild />
-        <Solutions />
-        <EngagementModel />
+        <MAAXStudioSpotlight />
         <SecurityPosture />
-        <WhoWeWorkWith />
-        <WhyCyryxV4 />
-        <ResearchBand />
         <ContactSection />
-        <FinalCTA />
       </main>
       <Footer />
     </div>

@@ -1,6 +1,5 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { HudLabel } from "./primitives/HudLabel";
-import { GlassPanel } from "./primitives/GlassPanel";
 import maaxDevices from "@/assets/cyryx-maax-devices-1200.jpg";
 import maaxDevices480Jpg from "@/assets/cyryx-maax-devices-480.jpg";
 import maaxDevices800Jpg from "@/assets/cyryx-maax-devices-800.jpg";
@@ -9,91 +8,145 @@ import maaxDevices480Webp from "@/assets/cyryx-maax-devices-480.webp";
 import maaxDevices800Webp from "@/assets/cyryx-maax-devices-800.webp";
 import maaxDevices1200Webp from "@/assets/cyryx-maax-devices-1200.webp";
 import maaxLogo from "@/assets/cyryx-maax-visual.png.asset.json";
-import { useCopyVariant } from "@/lib/copy-variant";
-import { getCopy } from "@/copy";
-import { trackCta } from "@/lib/track-cta";
+import { HudLabel } from "./primitives/HudLabel";
 import { setContactIntent } from "@/lib/contact-intent";
+import { trackCta } from "@/lib/track-cta";
 
-const PILLARS: { title: string; body: string }[] = [
-  { title: "Mission-based execution", body: "Work runs as governed missions with explicit completion criteria." },
-  { title: "Project memory", body: "Context that compounds across a project's life — not reset every session." },
-  { title: "Command Gates", body: "Quality, security, and cost gates before changes land. Default-fail." },
-  { title: "Mission Ledger", body: "An auditable record of agent activity: actions, authority, cost." },
-  { title: "Human authority", body: "Autonomy is granted, bounded, and revocable — never assumed." },
+const PRODUCT_LAYERS = [
+  {
+    n: "01",
+    title: "Ground",
+    body: "Soul Kernel and Atlas Graph assemble identity, project memory, source context, and operating constraints around the mission.",
+    signals: ["Soul Kernel", "Atlas Graph"],
+  },
+  {
+    n: "02",
+    title: "Execute",
+    body: "Command Units run the Mission Loop while quality, security, cost, and human-approval gates control what can advance.",
+    signals: ["Command Units", "Mission Loop", "Command Gates"],
+  },
+  {
+    n: "03",
+    title: "Account",
+    body: "Mission Ledger and Margin Governor preserve attribution, execution history, and cost visibility as the work compounds.",
+    signals: ["Mission Ledger", "Margin Governor"],
+  },
 ];
 
 function ProductPreview() {
   return (
-    <GlassPanel glow className="overflow-hidden p-2 sm:p-3" data-macbook-figure>
+    <figure
+      data-maax-visual
+      className="relative overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[var(--obsidian)] shadow-[0_32px_100px_-48px_rgba(0,0,0,0.95)]"
+    >
       <picture>
         <source
           type="image/webp"
           srcSet={`${maaxDevices480Webp} 480w, ${maaxDevices800Webp} 800w, ${maaxDevices1200Webp} 1200w`}
-          sizes="(min-width: 1024px) 560px, (min-width: 640px) 90vw, 100vw"
+          sizes="(min-width: 1024px) 54vw, 100vw"
         />
         <img
           src={maaxDevices}
           srcSet={`${maaxDevices480Jpg} 480w, ${maaxDevices800Jpg} 800w, ${maaxDevices1200Jpg} 1200w`}
-          sizes="(min-width: 1024px) 560px, (min-width: 640px) 90vw, 100vw"
-          alt="MAAX Studio agentic IDE shown on an external monitor and MacBook side by side"
+          sizes="(min-width: 1024px) 54vw, 100vw"
+          alt="MAAX Studio agentic IDE on a desktop monitor and laptop"
           width={1200}
           height={896}
           loading="lazy"
           decoding="async"
-          className="block h-auto w-full rounded-md object-contain"
+          className="block aspect-[4/3] h-auto w-full object-cover"
         />
       </picture>
-    </GlassPanel>
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-t from-[var(--onyx)]/80 via-transparent to-transparent"
+      />
+      <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 border-t border-white/10 bg-[color-mix(in_oklab,var(--onyx)_78%,transparent)] px-4 py-3 backdrop-blur-md sm:px-5">
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--silver)]">
+          MAAX Studio / Product preview
+        </span>
+        <span className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
+          <span className="h-1.5 w-1.5 rounded-full bg-current shadow-[0_0_10px_currentColor]" />{" "}
+          Active development
+        </span>
+      </figcaption>
+    </figure>
   );
 }
 
 export function MAAXStudioSpotlight() {
-  const copy = getCopy(useCopyVariant()).maaxSpotlight;
   return (
-    <section id="maax" className="relative py-20 sm:py-28 lg:py-40 bg-[var(--graphite)]">
+    <section
+      id="maax"
+      className="relative overflow-hidden bg-[var(--graphite)] py-24 sm:py-32 lg:py-44"
+    >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{ background: "var(--gradient-radial-teal)" }}
+        className="absolute inset-x-0 top-0 h-px bg-[color-mix(in_oklab,var(--accent-glow)_22%,transparent)]"
       />
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
-          <div className="cx-reveal">
-            <HudLabel withDot>{copy.eyebrow}</HudLabel>
-            <img
-              src={maaxLogo.url}
-              alt="MAAX Studio logo"
-              width={1794}
-              height={222}
-              loading="lazy"
-              decoding="async"
-              className="mt-5 block w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[520px] h-auto object-contain"
-            />
-            <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold uppercase leading-[1.05] tracking-tight text-silver-gradient">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+        <div className="cx-reveal max-w-4xl">
+          <HudLabel withDot>Flagship product / In active development</HudLabel>
+          <img
+            src={maaxLogo.url}
+            alt="MAAX Studio"
+            width={1794}
+            height={222}
+            loading="lazy"
+            decoding="async"
+            className="mt-7 block h-auto w-full max-w-[320px] object-contain sm:max-w-[440px]"
+          />
+          <h2 className="mt-8 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
             The agentic execution OS for AI-native builders.
-            </h2>
-            <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-[var(--silver-dim)]">
-              A local-first agentic execution environment: autonomous agents
-              under explicit human command, with governance built into the
-              MAAX Runtime — not layered on top.
-            </p>
-            <ul className="mt-7 space-y-4">
-              {PILLARS.map((p) => (
-                <li key={p.title} className="text-sm text-[var(--silver)]">
-                  <span className="font-display uppercase tracking-[0.08em] text-[var(--silver)]">
-                    {p.title}.
-                  </span>{" "}
-                  <span className="text-[var(--silver-dim)]">{p.body}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-glow)]">
-              MAAX Studio is in active development. Early access opens to a limited cohort.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+          </h2>
+          <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+            MAAX Studio turns goals into governed missions. Agents can plan, build, verify, and
+            preserve context — while humans retain explicit authority over scope, risk, and cost.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-20">
+          <div className="cx-reveal lg:sticky lg:top-28">
+            <ProductPreview />
+          </div>
+
+          <div className="cx-stagger">
+            {PRODUCT_LAYERS.map((layer) => (
+              <article
+                key={layer.n}
+                data-maax-step
+                className="cx-stagger-item border-t border-[color-mix(in_oklab,var(--steel)_18%,transparent)] py-9 first:pt-0 lg:py-11"
+              >
+                <div className="flex items-baseline gap-4">
+                  <span className="font-mono text-[10px] tracking-[0.24em] text-[var(--accent-glow)]">
+                    {layer.n}
+                  </span>
+                  <h3 className="font-display text-2xl font-medium tracking-[-0.025em] text-[var(--silver)] sm:text-3xl">
+                    {layer.title}
+                  </h3>
+                </div>
+                <p className="mt-4 text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base">
+                  {layer.body}
+                </p>
+                <ul
+                  className="mt-5 flex flex-wrap gap-2"
+                  aria-label={`${layer.title} architecture components`}
+                >
+                  {layer.signals.map((signal) => (
+                    <li
+                      key={signal}
+                      className="rounded-sm border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]"
+                    >
+                      {signal}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+
+            <div className="cx-reveal mt-4 flex flex-col gap-3 sm:flex-row">
               <a
                 href="#contact"
-                aria-label={`${copy.cta} — open contact form`}
                 onClick={() => {
                   setContactIntent("maax-early-access");
                   trackCta({
@@ -102,16 +155,17 @@ export function MAAXStudioSpotlight() {
                     href: "#contact",
                   });
                 }}
-                className="inline-flex h-12 items-center gap-2 rounded-md bg-[var(--accent-glow)] px-6 hud-label text-[var(--onyx)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--graphite)]"
               >
-                {copy.cta}
-                <ArrowRight className="h-4 w-4" />
+                Request early access <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
+              <Link
+                to="/products/maax-studio"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_22%,transparent)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+              >
+                Product details <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
             </div>
-          </div>
-
-          <div className="cx-reveal">
-            <ProductPreview />
           </div>
         </div>
       </div>

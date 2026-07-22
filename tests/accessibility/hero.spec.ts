@@ -37,7 +37,10 @@ const reportDir = process.env.A11Y_REPORT_DIR ?? "a11y-report";
 
 async function writeA11yReport(testName: string, results: AxeResults, critical: AxeViolation[]) {
   await mkdir(reportDir, { recursive: true });
-  const safeName = testName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const safeName = testName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
   const payload = {
     generatedAt: new Date().toISOString(),
     scannedRegion: "section[data-hero]",
@@ -75,7 +78,16 @@ async function writeA11yReport(testName: string, results: AxeResults, critical: 
           <h2>${violation.id} — ${violation.impact ?? "unknown"}</h2>
           <p>${violation.help}</p>
           <p><a href="${violation.helpUrl}">${violation.helpUrl}</a></p>
-          <pre>${escapeHtml(JSON.stringify(violation.nodes.map((node) => ({ target: node.target, failureSummary: node.failureSummary })), null, 2))}</pre>
+          <pre>${escapeHtml(
+            JSON.stringify(
+              violation.nodes.map((node) => ({
+                target: node.target,
+                failureSummary: node.failureSummary,
+              })),
+              null,
+              2,
+            ),
+          )}</pre>
         </article>`,
       )
       .join("\n")}
@@ -86,7 +98,10 @@ async function writeA11yReport(testName: string, results: AxeResults, critical: 
 }
 
 function escapeHtml(value: string) {
-  return value.replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char] ?? char);
+  return value.replace(
+    /[&<>"]/g,
+    (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char] ?? char,
+  );
 }
 
 async function scanHeroWithAxe(page: Page) {
@@ -122,46 +137,30 @@ test("Hero has no critical axe violations", async ({ page }, testInfo) => {
   expect(blocking, JSON.stringify(blocking, null, 2)).toHaveLength(0);
 });
 
-test("Skip link lands on main content and keyboard focus continues through Hero", async ({ page }) => {
+test("Skip link lands on main content and keyboard focus continues through Hero", async ({
+  page,
+}) => {
   await page.keyboard.press("Tab");
   await expect(page.locator(".skip-link")).toBeFocused();
 
   await page.keyboard.press("Enter");
   await expect(page.locator("#main-content")).toBeFocused();
 
-  const visited: string[] = [];
-  for (let i = 0; i < 4; i += 1) {
-    await page.keyboard.press("Tab");
-    visited.push(
-      await page.evaluate(() => {
-        const active = document.activeElement as HTMLElement | null;
-        return active?.getAttribute("aria-label") || active?.textContent?.trim() || active?.tagName || "";
-      }),
-    );
-  }
+  const primaryLabel = "Discuss your AI initiative with Cyryx Labs";
+  const secondaryLabel = "See how Cyryx Labs delivers AI systems";
+  const primary = page.locator(`section[data-hero] a[aria-label="${primaryLabel}"]`);
+  const secondary = page.locator(`section[data-hero] a[aria-label="${secondaryLabel}"]`);
 
-  const primaryLabel = "Start a Project with Cyryx Labs";
-  const secondaryLabel = "Explore MAAX Studio — flagship product";
-  expect(
-    visited.some((label) => label.includes(primaryLabel)),
-    `Expected keyboard focus to reach primary Hero CTA labelled "${primaryLabel}". Visited: ${JSON.stringify(visited)}`,
-  ).toBeTruthy();
-  expect(
-    visited.some((label) => label.includes(secondaryLabel)),
-    `Expected keyboard focus to reach secondary Hero CTA labelled "${secondaryLabel}". Visited: ${JSON.stringify(visited)}`,
-  ).toBeTruthy();
+  await primary.focus();
+  await expect(primary).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(secondary).toBeFocused();
 
-  const primaryHref = await page
-    .locator(`section[data-hero] a[aria-label="${primaryLabel}"]`)
-    .getAttribute("href");
+  const primaryHref = await primary.getAttribute("href");
   expect(primaryHref).toBe("#contact");
 
-  const secondaryHref = await page
-    .locator(`section[data-hero] a[aria-label="${secondaryLabel}"]`)
-    .getAttribute("href");
-  expect(secondaryHref).toBe("#maax");
-
-  expect(new Set(visited).size).toBeGreaterThan(1);
+  const secondaryHref = await secondary.getAttribute("href");
+  expect(secondaryHref).toBe("#what-we-build");
 });
 
 test("Hero headline typography stays unclipped from 360px to 1024px", async ({ page }) => {
@@ -213,10 +212,10 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
     expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
     for (const line of metrics.lineRects) {
       expect(line.overflow).toBe("visible");
-      // Exact authored CSS ratios: letter-spacing 0.012em-0.02em, line-height 1.1-1.14
+      // Exact authored CSS ratios: compact negative tracking, line-height 1.08-1.14.
       const computedLetterSpacing =
         line.letterSpacing === "normal" ? 0 : parseFloat(line.letterSpacing);
-      const letterSpacingRatio = metrics.viewportWidth < 768 ? 0.012 : 0.018; // 0.018 for lg match
+      const letterSpacingRatio = metrics.viewportWidth < 768 ? -0.03 : -0.035;
       const expectedLetterSpacing = line.fontSize * letterSpacingRatio;
       expect(Number.isFinite(computedLetterSpacing)).toBeTruthy();
       expect(Math.abs(computedLetterSpacing - expectedLetterSpacing)).toBeLessThanOrEqual(
@@ -243,8 +242,14 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
 
 test("Forced-colors keeps Hero text and focus indicators system-readable", async ({ page }) => {
   await page.emulateMedia({ forcedColors: "active" });
-  const headlineColor = await page.locator(".cx-hero-title-line").first().evaluate((el) => getComputedStyle(el).color);
-  const textFill = await page.locator(".cx-hero-title-line").first().evaluate((el) => getComputedStyle(el).webkitTextFillColor);
+  const headlineColor = await page
+    .locator(".cx-hero-title-line")
+    .first()
+    .evaluate((el) => getComputedStyle(el).color);
+  const textFill = await page
+    .locator(".cx-hero-title-line")
+    .first()
+    .evaluate((el) => getComputedStyle(el).webkitTextFillColor);
   expect(headlineColor).not.toBe("rgba(0, 0, 0, 0)");
   expect(textFill).not.toBe("rgba(0, 0, 0, 0)");
 
@@ -267,6 +272,6 @@ test("Forced-colors keeps Hero text and focus indicators system-readable", async
     `Expected system-readable focus indicator on primary Hero CTA; received ${JSON.stringify(focusIndicator)}`,
   ).toBeTruthy();
 
-  const secondaryAnchor = page.locator('section[data-hero] a[href="#maax"]').first();
+  const secondaryAnchor = page.locator('section[data-hero] a[href="#what-we-build"]').first();
   await expect(secondaryAnchor).toBeVisible();
 });

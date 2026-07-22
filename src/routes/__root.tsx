@@ -108,23 +108,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "preload",
         as: "style",
-        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600..700&family=Inter:wght@400..500&family=Orbitron:wght@500..700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
         crossOrigin: "anonymous",
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600..700&family=Inter:wght@400..500&family=Orbitron:wght@500..700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
         crossOrigin: "anonymous",
       },
-      // Preload the two hero-critical font files (Inter Tight 700 + Inter 400, latin subset).
-      // These gstatic URLs are content-addressed and stable across cache invalidations.
-      {
-        rel: "preload",
-        as: "font",
-        type: "font/woff2",
-        href: "https://fonts.gstatic.com/s/intertight/v11/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjDw-qXCBFwuXzk6OjrbCe.woff2",
-        crossOrigin: "anonymous",
-      },
+      // Inter's body face is preloaded; Space Grotesk is discovered by the
+      // stylesheet so the display family can evolve without a stale font URL.
       {
         rel: "preload",
         as: "font",
@@ -171,13 +164,12 @@ function RootShell({ children }: { children: ReactNode }) {
               "window.process=window.process||{};window.process.env=Object.assign({TSS_SERVER_FN_BASE:'/_serverFn',NODE_ENV:'production'},window.process.env||{});",
           }}
         />
-        {/* Always open new page loads at the very top. Disables the browser's
-            automatic scroll restoration and strips any hash from the URL so a
-            shared/refreshed `/#contact` link doesn't auto-jump to the form. */}
+        {/* Keep reload behavior deterministic without breaking deep links such
+            as /#contact or /#maax. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var h=window.location.hash;if(h){history.replaceState(null,'',window.location.pathname+window.location.search);}window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});}catch(e){}})();",
+              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}if(!window.location.hash){window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});}}catch(e){}})();",
           }}
         />
         {/* Subdomain routing: workspace.<domain> serves the internal console.

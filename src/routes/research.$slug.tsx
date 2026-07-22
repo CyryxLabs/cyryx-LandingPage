@@ -1,6 +1,18 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Download, ExternalLink, Github, Quote, X, Copy, Check, Shield, Scan, Fingerprint } from "lucide-react";
+import {
+  ArrowLeft,
+  Download,
+  ExternalLink,
+  Github,
+  Quote,
+  X,
+  Copy,
+  Check,
+  Shield,
+  Scan,
+  Fingerprint,
+} from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { getPublicationBySlug, type Publication } from "@/data/publications";
@@ -62,7 +74,7 @@ export const Route = createFileRoute("/research/$slug")({
     <div className="min-h-screen bg-[#0A0A0A] text-[#C7C9CC]">
       <Header />
       <main className="mx-auto max-w-3xl px-6 pt-40 text-center">
-        <h1 className="font-[Orbitron] text-2xl text-white">Publication not found</h1>
+        <h1 className="font-display text-2xl text-white">Publication not found</h1>
         <Link to="/research" className="mt-6 inline-block text-[#0E5B57] hover:text-white">
           ← Back to Research
         </Link>
@@ -104,7 +116,8 @@ function PaperHeader({ pub, onCite }: { pub: Publication; onCite: () => void }) 
           to="/research"
           className="inline-flex items-center gap-2 font-[Inter] text-[13px] text-[#9AA3AF] hover:text-white"
         >
-          <ArrowLeft className="h-3.5 w-3.5" /> Research / {pub.version ? `${pub.id.toUpperCase()}` : pub.id}
+          <ArrowLeft className="h-3.5 w-3.5" /> Research /{" "}
+          {pub.version ? `${pub.id.toUpperCase()}` : pub.id}
         </Link>
 
         <div className="mt-6 flex flex-wrap gap-2">
@@ -116,18 +129,27 @@ function PaperHeader({ pub, onCite }: { pub: Publication; onCite: () => void }) 
           </span>
         </div>
 
-        <h1 className="mt-4 font-[Orbitron] text-2xl font-bold leading-tight text-white lg:text-[32px]">
+        <h1 className="mt-4 font-display text-2xl font-semibold leading-tight tracking-[-0.025em] text-white lg:text-[32px]">
           {pub.title}
         </h1>
         <p className="mt-3 font-[Inter] text-base text-[#C7C9CC]">{pub.subtitle}</p>
 
         <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-[Inter] text-[13px] text-[#9AA3AF]">
-          <span>Authors: <span className="text-[#C7C9CC]">{pub.authors.join(", ")}</span></span>
-          <span>Date: <span className="text-[#C7C9CC]">{pub.date}</span></span>
+          <span>
+            Authors: <span className="text-[#C7C9CC]">{pub.authors.join(", ")}</span>
+          </span>
+          <span>
+            Date: <span className="text-[#C7C9CC]">{pub.date}</span>
+          </span>
           {pub.doi && pub.doiUrl && (
             <span>
               DOI:{" "}
-              <a href={pub.doiUrl} target="_blank" rel="noopener noreferrer" className="text-[#0E5B57] hover:text-white">
+              <a
+                href={pub.doiUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#0E5B57] hover:text-white"
+              >
                 {pub.doi}
               </a>
             </span>
@@ -135,7 +157,12 @@ function PaperHeader({ pub, onCite }: { pub: Publication; onCite: () => void }) 
           {pub.conceptDoi && pub.conceptDoiUrl && (
             <span>
               Concept DOI (all versions):{" "}
-              <a href={pub.conceptDoiUrl} target="_blank" rel="noopener noreferrer" className="text-[#0E5B57] hover:text-white">
+              <a
+                href={pub.conceptDoiUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#0E5B57] hover:text-white"
+              >
                 {pub.conceptDoi}
               </a>
             </span>
@@ -143,7 +170,12 @@ function PaperHeader({ pub, onCite }: { pub: Publication; onCite: () => void }) 
           {pub.license && pub.licenseUrl && (
             <span>
               License:{" "}
-              <a href={pub.licenseUrl} target="_blank" rel="noopener noreferrer" className="text-[#0E5B57] hover:text-white">
+              <a
+                href={pub.licenseUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#0E5B57] hover:text-white"
+              >
                 {pub.license}
               </a>
             </span>
@@ -230,28 +262,23 @@ function ThreeGaps() {
     {
       icon: Shield,
       title: "Cascading Failure Prevention",
-      body:
-        "When an agent fails mid-execution, failures propagate silently. CGP enforces rollback checkpoints and gate-failure halts.",
+      body: "When an agent fails mid-execution, failures propagate silently. CGP enforces rollback checkpoints and gate-failure halts.",
     },
     {
       icon: Scan,
       title: "Scope Creep Control",
-      body:
-        "Agents expand their own scope without authorization. CGP enforces explicit scope boundaries that cannot be exceeded implicitly.",
+      body: "Agents expand their own scope without authorization. CGP enforces explicit scope boundaries that cannot be exceeded implicitly.",
     },
     {
       icon: Fingerprint,
       title: "Decision Attribution",
-      body:
-        '"The AI decided" is not auditable. CGP requires operator-level, model-level, and human-level attribution for every consequential decision.',
+      body: '"The AI decided" is not auditable. CGP requires operator-level, model-level, and human-level attribution for every consequential decision.',
     },
   ];
   return (
     <section className="bg-[#121417]">
       <div className="mx-auto max-w-7xl px-6 py-12">
-        <h2 className="font-[Orbitron] text-xl font-semibold text-white">
-          The Three Gaps CGP Fills
-        </h2>
+        <h2 className="font-display text-xl font-semibold text-white">The Three Gaps CGP Fills</h2>
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {items.map(({ icon: Icon, title, body }) => (
             <div
@@ -259,7 +286,7 @@ function ThreeGaps() {
               className="rounded-lg border border-[#1B1E22] border-t-2 border-t-[#0E5B57] bg-[#23272B] p-6"
             >
               <Icon className="h-6 w-6 text-[#0E5B57]" />
-              <h3 className="mt-3 font-[Orbitron] text-base text-white">{title}</h3>
+              <h3 className="mt-3 font-display text-base text-white">{title}</h3>
               <p className="mt-2 font-[Inter] text-sm leading-relaxed text-[#C7C9CC]">{body}</p>
             </div>
           ))}
@@ -275,7 +302,7 @@ function ControlDomains({ pub }: { pub: Publication }) {
   return (
     <section className="bg-[#0A0A0A]">
       <div className="mx-auto max-w-7xl px-6 py-12">
-        <h2 className="font-[Orbitron] text-xl font-semibold text-white">
+        <h2 className="font-display text-xl font-semibold text-white">
           Seven Control Domains · 28 Normative Controls
         </h2>
         <div className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -284,7 +311,7 @@ function ControlDomains({ pub }: { pub: Publication }) {
               key={d.id}
               className="rounded-md border border-[#1B1E22] bg-[#121417] p-4 transition-colors hover:border-[#0E5B57]"
             >
-              <p className="font-[Orbitron] text-[11px] text-[#0E5B57]">{d.id}</p>
+              <p className="font-mono text-[11px] text-[#0E5B57]">{d.id}</p>
               <p className="mt-1 font-[Inter] text-[13px] font-medium text-white">{d.name}</p>
               <p className="mt-1 font-[Inter] text-xs text-[#9AA3AF]">
                 {d.controls} controls · {d.mustControls} MUST
@@ -303,7 +330,7 @@ function FrameworkMappingSection({ pub }: { pub: Publication }) {
   return (
     <section className="bg-[#121417]">
       <div className="mx-auto max-w-7xl px-6 py-12">
-        <h2 className="font-[Orbitron] text-xl font-semibold text-white">
+        <h2 className="font-display text-xl font-semibold text-white">
           Mapping to Existing Frameworks
         </h2>
         <p className="mt-3 font-[Inter] text-sm text-[#C7C9CC]">
@@ -340,11 +367,15 @@ function FrameworkMappingSection({ pub }: { pub: Publication }) {
 function Conformance({ pub }: { pub: Publication }) {
   if (!pub.conformanceLevels) return null;
   const borderTop = (a: string) =>
-    a === "emerald" ? "border-t-[#0E5B57]" : a === "white" ? "border-t-white" : "border-t-[#9AA3AF]";
+    a === "emerald"
+      ? "border-t-[#0E5B57]"
+      : a === "white"
+        ? "border-t-white"
+        : "border-t-[#9AA3AF]";
   return (
     <section className="bg-[#0A0A0A]">
       <div className="mx-auto max-w-7xl px-6 py-12">
-        <h2 className="font-[Orbitron] text-xl font-semibold text-white">Conformance Levels</h2>
+        <h2 className="font-display text-xl font-semibold text-white">Conformance Levels</h2>
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {pub.conformanceLevels.map((c) => (
             <div
@@ -358,7 +389,7 @@ function Conformance({ pub }: { pub: Publication }) {
               >
                 {c.badge}
               </span>
-              <p className="mt-3 font-[Orbitron] text-[13px] text-[#0E5B57]">{c.level}</p>
+              <p className="mt-3 font-mono text-[13px] text-[#0E5B57]">{c.level}</p>
               <p className="mt-1 font-[Inter] text-base font-semibold text-white">{c.name}</p>
               <p className="mt-2 font-[Inter] text-[13px] text-[#C7C9CC]">{c.requirement}</p>
             </div>
@@ -386,14 +417,14 @@ function ReferenceImplementation() {
   return (
     <section className="bg-[#121417]">
       <div className="mx-auto max-w-7xl px-6 py-12">
-        <h2 className="font-[Orbitron] text-xl font-semibold text-white">Reference Implementation</h2>
+        <h2 className="font-display text-xl font-semibold text-white">Reference Implementation</h2>
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
           <div>
             <p className="font-[Inter] text-[15px] leading-relaxed text-[#C7C9CC]">
-              Every control in CGP v1.0 has a reference implementation in MAAX Studio by Cyryx
-              Labs. MAAX Studio is the first IDE built around governed agentic execution — with
-              Mission State Machine, Command Gates, Evidence Vault, and Secure Apply Engine as
-              architectural primitives.
+              Every control in CGP v1.0 has a reference implementation in MAAX Studio by Cyryx Labs.
+              MAAX Studio is the first IDE built around governed agentic execution — with Mission
+              State Machine, Command Gates, Evidence Vault, and Secure Apply Engine as architectural
+              primitives.
             </p>
             <Link
               to="/products/maax-studio"
@@ -425,7 +456,7 @@ function ContributeAndContact({ pub }: { pub: Publication }) {
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
-            <h3 className="font-[Orbitron] text-base text-white">Contribute to CGP</h3>
+            <h3 className="font-display text-base text-white">Contribute to CGP</h3>
             <p className="mt-3 font-[Inter] text-sm text-[#C7C9CC]">
               CGP is published under CC BY 4.0. Open an issue, submit a gap report, or share your
               implementation.
@@ -442,13 +473,16 @@ function ContributeAndContact({ pub }: { pub: Publication }) {
             )}
           </div>
           <div>
-            <h3 className="font-[Orbitron] text-base text-white">Contact</h3>
+            <h3 className="font-display text-base text-white">Contact</h3>
             <p className="mt-3 font-[Inter] text-sm text-[#C7C9CC]">
               {pub.affiliation ?? "Cyryx Labs LLC"}
             </p>
             <div className="mt-3 space-y-1 font-[Inter] text-sm">
               {pub.contactEmail && (
-                <a href={`mailto:${pub.contactEmail}`} className="block text-[#0E5B57] hover:text-white">
+                <a
+                  href={`mailto:${pub.contactEmail}`}
+                  className="block text-[#0E5B57] hover:text-white"
+                >
                   {pub.contactEmail}
                 </a>
               )}
@@ -507,7 +541,7 @@ function CitationModal({ pub, onClose }: { pub: Publication; onClose: () => void
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
-          <h3 className="font-[Orbitron] text-base text-white">Cite this paper</h3>
+          <h3 className="font-display text-base text-white">Cite this paper</h3>
           <button onClick={onClose} aria-label="Close" className="text-[#9AA3AF] hover:text-white">
             <X className="h-5 w-5" />
           </button>

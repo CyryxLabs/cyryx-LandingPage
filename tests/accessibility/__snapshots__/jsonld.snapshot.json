@@ -4,12 +4,9 @@
     "@id": "https://cyryxlabs.com/#organization",
     "name": "Cyryx Labs",
     "legalName": "Cyryx Labs",
-    "alternateName": [
-      "Cyryx",
-      "Cyryx AI"
-    ],
+    "alternateName": ["Cyryx", "Cyryx AI"],
     "url": "https://cyryxlabs.com/",
-    "slogan": "The execution layer for enterprise AI.",
+    "slogan": "The command layer for AI-native builders.",
     "foundingDate": "2024",
     "industry": "Artificial Intelligence",
     "areaServed": "Worldwide",

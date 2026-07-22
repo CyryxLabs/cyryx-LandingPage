@@ -44,10 +44,57 @@ for (const vp of VIEWPORTS) {
         const m = new DOMMatrixReadOnly(getComputedStyle(el).transform);
         return { e: m.e, f: m.f };
       });
-      expect(Math.abs(heroTransform.e), "hero should not translate horizontally on mobile").toBeLessThan(2);
+      expect(
+        Math.abs(heroTransform.e),
+        "hero should not translate horizontally on mobile",
+      ).toBeLessThan(2);
     }
   });
 }
+
+test("desktop Hero pins and scrubs the cinematic video with scroll", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/", { waitUntil: "networkidle" });
+
+  const hero = page.locator("section[data-hero]");
+  const video = hero.locator("[data-hero-video]");
+  await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
+  await expect(page.locator(".pin-spacer")).toHaveCount(1);
+
+  const duration = await video.evaluate((element) => (element as HTMLVideoElement).duration);
+  expect(duration).toBeGreaterThan(1);
+
+  await page.evaluate(() => window.scrollTo(0, 650));
+  await page.waitForTimeout(900);
+
+  const state = await page.evaluate(() => {
+    const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
+    const videoElement = heroElement?.querySelector<HTMLVideoElement>("[data-hero-video]");
+    const progress = heroElement?.querySelector<HTMLElement>("[data-scroll-progress]");
+    const matrix = progress
+      ? new DOMMatrixReadOnly(getComputedStyle(progress).transform)
+      : new DOMMatrixReadOnly();
+    return {
+      currentTime: videoElement?.currentTime ?? 0,
+      heroTop: heroElement?.getBoundingClientRect().top ?? Number.NaN,
+      progressScale: matrix.a,
+    };
+  });
+
+  expect(state.currentTime).toBeGreaterThan(1);
+  expect(Math.abs(state.heroTop)).toBeLessThan(2);
+  expect(state.progressScale).toBeGreaterThan(0.1);
+});
+
+test("reduced motion removes Hero pinning and video scrubbing", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/", { waitUntil: "networkidle" });
+
+  await expect(page.locator("section[data-hero]")).toBeVisible();
+  await expect(page.locator(".pin-spacer")).toHaveCount(0);
+  await expect(page.locator("[data-hero-video]")).toHaveCount(0);
+});
 
 /**
  * SolutionPage / Privacy / Terms must scroll cleanly at every breakpoint
@@ -55,11 +102,7 @@ for (const vp of VIEWPORTS) {
  * pages should not initialize GSAP timelines at all — they render pure
  * layout content.
  */
-const CONTENT_PAGES = [
-  "/solutions/workflow-automation",
-  "/privacy",
-  "/terms",
-];
+const CONTENT_PAGES = ["/solutions/workflow-automation", "/privacy", "/terms"];
 
 for (const path of CONTENT_PAGES) {
   for (const vp of VIEWPORTS) {
@@ -84,4 +127,3 @@ for (const path of CONTENT_PAGES) {
     });
   }
 }
-

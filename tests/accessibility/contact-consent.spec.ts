@@ -13,9 +13,7 @@ test.describe("Contact form consent — client", () => {
     const submit = page.getByRole("button", { name: /send message/i });
     await expect(submit).toBeDisabled();
 
-    // Force-click to confirm validation also fires when somehow submitted
-    await submit.click({ force: true }).catch(() => {});
-    // Toggle consent and confirm enabled
+    // Disabled controls cannot submit; consent makes the action available.
     await page.locator('input[name="consent"]').check();
     await expect(submit).toBeEnabled();
   });

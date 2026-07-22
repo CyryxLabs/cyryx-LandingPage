@@ -7,9 +7,7 @@ test.describe("Copy variants — shape validation", () => {
     test(`variant "${variant}" matches CopyDocumentSchema`, () => {
       const result = validateCopy(getCopy(variant));
       if (!result.ok) {
-        const summary = result.issues
-          .map((i) => `${i.path}: ${i.message}`)
-          .join("\n");
+        const summary = result.issues.map((i) => `${i.path}: ${i.message}`).join("\n");
         throw new Error(`copy "${variant}" invalid:\n${summary}`);
       }
       expect(result.ok).toBe(true);
@@ -28,18 +26,33 @@ test.describe("Copy variants — shape validation", () => {
 
   test("schema allows 0 to 4 hero.meta items (contract-driven)", () => {
     const copy = getCopy("v3");
-    
+
     // Test 0 items (current v3 state)
-    expect(CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: [] } }).success).toBe(true);
-    
+    expect(
+      CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: [] } }).success,
+    ).toBe(true);
+
     // Test 3 items (previously rejected)
-    expect(CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: ["one", "two", "three"] } }).success).toBe(true);
-    
+    expect(
+      CopyDocumentSchema.safeParse({
+        ...copy,
+        hero: { ...copy.hero, meta: ["one", "two", "three"] },
+      }).success,
+    ).toBe(true);
+
     // Test 4 items (limit)
-    expect(CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: ["a", "b", "c", "d"] } }).success).toBe(true);
-    
+    expect(
+      CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: ["a", "b", "c", "d"] } })
+        .success,
+    ).toBe(true);
+
     // Test 5 items (should fail)
-    expect(CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, meta: ["a", "b", "c", "d", "e"] } }).success).toBe(false);
+    expect(
+      CopyDocumentSchema.safeParse({
+        ...copy,
+        hero: { ...copy.hero, meta: ["a", "b", "c", "d", "e"] },
+      }).success,
+    ).toBe(false);
   });
 });
 
@@ -54,13 +67,12 @@ test.describe("Consent + legal anchors render", () => {
   });
 });
 
-test.describe("Hero — approved copy lock", () => {
+test.describe("Hero — enterprise value proposition", () => {
   const APPROVED = {
-    headline: "The execution layer for enterprise AI.",
-    sub:
-      "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
-    ctaPrimary: "Start a project",
-    ctaSecondary: "MAAX Studio →",
+    headline: "Turn AI ambition into systems your business can run.",
+    sub: "Cyryx Labs takes high-value AI initiatives from strategy to production — designing, engineering, and governing the system so your team keeps control, evidence, and operational ownership.",
+    ctaPrimary: "Discuss your AI initiative",
+    ctaSecondary: "See how we deliver",
   } as const;
 
   test("v3 hero copy matches the approved source of truth exactly", () => {
@@ -78,17 +90,19 @@ test.describe("Hero — approved copy lock", () => {
     expect(hero.sub).not.toContain(forbidden);
   });
 
-  test("hero renders approved headline, sub, and CTA labels with correct destinations", async ({ page }) => {
+  test("hero renders approved headline, sub, and CTA labels with correct destinations", async ({
+    page,
+  }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const hero = page.locator("section[data-hero]");
     await expect(hero).toBeVisible();
     await expect(page.locator("#hero-heading")).toHaveText(APPROVED.headline);
     await expect(hero).toContainText(APPROVED.sub);
-    const primary = hero.getByRole("link", { name: /Start a Project with Cyryx Labs/i });
+    const primary = hero.getByRole("link", { name: /Discuss your AI initiative/i });
     await expect(primary).toHaveAttribute("href", "#contact");
     await expect(primary).toContainText(APPROVED.ctaPrimary);
-    const secondary = hero.getByRole("link", { name: /Explore MAAX Studio/i });
-    await expect(secondary).toHaveAttribute("href", "#maax");
+    const secondary = hero.getByRole("link", { name: /See how Cyryx Labs delivers/i });
+    await expect(secondary).toHaveAttribute("href", "#what-we-build");
     await expect(secondary).toContainText(APPROVED.ctaSecondary);
     await expect(hero).not.toContainText("The execution layer for business AI.");
   });

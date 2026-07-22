@@ -47,13 +47,10 @@ export function StickyMobileCTA() {
     };
   }, []);
 
+  if (!visible) return null;
+
   return (
-    <div
-      className="cx-sticky-cta lg:hidden"
-      data-visible={visible || undefined}
-      role="region"
-      aria-label="Quick actions"
-    >
+    <div className="cx-sticky-cta lg:hidden" data-visible role="region" aria-label="Quick actions">
       <div className="mx-auto flex max-w-7xl items-center gap-2">
         <a
           href="#contact"

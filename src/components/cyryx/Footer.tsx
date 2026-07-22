@@ -1,10 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { CyryxWordmark } from "./primitives/CyryxMark";
-import { 
-  PRIMARY_NAVIGATION, 
-  PRIMARY_NAVIGATION_CTA,
-  type NavigationItem
-} from "@/lib/navigation";
+import { PRIMARY_NAVIGATION, PRIMARY_NAVIGATION_CTA, type NavigationItem } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 type FooterItem = NavigationItem & {
@@ -27,9 +23,9 @@ function FooterLink({ item, className }: { item: FooterItem; className?: string 
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
         className={cn(
-        "text-sm sm:text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] rounded-sm whitespace-normal break-words",
+          "text-sm sm:text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] rounded-sm whitespace-normal break-words",
 
-          className
+          className,
         )}
       >
         {item.label}
@@ -42,7 +38,7 @@ function FooterLink({ item, className }: { item: FooterItem; className?: string 
       to={item.href}
       className={cn(
         "text-sm sm:text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] rounded-sm whitespace-normal break-words",
-        className
+        className,
       )}
 
       activeOptions={{ exact: true }}
@@ -81,8 +77,7 @@ export function Footer() {
           <div className="flex flex-col items-start">
             <CyryxWordmark className="h-9" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--silver-dim)]">
-              AI products and execution systems for the agentic era. Governed,
-              auditable, built to ship.
+              The command layer for AI-native builders. From prompt chaos to governed AI execution.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">
@@ -91,12 +86,16 @@ export function Footer() {
                 className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] text-sm font-medium tracking-wide transition-all hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
               >
                 {PRIMARY_NAVIGATION_CTA.label}
-                <span aria-hidden className="text-[var(--accent-glow)] text-lg">→</span>
+                <span aria-hidden className="text-[var(--accent-glow)] text-lg">
+                  →
+                </span>
               </Link>
             </div>
 
             <div className="mt-10">
-              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-50">Follow</div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-50">
+                Follow
+              </div>
               <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
                 {SOCIAL.map((s) => (
                   <li key={s.label}>
