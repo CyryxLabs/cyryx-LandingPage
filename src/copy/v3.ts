@@ -6,14 +6,10 @@ import type { CopyDocument } from "./types";
  */
 export const v3: CopyDocument = {
   hero: {
-    headline: "Turn AI ambition into systems your business can run.",
-    sub: "Cyryx Labs takes high-value AI initiatives from strategy to production — designing, engineering, and governing the system so your team keeps control, evidence, and operational ownership.",
+    headline: "The execution layer for enterprise AI.",
+    sub: "Cyryx turns high-value AI initiatives into governed production systems — so your organization can scale automation without losing control of risk, cost, or accountability.",
     meta: [],
-    rail: [
-      "Strategy to production",
-      "Human control by design",
-      "Operational ownership transferred",
-    ],
+    rail: ["Strategy to production", "Human control by design", "Operational ownership defined"],
     ctaPrimary: "Discuss your AI initiative",
     ctaSecondary: "See how we deliver",
   },

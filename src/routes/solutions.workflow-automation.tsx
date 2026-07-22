@@ -8,122 +8,191 @@ import {
 } from "@/components/cyryx/seo/seo";
 
 const PATH = "/solutions/workflow-automation";
-const TITLE = "AI workflow automation — Cyryx Labs";
-const DESC = "Governed AI workflow automation: missions, gates, and human review built into every step instead of bolted on after the fact.";
+const TITLE = "AI Workflow Automation — Cyryx Labs";
+const DESC =
+  "Design and engineering of AI-enabled workflows with explicit authority, review, exception handling, and operating ownership.";
 
 const FAQ = [
   {
-    q: "How is this different from Zapier, n8n, or a generic agent framework?",
-    a: "Those tools treat automation as pipelines of API calls or free-form agent loops. Cyryx treats every step as a mission with acceptance criteria and forces every model output through independent command gates before any downstream write. When a step fails a gate, the mission ledger records why, the workflow pauses, and the right human is paged — nothing silently proceeds.",
-  },
-  {
     q: "Do we have to replace the tools we already use?",
-    a: "No. Cyryx workflows sit on top of your existing CRM, billing, ticketing, and data warehouse. We wrap each connector with typed input/output contracts and gates so the AI layer becomes a governed caller of the systems you already trust.",
+    a: "Usually not. The first design question is how the target workflow should interact with the systems your team already trusts. Integration choices depend on access, data quality, provider constraints, and the authority the workflow is allowed to have.",
   },
   {
-    q: "How do you handle a model change or vendor swap mid-project?",
-    a: "Missions, gates, and ledgers are model-agnostic. When you swap a model, we replay historical missions from the ledger against the new model, diff the acceptance-criteria results, and only promote it when regression coverage passes. Vendor lock-in is designed out from day one.",
+    q: "How much autonomy should the workflow receive?",
+    a: "Only the authority justified by the business context and the available evidence. High-impact or ambiguous actions can remain review-gated, while lower-risk steps may be automated under written criteria.",
   },
   {
-    q: "What kind of team is required on the client side?",
-    a: "A named business owner for each workflow (to define acceptance criteria and escalation rules), plus an engineering or ops counterpart with access to the connected systems. Cyryx handles the runtime engineering; your team owns the missions.",
+    q: "How is success measured?",
+    a: "Measurement is defined with the workflow owner before implementation. Depending on the use case, that can include completion quality, cycle time, exception rate, rework, adoption, cost, and escalation patterns.",
   },
   {
-    q: "How is pricing structured?",
-    a: "Fixed-scope discovery, then a fixed-price build per workflow tier, plus an optional retained governance package for ongoing tuning and evaluator maintenance. We price per verified outcome where the data supports it.",
+    q: "How are scope and commercial terms set?",
+    a: "After discovery. Scope, milestones, acceptance, ownership, third-party costs, support, and any continuing operational responsibility are documented for the specific engagement.",
   },
 ];
 
 export const Route = createFileRoute("/solutions/workflow-automation")({
   head: () =>
-    buildHead(
-      { title: TITLE, description: DESC, path: PATH },
-      [
-        buildBreadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Solutions", path: "/solutions" },
-          { name: "Workflow automation", path: PATH },
-        ]),
-        buildServiceJsonLd({
-          name: "Governed AI workflow automation",
-          serviceType: "AI workflow engineering",
-          description: DESC,
-          path: PATH,
-        }),
-        buildFaqJsonLd(FAQ),
-      ],
-    ),
+    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Solutions", path: "/solutions" },
+        { name: "Workflow Automation", path: PATH },
+      ]),
+      buildServiceJsonLd({
+        name: "AI Workflow Automation",
+        serviceType: "AI workflow design and engineering",
+        description: DESC,
+        path: PATH,
+      }),
+      buildFaqJsonLd(FAQ),
+    ]),
   component: () => (
     <SolutionPage
       eyebrow="Workflow Automation"
-      title="Governed AI workflows that survive production."
-      directAnswer="Cyryx Labs builds AI workflow systems where every step is a mission with explicit acceptance criteria, every output passes through command gates, and every escalation lands with the right human. We replace brittle pipelines and ungoverned agents with workflows that are observable, auditable, and tunable."
-      whatItIs="A workflow engineering practice that treats automation as goal-driven execution: missions, gates, evaluators, and human review composed into reliable end-to-end systems on top of your existing tools."
+      title="Move work through the business with clearer control."
+      directAnswer="Cyryx designs AI-enabled workflows around the real operating path: inputs, decisions, systems, owners, exceptions, and evidence. The goal is not automation for its own sake. It is a workflow the business can understand, supervise, and improve."
+      whatItIs="A system-level engagement that combines workflow design, integration engineering, AI where it is useful, deterministic software where it is safer, and explicit human authority where judgment remains essential."
       whoItIsFor={[
-        "Operations and revenue teams hitting the ceiling of Zapier-style pipelines.",
-        "Teams whose agentic experiments produce great demos and unreliable production runs.",
-        "Organizations that need traceability for compliance, finance, or customer trust.",
+        "Operations teams carrying repetitive work across disconnected systems.",
+        "Product and technology leaders moving an AI prototype into an owned operating process.",
+        "Organizations that need clearer review, escalation, and accountability around AI-enabled work.",
       ]}
       whatWeBuild={[
-        "Mission catalogs covering each workflow with explicit acceptance criteria.",
-        "Goal-grounded generation calls in place of free-form prompts.",
-        "Command gates for structure, policy, task quality, and escalation.",
-        "Mission ledgers for full audit and regression replay.",
-        "Integration with existing CRMs, billing, and ticketing systems.",
+        "Workflow and decision maps with named owners and exception paths.",
+        "Integrations with the systems of record included in scope.",
+        "Task-specific AI components with written inputs, outputs, and review criteria.",
+        "Human review and escalation surfaces for material decisions.",
+        "Instrumentation for agreed quality, usage, cost, and operating signals.",
       ]}
       howWeWork={[
-        "Map the target workflow to missions and acceptance criteria.",
-        "Identify the gates each mission needs and who owns them.",
-        "Implement, instrument, and stage behind feature flags.",
-        "Roll out with humans in the loop, then tighten gates as confidence grows.",
+        "Frame the business outcome and map the current operating path.",
+        "Define system authority, evidence needs, exceptions, and acceptance criteria.",
+        "Build an end-to-end vertical slice before expanding the workflow.",
+        "Validate with representative cases and document limitations.",
+        "Launch with clear ownership and, when agreed, continuing operating coverage.",
       ]}
       challenges={[
-        "Prompt drift silently degrading throughput after a model or vendor change.",
-        "Agent loops that succeed in staging and hallucinate in production.",
-        "No trace of why a workflow acted the way it did on a specific record.",
-        "Cost curves that scale with model calls instead of verified outcomes.",
-        "Escalations that quietly disappear into a shared inbox nobody owns.",
+        "Automating a broken process without resolving its ownership gaps.",
+        "Allowing probabilistic output to trigger material actions without review.",
+        "Hiding failure inside integrations that no one monitors.",
+        "Measuring activity instead of business completion quality.",
+        "Launching without a named owner for exceptions and change decisions.",
       ]}
       architecture={[
-        { name: "Mission layer", detail: "Each workflow decomposed into missions with owners, acceptance criteria, and disqualifiers — the durable contract the AI executes against." },
-        { name: "Context resolver", detail: "Structured retrieval from your systems (CRM, warehouse, docs) with provenance attached to every field passed into a model call." },
-        { name: "Command gates", detail: "Independent policy, structure, task-quality, and safety checks that must pass before any write to a downstream system." },
-        { name: "Mission ledger", detail: "Append-only record of every candidate action, gate verdict, escalation, and final outcome — used for audit, replay, and evaluator training." },
-        { name: "Escalation router", detail: "Routes failed gates to the correct human or queue with full context, SLA, and reopen semantics." },
-        { name: "Evaluator suite", detail: "Automated evaluators (heuristic, model-based, human sample) that run on a schedule and gate model or prompt promotion." },
+        {
+          name: "Workflow contract",
+          detail:
+            "The target outcome, participating systems, roles, states, and acceptance boundaries.",
+        },
+        {
+          name: "Context layer",
+          detail:
+            "Approved data and evidence prepared for each task with access boundaries defined by the engagement.",
+        },
+        {
+          name: "Execution layer",
+          detail:
+            "AI and deterministic components composed according to the risk and repeatability of each step.",
+        },
+        {
+          name: "Control layer",
+          detail:
+            "Validation, review, escalation, and stop conditions applied before material actions proceed.",
+        },
+        {
+          name: "Operating layer",
+          detail:
+            "Logs, signals, runbooks, change ownership, and response expectations for the launched workflow.",
+        },
       ]}
       deliverables={[
-        { phase: "Discovery & mission design", duration: "1–2 weeks", scope: "We interview owners, review current pipelines, and translate each workflow into missions with acceptance criteria, disqualifiers, and escalation rules.", outputs: ["Mission catalog document", "Gate + evaluator map per mission", "Prioritized rollout plan tied to business risk"] },
-        { phase: "Build & instrument", duration: "3–6 weeks per workflow tier", scope: "Implement the mission runtime, connectors, gates, and ledger. Everything is behind feature flags with dual-write to legacy paths where relevant.", outputs: ["Production-ready workflow runtime", "Connector suite with typed contracts", "Mission ledger with retention policy"] },
-        { phase: "Governed rollout", duration: "2–4 weeks", scope: "Progressive rollout starting with human-in-the-loop on every mission, tightening automation thresholds as evaluator coverage confirms quality.", outputs: ["Runbook and on-call playbook", "Governance dashboards", "Post-launch tuning report"] },
-        { phase: "Ongoing tuning (optional)", duration: "Monthly retainer", scope: "Continuous evaluator tuning, model regression testing, and quarterly governance reviews owned by Cyryx and your workflow owners.", outputs: ["Monthly regression + drift report", "Prompt/model change log", "Quarterly executive review"] },
-      ]}
-      techStack={[
-        "TypeScript / Python runtimes",
-        "OpenAI, Anthropic, Google, open-weight models (routable)",
-        "Postgres + append-only ledger tables",
-        "Temporal or durable queues for long-running missions",
-        "OpenTelemetry + your existing observability stack",
-        "Feature-flag platform of your choice (LaunchDarkly, Statsig, Unleash)",
+        {
+          phase: "Frame",
+          duration: "Engagement-defined",
+          scope:
+            "Establish the business case, current workflow, owners, constraints, and evidence required to make a build decision.",
+          outputs: [
+            "Problem and workflow definition",
+            "Authority and risk map",
+            "Recommended implementation sequence",
+          ],
+        },
+        {
+          phase: "Design",
+          duration: "Engagement-defined",
+          scope:
+            "Specify the target workflow, integrations, review points, exceptions, and acceptance evidence.",
+          outputs: [
+            "Target operating flow",
+            "Architecture direction",
+            "Acceptance and governance criteria",
+          ],
+        },
+        {
+          phase: "Build & validate",
+          duration: "Engagement-defined",
+          scope:
+            "Implement controlled increments and test representative paths, failures, and handoffs.",
+          outputs: [
+            "Working system increments",
+            "Validation evidence",
+            "Known limitations and launch conditions",
+          ],
+        },
+        {
+          phase: "Launch & operate",
+          duration: "Engagement-defined",
+          scope:
+            "Release, transfer ownership, and optionally continue under a separately defined operating scope.",
+          outputs: [
+            "Launch and handover",
+            "Runbook and ownership record",
+            "Optional managed-operations agreement",
+          ],
+        },
       ]}
       kpis={[
-        { metric: "Verified outcome rate", detail: "Percentage of missions that complete acceptance criteria without human rework — tracked per workflow tier." },
-        { metric: "Cost per verified outcome", detail: "All-in AI spend divided by successful missions, so unit economics stay legible as volume scales." },
-        { metric: "Escalation quality", detail: "Ratio of escalations that a human confirms as correct — a leading indicator of gate calibration." },
-        { metric: "Time-to-detect regression", detail: "How quickly the evaluator suite catches a model or prompt-induced quality drop after promotion." },
+        {
+          metric: "Completion quality",
+          detail:
+            "How often the workflow produces an acceptable business result under the agreed criteria.",
+        },
+        {
+          metric: "Cycle time",
+          detail: "Elapsed time from qualified input to completed outcome, including human review.",
+        },
+        {
+          metric: "Exception and rework",
+          detail: "Where cases leave the expected path and what creates avoidable manual work.",
+        },
+        {
+          metric: "Operating cost",
+          detail:
+            "The agreed infrastructure, provider, and human effort signals required to understand the workflow.",
+        },
       ]}
       outcomes={[
-        "Fewer manual rework loops on AI-driven workflows.",
-        "Predictable cost per verified outcome, not per call.",
-        "A complete trace for every action taken on a customer or record.",
-        "A safe path to upgrading or swapping models without regressions.",
+        "A clearer path from request to completed business outcome.",
+        "Human authority preserved where judgment or risk requires it.",
+        "Exceptions that arrive with context instead of disappearing between systems.",
+        "An operating baseline the team can inspect and improve after launch.",
       ]}
       faq={FAQ}
-      engagementNote="Workflow engagements start with a fixed-scope discovery and are delivered as fixed-price builds per workflow tier. Ongoing tuning and evaluator maintenance are available as a monthly retainer. Cyryx does not resell model capacity — your model contracts stay with your chosen vendors."
+      engagementNote="Scope, timing, commercial terms, ownership, licensing, acceptance, support, and operational coverage are defined in writing for each engagement."
       relatedAnswers={[
-        { label: "AI execution system vs AI automation", href: "/answers/ai-execution-system-vs-ai-automation" },
-        { label: "What are command gates in AI systems?", href: "/answers/what-are-command-gates-in-ai-systems" },
-        { label: "How to measure AI output quality", href: "/answers/how-to-measure-ai-output-quality" },
+        {
+          label: "AI execution system vs AI automation",
+          href: "/answers/ai-execution-system-vs-ai-automation",
+        },
+        {
+          label: "What are command gates in AI systems?",
+          href: "/answers/what-are-command-gates-in-ai-systems",
+        },
+        {
+          label: "How to measure AI output quality",
+          href: "/answers/how-to-measure-ai-output-quality",
+        },
       ]}
     />
   ),

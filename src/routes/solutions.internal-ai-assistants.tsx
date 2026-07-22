@@ -8,122 +8,185 @@ import {
 } from "@/components/cyryx/seo/seo";
 
 const PATH = "/solutions/internal-ai-assistants";
-const TITLE = "Internal AI assistants — Cyryx Labs";
-const DESC = "Internal AI assistants grounded in your data, scoped by role, gated for policy, and measured against real task outcomes.";
+const TITLE = "Internal AI Assistants — Cyryx Labs";
+const DESC =
+  "Task-specific internal AI assistants designed around approved data, role boundaries, review, and measurable team workflows.";
 
 const FAQ = [
   {
-    q: "How is this different from Copilot, Glean, or ChatGPT Enterprise?",
-    a: "Those are horizontal surfaces. Cyryx builds vertical assistants tuned to the 5–10 tasks that move real numbers in your team, grounded in your systems of record, with acceptance criteria and gates per task. They complement horizontal tools rather than compete with them.",
+    q: "Is this a replacement for a general enterprise assistant?",
+    a: "Not necessarily. Cyryx focuses on the specific internal tasks, systems, and controls that a horizontal assistant may not cover. The result can complement an existing enterprise tool or become a dedicated interface for a defined workflow.",
   },
   {
-    q: "How do you handle permissions and sensitive data?",
-    a: "The context graph honors your existing IdP and per-source ACLs. Retrieval is filtered before it reaches the model, and gates enforce data-class policies (e.g. no customer PII in outbound drafts) at generation time.",
+    q: "How are permissions handled?",
+    a: "Permission behavior is designed from the identity, source-system, and data-class constraints in scope. The implementation must be validated against those boundaries before release; no universal security posture is assumed.",
   },
   {
-    q: "How do you keep the assistant from making things up?",
-    a: "Every task template is goal-grounded: the model receives the mission, retrieved context with provenance, and acceptance criteria. Outputs that cannot cite grounded context for load-bearing claims fail a gate and are rewritten or escalated.",
+    q: "How do you reduce unsupported answers?",
+    a: "We narrow each assistant to defined tasks, provide approved context, require evidence where appropriate, and introduce review or refusal behavior when the available information is insufficient.",
   },
   {
-    q: "How is success measured?",
-    a: "Per task, not per session. We instrument time-to-completion, rework rate, and human verdicts on a sampled set of outputs. Adoption follows utility — we ship the assistant against the tasks that measurably win first.",
-  },
-  {
-    q: "Can our team edit prompts and gates after handover?",
-    a: "Yes. Task templates, prompts, and gate rules live in a versioned config that your team owns. Cyryx provides the editor and the review workflow; you decide what changes and when.",
+    q: "Who owns the assistant after launch?",
+    a: "Ownership, access, configuration authority, support, and change responsibility are documented for the engagement. Cyryx can hand over the system or continue under a defined managed-operations scope.",
   },
 ];
 
 export const Route = createFileRoute("/solutions/internal-ai-assistants")({
   head: () =>
-    buildHead(
-      { title: TITLE, description: DESC, path: PATH },
-      [
-        buildBreadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Solutions", path: "/solutions" },
-          { name: "Internal AI assistants", path: PATH },
-        ]),
-        buildServiceJsonLd({
-          name: "Internal AI assistants",
-          serviceType: "Internal AI assistant engineering",
-          description: DESC,
-          path: PATH,
-        }),
-        buildFaqJsonLd(FAQ),
-      ],
-    ),
+    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Solutions", path: "/solutions" },
+        { name: "Internal AI Assistants", path: PATH },
+      ]),
+      buildServiceJsonLd({
+        name: "Internal AI Assistants",
+        serviceType: "Internal AI assistant design and engineering",
+        description: DESC,
+        path: PATH,
+      }),
+      buildFaqJsonLd(FAQ),
+    ]),
   component: () => (
     <SolutionPage
       eyebrow="Internal AI Assistants"
-      title="Internal AI assistants your team will actually use."
-      directAnswer="Cyryx Labs ships internal AI assistants that are grounded in your real systems, scoped to role and permission, gated for policy, and measured against task outcomes. The result is an assistant that earns trust over time instead of becoming the tab nobody opens."
-      whatItIs="A purpose-built internal assistant — chat, embedded panel, or in-app surface — sitting on top of a context graph of your data, with explicit gates and observability. Built once with Cyryx Solutions, owned and operable by your team afterward."
+      title="Give teams intelligence inside the work they already own."
+      directAnswer="Cyryx designs internal assistants around defined jobs, approved context, role boundaries, and review. Instead of launching a generic chat surface, we start with the decisions and tasks where better access to intelligence can materially improve the operating day."
+      whatItIs="A purpose-built internal interface—conversational, embedded, or workflow-native—that helps a defined group perform selected tasks using the data and systems approved for that use."
       whoItIsFor={[
-        "Teams that tried a generic copilot and saw adoption plateau.",
-        "Operations, support, and revenue teams with high-volume knowledge work.",
-        "Companies that need permissioned access and audit trails on AI use.",
+        "Teams spending significant time finding, reconciling, and applying internal knowledge.",
+        "Operations, support, product, and revenue functions with repeatable decision-support tasks.",
+        "Organizations that need an assistant to respect role, source, and approval boundaries.",
       ]}
       whatWeBuild={[
-        "A context graph over your sources of truth (docs, CRM, tickets, code, runbooks).",
-        "Role-scoped retrieval so every user sees only what they should.",
-        "Goal-grounded task templates for the work the team actually does.",
-        "Command gates for policy, data handling, and safety.",
-        "Observability on usage, success, and escalation patterns.",
+        "Task inventory and assistant experience for the highest-value internal jobs.",
+        "Context retrieval from the sources included in scope.",
+        "Role-aware behavior integrated with the selected identity and access model.",
+        "Evidence, review, refusal, and escalation behavior for material outputs.",
+        "Usage and quality signals tied to the agreed tasks.",
       ]}
       howWeWork={[
-        "Identify the top 5–10 tasks where an assistant moves real numbers.",
-        "Design grounded task flows with acceptance criteria for each.",
-        "Ship a vertical slice, then expand based on usage data.",
-        "Hand off operability: dashboards, prompt edits, gate updates owned by your team.",
+        "Identify the tasks, users, information, and decisions that justify an assistant.",
+        "Define source authority, role boundaries, review, and success criteria.",
+        "Build a narrow vertical slice with a representative user cohort.",
+        "Evaluate usefulness, unsupported behavior, and workflow fit before expanding.",
+        "Transfer or operate the assistant under written ownership and change controls.",
       ]}
       challenges={[
-        "Generic copilots that peak in week two and never recover adoption.",
-        "Assistants that hallucinate confidently on the questions that matter most.",
-        "Retrieval that ignores per-user ACLs and quietly leaks documents.",
-        "No idea which tasks the assistant actually helps with — and which it hurts.",
-        "Prompt changes shipped by whoever had the keyboard, with no versioning.",
+        "A generic chat surface with no defined job to be done.",
+        "Retrieval that ignores the authority and freshness of a source.",
+        "Access assumptions that do not match the underlying systems.",
+        "Confident output when the available evidence is incomplete.",
+        "Adoption measured by logins rather than completed work.",
       ]}
       architecture={[
-        { name: "Context graph", detail: "Structured retrieval across your sources of truth (docs, CRM, tickets, code, runbooks) with provenance and per-source ACLs." },
-        { name: "Role scope", detail: "Every request runs through the user's IdP identity — retrieval and gates enforce what that user is allowed to see and do." },
-        { name: "Task templates", detail: "Goal-grounded prompts for the specific tasks the team runs, each with acceptance criteria and evaluators." },
-        { name: "Policy gates", detail: "Data-class, tone, and scope gates that run on every generated response before it reaches a user or a downstream system." },
-        { name: "Task observability", detail: "Per-task metrics on usage, completion, rework, and escalation — leading indicators of trust and utility." },
-        { name: "Ownership console", detail: "Versioned editor for templates, prompts, and gates so your team owns changes with a proper review trail after handoff." },
+        {
+          name: "Experience",
+          detail:
+            "The interface and task flows designed for the users and operating context in scope.",
+        },
+        {
+          name: "Context",
+          detail:
+            "Approved sources prepared for retrieval with provenance and freshness behavior defined where required.",
+        },
+        {
+          name: "Identity",
+          detail: "Role and access signals from the selected identity and source systems.",
+        },
+        {
+          name: "Task runtime",
+          detail: "Task-specific instructions, tools, structured outputs, and application logic.",
+        },
+        {
+          name: "Controls",
+          detail:
+            "Evidence requirements, refusals, human review, escalation, and change authority.",
+        },
       ]}
       deliverables={[
-        { phase: "Task discovery", duration: "1–2 weeks", scope: "Interview teams, review current tooling, and rank the 5–10 tasks with the highest expected impact and the clearest acceptance criteria.", outputs: ["Ranked task inventory", "Acceptance criteria per task", "Adoption target model"] },
-        { phase: "Vertical slice", duration: "3–5 weeks", scope: "Ship the context graph and top 2–3 task templates end to end, with gates, evaluators, and a real user cohort.", outputs: ["Live assistant surface", "Context graph over top sources", "Instrumented task metrics"] },
-        { phase: "Expansion", duration: "6–10 weeks", scope: "Add remaining task templates, extend the context graph, and tune gates against real usage traces.", outputs: ["Full task coverage", "Gate + evaluator tuning report", "Adoption + impact readout"] },
-        { phase: "Handover", duration: "2 weeks", scope: "Hand ownership of templates, gates, and dashboards to your team, with a defined post-handover cadence for advisory support.", outputs: ["Handover manual", "Editor access + review workflow", "Advisory cadence agreement"] },
-      ]}
-      techStack={[
-        "TypeScript / Python retrieval + task runtime",
-        "pgvector, Turbopuffer, or your existing vector store",
-        "OpenAI, Anthropic, Google, open-weight (per-task routing)",
-        "SSO via Okta, Entra ID, WorkOS, or your IdP",
-        "OpenTelemetry + your existing APM",
-        "In-app surface (React SDK) or Slack / Teams entry points",
+        {
+          phase: "Task discovery",
+          duration: "Engagement-defined",
+          scope:
+            "Prioritize the internal jobs, users, systems, and constraints that can support a useful assistant.",
+          outputs: [
+            "Task and user map",
+            "Source and access inventory",
+            "Opportunity and risk assessment",
+          ],
+        },
+        {
+          phase: "Experience & system design",
+          duration: "Engagement-defined",
+          scope: "Define the interaction model, context behavior, controls, and validation plan.",
+          outputs: [
+            "Assistant experience flow",
+            "Architecture direction",
+            "Evaluation and release criteria",
+          ],
+        },
+        {
+          phase: "Build & evaluate",
+          duration: "Engagement-defined",
+          scope: "Implement a representative slice and evaluate it with approved cases and users.",
+          outputs: [
+            "Working assistant slice",
+            "Evaluation findings",
+            "Expansion or launch recommendation",
+          ],
+        },
+        {
+          phase: "Launch & ownership",
+          duration: "Engagement-defined",
+          scope:
+            "Release the approved scope, document authority, and establish the change and support model.",
+          outputs: [
+            "Launch and handover",
+            "Operating documentation",
+            "Optional continuing coverage",
+          ],
+        },
       ]}
       kpis={[
-        { metric: "Task completion rate", detail: "Percentage of started tasks that meet acceptance criteria without human rework — reported per template." },
-        { metric: "Time saved per task", detail: "Median wall-clock savings vs. the pre-assistant workflow, calibrated by periodic sampling." },
-        { metric: "Grounded-citation rate", detail: "Percentage of load-bearing claims backed by a retrieved source in the response — leading indicator of factual reliability." },
-        { metric: "Weekly active tasks", detail: "Unique users × unique tasks per week — utility signal that outlasts launch curiosity." },
+        {
+          metric: "Task completion",
+          detail:
+            "Whether the assistant helps users complete the selected job under the agreed criteria.",
+        },
+        {
+          metric: "Rework and correction",
+          detail: "How often users must materially revise, reject, or recover an output.",
+        },
+        {
+          metric: "Evidence coverage",
+          detail:
+            "Whether material claims or actions are supported by the sources required for the task.",
+        },
+        {
+          metric: "Adoption by task",
+          detail:
+            "Repeated use of the assistant for the defined work, interpreted alongside quality and user feedback.",
+        },
       ]}
       outcomes={[
-        "Measurable task-level time savings, not just chat sessions.",
-        "Lower hallucination rate via grounded retrieval and evaluator gates.",
-        "Clear access controls and audit trail for sensitive work.",
-        "An assistant your team trusts enough to make it part of their workflow.",
+        "Faster access to the information required for selected internal tasks.",
+        "Clearer boundaries around what the assistant may see, say, and do.",
+        "A measurable path from useful prototype to owned internal capability.",
+        "An operating model for review, change, and support after launch.",
       ]}
       faq={FAQ}
-      engagementNote="Delivered as a fixed-scope task discovery, then a milestone-priced build with a defined handover. Ongoing tuning is offered as a lightweight monthly advisory retainer rather than an open-ended managed service."
+      engagementNote="Data access, identity integration, scope, ownership, licensing, support, acceptance, and operational coverage are defined for the specific engagement."
       relatedAnswers={[
-        { label: "What is goal-grounded generation?", href: "/answers/what-is-goal-grounded-generation" },
+        {
+          label: "What is goal-grounded generation?",
+          href: "/answers/what-is-goal-grounded-generation",
+        },
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
-        { label: "How to measure AI output quality", href: "/answers/how-to-measure-ai-output-quality" },
+        {
+          label: "How to measure AI output quality",
+          href: "/answers/how-to-measure-ai-output-quality",
+        },
       ]}
     />
   ),

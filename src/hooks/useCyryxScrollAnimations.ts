@@ -167,6 +167,67 @@ export function useCyryxScrollAnimations() {
             });
           });
 
+          if (desktop) {
+            const storySteps = gsap.utils.toArray<HTMLElement>("[data-story-step]");
+            const storyCaptions = gsap.utils.toArray<HTMLElement>("[data-story-caption]");
+
+            if (storySteps.length === storyCaptions.length && storyCaptions.length > 0) {
+              gsap.set(storyCaptions, { autoAlpha: 0, y: 16 });
+              gsap.set(storyCaptions[0], { autoAlpha: 1, y: 0 });
+              let activeStoryIndex = 0;
+
+              const activateStoryCaption = (activeIndex: number) => {
+                if (activeIndex === activeStoryIndex) return;
+                activeStoryIndex = activeIndex;
+                gsap.killTweensOf(storyCaptions);
+                storyCaptions.forEach((caption, captionIndex) => {
+                  if (captionIndex === activeIndex) return;
+                  gsap.set(caption, { autoAlpha: 0, y: -10 });
+                });
+
+                gsap.fromTo(
+                  storyCaptions[activeIndex],
+                  { autoAlpha: 0, y: 16 },
+                  {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.45,
+                    ease: "power3.out",
+                    overwrite: true,
+                  },
+                );
+              };
+
+              const activateNearestStoryCaption = () => {
+                const focusLine = window.innerHeight * 0.58;
+                const nearestIndex = storySteps.reduce(
+                  (nearest, step, index) =>
+                    Math.abs(step.getBoundingClientRect().top - focusLine) < nearest.distance
+                      ? {
+                          index,
+                          distance: Math.abs(step.getBoundingClientRect().top - focusLine),
+                        }
+                      : nearest,
+                  { index: 0, distance: Number.POSITIVE_INFINITY },
+                ).index;
+
+                activateStoryCaption(nearestIndex);
+              };
+
+              storySteps.forEach((step) => {
+                ScrollTrigger.create({
+                  trigger: step,
+                  start: "top 58%",
+                  end: "bottom 42%",
+                  refreshPriority: 10,
+                  invalidateOnRefresh: true,
+                  onUpdate: activateNearestStoryCaption,
+                  onRefresh: activateNearestStoryCaption,
+                });
+              });
+            }
+          }
+
           if (desktop && !lowPerf) {
             const hero = document.querySelector<HTMLElement>("[data-hero]");
             const heroVideo = hero?.querySelector<HTMLVideoElement>("[data-hero-video]");
@@ -196,6 +257,7 @@ export function useCyryxScrollAnimations() {
                   pinSpacing: true,
                   scrub: 0.35,
                   anticipatePin: 1,
+                  refreshPriority: -10,
                   invalidateOnRefresh: true,
                 },
               });
@@ -211,6 +273,11 @@ export function useCyryxScrollAnimations() {
               if (scrollProgress) {
                 heroScrollTimeline.to(scrollProgress, { scaleX: 1, ease: "none" }, 0);
               }
+
+              requestAnimationFrame(() => {
+                ScrollTrigger.sort();
+                ScrollTrigger.refresh();
+              });
             };
 
             if (heroVideo?.readyState && heroVideo.readyState >= HTMLMediaElement.HAVE_METADATA) {

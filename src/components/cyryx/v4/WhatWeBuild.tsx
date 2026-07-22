@@ -26,8 +26,8 @@ const PATHS = [
   {
     n: "03",
     eyebrow: "Research",
-    title: "Use the protocol.",
-    body: "Read the open Cyryx Governance Protocol and inspect the control model that informs our products and delivery work.",
+    title: "Explore the questions behind the system.",
+    body: "See the applied research directions informing our work in execution, context, evaluation, authority, cost, and human-system interaction.",
     cta: "Explore research",
     href: "/research",
     intent: null,
@@ -36,13 +36,21 @@ const PATHS = [
 
 const DELIVERY = [
   ["01", "Diagnose", "Clarify the workflow, authority, data, risk, and economic case."],
-  ["02", "Scope", "Fix deliverables, exclusions, acceptance criteria, timeline, and price."],
+  [
+    "02",
+    "Design",
+    "Define the scope, exclusions, acceptance criteria, responsibilities, and engagement terms.",
+  ],
   [
     "03",
     "Build + verify",
     "Engineer the system and test material behavior against written criteria.",
   ],
-  ["04", "Transfer", "Hand over documentation, access, training, and operational control."],
+  [
+    "04",
+    "Launch",
+    "Establish documentation, access, training, ownership, support, and transition as agreed.",
+  ],
 ] as const;
 
 export function WhatWeBuild() {

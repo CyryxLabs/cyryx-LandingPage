@@ -53,8 +53,8 @@ export function Solutions() {
             Systems under contract. Not hours under retainer.
           </h2>
           <p className="mt-8 max-w-2xl text-base sm:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Fixed deliverables, acceptance criteria, and full IP transfer — every engagement under a
-            Master Service Agreement.
+            Deliverables, acceptance criteria, ownership, licensing, support, and transition are
+            defined for each engagement.
           </p>
         </div>
         <div className="cx-stagger mt-14 grid gap-5 sm:mt-20 md:grid-cols-2 lg:grid-cols-3">

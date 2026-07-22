@@ -1,9 +1,5 @@
 import { test, expect } from "@playwright/test";
-import {
-  hasNewPublication,
-  PUBLICATIONS,
-  type Publication,
-} from "../../src/data/publications";
+import { hasNewPublication, PUBLICATIONS, type Publication } from "../../src/data/publications";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -51,44 +47,14 @@ test.describe("hasNewPublication() static date check", () => {
   });
 });
 
-test.describe("CGP v1.0 citation modal", () => {
-  test("tabs switch and Copy writes plain text with no HTML entities", async ({
-    page,
-    context,
-  }) => {
-    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-
+test.describe("research publication release boundary", () => {
+  test("unapproved publication routes return to the research hub", async ({ page }) => {
     await page.goto("/research/cgp-v1");
-    await page.getByRole("button", { name: /cite this paper/i }).click();
-
-    const dialog = page.getByRole("dialog");
-    await expect(dialog).toBeVisible();
-
-    // Default tab: BibTeX
-    await expect(dialog.locator("pre")).toContainText("@techreport{cyryxlabs2026cgp");
-
-    // Switch to APA
-    await dialog.getByRole("button", { name: "APA" }).click();
-    await expect(dialog.locator("pre")).toContainText(
-      "CGP: Cyryx Governance Protocol for Agentic AI Execution",
+    await expect(page).toHaveURL(/\/research\/?$/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(
+      "Research for systems that must leave the lab",
     );
-    await expect(dialog.locator("pre")).toContainText("Cyryx Labs LLC");
-
-    // Switch to Plain text
-    await dialog.getByRole("button", { name: /plain text/i }).click();
-    await expect(dialog.locator("pre")).toContainText("DOI:");
-
-    // Copy and read clipboard
-    await dialog.getByRole("button", { name: /^copy$/i }).click();
-    const clip = await page.evaluate(() => navigator.clipboard.readText());
-
-    expect(clip.length).toBeGreaterThan(0);
-    // No HTML entities should leak into copied text
-    expect(clip).not.toMatch(/&(amp|lt|gt|quot|#\d+|#x[0-9a-fA-F]+);/);
-    expect(clip).toContain("CGP: Cyryx Governance Protocol for Agentic AI Execution");
-
-    // Close via Close button
-    await dialog.getByRole("button", { name: /^close$/i }).click();
-    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(page.locator("main")).not.toContainText("DOI");
+    await expect(page.locator("main")).toContainText("Evidence before publication");
   });
 });

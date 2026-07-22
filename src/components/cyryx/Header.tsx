@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import { Menu } from "lucide-react";
 import { Link, useRouterState, useLocation } from "@tanstack/react-router";
-import { CyryxWordmark } from "./primitives/CyryxMark";
+import { CyryxLockup } from "./primitives/CyryxMark";
 import { MobileMenu } from "./MobileMenu";
 import { HeaderDropdown } from "./HeaderDropdown";
 import { cn } from "@/lib/utils";
@@ -20,7 +20,6 @@ import {
   NavigationGroupId,
 } from "@/lib/navigation";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
-
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -65,13 +64,10 @@ export function Header() {
             className="-mx-1 inline-flex h-12 min-w-0 shrink-0 items-center px-1 lg:h-16"
             aria-label="Cyryx Labs — home"
           >
-            <CyryxWordmark priority className="h-10 lg:h-14" />
+            <CyryxLockup priority className="h-10 lg:h-14" />
           </Link>
 
-          <nav
-            className="hidden lg:flex items-center"
-            aria-label="Primary"
-          >
+          <nav className="hidden lg:flex items-center" aria-label="Primary">
             <NavigationMenu value={openGroup} onValueChange={setOpenGroup}>
               <NavigationMenuList className="gap-7 xl:gap-8">
                 {PRIMARY_NAVIGATION.map((group) => (
@@ -84,23 +80,29 @@ export function Header() {
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
-
           </nav>
-
 
           <Link
             to={PRIMARY_NAVIGATION_CTA.href}
             aria-label={PRIMARY_NAVIGATION_CTA.label}
-            onClick={() => trackCta({ cta: "start_project", section: "header", href: PRIMARY_NAVIGATION_CTA.href })}
+            onClick={() =>
+              trackCta({
+                cta: "start_project",
+                section: "header",
+                href: PRIMARY_NAVIGATION_CTA.href,
+              })
+            }
             className={cn(
               "cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md hud-label text-[var(--silver)] transition-colors relative",
               isPrimaryNavigationCTAActive(pathname)
                 ? "after:absolute after:left-2 after:right-2 after:-bottom-1 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]"
-                : "hover:text-white"
+                : "hover:text-white",
             )}
           >
             {PRIMARY_NAVIGATION_CTA.label}
-            <span aria-hidden className="text-[var(--accent-glow)]">→</span>
+            <span aria-hidden className="text-[var(--accent-glow)]">
+              →
+            </span>
           </Link>
 
           <button
@@ -114,15 +116,10 @@ export function Header() {
           >
             <Menu className="h-5 w-5" />
           </button>
-
         </div>
       </header>
 
-      <MobileMenu 
-        open={menuOpen} 
-        onClose={() => setMenuOpen(false)} 
-      />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </>
   );
 }
-

@@ -6,24 +6,28 @@ const EXECUTION_FLOW = [
     label: "Qualify the opportunity",
     title: "From broad ambition to a valuable use case.",
     body: "We identify where AI can create durable operational value — and where a simpler system is the better answer.",
+    signal: "A prioritized decision instead of a list of AI ideas.",
   },
   {
     n: "02",
     label: "Engineer the system",
     title: "From isolated prototype to integrated capability.",
     body: "Architecture, product experience, data, integrations, and operating constraints are designed as one system — not assembled after the demo.",
+    signal: "A coherent capability instead of a disconnected prototype.",
   },
   {
     n: "03",
     label: "Govern the execution",
     title: "From opaque autonomy to bounded action.",
     body: "Human approvals, quality gates, cost limits, and an operating record keep consequential work visible and revocable.",
+    signal: "Bounded authority instead of opaque autonomy.",
   },
   {
     n: "04",
     label: "Transfer ownership",
-    title: "From vendor dependency to an asset your team can run.",
-    body: "Documentation, access, training, and operational control are part of delivery — so the capability can outlast the engagement.",
+    title: "From unclear responsibility to an owned operating model.",
+    body: "Documentation, access, training, licensing, support, and operational responsibility are defined for the engagement.",
+    signal: "A named ownership path instead of a launch-day handoff gap.",
   },
 ];
 
@@ -50,7 +54,30 @@ export function Problem() {
               aria-hidden
               className="h-2 w-2 rounded-full bg-[var(--accent-glow)] shadow-[0_0_14px_var(--accent-glow)]"
             />
-            One accountable partner from strategy to operational transfer.
+            One accountable partner from the decision through launch or transition.
+          </div>
+          <div
+            aria-hidden="true"
+            className="relative mt-10 hidden min-h-28 border-t border-white/10 pt-6 lg:block"
+          >
+            {EXECUTION_FLOW.map((step, index) => (
+              <div
+                key={step.n}
+                data-story-caption
+                className={`absolute inset-x-0 top-6 ${index === 0 ? "opacity-100" : "opacity-0"}`}
+                style={{
+                  opacity: index === 0 ? 1 : 0,
+                  visibility: index === 0 ? "visible" : "hidden",
+                }}
+              >
+                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
+                  Active outcome / {step.n}
+                </span>
+                <p className="mt-3 max-w-md font-display text-xl leading-snug tracking-[-0.02em] text-[var(--silver)]">
+                  {step.signal}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -59,7 +86,7 @@ export function Problem() {
             <li
               key={step.n}
               data-story-step
-              className="cx-stagger-item group relative border-b border-[color-mix(in_oklab,var(--steel)_16%,transparent)] py-9 first:pt-0 last:border-b-0 last:pb-0 sm:py-12"
+              className="cx-stagger-item group relative border-b border-[color-mix(in_oklab,var(--steel)_16%,transparent)] py-9 first:pt-0 last:border-b-0 last:pb-0 sm:py-12 lg:flex lg:min-h-[46vh] lg:flex-col lg:justify-center"
             >
               <span
                 aria-hidden

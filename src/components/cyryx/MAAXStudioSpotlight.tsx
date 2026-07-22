@@ -16,20 +16,20 @@ const PRODUCT_LAYERS = [
   {
     n: "01",
     title: "Ground",
-    body: "Soul Kernel and Atlas Graph assemble identity, project memory, source context, and operating constraints around the mission.",
-    signals: ["Soul Kernel", "Atlas Graph"],
+    body: "Organize the goal, project context, constraints, and completion criteria around a defined software mission.",
+    signals: ["Mission context", "Completion criteria"],
   },
   {
     n: "02",
     title: "Execute",
-    body: "Command Units run the Mission Loop while quality, security, cost, and human-approval gates control what can advance.",
-    signals: ["Command Units", "Mission Loop", "Command Gates"],
+    body: "Coordinate specialized agent roles and tools while keeping review and action boundaries visible to the operator.",
+    signals: ["Agent coordination", "Review boundaries"],
   },
   {
     n: "03",
-    title: "Account",
-    body: "Mission Ledger and Margin Governor preserve attribution, execution history, and cost visibility as the work compounds.",
-    signals: ["Mission Ledger", "Margin Governor"],
+    title: "Continue",
+    body: "Preserve useful execution context and decisions so work can be reviewed, recovered, and continued with less fragmentation.",
+    signals: ["Operating context", "Continuation"],
   },
 ];
 
@@ -100,8 +100,9 @@ export function MAAXStudioSpotlight() {
             The agentic execution OS for AI-native builders.
           </h2>
           <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-            MAAX Studio turns goals into governed missions. Agents can plan, build, verify, and
-            preserve context — while humans retain explicit authority over scope, risk, and cost.
+            MAAX Studio is being designed to turn software goals into structured missions that
+            coordinate agents, context, review, and controlled execution while keeping the operator
+            in command.
           </p>
         </div>
 

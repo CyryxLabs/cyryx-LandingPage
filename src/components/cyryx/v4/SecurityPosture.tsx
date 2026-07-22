@@ -1,123 +1,107 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { HudLabel } from "../primitives/HudLabel";
-import { CGP_V1 } from "@/data/publications";
 
-const CONTROLS = [
-  [
-    "Authority",
-    "Agents receive bounded permissions. Consequential actions can require explicit human approval.",
-  ],
-  [
-    "Gates",
-    "Quality, security, cost, and completion checks can stop a mission before changes land.",
-  ],
-  ["Ledger", "Material actions preserve a record of context, execution, authorization, and cost."],
-  ["Transfer", "Client systems are engineered for documented ownership and operational handover."],
+const CONTROL_FLOW = [
+  ["01", "Authority", "Define who or what may initiate consequential work."],
+  ["02", "Boundaries", "Limit data, tools, spend, and downstream actions according to risk."],
+  ["03", "Evaluation", "Check material output before it advances where the system supports it."],
+  ["04", "Evidence", "Preserve the operating record needed for review and improvement."],
+  ["05", "Ownership", "Assign human responsibility for decisions, exceptions, and change."],
 ] as const;
 
-const FRAMEWORKS = ["EU AI Act", "NIST AI RMF", "ISO/IEC 42001"];
+const RESEARCH_DIRECTIONS = [
+  [
+    "Authority and governance",
+    "Approval boundaries, revocation, and responsibility across agentic workflows.",
+  ],
+  [
+    "Reliability and recovery",
+    "State, failure isolation, checkpoints, escalation, and safe continuation.",
+  ],
+  [
+    "Evaluation and cost discipline",
+    "How quality evidence and resource use shape operational decisions.",
+  ],
+] as const;
 
 export function SecurityPosture() {
   return (
-    <section
-      id="security"
-      className="relative overflow-hidden bg-[var(--graphite)] py-24 sm:py-32 lg:py-44"
-    >
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-px bg-[color-mix(in_oklab,var(--accent-glow)_22%,transparent)]"
-      />
+    <section id="security" className="relative overflow-hidden py-24 sm:py-32 lg:py-44">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        <div className="cx-reveal max-w-4xl">
-          <HudLabel withDot>Proof before promise</HudLabel>
-          <h2 className="mt-7 max-w-[16ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
-            Control is not a claim. It is a system of record.
-          </h2>
-          <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-            The same primitives shape our product architecture, custom systems, and published
-            research. We state what is ready, what is experimental, and what remains unknown.
+        <div className="cx-reveal grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-20">
+          <div>
+            <HudLabel withDot>Governance and evidence</HudLabel>
+            <h2 className="mt-7 max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl">
+              Control is an architectural decision, not a badge.
+            </h2>
+          </div>
+          <p className="max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg lg:pb-2">
+            Governance is designed according to system authority, infrastructure, data, and the
+            engagement. The goal is to make consequential execution bounded, reviewable, and owned —
+            without implying automatic compliance or universal auditability.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-12 sm:mt-20 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
-          <dl className="cx-stagger">
-            {CONTROLS.map(([term, description]) => (
-              <div
-                key={term}
-                className="cx-stagger-item grid gap-3 border-t border-[color-mix(in_oklab,var(--steel)_18%,transparent)] py-7 first:pt-0 sm:grid-cols-[8rem_1fr] sm:gap-6"
-              >
-                <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
-                  {term}
-                </dt>
-                <dd className="text-[15px] leading-relaxed text-[var(--silver-dim)]">
-                  {description}
-                </dd>
-              </div>
-            ))}
-          </dl>
+        <div className="mt-16 grid gap-12 sm:mt-20 lg:grid-cols-[1.12fr_0.88fr] lg:gap-20">
+          <figure className="cx-reveal relative overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[var(--obsidian)] p-6 sm:p-10">
+            <figcaption className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--steel)]">
+              Conceptual control path / engagement-specific
+            </figcaption>
+            <ol className="mt-10">
+              {CONTROL_FLOW.map(([n, title, body], index) => (
+                <li key={n} className="relative grid grid-cols-[2.5rem_1fr] gap-4 pb-8 last:pb-0">
+                  {index < CONTROL_FLOW.length - 1 && (
+                    <span
+                      aria-hidden
+                      className="absolute left-[1.18rem] top-8 h-[calc(100%-1.1rem)] w-px bg-[color-mix(in_oklab,var(--accent-glow)_24%,transparent)]"
+                    />
+                  )}
+                  <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)] bg-[var(--obsidian)] font-mono text-[9px] text-[var(--accent-glow)]">
+                    {n}
+                  </span>
+                  <div className="pt-1">
+                    <h3 className="font-display text-xl font-medium text-[var(--silver)]">
+                      {title}
+                    </h3>
+                    <p className="mt-2 max-w-lg text-sm leading-relaxed text-[var(--silver-dim)]">
+                      {body}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </figure>
 
-          <article
-            id="research"
-            className="cx-reveal relative overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_16%,transparent)] bg-[var(--obsidian)] p-7 sm:p-10"
-          >
-            <div
-              aria-hidden
-              className="absolute right-0 top-0 h-32 w-32 bg-[radial-gradient(circle_at_top_right,color-mix(in_oklab,var(--accent-glow)_14%,transparent),transparent_70%)]"
-            />
-            <div className="relative">
-              <div className="flex flex-wrap items-center gap-3">
-                <HudLabel>{CGP_V1.category}</HudLabel>
-                <span className="rounded-sm border border-[color-mix(in_oklab,var(--silver)_16%,transparent)] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--steel)]">
-                  {CGP_V1.license}
-                </span>
-              </div>
-              <h3 className="mt-10 max-w-[20ch] font-display text-3xl font-medium leading-[1.04] tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
-                {CGP_V1.title}
-              </h3>
-              <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--steel)]">
-                {CGP_V1.subtitle} / {CGP_V1.date}
-              </p>
-              <p className="mt-7 max-w-2xl text-[15px] leading-relaxed text-[var(--silver-dim)]">
-                An open control model for extending existing governance frameworks into agentic
-                execution. The protocol is published for review and includes a MAAX Studio reference
-                implementation.
-              </p>
-              <ul
-                className="mt-6 flex flex-wrap gap-2"
-                aria-label="Frameworks mapped by the Cyryx Governance Protocol"
-              >
-                {FRAMEWORKS.map((framework) => (
-                  <li
-                    key={framework}
-                    className="rounded-sm bg-[color-mix(in_oklab,var(--silver)_7%,transparent)] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]"
-                  >
-                    {framework}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-10 flex flex-col gap-3 border-t border-[color-mix(in_oklab,var(--silver)_12%,transparent)] pt-7 sm:flex-row sm:items-center sm:gap-6">
-                <Link
-                  to="/research/$slug"
-                  params={{ slug: CGP_V1.slug }}
-                  className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+          <div id="research" className="cx-stagger">
+            <HudLabel>Applied research</HudLabel>
+            <h3 className="mt-6 max-w-[14ch] font-display text-3xl font-medium leading-[1.04] tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
+              Research that informs product and system decisions.
+            </h3>
+            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[var(--silver-dim)]">
+              Cyryx investigates the operating questions that appear when AI systems move from
+              controlled experiments into consequential workflows.
+            </p>
+            <dl className="mt-9 border-t border-[color-mix(in_oklab,var(--silver)_14%,transparent)]">
+              {RESEARCH_DIRECTIONS.map(([term, description]) => (
+                <div
+                  key={term}
+                  className="cx-stagger-item border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-6"
                 >
-                  Read the protocol <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                </Link>
-                {CGP_V1.doiUrl && (
-                  <a
-                    href={CGP_V1.doiUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] tracking-[0.1em] text-[var(--steel)] underline decoration-white/20 underline-offset-4 transition hover:text-[var(--accent-glow)]"
-                  >
-                    DOI {CGP_V1.doi} <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                )}
-              </div>
-            </div>
-          </article>
+                  <dt className="font-display text-lg font-medium text-[var(--silver)]">{term}</dt>
+                  <dd className="mt-2 text-sm leading-relaxed text-[var(--silver-dim)]">
+                    {description}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <Link
+              to="/research"
+              className="mt-7 inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+            >
+              Explore applied research <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

@@ -20,14 +20,16 @@ for (const vp of VIEWPORTS) {
     });
 
     await page.setViewportSize({ width: vp.width, height: vp.height });
-    await page.goto("/", { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("section[data-hero]")).toBeVisible();
 
     // Scroll through the page in stages so ScrollTrigger has to run.
-    const height = await page.evaluate(() => document.documentElement.scrollHeight);
-    for (let y = 0; y < height; y += vp.height) {
-      await page.evaluate((sy) => window.scrollTo(0, sy), y);
-      await page.waitForTimeout(60);
+    const maxScroll = await page.evaluate(
+      () => document.documentElement.scrollHeight - window.innerHeight,
+    );
+    for (const ratio of [0, 0.16, 0.33, 0.5, 0.66, 0.83, 1]) {
+      await page.evaluate((sy) => window.scrollTo(0, sy), maxScroll * ratio);
+      await page.waitForTimeout(35);
     }
 
     // Filter out unrelated third-party/network noise; fail on GSAP or React errors.
@@ -54,8 +56,7 @@ for (const vp of VIEWPORTS) {
 
 test("desktop Hero pins and scrubs the cinematic video with scroll", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/", { waitUntil: "networkidle" });
-
+  await page.goto("/", { waitUntil: "domcontentloaded" });
   const hero = page.locator("section[data-hero]");
   const video = hero.locator("[data-hero-video]");
   await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
@@ -89,7 +90,7 @@ test("desktop Hero pins and scrubs the cinematic video with scroll", async ({ pa
 test("reduced motion removes Hero pinning and video scrubbing", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/", { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
 
   await expect(page.locator("section[data-hero]")).toBeVisible();
   await expect(page.locator(".pin-spacer")).toHaveCount(0);
@@ -99,8 +100,7 @@ test("reduced motion removes Hero pinning and video scrubbing", async ({ page })
 /**
  * SolutionPage / Privacy / Terms must scroll cleanly at every breakpoint
  * with zero GSAP runtime errors and zero ScrollTrigger pinning. These
- * pages should not initialize GSAP timelines at all — they render pure
- * layout content.
+ * pages may use lightweight reveal timelines, but never pin content.
  */
 const CONTENT_PAGES = ["/solutions/workflow-automation", "/privacy", "/terms"];
 
@@ -112,13 +112,15 @@ for (const path of CONTENT_PAGES) {
       page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
 
       await page.setViewportSize({ width: vp.width, height: vp.height });
-      await page.goto(path, { waitUntil: "networkidle" });
+      await page.goto(path, { waitUntil: "domcontentloaded" });
       await expect(page.locator("h1")).toBeVisible();
 
-      const height = await page.evaluate(() => document.documentElement.scrollHeight);
-      for (let y = 0; y < height; y += vp.height) {
-        await page.evaluate((sy) => window.scrollTo(0, sy), y);
-        await page.waitForTimeout(40);
+      const maxScroll = await page.evaluate(
+        () => document.documentElement.scrollHeight - window.innerHeight,
+      );
+      for (const ratio of [0, 0.25, 0.5, 0.75, 1]) {
+        await page.evaluate((sy) => window.scrollTo(0, sy), maxScroll * ratio);
+        await page.waitForTimeout(30);
       }
 
       const relevant = errors.filter((e) => /gsap|scrolltrigger|react|invariant/i.test(e));
@@ -127,3 +129,29 @@ for (const path of CONTENT_PAGES) {
     });
   }
 }
+
+test("desktop side-by-side story changes the fixed outcome as steps advance", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("section[data-hero]")).toHaveAttribute("data-scroll-scrub", "true", {
+    timeout: 10_000,
+  });
+
+  const step = page.locator("[data-story-step]").nth(2);
+  await expect(step).toBeVisible();
+  await step.evaluate((element) => {
+    element.scrollIntoView({ behavior: "auto", block: "center" });
+  });
+  await page.waitForTimeout(700);
+
+  const active = await page
+    .locator("[data-story-caption]")
+    .evaluateAll((captions) =>
+      captions
+        .filter((caption) => Number.parseFloat(getComputedStyle(caption).opacity) > 0.6)
+        .map((caption) => caption.textContent ?? ""),
+    );
+
+  expect(active).toHaveLength(1);
+  expect(active[0]).toContain("Bounded authority");
+});

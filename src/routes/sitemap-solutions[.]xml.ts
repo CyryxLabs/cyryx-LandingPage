@@ -5,12 +5,11 @@ const BASE_URL = "https://cyryxlabs.com";
 
 const ENTRIES = [
   { path: "/solutions", priority: "0.8" },
+  { path: "/solutions/ai-strategy-advisory", priority: "0.8" },
   { path: "/solutions/digital-web-systems", priority: "0.8" },
-  { path: "/solutions/ai-websites-lead-systems", priority: "0.7" },
   { path: "/solutions/workflow-automation", priority: "0.7" },
   { path: "/solutions/internal-ai-assistants", priority: "0.7" },
   { path: "/solutions/custom-ai-product-development", priority: "0.7" },
-  { path: "/solutions/ai-integrations", priority: "0.7" },
   { path: "/solutions/ai-governance-cost-control", priority: "0.7" },
   { path: "/managed-operations", priority: "0.7" },
   { path: "/engagement-model", priority: "0.7" },

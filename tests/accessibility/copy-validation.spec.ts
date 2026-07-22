@@ -67,10 +67,19 @@ test.describe("Consent + legal anchors render", () => {
   });
 });
 
+test("primary navigation uses the official mark and wordmark lockup", async ({ page }) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  const home = page.getByRole("link", { name: "Cyryx Labs — home" });
+  const lockup = home.locator("[data-cyryx-lockup]");
+  await expect(lockup).toBeVisible();
+  await expect(lockup.locator("img")).toHaveCount(2);
+  await expect(lockup.locator('img[alt="Cyryx Labs"]')).toHaveCount(1);
+});
+
 test.describe("Hero — enterprise value proposition", () => {
   const APPROVED = {
-    headline: "Turn AI ambition into systems your business can run.",
-    sub: "Cyryx Labs takes high-value AI initiatives from strategy to production — designing, engineering, and governing the system so your team keeps control, evidence, and operational ownership.",
+    headline: "The execution layer for enterprise AI.",
+    sub: "Cyryx turns high-value AI initiatives into governed production systems — so your organization can scale automation without losing control of risk, cost, or accountability.",
     ctaPrimary: "Discuss your AI initiative",
     ctaSecondary: "See how we deliver",
   } as const;
@@ -105,5 +114,28 @@ test.describe("Hero — enterprise value proposition", () => {
     await expect(secondary).toHaveAttribute("href", "#what-we-build");
     await expect(secondary).toContainText(APPROVED.ctaSecondary);
     await expect(hero).not.toContainText("The execution layer for business AI.");
+  });
+
+  test("execution-gap evidence preserves Gartner qualifiers and original sources", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const section = page.locator("#execution-gap");
+    await expect(section).toBeVisible();
+    await expect(section).toContainText("Gartner predicts");
+    await expect(section).toContainText("57% of high-maturity organizations");
+    await expect(section).toContainText("14% of low-maturity organizations");
+
+    const sources = section.locator('a[href^="https://www.gartner.com/en/newsroom/"]');
+    await expect(sources).toHaveCount(3);
+    const sourceAttributes = await sources.evaluateAll((anchors) =>
+      anchors.map((anchor) => ({
+        target: anchor.getAttribute("target"),
+        rel: anchor.getAttribute("rel"),
+      })),
+    );
+    expect(sourceAttributes).toEqual(
+      Array.from({ length: 3 }, () => ({ target: "_blank", rel: "noopener noreferrer" })),
+    );
   });
 });

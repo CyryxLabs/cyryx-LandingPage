@@ -9,17 +9,22 @@ import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
 import { ContactSection } from "@/components/cyryx/ContactSection";
 import { Problem } from "@/components/cyryx/v4/Problem";
+import { ExecutionGap } from "@/components/cyryx/v4/ExecutionGap";
 import { WhatWeBuild } from "@/components/cyryx/v4/WhatWeBuild";
 import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
+import { OperatingModel } from "@/components/cyryx/v4/OperatingModel";
+import { BusinessOutcomes } from "@/components/cyryx/v4/BusinessOutcomes";
+import { LyraSpotlight } from "@/components/cyryx/v4/LyraSpotlight";
+import { WhyCyryx } from "@/components/cyryx/v4/WhyCyryx";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
 import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
 import brandMark from "@/assets/cyryx-brand-mark.png";
 
 const HOME_URL = "https://cyryxlabs.com/";
-const HOME_TITLE = "Cyryx Labs — AI Systems Your Business Can Run";
+const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
 const HOME_DESCRIPTION =
-  "Cyryx Labs takes high-value AI initiatives from strategy to production, building governed products and workflows that teams can operate and own.";
+  "Cyryx Labs turns high-value AI initiatives into governed production systems with control over risk, cost, and accountability.";
 const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
 
 export const Route = createFileRoute("/")({
@@ -60,12 +65,11 @@ export const Route = createFileRoute("/")({
               "@id": "https://cyryxlabs.com/#organization",
               name: "Cyryx Labs",
               legalName: "Cyryx Labs",
-              alternateName: ["Cyryx", "Cyryx AI"],
+              alternateName: "Cyryx",
               url: "https://cyryxlabs.com/",
               description:
                 "Cyryx Labs is an AI product and systems company building proprietary AI products, governed agentic workflow systems, and execution infrastructure.",
-              slogan: "The command layer for AI-native builders.",
-              foundingDate: "2024",
+              slogan: "Advise. Build. Operate.",
               industry: "Artificial Intelligence",
               areaServed: "Worldwide",
               email: "contact@cyryxlabs.com",
@@ -82,14 +86,21 @@ export const Route = createFileRoute("/")({
                     "@id": "https://cyryxlabs.com/#maax-studio",
                   },
                 },
+                {
+                  "@type": "Offer",
+                  name: "Lyra",
+                  itemOffered: {
+                    "@id": "https://cyryxlabs.com/#lyra",
+                  },
+                },
               ],
               knowsAbout: [
-                "Operational AI",
+                "AI strategy and advisory",
                 "Agentic workflow systems",
                 "AI execution infrastructure",
-                "Governed autonomy",
+                "AI governance and operations",
                 "MAAX Studio",
-                "Proprietary AI products",
+                "Lyra",
               ],
               logo: {
                 "@type": "ImageObject",
@@ -111,7 +122,7 @@ export const Route = createFileRoute("/")({
               "@type": "WebPage",
               "@id": "https://cyryxlabs.com/#webpage",
               url: "https://cyryxlabs.com/",
-              name: "Cyryx Labs — AI Systems Your Business Can Run",
+              name: "Cyryx Labs — The Execution Layer for Enterprise AI",
               isPartOf: {
                 "@id": "https://cyryxlabs.com/#website",
               },
@@ -119,7 +130,7 @@ export const Route = createFileRoute("/")({
                 "@id": "https://cyryxlabs.com/#organization",
               },
               description:
-                "Cyryx Labs takes AI initiatives from strategy to production, building governed products and workflow systems that client teams can operate and own.",
+                "Cyryx Labs turns high-value AI initiatives into governed production systems with control over risk, cost, and accountability.",
             },
             {
               "@type": "SoftwareApplication",
@@ -127,7 +138,6 @@ export const Route = createFileRoute("/")({
               name: "MAAX Studio",
               applicationCategory: "DeveloperApplication",
               applicationSubCategory: "Agentic Execution Environment",
-              operatingSystem: "macOS, Windows, Linux",
               featureList: [
                 "Mission-based execution",
                 "Project memory",
@@ -150,11 +160,27 @@ export const Route = createFileRoute("/")({
               brand: {
                 "@id": "https://cyryxlabs.com/#organization",
               },
-              offers: {
-                "@type": "Offer",
-                availability: "https://schema.org/PreOrder",
-                price: "0",
-                priceCurrency: "USD",
+            },
+            {
+              "@type": "SoftwareApplication",
+              "@id": "https://cyryxlabs.com/#lyra",
+              name: "Lyra",
+              applicationCategory: "DeveloperApplication",
+              applicationSubCategory: "Intelligence and execution runtime",
+              audience: {
+                "@type": "Audience",
+                audienceType: "Private development program",
+              },
+              creator: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
+              publisher: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
+              description:
+                "Lyra is a private, model-agnostic intelligence and execution runtime in development at Cyryx Labs.",
+              brand: {
+                "@id": "https://cyryxlabs.com/#organization",
               },
             },
           ],
@@ -193,10 +219,15 @@ function IndexPage() {
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero />
+        <ExecutionGap />
         <Problem />
+        <OperatingModel />
         <WhatWeBuild />
+        <BusinessOutcomes />
         <MAAXStudioSpotlight />
+        <LyraSpotlight />
         <SecurityPosture />
+        <WhyCyryx />
         <ContactSection />
       </main>
       <Footer />

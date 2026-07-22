@@ -1,63 +1,44 @@
-import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
-import { HudGrid } from "@/components/cyryx/primitives/HudGrid";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { START_PROJECT_HREF } from "@/lib/cta";
 
 const PATH = "/products";
 const TITLE = "Products — Cyryx Labs";
 const DESC =
-  "Explore the Cyryx Labs product ecosystem, including MAAX Studio and future Cyryx systems built around governed execution.";
+  "Cyryx Labs develops MAAX Studio, an agentic software execution environment, and Lyra, a private model-agnostic intelligence and execution runtime.";
 
 const PRODUCTS = [
   {
-    name: "Operational AI",
-    eyebrow: "Enterprise · In development",
-    tagline: "Operational intelligence and execution platform for enterprise.",
-    description:
-      "A unified operating layer for governed AI execution, mission management, and operational audit — the command center for organizations running at scale.",
-    bullets: [
-      "Enterprise-wide mission management and goal tracking",
-      "Unified governance and policy enforcement through command gates",
-      "Cross-departmental operational audit and mission ledgers",
-    ],
-    status: "In development",
-  },
-  {
-    eyebrow: "Native Engine · In development",
-    name: "Lyra",
-    tagline: "Governed, local-first AI model for enterprise.",
-    description:
-      "The sovereign intelligence layer engineered for accountability and honesty — trained to execute under command, not just to answer.",
-    bullets: [
-      "Governance trained into the model weights, not just prompts",
-      "Local-first sovereignty for data privacy and security",
-      "Evidence-grounded execution with verifiable citations",
-    ],
-    href: "/products/lyra",
-    cta: "Explore Lyra",
-    status: "Enterprise early access",
-  },
-  {
-    eyebrow: "Flagship · In development",
+    n: "01",
     name: "MAAX Studio",
-    tagline: "Agentic execution environment for AI-native builders.",
+    maturity: "In active development",
+    identity: "Agentic software execution environment",
     description:
-      "Missions, command gates, goal-grounded generation, project context graph, and mission ledgers — the runtime we use to ship every Cyryx system.",
-    bullets: [
-      "Mission-based execution with explicit acceptance criteria",
-      "Command gates for policy, structure, and task-quality control",
-      "Audit ledgers: what ran, under whose authority, at what cost",
-    ],
+      "A command environment intended to coordinate software missions, agents, project context, review, and controlled execution.",
+    focus: ["Mission-based work", "Project context", "Review and execution controls"],
     href: "/products/maax-studio",
     cta: "Explore MAAX Studio",
-    status: "Pre-release · early access",
   },
-];
+  {
+    n: "02",
+    name: "Lyra",
+    maturity: "Private development",
+    identity: "Private, model-agnostic intelligence and execution runtime",
+    description:
+      "A private runtime direction for coordinating models, tools, context, and execution boundaries without depending on one model provider.",
+    focus: [
+      "Model-agnostic orchestration",
+      "Private execution",
+      "Controlled tool and context access",
+    ],
+    href: "/products/lyra",
+    cta: "Understand Lyra",
+  },
+] as const;
 
 export const Route = createFileRoute("/products")({
   head: () =>
@@ -71,114 +52,100 @@ export const Route = createFileRoute("/products")({
 });
 
 function ProductsPage() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  // Parent route: render <Outlet /> for any /products/* child; render hub on exact /products.
-  if (pathname !== "/products" && pathname !== "/products/") {
-    return <Outlet />;
-  }
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  if (pathname !== "/products" && pathname !== "/products/") return <Outlet />;
+
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
-      <main className="relative">
-        <HudGrid />
-        <section className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 pt-32 pb-16 lg:pt-40">
-          <nav
-            aria-label="Breadcrumb"
-            className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--silver-dim)]"
-          >
-            <span className="text-[var(--accent-glow)]">[00]</span>
-            <Link to="/" className="hover:text-[var(--silver)] transition-colors">
-              Home
-            </Link>
-            <span className="opacity-40">/</span>
-            <span className="text-[var(--silver)]">Products</span>
-          </nav>
-          <div className="mt-10 flex items-center gap-4">
-            <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-[var(--accent-glow)]">
-              § Cyryx Labs · Products
-            </span>
-            <div className="flex-1 h-px bg-[color-mix(in_oklab,var(--silver)_12%,transparent)]" />
+      <main id="main-content">
+        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
+          <div className="mx-auto max-w-7xl">
+            <HudLabel withDot>Cyryx Labs / Product infrastructure</HudLabel>
+            <div className="mt-8 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-24">
+              <h1 className="max-w-[11ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-[var(--silver)] sm:text-6xl lg:text-8xl">
+                We build the command layer we want to use.
+              </h1>
+              <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl lg:pb-2">
+                Cyryx product work concentrates on controlled execution: how people, agents, models,
+                tools, project context, and review can operate as one system. Both public product
+                directions remain under development.
+              </p>
+            </div>
           </div>
-          <h1 className="mt-6 max-w-3xl font-display text-[40px] sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.02em] text-silver-gradient">
-            Proprietary systems for the agentic era.
-          </h1>
-          <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Cyryx products are the runtime and the research behind every engagement.
-            Built for teams operationalizing AI under production standards — governance,
-            audit, and human authority as defaults.
-          </p>
         </section>
 
-        <section className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 pb-24 lg:pb-32">
-          <div className="grid gap-px lg:grid-cols-2 bg-[color-mix(in_oklab,var(--silver)_12%,transparent)] border border-[color-mix(in_oklab,var(--silver)_12%,transparent)]">
-            {PRODUCTS.map((p, i) => (
+        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+          <div className="grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 lg:grid-cols-2">
+            {PRODUCTS.map((product) => (
               <article
-                key={p.name}
-                className="bg-[var(--onyx)] flex flex-col p-8 lg:p-12 hover:bg-[color-mix(in_oklab,var(--graphite)_60%,var(--onyx))] transition-colors"
+                key={product.name}
+                className="flex min-h-[38rem] flex-col bg-[var(--obsidian)] p-8 sm:p-12"
               >
-                <div className="font-mono text-[10px] tracking-[0.25em] text-[var(--accent-glow)]">
-                  {String(i + 1).padStart(2, "0")} // {p.eyebrow.toUpperCase()}
+                <div className="flex items-center justify-between gap-4">
+                  <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
+                    {product.n}
+                  </span>
+                  <span className="rounded-sm border border-white/10 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]">
+                    {product.maturity}
+                  </span>
                 </div>
-                <h2 className="mt-6 font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[var(--silver)]">
-                  {p.name}
+                <h2 className="mt-16 font-display text-4xl font-semibold tracking-[-0.04em] text-[var(--silver)] sm:text-5xl">
+                  {product.name}
                 </h2>
-                <p className="mt-2 text-[15px] leading-relaxed text-[var(--silver)]">
-                  {p.tagline}
+                <p className="mt-4 font-mono text-[10px] uppercase leading-relaxed tracking-[0.18em] text-[var(--accent-glow)]">
+                  {product.identity}
                 </p>
-                <p className="mt-4 text-sm leading-relaxed text-[var(--silver-dim)]">
-                  {p.description}
+                <p className="mt-8 max-w-xl text-base leading-relaxed text-[var(--silver-dim)]">
+                  {product.description}
                 </p>
-                <ul className="mt-6 space-y-2 text-sm leading-relaxed text-[var(--silver-dim)]">
-                  {p.bullets.map((b) => (
-                    <li key={b} className="flex gap-2">
-                      <span
-                        aria-hidden
-                        className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--accent-glow)]"
-                      />
-                      <span>{b}</span>
+                <ul className="mt-8 space-y-3 border-t border-white/10 pt-6 text-sm text-[var(--silver-dim)]">
+                  {product.focus.map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <span aria-hidden className="text-[var(--accent-glow)]">
+                        /
+                      </span>
+                      {item}
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto pt-10 flex items-center justify-between gap-4 border-t border-[color-mix(in_oklab,var(--silver)_10%,transparent)]">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--silver-dim)] mt-6">
-                    {p.status}
-                  </span>
-                  <Link
-                    to={p.href}
-                    className="mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--accent-glow)] hover:opacity-80 transition-opacity"
-                  >
-                    {p.cta}
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
+                <Link
+                  to={product.href}
+                  className="mt-auto inline-flex min-h-12 items-center gap-2 pt-10 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+                >
+                  {product.cta} <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
               </article>
             ))}
           </div>
+        </section>
 
-          <div className="mt-16 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_25%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-8 backdrop-blur-sm lg:p-10">
-            <HudLabel withDot>Delivery arm</HudLabel>
-            <h2 className="mt-4 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-silver-gradient">
-              Need a system built on this stack?
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--silver-dim)]">
-              Cyryx Solutions delivers custom systems built on the same primitives as
-              our products — with governance, audit, and handover engineered in from
-              day one.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                to="/solutions"
-                className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
-              >
-                View solutions
-                <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-glow)]" />
-              </Link>
-              <a
-                href={START_PROJECT_HREF}
-                className="inline-flex items-center gap-2 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors px-3 h-11"
-              >
-                Start a project
-              </a>
+        <section className="border-y border-white/10 bg-[var(--graphite)] px-5 py-20 sm:px-8 sm:py-24">
+          <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-24">
+            <HudLabel>Product and delivery</HudLabel>
+            <div>
+              <h2 className="font-display text-3xl font-medium tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
+                Product research informs delivery. Client scope remains independent.
+              </h2>
+              <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-[var(--silver-dim)]">
+                Cyryx may apply product concepts or internal tooling where appropriate, but each
+                client system is defined by its own architecture, licensing, ownership, security,
+                support, and acceptance requirements.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link
+                  to="/solutions"
+                  className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+                >
+                  Explore solutions <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                </Link>
+                <a
+                  href={START_PROJECT_HREF}
+                  className="inline-flex min-h-11 items-center px-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--steel)] transition hover:text-[var(--accent-glow)]"
+                >
+                  Start a project
+                </a>
+              </div>
             </div>
           </div>
         </section>

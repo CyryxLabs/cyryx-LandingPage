@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
@@ -6,25 +7,49 @@ import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { START_PROJECT_HREF } from "@/lib/cta";
 
 const PATH = "/engagement-model";
-const TITLE = "Engagement Model — Cyryx Labs";
+const TITLE = "How We Work — Cyryx Labs";
 const DESC =
-  "How Cyryx Labs engagements operate: diagnose, scope, build, verify, transfer, and optionally operate. Fixed scope, verifiable delivery, full transfer.";
+  "The Cyryx engagement lifecycle: discover the business problem, design the system, build, validate, launch, transfer, and optionally operate under defined terms.";
 
 const STEPS = [
-  { n: "01", title: "Diagnose", body: "Establish the workflow, current systems, data, risk, ownership, and economic case." },
-  { n: "02", title: "Scope", body: "Define deliverables, exclusions, acceptance criteria, timeline, price, responsibilities, and ownership in writing." },
-  { n: "03", title: "Build", body: "Implement with production discipline, controlled access, documented decisions, observability, and fallback." },
-  { n: "04", title: "Verify", body: "Test material claims and system behavior against written acceptance criteria." },
-  { n: "05", title: "Transfer", body: "Provide documentation, training, account ownership, access records, and operational control." },
-  { n: "06", title: "Operate", body: "When selected, provide managed coverage under defined systems, response windows, and exclusions." },
-];
+  [
+    "01",
+    "Discover",
+    "Understand the business problem, current workflow, systems, data, security constraints, ownership, and decision context.",
+    ["Problem definition", "Workflow and stakeholder map", "Evidence and access needs"],
+  ],
+  [
+    "02",
+    "Design",
+    "Define the target experience, architecture, authority, dependencies, acceptance criteria, implementation sequence, and operating model.",
+    ["Architecture direction", "Delivery scope", "Acceptance and governance requirements"],
+  ],
+  [
+    "03",
+    "Build",
+    "Implement the agreed system in controlled increments, integrating AI and deterministic software according to the design.",
+    ["Working increments", "Documented decisions", "Integration and operating setup"],
+  ],
+  [
+    "04",
+    "Validate",
+    "Test material behavior against written criteria, record limitations, and resolve issues before launch decisions.",
+    ["Acceptance evidence", "Known limitations", "Launch recommendation"],
+  ],
+  [
+    "05",
+    "Launch & Operate",
+    "Release, transfer access and knowledge, and optionally continue under a separately defined managed-operations scope.",
+    ["Launch and handover", "Training and documentation", "Optional operating agreement"],
+  ],
+] as const;
 
 export const Route = createFileRoute("/engagement-model")({
   head: () =>
     buildHead({ title: TITLE, description: DESC, path: PATH }, [
       buildBreadcrumbJsonLd([
         { name: "Home", path: "/" },
-        { name: "Engagement Model", path: PATH },
+        { name: "How We Work", path: PATH },
       ]),
     ]),
   component: EngagementModelPage,
@@ -34,56 +59,99 @@ function EngagementModelPage() {
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
-      <main id="main-content" className="relative">
-        <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pt-32 pb-16 lg:pt-44">
-          <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="hover:text-[var(--accent-glow)]">Home</Link>
-            <span className="mx-2 opacity-60">/</span>
-            <span className="text-[var(--silver)]">Engagement Model</span>
-          </nav>
-          <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">Engagement Model</HudLabel>
-          <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
-            Fixed scope. Verifiable delivery. Full transfer.
-          </h1>
-          <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Every Cyryx engagement is built around a bounded problem, an accountable owner, and a verifiable outcome. Every system is built on the same architecture as MAAX Studio.
-          </p>
+      <main id="main-content">
+        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
+          <div className="mx-auto max-w-7xl">
+            <HudLabel withDot>How We Work</HudLabel>
+            <div className="mt-8 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-end lg:gap-24">
+              <h1 className="max-w-[11ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-[var(--silver)] sm:text-6xl lg:text-8xl">
+                Decisions first. Evidence throughout. Ownership at launch.
+              </h1>
+              <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl lg:pb-2">
+                Every engagement is shaped around the actual problem and authority of the system.
+                Scope, commercial terms, ownership, licensing, support, acceptance, and operational
+                responsibility are defined in writing for that engagement.
+              </p>
+            </div>
+          </div>
         </section>
 
-        <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-16">
-          <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {STEPS.map((s) => (
-              <li key={s.title} className="glass-panel rounded-md p-6">
-                <span className="hud-label text-[var(--accent-glow)]">{s.n}</span>
-                <h2 className="mt-3 font-display text-lg font-semibold uppercase tracking-wider text-[var(--silver)]">
-                  {s.title}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">{s.body}</p>
+        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+          <ol className="relative">
+            <div
+              aria-hidden
+              className="absolute bottom-0 left-[1.2rem] top-0 w-px bg-[color-mix(in_oklab,var(--accent-glow)_22%,transparent)] sm:left-[2rem]"
+            />
+            {STEPS.map(([n, title, body, outputs]) => (
+              <li
+                key={n}
+                className="relative grid gap-6 pb-16 last:pb-0 sm:grid-cols-[4rem_0.75fr_1.25fr] sm:gap-10 sm:pb-20"
+              >
+                <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--accent-glow)] bg-[var(--onyx)] font-mono text-[9px] text-[var(--accent-glow)] sm:h-16 sm:w-16">
+                  {n}
+                </span>
+                <div>
+                  <h2 className="font-display text-3xl font-medium tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
+                    {title}
+                  </h2>
+                  <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[var(--silver-dim)]">
+                    {body}
+                  </p>
+                </div>
+                <div className="border-t border-white/10 pt-5">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--steel)]">
+                    Representative outputs
+                  </p>
+                  <ul className="mt-4 space-y-2 text-sm text-[var(--silver-dim)]">
+                    {outputs.map((output) => (
+                      <li key={output} className="flex gap-3">
+                        <span aria-hidden className="text-[var(--accent-glow)]">
+                          /
+                        </span>
+                        {output}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </li>
             ))}
           </ol>
         </section>
 
-        <section className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12 pb-24">
-          <div className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_55%,transparent)] p-6 backdrop-blur-sm">
-            <h2 className="font-display text-xl font-semibold text-[var(--silver)]">Operating principles</h2>
-            <ul className="mt-4 grid gap-2 text-sm leading-relaxed text-[var(--silver-dim)] sm:grid-cols-2">
-              <li>· Outcomes over output.</li>
-              <li>· Verification over generation.</li>
-              <li>· Systems over tools.</li>
-              <li>· Humans in command.</li>
-              <li>· Fixed scope, defined acceptance.</li>
-              <li>· Documented transfer.</li>
-              <li>· Conservative claims.</li>
-            </ul>
+        <section className="bg-[var(--graphite)] px-5 py-24 sm:px-8 sm:py-32">
+          <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2 lg:gap-24">
+            <div>
+              <HudLabel>Commercial and ownership terms</HudLabel>
+              <h2 className="mt-6 font-display text-4xl font-medium tracking-[-0.04em] text-[var(--silver)] sm:text-5xl">
+                Defined for the engagement — never implied by the website.
+              </h2>
+            </div>
+            <p className="text-lg leading-relaxed text-[var(--silver-dim)]">
+              Price structure, timeline, acceptance, intellectual property, licenses, third-party
+              services, data handling, support, warranty, change control, and handover vary by
+              scope. The applicable proposal and agreement control those terms. Optional managed
+              operations are documented separately.
+            </p>
           </div>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a href={START_PROJECT_HREF} className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label">
-              Start a project
-              <span aria-hidden className="text-[var(--accent-glow)]">→</span>
+        </section>
+
+        <section className="mx-auto max-w-4xl px-5 py-24 text-center sm:px-8 sm:py-32">
+          <HudLabel withDot>Start with the problem</HudLabel>
+          <h2 className="mt-7 font-display text-4xl font-semibold leading-[1] tracking-[-0.045em] text-[var(--silver)] sm:text-6xl">
+            Bring the workflow, bottleneck, or system decision.
+          </h2>
+          <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+            <a
+              href={START_PROJECT_HREF}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
+            >
+              Start a project <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
-            <Link to="/solutions" className="inline-flex items-center h-11 px-3 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)]">
-              Explore solutions
+            <Link
+              to="/solutions"
+              className="inline-flex min-h-12 items-center justify-center rounded-md border border-white/15 px-7 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+            >
+              Explore capabilities
             </Link>
           </div>
         </section>

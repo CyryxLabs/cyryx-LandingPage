@@ -1,10 +1,54 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
-import { ArrowRight, Download, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
-import { PUBLICATIONS, type PublicationCategory } from "@/data/publications";
+import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, jsonLdScript } from "@/components/cyryx/seo/seo";
+import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
+
+const AREAS = [
+  [
+    "Execution architecture",
+    "How AI, deterministic software, tools, state, and people coordinate across a real task.",
+  ],
+  [
+    "Context intelligence",
+    "How systems select, structure, constrain, and attribute the information used for a decision.",
+  ],
+  [
+    "Evaluation",
+    "How representative cases, human judgment, and system signals can support release and change decisions.",
+  ],
+  [
+    "Authority & governance",
+    "How action boundaries, review, escalation, evidence, and ownership become part of system design.",
+  ],
+  [
+    "Cost intelligence",
+    "How model, provider, infrastructure, and human effort can be interpreted at the workload level.",
+  ],
+  [
+    "Human-system interaction",
+    "How interfaces communicate uncertainty, evidence, control, failure, and recovery to operators.",
+  ],
+] as const;
+
+const RELEASE = [
+  ["Investigate", "Frame a precise question from product or system work."],
+  ["Prototype", "Build the smallest instrumented environment that can produce useful evidence."],
+  [
+    "Evaluate",
+    "Test representative behavior, failure modes, limitations, and competing explanations.",
+  ],
+  [
+    "Integrate",
+    "Feed relevant findings back into product, advisory, engineering, and operating decisions.",
+  ],
+  [
+    "Publish selectively",
+    "Release public material only after its evidence, attribution, limitations, and approval are ready.",
+  ],
+] as const;
 
 export const Route = createFileRoute("/research/")({
   head: () => ({
@@ -13,13 +57,13 @@ export const Route = createFileRoute("/research/")({
       {
         name: "description",
         content:
-          "Cyryx Applied Research develops the architectures, protocols, and evaluation models behind governed AI execution systems and productized AI infrastructure.",
+          "Applied research at Cyryx Labs explores AI execution architecture, context, evaluation, authority, cost, and human-system interaction.",
       },
       { property: "og:title", content: "Applied Research — Cyryx Labs" },
       {
         property: "og:description",
         content:
-          "Applied research and architecture behind Cyryx products and client systems — agentic execution, context intelligence, governance, model routing, cost intelligence.",
+          "Research directions informing Cyryx products, advisory, engineering, and operations.",
       },
       { property: "og:url", content: "https://cyryxlabs.com/research" },
     ],
@@ -36,132 +80,116 @@ export const Route = createFileRoute("/research/")({
   component: ResearchHub,
 });
 
-const FILTERS: Array<"All" | PublicationCategory> = [
-  "All",
-  "Governance",
-  "Agentic AI",
-  "Token Intelligence",
-  "Architecture",
-];
-
 function ResearchHub() {
-  const [active, setActive] = useState<(typeof FILTERS)[number]>("All");
-
-  const items = useMemo(
-    () => (active === "All" ? PUBLICATIONS : PUBLICATIONS.filter((p) => p.category === active)),
-    [active],
-  );
+  useCyryxScrollAnimations();
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#C7C9CC]">
+    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
-      <main className="pt-32 lg:pt-40">
-        {/* Hero */}
-        <section className="mx-auto max-w-7xl px-6 pb-12">
-          <p className="font-[Inter] text-[11px] font-semibold uppercase tracking-[0.18em] text-[#0E5B57]">
-            Cyryx Labs · Applied Research
-          </p>
-          <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-[-0.03em] text-white sm:text-4xl lg:text-5xl">
-            Research &amp; Publications
-          </h1>
-          <p className="mt-4 max-w-2xl font-[Inter] text-base leading-relaxed text-[#C7C9CC]">
-            Technical frameworks, governance protocols, and applied research from Cyryx Labs —
-            published openly for the community.
-          </p>
-
-          {/* Filters */}
-          <div className="mt-8 flex flex-wrap gap-2">
-            {FILTERS.map((f) => {
-              const isActive = f === active;
-              return (
-                <button
-                  key={f}
-                  type="button"
-                  onClick={() => setActive(f)}
-                  className={`rounded-full px-4 py-1.5 font-[Inter] text-xs font-medium transition-colors ${
-                    isActive
-                      ? "bg-[#0E5B57] text-white"
-                      : "bg-[#1B1E22] text-[#9AA3AF] hover:text-white"
-                  }`}
-                >
-                  {f}
-                </button>
-              );
-            })}
+      <main id="main-content" tabIndex={-1} className="outline-none">
+        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
+          <div className="mx-auto max-w-7xl">
+            <HudLabel withDot>Applied Research</HudLabel>
+            <div className="mt-8 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-24">
+              <h1 className="max-w-[11ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
+                Research for systems that must leave the lab.
+              </h1>
+              <p className="text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl lg:pb-2">
+                Cyryx investigates the engineering and operating questions that appear when AI is
+                expected to support real products, workflows, and decisions. The purpose is
+                practical: better architectures, better evidence, and clearer limits.
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* Grid */}
-        <section className="mx-auto max-w-7xl px-6 pb-24">
-          {items.length === 0 ? (
-            <p className="py-24 text-center font-[Inter] text-sm text-[#9AA3AF]">
-              No publications in this category yet.
-            </p>
-          ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((p) => (
-                <PublicationCard key={p.id} pub={p} />
+        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+          <div className="cx-reveal grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
+            <div>
+              <HudLabel>Research directions</HudLabel>
+              <h2 className="mt-6 max-w-[12ch] font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
+                Six questions behind one operating system.
+              </h2>
+            </div>
+            <div className="cx-stagger grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:grid-cols-2">
+              {AREAS.map(([title, body], index) => (
+                <article
+                  key={title}
+                  className="cx-stagger-item min-h-64 bg-[var(--obsidian)] p-7 sm:p-8"
+                >
+                  <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                    0{index + 1}
+                  </span>
+                  <h3 className="mt-12 font-display text-2xl tracking-[-0.035em] text-[var(--silver)]">
+                    {title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-relaxed text-[var(--silver-dim)]">{body}</p>
+                </article>
               ))}
             </div>
-          )}
+          </div>
+        </section>
+
+        <section className="border-y border-white/10 bg-[var(--obsidian)] px-5 py-24 sm:px-8 sm:py-32">
+          <div className="cx-reveal mx-auto max-w-7xl">
+            <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
+              <div>
+                <HudLabel>Research discipline</HudLabel>
+                <h2 className="mt-6 font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
+                  Evidence before publication.
+                </h2>
+                <p className="mt-6 text-sm leading-relaxed text-[var(--silver-dim)]">
+                  Public claims, publication records, identifiers, control mappings, and maturity
+                  statements are withheld until the underlying evidence and release approval are
+                  complete.
+                </p>
+              </div>
+              <ol className="divide-y divide-white/10 border-y border-white/10">
+                {RELEASE.map(([title, body], index) => (
+                  <li
+                    key={title}
+                    className="grid gap-3 py-6 sm:grid-cols-[3rem_0.7fr_1.3fr] sm:gap-8"
+                  >
+                    <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                      0{index + 1}
+                    </span>
+                    <h3 className="text-sm font-medium text-[var(--silver)]">{title}</h3>
+                    <p className="text-sm leading-relaxed text-[var(--silver-dim)]">{body}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section className="px-5 py-24 sm:px-8 sm:py-32">
+          <div className="cx-reveal mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-24">
+            <div>
+              <HudLabel>From research to practice</HudLabel>
+              <h2 className="mt-6 max-w-[16ch] font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-6xl">
+                Findings matter when they improve a product or operating decision.
+              </h2>
+            </div>
+            <div className="space-y-4">
+              <Link
+                to="/products"
+                className="group flex items-center justify-between border-b border-white/10 py-4 text-sm text-[var(--silver-dim)] transition hover:text-[var(--accent-glow)]"
+              >
+                Explore MAAX Studio and Lyra{" "}
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden />
+              </Link>
+              <Link
+                to="/answers"
+                className="group flex items-center justify-between border-b border-white/10 py-4 text-sm text-[var(--silver-dim)] transition hover:text-[var(--accent-glow)]"
+              >
+                Read the Cyryx Answers library{" "}
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden />
+              </Link>
+            </div>
+          </div>
         </section>
       </main>
       <Footer />
     </div>
-  );
-}
-
-function PublicationCard({ pub }: { pub: (typeof PUBLICATIONS)[number] }) {
-  const isNew = pub.status === "new";
-  return (
-    <Link
-      to="/research/$slug"
-      params={{ slug: pub.slug }}
-      className="group block rounded-lg border border-[#1B1E22] bg-[#121417] p-6 transition-all duration-200 hover:border-[#0E5B57] hover:shadow-lg"
-    >
-      <div className="flex items-center justify-between gap-3">
-        <span className="rounded bg-[#0D3B3B] px-2 py-0.5 font-[Inter] text-[11px] font-medium uppercase tracking-wider text-[#0E5B57]">
-          {pub.category}
-        </span>
-        <span
-          className={`rounded px-2 py-0.5 font-[Inter] text-[11px] font-medium uppercase ${
-            isNew ? "bg-[#0E5B57] text-white" : "bg-[#1B1E22] text-[#9AA3AF]"
-          }`}
-        >
-          {isNew ? "New" : "Published"}
-        </span>
-      </div>
-
-      <h2 className="mt-4 font-display text-base font-semibold leading-snug text-white">
-        {pub.title}
-      </h2>
-
-      <p className="mt-2 font-[Inter] text-[13px] text-[#9AA3AF]">
-        {pub.authors.join(", ")} · {pub.date}
-        {pub.doi ? <> · DOI {pub.doi}</> : null}
-      </p>
-
-      <p className="mt-3 line-clamp-3 font-[Inter] text-sm leading-relaxed text-[#C7C9CC]">
-        {pub.abstract}
-      </p>
-
-      <div className="my-4 h-px bg-[#1B1E22]" />
-
-      <div className="flex flex-wrap items-center gap-4 font-[Inter] text-[12px] text-[#9AA3AF]">
-        {pub.pdfUrl && (
-          <span className="inline-flex items-center gap-1 group-hover:text-white">
-            <Download className="h-3.5 w-3.5" /> PDF
-          </span>
-        )}
-        {pub.doiUrl && (
-          <span className="inline-flex items-center gap-1 group-hover:text-white">
-            <ExternalLink className="h-3.5 w-3.5" /> DOI
-          </span>
-        )}
-        <span className="ml-auto inline-flex items-center gap-1 text-[#0E5B57] group-hover:text-white">
-          Read more <ArrowRight className="h-3.5 w-3.5" />
-        </span>
-      </div>
-    </Link>
   );
 }

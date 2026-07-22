@@ -117,7 +117,7 @@ export function Hero() {
             muted
             loop
             playsInline
-            preload="none"
+            preload="metadata"
             disablePictureInPicture
             disableRemotePlayback
             onLoadedData={() => setVideoReady(true)}

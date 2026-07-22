@@ -26,7 +26,7 @@ export function WhyCyryxV4() {
         <div className="cx-reveal max-w-3xl">
           <HudLabel withDot>Why Cyryx Labs</HudLabel>
           <h2 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold uppercase leading-[1.02] tracking-tight text-silver-gradient">
-            A lab, not an agency.
+            One operating model across advice, products, engineering, and research.
           </h2>
         </div>
         <div className="cx-stagger mt-14 grid gap-5 sm:mt-20 md:grid-cols-2">

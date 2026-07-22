@@ -8,122 +8,181 @@ import {
 } from "@/components/cyryx/seo/seo";
 
 const PATH = "/solutions/ai-governance-cost-control";
-const TITLE = "AI governance & cost control — Cyryx Labs";
-const DESC = "Govern AI usage and bring spend under control: policy gates, evaluator coverage, mission ledgers, and per-outcome cost tracking.";
+const TITLE = "AI Governance & Cost Control — Cyryx Labs";
+const DESC =
+  "Practical control design for AI systems: authority, evidence, review, change, provider dependencies, usage, and cost.";
 
 const FAQ = [
   {
-    q: "Is this a compliance product or an engineering engagement?",
-    a: "An engineering engagement. We instrument the systems you already run, implement policy gates and cost-per-outcome tracking, and leave your team with dashboards, runbooks, and a governance operating model. We do not sell a certification or a compliance seal.",
+    q: "Is this a compliance certification service?",
+    a: "No. Cyryx designs and implements technical and operational controls for the systems in scope. Legal interpretation, formal certification, and independent assurance require the appropriate qualified parties.",
   },
   {
-    q: "How do you handle regulated data — PII, PHI, financial records?",
-    a: "Data classification is a first-class input to every gate. Policies specify which classes may leave which boundaries, which models can process them, and what redaction runs before a call. Ledgers store hashes and provenance, not raw sensitive payloads, unless your policy explicitly permits otherwise.",
+    q: "Can governance be added to an existing system?",
+    a: "Often, but the path depends on the architecture, available logs, authority model, provider behavior, and access to the system. Discovery determines which controls can be added and where redesign may be required.",
   },
   {
-    q: "Can you cover AI that our teams built themselves in Python notebooks or Zapier?",
-    a: "Yes. The inventory phase surfaces shadow AI regardless of where it lives. We then decide, per surface, whether to wrap it with gates, migrate it to a governed workflow, or retire it.",
+    q: "Does cost control mean choosing the cheapest model?",
+    a: "No. Cost is evaluated against task requirements, quality, latency, reliability, privacy, contractual constraints, and operating complexity. Lower unit price does not automatically mean lower total operating cost.",
   },
   {
-    q: "What does 'cost per outcome' actually mean in practice?",
-    a: "For each governed workflow, we tag every model call with a mission ID. The ledger then aggregates cost per mission and joins it to whether the mission met acceptance criteria. You end up with dashboards that read 'this workflow costs X per verified case', not 'we spent Y on tokens last month'.",
-  },
-  {
-    q: "Do you help prepare for security reviews or board reporting?",
-    a: "Yes. The governance operating model includes an executive review package — coverage, incidents, cost curves, and evaluator health — sized for board and audit committee cadence.",
+    q: "Who approves governance changes?",
+    a: "The client-side authority model is documented for the engagement. Material changes should have named owners, required evidence, and an approval path appropriate to the system's impact.",
   },
 ];
 
 export const Route = createFileRoute("/solutions/ai-governance-cost-control")({
   head: () =>
-    buildHead(
-      { title: TITLE, description: DESC, path: PATH },
-      [
-        buildBreadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Solutions", path: "/solutions" },
-          { name: "AI governance & cost control", path: PATH },
-        ]),
-        buildServiceJsonLd({
-          name: "AI governance & cost control",
-          serviceType: "AI governance engineering",
-          description: DESC,
-          path: PATH,
-        }),
-        buildFaqJsonLd(FAQ),
-      ],
-    ),
+    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Solutions", path: "/solutions" },
+        { name: "AI Governance & Cost Control", path: PATH },
+      ]),
+      buildServiceJsonLd({
+        name: "AI Governance & Cost Control",
+        serviceType: "AI system governance and operating control design",
+        description: DESC,
+        path: PATH,
+      }),
+      buildFaqJsonLd(FAQ),
+    ]),
   component: () => (
     <SolutionPage
-      eyebrow="AI Governance & Cost Control"
-      title="AI governance and cost control as one system."
-      directAnswer="Cyryx Labs designs governance and cost control as the same layer: policy gates, evaluator coverage, mission ledgers, and per-outcome cost tracking. The result is an AI footprint you can explain to a board, an auditor, and a finance team — and tune deliberately instead of reactively."
-      whatItIs="A combined governance and FinOps engagement for AI workloads. We instrument the systems you already run, surface where governance is thin and where spend escapes, and ship the gates, dashboards, and policies to close the gap."
+      eyebrow="Governance & Cost Control"
+      title="Make authority, evidence, and cost visible before scale."
+      directAnswer="Cyryx helps teams define and implement practical controls around AI-enabled systems: what the system may do, what evidence it must produce, where people decide, how changes are approved, and how usage and cost are interpreted."
+      whatItIs="A technical and operating-control engagement for selected AI systems. It connects policy intent to system behavior without representing legal advice, certification, or independent assurance."
       whoItIsFor={[
-        "Leaders whose AI spend is growing faster than their understanding of where it goes.",
-        "Teams in regulated industries needing real governance evidence, not screenshots.",
-        "Companies preparing for a security review, audit, or board scrutiny of AI usage.",
+        "Technology leaders who need a clearer inventory and ownership model for AI-enabled systems.",
+        "Product and operations teams preparing a prototype for controlled use.",
+        "Organizations facing rising provider spend without task-level cost visibility.",
       ]}
       whatWeBuild={[
-        "An AI usage inventory and policy baseline.",
-        "Command gates and approval workflows for sensitive actions.",
-        "Cost-per-outcome tracking, not just cost-per-call.",
-        "Mission ledgers with retention policies for audit.",
-        "Quarterly governance and cost review packages owned by your team.",
+        "System inventory, authority map, and named ownership for the scope reviewed.",
+        "Review, escalation, evidence, change, and release control patterns.",
+        "Usage and cost instrumentation aligned to agreed workloads and outcomes.",
+        "Provider and model-change evaluation paths appropriate to the architecture.",
+        "Operating documentation for decisions, incidents, limitations, and change.",
       ]}
       howWeWork={[
-        "Map AI surfaces, owners, models, and current controls.",
-        "Identify the highest governance and cost risks.",
-        "Implement gates, dashboards, and policies prioritized by risk.",
-        "Hand off operating model, alerts, and review cadence.",
+        "Inventory the relevant systems, owners, providers, data, and current controls.",
+        "Prioritize material gaps using the business impact and authority of each system.",
+        "Design controls that can be implemented and operated by the responsible teams.",
+        "Implement the agreed instrumentation, review, and change paths.",
+        "Validate behavior and establish ownership for ongoing decisions.",
       ]}
       challenges={[
-        "Shadow AI: notebooks, plugins, and SaaS features nobody has inventoried.",
-        "Model bills growing faster than any measurable business outcome.",
-        "Policies that exist as PDFs but are not enforced anywhere in the stack.",
-        "No answer to 'what did AI touch on this customer, and who approved it?'",
-        "Vendor contracts with no exit plan when a model changes or a price shifts.",
+        "Policy language with no corresponding system or operating control.",
+        "No named owner for AI behavior, provider changes, or exceptions.",
+        "Logs that record activity but not the context needed for a decision.",
+        "Spend measured only by provider invoice rather than workload and value.",
+        "Governance applied uniformly without regard to system authority and impact.",
       ]}
       architecture={[
-        { name: "AI inventory", detail: "A living register of every AI surface — internal, embedded, and third-party — with owner, model, data classes, and current controls." },
-        { name: "Policy layer", detail: "Declarative policies (data class, tenant, geography, action type) compiled into runtime gates instead of static documents." },
-        { name: "Cost telemetry", detail: "Per-call cost signals joined to mission IDs, workflows, and tenants — so cost aggregates roll up by outcome and by owner." },
-        { name: "Approval workflows", detail: "Structured human-in-the-loop for high-risk actions, with SLAs, delegates, and full audit of who approved what and when." },
-        { name: "Evaluator coverage", detail: "Automated evaluators wired to critical missions, with alerts when coverage drops or drift is detected." },
-        { name: "Executive dashboards", detail: "Board-ready views of coverage, incidents, spend curves, and evaluator health — refreshed continuously from the ledger." },
+        {
+          name: "Inventory",
+          detail:
+            "Systems, providers, data, owners, users, and dependencies included in the review.",
+        },
+        {
+          name: "Authority",
+          detail: "What each system and role may decide, recommend, write, or escalate.",
+        },
+        {
+          name: "Evidence",
+          detail: "The records and evaluation required for material behavior and change decisions.",
+        },
+        {
+          name: "Change",
+          detail: "Ownership, review, testing, approval, release, and rollback expectations.",
+        },
+        {
+          name: "Economics",
+          detail:
+            "Usage and cost signals interpreted alongside workload, quality, and operating effort.",
+        },
       ]}
       deliverables={[
-        { phase: "Inventory & baseline", duration: "2–3 weeks", scope: "Discover every AI surface, classify data flows, and score current governance and cost posture against a Cyryx baseline.", outputs: ["AI usage inventory", "Governance + cost scorecard", "Prioritized risk register"] },
-        { phase: "Gate & policy build", duration: "4–8 weeks", scope: "Implement policy gates, approval workflows, and cost telemetry starting with the highest-risk surfaces.", outputs: ["Runtime policy engine", "Approval workflows in production", "Cost-per-outcome dashboards"] },
-        { phase: "Operating model handover", duration: "2 weeks", scope: "Codify roles, review cadence, incident response, and executive reporting. Train your team to own the system.", outputs: ["Governance operating manual", "Executive reporting pack", "On-call playbook"] },
-        { phase: "Quarterly review (optional)", duration: "Quarterly", scope: "Cyryx joins your governance forum with a fresh scorecard, incident review, and cost outlook.", outputs: ["Quarterly scorecard", "Regression + drift report", "Roadmap update"] },
-      ]}
-      techStack={[
-        "Policy engines (OPA / Cedar) compiled to runtime gates",
-        "OpenTelemetry + your SIEM (Splunk, Datadog, Elastic)",
-        "Data warehouse-native cost joins (Snowflake, BigQuery, Databricks)",
-        "Secrets and key management on your cloud of record",
-        "Ledger tables on Postgres or your existing OLTP",
-        "SSO / SCIM through your existing IdP",
+        {
+          phase: "Assess",
+          duration: "Engagement-defined",
+          scope:
+            "Establish the system inventory, authority, current controls, dependencies, and priority gaps.",
+          outputs: [
+            "System and ownership inventory",
+            "Authority and control map",
+            "Prioritized recommendations",
+          ],
+        },
+        {
+          phase: "Design",
+          duration: "Engagement-defined",
+          scope:
+            "Translate the selected recommendations into implementable technical and operating controls.",
+          outputs: [
+            "Control design",
+            "Evidence and decision requirements",
+            "Implementation sequence",
+          ],
+        },
+        {
+          phase: "Implement",
+          duration: "Engagement-defined",
+          scope:
+            "Add the agreed instrumentation, review, escalation, and change paths to the systems in scope.",
+          outputs: [
+            "Implemented control surfaces",
+            "Operating documentation",
+            "Validation evidence",
+          ],
+        },
+        {
+          phase: "Operate or transfer",
+          duration: "Engagement-defined",
+          scope: "Establish the ongoing ownership, review cadence, and optional managed coverage.",
+          outputs: ["Ownership and review model", "Handover", "Optional continuing scope"],
+        },
       ]}
       kpis={[
-        { metric: "Governance coverage", detail: "Percentage of inventoried AI surfaces protected by an active gate and an owned policy." },
-        { metric: "Cost per verified outcome", detail: "All-in AI spend attributed to a mission, divided by successful missions — reported by workflow and by owner." },
-        { metric: "Policy incident rate", detail: "Count of policy-violating candidate actions blocked at a gate — a leading indicator of exposure trends." },
-        { metric: "Evaluator freshness", detail: "How recently each critical mission's evaluator suite ran and passed — surfaces stale coverage before it becomes an incident." },
+        {
+          metric: "Ownership coverage",
+          detail: "Whether each material system and decision has a named responsible owner.",
+        },
+        {
+          metric: "Evidence sufficiency",
+          detail:
+            "Whether agreed decisions and changes are supported by the records required for the use case.",
+        },
+        {
+          metric: "Exception visibility",
+          detail:
+            "How quickly relevant failures and ambiguous cases reach the correct owner with context.",
+        },
+        {
+          metric: "Cost by workload",
+          detail:
+            "The selected usage and cost signals interpreted at a level useful for product and operating decisions.",
+        },
       ]}
       outcomes={[
-        "A defensible answer to 'how is AI governed here?'",
-        "Visibility into the unit economics of each AI workflow.",
-        "Lower likelihood of an AI-driven incident.",
-        "A predictable, reviewable AI cost profile.",
+        "Clearer authority and ownership across the AI systems in scope.",
+        "Controls connected to actual product and workflow behavior.",
+        "Better evidence for release, provider, and model-change decisions.",
+        "Cost visibility that supports engineering and business tradeoffs.",
       ]}
       faq={FAQ}
-      engagementNote="Delivered as a fixed-scope inventory + baseline, then a phased implementation retainer. Cyryx is model-agnostic and does not resell capacity — reduced spend accrues entirely to your team."
+      engagementNote="This service does not provide legal advice, certification, or independent assurance. Scope, applicable requirements, responsibilities, evidence, and any continuing review are defined for each engagement."
       relatedAnswers={[
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
-        { label: "What are command gates in AI systems?", href: "/answers/what-are-command-gates-in-ai-systems" },
-        { label: "How to measure AI output quality", href: "/answers/how-to-measure-ai-output-quality" },
+        {
+          label: "What are command gates in AI systems?",
+          href: "/answers/what-are-command-gates-in-ai-systems",
+        },
+        {
+          label: "How to measure AI output quality",
+          href: "/answers/how-to-measure-ai-output-quality",
+        },
       ]}
     />
   ),

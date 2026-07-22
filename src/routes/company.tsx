@@ -1,112 +1,201 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
-import {
-  buildBreadcrumbJsonLd,
-  buildHead,
-} from "@/components/cyryx/seo/seo";
+import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { START_PROJECT_HREF } from "@/lib/cta";
+import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 const PATH = "/company";
 const TITLE = "Company — Cyryx Labs";
-const DESC = "Cyryx Labs is an AI technology company building products, execution systems, and applied research. Most AI produces output; Cyryx builds systems that verify outcomes.";
+const DESC =
+  "Cyryx Labs advises, builds, and operates AI-enabled products and systems, while developing MAAX Studio, Lyra, and applied research.";
+
+const UNITS = [
+  [
+    "Advise",
+    "AI strategy, opportunity framing, architecture direction, governance, and operating-model design.",
+    "/solutions/ai-strategy-advisory",
+  ],
+  [
+    "Build",
+    "Digital systems, workflows, internal assistants, and custom AI products designed around the business outcome.",
+    "/solutions",
+  ],
+  [
+    "Operate",
+    "Defined monitoring, maintenance, optimization, escalation, and transition for selected launched systems.",
+    "/managed-operations",
+  ],
+  [
+    "Products",
+    "MAAX Studio and Lyra: two private product programs exploring governed software and intelligence execution.",
+    "/products",
+  ],
+  [
+    "Research",
+    "Applied investigation into execution, context, evaluation, cost, control, and human authority.",
+    "/research",
+  ],
+] as const;
+
+const PRINCIPLES = [
+  [
+    "Business problem before model",
+    "We begin with the decision, workflow, customer, and operating constraint—not a predetermined AI feature.",
+  ],
+  [
+    "AI and software as one system",
+    "Probabilistic intelligence, deterministic logic, data, integrations, interfaces, and people are designed together.",
+  ],
+  [
+    "Authority must be explicit",
+    "The system, the operator, and the owner each need a clear boundary for action, review, escalation, and change.",
+  ],
+  [
+    "Evidence before expansion",
+    "A compelling demonstration is a starting point. Expansion should follow representative validation and documented limitations.",
+  ],
+  [
+    "Ownership survives launch",
+    "The work is not complete until the system has an operating owner, change path, and support model appropriate to its impact.",
+  ],
+] as const;
 
 export const Route = createFileRoute("/company")({
   head: () =>
-    buildHead(
-      { title: TITLE, description: DESC, path: PATH },
-      [
-        buildBreadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Company", path: PATH },
-        ]),
-      ],
-    ),
+    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Company", path: PATH },
+      ]),
+    ]),
   component: CompanyPage,
 });
 
 function CompanyPage() {
+  useCyryxScrollAnimations();
+
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
-      <main className="mx-auto max-w-3xl px-5 sm:px-8 lg:px-12 pt-32 pb-24 lg:pt-44">
-        <HudLabel withDot className="text-[var(--accent-glow)]">About Cyryx Labs</HudLabel>
-        <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
-          An AI technology company. Not an AI agency.
-        </h1>
-        <p className="mt-6 text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-          Cyryx Labs builds AI products, AI execution systems, and applied AI research. We are not a chatbot shop, a prompt-engineering service, or a generic AI agency. Our core thesis is direct: most AI produces output; Cyryx builds systems that verify outcomes.
-        </p>
+      <main id="main-content" tabIndex={-1} className="outline-none">
+        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
+          <div className="mx-auto max-w-7xl">
+            <HudLabel withDot>Cyryx Labs / Company</HudLabel>
+            <div className="mt-8 grid gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-end lg:gap-24">
+              <h1 className="max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
+                AI value is created by the system around the model.
+              </h1>
+              <div className="lg:pb-2">
+                <p className="text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
+                  Cyryx Labs is an AI lab and systems company. We help organizations decide where AI
+                  belongs, build the product or workflow around it, and establish the controls and
+                  ownership required to operate it.
+                </p>
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--accent-glow)]">
+                  Advise. Build. Operate.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <Section heading="What we do">
-          <p>
-            We design and ship software. The work happens across five core units that share one architecture and one operating model:
-          </p>
-          <ul className="mt-4 space-y-4 text-base leading-relaxed text-[var(--silver-dim)]">
-            <li>
-              <strong className="text-[var(--silver)]">Operational AI</strong> — our enterprise operational intelligence and execution platform. In development.
-            </li>
-            <li>
-              <strong className="text-[var(--silver)]"><Link to="/products/maax-studio" className="hover:text-[var(--accent-glow)]">MAAX Studio</Link></strong> — a local-first agentic software execution environment for AI-native builders.
-            </li>
-            <li>
-              <strong className="text-[var(--silver)]"><Link to="/products/lyra" className="hover:text-[var(--accent-glow)]">Lyra</Link></strong> — our local-first agentic model: governed, local-first, and the sovereign engine of MAAX Studio.
-            </li>
-            <li>
-              <strong className="text-[var(--silver)]"><Link to="/solutions" className="hover:text-[var(--accent-glow)]">Cyryx Solutions</Link></strong> — our commercial implementation layer. Custom AI systems built on the same governance primitives as our products.
-            </li>
-            <li>
-              <strong className="text-[var(--silver)]"><Link to="/research" className="hover:text-[var(--accent-glow)]">Applied Research</Link></strong> — our engineering and research discipline. Protocols and evaluations published openly via the Applied AI Lab.
-            </li>
-          </ul>
-        </Section>
+        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+          <div className="cx-reveal grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
+            <div>
+              <HudLabel>The execution gap</HudLabel>
+              <h2 className="mt-6 max-w-[12ch] font-display text-4xl font-medium tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
+                The model is rarely the whole problem.
+              </h2>
+            </div>
+            <div className="space-y-6 text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+              <p>
+                Organizations can access capable models. The harder work is turning that capability
+                into a dependable product, workflow, or operating decision: the right context,
+                deterministic software, interfaces, integrations, evaluation, human authority, and
+                post-launch ownership.
+              </p>
+              <p>
+                Cyryx exists for that gap. We connect executive intent to system design and system
+                design to the operating day, without pretending that every problem needs AI or that
+                every prototype deserves to scale.
+              </p>
+            </div>
+          </div>
+        </section>
 
-        <Section heading="How we operate">
-          <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-[var(--silver-dim)] marker:text-[var(--accent-glow)]">
-            <li>Senior engineering, opinionated architecture, small teams.</li>
-            <li>Missions before workflows: we write the goal and acceptance criteria first.</li>
-            <li>Governance as architecture, not as a guardrail prompt.</li>
-            <li>Operability handoff is part of the engagement — your team owns the system after we ship.</li>
-          </ul>
-        </Section>
+        <section className="border-y border-white/10 bg-[var(--obsidian)] px-5 py-24 sm:px-8 sm:py-32">
+          <div className="mx-auto max-w-7xl">
+            <HudLabel>One company / five connected practices</HudLabel>
+            <div className="cx-stagger mt-12 divide-y divide-white/10 border-y border-white/10">
+              {UNITS.map(([title, body, href], index) => (
+                <Link
+                  key={title}
+                  to={href}
+                  className="cx-stagger-item group grid gap-4 py-7 sm:grid-cols-[4rem_0.65fr_1.35fr_auto] sm:items-center sm:gap-8 sm:py-9"
+                >
+                  <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h2 className="font-display text-3xl tracking-[-0.035em] text-[var(--silver)]">
+                    {title}
+                  </h2>
+                  <p className="max-w-2xl text-sm leading-relaxed text-[var(--silver-dim)]">
+                    {body}
+                  </p>
+                  <ArrowRight
+                    className="hidden h-5 w-5 text-[var(--steel)] transition group-hover:translate-x-1 group-hover:text-[var(--accent-glow)] sm:block"
+                    aria-hidden
+                  />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <Section heading="What we do not do">
-          <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-[var(--silver-dim)] marker:text-[var(--accent-glow)]">
-            <li>Generic chatbots without grounding, gates, or measurable outcomes.</li>
-            <li>Demoware that ships great and breaks under real load.</li>
-            <li>Prompt-engineering retainers without execution architecture.</li>
-            <li>Hype-driven claims about AI capability or business impact.</li>
-          </ul>
-        </Section>
+        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+          <div className="cx-reveal grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
+            <div>
+              <HudLabel>How we think</HudLabel>
+              <h2 className="mt-6 font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
+                Principles before promises.
+              </h2>
+            </div>
+            <ol className="divide-y divide-white/10 border-y border-white/10">
+              {PRINCIPLES.map(([title, body], index) => (
+                <li
+                  key={title}
+                  className="grid gap-3 py-6 sm:grid-cols-[3rem_0.8fr_1.2fr] sm:gap-8"
+                >
+                  <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                    0{index + 1}
+                  </span>
+                  <h3 className="text-sm font-medium text-[var(--silver)]">{title}</h3>
+                  <p className="text-sm leading-relaxed text-[var(--silver-dim)]">{body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
 
-        <Section heading="Talk to us">
-          <p>
-            If you are operationalizing AI inside a real business — and you want execution systems that you can audit, evolve, and trust — start a conversation.
-          </p>
-          <div className="mt-6">
+        <section className="bg-[var(--graphite)] px-5 py-24 sm:px-8 sm:py-32">
+          <div className="cx-reveal mx-auto max-w-5xl text-center">
+            <HudLabel withDot>Start with the decision</HudLabel>
+            <h2 className="mx-auto mt-7 max-w-[17ch] font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-6xl">
+              Bring the opportunity, constraint, or workflow—not a predetermined answer.
+            </h2>
             <a
               href={START_PROJECT_HREF}
-              className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
+              className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
             >
-              Start a project
-              <span aria-hidden className="text-[var(--accent-glow)]">→</span>
+              Discuss the initiative <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
           </div>
-        </Section>
+        </section>
       </main>
       <Footer />
     </div>
-  );
-}
-
-function Section({ heading, children }: { heading: string; children: React.ReactNode }) {
-  return (
-    <section className="mt-12">
-      <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-[var(--silver)]">
-        {heading}
-      </h2>
-      <div className="mt-4 text-base leading-relaxed text-[var(--silver-dim)]">{children}</div>
-    </section>
   );
 }
