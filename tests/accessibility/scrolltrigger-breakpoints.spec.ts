@@ -139,6 +139,7 @@ test("desktop side-by-side story changes the fixed outcome as steps advance", as
 
   const step = page.locator("[data-story-step]").nth(2);
   await expect(step).toBeVisible();
+  await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
   await step.evaluate((element) => {
     element.scrollIntoView({ behavior: "auto", block: "center" });
   });
@@ -153,5 +154,5 @@ test("desktop side-by-side story changes the fixed outcome as steps advance", as
     );
 
   expect(active).toHaveLength(1);
-  expect(active[0]).toContain("Bounded authority");
+  expect(active[0]).toContain("A working system supported by implementation evidence");
 });

@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
-import { buildBreadcrumbJsonLd, jsonLdScript } from "@/components/cyryx/seo/seo";
+import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 const AREAS = [
@@ -51,32 +51,21 @@ const RELEASE = [
 ] as const;
 
 export const Route = createFileRoute("/research/")({
-  head: () => ({
-    meta: [
-      { title: "Applied Research — Cyryx Labs" },
+  head: () =>
+    buildHead(
       {
-        name: "description",
-        content:
+        title: "Applied Research — Cyryx Labs",
+        description:
           "Applied research at Cyryx Labs explores AI execution architecture, context, evaluation, authority, cost, and human-system interaction.",
+        path: "/research",
       },
-      { property: "og:title", content: "Applied Research — Cyryx Labs" },
-      {
-        property: "og:description",
-        content:
-          "Research directions informing Cyryx products, advisory, engineering, and operations.",
-      },
-      { property: "og:url", content: "https://cyryxlabs.com/research" },
-    ],
-    links: [{ rel: "canonical", href: "https://cyryxlabs.com/research" }],
-    scripts: [
-      jsonLdScript(
+      [
         buildBreadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: "Research", path: "/research" },
         ]),
-      ),
-    ],
-  }),
+      ],
+    ),
   component: ResearchHub,
 });
 

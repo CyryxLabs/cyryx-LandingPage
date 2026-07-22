@@ -7,11 +7,11 @@ import type { CopyDocument } from "./types";
 export const v3: CopyDocument = {
   hero: {
     headline: "The execution layer for enterprise AI.",
-    sub: "Cyryx turns high-value AI initiatives into governed production systems — so your organization can scale automation without losing control of risk, cost, or accountability.",
+    sub: "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
     meta: [],
-    rail: ["Strategy to production", "Human control by design", "Operational ownership defined"],
-    ctaPrimary: "Discuss your AI initiative",
-    ctaSecondary: "See how we deliver",
+    rail: [],
+    ctaPrimary: "Start a project",
+    ctaSecondary: "MAAX Studio →",
   },
   header: {
     cta: "Start a project",

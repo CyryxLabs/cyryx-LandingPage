@@ -11,17 +11,18 @@ import { submitContact } from "@/lib/contact.functions";
 const PATH = "/start";
 const TITLE = "Start a Project — Cyryx Labs";
 const DESC =
-  "Describe the workflow, product, digital foundation, or operational problem. Cyryx Labs will determine the right engagement — website, automation, AI system, product build, or none.";
+  "Describe the workflow, product, digital foundation, or operational problem. Cyryx Labs will identify the right engagement or recommend no build.";
 
 const PROJECT_TYPES = [
+  "AI Strategy & Advisory",
   "Digital & Web Systems",
   "Workflow Automation",
-  "Applied AI System",
-  "AI Product Engineering",
-  "Governance & Optimization",
+  "Internal AI Assistant",
+  "Custom AI Product Development",
+  "AI Governance & Cost Control",
   "Managed Operations",
-  "MAAX Studio Early Access",
-  "Lyra Briefing",
+  "MAAX Studio — access inquiry",
+  "Lyra — private briefing",
   "Other",
 ] as const;
 
@@ -48,6 +49,24 @@ const DECISION = [
   "I am part of the decision team",
   "I am researching for another stakeholder",
   "Not yet defined",
+] as const;
+
+const NEXT_STEPS = [
+  {
+    n: "01",
+    title: "Fit review",
+    body: "We review the business problem, available context, timing, and whether Cyryx is the right partner.",
+  },
+  {
+    n: "02",
+    title: "Initial response",
+    body: "You can expect an initial response within one business day with fit, a question, or the clearest next step.",
+  },
+  {
+    n: "03",
+    title: "Discovery if warranted",
+    body: "When there is a fit, we define the discovery needed before proposing scope, architecture, commercial terms, or delivery.",
+  },
 ] as const;
 
 export const Route = createFileRoute("/start")({
@@ -120,7 +139,8 @@ function StartPage() {
           email,
           company,
           message,
-          interest: projectType === "MAAX Studio Early Access" ? "maax-early-access" : "project",
+          interest:
+            projectType === "MAAX Studio — access inquiry" ? "maax-early-access" : "project",
           consent: consent as true,
           website: "",
         },
@@ -146,30 +166,63 @@ function StartPage() {
       <main id="main-content" className="relative">
         <section className="mx-auto max-w-4xl px-5 sm:px-8 lg:px-12 pt-32 pb-24 lg:pt-44">
           <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="hover:text-[var(--accent-glow)]">Home</Link>
+            <Link to="/" className="hover:text-[var(--accent-glow)]">
+              Home
+            </Link>
             <span className="mx-2 opacity-60">/</span>
             <span className="text-[var(--silver)]">Start a Project</span>
           </nav>
-          <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">Start with the problem</HudLabel>
-          <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
-            From fragmented operations to governed execution.
+          <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
+            Start with the problem
+          </HudLabel>
+          <h1 className="mt-4 max-w-[14ch] font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
+            Bring us the workflow, bottleneck, or system.
           </h1>
           <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Describe the workflow, product, digital foundation, or operational problem. Cyryx will determine whether it requires a website, automation, AI system, product engagement, or no system at all.
+            Describe the business problem, current workflow, constraints, and desired outcome. We
+            will determine whether the right starting point is advisory, a digital system,
+            automation, an AI product, managed operations, or no build at all.
           </p>
+
+          <ol className="mt-12 grid border-y border-[color-mix(in_oklab,var(--silver)_14%,transparent)] lg:grid-cols-3">
+            {NEXT_STEPS.map((step) => (
+              <li
+                key={step.n}
+                className="border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-7 last:border-b-0 lg:border-b-0 lg:border-r lg:px-7 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
+              >
+                <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
+                  {step.n}
+                </span>
+                <h2 className="mt-4 font-display text-xl tracking-[-0.02em] text-[var(--silver)]">
+                  {step.title}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">{step.body}</p>
+              </li>
+            ))}
+          </ol>
 
           {status === "ok" ? (
             <div className="mt-10 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-6 backdrop-blur-sm">
               <HudLabel className="text-[var(--accent-glow)]">Received</HudLabel>
               <p className="mt-3 text-[15px] leading-relaxed text-[var(--silver)]">
-                Thank you. Your submission has been recorded. A member of the Cyryx team will review it and respond directly if the engagement is a fit for both sides.
+                Thank you. Your submission has been recorded. You can expect an initial response
+                within one business day. That response may confirm fit, ask for context, recommend a
+                different next step, or decline the opportunity.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/engagement-model" className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label">
+                <Link
+                  to="/engagement-model"
+                  className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
+                >
                   Read our engagement model
-                  <span aria-hidden className="text-[var(--accent-glow)]">→</span>
+                  <span aria-hidden className="text-[var(--accent-glow)]">
+                    →
+                  </span>
                 </Link>
-                <Link to="/" className="inline-flex items-center h-11 px-3 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)]">
+                <Link
+                  to="/"
+                  className="inline-flex items-center h-11 px-3 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)]"
+                >
                   Back to home
                 </Link>
               </div>
@@ -191,38 +244,80 @@ function StartPage() {
                 <Field label="Work email" name="email" type="email" required autoComplete="email" />
                 <Field label="Company" name="company" required autoComplete="organization" />
                 <Field label="Role" name="role" autoComplete="organization-title" />
-                <Field label="Company website" name="companyWebsite" type="url" placeholder="https://" className="sm:col-span-2" />
+                <Field
+                  label="Company website"
+                  name="companyWebsite"
+                  type="url"
+                  placeholder="https://"
+                  className="sm:col-span-2"
+                />
               </div>
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <Select label="Project type" name="projectType" required options={PROJECT_TYPES} />
-                <Field label="Current stage" name="stage" placeholder="e.g. exploring, defined problem, in production" />
+                <Field
+                  label="Current stage"
+                  name="stage"
+                  placeholder="e.g. exploring, defined problem, in production"
+                />
               </div>
 
-              <TextArea label="Primary problem" name="problem" required rows={4} placeholder="What's broken, missing, or slowing you down?" />
-              <TextArea label="Desired outcome" name="outcome" rows={3} placeholder="What does success look like in 90 days?" />
+              <TextArea
+                label="Primary problem"
+                name="problem"
+                required
+                rows={4}
+                placeholder="What's broken, missing, or slowing you down?"
+              />
+              <TextArea
+                label="Desired outcome"
+                name="outcome"
+                rows={3}
+                placeholder="What would be materially different if this work succeeds?"
+              />
 
               <div className="grid gap-6 sm:grid-cols-2">
-                <Select label="Investment range" name="investment" required options={INVESTMENT_RANGES} />
+                <Select
+                  label="Investment range"
+                  name="investment"
+                  required
+                  options={INVESTMENT_RANGES}
+                />
                 <Select label="Desired timeline" name="timeline" required options={TIMELINES} />
               </div>
 
-              <TextArea label="Systems or data involved" name="systems" rows={2} placeholder="e.g. HubSpot CRM, Postgres warehouse, Google Workspace" />
+              <TextArea
+                label="Systems or data involved"
+                name="systems"
+                rows={2}
+                placeholder="e.g. HubSpot CRM, Postgres warehouse, Google Workspace"
+              />
 
               <Select label="Decision-maker status" name="decision" required options={DECISION} />
 
               <TextArea label="Additional context" name="notes" rows={3} />
 
               <label className="flex items-start gap-3 text-sm text-[var(--silver-dim)]">
-                <input type="checkbox" name="consent" required className="mt-1 h-4 w-4 accent-[var(--accent-glow)]" />
+                <input
+                  type="checkbox"
+                  name="consent"
+                  required
+                  className="mt-1 h-4 w-4 accent-[var(--accent-glow)]"
+                />
                 <span>
                   I consent to Cyryx Labs contacting me about this submission in accordance with the{" "}
-                  <Link to="/privacy" className="text-[var(--accent-glow)] hover:underline">Privacy Policy</Link>.
+                  <Link to="/privacy" className="text-[var(--accent-glow)] hover:underline">
+                    Privacy Policy
+                  </Link>
+                  .
                 </span>
               </label>
 
               {status === "err" && error && (
-                <p role="alert" className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+                <p
+                  role="alert"
+                  className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200"
+                >
                   {error}
                 </p>
               )}
@@ -234,10 +329,14 @@ function StartPage() {
                   className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-12 px-6 rounded-md text-[var(--silver)] hud-label disabled:opacity-60"
                 >
                   {status === "submitting" ? "Sending…" : "Submit for review"}
-                  <span aria-hidden className="text-[var(--accent-glow)]">→</span>
+                  <span aria-hidden className="text-[var(--accent-glow)]">
+                    →
+                  </span>
                 </button>
                 <p className="text-xs text-[var(--silver-dim)]">
-                  We do not promise acceptance or a fixed response window. You will hear from us only if the engagement is a fit.
+                  Initial response within one business day. Acceptance, scope, timing, ownership,
+                  licensing, support, and commercial terms are defined separately for each
+                  engagement.
                 </p>
               </div>
             </form>
@@ -268,7 +367,14 @@ function Field({
 }) {
   return (
     <label className={`block ${className ?? ""}`}>
-      <span className="hud-label text-[var(--silver)]">{label}{required && <span aria-hidden className="ml-1 text-[var(--accent-glow)]">*</span>}</span>
+      <span className="hud-label text-[var(--silver)]">
+        {label}
+        {required && (
+          <span aria-hidden className="ml-1 text-[var(--accent-glow)]">
+            *
+          </span>
+        )}
+      </span>
       <input
         name={name}
         type={type}
@@ -296,7 +402,14 @@ function TextArea({
 }) {
   return (
     <label className="block">
-      <span className="hud-label text-[var(--silver)]">{label}{required && <span aria-hidden className="ml-1 text-[var(--accent-glow)]">*</span>}</span>
+      <span className="hud-label text-[var(--silver)]">
+        {label}
+        {required && (
+          <span aria-hidden className="ml-1 text-[var(--accent-glow)]">
+            *
+          </span>
+        )}
+      </span>
       <textarea
         name={name}
         required={required}
@@ -321,16 +434,27 @@ function Select({
 }) {
   return (
     <label className="block">
-      <span className="hud-label text-[var(--silver)]">{label}{required && <span aria-hidden className="ml-1 text-[var(--accent-glow)]">*</span>}</span>
+      <span className="hud-label text-[var(--silver)]">
+        {label}
+        {required && (
+          <span aria-hidden className="ml-1 text-[var(--accent-glow)]">
+            *
+          </span>
+        )}
+      </span>
       <select
         name={name}
         required={required}
         defaultValue=""
         className="mt-2 w-full rounded-md border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_55%,transparent)] px-4 py-3 text-sm text-[var(--silver)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-glow)]"
       >
-        <option value="" disabled>Select…</option>
+        <option value="" disabled>
+          Select…
+        </option>
         {options.map((o) => (
-          <option key={o} value={o}>{o}</option>
+          <option key={o} value={o}>
+            {o}
+          </option>
         ))}
       </select>
     </label>

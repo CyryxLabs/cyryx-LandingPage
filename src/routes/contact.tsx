@@ -1,22 +1,61 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Mail } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
-import { ContactSection } from "@/components/cyryx/ContactSection";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import { CONTACT_EMAIL } from "@/lib/cta";
+import { trackCta } from "@/lib/track-cta";
 
 const PATH = "/contact";
-const TITLE = "Contact — Cyryx Labs";
+const TITLE = "Contact Cyryx Labs";
 const DESC =
-  "Contact Cyryx Labs to build an AI product, automate a workflow, explore MAAX Studio, or design governed AI execution systems.";
+  "Contact Cyryx Labs for general, research, partnership, product, privacy, or careers inquiries. Project opportunities begin through the dedicated qualification route.";
 
-const SIGNALS = [
-  { k: "Best fit", v: "Founders, agencies, product teams, and operators building with AI" },
-  { k: "Engagement model", v: "Scoped, milestone-based, handover-ready" },
-  { k: "Interests", v: "MAAX early access · Product · Automation · Agents · Knowledge · Governance" },
-  { k: "Delivered on", v: "MAAX Runtime primitives" },
-];
+const CONTACT_PATHS = [
+  {
+    label: "Project opportunities",
+    title: "Bring us the business constraint.",
+    body: "Use the project brief for advisory, digital systems, automation, internal assistants, custom AI products, governance, or managed operations.",
+    action: "Start a project",
+    cta: "start_project",
+    href: "/start",
+  },
+  {
+    label: "Products",
+    title: "Discuss MAAX Studio or Lyra.",
+    body: "Review the current product maturity and access model first, then contact us with the use case or research question you want to explore.",
+    action: "Explore products",
+    cta: "explore_products",
+    href: "/products",
+  },
+  {
+    label: "Research and collaboration",
+    title: "Start with a specific question.",
+    body: "For applied research, technical collaboration, or partnership inquiries, include the topic, intended outcome, and relevant organization.",
+    action: "Review research",
+    cta: "view_research",
+    href: "/research",
+  },
+] as const;
+
+const DIRECT_CHANNELS = [
+  {
+    label: "General inquiries",
+    email: CONTACT_EMAIL,
+    subject: "General inquiry",
+  },
+  {
+    label: "Privacy",
+    email: "privacy@cyryxlabs.com",
+    subject: "Privacy inquiry",
+  },
+  {
+    label: "Careers",
+    email: "careers@cyryxlabs.com",
+    subject: "Careers inquiry",
+  },
+] as const;
 
 export const Route = createFileRoute("/contact")({
   head: () =>
@@ -33,46 +72,123 @@ function ContactPage() {
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
-      <main className="relative">
-        <section className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 pt-32 pb-12 lg:pt-44">
+      <main id="main-content" className="relative overflow-hidden">
+        <section className="mx-auto max-w-7xl px-5 pb-24 pt-32 sm:px-8 lg:px-12 lg:pb-32 lg:pt-44">
           <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="hover:text-[var(--accent-glow)]">Home</Link>
+            <Link to="/" className="transition-colors hover:text-[var(--accent-glow)]">
+              Home
+            </Link>
             <span className="mx-2 opacity-60">/</span>
             <span className="text-[var(--silver)]">Contact</span>
           </nav>
 
-          <div className="mt-6 grid gap-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+          <div className="mt-10 grid gap-12 border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] pb-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.6fr)] lg:items-end lg:gap-20 lg:pb-24">
             <div>
-              <HudLabel withDot className="text-[var(--accent-glow)]">
-                Start a project
-              </HudLabel>
-              <h1 className="mt-4 font-display text-[40px] sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-[-0.02em] text-silver-gradient">
-                Let's build your AI system.
+              <HudLabel withDot>Contact Cyryx Labs</HudLabel>
+              <h1 className="mt-7 max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
+                Start in the right place.
               </h1>
-              <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-                Share the outcome you're pursuing, the constraints that matter, and
-                who will own the system after delivery. We reply with scope, risk
-                posture, and a proposed engagement shape — not a sales sequence.
+            </div>
+            <p className="max-w-xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+              Project qualification, product access, research, privacy, and careers follow different
+              paths. Choose the context below so your inquiry reaches the right workflow.
+            </p>
+          </div>
+
+          <div className="mt-20 lg:mt-28">
+            <HudLabel>Inquiry paths</HudLabel>
+            <div className="mt-8 border-y border-[color-mix(in_oklab,var(--silver)_14%,transparent)]">
+              {CONTACT_PATHS.map((path, index) => (
+                <article
+                  key={path.label}
+                  className="grid gap-5 border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-8 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)] lg:grid-cols-[5rem_minmax(16rem,0.65fr)_minmax(18rem,1fr)_auto] lg:items-center lg:gap-10 lg:py-10"
+                >
+                  <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.16em] text-[var(--steel)]">
+                      {path.label}
+                    </p>
+                    <h2 className="mt-3 font-display text-2xl tracking-[-0.03em] text-[var(--silver)] sm:text-3xl">
+                      {path.title}
+                    </h2>
+                  </div>
+                  <p className="sm:col-start-2 text-sm leading-relaxed text-[var(--silver-dim)] lg:col-start-auto lg:text-base">
+                    {path.body}
+                  </p>
+                  <Link
+                    to={path.href}
+                    onClick={() =>
+                      trackCta({
+                        cta: path.cta,
+                        section: "contact",
+                        href: path.href,
+                      })
+                    }
+                    className="sm:col-start-2 inline-flex min-h-11 items-center gap-2 justify-self-start hud-label text-[var(--silver)] transition-colors hover:text-[var(--accent-glow)] lg:col-start-auto lg:justify-self-end"
+                  >
+                    {path.action}
+                    <ArrowRight className="h-4 w-4" aria-hidden />
+                  </Link>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <section
+            aria-labelledby="direct-contact-heading"
+            className="mt-20 grid gap-10 lg:mt-28 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:gap-20"
+          >
+            <div>
+              <HudLabel>Direct channels</HudLabel>
+              <h2
+                id="direct-contact-heading"
+                className="mt-6 max-w-[13ch] font-display text-4xl tracking-[-0.04em] text-[var(--silver)] sm:text-5xl"
+              >
+                A concise note is enough.
+              </h2>
+              <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--silver-dim)]">
+                Include the reason for your inquiry, the relevant organization, and the response you
+                need. Sensitive project details should wait until an appropriate channel is agreed.
               </p>
             </div>
-
-            <aside className="glass-panel rounded-md p-6 lg:p-7">
-              <HudLabel>What to expect</HudLabel>
-              <dl className="mt-4 divide-y divide-[color-mix(in_oklab,var(--silver)_12%,transparent)]">
-                {SIGNALS.map((s) => (
-                  <div key={s.k} className="flex items-start justify-between gap-4 py-3">
-                    <dt className="text-xs uppercase tracking-[0.08em] text-[var(--silver-dim)]">
-                      {s.k}
-                    </dt>
-                    <dd className="text-right text-sm text-[var(--silver)]">{s.v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </aside>
-          </div>
+            <ul className="border-y border-[color-mix(in_oklab,var(--silver)_14%,transparent)]">
+              {DIRECT_CHANNELS.map((channel) => {
+                const href = `mailto:${channel.email}?subject=${encodeURIComponent(channel.subject)}`;
+                return (
+                  <li
+                    key={channel.label}
+                    className="border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] last:border-b-0"
+                  >
+                    <a
+                      href={href}
+                      onClick={() =>
+                        trackCta({
+                          cta: "contact_email",
+                          section: "contact",
+                          href,
+                        })
+                      }
+                      className="group grid min-h-20 gap-2 py-5 sm:grid-cols-[minmax(9rem,0.6fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-6"
+                    >
+                      <span className="text-xs uppercase tracking-[0.14em] text-[var(--steel)]">
+                        {channel.label}
+                      </span>
+                      <span className="break-all text-sm text-[var(--silver)] sm:text-base">
+                        {channel.email}
+                      </span>
+                      <Mail
+                        className="h-4 w-4 text-[var(--accent-glow)] transition-transform group-hover:-translate-y-0.5"
+                        aria-hidden
+                      />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
         </section>
-
-        <ContactSection />
       </main>
       <Footer />
     </div>

@@ -47,13 +47,22 @@ const LIMITATIONS = [
 
 export const Route = createFileRoute("/products/lyra")({
   head: () =>
-    buildHead({ title: TITLE, description: DESC, path: PATH, ogType: "product" }, [
-      buildBreadcrumbJsonLd([
-        { name: "Home", path: "/" },
-        { name: "Products", path: "/products" },
-        { name: "Lyra", path: PATH },
-      ]),
-    ]),
+    buildHead(
+      {
+        title: TITLE,
+        description: DESC,
+        path: PATH,
+        ogType: "product",
+        image: "https://cyryxlabs.com/lyra-og-1200x630.jpg",
+      },
+      [
+        buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Products", path: "/products" },
+          { name: "Lyra", path: PATH },
+        ]),
+      ],
+    ),
   component: LyraPage,
 });
 

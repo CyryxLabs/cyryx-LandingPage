@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CyryxWordmark } from "./primitives/CyryxMark";
+import { CyryxLockup } from "./primitives/CyryxMark";
 import { PRIMARY_NAVIGATION, PRIMARY_NAVIGATION_CTA, type NavigationItem } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
@@ -40,7 +40,6 @@ function FooterLink({ item, className }: { item: FooterItem; className?: string 
         "text-sm sm:text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] rounded-sm whitespace-normal break-words",
         className,
       )}
-
       activeOptions={{ exact: true }}
     >
       {item.label}
@@ -75,9 +74,10 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2.8fr)]">
           {/* Brand area */}
           <div className="flex flex-col items-start">
-            <CyryxWordmark className="h-9" />
+            <CyryxLockup className="h-14" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--silver-dim)]">
-              The command layer for AI-native builders. From prompt chaos to governed AI execution.
+              The execution layer for enterprise AI. Advisory, engineering, products, research, and
+              optional operations for controlled execution.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">

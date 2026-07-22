@@ -3,7 +3,11 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
-import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildHead,
+  buildOrganizationJsonLd,
+} from "@/components/cyryx/seo/seo";
 import { START_PROJECT_HREF } from "@/lib/cta";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
@@ -70,6 +74,7 @@ export const Route = createFileRoute("/company")({
         { name: "Home", path: "/" },
         { name: "Company", path: PATH },
       ]),
+      buildOrganizationJsonLd(),
     ]),
   component: CompanyPage,
 });

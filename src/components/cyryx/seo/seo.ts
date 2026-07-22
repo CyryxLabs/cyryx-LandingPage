@@ -94,7 +94,43 @@ export function buildServiceJsonLd(input: {
       name: "Cyryx Labs",
       url: BASE,
     },
-    areaServed: "Worldwide",
+  };
+}
+
+export function buildOrganizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${BASE}/#organization`,
+    name: "Cyryx Labs",
+    alternateName: "Cyryx",
+    url: `${BASE}/`,
+    slogan: "The execution layer for enterprise AI.",
+    description:
+      "Cyryx Labs is an AI lab and systems company that advises, builds, and operates digital and AI systems for organizations moving from strategy to controlled execution.",
+    email: "contact@cyryxlabs.com",
+  };
+}
+
+export function buildSoftwareApplicationJsonLd(input: {
+  name: string;
+  description: string;
+  path: string;
+  applicationSubCategory: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: input.name,
+    applicationCategory: "DeveloperApplication",
+    applicationSubCategory: input.applicationSubCategory,
+    description: input.description,
+    url: `${BASE}${input.path}`,
+    creator: {
+      "@type": "Organization",
+      name: "Cyryx Labs",
+      url: `${BASE}/`,
+    },
   };
 }
 
@@ -155,10 +191,7 @@ export function jsonLdScript(obj: unknown) {
 /**
  * Compose a full head() return for a leaf page with metadata + a JSON-LD graph.
  */
-export function buildHead(
-  meta: PageMetaInput,
-  jsonLdNodes: unknown[] = [],
-) {
+export function buildHead(meta: PageMetaInput, jsonLdNodes: unknown[] = []) {
   const base = pageMeta(meta);
   return {
     meta: base.meta,

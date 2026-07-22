@@ -9,20 +9,32 @@ const PAGES: { path: string; required: string[] }[] = [
   { path: "/", required: ["Organization", "WebSite"] },
   { path: "/company", required: ["Organization"] },
   { path: "/products/maax-studio", required: ["SoftwareApplication", "BreadcrumbList"] },
+  { path: "/products/lyra", required: ["BreadcrumbList"] },
   { path: "/solutions", required: ["BreadcrumbList"] },
-  { path: "/solutions/ai-websites-lead-systems", required: ["Service", "BreadcrumbList"] },
+  { path: "/solutions/ai-strategy-advisory", required: ["Service", "BreadcrumbList"] },
+  { path: "/solutions/digital-web-systems", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/workflow-automation", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/internal-ai-assistants", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/custom-ai-product-development", required: ["Service", "BreadcrumbList"] },
-  { path: "/solutions/ai-integrations", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/ai-governance-cost-control", required: ["Service", "BreadcrumbList"] },
+  { path: "/managed-operations", required: ["Service", "BreadcrumbList"] },
+  { path: "/engagement-model", required: ["BreadcrumbList"] },
+  { path: "/start", required: ["BreadcrumbList"] },
+  { path: "/contact", required: ["BreadcrumbList"] },
+  { path: "/careers", required: ["BreadcrumbList"] },
   { path: "/privacy", required: ["PrivacyPolicy", "BreadcrumbList"] },
   { path: "/terms", required: ["TermsOfService", "BreadcrumbList"] },
   { path: "/research", required: ["BreadcrumbList"] },
   { path: "/answers", required: ["BreadcrumbList"] },
   { path: "/answers/what-is-governed-ai-execution", required: ["FAQPage", "BreadcrumbList"] },
-  { path: "/answers/ai-execution-system-vs-ai-automation", required: ["FAQPage", "BreadcrumbList"] },
-  { path: "/answers/what-are-command-gates-in-ai-systems", required: ["FAQPage", "BreadcrumbList"] },
+  {
+    path: "/answers/ai-execution-system-vs-ai-automation",
+    required: ["FAQPage", "BreadcrumbList"],
+  },
+  {
+    path: "/answers/what-are-command-gates-in-ai-systems",
+    required: ["FAQPage", "BreadcrumbList"],
+  },
   { path: "/answers/what-is-goal-grounded-generation", required: ["FAQPage", "BreadcrumbList"] },
   { path: "/answers/how-to-measure-ai-output-quality", required: ["FAQPage", "BreadcrumbList"] },
 ];
@@ -54,7 +66,11 @@ for (const { path, required } of PAGES) {
       expect(() => {
         parsed = JSON.parse(raw);
       }, `invalid JSON-LD JSON on ${path}`).not.toThrow();
-      if (parsed && typeof parsed === "object" && Array.isArray((parsed as { "@graph"?: unknown[] })["@graph"])) {
+      if (
+        parsed &&
+        typeof parsed === "object" &&
+        Array.isArray((parsed as { "@graph"?: unknown[] })["@graph"])
+      ) {
         graph.push(...(parsed as { "@graph": unknown[] })["@graph"]);
         topLevelNodes.push(parsed);
       } else {
@@ -65,9 +81,10 @@ for (const { path, required } of PAGES) {
 
     // Every top-level JSON-LD block must declare @context.
     for (const node of topLevelNodes) {
-      expect((node as Record<string, unknown>)["@context"], `${path}: top-level JSON-LD missing @context`).toBe(
-        "https://schema.org",
-      );
+      expect(
+        (node as Record<string, unknown>)["@context"],
+        `${path}: top-level JSON-LD missing @context`,
+      ).toBe("https://schema.org");
     }
 
     // schema.org sanity: every node must have @type and (where applicable) @context
@@ -78,7 +95,16 @@ for (const { path, required } of PAGES) {
 
     const types = collectTypes(graph);
     for (const req of required) {
-      expect(types.has(req), `${path}: missing @type ${req} (found: ${[...types].join(",")})`).toBe(true);
+      expect(types.has(req), `${path}: missing @type ${req} (found: ${[...types].join(",")})`).toBe(
+        true,
+      );
+    }
+
+    if (path === "/products/lyra") {
+      expect(
+        types.has("SoftwareApplication"),
+        "Lyra is private development, not a public SoftwareApplication entity",
+      ).toBe(false);
     }
 
     // Schema-shape assertions: each node must declare @context and required
@@ -89,12 +115,18 @@ for (const { path, required } of PAGES) {
       const typeStr = typeof t === "string" ? t : Array.isArray(t) ? String(t[0]) : "";
 
       if (typeStr === "BreadcrumbList") {
-        expect(Array.isArray(n.itemListElement), `${path}: BreadcrumbList.itemListElement not array`).toBe(true);
+        expect(
+          Array.isArray(n.itemListElement),
+          `${path}: BreadcrumbList.itemListElement not array`,
+        ).toBe(true);
         for (const item of n.itemListElement as Array<Record<string, unknown>>) {
           expect(item["@type"], `${path}: breadcrumb item missing @type`).toBe("ListItem");
           expect(typeof item.position, `${path}: breadcrumb position not number`).toBe("number");
           expect(typeof item.name, `${path}: breadcrumb name not string`).toBe("string");
-          expect(typeof item.item === "string" && (item.item as string).startsWith("https://"), `${path}: breadcrumb item URL invalid`).toBe(true);
+          expect(
+            typeof item.item === "string" && (item.item as string).startsWith("https://"),
+            `${path}: breadcrumb item URL invalid`,
+          ).toBe(true);
         }
       }
 

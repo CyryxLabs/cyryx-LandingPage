@@ -97,7 +97,7 @@ export function MAAXStudioSpotlight() {
             className="mt-7 block h-auto w-full max-w-[320px] object-contain sm:max-w-[440px]"
           />
           <h2 className="mt-8 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
-            The agentic execution OS for AI-native builders.
+            An agentic software execution environment.
           </h2>
           <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
             MAAX Studio is being designed to turn software goals into structured missions that

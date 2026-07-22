@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe.configure({ mode: "serial" });
 
-const VIDEO_URL_RE = /cyryx-hero\.mp4/i;
+const VIDEO_URL_RE = /cyryx-hero-(?:720|1080)\.mp4/i;
 
 test("Hero video is NOT downloaded on routes without the hero", async ({ page }) => {
   const hits: string[] = [];
@@ -28,11 +28,15 @@ test("Hero video only downloads after IntersectionObserver fires on /", async ({
   await expect(video).toHaveCount(1);
 
   // Wait for src to be wired up by the observer, then for the network hit
-  await expect.poll(() => video.evaluate((el: HTMLVideoElement) => el.currentSrc || el.src || "")).toMatch(VIDEO_URL_RE);
+  await expect
+    .poll(() => video.evaluate((el: HTMLVideoElement) => el.currentSrc || el.src || ""))
+    .toMatch(VIDEO_URL_RE);
   await expect.poll(() => hits.length, { timeout: 10_000 }).toBeGreaterThan(0);
 });
 
-test("Hero video uses preload='none' so byte download is gated by IO, not by parser", async ({ page }) => {
+test("Hero video uses preload='none' so byte download is gated by IO, not by parser", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded", timeout: 60_000 });
   const preload = await page

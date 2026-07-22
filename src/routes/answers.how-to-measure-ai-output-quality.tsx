@@ -1,14 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnswerPage } from "@/components/cyryx/seo/AnswerPage";
-import {
-  buildBreadcrumbJsonLd,
-  buildFaqJsonLd,
-  buildHead,
-} from "@/components/cyryx/seo/seo";
+import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 
 const PATH = "/answers/how-to-measure-ai-output-quality";
 const TITLE = "How to measure AI output quality — Cyryx Labs";
-const DESC = "Measure AI output quality with structural checks, task-level evaluators, regression suites, and targeted human review — combined into one signal.";
+const DESC =
+  "Measure AI output quality with structural checks, task-level evaluators, regression suites, and targeted human review — combined into one signal.";
 
 const faqs = [
   {
@@ -21,23 +18,20 @@ const faqs = [
   },
   {
     q: "What's the role of human review?",
-    a: "Human review is reserved for cases gates can't resolve. Used well, it's a signal for improving gates — every escalation should produce either a gate change or a documented exception.",
+    a: "Human review can be required for higher-authority decisions, unresolved cases, or representative quality sampling. Its findings can inform a gate change, a documented exception, or a narrower system boundary.",
   },
 ];
 
 export const Route = createFileRoute("/answers/how-to-measure-ai-output-quality")({
   head: () =>
-    buildHead(
-      { title: TITLE, description: DESC, path: PATH, ogType: "article" },
-      [
-        buildBreadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Answers", path: "/answers" },
-          { name: "Measuring AI output quality", path: PATH },
-        ]),
-        buildFaqJsonLd(faqs),
-      ],
-    ),
+    buildHead({ title: TITLE, description: DESC, path: PATH, ogType: "article" }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Answers", path: "/answers" },
+        { name: "Measuring AI output quality", path: PATH },
+      ]),
+      buildFaqJsonLd(faqs),
+    ]),
   component: () => (
     <AnswerPage
       eyebrow="Quality measurement"
@@ -46,7 +40,7 @@ export const Route = createFileRoute("/answers/how-to-measure-ai-output-quality"
       definition="AI output quality is a multi-axis measurement, not a single number. Each axis is owned by a different mechanism — code, policy engines, evaluator models, and humans — and each produces a verdict for every relevant output."
       whyItMatters={[
         "Without multi-axis measurement, a system can score well on the wrong thing and ship the wrong outcome.",
-        "Without a regression suite, every model change is a guess. Quality measurement is what makes model upgrades safe.",
+        "Without representative regression evidence, teams have less basis for deciding whether a model, prompt, or system change is acceptable.",
       ]}
       howItWorks={[
         "Build a structural check from the output contract: schema, required fields, references.",
@@ -56,7 +50,7 @@ export const Route = createFileRoute("/answers/how-to-measure-ai-output-quality"
         "Maintain a regression suite that runs on every prompt, model, or gate change.",
       ]}
       example="For an AI assistant that books meetings: structural — the calendar event has all required fields; policy — the assistant never schedules outside business hours; task — the assistant proposed times that match the user's stated constraints; human — a sampled set of bookings is reviewed weekly and any regression appears as a failing test."
-      cyryxPerspective="In Cyryx systems, quality measurement is part of the execution loop, not a dashboard. A gate failure is also a metric event, a regression test, and a candidate for a new evaluator."
+      cyryxPerspective="Cyryx designs quality signals as part of the execution and release decision. A failure can become an operational metric, a representative regression case, or evidence that a boundary needs to change."
       metrics={[
         "Per-axis pass rate (structural, policy, task, human) over time.",
         "Disagreement rate between automated evaluator and human reviewer.",
@@ -71,11 +65,17 @@ export const Route = createFileRoute("/answers/how-to-measure-ai-output-quality"
       ]}
       faqs={faqs}
       related={[
-        { label: "What are command gates in AI systems?", href: "/answers/what-are-command-gates-in-ai-systems" },
-        { label: "What is goal-grounded generation?", href: "/answers/what-is-goal-grounded-generation" },
+        {
+          label: "What are command gates in AI systems?",
+          href: "/answers/what-are-command-gates-in-ai-systems",
+        },
+        {
+          label: "What is goal-grounded generation?",
+          href: "/answers/what-is-goal-grounded-generation",
+        },
         { label: "MAAX Studio (Cyryx Labs)", href: "/products/maax-studio" },
         { label: "Cyryx Solutions", href: "/solutions" },
-        { label: "Cyryx Applied AI Lab", href: "/research" },
+        { label: "Cyryx Applied Research", href: "/research" },
       ]}
     />
   ),

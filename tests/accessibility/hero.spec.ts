@@ -146,8 +146,8 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await page.keyboard.press("Enter");
   await expect(page.locator("#main-content")).toBeFocused();
 
-  const primaryLabel = "Discuss your AI initiative with Cyryx Labs";
-  const secondaryLabel = "See how Cyryx Labs delivers AI systems";
+  const primaryLabel = "Start a Project with Cyryx Labs";
+  const secondaryLabel = "Explore MAAX Studio — flagship product";
   const primary = page.locator(`section[data-hero] a[aria-label="${primaryLabel}"]`);
   const secondary = page.locator(`section[data-hero] a[aria-label="${secondaryLabel}"]`);
 
@@ -160,7 +160,7 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   expect(primaryHref).toBe("#contact");
 
   const secondaryHref = await secondary.getAttribute("href");
-  expect(secondaryHref).toBe("#what-we-build");
+  expect(secondaryHref).toBe("#maax");
 });
 
 test("Hero headline typography stays unclipped from 360px to 1024px", async ({ page }) => {
@@ -272,6 +272,6 @@ test("Forced-colors keeps Hero text and focus indicators system-readable", async
     `Expected system-readable focus indicator on primary Hero CTA; received ${JSON.stringify(focusIndicator)}`,
   ).toBeTruthy();
 
-  const secondaryAnchor = page.locator('section[data-hero] a[href="#what-we-build"]').first();
+  const secondaryAnchor = page.locator('section[data-hero] a[href="#maax"]').first();
   await expect(secondaryAnchor).toBeVisible();
 });

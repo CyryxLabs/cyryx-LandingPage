@@ -1,14 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnswerPage } from "@/components/cyryx/seo/AnswerPage";
-import {
-  buildBreadcrumbJsonLd,
-  buildFaqJsonLd,
-  buildHead,
-} from "@/components/cyryx/seo/seo";
+import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 
 const PATH = "/answers/what-are-command-gates-in-ai-systems";
 const TITLE = "What are command gates in AI systems? | Cyryx Labs";
-const DESC = "Command gates are policy and evaluation checkpoints between an agent's output and any downstream action — the unit of governance in agentic systems.";
+const DESC =
+  "Command gates are policy and evaluation checkpoints between an agent's output and any downstream action — the unit of governance in agentic systems.";
 
 const faqs = [
   {
@@ -27,26 +24,23 @@ const faqs = [
 
 export const Route = createFileRoute("/answers/what-are-command-gates-in-ai-systems")({
   head: () =>
-    buildHead(
-      { title: TITLE, description: DESC, path: PATH, ogType: "article" },
-      [
-        buildBreadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Answers", path: "/answers" },
-          { name: "Command gates", path: PATH },
-        ]),
-        buildFaqJsonLd(faqs),
-      ],
-    ),
+    buildHead({ title: TITLE, description: DESC, path: PATH, ogType: "article" }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Answers", path: "/answers" },
+        { name: "Command gates", path: PATH },
+      ]),
+      buildFaqJsonLd(faqs),
+    ]),
   component: () => (
     <AnswerPage
       eyebrow="Command gates"
       title="What are command gates in AI systems?"
-      directAnswer="A command gate is a checkpoint that sits between an AI agent's candidate output and any downstream action. It evaluates the candidate against policy, structure, task quality, and safety, then routes the result — pass, remediate, or escalate. Command gates are the unit of governance in an agentic system: they convert generation into auditable, controllable execution."
+      directAnswer="A command gate is a checkpoint between an AI agent's candidate output and a downstream action. It can evaluate policy, structure, task quality, or authority, then route the result to pass, remediation, or escalation according to the system design."
       definition="Command gates are independent stages — typically a mix of deterministic checks and dedicated evaluators — that decide whether a model's output is allowed to act. They are separate from generation, separate from each other, and produce explicit verdicts that the orchestrator routes on."
       whyItMatters={[
-        "Gates are how you turn 'the model usually does the right thing' into 'the system only does the right thing'.",
-        "They give teams a place to encode policy once and enforce it across every agent and every workflow.",
+        "Gates give teams an explicit place to decide what evidence is required before consequential output advances.",
+        "Shared checks can reduce duplicated policy logic when the same authority rules apply across agents or workflows.",
       ]}
       howItWorks={[
         "Generation produces one or more candidate actions for the current mission step.",
@@ -55,8 +49,8 @@ export const Route = createFileRoute("/answers/what-are-command-gates-in-ai-syst
         "Evaluator gates check task quality: groundedness, faithfulness, acceptance-criteria match.",
         "The orchestrator routes on the combined verdict: commit, remediate with feedback, or escalate to human review.",
       ]}
-      example="An agent drafts an outbound email. The structural gate confirms required fields. The policy gate blocks any unapproved pricing claim. The evaluator gate scores grounding against the CRM record. A pass commits the send; a soft fail returns the draft with the failing checks attached so the agent can try again; a hard fail escalates to a human."
-      cyryxPerspective="Cyryx Labs designs gates as first-class architecture. Every Cyryx system has an explicit gate catalog with owners, change history, and failure dashboards — gates are code, not vibes."
+      example="An agent drafts an outbound email. A structural gate can confirm required fields, a policy gate can block unapproved claims, and an evaluator can compare the draft with approved source data. If sending authority has been granted, a pass may advance; otherwise the draft remains subject to human approval."
+      cyryxPerspective="Where authority and risk justify them, Cyryx designs gates as explicit architecture with defined checks, owners, routing behavior, and review requirements."
       metrics={[
         "Gate firing rate — how often each gate runs.",
         "Gate failure rate by type — surfaces which gates are catching real issues.",
@@ -72,10 +66,13 @@ export const Route = createFileRoute("/answers/what-are-command-gates-in-ai-syst
       faqs={faqs}
       related={[
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
-        { label: "How to measure AI output quality", href: "/answers/how-to-measure-ai-output-quality" },
+        {
+          label: "How to measure AI output quality",
+          href: "/answers/how-to-measure-ai-output-quality",
+        },
         { label: "MAAX Studio (Cyryx Labs)", href: "/products/maax-studio" },
         { label: "Cyryx Solutions", href: "/solutions" },
-        { label: "Cyryx Applied AI Lab", href: "/research" },
+        { label: "Cyryx Applied Research", href: "/research" },
       ]}
     />
   ),

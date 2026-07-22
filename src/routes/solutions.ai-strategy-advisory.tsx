@@ -9,7 +9,7 @@ import { START_PROJECT_HREF } from "@/lib/cta";
 const PATH = "/solutions/ai-strategy-advisory";
 const TITLE = "AI Strategy & Advisory — Cyryx Labs";
 const DESC =
-  "AI strategy, readiness, workflow discovery, architecture, governance requirements, and implementation planning for organizations moving from interest to controlled execution.";
+  "AI strategy, readiness, workflow discovery, architecture, governance requirements, and implementation planning for controlled execution.";
 
 const QUESTIONS = [
   "Which workflows or product opportunities are worth pursuing?",

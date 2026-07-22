@@ -79,9 +79,9 @@ test("primary navigation uses the official mark and wordmark lockup", async ({ p
 test.describe("Hero — enterprise value proposition", () => {
   const APPROVED = {
     headline: "The execution layer for enterprise AI.",
-    sub: "Cyryx turns high-value AI initiatives into governed production systems — so your organization can scale automation without losing control of risk, cost, or accountability.",
-    ctaPrimary: "Discuss your AI initiative",
-    ctaSecondary: "See how we deliver",
+    sub: "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
+    ctaPrimary: "Start a project",
+    ctaSecondary: "MAAX Studio →",
   } as const;
 
   test("v3 hero copy matches the approved source of truth exactly", () => {
@@ -107,11 +107,11 @@ test.describe("Hero — enterprise value proposition", () => {
     await expect(hero).toBeVisible();
     await expect(page.locator("#hero-heading")).toHaveText(APPROVED.headline);
     await expect(hero).toContainText(APPROVED.sub);
-    const primary = hero.getByRole("link", { name: /Discuss your AI initiative/i });
+    const primary = hero.getByRole("link", { name: /Start a Project with Cyryx Labs/i });
     await expect(primary).toHaveAttribute("href", "#contact");
     await expect(primary).toContainText(APPROVED.ctaPrimary);
-    const secondary = hero.getByRole("link", { name: /See how Cyryx Labs delivers/i });
-    await expect(secondary).toHaveAttribute("href", "#what-we-build");
+    const secondary = hero.getByRole("link", { name: /Explore MAAX Studio/i });
+    await expect(secondary).toHaveAttribute("href", "#maax");
     await expect(secondary).toContainText(APPROVED.ctaSecondary);
     await expect(hero).not.toContainText("The execution layer for business AI.");
   });

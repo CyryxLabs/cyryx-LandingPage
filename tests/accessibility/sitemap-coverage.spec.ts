@@ -15,6 +15,13 @@ const EXCLUDED = new Set<string>([
   "unsubscribe.tsx",
   "newsletter.confirm.tsx",
   "research.$slug.tsx", // dynamic — covered by sitemap-research generator
+  "auth.tsx", // authenticated entry point; explicitly noindex
+  // Compatibility aliases intentionally redirect to canonical solution routes.
+  "solutions.ai-integrations.tsx",
+  "solutions.ai-product-engineering.tsx",
+  "solutions.ai-websites-lead-systems.tsx",
+  "solutions.applied-ai-systems.tsx",
+  "solutions.governance-optimization.tsx",
 ]);
 
 function fileToPath(name: string): string | null {
@@ -27,17 +34,18 @@ function fileToPath(name: string): string | null {
   return "/" + segments.filter(Boolean).join("/");
 }
 
-test("sitemap.xml includes every public page route in src/routes/", async ({ baseURL, request }) => {
+test("sitemap.xml includes every public page route in src/routes/", async ({
+  baseURL,
+  request,
+}) => {
   const files = await readdir(ROUTES_DIR);
-  const expected = files
-    .map(fileToPath)
-    .filter((p): p is string => Boolean(p));
+  const expected = files.map(fileToPath).filter((p): p is string => Boolean(p));
 
   const res = await request.get(`${baseURL}/sitemap.xml`);
   expect(res.status()).toBe(200);
   const xml = await res.text();
-  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) =>
-    new URL(m[1].trim()).pathname.replace(/\/$/, "") || "/",
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+    (m) => new URL(m[1].trim()).pathname.replace(/\/$/, "") || "/",
   );
   const locSet = new Set(locs);
 
@@ -45,7 +53,10 @@ test("sitemap.xml includes every public page route in src/routes/", async ({ bas
   expect(missing, `sitemap missing routes: ${missing.join(", ")}`).toEqual([]);
 });
 
-test("robots.txt Sitemap: directive points at a reachable sitemap", async ({ baseURL, request }) => {
+test("robots.txt Sitemap: directive points at a reachable sitemap", async ({
+  baseURL,
+  request,
+}) => {
   const robots = await request.get(`${baseURL}/robots.txt`);
   const body = await robots.text();
   const match = body.match(/Sitemap:\s*(\S+)/i);

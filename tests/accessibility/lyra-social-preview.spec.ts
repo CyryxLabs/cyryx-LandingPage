@@ -3,12 +3,11 @@ import { expect, test } from "@playwright/test";
 test("Lyra page emits dedicated OG/Twitter social preview metadata", async ({ page, request }) => {
   await page.goto("/products/lyra", { waitUntil: "networkidle" });
 
-  const meta = async (selector: string) =>
-    page.locator(selector).first().getAttribute("content");
+  const meta = async (selector: string) => page.locator(selector).first().getAttribute("content");
   const allLinks = async (selector: string) =>
-    page.locator(selector).evaluateAll((els) =>
-      els.map((el) => (el as HTMLLinkElement).getAttribute("href")),
-    );
+    page
+      .locator(selector)
+      .evaluateAll((els) => els.map((el) => (el as HTMLLinkElement).getAttribute("href")));
 
   const ogTitle = await meta('meta[property="og:title"]');
   const ogDesc = await meta('meta[property="og:description"]');
@@ -37,7 +36,7 @@ test("Lyra page emits dedicated OG/Twitter social preview metadata", async ({ pa
   expect(twImage).toBe(ogImage);
 
   // Image is reachable and served as an image.
-  const res = await request.get(ogImage!);
+  const res = await request.get(new URL(ogImage!).pathname);
   expect(res.status()).toBe(200);
   expect(res.headers()["content-type"] ?? "").toMatch(/^image\//);
 });

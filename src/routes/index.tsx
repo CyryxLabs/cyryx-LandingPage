@@ -8,13 +8,14 @@ import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
 import { ContactSection } from "@/components/cyryx/ContactSection";
-import { Problem } from "@/components/cyryx/v4/Problem";
 import { ExecutionGap } from "@/components/cyryx/v4/ExecutionGap";
-import { WhatWeBuild } from "@/components/cyryx/v4/WhatWeBuild";
 import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
 import { OperatingModel } from "@/components/cyryx/v4/OperatingModel";
 import { BusinessOutcomes } from "@/components/cyryx/v4/BusinessOutcomes";
+import { Capabilities } from "@/components/cyryx/v4/Capabilities";
+import { HowWeWork } from "@/components/cyryx/v4/HowWeWork";
 import { LyraSpotlight } from "@/components/cyryx/v4/LyraSpotlight";
+import { ResearchBand } from "@/components/cyryx/v4/ResearchBand";
 import { WhyCyryx } from "@/components/cyryx/v4/WhyCyryx";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
@@ -24,7 +25,7 @@ import brandMark from "@/assets/cyryx-brand-mark.png";
 const HOME_URL = "https://cyryxlabs.com/";
 const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
 const HOME_DESCRIPTION =
-  "Cyryx Labs turns high-value AI initiatives into governed production systems with control over risk, cost, and accountability.";
+  "Cyryx Labs advises, builds, and operates governed AI systems that turn enterprise strategy into controlled execution—with ownership, evidence, and cost visibility.";
 const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
 
 export const Route = createFileRoute("/")({
@@ -68,32 +69,10 @@ export const Route = createFileRoute("/")({
               alternateName: "Cyryx",
               url: "https://cyryxlabs.com/",
               description:
-                "Cyryx Labs is an AI product and systems company building proprietary AI products, governed agentic workflow systems, and execution infrastructure.",
-              slogan: "Advise. Build. Operate.",
+                "Cyryx Labs is an AI lab and systems company that advises, builds, and operates governed AI systems for organizations moving from strategy to controlled execution.",
+              slogan: "The execution layer for enterprise AI.",
               industry: "Artificial Intelligence",
-              areaServed: "Worldwide",
               email: "contact@cyryxlabs.com",
-              sameAs: [
-                "https://www.linkedin.com/company/cyryx-labs",
-                "https://x.com/cyryxlabs",
-                "https://github.com/cyryxlabs",
-              ],
-              makesOffer: [
-                {
-                  "@type": "Offer",
-                  name: "MAAX Studio",
-                  itemOffered: {
-                    "@id": "https://cyryxlabs.com/#maax-studio",
-                  },
-                },
-                {
-                  "@type": "Offer",
-                  name: "Lyra",
-                  itemOffered: {
-                    "@id": "https://cyryxlabs.com/#lyra",
-                  },
-                },
-              ],
               knowsAbout: [
                 "AI strategy and advisory",
                 "Agentic workflow systems",
@@ -130,7 +109,7 @@ export const Route = createFileRoute("/")({
                 "@id": "https://cyryxlabs.com/#organization",
               },
               description:
-                "Cyryx Labs turns high-value AI initiatives into governed production systems with control over risk, cost, and accountability.",
+                "Cyryx Labs advises, builds, and operates governed AI systems that turn enterprise strategy into controlled execution—with ownership, evidence, and cost visibility.",
             },
             {
               "@type": "SoftwareApplication",
@@ -138,16 +117,9 @@ export const Route = createFileRoute("/")({
               name: "MAAX Studio",
               applicationCategory: "DeveloperApplication",
               applicationSubCategory: "Agentic Execution Environment",
-              featureList: [
-                "Mission-based execution",
-                "Project memory",
-                "Command Gates",
-                "Mission Ledger",
-                "Cost visibility",
-              ],
               audience: {
                 "@type": "Audience",
-                audienceType: "AI-native builders",
+                audienceType: "Software teams evaluating an active-development environment",
               },
               creator: {
                 "@id": "https://cyryxlabs.com/#organization",
@@ -156,29 +128,7 @@ export const Route = createFileRoute("/")({
                 "@id": "https://cyryxlabs.com/#organization",
               },
               description:
-                "MAAX Studio is a local-first agentic software execution environment engineered for governed autonomy.",
-              brand: {
-                "@id": "https://cyryxlabs.com/#organization",
-              },
-            },
-            {
-              "@type": "SoftwareApplication",
-              "@id": "https://cyryxlabs.com/#lyra",
-              name: "Lyra",
-              applicationCategory: "DeveloperApplication",
-              applicationSubCategory: "Intelligence and execution runtime",
-              audience: {
-                "@type": "Audience",
-                audienceType: "Private development program",
-              },
-              creator: {
-                "@id": "https://cyryxlabs.com/#organization",
-              },
-              publisher: {
-                "@id": "https://cyryxlabs.com/#organization",
-              },
-              description:
-                "Lyra is a private, model-agnostic intelligence and execution runtime in development at Cyryx Labs.",
+                "MAAX Studio is an agentic software execution environment in active development at Cyryx Labs.",
               brand: {
                 "@id": "https://cyryxlabs.com/#organization",
               },
@@ -220,13 +170,14 @@ function IndexPage() {
       <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero />
         <ExecutionGap />
-        <Problem />
         <OperatingModel />
-        <WhatWeBuild />
+        <Capabilities />
         <BusinessOutcomes />
+        <HowWeWork />
+        <SecurityPosture />
         <MAAXStudioSpotlight />
         <LyraSpotlight />
-        <SecurityPosture />
+        <ResearchBand />
         <WhyCyryx />
         <ContactSection />
       </main>

@@ -41,13 +41,16 @@ const PRODUCTS = [
 ] as const;
 
 export const Route = createFileRoute("/products")({
-  head: () =>
-    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+  head: ({ matches }) => {
+    const leafPath = matches.at(-1)?.pathname.replace(/\/$/, "") || "/";
+    if (leafPath !== PATH) return {};
+    return buildHead({ title: TITLE, description: DESC, path: PATH }, [
       buildBreadcrumbJsonLd([
         { name: "Home", path: "/" },
         { name: "Products", path: PATH },
       ]),
-    ]),
+    ]);
+  },
   component: ProductsPage,
 });
 
@@ -64,7 +67,7 @@ function ProductsPage() {
             <HudLabel withDot>Cyryx Labs / Product infrastructure</HudLabel>
             <div className="mt-8 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-24">
               <h1 className="max-w-[11ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-[var(--silver)] sm:text-6xl lg:text-8xl">
-                We build the command layer we want to use.
+                Products for controlled execution.
               </h1>
               <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl lg:pb-2">
                 Cyryx product work concentrates on controlled execution: how people, agents, models,

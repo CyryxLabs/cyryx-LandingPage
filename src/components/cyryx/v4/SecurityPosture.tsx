@@ -10,18 +10,18 @@ const CONTROL_FLOW = [
   ["05", "Ownership", "Assign human responsibility for decisions, exceptions, and change."],
 ] as const;
 
-const RESEARCH_DIRECTIONS = [
+const ARCHITECTURE_NOTES = [
   [
-    "Authority and governance",
-    "Approval boundaries, revocation, and responsibility across agentic workflows.",
+    "Approval boundaries",
+    "High-impact actions can be held for the named human decision the engagement requires.",
   ],
   [
-    "Reliability and recovery",
-    "State, failure isolation, checkpoints, escalation, and safe continuation.",
+    "Decision evidence",
+    "The operating context needed to understand what happened can be preserved for review.",
   ],
   [
-    "Evaluation and cost discipline",
-    "How quality evidence and resource use shape operational decisions.",
+    "Cost visibility",
+    "Usage and spend can be made visible where selected infrastructure supports it.",
   ],
 ] as const;
 
@@ -33,13 +33,13 @@ export function SecurityPosture() {
           <div>
             <HudLabel withDot>Governance and evidence</HudLabel>
             <h2 className="mt-7 max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl">
-              Control is an architectural decision, not a badge.
+              Governance is architecture.
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg lg:pb-2">
-            Governance is designed according to system authority, infrastructure, data, and the
-            engagement. The goal is to make consequential execution bounded, reviewable, and owned —
-            without implying automatic compliance or universal auditability.
+            Know what the system may do, who owns consequential decisions, what evidence remains,
+            and what execution costs. Cyryx designs those controls according to authority, risk,
+            infrastructure, and the engagement — without implying automatic compliance.
           </p>
         </div>
 
@@ -73,17 +73,17 @@ export function SecurityPosture() {
             </ol>
           </figure>
 
-          <div id="research" className="cx-stagger">
-            <HudLabel>Applied research</HudLabel>
+          <div className="cx-stagger lg:pt-3">
+            <HudLabel>Architecture before automation</HudLabel>
             <h3 className="mt-6 max-w-[14ch] font-display text-3xl font-medium leading-[1.04] tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
-              Research that informs product and system decisions.
+              Controls follow authority and risk — not a universal checklist.
             </h3>
             <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[var(--silver-dim)]">
-              Cyryx investigates the operating questions that appear when AI systems move from
-              controlled experiments into consequential workflows.
+              The appropriate control path depends on what a system can access, decide, spend, and
+              change. Cyryx defines those boundaries with the client and selected infrastructure.
             </p>
             <dl className="mt-9 border-t border-[color-mix(in_oklab,var(--silver)_14%,transparent)]">
-              {RESEARCH_DIRECTIONS.map(([term, description]) => (
+              {ARCHITECTURE_NOTES.map(([term, description]) => (
                 <div
                   key={term}
                   className="cx-stagger-item border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-6"
@@ -96,10 +96,10 @@ export function SecurityPosture() {
               ))}
             </dl>
             <Link
-              to="/research"
+              to="/solutions/ai-governance-cost-control"
               className="mt-7 inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
             >
-              Explore applied research <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              Explore governance architecture <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </Link>
           </div>
         </div>

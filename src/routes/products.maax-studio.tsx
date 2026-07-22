@@ -3,7 +3,11 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
-import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildHead,
+  buildSoftwareApplicationJsonLd,
+} from "@/components/cyryx/seo/seo";
 import { START_PROJECT_HREF } from "@/lib/cta";
 import maaxDevices from "@/assets/cyryx-maax-devices-1200.jpg";
 import maaxDevices480 from "@/assets/cyryx-maax-devices-480.webp";
@@ -13,7 +17,7 @@ import maaxDevices1200 from "@/assets/cyryx-maax-devices-1200.webp";
 const PATH = "/products/maax-studio";
 const TITLE = "MAAX Studio — Agentic Software Execution Environment";
 const DESC =
-  "MAAX Studio is an agentic software execution environment in active development, intended to coordinate software missions, agents, project context, review, and controlled execution.";
+  "MAAX Studio is an agentic software execution environment in active development for software missions, agents, context, review, and controlled execution.";
 
 const LAYERS = [
   [
@@ -35,7 +39,7 @@ const LAYERS = [
 ] as const;
 
 const USERS = [
-  ["AI-native builders", "Teams coordinating multiple agents and tools across real software work."],
+  ["Software teams", "Teams coordinating multiple agents and tools across real software work."],
   [
     "Technical leads",
     "Operators who need visibility into mission state, review, and project context.",
@@ -61,6 +65,12 @@ export const Route = createFileRoute("/products/maax-studio")({
         { name: "Products", path: "/products" },
         { name: "MAAX Studio", path: PATH },
       ]),
+      buildSoftwareApplicationJsonLd({
+        name: "MAAX Studio",
+        description: DESC,
+        path: PATH,
+        applicationSubCategory: "Agentic software execution environment",
+      }),
     ]),
   component: MaaxStudioPage,
 });

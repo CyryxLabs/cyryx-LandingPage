@@ -2,12 +2,12 @@ import { expect, test } from "@playwright/test";
 
 const EXPECTED = {
   title: /Cyryx Labs.*Execution Layer for Enterprise AI/i,
-  description: /Cyryx Labs.*governed production systems.*(risk|cost|accountability)/i,
+  description: /Cyryx Labs.*governed AI systems.*(ownership|evidence|cost visibility)/i,
   ogTitle: /Cyryx Labs/,
-  ogDescription: /(governed production systems|risk|cost|accountability)/i,
+  ogDescription: /(governed AI systems|ownership|evidence|cost visibility)/i,
   ogUrl: /\/$/,
   twitterTitle: /Cyryx Labs/,
-  twitterDescription: /(governed production systems|risk|cost|accountability)/i,
+  twitterDescription: /(governed AI systems|ownership|evidence|cost visibility)/i,
 };
 
 test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async ({ page }) => {
@@ -29,7 +29,7 @@ test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async 
   expect(await link('link[rel="canonical"]')).toMatch(/\/$/);
 });
 
-test("JSON-LD schema.org graph exposes Organization, WebSite, WebPage, MAAX Studio, and Lyra", async ({
+test("JSON-LD exposes the organization, site, page, and approved MAAX Studio product entity", async ({
   page,
 }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -50,5 +50,6 @@ test("JSON-LD schema.org graph exposes Organization, WebSite, WebPage, MAAX Stud
   const org = graph.find((n) => n["@type"] === "Organization");
   expect(org?.name).toBe("Cyryx Labs");
   const apps = graph.filter((n) => n["@type"] === "SoftwareApplication");
-  expect(apps.map((app) => app.name)).toEqual(expect.arrayContaining(["MAAX Studio", "Lyra"]));
+  expect(apps.map((app) => app.name)).toEqual(["MAAX Studio"]);
+  expect(apps.map((app) => app.name)).not.toContain("Lyra");
 });

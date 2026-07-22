@@ -21,6 +21,24 @@ const FormSchema = z.object({
 
 type Errors = Partial<Record<keyof z.infer<typeof FormSchema>, string>>;
 
+const NEXT_STEPS = [
+  {
+    n: "01",
+    title: "Describe the constraint",
+    body: "Share the workflow, opportunity, systems involved, and why it matters now.",
+  },
+  {
+    n: "02",
+    title: "Receive an initial response",
+    body: "You can expect an initial response within one business day with fit or the clearest next step.",
+  },
+  {
+    n: "03",
+    title: "Qualify the engagement",
+    body: "If there is a fit, we define the discovery needed before scope, architecture, or delivery is proposed.",
+  },
+] as const;
+
 export function ContactSection() {
   const submit = useServerFn(submitContact);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -96,8 +114,8 @@ export function ContactSection() {
 
   return (
     <section id="contact" className="relative py-24 sm:py-32 lg:py-40">
-      <div className="mx-auto max-w-3xl px-5 sm:px-8 lg:px-10">
-        <div className="cx-reveal text-center">
+      <div className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-10">
+        <div className="cx-reveal mx-auto max-w-3xl text-center">
           <HudLabel withDot>Start with the business constraint</HudLabel>
           <h2 className="mt-7 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
             Find out whether the opportunity is worth building.
@@ -109,7 +127,29 @@ export function ContactSection() {
           </p>
         </div>
 
-        <GlassPanel liquid className="mt-8 p-5 sm:mt-10 sm:p-8 cx-reveal">
+        <ol className="cx-stagger mt-12 grid border-y border-[color-mix(in_oklab,var(--silver)_14%,transparent)] sm:grid-cols-3">
+          {NEXT_STEPS.map((step) => (
+            <li
+              key={step.n}
+              className="cx-stagger-item border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] px-1 py-7 last:border-b-0 sm:border-b-0 sm:border-r sm:px-6 sm:last:border-r-0"
+            >
+              <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
+                {step.n}
+              </span>
+              <h3 className="mt-4 font-display text-lg font-medium text-[var(--silver)]">
+                {step.title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+
+        <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-relaxed text-[var(--steel)]">
+          Submitted details are used to evaluate and respond to your inquiry and are handled under
+          the Cyryx Labs Privacy Policy.
+        </p>
+
+        <GlassPanel liquid className="cx-reveal mx-auto mt-10 max-w-3xl p-5 sm:p-8">
           {status === "success" ? (
             <div ref={successRef} className="flex flex-col items-center gap-3 py-10 text-center">
               <CheckCircle2 className="h-10 w-10 text-[var(--accent-glow)]" />

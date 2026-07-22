@@ -87,7 +87,7 @@ export function useCyryxScrollAnimations() {
     const showFinalStates = () => {
       document
         .querySelectorAll<HTMLElement>(
-          ".cx-reveal, .cx-stagger-item, [data-hero-line], .cx-hero-kicker, .cx-hero-sub, .cx-hero-ctas, .cx-hero-proof",
+          ".cx-reveal, .cx-stagger-item, [data-hero-line], .cx-hero-sub, .cx-hero-ctas",
         )
         .forEach((element) => {
           element.style.opacity = "1";
@@ -129,11 +129,9 @@ export function useCyryxScrollAnimations() {
 
           const heroSequence = gsap.timeline({ defaults: { ease: "power3.out" } });
           heroSequence
-            .from(".cx-hero-kicker", { opacity: 0, y: mobile ? 12 : 18, duration: 0.55 })
-            .from("[data-hero-line]", { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 }, "-=0.25")
+            .from("[data-hero-line]", { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
             .from(".cx-hero-sub", { opacity: 0, y: 16, duration: 0.65 }, "-=0.45")
-            .from(".cx-hero-ctas", { opacity: 0, y: 14, duration: 0.6 }, "-=0.4")
-            .from(".cx-hero-proof", { opacity: 0, y: 12, duration: 0.55 }, "-=0.35");
+            .from(".cx-hero-ctas", { opacity: 0, y: 14, duration: 0.6 }, "-=0.4");
 
           gsap.utils.toArray<HTMLElement>(".cx-reveal").forEach((element) => {
             gsap.from(element, {
@@ -185,46 +183,42 @@ export function useCyryxScrollAnimations() {
                   gsap.set(caption, { autoAlpha: 0, y: -10 });
                 });
 
+                gsap.set(storyCaptions[activeIndex], { autoAlpha: 1, y: 0 });
                 gsap.fromTo(
                   storyCaptions[activeIndex],
-                  { autoAlpha: 0, y: 16 },
-                  {
-                    autoAlpha: 1,
-                    y: 0,
-                    duration: 0.45,
-                    ease: "power3.out",
-                    overwrite: true,
-                  },
+                  { y: 8 },
+                  { y: 0, duration: 0.25, ease: "power3.out", overwrite: "auto" },
                 );
               };
 
               const activateNearestStoryCaption = () => {
                 const focusLine = window.innerHeight * 0.58;
                 const nearestIndex = storySteps.reduce(
-                  (nearest, step, index) =>
-                    Math.abs(step.getBoundingClientRect().top - focusLine) < nearest.distance
-                      ? {
-                          index,
-                          distance: Math.abs(step.getBoundingClientRect().top - focusLine),
-                        }
-                      : nearest,
+                  (nearest, step, index) => {
+                    const rect = step.getBoundingClientRect();
+                    const distance = Math.abs(rect.top + rect.height / 2 - focusLine);
+                    return distance < nearest.distance ? { index, distance } : nearest;
+                  },
                   { index: 0, distance: Number.POSITIVE_INFINITY },
                 ).index;
 
                 activateStoryCaption(nearestIndex);
               };
 
-              storySteps.forEach((step) => {
+              const storyHost = storySteps[0]?.closest<HTMLElement>("#how-we-work");
+              if (storyHost) {
                 ScrollTrigger.create({
-                  trigger: step,
-                  start: "top 58%",
-                  end: "bottom 42%",
+                  trigger: storyHost,
+                  start: "top bottom",
+                  end: "bottom top",
                   refreshPriority: 10,
                   invalidateOnRefresh: true,
+                  onEnter: activateNearestStoryCaption,
+                  onEnterBack: activateNearestStoryCaption,
                   onUpdate: activateNearestStoryCaption,
                   onRefresh: activateNearestStoryCaption,
                 });
-              });
+              }
             }
           }
 

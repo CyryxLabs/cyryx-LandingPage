@@ -9,7 +9,7 @@ import { START_PROJECT_HREF } from "@/lib/cta";
 const PATH = "/solutions";
 const TITLE = "AI Advisory, Digital Systems & Engineering — Cyryx Labs";
 const DESC =
-  "Cyryx Labs advises, builds, and can operate AI and digital systems: strategy, web platforms, workflow automation, internal assistants, custom products, governance, and defined operations.";
+  "Explore Cyryx Labs advisory, digital systems, automation, internal assistants, custom AI products, governance, and managed operations.";
 
 const CAPABILITIES = [
   {
@@ -77,8 +77,10 @@ const CAPABILITIES = [
 ] as const;
 
 export const Route = createFileRoute("/solutions")({
-  head: () =>
-    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+  head: ({ matches }) => {
+    const leafPath = matches.at(-1)?.pathname.replace(/\/$/, "") || "/";
+    if (leafPath !== PATH) return {};
+    return buildHead({ title: TITLE, description: DESC, path: PATH }, [
       buildBreadcrumbJsonLd([
         { name: "Home", path: "/" },
         { name: "Solutions", path: PATH },
@@ -89,7 +91,8 @@ export const Route = createFileRoute("/solutions")({
         description: DESC,
         path: PATH,
       }),
-    ]),
+    ]);
+  },
   component: SolutionsHub,
 });
 

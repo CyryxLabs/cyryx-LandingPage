@@ -10,7 +10,7 @@ import { useEffect } from "react";
  * - Mirrors the hash into the URL via `history.replaceState` so deep links
  *   keep working without triggering the global scroll-restoration script.
  * - Adds a `data-cx-flash` attribute to the target for ~1.2s so the user can
- *   visually locate the section they jumped to (used by MAAX Runtime → Ecosystem).
+ *   visually locate the section they jumped to.
  */
 export function useSmoothScroll(): void {
   useEffect(() => {
@@ -46,7 +46,18 @@ export function useSmoothScroll(): void {
       window.scrollTo({ top: Math.max(0, top), behavior: reduce ? "auto" : "smooth" });
       try {
         history.replaceState(null, "", `#${id}`);
-      } catch {}
+      } catch {
+        // History replacement can be unavailable in constrained webviews;
+        // scrolling and focus movement must still complete.
+      }
+
+      // Skip links must move keyboard focus as well as the viewport. Without
+      // this, keyboard and screen-reader users remain trapped in the header
+      // even though the page appears to have jumped to the main content.
+      if (anchor.classList.contains("skip-link")) {
+        if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
+        el.focus({ preventScroll: true });
+      }
 
       el.setAttribute("data-cx-flash", "true");
       window.setTimeout(() => el.removeAttribute("data-cx-flash"), 1400);
