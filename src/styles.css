@@ -366,6 +366,72 @@ html.cx-low-perf .glass-panel {
   padding-bottom: 0.08em;
 }
 
+/* Hero art direction -------------------------------------------------------
+ * The source film is intentionally graded behind the copy rather than dimmed
+ * uniformly. Desktop keeps the left reading field quiet while allowing the
+ * execution core to remain visible on the right. */
+.cx-hero-media-frame {
+  background: #020506;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.cx-hero-media {
+  filter: saturate(0.86) contrast(1.08) brightness(0.78);
+  transform: scale(1.025);
+  transform-origin: 62% 50%;
+}
+
+.cx-hero-grade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.74) 0%,
+      rgba(0, 0, 0, 0.22) 28%,
+      rgba(0, 0, 0, 0.14) 58%,
+      rgba(0, 0, 0, 0.86) 100%
+    ),
+    linear-gradient(90deg, rgba(0, 3, 4, 0.58) 0%, transparent 70%);
+}
+
+.cx-hero-feather {
+  background: linear-gradient(180deg, #000 0%, transparent 13%, transparent 80%, #000 100%);
+}
+
+.cx-hero-scroll-cue {
+  z-index: 10;
+}
+
+.cx-hero-scroll-track > span {
+  box-shadow: 0 0 12px color-mix(in oklab, var(--accent-glow) 72%, transparent);
+}
+
+@media (min-width: 1024px) {
+  .cx-hero-grade {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(0, 3, 4, 0.96) 0%,
+        rgba(0, 3, 4, 0.86) 25%,
+        rgba(0, 3, 4, 0.56) 43%,
+        rgba(0, 3, 4, 0.18) 62%,
+        rgba(0, 3, 4, 0.04) 78%,
+        rgba(0, 3, 4, 0.2) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.68) 0%,
+        rgba(0, 0, 0, 0.08) 31%,
+        rgba(0, 0, 0, 0.1) 66%,
+        rgba(0, 0, 0, 0.82) 100%
+      );
+  }
+
+  .cx-hero-panel {
+    max-width: 54rem;
+  }
+}
+
 .cx-hero-proof {
   display: none !important;
 }
@@ -501,7 +567,8 @@ html.cx-low-perf .glass-panel {
     background: color-mix(in oklab, #000 55%, transparent);
   }
   .cx-hero-noise,
-  .cx-hero-line-glow {
+  .cx-hero-line-glow,
+  .cx-hero-scroll-cue {
     display: none !important;
   }
   .cx-cta,

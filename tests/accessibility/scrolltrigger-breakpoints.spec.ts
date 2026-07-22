@@ -59,6 +59,7 @@ test("desktop Hero pins and scrubs the cinematic video with scroll", async ({ pa
   await page.goto("/", { waitUntil: "domcontentloaded" });
   const hero = page.locator("section[data-hero]");
   const video = hero.locator("[data-hero-video]");
+  await expect(hero.locator("[data-scroll-progress]")).toHaveCount(1);
   await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
   await expect(page.locator(".pin-spacer")).toHaveCount(1);
 

@@ -7,7 +7,7 @@ test("Hero video is present and playing on desktop", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded", timeout: 60_000 });
   const video = page.locator("section[data-hero] video[data-hero-video]");
   await expect(video).toHaveCount(1);
-  await expect(video).toHaveAttribute("loop", "");
+  await expect(video).not.toHaveAttribute("loop", "");
   await expect(video).toHaveAttribute("muted", "");
   await expect(video).toHaveAttribute("playsinline", "");
   await expect(video).toHaveAttribute("aria-hidden", "true");
@@ -23,16 +23,19 @@ test("Hero video is present on mobile", async ({ page }) => {
   await expect(page.locator("section[data-hero] img[data-hero-poster]")).toBeVisible();
 });
 
-test("prefers-reduced-motion disables the Hero video", async ({ browser }) => {
-  const context = await browser.newContext({ reducedMotion: "reduce" });
-  const page = await context.newPage();
+test("prefers-reduced-motion disables the Hero video", async ({ page }) => {
+  // Emulate on the test-owned page so the media preference is applied before
+  // navigation and cannot be lost when Playwright composes project context options.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded", timeout: 60_000 });
+  expect(
+    await page.evaluate(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches),
+  ).toBe(true);
   // Video must NOT render when user requests reduced motion
   await expect(page.locator("section[data-hero] video[data-hero-video]")).toHaveCount(0);
   // Poster image still anchors the hero
   await expect(page.locator("section[data-hero] img[data-hero-poster]")).toBeVisible();
-  await context.close();
 });
 
 test("Hero headline remains readable over the video background", async ({ page }) => {

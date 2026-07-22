@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ArrowUpRight } from "lucide-react";
 import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
 import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
@@ -8,25 +8,35 @@ import { trackCta } from "@/lib/track-cta";
 
 const HERO_VIDEO_MOBILE = "/media/cyryx-hero-720.mp4";
 const HERO_VIDEO_DESKTOP = "/media/cyryx-hero-1080.mp4";
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeToReducedMotion(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+  mediaQuery.addEventListener("change", onStoreChange);
+  return () => mediaQuery.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+function getServerReducedMotionSnapshot() {
+  return false;
+}
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
   const copy = getCopy(useCopyVariant()).hero;
   const [debug, setDebug] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const reducedMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    getServerReducedMotionSnapshot,
+  );
   const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const parallax = { y: 0, scale: 1, progress: 0 };
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
 
   // Pause video when offscreen to save CPU/battery
   useEffect(() => {
@@ -86,7 +96,8 @@ export function Hero() {
       {/* Background */}
       <div
         aria-hidden
-        className="cx-bg absolute inset-0 -z-10"
+        className="cx-bg cx-hero-media-frame absolute inset-0 -z-10 overflow-hidden"
+        data-hero-media-frame
         data-hide-overlay={hideOverlay || undefined}
       >
         {/* Always-on local poster — instant LCP and fallback when reduced motion or video stalls. */}
@@ -106,7 +117,7 @@ export function Hero() {
             height={1080}
             data-no3d="1"
             data-hero-poster
-            className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+            className="cx-bg-img cx-hero-media absolute inset-0 h-full w-full object-cover object-center will-change-transform"
             draggable={false}
           />
         </picture>
@@ -115,7 +126,6 @@ export function Hero() {
             ref={videoRef}
             autoPlay
             muted
-            loop
             playsInline
             preload="none"
             disablePictureInPicture
@@ -126,29 +136,21 @@ export function Hero() {
             aria-hidden="true"
             data-no3d="1"
             data-hero-video
-            className={`cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
+            className={`cx-bg-img cx-hero-media absolute inset-0 h-full w-full object-cover object-center will-change-transform transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
           >
             <source media="(max-width: 767px)" src={HERO_VIDEO_MOBILE} type="video/mp4" />
             <source src={HERO_VIDEO_DESKTOP} type="video/mp4" />
           </video>
         )}
-        {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
+        {/* Responsive grade: preserves a stable, high-contrast reading field without hiding the film. */}
         <div
-          className="cx-hero-overlay absolute inset-0 data-[hide=true]:hidden"
+          className="cx-hero-overlay cx-hero-grade absolute inset-0 data-[hide=true]:hidden"
           data-hide={hideOverlay ? "true" : "false"}
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.08) 60%, rgba(0,0,0,0.78) 100%)",
-          }}
         />
         {/* top/bottom feather */}
         <div
-          className="cx-hero-overlay absolute inset-0 data-[hide=true]:hidden"
+          className="cx-hero-overlay cx-hero-feather absolute inset-0 data-[hide=true]:hidden"
           data-hide={hideOverlay ? "true" : "false"}
-          style={{
-            background:
-              "linear-gradient(180deg, #000 0%, transparent 14%, transparent 78%, #000 100%)",
-          }}
         />
         {/* subtle horizontal teal line */}
         <div
@@ -227,7 +229,7 @@ export function Hero() {
             </h1>
 
             {/* Sub */}
-            <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-[var(--silver-dim)] [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
+            <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-[rgba(230,238,239,0.82)] [text-shadow:0_1px_16px_rgba(0,0,0,0.9)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
               {copy.sub}
             </p>
 
@@ -259,6 +261,22 @@ export function Hero() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* A minimal affordance makes the pinned, scroll-driven sequence discoverable. */}
+      <div
+        aria-hidden="true"
+        className="cx-hero-scroll-cue pointer-events-none absolute bottom-8 right-8 hidden items-center gap-4 lg:flex xl:bottom-10 xl:right-12"
+      >
+        <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/55">
+          Scroll to execute
+        </span>
+        <span className="cx-hero-scroll-track relative block h-px w-24 overflow-hidden bg-white/15">
+          <span
+            data-scroll-progress
+            className="absolute inset-0 origin-left scale-x-[0.06] bg-[var(--accent-glow)] will-change-transform"
+          />
+        </span>
       </div>
     </section>
   );

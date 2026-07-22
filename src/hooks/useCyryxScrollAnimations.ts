@@ -127,11 +127,17 @@ export function useCyryxScrollAnimations() {
             mobile: boolean;
           };
 
-          const heroSequence = gsap.timeline({ defaults: { ease: "power3.out" } });
-          heroSequence
-            .from("[data-hero-line]", { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
-            .from(".cx-hero-sub", { opacity: 0, y: 16, duration: 0.65 }, "-=0.45")
-            .from(".cx-hero-ctas", { opacity: 0, y: 14, duration: 0.6 }, "-=0.4");
+          const heroLine = document.querySelector<HTMLElement>("[data-hero-line]");
+          const heroSub = document.querySelector<HTMLElement>(".cx-hero-sub");
+          const heroCtas = document.querySelector<HTMLElement>(".cx-hero-ctas");
+
+          if (heroLine && heroSub && heroCtas) {
+            const heroSequence = gsap.timeline({ defaults: { ease: "power3.out" } });
+            heroSequence
+              .from(heroLine, { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
+              .from(heroSub, { opacity: 0, y: 16, duration: 0.65 }, "-=0.45")
+              .from(heroCtas, { opacity: 0, y: 14, duration: 0.6 }, "-=0.4");
+          }
 
           gsap.utils.toArray<HTMLElement>(".cx-reveal").forEach((element) => {
             gsap.from(element, {
@@ -225,6 +231,8 @@ export function useCyryxScrollAnimations() {
           if (desktop && !lowPerf) {
             const hero = document.querySelector<HTMLElement>("[data-hero]");
             const heroVideo = hero?.querySelector<HTMLVideoElement>("[data-hero-video]");
+            const heroMediaFrame = hero?.querySelector<HTMLElement>("[data-hero-media-frame]");
+            const heroGrade = hero?.querySelector<HTMLElement>(".cx-hero-grade");
             const scrollProgress = hero?.querySelector<HTMLElement>("[data-scroll-progress]");
             let heroScrollTimeline: gsap.core.Timeline | undefined;
 
@@ -232,6 +240,8 @@ export function useCyryxScrollAnimations() {
               if (
                 !hero ||
                 !heroVideo ||
+                !heroMediaFrame ||
+                !heroGrade ||
                 heroScrollTimeline ||
                 !Number.isFinite(heroVideo.duration)
               ) {
@@ -240,16 +250,18 @@ export function useCyryxScrollAnimations() {
 
               hero.dataset.scrollScrub = "true";
               heroVideo.pause();
-              heroVideo.currentTime = 0;
+              const scrubStart = Math.min(0.08, heroVideo.duration * 0.01);
+              const scrubEnd = Math.max(scrubStart, heroVideo.duration - 0.12);
+              heroVideo.currentTime = scrubStart;
 
               heroScrollTimeline = gsap.timeline({
                 scrollTrigger: {
                   trigger: hero,
                   start: "top top",
-                  end: "+=120%",
+                  end: "+=160%",
                   pin: true,
                   pinSpacing: true,
-                  scrub: 0.35,
+                  scrub: 0.5,
                   anticipatePin: 1,
                   refreshPriority: -10,
                   invalidateOnRefresh: true,
@@ -257,12 +269,9 @@ export function useCyryxScrollAnimations() {
               });
 
               heroScrollTimeline
-                .to(
-                  heroVideo,
-                  { currentTime: Math.max(0, heroVideo.duration - 0.08), ease: "none" },
-                  0,
-                )
-                .to(".cx-hero-panel", { yPercent: -5, scale: 0.985, ease: "none" }, 0);
+                .to(heroVideo, { currentTime: scrubEnd, ease: "none" }, 0)
+                .fromTo(heroMediaFrame, { scale: 1.018 }, { scale: 1, ease: "none" }, 0)
+                .to(heroGrade, { opacity: 0.9, ease: "none" }, 0);
 
               if (scrollProgress) {
                 heroScrollTimeline.to(scrollProgress, { scaleX: 1, ease: "none" }, 0);
