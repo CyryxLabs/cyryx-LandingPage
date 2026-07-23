@@ -30,11 +30,19 @@ const BUYERS = [
 
 export function BusinessOutcomes() {
   return (
-    <section id="outcomes" className="relative py-24 sm:py-32 lg:py-44">
+    <section
+      id="outcomes"
+      aria-labelledby="outcomes-heading"
+      data-story-section
+      className="relative py-20 sm:py-24 lg:py-32"
+    >
       <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24 lg:px-10">
         <div className="cx-reveal lg:sticky lg:top-32 lg:self-start">
           <HudLabel withDot>Organized around the work</HudLabel>
-          <h2 className="mt-7 max-w-[11ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl">
+          <h2
+            id="outcomes-heading"
+            className="mt-7 max-w-[11ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl"
+          >
             Start with the buyer problem. Then choose the technology.
           </h2>
           <p className="mt-8 max-w-lg text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">

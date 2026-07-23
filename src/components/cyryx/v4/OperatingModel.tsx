@@ -31,12 +31,20 @@ const STAGES = [
 
 export function OperatingModel() {
   return (
-    <section id="operating-model" className="relative bg-[var(--graphite)] py-24 sm:py-32 lg:py-44">
+    <section
+      id="operating-model"
+      aria-labelledby="operating-model-heading"
+      data-story-section
+      className="relative bg-[var(--graphite)] py-20 sm:py-24 lg:py-32"
+    >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end lg:gap-20">
           <div>
             <HudLabel withDot>Advise · Build · Operate</HudLabel>
-            <h2 className="mt-7 max-w-[12ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl">
+            <h2
+              id="operating-model-heading"
+              className="mt-7 max-w-[12ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl"
+            >
               One partner from decision to operation.
             </h2>
           </div>
@@ -46,7 +54,7 @@ export function OperatingModel() {
           </p>
         </div>
 
-        <ol className="cx-stagger relative mt-16 grid gap-10 sm:mt-20 lg:grid-cols-3 lg:gap-0">
+        <ol className="cx-stagger relative mt-14 grid gap-10 sm:mt-16 lg:grid-cols-3 lg:gap-0">
           <div
             aria-hidden
             className="absolute left-0 right-0 top-4 hidden h-px bg-[color-mix(in_oklab,var(--silver)_18%,transparent)] lg:block"
@@ -54,7 +62,7 @@ export function OperatingModel() {
           {STAGES.map((stage) => (
             <li
               key={stage.name}
-              className="cx-stagger-item relative flex flex-col border-l border-[color-mix(in_oklab,var(--silver)_18%,transparent)] pl-6 lg:min-h-[31rem] lg:border-l-0 lg:border-r lg:px-8 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
+              className="cx-stagger-item relative flex flex-col border-l border-[color-mix(in_oklab,var(--silver)_18%,transparent)] pl-6 lg:min-h-[29rem] lg:border-l-0 lg:border-r lg:px-8 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
             >
               <div className="relative z-10 flex items-center gap-4">
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--accent-glow)] bg-[var(--graphite)] font-mono text-[9px] text-[var(--accent-glow)]">

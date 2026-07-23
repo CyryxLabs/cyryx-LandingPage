@@ -116,15 +116,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
         crossOrigin: "anonymous",
       },
-      // Inter's body face is preloaded; Space Grotesk is discovered by the
-      // stylesheet so the display family can evolve without a stale font URL.
-      {
-        rel: "preload",
-        as: "font",
-        type: "font/woff2",
-        href: "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa15N-qhg.woff2",
-        crossOrigin: "anonymous",
-      },
+      // Font files are discovered from the Google Fonts stylesheet. Avoid a
+      // version-specific direct preload URL, which can become stale upstream.
     ],
   }),
   shellComponent: RootShell,

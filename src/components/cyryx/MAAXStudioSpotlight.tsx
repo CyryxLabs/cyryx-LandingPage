@@ -78,7 +78,9 @@ export function MAAXStudioSpotlight() {
   return (
     <section
       id="maax"
-      className="relative overflow-hidden bg-[var(--graphite)] py-24 sm:py-32 lg:py-44"
+      aria-labelledby="maax-heading"
+      data-story-section
+      className="relative overflow-hidden bg-[var(--graphite)] py-20 sm:py-24 lg:py-36"
     >
       <div
         aria-hidden
@@ -96,7 +98,10 @@ export function MAAXStudioSpotlight() {
             decoding="async"
             className="mt-7 block h-auto w-full max-w-[320px] object-contain sm:max-w-[440px]"
           />
-          <h2 className="mt-8 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
+          <h2
+            id="maax-heading"
+            className="mt-8 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
+          >
             An agentic software execution environment.
           </h2>
           <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
@@ -106,7 +111,7 @@ export function MAAXStudioSpotlight() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-20">
+        <div className="mt-14 grid gap-12 lg:mt-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-20">
           <div className="cx-reveal lg:sticky lg:top-28">
             <ProductPreview />
           </div>
@@ -158,7 +163,7 @@ export function MAAXStudioSpotlight() {
                 }}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--graphite)]"
               >
-                Request early access <ArrowRight className="h-4 w-4" aria-hidden />
+                Request an early-access review <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
               <Link
                 to="/products/maax-studio"

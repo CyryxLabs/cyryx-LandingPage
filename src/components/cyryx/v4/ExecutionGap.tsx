@@ -30,7 +30,8 @@ export function ExecutionGap() {
     <section
       id="execution-gap"
       aria-labelledby="execution-gap-heading"
-      className="relative overflow-hidden border-y border-[color-mix(in_oklab,var(--silver)_12%,transparent)] bg-[var(--obsidian)] py-24 sm:py-32 lg:py-40"
+      data-story-section
+      className="relative overflow-hidden border-y border-[color-mix(in_oklab,var(--silver)_12%,transparent)] bg-[var(--obsidian)] py-20 sm:py-24 lg:py-32"
     >
       <div
         aria-hidden
@@ -59,7 +60,7 @@ export function ExecutionGap() {
           </h2>
         </div>
 
-        <div className="cx-stagger mt-16 grid gap-px overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--silver)_14%,transparent)] sm:mt-20 lg:grid-cols-3">
+        <div className="cx-stagger mt-14 grid gap-px overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--silver)_14%,transparent)] sm:mt-16 lg:grid-cols-3">
           {EVIDENCE.map((item, index) => (
             <article
               key={item.value}

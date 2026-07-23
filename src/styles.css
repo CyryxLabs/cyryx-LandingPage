@@ -912,6 +912,74 @@ html.cx-low-perf .cx-liquid-glass {
   transform: none;
 }
 
+/* Homepage story system. The chapter dividers replace the old page-fixed
+   monolith with local, content-bound continuity. */
+.cx-story {
+  isolation: isolate;
+}
+
+.cx-story-chapter {
+  isolation: isolate;
+}
+
+.cx-story-chapter-marker {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--onyx) 96%, transparent),
+    color-mix(in oklab, var(--graphite) 84%, transparent),
+    color-mix(in oklab, var(--onyx) 96%, transparent)
+  );
+}
+
+.cx-story [data-story-section] {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.cx-story [data-story-section] + [data-story-section] {
+  border-top: 1px solid color-mix(in oklab, var(--silver) 8%, transparent);
+}
+
+.cx-story [data-story-chapter="01"] [data-story-section] {
+  background-image: radial-gradient(
+    circle at 84% 18%,
+    color-mix(in oklab, var(--accent-glow) 7%, transparent),
+    transparent 34%
+  );
+}
+
+.cx-story [data-story-chapter="02"] [data-story-section]:nth-of-type(even),
+.cx-story [data-story-chapter="03"] [data-story-section]:nth-of-type(odd) {
+  background-image: radial-gradient(
+    ellipse at 14% 42%,
+    color-mix(in oklab, var(--silver) 4%, transparent),
+    transparent 42%
+  );
+}
+
+.cx-story [data-story-chapter="04"] [data-story-section] {
+  background-image: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklab, var(--accent-glow) 2.5%, transparent),
+    transparent
+  );
+}
+
+.cx-story-progress {
+  opacity: 0;
+}
+
+.cx-story-progress [data-story-progress-item][data-active="true"] {
+  opacity: 1;
+  color: var(--accent-glow);
+}
+
+[data-capability-monolith-core],
+[data-capability-monolith-pulse] {
+  will-change: transform, opacity;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cx-reveal {
     opacity: 1;
@@ -926,6 +994,17 @@ html.cx-low-perf .cx-liquid-glass {
   [data-tilt] {
     transform: none !important;
     transition: none !important;
+  }
+  [data-chapter-line],
+  [data-story-progress-fill],
+  [data-capability-monolith-core] {
+    transform: none !important;
+  }
+  [data-capability-monolith-pulse] {
+    display: none !important;
+  }
+  .cx-story-progress {
+    display: none !important;
   }
   *,
   *::before,

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
+import { PUBLICATIONS } from "@/data/publications";
 
 const BASE_URL = "https://cyryxlabs.com";
 
@@ -18,7 +19,6 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/company", changefreq: "monthly", priority: "0.7" },
           { path: "/products", changefreq: "monthly", priority: "0.8" },
           { path: "/products/maax-studio", changefreq: "monthly", priority: "0.9" },
-          { path: "/products/lyra", changefreq: "monthly", priority: "0.6" },
           { path: "/solutions", changefreq: "monthly", priority: "0.8" },
           { path: "/solutions/ai-strategy-advisory", changefreq: "monthly", priority: "0.8" },
           { path: "/solutions/digital-web-systems", changefreq: "monthly", priority: "0.7" },
@@ -64,6 +64,11 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/careers", changefreq: "monthly", priority: "0.5" },
           { path: "/privacy", changefreq: "yearly", priority: "0.3" },
           { path: "/terms", changefreq: "yearly", priority: "0.3" },
+          ...PUBLICATIONS.filter((p) => p.status !== "draft").map((p) => ({
+            path: `/research/${p.slug}`,
+            changefreq: "monthly" as const,
+            priority: "0.6",
+          })),
         ];
 
         const urls = entries.map((e) =>

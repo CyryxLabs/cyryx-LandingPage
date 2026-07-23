@@ -232,10 +232,6 @@ export function SolutionPage(p: SolutionPageProps) {
                 >
                   MAAX Studio
                 </Link>{" "}
-                and{" "}
-                <Link to="/products/lyra" className="text-[var(--accent-glow)] hover:underline">
-                  Lyra
-                </Link>{" "}
                 informs that perspective without imposing a universal architecture on client work.
               </p>
             </Sec>

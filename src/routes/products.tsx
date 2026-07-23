@@ -9,7 +9,7 @@ import { START_PROJECT_HREF } from "@/lib/cta";
 const PATH = "/products";
 const TITLE = "Products — Cyryx Labs";
 const DESC =
-  "Cyryx Labs develops MAAX Studio, an agentic software execution environment, and Lyra, a private model-agnostic intelligence and execution runtime.";
+  "Cyryx Labs develops MAAX Studio, an agentic software execution environment for governed software missions.";
 
 const PRODUCTS = [
   {
@@ -22,21 +22,6 @@ const PRODUCTS = [
     focus: ["Mission-based work", "Project context", "Review and execution controls"],
     href: "/products/maax-studio",
     cta: "Explore MAAX Studio",
-  },
-  {
-    n: "02",
-    name: "Lyra",
-    maturity: "Private development",
-    identity: "Private, model-agnostic intelligence and execution runtime",
-    description:
-      "A private runtime direction for coordinating models, tools, context, and execution boundaries without depending on one model provider.",
-    focus: [
-      "Model-agnostic orchestration",
-      "Private execution",
-      "Controlled tool and context access",
-    ],
-    href: "/products/lyra",
-    cta: "Understand Lyra",
   },
 ] as const;
 
@@ -70,16 +55,15 @@ function ProductsPage() {
                 Products for controlled execution.
               </h1>
               <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl lg:pb-2">
-                Cyryx product work concentrates on controlled execution: how people, agents, models,
-                tools, project context, and review can operate as one system. Both public product
-                directions remain under development.
+                MAAX Studio is Cyryx Labs&apos; active product program for coordinating software
+                missions, agents, project context, review, and controlled execution.
               </p>
             </div>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
-          <div className="grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 lg:grid-cols-2">
+          <div className="mx-auto max-w-4xl overflow-hidden rounded-lg border border-white/10 bg-white/10">
             {PRODUCTS.map((product) => (
               <article
                 key={product.name}

@@ -7,11 +7,19 @@ const DIRECTIONS = ["Execution", "Context", "Evaluation", "Authority", "Cost", "
 
 export function ResearchBand() {
   return (
-    <section id="research" className="relative bg-[var(--graphite)] py-20 sm:py-28 lg:py-40">
+    <section
+      id="research"
+      aria-labelledby="research-heading"
+      data-story-section
+      className="relative bg-[var(--graphite)] py-16 sm:py-20 lg:py-24"
+    >
       <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-24 lg:px-10">
         <div className="cx-reveal">
           <HudLabel withDot>Applied Research</HudLabel>
-          <h2 className="mt-7 max-w-[13ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
+          <h2
+            id="research-heading"
+            className="mt-7 max-w-[13ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-6xl"
+          >
             Research for systems that must leave the lab.
           </h2>
         </div>

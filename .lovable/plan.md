@@ -36,7 +36,7 @@ Provisionar nos três escopos (Production / Preview / Development):
 ### 4. Deploy inicial na Vercel (sem tocar em DNS)
 - Import do repo GitHub na Vercel; framework auto-detect (Vite / TanStack Start).
 - Primeiro deploy roda em `<project>.vercel.app`.
-- Smoke test: home, `/products/lyra`, `/solutions`, auth flow, formulários, JSON-LD, Hero.
+- Smoke test: home, `/products/maax-studio`, `/solutions`, auth flow, formulários, JSON-LD, Hero.
 
 ### 5. Auth & OAuth
 - Adicionar as URLs Vercel (`*.vercel.app` de production + branch) à lista de Redirect URLs do Supabase Auth (via `supabase--configure_social_auth`, no momento certo).

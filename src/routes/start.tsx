@@ -22,7 +22,6 @@ const PROJECT_TYPES = [
   "AI Governance & Cost Control",
   "Managed Operations",
   "MAAX Studio — access inquiry",
-  "Lyra — private briefing",
   "Other",
 ] as const;
 

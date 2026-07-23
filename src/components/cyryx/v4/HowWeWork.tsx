@@ -42,11 +42,19 @@ const STEPS = [
 
 export function HowWeWork() {
   return (
-    <section id="how-we-work" className="relative overflow-hidden py-24 sm:py-32 lg:py-44">
+    <section
+      id="how-we-work"
+      aria-labelledby="how-we-work-heading"
+      data-story-section
+      className="relative overflow-hidden py-20 sm:py-24 lg:py-36"
+    >
       <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-24 lg:px-10">
         <div className="cx-reveal lg:sticky lg:top-32 lg:self-start">
           <HudLabel withDot>How we work</HudLabel>
-          <h2 className="mt-7 max-w-[12ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
+          <h2
+            id="how-we-work-heading"
+            className="mt-7 max-w-[12ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
+          >
             A disciplined path from decision to operation.
           </h2>
           <p className="mt-8 max-w-lg text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
@@ -90,7 +98,7 @@ export function HowWeWork() {
             <li
               key={step.n}
               data-story-step
-              className="cx-stagger-item group relative border-b border-[color-mix(in_oklab,var(--steel)_16%,transparent)] py-9 first:pt-0 last:border-b-0 last:pb-0 sm:py-12 lg:flex lg:min-h-[43vh] lg:flex-col lg:justify-center"
+              className="cx-stagger-item group relative border-b border-[color-mix(in_oklab,var(--steel)_16%,transparent)] py-9 first:pt-0 last:border-b-0 last:pb-0 sm:py-12 lg:flex lg:min-h-[36vh] lg:flex-col lg:justify-center"
             >
               <span
                 aria-hidden

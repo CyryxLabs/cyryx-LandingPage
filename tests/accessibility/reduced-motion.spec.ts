@@ -11,7 +11,6 @@ const PAGES = [
   { path: "/terms", label: "Terms" },
   { path: "/careers", label: "Careers" },
   { path: "/products/maax-studio", label: "MAAXStudio" },
-  { path: "/products/lyra", label: "Lyra" },
 ];
 
 for (const { path, label } of PAGES) {
@@ -34,20 +33,30 @@ for (const { path, label } of PAGES) {
         const s = getComputedStyle(el);
         const iter = s.animationIterationCount;
         const name = s.animationName;
-        if (name && name !== "none" && (iter === "infinite" || parseFloat(s.animationDuration) > 0.5)) {
+        if (
+          name &&
+          name !== "none" &&
+          (iter === "infinite" || parseFloat(s.animationDuration) > 0.5)
+        ) {
           bad.push({ tag: el.tagName, anim: name, iter });
         }
       }
       return bad;
     });
-    expect(offenders, `unsuppressed animations under reduced motion: ${JSON.stringify(offenders)}`).toEqual([]);
+    expect(
+      offenders,
+      `unsuppressed animations under reduced motion: ${JSON.stringify(offenders)}`,
+    ).toEqual([]);
 
     // GSAP timelines/ScrollTriggers must not be initialized on these routes
     // under reduced-motion. If gsap loads at all, its global registry should
     // hold no active tweens or ScrollTrigger instances tied to this page.
     const gsapState = await page.evaluate(() => {
-      const g = (window as unknown as { gsap?: { globalTimeline?: { getChildren?: () => unknown[] } } }).gsap;
-      const st = (window as unknown as { ScrollTrigger?: { getAll?: () => unknown[] } }).ScrollTrigger;
+      const g = (
+        window as unknown as { gsap?: { globalTimeline?: { getChildren?: () => unknown[] } } }
+      ).gsap;
+      const st = (window as unknown as { ScrollTrigger?: { getAll?: () => unknown[] } })
+        .ScrollTrigger;
       return {
         tweens: g?.globalTimeline?.getChildren?.().length ?? 0,
         scrollTriggers: st?.getAll?.().length ?? 0,

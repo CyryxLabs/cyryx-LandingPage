@@ -14,7 +14,7 @@ import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 const PATH = "/company";
 const TITLE = "Company — Cyryx Labs";
 const DESC =
-  "Cyryx Labs advises, builds, and operates AI-enabled products and systems, while developing MAAX Studio, Lyra, and applied research.";
+  "Cyryx Labs advises, builds, and operates AI-enabled products and systems, while developing MAAX Studio and applied research.";
 
 const UNITS = [
   [
@@ -34,7 +34,7 @@ const UNITS = [
   ],
   [
     "Products",
-    "MAAX Studio and Lyra: two private product programs exploring governed software and intelligence execution.",
+    "MAAX Studio: an active product program exploring governed software execution.",
     "/products",
   ],
   [

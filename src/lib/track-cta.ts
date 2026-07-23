@@ -20,8 +20,7 @@ export type CtaName =
   | "view_research"
   | "read_cgp"
   | "qualification_form_submitted"
-  | "qualification_form_error"
-  | "lyra_early_access";
+  | "qualification_form_error";
 
 export type CtaSection =
   | "hero"
@@ -36,10 +35,7 @@ export type CtaSection =
   | "contact"
   | "footer"
   | "research_band"
-  | "start"
-  | "lyra_hero"
-  | "lyra_faq"
-  | "lyra_access";
+  | "start";
 
 export interface TrackCtaInput {
   cta: CtaName;

@@ -23,7 +23,7 @@ const CONTACT_PATHS = [
   },
   {
     label: "Products",
-    title: "Discuss MAAX Studio or Lyra.",
+    title: "Discuss MAAX Studio.",
     body: "Review the current product maturity and access model first, then contact us with the use case or research question you want to explore.",
     action: "Explore products",
     cta: "explore_products",

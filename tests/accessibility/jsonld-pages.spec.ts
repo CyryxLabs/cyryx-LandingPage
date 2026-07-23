@@ -9,7 +9,6 @@ const PAGES: { path: string; required: string[] }[] = [
   { path: "/", required: ["Organization", "WebSite"] },
   { path: "/company", required: ["Organization"] },
   { path: "/products/maax-studio", required: ["SoftwareApplication", "BreadcrumbList"] },
-  { path: "/products/lyra", required: ["BreadcrumbList"] },
   { path: "/solutions", required: ["BreadcrumbList"] },
   { path: "/solutions/ai-strategy-advisory", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/digital-web-systems", required: ["Service", "BreadcrumbList"] },
@@ -98,13 +97,6 @@ for (const { path, required } of PAGES) {
       expect(types.has(req), `${path}: missing @type ${req} (found: ${[...types].join(",")})`).toBe(
         true,
       );
-    }
-
-    if (path === "/products/lyra") {
-      expect(
-        types.has("SoftwareApplication"),
-        "Lyra is private development, not a public SoftwareApplication entity",
-      ).toBe(false);
     }
 
     // Schema-shape assertions: each node must declare @context and required

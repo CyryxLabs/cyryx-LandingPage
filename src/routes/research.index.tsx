@@ -164,7 +164,7 @@ function ResearchHub() {
                 to="/products"
                 className="group flex items-center justify-between border-b border-white/10 py-4 text-sm text-[var(--silver-dim)] transition hover:text-[var(--accent-glow)]"
               >
-                Explore MAAX Studio and Lyra{" "}
+                Explore MAAX Studio{" "}
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden />
               </Link>
               <Link

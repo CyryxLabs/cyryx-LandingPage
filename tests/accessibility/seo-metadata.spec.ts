@@ -51,5 +51,4 @@ test("JSON-LD exposes the organization, site, page, and approved MAAX Studio pro
   expect(org?.name).toBe("Cyryx Labs");
   const apps = graph.filter((n) => n["@type"] === "SoftwareApplication");
   expect(apps.map((app) => app.name)).toEqual(["MAAX Studio"]);
-  expect(apps.map((app) => app.name)).not.toContain("Lyra");
 });

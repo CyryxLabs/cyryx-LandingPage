@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 test.describe("Mobile Navigation Accessibility", () => {
   test.beforeEach(async ({ page }) => {
@@ -9,8 +9,8 @@ test.describe("Mobile Navigation Accessibility", () => {
     await page.waitForLoadState("networkidle");
   });
 
-  const getMobileMenu = (page: any) => page.locator("#cyryx-mobile-navigation");
-  const getNav = (page: any) => page.getByRole("navigation", { name: /mobile/i });
+  const getMobileMenu = (page: Page) => page.locator("#cyryx-mobile-navigation");
+  const getNav = (page: Page) => page.getByRole("navigation", { name: /mobile/i });
 
   test("1-5. Trigger and state: renders, type, aria attributes", async ({ page }) => {
     const trigger = page.getByRole("button", { name: /open menu/i });
@@ -30,7 +30,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     // Re-select trigger as the open/close state change might swap the element if React re-renders it differently
     const openTrigger = page.getByRole("banner").getByRole("button", { name: /close menu/i });
     await expect(openTrigger).toHaveAttribute("aria-expanded", "true", { timeout: 5000 });
-    
+
     await expect(dialog).toBeVisible();
     await expect(dialog).toHaveAttribute("id", "cyryx-mobile-navigation");
     await expect(dialog).toHaveRole("dialog");
@@ -40,18 +40,23 @@ test.describe("Mobile Navigation Accessibility", () => {
   test("9-11. Accordion group switching: products and solutions", async ({ page }) => {
     await page.getByRole("button", { name: /open menu/i }).click();
     const nav = getNav(page);
-    
+
     const productsTrigger = nav.getByRole("button", { name: /^Products$/ });
     const solutionsTrigger = nav.getByRole("button", { name: /^Solutions$/ });
 
     // 9. Products opens
     await productsTrigger.click();
     await expect(productsTrigger).toHaveAttribute("aria-expanded", "true");
-    
+
     // 12. Exact Products labels and hrefs
-    await expect(nav.getByRole("link", { name: "Products Overview" })).toHaveAttribute("href", "/products");
-    await expect(nav.getByRole("link", { name: "MAAX Studio", exact: true })).toHaveAttribute("href", "/products/maax-studio");
-    await expect(nav.getByRole("link", { name: "Lyra" })).toHaveAttribute("href", "/products/lyra");
+    await expect(nav.getByRole("link", { name: "Products Overview" })).toHaveAttribute(
+      "href",
+      "/products",
+    );
+    await expect(nav.getByRole("link", { name: "MAAX Studio", exact: true })).toHaveAttribute(
+      "href",
+      "/products/maax-studio",
+    );
 
     // 10. Products closes when solutions opens
     // 11. Solutions opening closes Products
@@ -63,7 +68,7 @@ test.describe("Mobile Navigation Accessibility", () => {
   test("13-16. All groups and forbidden labels check", async ({ page }) => {
     await page.getByRole("button", { name: /open menu/i }).click();
     const nav = getNav(page);
-    
+
     // 13. Exact Solutions labels and hrefs
     const solutionsTrigger = nav.getByRole("button", { name: /^Solutions$/ });
     await solutionsTrigger.click();
@@ -74,28 +79,42 @@ test.describe("Mobile Navigation Accessibility", () => {
       ["Custom AI Product Development", "/solutions/custom-ai-product-development"],
       ["AI Governance & Cost Control", "/solutions/ai-governance-cost-control"],
       ["Managed Operations", "/managed-operations"],
-      ["How We Work", "/engagement-model"]
+      ["How We Work", "/engagement-model"],
     ];
     for (const [label, href] of solutions) {
-      await expect(nav.getByRole("link", { name: label, exact: true })).toHaveAttribute("href", href);
+      await expect(nav.getByRole("link", { name: label, exact: true })).toHaveAttribute(
+        "href",
+        href,
+      );
     }
 
     // 14. Exact Research labels and hrefs
     await nav.getByRole("button", { name: /^Research$/ }).click();
-    await expect(nav.getByRole("link", { name: "Research", exact: true })).toHaveAttribute("href", "/research");
+    await expect(nav.getByRole("link", { name: "Research", exact: true })).toHaveAttribute(
+      "href",
+      "/research",
+    );
     await expect(nav.getByRole("link", { name: "Answers" })).toHaveAttribute("href", "/answers");
 
     // 15. Exact Company labels and hrefs
     await nav.getByRole("button", { name: /^Company$/ }).click();
-    await expect(nav.getByRole("link", { name: "Company", exact: true })).toHaveAttribute("href", "/company");
+    await expect(nav.getByRole("link", { name: "Company", exact: true })).toHaveAttribute(
+      "href",
+      "/company",
+    );
     await expect(nav.getByRole("link", { name: "Careers" })).toHaveAttribute("href", "/careers");
     await expect(nav.getByRole("link", { name: "Contact" })).toHaveAttribute("href", "/contact");
 
     // 16. Forbidden labels absent
     const forbidden = [
-      "MAAX Runtime", "Documentation", "Enterprise Lead Systems",
-      "AI Product Engineering", "Applied AI Systems", "Governance Optimization",
-      "AI Websites & Lead Systems", "AI Integrations"
+      "MAAX Runtime",
+      "Documentation",
+      "Enterprise Lead Systems",
+      "AI Product Engineering",
+      "Applied AI Systems",
+      "Governance Optimization",
+      "AI Websites & Lead Systems",
+      "AI Integrations",
     ];
     for (const label of forbidden) {
       await expect(nav.getByRole("link", { name: label })).not.toBeVisible();
@@ -108,10 +127,10 @@ test.describe("Mobile Navigation Accessibility", () => {
     await page.waitForLoadState("networkidle");
     await page.getByRole("button", { name: /open menu/i }).click();
     const nav = getNav(page);
-    
+
     const productsTrigger = nav.getByRole("button", { name: /^Products$/ });
     await expect(productsTrigger).toHaveAttribute("aria-expanded", "true");
-    
+
     // 18. Current child has aria-current
     const activeLink = nav.getByRole("link", { name: "MAAX Studio", exact: true });
     await expect(activeLink).toHaveAttribute("aria-current", "page");
@@ -124,12 +143,12 @@ test.describe("Mobile Navigation Accessibility", () => {
   test("20-21. CTA behavior", async ({ page }) => {
     await page.getByRole("button", { name: /open menu/i }).click();
     const nav = getNav(page);
-    
+
     // 20. CTA label and href
     const cta = nav.getByRole("link", { name: "Start a Project" });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "/start");
-    
+
     // 21. CTA selection closes
     await cta.click();
     await expect(page).toHaveURL(/\/start/);
@@ -139,11 +158,11 @@ test.describe("Mobile Navigation Accessibility", () => {
   test("22-24. Closing: Escape and focus", async ({ page }) => {
     const trigger = page.getByRole("button", { name: /open menu/i });
     await trigger.click();
-    
+
     // 22. Escape closes
     await page.keyboard.press("Escape");
     await expect(getMobileMenu(page)).not.toBeVisible();
-    
+
     // 24. Focus returns
     await expect(trigger).toBeFocused();
   });
@@ -162,7 +181,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     }
     const cta = nav.getByRole("link", { name: "Start a Project" });
     await expect(cta).toBeFocused();
-    
+
     await page.keyboard.press("Tab");
     await expect(closeBtn).toBeFocused();
 
@@ -172,8 +191,11 @@ test.describe("Mobile Navigation Accessibility", () => {
 
     // 27. Collapsed children not tabbable
     // Re-verify initial closed state
-    await expect(nav.getByRole("button", { name: /^Products$/ })).toHaveAttribute("aria-expanded", "false");
-    
+    await expect(nav.getByRole("button", { name: /^Products$/ })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+
     // Try to find hidden link in tab order
     await closeBtn.focus();
     let foundHiddenLink = false;
@@ -192,9 +214,11 @@ test.describe("Mobile Navigation Accessibility", () => {
     await page.getByRole("button", { name: /open menu/i }).click();
     // 28. Body scroll locks
     await expect(page.locator("body")).toHaveCSS("overflow", "hidden");
-    
+
     // 30. Route change closes
-    await getMobileMenu(page).getByRole("button", { name: /close menu/i }).click();
+    await getMobileMenu(page)
+      .getByRole("button", { name: /close menu/i })
+      .click();
     // 29. Body scroll restores
     await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
   });
@@ -206,10 +230,10 @@ test.describe("Mobile Navigation Accessibility", () => {
     await page.getByRole("button", { name: /open menu/i }).click();
     // Wait for the menu to be fully rendered and layout settled
     await expect(page.locator("#cyryx-mobile-navigation")).toBeVisible();
-    
+
     const overflow = await page.evaluate(() => {
       // Check the specific menu element instead of document
-      const menu = document.getElementById('cyryx-mobile-navigation');
+      const menu = document.getElementById("cyryx-mobile-navigation");
       if (!menu) return false;
       return menu.scrollWidth > menu.clientWidth + 1;
     });

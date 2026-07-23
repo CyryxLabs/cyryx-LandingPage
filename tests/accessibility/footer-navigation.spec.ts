@@ -25,7 +25,6 @@ test.describe("footer navigation model", () => {
     const expectedProducts = [
       { label: "Products Overview", href: "/products" },
       { label: "MAAX Studio", href: "/products/maax-studio" },
-      { label: "Lyra", href: "/products/lyra" },
     ];
 
     for (const item of expectedProducts) {
@@ -98,20 +97,32 @@ test.describe("footer navigation model", () => {
 
   test("legal and email links", async ({ page }) => {
     const footer = page.locator('footer[role="contentinfo"]');
-    
+
     // Privacy and Terms
-    await expect(footer.getByRole("link", { name: "Privacy", exact: true })).toHaveAttribute("href", "/privacy");
-    await expect(footer.getByRole("link", { name: "Terms", exact: true })).toHaveAttribute("href", "/terms");
+    await expect(footer.getByRole("link", { name: "Privacy", exact: true })).toHaveAttribute(
+      "href",
+      "/privacy",
+    );
+    await expect(footer.getByRole("link", { name: "Terms", exact: true })).toHaveAttribute(
+      "href",
+      "/terms",
+    );
 
     // Email actions
-    await expect(footer.getByRole("link", { name: "Press", exact: true })).toHaveAttribute("href", "mailto:press@cyryxlabs.com");
-    await expect(footer.getByRole("link", { name: "Security", exact: true })).toHaveAttribute("href", "mailto:security@cyryxlabs.com?subject=Security%20inquiry");
+    await expect(footer.getByRole("link", { name: "Press", exact: true })).toHaveAttribute(
+      "href",
+      "mailto:press@cyryxlabs.com",
+    );
+    await expect(footer.getByRole("link", { name: "Security", exact: true })).toHaveAttribute(
+      "href",
+      "mailto:security@cyryxlabs.com?subject=Security%20inquiry",
+    );
   });
 
   test("temporary stubs are absent", async ({ page }) => {
     const footer = page.locator('footer[role="contentinfo"]');
     const stubs = ["Docs", "Support", "Status", "Responsible AI"];
-    
+
     for (const stub of stubs) {
       await expect(footer.getByRole("link", { name: stub, exact: true })).not.toBeVisible();
     }
@@ -128,11 +139,10 @@ test.describe("footer navigation model", () => {
     await page.setViewportSize({ width: 320, height: 800 });
     const footer = page.locator('footer[role="contentinfo"]');
     await expect(footer).toBeVisible();
-    
+
     // Check for horizontal overflow within the footer itself or its container
     // We check if the footer's bounding box is significantly wider than the viewport
     const footerBox = await footer.boundingBox();
     expect(footerBox?.width).toBeLessThanOrEqual(321);
   });
-
 });

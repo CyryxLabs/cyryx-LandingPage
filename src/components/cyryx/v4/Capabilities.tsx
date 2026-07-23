@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { HudLabel } from "../primitives/HudLabel";
+import { CapabilityMonolith } from "../primitives/CapabilityMonolith";
 
 const CAPABILITIES = [
   {
@@ -59,9 +60,11 @@ export function Capabilities() {
     <section
       id="what-we-build"
       aria-labelledby="capabilities-heading"
-      className="relative overflow-hidden py-24 sm:py-32 lg:py-44"
+      data-story-section
+      className="relative overflow-hidden py-20 sm:py-24 lg:py-36"
     >
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+      <CapabilityMonolith />
+      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end lg:gap-20">
           <div>
             <HudLabel withDot>Capabilities</HudLabel>
@@ -79,7 +82,7 @@ export function Capabilities() {
           </p>
         </div>
 
-        <ol className="cx-stagger mt-16 border-t border-[color-mix(in_oklab,var(--silver)_16%,transparent)] sm:mt-20">
+        <ol className="cx-stagger mt-14 border-t border-[color-mix(in_oklab,var(--silver)_16%,transparent)] sm:mt-16">
           {CAPABILITIES.map((capability) => (
             <li
               key={capability.n}

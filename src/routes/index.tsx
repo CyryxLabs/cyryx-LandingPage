@@ -3,9 +3,9 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
-import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
+import { StoryChapter, StoryProgress } from "@/components/cyryx/StoryChapter";
 import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
 import { ContactSection } from "@/components/cyryx/ContactSection";
 import { ExecutionGap } from "@/components/cyryx/v4/ExecutionGap";
@@ -14,7 +14,6 @@ import { OperatingModel } from "@/components/cyryx/v4/OperatingModel";
 import { BusinessOutcomes } from "@/components/cyryx/v4/BusinessOutcomes";
 import { Capabilities } from "@/components/cyryx/v4/Capabilities";
 import { HowWeWork } from "@/components/cyryx/v4/HowWeWork";
-import { LyraSpotlight } from "@/components/cyryx/v4/LyraSpotlight";
 import { ResearchBand } from "@/components/cyryx/v4/ResearchBand";
 import { WhyCyryx } from "@/components/cyryx/v4/WhyCyryx";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
@@ -79,7 +78,6 @@ export const Route = createFileRoute("/")({
                 "AI execution infrastructure",
                 "AI governance and operations",
                 "MAAX Studio",
-                "Lyra",
               ],
               logo: {
                 "@type": "ImageObject",
@@ -164,22 +162,31 @@ function IndexPage() {
       >
         Skip to content
       </a>
-      <BackgroundMonolith />
       <StickyMobileCTA />
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero />
-        <ExecutionGap />
-        <OperatingModel />
-        <Capabilities />
-        <BusinessOutcomes />
-        <HowWeWork />
-        <SecurityPosture />
-        <MAAXStudioSpotlight />
-        <LyraSpotlight />
-        <ResearchBand />
-        <WhyCyryx />
-        <ContactSection />
+        <div className="cx-story relative" data-story-root>
+          <StoryProgress />
+          <StoryChapter index="01" label="Why now">
+            <ExecutionGap />
+          </StoryChapter>
+          <StoryChapter index="02" label="Execution system">
+            <OperatingModel />
+            <Capabilities />
+            <BusinessOutcomes />
+            <HowWeWork />
+          </StoryChapter>
+          <StoryChapter index="03" label="Governed product">
+            <SecurityPosture />
+            <MAAXStudioSpotlight />
+          </StoryChapter>
+          <StoryChapter index="04" label="Proof and contact">
+            <ResearchBand />
+            <WhyCyryx />
+            <ContactSection />
+          </StoryChapter>
+        </div>
       </main>
       <Footer />
     </div>

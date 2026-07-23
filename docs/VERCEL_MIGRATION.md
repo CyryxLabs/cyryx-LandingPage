@@ -48,7 +48,7 @@ Ao terminar o import, a Vercel roda o primeiro build. Se `VERCEL=1` estiver pres
 ### 5. Smoke test em `<projeto>.vercel.app`
 
 - Home `/`
-- `/products/lyra`, `/solutions`
+- `/products/maax-studio`, `/solutions`
 - Login Google (ver seção OAuth abaixo)
 - Renderização SSR de metadata (View Source deve mostrar `<title>`, `og:*`, JSON-LD)
 - Formulário de contato (**ver ⚠️ abaixo**)

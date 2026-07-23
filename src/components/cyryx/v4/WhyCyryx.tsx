@@ -30,15 +30,23 @@ const PRINCIPLES = [
 
 export function WhyCyryx() {
   return (
-    <section id="why" className="relative bg-[var(--graphite)] py-24 sm:py-32 lg:py-44">
+    <section
+      id="why"
+      aria-labelledby="why-heading"
+      data-story-section
+      className="relative bg-[var(--graphite)] py-20 sm:py-24 lg:py-32"
+    >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal max-w-4xl">
           <HudLabel withDot>Why Cyryx Labs</HudLabel>
-          <h2 className="mt-7 max-w-[16ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl">
+          <h2
+            id="why-heading"
+            className="mt-7 max-w-[16ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-6xl"
+          >
             Advisory, engineering, products, and research in one operating model.
           </h2>
         </div>
-        <ol className="cx-stagger mt-14 border-t border-[color-mix(in_oklab,var(--silver)_16%,transparent)] sm:mt-20">
+        <ol className="cx-stagger mt-14 border-t border-[color-mix(in_oklab,var(--silver)_16%,transparent)] sm:mt-16">
           {PRINCIPLES.map(([n, title, body]) => (
             <li
               key={n}

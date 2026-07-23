@@ -27,12 +27,20 @@ const ARCHITECTURE_NOTES = [
 
 export function SecurityPosture() {
   return (
-    <section id="security" className="relative overflow-hidden py-24 sm:py-32 lg:py-44">
+    <section
+      id="security"
+      aria-labelledby="security-heading"
+      data-story-section
+      className="relative overflow-hidden py-20 sm:py-24 lg:py-36"
+    >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-20">
           <div>
             <HudLabel withDot>Governance and evidence</HudLabel>
-            <h2 className="mt-7 max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl">
+            <h2
+              id="security-heading"
+              className="mt-7 max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl"
+            >
               Governance is architecture.
             </h2>
           </div>

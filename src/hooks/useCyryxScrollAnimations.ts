@@ -87,7 +87,7 @@ export function useCyryxScrollAnimations() {
     const showFinalStates = () => {
       document
         .querySelectorAll<HTMLElement>(
-          ".cx-reveal, .cx-stagger-item, [data-hero-line], .cx-hero-sub, .cx-hero-ctas",
+          ".cx-reveal, .cx-stagger-item, [data-hero-line], .cx-hero-sub, .cx-hero-ctas, [data-chapter-line]",
         )
         .forEach((element) => {
           element.style.opacity = "1";
@@ -139,14 +139,18 @@ export function useCyryxScrollAnimations() {
               .from(heroCtas, { opacity: 0, y: 14, duration: 0.6 }, "-=0.4");
           }
 
-          gsap.utils.toArray<HTMLElement>(".cx-reveal").forEach((element) => {
-            gsap.from(element, {
+          gsap.utils.toArray<HTMLElement>("[data-story-section]").forEach((section) => {
+            const reveals = section.querySelectorAll<HTMLElement>(".cx-reveal");
+            if (!reveals.length) return;
+
+            gsap.from(reveals, {
               opacity: 0,
               y: mobile ? 22 : 34,
               duration: mobile ? 0.7 : 0.85,
+              stagger: mobile ? 0.04 : 0.08,
               ease: "power3.out",
               scrollTrigger: {
-                trigger: element,
+                trigger: section,
                 start: mobile ? "top 90%" : "top 84%",
                 once: true,
               },
@@ -170,6 +174,145 @@ export function useCyryxScrollAnimations() {
               },
             });
           });
+
+          gsap.utils.toArray<HTMLElement>("[data-story-chapter]").forEach((chapter) => {
+            const marker = chapter.querySelector<HTMLElement>(".cx-story-chapter-marker");
+            const line = chapter.querySelector<HTMLElement>("[data-chapter-line]");
+            if (!marker || !line) return;
+
+            const markerText = marker.querySelectorAll<HTMLElement>("[data-chapter-text]");
+            const chapterSequence = gsap.timeline({
+              scrollTrigger: {
+                trigger: marker,
+                start: mobile ? "top 94%" : "top 88%",
+                once: true,
+              },
+            });
+
+            chapterSequence
+              .from(markerText, {
+                opacity: 0,
+                x: mobile ? -8 : -14,
+                duration: 0.5,
+                stagger: 0.06,
+                ease: "power2.out",
+              })
+              .to(line, { scaleX: 1, duration: 0.9, ease: "power3.out" }, 0.08);
+          });
+
+          if (desktop && !lowPerf) {
+            const storyRoot = document.querySelector<HTMLElement>("[data-story-root]");
+            const storyProgress = document.querySelector<HTMLElement>("[data-story-progress]");
+            const storyProgressFill = document.querySelector<HTMLElement>(
+              "[data-story-progress-fill]",
+            );
+            const storyChapters = gsap.utils.toArray<HTMLElement>("[data-story-chapter]");
+            const progressItems = gsap.utils.toArray<HTMLElement>("[data-story-progress-item]");
+
+            if (storyRoot && storyProgress && storyProgressFill && storyChapters.length) {
+              const setActiveChapter = () => {
+                const focusLine = window.innerHeight * 0.5;
+                const containingIndex = storyChapters.findIndex((chapter) => {
+                  const rect = chapter.getBoundingClientRect();
+                  return rect.top <= focusLine && rect.bottom > focusLine;
+                });
+                let activeIndex = containingIndex >= 0 ? containingIndex : 0;
+                if (containingIndex < 0) {
+                  storyChapters.forEach((chapter, index) => {
+                    if (chapter.getBoundingClientRect().top <= focusLine) activeIndex = index;
+                  });
+                }
+
+                progressItems.forEach((item, index) => {
+                  if (index === activeIndex) item.dataset.active = "true";
+                  else delete item.dataset.active;
+                });
+              };
+
+              gsap.to(storyProgress, {
+                autoAlpha: 1,
+                duration: 0.25,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: storyRoot,
+                  start: "top 72%",
+                  end: "bottom 28%",
+                  toggleActions: "play reverse play reverse",
+                },
+              });
+
+              gsap.to(storyProgressFill, {
+                scaleY: 1,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: storyRoot,
+                  start: "top center",
+                  end: "bottom center",
+                  scrub: 0.35,
+                  onUpdate: setActiveChapter,
+                  onRefresh: setActiveChapter,
+                },
+              });
+            }
+
+            const capabilitySection = document.querySelector<HTMLElement>("#what-we-build");
+            const capabilityMonolith = document.querySelector<HTMLElement>(
+              "[data-capability-monolith]",
+            );
+            const capabilityCore = document.querySelector<HTMLElement>(
+              "[data-capability-monolith-core]",
+            );
+            const capabilityPulse = document.querySelector<HTMLElement>(
+              "[data-capability-monolith-pulse]",
+            );
+
+            if (capabilitySection && capabilityMonolith && capabilityCore && capabilityPulse) {
+              const capabilityCoreSequence = gsap.timeline({
+                scrollTrigger: {
+                  trigger: capabilitySection,
+                  start: "top 76%",
+                  end: "bottom 30%",
+                  scrub: 0.65,
+                  invalidateOnRefresh: true,
+                },
+              });
+
+              capabilityCoreSequence
+                .fromTo(capabilityCore, { scaleY: 0 }, { scaleY: 1, duration: 1, ease: "none" }, 0)
+                .fromTo(
+                  capabilityPulse,
+                  { autoAlpha: 0, y: 0 },
+                  { autoAlpha: 1, y: 0, duration: 0.08, ease: "none" },
+                  0,
+                )
+                .to(
+                  capabilityPulse,
+                  {
+                    y: () =>
+                      Math.max(
+                        0,
+                        (capabilityPulse.parentElement?.offsetHeight ??
+                          capabilityMonolith.offsetHeight) - capabilityPulse.offsetHeight,
+                      ),
+                    duration: 0.84,
+                    ease: "none",
+                  },
+                  0.08,
+                )
+                .to(capabilityPulse, { autoAlpha: 0, duration: 0.08, ease: "none" }, 0.92);
+            }
+          }
+
+          if (desktop && lowPerf) {
+            const capabilityCore = document.querySelector<HTMLElement>(
+              "[data-capability-monolith-core]",
+            );
+            const capabilityPulse = document.querySelector<HTMLElement>(
+              "[data-capability-monolith-pulse]",
+            );
+            if (capabilityCore) gsap.set(capabilityCore, { scaleY: 1 });
+            if (capabilityPulse) gsap.set(capabilityPulse, { autoAlpha: 0 });
+          }
 
           if (desktop) {
             const storySteps = gsap.utils.toArray<HTMLElement>("[data-story-step]");
@@ -263,7 +406,9 @@ export function useCyryxScrollAnimations() {
                   pinSpacing: true,
                   scrub: 0.5,
                   anticipatePin: 1,
-                  refreshPriority: -10,
+                  // The hero pin changes every downstream section's document position.
+                  // Refresh it first so later ScrollTriggers measure against its spacer.
+                  refreshPriority: 1,
                   invalidateOnRefresh: true,
                 },
               });

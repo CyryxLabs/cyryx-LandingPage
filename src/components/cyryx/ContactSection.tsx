@@ -15,7 +15,7 @@ const FormSchema = z.object({
   company: z.string().trim().max(120).optional().default(""),
   message: z.string().trim().min(10, "At least 10 characters").max(2000),
   consent: z.literal(true, {
-    errorMap: () => ({ message: "Please accept the Privacy Policy to continue" }),
+    errorMap: () => ({ message: "Please confirm contact consent to continue" }),
   }),
 });
 
@@ -30,7 +30,7 @@ const NEXT_STEPS = [
   {
     n: "02",
     title: "Receive an initial response",
-    body: "You can expect an initial response within one business day with fit or the clearest next step.",
+    body: "We aim to respond within one business day with fit or the clearest next step.",
   },
   {
     n: "03",
@@ -113,11 +113,19 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="relative py-24 sm:py-32 lg:py-40">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      data-story-section
+      className="relative py-20 sm:py-24 lg:py-32"
+    >
       <div className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal mx-auto max-w-3xl text-center">
           <HudLabel withDot>Start with the business constraint</HudLabel>
-          <h2 className="mt-7 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl">
+          <h2
+            id="contact-heading"
+            className="mt-7 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
+          >
             Find out whether the opportunity is worth building.
           </h2>
           <p className="mx-auto mt-7 max-w-2xl text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base">
@@ -317,7 +325,7 @@ export function ContactSection() {
                 type="submit"
                 disabled={!hydrated || status === "loading" || !consent}
                 aria-disabled={!hydrated || status === "loading" || !consent}
-                title={!consent ? "Accept the Privacy Policy to enable sending" : undefined}
+                title={!consent ? "Confirm contact consent to enable sending" : undefined}
                 className="cx-btn cx-cta cx-cta-primary cx-liquid-glass mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md px-6 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] sm:w-auto sm:self-start"
               >
                 {status === "loading" ? (
