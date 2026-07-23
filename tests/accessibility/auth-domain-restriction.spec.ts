@@ -57,9 +57,7 @@ test.describe("/auth domain restriction", () => {
 
       // The blocked attempt MUST be persisted server-side (not only console.warn),
       // and the payload MUST include the exact blocked email.
-      await expect
-        .poll(() => blockLogs.length, { timeout: 4000 })
-        .toBeGreaterThan(0);
+      await expect.poll(() => blockLogs.length, { timeout: 4000 }).toBeGreaterThan(0);
       const payload = JSON.parse(blockLogs[0].postData ?? "{}");
       // Browser inputs may punycode-encode unicode domains — accept either form.
       const sent = String(payload.email ?? "").toLowerCase();
@@ -86,9 +84,7 @@ test.describe("/auth domain restriction", () => {
       await expect(page).toHaveURL(/\/auth$/);
       expect(consoleWarnings.some((t) => t.includes("blocked password recovery"))).toBe(true);
 
-      await expect
-        .poll(() => blockLogs.length, { timeout: 4000 })
-        .toBeGreaterThan(0);
+      await expect.poll(() => blockLogs.length, { timeout: 4000 }).toBeGreaterThan(0);
       const payload = JSON.parse(blockLogs[0].postData ?? "{}");
       const sent = String(payload.email ?? "").toLowerCase();
       expect(sent.startsWith(email.split("@")[0].toLowerCase() + "@")).toBe(true);
@@ -100,6 +96,11 @@ test.describe("/auth domain restriction", () => {
   // Direct-endpoint attack surface: even if the client is bypassed, the
   // server-side recovery route must reject any non-@cyryxlabs.com email.
   test("server-side recovery endpoint rejects non-cyryxlabs domains", async ({ request }) => {
+    test.skip(
+      !process.env.SUPABASE_SERVICE_ROLE_KEY,
+      "Requires the Lovable Cloud service-role key; public CI intentionally does not receive it.",
+    );
+
     for (const email of ["attacker@evil.com", "user@sub.cyryxlabs.com", "user@cyryxlabs.co"]) {
       const res = await request.post("/api/public/auth/recover", {
         data: { email },
@@ -114,6 +115,11 @@ test.describe("/auth domain restriction", () => {
   test("server-side recovery endpoint accepts @cyryxlabs.com emails (mixed case + plus tag)", async ({
     request,
   }) => {
+    test.skip(
+      !process.env.SUPABASE_SERVICE_ROLE_KEY,
+      "Requires the Lovable Cloud service-role key; public CI intentionally does not receive it.",
+    );
+
     for (const email of ["ok@cyryxlabs.com", "Ok.User+tag@Cyryxlabs.COM"]) {
       const res = await request.post("/api/public/auth/recover", {
         data: { email },

@@ -145,10 +145,34 @@ jobs:
           name: lighthouse-report-${{ matrix.form_factor }}
           path: lighthouse-report/${{ matrix.form_factor }}
 
+  visual-regression:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install chromium
+      - name: Compare approved Windows desktop baselines
+        env:
+          CI: "1"
+        run: bunx playwright test tests/accessibility/visual-regression.spec.ts --project=hero-a11y-chromium
+      - name: Upload visual regression report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-report
+          path: playwright-report/a11y
+          if-no-files-found: warn
+
   summarize:
-    needs: [a11y-content-seo, lighthouse]
+    needs: [a11y-content-seo, lighthouse, visual-regression]
     if: always() && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
