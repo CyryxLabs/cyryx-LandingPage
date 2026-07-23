@@ -2,30 +2,20 @@ import { expect, test } from "@playwright/test";
 import { ContactSchema } from "../../src/lib/contact.schema";
 
 test.describe("Contact form consent — client", () => {
-  test("submit is disabled until consent is checked and shows specific error", async ({ page }) => {
-    await page.goto("/");
-    await page.locator("#contact").scrollIntoViewIfNeeded();
-
-    await page.locator('input[name="name"]').fill("Ada Lovelace");
-    await page.locator('input[name="email"]').fill("ada@example.com");
-    await page.locator('textarea[name="message"]').fill("Hello there, this is a real message.");
-
-    const submit = page.getByRole("button", { name: /send message/i });
-    await expect(submit).toBeDisabled();
-
-    // Disabled controls cannot submit; consent makes the action available.
-    await page.locator('input[name="consent"]').check();
-    await expect(submit).toBeEnabled();
+  test("project qualification requires explicit consent", async ({ page }) => {
+    await page.goto("/start");
+    const consent = page.locator('input[name="consent"]');
+    await expect(consent).toHaveAttribute("required", "");
+    await expect(consent).not.toBeChecked();
+    await consent.check();
+    await expect(consent).toBeChecked();
   });
 
-  test("privacy policy link is accessible and opens in new tab", async ({ page }) => {
-    await page.goto("/");
-    const link = page.locator('#contact a[href="/privacy"]').first();
-    await expect(link).toHaveAttribute("target", "_blank");
-    const rel = (await link.getAttribute("rel")) ?? "";
-    expect(rel).toContain("noopener");
-    expect(rel).toContain("noreferrer");
-    await expect(link).toHaveAttribute("aria-label", /privacy policy.*new tab/i);
+  test("privacy policy link is accessible from the consent block", async ({ page }) => {
+    await page.goto("/start");
+    const link = page.locator('label:has(input[name="consent"]) a[href="/privacy"]');
+    await expect(link).toBeVisible();
+    await expect(link).toHaveText(/privacy policy/i);
   });
 });
 

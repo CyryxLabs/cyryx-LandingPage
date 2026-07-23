@@ -54,9 +54,6 @@ export function SolutionPage(p: SolutionPageProps) {
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
-      <a href="#main-content" className="skip-link">
-        Skip to content
-      </a>
       <Header />
       <main id="main-content" tabIndex={-1} className="relative focus:outline-none">
         <section className="mx-auto max-w-7xl px-5 pb-24 pt-32 sm:px-8 lg:px-12 lg:pb-32 lg:pt-44">
@@ -89,7 +86,7 @@ export function SolutionPage(p: SolutionPageProps) {
             </div>
           </div>
 
-          <div className="mx-auto mt-24 max-w-3xl lg:mt-32">
+          <div className="mx-auto mt-20 grid max-w-7xl gap-x-16 gap-y-14 lg:mt-28 lg:grid-cols-2 lg:gap-y-20">
             <Sec heading="What this is">
               <p className="mt-4 text-base leading-relaxed text-[var(--silver-dim)]">
                 {p.whatItIs}
@@ -133,8 +130,8 @@ export function SolutionPage(p: SolutionPageProps) {
             </Sec>
 
             {p.architecture && p.architecture.length > 0 && (
-              <Sec heading="Reference architecture">
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <Sec heading="Reference architecture" wide>
+                <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {p.architecture.map((layer) => (
                     <GlassPanel key={layer.name} className="p-5">
                       <div className="text-xs uppercase tracking-[0.14em] text-[var(--accent-glow)]">
@@ -150,8 +147,8 @@ export function SolutionPage(p: SolutionPageProps) {
             )}
 
             {p.deliverables && p.deliverables.length > 0 && (
-              <Sec heading="Engagement phases and deliverables">
-                <ol className="mt-4 space-y-4">
+              <Sec heading="Engagement phases and deliverables" wide>
+                <ol className="mt-6 grid gap-4 lg:grid-cols-2">
                   {p.deliverables.map((d, i) => (
                     <li
                       key={i}
@@ -237,7 +234,7 @@ export function SolutionPage(p: SolutionPageProps) {
             </Sec>
 
             {p.faq && p.faq.length > 0 && (
-              <Sec heading="Questions decision-makers ask us">
+              <Sec heading="Questions decision-makers ask us" wide>
                 <div className="mt-4 divide-y divide-[color-mix(in_oklab,var(--silver)_10%,transparent)] rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_40%,transparent)]">
                   {p.faq.map((f, i) => (
                     <details key={i} className="group p-5" open={i === 0}>
@@ -260,7 +257,7 @@ export function SolutionPage(p: SolutionPageProps) {
               </Sec>
             )}
 
-            <Sec heading="Related answers">
+            <Sec heading="Related answers" wide>
               <ul className="mt-4 grid gap-2 sm:grid-cols-2">
                 {p.relatedAnswers.map((r) => (
                   <li key={r.href}>
@@ -275,7 +272,7 @@ export function SolutionPage(p: SolutionPageProps) {
               </ul>
             </Sec>
 
-            <div className="mt-16 flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 border-t border-white/10 pt-8 lg:col-span-2">
               <a
                 href={START_PROJECT_HREF}
                 className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
@@ -301,9 +298,19 @@ export function SolutionPage(p: SolutionPageProps) {
   );
 }
 
-function Sec({ heading, children }: { heading: string; children: React.ReactNode }) {
+function Sec({
+  heading,
+  children,
+  wide = false,
+}: {
+  heading: string;
+  children: React.ReactNode;
+  wide?: boolean;
+}) {
   return (
-    <section className="cx-reveal mt-16 border-t border-white/10 pt-8 sm:mt-20 sm:pt-10">
+    <section
+      className={`cx-reveal border-t border-white/10 pt-8 sm:pt-10 ${wide ? "lg:col-span-2" : ""}`}
+    >
       <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-[var(--silver)]">
         {heading}
       </h2>

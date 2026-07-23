@@ -57,6 +57,7 @@ function CRMPage() {
             { key: "full_name", label: "Name", type: "text", required: true },
             { key: "email", label: "Email", type: "text" },
             { key: "phone", label: "Phone", type: "text" },
+            { key: "country", label: "Country", type: "text" },
             { key: "title", label: "Title", type: "text" },
             { key: "linkedin_url", label: "LinkedIn", type: "text" },
             { key: "notes", label: "Notes", type: "text", className: "min-w-[240px]" },

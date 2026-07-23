@@ -46,6 +46,15 @@ export function Header() {
     }
   }, [pathname]);
 
+  useEffect(() => {
+    if (!openGroup) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenGroup("");
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [openGroup]);
+
   const handleClose = () => setOpenGroup("");
 
   return (

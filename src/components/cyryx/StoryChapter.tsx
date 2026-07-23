@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 
 const CHAPTERS = [
-  ["01", "Why now"],
+  ["01", "Reality"],
   ["02", "Execution system"],
-  ["03", "Governed product"],
-  ["04", "Proof and contact"],
+  ["03", "Delivery"],
+  ["04", "Governance and product"],
+  ["05", "Evidence and start"],
 ] as const;
 
 type StoryChapterProps = {
@@ -49,7 +50,7 @@ export function StoryProgress() {
     <div
       data-story-progress
       aria-hidden="true"
-      className="cx-story-progress pointer-events-none fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 xl:flex"
+      className="cx-story-progress pointer-events-none fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 2xl:flex"
     >
       <div className="relative mr-3 w-px self-stretch overflow-hidden bg-white/10">
         <span

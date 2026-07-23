@@ -51,6 +51,41 @@ for (const vp of VIEWPORTS) {
         "hero should not translate horizontally on mobile",
       ).toBeLessThan(2);
     }
+
+    if (vp.name !== "desktop") {
+      const governanceVisual = await page.evaluate(() => {
+        const core = document.querySelector<HTMLElement>("[data-governance-core]");
+        const gates = Array.from(document.querySelectorAll<HTMLElement>("[data-governance-gate]"));
+        const labels = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-governance-label]"),
+        );
+
+        const scaleOf = (element: HTMLElement) => {
+          const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
+          return { x: Math.hypot(matrix.a, matrix.b), y: Math.hypot(matrix.c, matrix.d) };
+        };
+
+        return {
+          coreScaleY: core ? scaleOf(core).y : 0,
+          gateScales: gates.map((gate) => scaleOf(gate).x),
+          visibleLabels: labels.filter(
+            (label) => Number.parseFloat(getComputedStyle(label).opacity) > 0.8,
+          ).length,
+        };
+      });
+
+      expect(
+        governanceVisual.coreScaleY,
+        `${vp.name}: governance core must be visible`,
+      ).toBeGreaterThan(0.95);
+      expect(
+        governanceVisual.gateScales.every((scale) => scale > 0.95),
+        `${vp.name}: governance gates must be visible without desktop GSAP`,
+      ).toBe(true);
+      expect(governanceVisual.visibleLabels, `${vp.name}: governance labels must be visible`).toBe(
+        4,
+      );
+    }
   });
 }
 
@@ -87,6 +122,51 @@ test("desktop Hero pins and scrubs the cinematic video with scroll", async ({ pa
   expect(Math.abs(state.heroTop)).toBeLessThan(2);
   expect(state.progressScale).toBeGreaterThan(0.1);
 });
+
+for (const viewport of [
+  { name: "tablet", width: 768, height: 1024, shouldPin: true },
+  { name: "mobile", width: 390, height: 800, shouldPin: false },
+]) {
+  test(`${viewport.name} Hero scrubs with scroll without autoplay fallback`, async ({ page }) => {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const hero = page.locator("section[data-hero]");
+    const video = hero.locator("[data-hero-video]");
+    await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
+    await expect(page.locator(".pin-spacer")).toHaveCount(viewport.shouldPin ? 1 : 0);
+    await expect
+      .poll(() => video.evaluate((element) => (element as HTMLVideoElement).duration))
+      .toBeGreaterThan(1);
+
+    const initial = await video.evaluate((element) => {
+      const media = element as HTMLVideoElement;
+      return { paused: media.paused, currentTime: media.currentTime };
+    });
+    expect(initial.paused, `${viewport.name}: video must not autoplay`).toBe(true);
+    expect(initial.currentTime).toBeLessThan(0.25);
+
+    await page.evaluate((distance) => window.scrollTo(0, distance), viewport.height * 0.72);
+    await page.waitForTimeout(900);
+
+    const scrubbed = await page.evaluate(() => {
+      const media = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+      const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
+      const matrix = progress
+        ? new DOMMatrixReadOnly(getComputedStyle(progress).transform)
+        : new DOMMatrixReadOnly();
+      return {
+        paused: media?.paused ?? false,
+        currentTime: media?.currentTime ?? 0,
+        progressScale: matrix.a,
+      };
+    });
+
+    expect(scrubbed.paused, `${viewport.name}: scroll scrub must keep playback paused`).toBe(true);
+    expect(scrubbed.currentTime).toBeGreaterThan(0.5);
+    expect(scrubbed.progressScale).toBeGreaterThan(0.2);
+  });
+}
 
 test("reduced motion removes Hero pinning and video scrubbing", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -131,29 +211,33 @@ for (const path of CONTENT_PAGES) {
   }
 }
 
-test("desktop side-by-side story changes the fixed outcome as steps advance", async ({ page }) => {
+test("desktop execution rail progresses through the governed operating sequence", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expect(page.locator("section[data-hero]")).toHaveAttribute("data-scroll-scrub", "true", {
     timeout: 10_000,
   });
 
-  const step = page.locator("[data-story-step]").nth(2);
-  await expect(step).toBeVisible();
+  const system = page.locator("[data-execution-system]");
+  const nodes = system.locator("[data-execution-node]");
+  const rail = system.locator("[data-execution-rail]");
+  await expect(system).toBeVisible();
+  await expect(nodes).toHaveCount(5);
   await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
-  await step.evaluate((element) => {
+  await system.evaluate((element) => {
     element.scrollIntoView({ behavior: "auto", block: "center" });
   });
   await page.waitForTimeout(700);
 
-  const active = await page
-    .locator("[data-story-caption]")
-    .evaluateAll((captions) =>
-      captions
-        .filter((caption) => Number.parseFloat(getComputedStyle(caption).opacity) > 0.6)
-        .map((caption) => caption.textContent ?? ""),
-    );
+  const railTransform = await rail.evaluate((element) => getComputedStyle(element).transform);
+  const visibleNodes = await nodes.evaluateAll(
+    (items) =>
+      items.filter((item) => Number.parseFloat(getComputedStyle(item).opacity) > 0.6).length,
+  );
 
-  expect(active).toHaveLength(1);
-  expect(active[0]).toContain("A working system supported by implementation evidence");
+  expect(railTransform).not.toBe("none");
+  expect(visibleNodes).toBe(5);
+  await expect(system).toContainText("From intent to action. From action to evidence.");
 });

@@ -34,7 +34,7 @@ test("Hero video only downloads after IntersectionObserver fires on /", async ({
   await expect.poll(() => hits.length, { timeout: 10_000 }).toBeGreaterThan(0);
 });
 
-test("Hero video uses preload='none' so byte download is gated by IO, not by parser", async ({
+test("Hero video preloads metadata after IO so scroll scrubbing is deterministic", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
@@ -42,5 +42,5 @@ test("Hero video uses preload='none' so byte download is gated by IO, not by par
   const preload = await page
     .locator("section[data-hero] video[data-hero-video]")
     .getAttribute("preload");
-  expect(preload).toBe("none");
+  expect(preload).toBe("metadata");
 });

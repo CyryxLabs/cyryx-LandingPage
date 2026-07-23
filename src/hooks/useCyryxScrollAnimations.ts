@@ -87,11 +87,16 @@ export function useCyryxScrollAnimations() {
     const showFinalStates = () => {
       document
         .querySelectorAll<HTMLElement>(
-          ".cx-reveal, .cx-stagger-item, [data-hero-line], .cx-hero-sub, .cx-hero-ctas, [data-chapter-line]",
+          ".cx-reveal, .cx-stagger-item, [data-hero-line], .cx-hero-sub, .cx-hero-ctas, [data-chapter-line], [data-governance-core], [data-governance-gate]",
         )
         .forEach((element) => {
           element.style.opacity = "1";
           element.style.transform = "none";
+        });
+      document
+        .querySelectorAll<HTMLElement>("[data-governance-node], [data-governance-label]")
+        .forEach((element) => {
+          element.style.opacity = "1";
         });
       publishDiagnostics();
     };
@@ -121,11 +126,12 @@ export function useCyryxScrollAnimations() {
           mobile: "(max-width: 767px)",
         },
         (context) => {
-          const { desktop, mobile } = context.conditions as {
+          const { desktop, tablet, mobile } = context.conditions as {
             desktop: boolean;
             tablet: boolean;
             mobile: boolean;
           };
+          const localCleanups: Array<() => void> = [];
 
           const heroLine = document.querySelector<HTMLElement>("[data-hero-line]");
           const heroSub = document.querySelector<HTMLElement>(".cx-hero-sub");
@@ -137,6 +143,128 @@ export function useCyryxScrollAnimations() {
               .from(heroLine, { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
               .from(heroSub, { opacity: 0, y: 16, duration: 0.65 }, "-=0.45")
               .from(heroCtas, { opacity: 0, y: 14, duration: 0.6 }, "-=0.4");
+          }
+
+          /*
+           * The Hero is a deterministic scroll scene at every breakpoint.
+           * Desktop/tablet pin the scene; mobile keeps native flow while still
+           * scrubbing the film and visual layers. Metadata only enriches the
+           * scene — it never gates ScrollTrigger creation.
+           */
+          const hero = document.querySelector<HTMLElement>("[data-hero]");
+          const heroVideo = hero?.querySelector<HTMLVideoElement>("[data-hero-video]");
+          const heroMediaFrame = hero?.querySelector<HTMLElement>("[data-hero-media-frame]");
+          const heroGrade = hero?.querySelector<HTMLElement>(".cx-hero-grade");
+          const heroAura = hero?.querySelector<HTMLElement>("[data-hero-aura]");
+          const heroContent = hero?.querySelector<HTMLElement>("[data-hero-content]");
+          const heroScrollCue = hero?.querySelector<HTMLElement>("[data-hero-scroll-cue]");
+          const scrollProgress = hero?.querySelector<HTMLElement>("[data-scroll-progress]");
+
+          if (hero && heroMediaFrame && heroGrade && heroContent) {
+            hero.dataset.scrollScrub = "true";
+            heroVideo?.pause();
+
+            const videoRange = () => {
+              const duration = heroVideo?.duration ?? Number.NaN;
+              if (!Number.isFinite(duration) || duration <= 0.5) return null;
+              const start = Math.min(0.08, duration * 0.01);
+              return { start, end: Math.max(start, duration - 0.12) };
+            };
+
+            let heroScrollTimeline: gsap.core.Timeline;
+            const syncVideoToScroll = () => {
+              const range = videoRange();
+              if (!heroVideo || !range) return;
+              const nextTime =
+                range.start + (range.end - range.start) * heroScrollTimeline.progress();
+              if (Math.abs(heroVideo.currentTime - nextTime) > 0.025) {
+                heroVideo.currentTime = nextTime;
+              }
+              heroVideo.pause();
+            };
+
+            const initializeVideoFrame = () => {
+              const range = videoRange();
+              if (!heroVideo || !range) return;
+              heroVideo.pause();
+              heroVideo.currentTime = range.start;
+              syncVideoToScroll();
+            };
+
+            heroScrollTimeline = gsap.timeline({
+              onUpdate: syncVideoToScroll,
+              scrollTrigger: {
+                trigger: hero,
+                start: "top top",
+                end: () =>
+                  `+=${Math.round(
+                    window.innerHeight * (desktop ? 1.75 : tablet ? 1.35 : 0.95),
+                  )}`,
+                pin: !mobile,
+                pinSpacing: !mobile,
+                scrub: desktop ? 0.65 : tablet ? 0.45 : 0.3,
+                anticipatePin: mobile ? 0 : 1,
+                refreshPriority: -20,
+                invalidateOnRefresh: true,
+              },
+            });
+
+            heroScrollTimeline
+              .fromTo(
+                heroMediaFrame,
+                { scale: mobile ? 1.022 : 1.04 },
+                { scale: 1, ease: "none", duration: 1 },
+                0,
+              )
+              .to(heroGrade, { opacity: 0.88, ease: "none", duration: 1 }, 0)
+              .to(
+                heroContent,
+                {
+                  y: mobile ? -24 : -44,
+                  autoAlpha: mobile ? 0.25 : 0.08,
+                  ease: "power1.in",
+                  duration: 0.34,
+                },
+                0.62,
+              );
+
+            if (heroAura) {
+              heroScrollTimeline.fromTo(
+                heroAura,
+                { scale: 0.92, autoAlpha: 0.7 },
+                { scale: 1.16, autoAlpha: 0.28, ease: "none", duration: 1 },
+                0,
+              );
+            }
+
+            if (heroScrollCue) {
+              heroScrollTimeline.to(
+                heroScrollCue,
+                { autoAlpha: 0, y: 8, ease: "power1.out", duration: 0.2 },
+                0.16,
+              );
+            }
+
+            if (scrollProgress) {
+              heroScrollTimeline.to(scrollProgress, { scaleX: 1, ease: "none", duration: 1 }, 0);
+            }
+
+            heroVideo?.addEventListener("loadedmetadata", initializeVideoFrame);
+            if (
+              heroVideo?.readyState &&
+              heroVideo.readyState >= HTMLMediaElement.HAVE_METADATA
+            ) {
+              initializeVideoFrame();
+            } else {
+              heroVideo?.load();
+            }
+
+            localCleanups.push(() => {
+              heroVideo?.removeEventListener("loadedmetadata", initializeVideoFrame);
+              heroVideo?.pause();
+              delete hero.dataset.scrollScrub;
+              heroScrollTimeline.kill();
+            });
           }
 
           gsap.utils.toArray<HTMLElement>("[data-story-section]").forEach((section) => {
@@ -200,7 +328,91 @@ export function useCyryxScrollAnimations() {
               .to(line, { scaleX: 1, duration: 0.9, ease: "power3.out" }, 0.08);
           });
 
-          if (desktop && !lowPerf) {
+          if ((desktop || tablet) && !lowPerf) {
+            const executionSystem = document.querySelector<HTMLElement>("[data-execution-system]");
+            const executionRail =
+              executionSystem?.querySelector<HTMLElement>("[data-execution-rail]");
+            const executionPulse =
+              executionSystem?.querySelector<HTMLElement>("[data-execution-pulse]");
+            const executionNodes = executionSystem
+              ? gsap.utils.toArray<HTMLElement>("[data-execution-node]", executionSystem)
+              : [];
+
+            if (executionSystem && executionRail && executionPulse && executionNodes.length) {
+              const executionTrack = executionRail.parentElement;
+              gsap.set(executionNodes, { autoAlpha: 0.38, y: 12 });
+
+              const executionSequence = gsap.timeline({
+                scrollTrigger: {
+                  trigger: executionSystem,
+                  start: "top 68%",
+                  end: "bottom 36%",
+                  scrub: 0.6,
+                  invalidateOnRefresh: true,
+                  refreshPriority: 3,
+                },
+              });
+
+              if (desktop) {
+                executionSequence
+                  .fromTo(
+                    executionRail,
+                    { scaleX: 0 },
+                    { scaleX: 1, duration: 1, ease: "none" },
+                    0,
+                  )
+                  .fromTo(
+                    executionPulse,
+                    { autoAlpha: 0, x: 0 },
+                    {
+                      autoAlpha: 1,
+                      x: () =>
+                        Math.max(0, (executionTrack?.offsetWidth ?? 0) - executionPulse.offsetWidth),
+                      duration: 1,
+                      ease: "none",
+                    },
+                    0,
+                  );
+              } else {
+                executionSequence
+                  .fromTo(
+                    executionRail,
+                    { scaleY: 0 },
+                    { scaleY: 1, duration: 1, ease: "none" },
+                    0,
+                  )
+                  .fromTo(
+                    executionPulse,
+                    { autoAlpha: 0, y: 0 },
+                    {
+                      autoAlpha: 1,
+                      y: () =>
+                        Math.max(
+                          0,
+                          (executionTrack?.offsetHeight ?? 0) - executionPulse.offsetHeight,
+                        ),
+                      duration: 1,
+                      ease: "none",
+                    },
+                    0,
+                  );
+              }
+
+              executionSequence
+                .to(
+                  executionNodes,
+                  {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.16,
+                    stagger: 0.17,
+                    ease: "power2.out",
+                  },
+                  0.04,
+                )
+                .to(executionPulse, { autoAlpha: 0, duration: 0.08, ease: "none" }, 0.92);
+            }
+
             const storyRoot = document.querySelector<HTMLElement>("[data-story-root]");
             const storyProgress = document.querySelector<HTMLElement>("[data-story-progress]");
             const storyProgressFill = document.querySelector<HTMLElement>(
@@ -255,7 +467,7 @@ export function useCyryxScrollAnimations() {
               });
             }
 
-            const capabilitySection = document.querySelector<HTMLElement>("#what-we-build");
+            const capabilitySection = document.querySelector<HTMLElement>("#security");
             const capabilityMonolith = document.querySelector<HTMLElement>(
               "[data-capability-monolith]",
             );
@@ -266,7 +478,29 @@ export function useCyryxScrollAnimations() {
               "[data-capability-monolith-pulse]",
             );
 
-            if (capabilitySection && capabilityMonolith && capabilityCore && capabilityPulse) {
+            const governanceCore =
+              capabilitySection?.querySelector<HTMLElement>("[data-governance-core]");
+            const governancePulse =
+              capabilitySection?.querySelector<HTMLElement>("[data-governance-pulse]");
+            const governanceGates = capabilitySection
+              ? gsap.utils.toArray<HTMLElement>("[data-governance-gate]", capabilitySection)
+              : [];
+            const governanceNodes = capabilitySection
+              ? gsap.utils.toArray<HTMLElement>("[data-governance-node]", capabilitySection)
+              : [];
+            const governanceLabels = capabilitySection
+              ? gsap.utils.toArray<HTMLElement>("[data-governance-label]", capabilitySection)
+              : [];
+
+            if (
+              desktop &&
+              capabilitySection &&
+              capabilityMonolith &&
+              capabilityCore &&
+              capabilityPulse &&
+              governanceCore &&
+              governancePulse
+            ) {
               const capabilityCoreSequence = gsap.timeline({
                 scrollTrigger: {
                   trigger: capabilitySection,
@@ -274,11 +508,49 @@ export function useCyryxScrollAnimations() {
                   end: "bottom 30%",
                   scrub: 0.65,
                   invalidateOnRefresh: true,
+                  refreshPriority: 5,
                 },
               });
 
               capabilityCoreSequence
                 .fromTo(capabilityCore, { scaleY: 0 }, { scaleY: 1, duration: 1, ease: "none" }, 0)
+                .fromTo(governanceCore, { scaleY: 0 }, { scaleY: 1, duration: 1, ease: "none" }, 0)
+                .fromTo(
+                  governanceGates,
+                  { scaleX: 0, autoAlpha: 0.3 },
+                  {
+                    scaleX: 1,
+                    autoAlpha: 1,
+                    duration: 0.12,
+                    stagger: 0.18,
+                    ease: "power2.out",
+                  },
+                  0.12,
+                )
+                .fromTo(
+                  governanceNodes,
+                  { scale: 0.55, autoAlpha: 0.35 },
+                  {
+                    scale: 1,
+                    autoAlpha: 1,
+                    duration: 0.12,
+                    stagger: 0.18,
+                    ease: "power2.out",
+                  },
+                  0.12,
+                )
+                .fromTo(
+                  governanceLabels,
+                  { autoAlpha: 0.4, y: 5 },
+                  {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.16,
+                    stagger: 0.18,
+                    ease: "power2.out",
+                  },
+                  0.14,
+                )
                 .fromTo(
                   capabilityPulse,
                   { autoAlpha: 0, y: 0 },
@@ -300,10 +572,49 @@ export function useCyryxScrollAnimations() {
                   0.08,
                 )
                 .to(capabilityPulse, { autoAlpha: 0, duration: 0.08, ease: "none" }, 0.92);
+
+              capabilityCoreSequence
+                .fromTo(
+                  governancePulse,
+                  { autoAlpha: 0, y: 0 },
+                  { autoAlpha: 1, y: 0, duration: 0.08, ease: "none" },
+                  0,
+                )
+                .to(
+                  governancePulse,
+                  {
+                    y: () =>
+                      Math.max(
+                        0,
+                        (governancePulse.parentElement?.offsetHeight ?? 0) -
+                          governancePulse.offsetHeight,
+                      ),
+                    duration: 0.84,
+                    ease: "none",
+                  },
+                  0.08,
+                )
+                .to(governancePulse, { autoAlpha: 0, duration: 0.08, ease: "none" }, 0.92);
+            }
+
+            if (tablet) {
+              if (capabilityCore) gsap.set(capabilityCore, { scaleY: 1 });
+              if (capabilityPulse) gsap.set(capabilityPulse, { autoAlpha: 0 });
+              if (governanceCore) gsap.set(governanceCore, { scaleY: 1 });
+              if (governancePulse) gsap.set(governancePulse, { autoAlpha: 0 });
+              if (governanceGates.length) {
+                gsap.set(governanceGates, { scaleX: 1, autoAlpha: 1 });
+              }
+              if (governanceNodes.length) {
+                gsap.set(governanceNodes, { scale: 1, autoAlpha: 1 });
+              }
+              if (governanceLabels.length) {
+                gsap.set(governanceLabels, { y: 0, autoAlpha: 1 });
+              }
             }
           }
 
-          if (desktop && lowPerf) {
+          if (lowPerf) {
             const capabilityCore = document.querySelector<HTMLElement>(
               "[data-capability-monolith-core]",
             );
@@ -312,155 +623,46 @@ export function useCyryxScrollAnimations() {
             );
             if (capabilityCore) gsap.set(capabilityCore, { scaleY: 1 });
             if (capabilityPulse) gsap.set(capabilityPulse, { autoAlpha: 0 });
+            const executionRail = document.querySelector<HTMLElement>("[data-execution-rail]");
+            const executionPulse = document.querySelector<HTMLElement>("[data-execution-pulse]");
+            const governanceCore = document.querySelector<HTMLElement>("[data-governance-core]");
+            const governancePulse = document.querySelector<HTMLElement>("[data-governance-pulse]");
+            const governanceGates = gsap.utils.toArray<HTMLElement>("[data-governance-gate]");
+            const governanceNodes = gsap.utils.toArray<HTMLElement>("[data-governance-node]");
+            const governanceLabels = gsap.utils.toArray<HTMLElement>("[data-governance-label]");
+            if (executionRail) {
+              gsap.set(executionRail, desktop ? { scaleX: 1 } : { scaleY: 1 });
+            }
+            if (executionPulse) gsap.set(executionPulse, { autoAlpha: 0 });
+            if (governanceCore) gsap.set(governanceCore, { scaleY: 1 });
+            if (governancePulse) gsap.set(governancePulse, { autoAlpha: 0 });
+            if (governanceGates.length) gsap.set(governanceGates, { scaleX: 1, autoAlpha: 1 });
+            if (governanceNodes.length) gsap.set(governanceNodes, { scale: 1, autoAlpha: 1 });
+            if (governanceLabels.length) gsap.set(governanceLabels, { y: 0, autoAlpha: 1 });
           }
 
-          if (desktop) {
-            const storySteps = gsap.utils.toArray<HTMLElement>("[data-story-step]");
-            const storyCaptions = gsap.utils.toArray<HTMLElement>("[data-story-caption]");
-
-            if (storySteps.length === storyCaptions.length && storyCaptions.length > 0) {
-              gsap.set(storyCaptions, { autoAlpha: 0, y: 16 });
-              gsap.set(storyCaptions[0], { autoAlpha: 1, y: 0 });
-              let activeStoryIndex = 0;
-
-              const activateStoryCaption = (activeIndex: number) => {
-                if (activeIndex === activeStoryIndex) return;
-                activeStoryIndex = activeIndex;
-                gsap.killTweensOf(storyCaptions);
-                storyCaptions.forEach((caption, captionIndex) => {
-                  if (captionIndex === activeIndex) return;
-                  gsap.set(caption, { autoAlpha: 0, y: -10 });
-                });
-
-                gsap.set(storyCaptions[activeIndex], { autoAlpha: 1, y: 0 });
-                gsap.fromTo(
-                  storyCaptions[activeIndex],
-                  { y: 8 },
-                  { y: 0, duration: 0.25, ease: "power3.out", overwrite: "auto" },
-                );
-              };
-
-              const activateNearestStoryCaption = () => {
-                const focusLine = window.innerHeight * 0.58;
-                const nearestIndex = storySteps.reduce(
-                  (nearest, step, index) => {
-                    const rect = step.getBoundingClientRect();
-                    const distance = Math.abs(rect.top + rect.height / 2 - focusLine);
-                    return distance < nearest.distance ? { index, distance } : nearest;
-                  },
-                  { index: 0, distance: Number.POSITIVE_INFINITY },
-                ).index;
-
-                activateStoryCaption(nearestIndex);
-              };
-
-              const storyHost = storySteps[0]?.closest<HTMLElement>("#how-we-work");
-              if (storyHost) {
-                ScrollTrigger.create({
-                  trigger: storyHost,
+          const productVisual = document.querySelector<HTMLElement>("[data-maax-visual]");
+          if (productVisual && !lowPerf) {
+            gsap.fromTo(
+              productVisual,
+              { yPercent: mobile ? 1 : 2, scale: mobile ? 0.996 : 0.992 },
+              {
+                yPercent: mobile ? -1 : -2,
+                scale: 1,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: productVisual,
                   start: "top bottom",
                   end: "bottom top",
-                  refreshPriority: 10,
-                  invalidateOnRefresh: true,
-                  onEnter: activateNearestStoryCaption,
-                  onEnterBack: activateNearestStoryCaption,
-                  onUpdate: activateNearestStoryCaption,
-                  onRefresh: activateNearestStoryCaption,
-                });
-              }
-            }
+                  scrub: mobile ? 0.4 : 0.7,
+                },
+              },
+            );
           }
 
-          if (desktop && !lowPerf) {
-            const hero = document.querySelector<HTMLElement>("[data-hero]");
-            const heroVideo = hero?.querySelector<HTMLVideoElement>("[data-hero-video]");
-            const heroMediaFrame = hero?.querySelector<HTMLElement>("[data-hero-media-frame]");
-            const heroGrade = hero?.querySelector<HTMLElement>(".cx-hero-grade");
-            const scrollProgress = hero?.querySelector<HTMLElement>("[data-scroll-progress]");
-            let heroScrollTimeline: gsap.core.Timeline | undefined;
-
-            const setupHeroScrollSequence = () => {
-              if (
-                !hero ||
-                !heroVideo ||
-                !heroMediaFrame ||
-                !heroGrade ||
-                heroScrollTimeline ||
-                !Number.isFinite(heroVideo.duration)
-              ) {
-                return;
-              }
-
-              hero.dataset.scrollScrub = "true";
-              heroVideo.pause();
-              const scrubStart = Math.min(0.08, heroVideo.duration * 0.01);
-              const scrubEnd = Math.max(scrubStart, heroVideo.duration - 0.12);
-              heroVideo.currentTime = scrubStart;
-
-              heroScrollTimeline = gsap.timeline({
-                scrollTrigger: {
-                  trigger: hero,
-                  start: "top top",
-                  end: "+=160%",
-                  pin: true,
-                  pinSpacing: true,
-                  scrub: 0.5,
-                  anticipatePin: 1,
-                  // The hero pin changes every downstream section's document position.
-                  // Refresh it first so later ScrollTriggers measure against its spacer.
-                  refreshPriority: 1,
-                  invalidateOnRefresh: true,
-                },
-              });
-
-              heroScrollTimeline
-                .to(heroVideo, { currentTime: scrubEnd, ease: "none" }, 0)
-                .fromTo(heroMediaFrame, { scale: 1.018 }, { scale: 1, ease: "none" }, 0)
-                .to(heroGrade, { opacity: 0.9, ease: "none" }, 0);
-
-              if (scrollProgress) {
-                heroScrollTimeline.to(scrollProgress, { scaleX: 1, ease: "none" }, 0);
-              }
-
-              requestAnimationFrame(() => {
-                ScrollTrigger.sort();
-                ScrollTrigger.refresh();
-              });
-            };
-
-            if (heroVideo?.readyState && heroVideo.readyState >= HTMLMediaElement.HAVE_METADATA) {
-              setupHeroScrollSequence();
-            } else {
-              heroVideo?.addEventListener("loadedmetadata", setupHeroScrollSequence, {
-                once: true,
-              });
-            }
-
-            const productVisual = document.querySelector<HTMLElement>("[data-maax-visual]");
-            if (productVisual) {
-              gsap.fromTo(
-                productVisual,
-                { yPercent: 2, scale: 0.992 },
-                {
-                  yPercent: -2,
-                  scale: 1,
-                  ease: "none",
-                  scrollTrigger: {
-                    trigger: productVisual,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 0.7,
-                  },
-                },
-              );
-            }
-
-            return () => {
-              heroVideo?.removeEventListener("loadedmetadata", setupHeroScrollSequence);
-              if (hero) delete hero.dataset.scrollScrub;
-              heroScrollTimeline?.kill();
-            };
-          }
+          return () => {
+            localCleanups.forEach((dispose) => dispose());
+          };
         },
       );
 

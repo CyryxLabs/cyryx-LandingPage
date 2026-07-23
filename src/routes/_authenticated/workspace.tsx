@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, retainSearchParams } from "@tanstack/react-router";
 import { z } from "zod";
 import { zodValidator } from "@tanstack/zod-adapter";
+import { buildHead } from "@/components/cyryx/seo/seo";
 
 export const TABS = ["overview", "contacts", "newsletter", "cta"] as const;
 export type WsTab = (typeof TABS)[number];
@@ -15,6 +16,17 @@ const workspaceSearchSchema = z.object({
 export type WorkspaceSearch = z.infer<typeof workspaceSearchSchema>;
 
 export const Route = createFileRoute("/_authenticated/workspace")({
+  head: () => {
+    const h = buildHead({
+      title: "Workspace — Cyryx Labs",
+      description: "Internal Cyryx Labs workspace.",
+      path: "/workspace",
+    });
+    return {
+      ...h,
+      meta: [...h.meta, { name: "robots", content: "noindex, nofollow" }],
+    };
+  },
   validateSearch: zodValidator(workspaceSearchSchema),
   search: {
     middlewares: [retainSearchParams(["w", "tab"])],

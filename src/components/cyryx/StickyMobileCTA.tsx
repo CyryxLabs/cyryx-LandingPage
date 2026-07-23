@@ -51,22 +51,15 @@ export function StickyMobileCTA() {
 
   return (
     <div className="cx-sticky-cta lg:hidden" data-visible role="region" aria-label="Quick actions">
-      <div className="mx-auto flex max-w-7xl items-center gap-2">
+      <div className="mx-auto flex max-w-7xl items-center">
         <a
           href="#contact"
           aria-label={headerCta}
           onClick={() => trackCta({ cta: "start_project", section: "sticky", href: "#contact" })}
-          className="cx-liquid-glass inline-flex h-12 min-h-11 flex-1 items-center justify-center gap-2 rounded-md px-4 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] active:brightness-95"
+          className="cx-liquid-glass inline-flex h-12 min-h-11 w-full items-center justify-center gap-2 rounded-md px-4 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] active:brightness-95"
         >
           {headerCta}
           <ArrowRight className="h-4 w-4" />
-        </a>
-        <a
-          href="#maax"
-          aria-label="Jump to MAAX Studio"
-          className="cx-liquid-glass inline-flex h-12 min-h-11 min-w-11 items-center justify-center rounded-md px-4 hud-label text-[var(--silver)]"
-        >
-          MAAX
         </a>
       </div>
     </div>

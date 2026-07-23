@@ -33,7 +33,7 @@ export const Route = createFileRoute("/_authenticated/workspace/marketing")({
   component: MarketingPage,
 });
 
-const TABS = ["dashboard", "campaigns", "channels", "leads", "attribution"] as const;
+const TABS = ["dashboard", "campaigns", "channels", "leads", "maax", "attribution"] as const;
 type Tab = (typeof TABS)[number];
 
 function MarketingPage() {
@@ -110,6 +110,29 @@ function MarketingPage() {
             { key: "first_touch_at", label: "First touch", type: "date" },
             { key: "converted_at", label: "Converted", type: "date" },
             { key: "notes", label: "Notes", type: "text", className: "min-w-[200px]" },
+          ]}
+        />
+      )}
+
+      {tab === "maax" && (
+        <DataTable
+          tableName="maax_waitlist"
+          queryKey="maax_waitlist"
+          orderBy="created_at"
+          fields={[
+            { key: "full_name", label: "Name", type: "text", required: true },
+            { key: "email", label: "Email", type: "text", required: true },
+            { key: "phone", label: "Telephone", type: "text", required: true },
+            { key: "country", label: "Country", type: "text", required: true },
+            {
+              key: "status",
+              label: "Status",
+              type: "select",
+              options: ["waiting", "qualified", "invited", "onboarded", "declined", "unsubscribed"],
+            },
+            { key: "utm_source", label: "UTM source", type: "text" },
+            { key: "utm_campaign", label: "UTM campaign", type: "text" },
+            { key: "created_at", label: "Joined", type: "date" },
           ]}
         />
       )}

@@ -54,6 +54,7 @@ import { Route as AuthenticatedWorkspaceRouteImport } from './routes/_authentica
 import { Route as AuthenticatedWorkspaceIndexRouteImport } from './routes/_authenticated/workspace.index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
+import { Route as ApiPublicMaaxWaitlistRouteImport } from './routes/api/public/maax-waitlist'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 import { Route as AuthenticatedWorkspaceProductsRouteImport } from './routes/_authenticated/workspace.products'
@@ -313,6 +314,11 @@ const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
   path: '/api/public/web-vitals',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicMaaxWaitlistRoute = ApiPublicMaaxWaitlistRouteImport.update({
+  id: '/api/public/maax-waitlist',
+  path: '/api/public/maax-waitlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
   id: '/api/public/cta-events',
   path: '/api/public/cta-events',
@@ -472,6 +478,7 @@ export interface FileRoutesByFullPath {
   '/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
+  '/api/public/maax-waitlist': typeof ApiPublicMaaxWaitlistRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/workspace/': typeof AuthenticatedWorkspaceIndexRoute
@@ -535,6 +542,7 @@ export interface FileRoutesByTo {
   '/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
+  '/api/public/maax-waitlist': typeof ApiPublicMaaxWaitlistRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/workspace': typeof AuthenticatedWorkspaceIndexRoute
@@ -601,6 +609,7 @@ export interface FileRoutesById {
   '/_authenticated/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
+  '/api/public/maax-waitlist': typeof ApiPublicMaaxWaitlistRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/_authenticated/workspace/': typeof AuthenticatedWorkspaceIndexRoute
@@ -667,6 +676,7 @@ export interface FileRouteTypes {
     | '/workspace/products'
     | '/api/public/contact'
     | '/api/public/cta-events'
+    | '/api/public/maax-waitlist'
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
     | '/workspace/'
@@ -730,6 +740,7 @@ export interface FileRouteTypes {
     | '/workspace/products'
     | '/api/public/contact'
     | '/api/public/cta-events'
+    | '/api/public/maax-waitlist'
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
     | '/workspace'
@@ -795,6 +806,7 @@ export interface FileRouteTypes {
     | '/_authenticated/workspace/products'
     | '/api/public/contact'
     | '/api/public/cta-events'
+    | '/api/public/maax-waitlist'
     | '/api/public/web-vitals'
     | '/lovable/email/suppression'
     | '/_authenticated/workspace/'
@@ -839,6 +851,7 @@ export interface RootRouteChildren {
   ResearchIndexRoute: typeof ResearchIndexRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
   ApiPublicCtaEventsRoute: typeof ApiPublicCtaEventsRoute
+  ApiPublicMaaxWaitlistRoute: typeof ApiPublicMaaxWaitlistRoute
   ApiPublicWebVitalsRoute: typeof ApiPublicWebVitalsRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicAuthDomainBlockRoute: typeof ApiPublicAuthDomainBlockRoute
@@ -1167,6 +1180,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebVitalsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/maax-waitlist': {
+      id: '/api/public/maax-waitlist'
+      path: '/api/public/maax-waitlist'
+      fullPath: '/api/public/maax-waitlist'
+      preLoaderRoute: typeof ApiPublicMaaxWaitlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/cta-events': {
       id: '/api/public/cta-events'
       path: '/api/public/cta-events'
@@ -1420,6 +1440,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResearchIndexRoute: ResearchIndexRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
   ApiPublicCtaEventsRoute: ApiPublicCtaEventsRoute,
+  ApiPublicMaaxWaitlistRoute: ApiPublicMaaxWaitlistRoute,
   ApiPublicWebVitalsRoute: ApiPublicWebVitalsRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicAuthDomainBlockRoute: ApiPublicAuthDomainBlockRoute,

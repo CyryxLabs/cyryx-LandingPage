@@ -7,7 +7,7 @@ import maaxDevices1200Jpg from "@/assets/cyryx-maax-devices-1200.jpg";
 import maaxDevices480Webp from "@/assets/cyryx-maax-devices-480.webp";
 import maaxDevices800Webp from "@/assets/cyryx-maax-devices-800.webp";
 import maaxDevices1200Webp from "@/assets/cyryx-maax-devices-1200.webp";
-import maaxLogo from "@/assets/cyryx-maax-visual.png.asset.json";
+import maaxLogo from "@/assets/maax-studio-logo-exact.svg";
 import { HudLabel } from "./primitives/HudLabel";
 import { setContactIntent } from "@/lib/contact-intent";
 import { trackCta } from "@/lib/track-cta";
@@ -15,21 +15,18 @@ import { trackCta } from "@/lib/track-cta";
 const PRODUCT_LAYERS = [
   {
     n: "01",
-    title: "Ground",
-    body: "Organize the goal, project context, constraints, and completion criteria around a defined software mission.",
-    signals: ["Mission context", "Completion criteria"],
+    title: "Ground the mission",
+    body: "Organize the goal, project context, constraints, and completion criteria.",
   },
   {
     n: "02",
-    title: "Execute",
-    body: "Coordinate specialized agent roles and tools while keeping review and action boundaries visible to the operator.",
-    signals: ["Agent coordination", "Review boundaries"],
+    title: "Coordinate execution",
+    body: "Connect specialized agent roles and tools with review boundaries visible.",
   },
   {
     n: "03",
-    title: "Continue",
-    body: "Preserve useful execution context and decisions so work can be reviewed, recovered, and continued with less fragmentation.",
-    signals: ["Operating context", "Continuation"],
+    title: "Preserve operating context",
+    body: "Keep decisions and execution context available for review and continuation.",
   },
 ];
 
@@ -80,7 +77,7 @@ export function MAAXStudioSpotlight() {
       id="maax"
       aria-labelledby="maax-heading"
       data-story-section
-      className="relative overflow-hidden bg-[var(--graphite)] py-20 sm:py-24 lg:py-36"
+      className="relative overflow-hidden bg-[var(--graphite)] py-20 sm:py-24 lg:py-28"
     >
       <div
         aria-hidden
@@ -88,26 +85,27 @@ export function MAAXStudioSpotlight() {
       />
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal max-w-4xl">
-          <HudLabel withDot>Flagship product / In active development</HudLabel>
+          <HudLabel withDot>Cyryx Labs / Flagship product</HudLabel>
           <img
-            src={maaxLogo.url}
+            src={maaxLogo}
             alt="MAAX Studio"
             width={1794}
             height={222}
             loading="lazy"
             decoding="async"
-            className="mt-7 block h-auto w-full max-w-[320px] object-contain sm:max-w-[440px]"
+            className="mt-7 block h-auto w-full object-contain"
+            style={{ maxWidth: 500 }}
           />
           <h2
             id="maax-heading"
             className="mt-8 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
           >
-            An agentic software execution environment.
+            A command environment for agentic software execution.
           </h2>
           <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-            MAAX Studio is being designed to turn software goals into structured missions that
-            coordinate agents, context, review, and controlled execution while keeping the operator
-            in command.
+            Separate from client delivery, MAAX Studio is Cyryx Labs&apos; product program for
+            coordinating software missions, project context, review, and controlled action — with
+            the operator in command.
           </p>
         </div>
 
@@ -116,12 +114,12 @@ export function MAAXStudioSpotlight() {
             <ProductPreview />
           </div>
 
-          <div className="cx-stagger">
+          <div className="cx-stagger lg:pt-4">
             {PRODUCT_LAYERS.map((layer) => (
               <article
                 key={layer.n}
                 data-maax-step
-                className="cx-stagger-item border-t border-[color-mix(in_oklab,var(--steel)_18%,transparent)] py-9 first:pt-0 lg:py-11"
+                className="cx-stagger-item border-t border-[color-mix(in_oklab,var(--steel)_18%,transparent)] py-7 first:pt-0 lg:py-8"
               >
                 <div className="flex items-baseline gap-4">
                   <span className="font-mono text-[10px] tracking-[0.24em] text-[var(--accent-glow)]">
@@ -134,31 +132,18 @@ export function MAAXStudioSpotlight() {
                 <p className="mt-4 text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base">
                   {layer.body}
                 </p>
-                <ul
-                  className="mt-5 flex flex-wrap gap-2"
-                  aria-label={`${layer.title} architecture components`}
-                >
-                  {layer.signals.map((signal) => (
-                    <li
-                      key={signal}
-                      className="rounded-sm border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]"
-                    >
-                      {signal}
-                    </li>
-                  ))}
-                </ul>
               </article>
             ))}
 
             <div className="cx-reveal mt-4 flex flex-col gap-3 sm:flex-row">
               <a
-                href="#contact"
+                href="/start"
                 onClick={() => {
                   setContactIntent("maax-early-access");
                   trackCta({
                     cta: "request_early_access",
                     section: "maax_spotlight",
-                    href: "#contact",
+                    href: "/start",
                   });
                 }}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--graphite)]"
@@ -169,7 +154,7 @@ export function MAAXStudioSpotlight() {
                 to="/products/maax-studio"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_22%,transparent)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
               >
-                Product details <ArrowRight className="h-4 w-4" aria-hidden />
+                Explore MAAX Studio <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
             </div>
           </div>

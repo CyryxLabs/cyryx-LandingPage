@@ -13,8 +13,8 @@ const PATH = "/privacy";
 const TITLE = "Privacy Policy — Cyryx Labs";
 const DESC =
   "How Cyryx Labs collects, uses, and protects information from visitors and clients of cyryxlabs.com.";
-const LAST_UPDATED = "June 26, 2026";
-const DATE_MODIFIED_ISO = "2026-06-26";
+const LAST_UPDATED = "July 23, 2026";
+const DATE_MODIFIED_ISO = "2026-07-23";
 
 export const Route = createFileRoute("/privacy")({
   head: () =>
@@ -56,7 +56,6 @@ const SECTIONS: Array<{ id: string; n: string; title: string }> = [
 function PrivacyPage() {
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
-      <a href="#main-content" className="skip-link">Skip to content</a>
       <Header />
       <main id="main-content" tabIndex={-1} className="relative focus:outline-none">
         <section className="relative pt-28 pb-10 lg:pt-40 lg:pb-14">
@@ -67,7 +66,7 @@ function PrivacyPage() {
                 Legal · Privacy
               </HudLabel>
               <span className="hud-label text-[var(--silver-dim)]">
-                v2026.06 · Last updated {LAST_UPDATED}
+                v2026.07 · Last updated {LAST_UPDATED}
               </span>
             </div>
             <h1 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
@@ -150,6 +149,7 @@ function PrivacyPage() {
                 </p>
                 <ul className="mt-3 list-disc space-y-2 pl-5 marker:text-[var(--accent-glow)]">
                   <li><span className="text-[var(--silver)]">Contact form data:</span> name, email, optional company, message body, and consent confirmation.</li>
+                  <li><span className="text-[var(--silver)]">MAAX Studio early-access data:</span> name, work email, telephone, country, consent record, referral source, and campaign attribution parameters you arrive with.</li>
                   <li><span className="text-[var(--silver)]">Newsletter data:</span> email address and opt-in state, plus timestamped confirmation and unsubscribe records.</li>
                   <li><span className="text-[var(--silver)]">Technical data:</span> IP address, user agent, request timestamps, referrer, and aggregated performance metrics (Core Web Vitals).</li>
                   <li><span className="text-[var(--silver)]">Engagement data:</span> if you enter into an MSA, business contact details, invoicing information, and correspondence records.</li>
@@ -165,6 +165,7 @@ function PrivacyPage() {
               <Panel id="use" n="04" title="How we use information">
                 <ul className="list-disc space-y-2 pl-5 marker:text-[var(--accent-glow)]">
                   <li>Respond to inquiries and provide the information or service you requested.</li>
+                  <li>Manage MAAX Studio early-access requests, assess fit for future access waves, and contact people who expressly joined that list.</li>
                   <li>Deliver newsletters and administrative communications you have opted into.</li>
                   <li>Operate, secure, monitor, and improve the site and our services.</li>
                   <li>Detect, prevent, and investigate fraud, abuse, or security incidents.</li>
@@ -211,6 +212,7 @@ function PrivacyPage() {
               <Panel id="retention" n="07" title="Retention & deletion">
                 <ul className="list-disc space-y-2 pl-5 marker:text-[var(--accent-glow)]">
                   <li><span className="text-[var(--silver)]">Contact submissions:</span> up to 24 months from last contact.</li>
+                  <li><span className="text-[var(--silver)]">MAAX Studio early-access records:</span> until you withdraw consent or the early-access program ends, plus a minimal suppression record where needed to honor an opt-out.</li>
                   <li><span className="text-[var(--silver)]">Newsletter records:</span> until you unsubscribe, plus a suppression record retained indefinitely to honor your opt-out.</li>
                   <li><span className="text-[var(--silver)]">Server logs:</span> up to 90 days, then rotated or aggregated.</li>
                   <li><span className="text-[var(--silver)]">Engagement records:</span> for the term of the MSA and the period required by tax, accounting, and legal-hold obligations.</li>

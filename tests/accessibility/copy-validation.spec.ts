@@ -57,13 +57,12 @@ test.describe("Copy variants — shape validation", () => {
 });
 
 test.describe("Consent + legal anchors render", () => {
-  test("contact consent block contains Privacy Policy + email anchors", async ({ page }) => {
-    await page.goto("/");
-    const consent = page.locator('label[for="consent"]');
-    await expect(consent).toContainText(/agree to be contacted/i);
+  test("project qualification consent contains the Privacy Policy anchor", async ({ page }) => {
+    await page.goto("/start");
+    const consent = page.locator('label:has(input[name="consent"])');
+    await expect(consent).toContainText(/consent to Cyryx Labs contacting me/i);
     await expect(consent).toContainText(/Privacy Policy/i);
     await expect(consent.locator('a[href="/privacy"]')).toHaveCount(1);
-    await expect(consent.locator('a[href^="mailto:"]')).toHaveCount(1);
   });
 });
 
@@ -123,11 +122,11 @@ test.describe("Hero — enterprise value proposition", () => {
     const section = page.locator("#execution-gap");
     await expect(section).toBeVisible();
     await expect(section).toContainText("Gartner predicts");
-    await expect(section).toContainText("57% of high-maturity organizations");
-    await expect(section).toContainText("14% of low-maturity organizations");
+    await expect(section).toContainText("more than 40% of agentic AI projects");
+    await expect(section).toContainText("60% of AI projects");
 
     const sources = section.locator('a[href^="https://www.gartner.com/en/newsroom/"]');
-    await expect(sources).toHaveCount(3);
+    await expect(sources).toHaveCount(2);
     const sourceAttributes = await sources.evaluateAll((anchors) =>
       anchors.map((anchor) => ({
         target: anchor.getAttribute("target"),
@@ -135,7 +134,31 @@ test.describe("Hero — enterprise value proposition", () => {
       })),
     );
     expect(sourceAttributes).toEqual(
-      Array.from({ length: 3 }, () => ({ target: "_blank", rel: "noopener noreferrer" })),
+      Array.from({ length: 2 }, () => ({ target: "_blank", rel: "noopener noreferrer" })),
     );
+  });
+
+  test("homepage translates the execution thesis into executive outcomes", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const section = page.locator("#execution-gap");
+
+    await expect(section).toContainText("Turn AI investment into controlled operating capability.");
+    for (const outcome of [
+      "Reduce operational risk",
+      "Control spend before scale",
+      "Create decision evidence",
+      "Move beyond pilots",
+    ]) {
+      await expect(section).toContainText(outcome);
+    }
+  });
+
+  test("MAAX Studio is presented as a distinct Cyryx product program", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const section = page.locator("#maax");
+
+    await expect(section).toContainText("Cyryx Labs / Flagship product");
+    await expect(section).toContainText("Separate from client delivery");
+    await expect(section).toContainText("Active development");
   });
 });

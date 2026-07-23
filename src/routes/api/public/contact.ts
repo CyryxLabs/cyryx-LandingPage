@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
 const Schema = z.object({
@@ -32,65 +33,38 @@ export const Route = createFileRoute("/api/public/contact")({
           return Response.json({ ok: true });
         }
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { clientIpHash, userAgentHash, checkRateLimit } = await import(
+        const { clientIpHash, userAgentHash } = await import(
           "@/lib/security/request.server"
         );
-        const { enqueueInternalEmail } = await import("@/lib/email/send-internal.server");
-
         const ipHash = clientIpHash(request);
         const uaHash = userAgentHash(request);
-
-        // Rate limit: 5 contact submissions per IP per hour.
-        const rl = await checkRateLimit(supabaseAdmin as any, "contact_submissions", ipHash, 5);
-        if (!rl.allowed) {
+        const url = process.env.SUPABASE_URL;
+        const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+        if (!url || !key) {
+          return Response.json({ error: "Backend unavailable" }, { status: 503 });
+        }
+        const supabase = createClient(url, key, {
+          auth: { persistSession: false, autoRefreshToken: false },
+        });
+        const normalizedEmail = data.email.toLowerCase();
+        const { error } = await supabase.rpc("submit_contact_public", {
+          p_name: data.name,
+          p_email: normalizedEmail,
+          p_company: data.company || "",
+          p_message: data.message,
+          p_interest: "project",
+          p_consent_version: "website-contact-v1-2026-07-23",
+          p_ip_hash: ipHash,
+          p_user_agent_hash: uaHash,
+        });
+        if (error) {
+          const rateLimited = /rate_limited/i.test(error.message);
+          console.error("[contact] RPC failed", rateLimited ? "rate_limited" : error.code);
           return Response.json(
-            { error: "Too many submissions — please try again later." },
-            { status: 429 },
+            { error: rateLimited ? "Too many submissions — please try again later." : "Could not save submission" },
+            { status: rateLimited ? 429 : 500 },
           );
         }
-
-        const normalizedEmail = data.email.toLowerCase();
-
-        // Persist the submission (audit + LGPD consent record).
-        const { error: insertError } = await supabaseAdmin
-          .from("contact_submissions")
-          .insert({
-            name: data.name,
-            email: normalizedEmail,
-            company: data.company || null,
-            message: data.message,
-            ip_hash: ipHash,
-            user_agent_hash: uaHash,
-          });
-        if (insertError) {
-          console.error("[contact] insert failed", insertError.message);
-          return Response.json({ error: "Could not save submission" }, { status: 500 });
-        }
-
-        const submittedAt = new Date().toISOString();
-
-        // Fire-and-forget both emails; failures are logged in email_send_log.
-        await Promise.all([
-          enqueueInternalEmail({
-            templateName: "contact-notification",
-            templateData: {
-              name: data.name,
-              email: normalizedEmail,
-              company: data.company || "",
-              message: data.message,
-              submittedAt,
-              ipHash,
-            },
-            idempotencyKey: `contact-notify-${ipHash}-${submittedAt}`,
-          }),
-          enqueueInternalEmail({
-            templateName: "contact-confirmation",
-            recipientEmail: normalizedEmail,
-            templateData: { name: data.name },
-            idempotencyKey: `contact-confirm-${ipHash}-${submittedAt}`,
-          }),
-        ]);
 
         return Response.json({ ok: true });
       },

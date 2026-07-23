@@ -19,6 +19,10 @@ export type CtaName =
   | "contact_email"
   | "view_research"
   | "read_cgp"
+  | "maax_waitlist_view"
+  | "maax_waitlist_started"
+  | "maax_waitlist_submitted"
+  | "maax_waitlist_error"
   | "qualification_form_submitted"
   | "qualification_form_error";
 
@@ -35,6 +39,7 @@ export type CtaSection =
   | "contact"
   | "footer"
   | "research_band"
+  | "maax_product"
   | "start";
 
 export interface TrackCtaInput {

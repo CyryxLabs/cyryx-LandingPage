@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
@@ -59,7 +59,7 @@ const NEXT_STEPS = [
   {
     n: "02",
     title: "Initial response",
-    body: "You can expect an initial response within one business day with fit, a question, or the clearest next step.",
+    body: "We respond with fit, a focused question, or the clearest next step after reviewing the available context.",
   },
   {
     n: "03",
@@ -82,6 +82,12 @@ export const Route = createFileRoute("/start")({
 function StartPage() {
   const [status, setStatus] = useState<"idle" | "submitting" | "ok" | "err">("idle");
   const [error, setError] = useState<string | null>(null);
+  const successRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (status !== "ok") return;
+    requestAnimationFrame(() => successRef.current?.focus());
+  }, [status]);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -201,12 +207,17 @@ function StartPage() {
           </ol>
 
           {status === "ok" ? (
-            <div className="mt-10 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-6 backdrop-blur-sm">
+            <div
+              ref={successRef}
+              tabIndex={-1}
+              role="status"
+              aria-live="polite"
+              className="mt-10 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-6 outline-none backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+            >
               <HudLabel className="text-[var(--accent-glow)]">Received</HudLabel>
               <p className="mt-3 text-[15px] leading-relaxed text-[var(--silver)]">
-                Thank you. Your submission has been recorded. You can expect an initial response
-                within one business day. That response may confirm fit, ask for context, recommend a
-                different next step, or decline the opportunity.
+                Thank you. Your submission has been recorded. Our response may confirm fit, ask for
+                context, recommend a different next step, or decline the opportunity.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
@@ -227,7 +238,7 @@ function StartPage() {
               </div>
             </div>
           ) : (
-            <form onSubmit={onSubmit} className="mt-10 space-y-6" noValidate>
+            <form onSubmit={onSubmit} className="mt-10 space-y-6">
               {/* Honeypot */}
               <input
                 type="text"
@@ -242,23 +253,7 @@ function StartPage() {
                 <Field label="Full name" name="name" required autoComplete="name" />
                 <Field label="Work email" name="email" type="email" required autoComplete="email" />
                 <Field label="Company" name="company" required autoComplete="organization" />
-                <Field label="Role" name="role" autoComplete="organization-title" />
-                <Field
-                  label="Company website"
-                  name="companyWebsite"
-                  type="url"
-                  placeholder="https://"
-                  className="sm:col-span-2"
-                />
-              </div>
-
-              <div className="grid gap-6 sm:grid-cols-2">
-                <Select label="Project type" name="projectType" required options={PROJECT_TYPES} />
-                <Field
-                  label="Current stage"
-                  name="stage"
-                  placeholder="e.g. exploring, defined problem, in production"
-                />
+                <Select label="Project type" name="projectType" options={PROJECT_TYPES} />
               </div>
 
               <TextArea
@@ -275,26 +270,39 @@ function StartPage() {
                 placeholder="What would be materially different if this work succeeds?"
               />
 
-              <div className="grid gap-6 sm:grid-cols-2">
-                <Select
-                  label="Investment range"
-                  name="investment"
-                  required
-                  options={INVESTMENT_RANGES}
-                />
-                <Select label="Desired timeline" name="timeline" required options={TIMELINES} />
-              </div>
-
-              <TextArea
-                label="Systems or data involved"
-                name="systems"
-                rows={2}
-                placeholder="e.g. HubSpot CRM, Postgres warehouse, Google Workspace"
-              />
-
-              <Select label="Decision-maker status" name="decision" required options={DECISION} />
-
-              <TextArea label="Additional context" name="notes" rows={3} />
+              <details className="group rounded-md border border-white/10 bg-[color-mix(in_oklab,var(--graphite)_35%,transparent)]">
+                <summary className="cursor-pointer list-none px-5 py-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--accent-glow)]">
+                  Add planning context <span className="text-[var(--accent-glow)]">/ optional</span>
+                </summary>
+                <div className="grid gap-6 border-t border-white/10 p-5 sm:grid-cols-2">
+                  <Field label="Role" name="role" autoComplete="organization-title" />
+                  <Field
+                    label="Company website"
+                    name="companyWebsite"
+                    type="url"
+                    placeholder="https://"
+                  />
+                  <Field
+                    label="Current stage"
+                    name="stage"
+                    placeholder="e.g. exploring or in production"
+                  />
+                  <Select label="Investment range" name="investment" options={INVESTMENT_RANGES} />
+                  <Select label="Desired timeline" name="timeline" options={TIMELINES} />
+                  <Select label="Decision-maker status" name="decision" options={DECISION} />
+                  <div className="sm:col-span-2">
+                    <TextArea
+                      label="Systems or data involved"
+                      name="systems"
+                      rows={2}
+                      placeholder="e.g. HubSpot CRM, Postgres warehouse, Google Workspace"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <TextArea label="Additional context" name="notes" rows={3} />
+                  </div>
+                </div>
+              </details>
 
               <label className="flex items-start gap-3 text-sm text-[var(--silver-dim)]">
                 <input
@@ -333,9 +341,8 @@ function StartPage() {
                   </span>
                 </button>
                 <p className="text-xs text-[var(--silver-dim)]">
-                  Initial response within one business day. Acceptance, scope, timing, ownership,
-                  licensing, support, and commercial terms are defined separately for each
-                  engagement.
+                  Acceptance, scope, timing, ownership, licensing, support, and commercial terms are
+                  defined separately for each engagement.
                 </p>
               </div>
             </form>
@@ -412,6 +419,7 @@ function TextArea({
       <textarea
         name={name}
         required={required}
+        minLength={required ? 10 : undefined}
         rows={rows}
         placeholder={placeholder}
         className="mt-2 w-full rounded-md border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_55%,transparent)] px-4 py-3 text-sm text-[var(--silver)] placeholder:text-[var(--silver-dim)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-glow)]"

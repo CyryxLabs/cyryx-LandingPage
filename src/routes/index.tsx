@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Header } from "@/components/cyryx/Header";
@@ -7,15 +6,12 @@ import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { StoryChapter, StoryProgress } from "@/components/cyryx/StoryChapter";
 import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
-import { ContactSection } from "@/components/cyryx/ContactSection";
 import { ExecutionGap } from "@/components/cyryx/v4/ExecutionGap";
 import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
 import { OperatingModel } from "@/components/cyryx/v4/OperatingModel";
-import { BusinessOutcomes } from "@/components/cyryx/v4/BusinessOutcomes";
-import { Capabilities } from "@/components/cyryx/v4/Capabilities";
-import { HowWeWork } from "@/components/cyryx/v4/HowWeWork";
-import { ResearchBand } from "@/components/cyryx/v4/ResearchBand";
-import { WhyCyryx } from "@/components/cyryx/v4/WhyCyryx";
+import { ControlledExecution } from "@/components/cyryx/v4/ControlledExecution";
+import { EvidenceBeforeClaims } from "@/components/cyryx/v4/EvidenceBeforeClaims";
+import { CompactStart } from "@/components/cyryx/v4/CompactStart";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
 import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
@@ -142,49 +138,30 @@ export const Route = createFileRoute("/")({
 function IndexPage() {
   useCyryxScrollAnimations();
 
-  const handleSkipToContent = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-    const target = document.getElementById("main-content");
-    if (target) {
-      e.preventDefault();
-      // Update URL fragment without triggering route navigation
-      window.history.replaceState(null, "", "#main-content");
-      target.focus({ preventScroll: true });
-      target.scrollIntoView({ behavior: "auto", block: "start" });
-    }
-  }, []);
-
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">
-      <a
-        href="#main-content"
-        onClick={handleSkipToContent}
-        className="skip-link sr-only focus:not-sr-only fixed left-4 top-4 z-[100] inline-flex h-11 items-center justify-center rounded-md px-5 bg-[var(--accent-glow)] text-[var(--onyx)] font-semibold shadow-[0_0_20px_var(--accent-glow)] outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-      >
-        Skip to content
-      </a>
       <StickyMobileCTA />
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero />
         <div className="cx-story relative" data-story-root>
           <StoryProgress />
-          <StoryChapter index="01" label="Why now">
+          <StoryChapter index="01" label="Reality">
             <ExecutionGap />
           </StoryChapter>
           <StoryChapter index="02" label="Execution system">
-            <OperatingModel />
-            <Capabilities />
-            <BusinessOutcomes />
-            <HowWeWork />
+            <ControlledExecution />
           </StoryChapter>
-          <StoryChapter index="03" label="Governed product">
+          <StoryChapter index="03" label="Delivery">
+            <OperatingModel />
+          </StoryChapter>
+          <StoryChapter index="04" label="Governance and product">
             <SecurityPosture />
             <MAAXStudioSpotlight />
           </StoryChapter>
-          <StoryChapter index="04" label="Proof and contact">
-            <ResearchBand />
-            <WhyCyryx />
-            <ContactSection />
+          <StoryChapter index="05" label="Evidence and start">
+            <EvidenceBeforeClaims />
+            <CompactStart />
           </StoryChapter>
         </div>
       </main>

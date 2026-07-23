@@ -38,7 +38,9 @@ export function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const parallax = { y: 0, scale: 1, progress: 0 };
 
-  // Pause video when offscreen to save CPU/battery
+  // The film is a scroll-controlled surface. Never fall back to autoplay:
+  // without ScrollTrigger the poster remains visible instead of changing the
+  // approved composition on its own.
   useEffect(() => {
     if (typeof window === "undefined" || reducedMotion) return;
     const host = root.current;
@@ -47,19 +49,11 @@ export function Hero() {
       ([entry]) => {
         const v = videoRef.current;
         if (entry.isIntersecting) {
-          if (host.dataset.scrollScrub === "true") {
-            v?.pause();
-            return;
-          }
           if (v?.readyState && v.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
             setVideoReady(true);
           }
-          v?.play()
-            .then(() => setVideoReady(true))
-            .catch(() => {});
-        } else {
-          v?.pause();
         }
+        v?.pause();
       },
       { threshold: 0.05 },
     );
@@ -124,10 +118,9 @@ export function Hero() {
         {!reducedMotion && (
           <video
             ref={videoRef}
-            autoPlay
             muted
             playsInline
-            preload="none"
+            preload="metadata"
             disablePictureInPicture
             disableRemotePlayback
             onLoadedData={() => setVideoReady(true)}
@@ -203,6 +196,7 @@ export function Hero() {
       {/* Teal aura behind banner */}
       <div
         aria-hidden
+        data-hero-aura
         className="cx-stage pointer-events-none absolute left-1/2 top-[58%] -z-[5] h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rounded-full lg:top-1/2"
         style={{
           background:
@@ -212,7 +206,10 @@ export function Hero() {
       />
 
       {/* Foreground content */}
-      <div className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-28 sm:px-10 sm:pt-40 sm:pb-28 lg:px-14">
+      <div
+        data-hero-content
+        className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-28 sm:px-10 sm:pt-40 sm:pb-28 lg:px-14"
+      >
         <div className="mx-auto w-full max-w-[68rem] sm:mx-0">
           <div className="cx-hero-panel">
             {/* Headline */}
@@ -266,12 +263,13 @@ export function Hero() {
       {/* A minimal affordance makes the pinned, scroll-driven sequence discoverable. */}
       <div
         aria-hidden="true"
-        className="cx-hero-scroll-cue pointer-events-none absolute bottom-8 right-8 hidden items-center gap-4 lg:flex xl:bottom-10 xl:right-12"
+        data-hero-scroll-cue
+        className="cx-hero-scroll-cue pointer-events-none absolute bottom-6 right-5 flex items-center gap-3 sm:bottom-8 sm:right-8 sm:gap-4 xl:bottom-10 xl:right-12"
       >
-        <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/55">
+        <span className="hidden font-mono text-[9px] uppercase tracking-[0.28em] text-white/55 sm:inline">
           Scroll to execute
         </span>
-        <span className="cx-hero-scroll-track relative block h-px w-24 overflow-hidden bg-white/15">
+        <span className="cx-hero-scroll-track relative block h-px w-16 overflow-hidden bg-white/15 sm:w-24">
           <span
             data-scroll-progress
             className="absolute inset-0 origin-left scale-x-[0.06] bg-[var(--accent-glow)] will-change-transform"
