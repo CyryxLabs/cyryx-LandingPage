@@ -25,7 +25,7 @@ const PRODUCTS = [
 
 export function ProductEcosystem() {
   return (
-    <section id="products" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--onyx)]">
+    <section id="product-ecosystem" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--onyx)]">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
@@ -81,10 +81,10 @@ export function ProductEcosystem() {
             </div>
           </div>
           <figcaption className="mt-3 grid gap-1 text-[11px] text-[var(--silver-dim)] sm:hidden">
-            <span><span className="text-[var(--accent-glow)]">Explorer</span> · arquivos, agentes e gates</span>
-            <span><span className="text-[var(--accent-glow)]">Editor</span> · abas e minimap</span>
-            <span><span className="text-[var(--accent-glow)]">Execution Graph</span> · gates de qualidade</span>
-            <span><span className="text-[var(--accent-glow)]">Eval Terminal</span> · tokens, latência e custo</span>
+            <span><span className="text-[var(--accent-glow)]">Explorer</span> · Files, agents, and gates</span>
+            <span><span className="text-[var(--accent-glow)]">Editor</span> · Tabs and minimap</span>
+            <span><span className="text-[var(--accent-glow)]">Execution Graph</span> · Quality gates</span>
+            <span><span className="text-[var(--accent-glow)]">Eval Terminal</span> · Tokens, latency, and cost</span>
           </figcaption>
         </figure>
 

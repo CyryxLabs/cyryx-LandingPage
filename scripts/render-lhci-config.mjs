@@ -18,6 +18,7 @@ const defaults = {
   LH_CLS_MAX: 0.1,
   LH_TBT_MAX_MOBILE: 300,
   LH_TBT_MAX_DESKTOP: 200,
+  LH_INP_MAX_MOBILE: 200,
 };
 
 let raw = readFileSync(template, "utf8");

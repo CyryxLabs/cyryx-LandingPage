@@ -1,70 +1,54 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
+
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
-import { BackgroundMonolith } from "@/components/cyryx/primitives/BackgroundMonolith";
-import { CapabilityStrip } from "@/components/cyryx/CapabilityStrip";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
-import { PerfToggle } from "@/components/cyryx/PerfToggle";
-import { DiagnosticsOverlay } from "@/components/cyryx/DiagnosticsOverlay";
+import { StoryChapter, StoryProgress } from "@/components/cyryx/StoryChapter";
+import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
+import { ExecutionGap } from "@/components/cyryx/v4/ExecutionGap";
+import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
+import { OperatingModel } from "@/components/cyryx/v4/OperatingModel";
+import { ControlledExecution } from "@/components/cyryx/v4/ControlledExecution";
+import { EvidenceBeforeClaims } from "@/components/cyryx/v4/EvidenceBeforeClaims";
+import { CompactStart } from "@/components/cyryx/v4/CompactStart";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
-import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
-import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
-import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
+import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
+import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
+import brandMark from "@/assets/cyryx-brand-mark.png";
 
-// Below-the-fold: code-split to shrink the initial mobile bundle.
-const WhyCyryx = lazy(() => import("@/components/cyryx/WhyCyryx").then(m => ({ default: m.WhyCyryx })));
-const CoreCapabilities = lazy(() => import("@/components/cyryx/CoreCapabilities").then(m => ({ default: m.CoreCapabilities })));
-const CommandLayerSection = lazy(() => import("@/components/cyryx/CommandLayerSection").then(m => ({ default: m.CommandLayerSection })));
-const MAAXStudioSpotlight = lazy(() => import("@/components/cyryx/MAAXStudioSpotlight").then(m => ({ default: m.MAAXStudioSpotlight })));
-const ProductEcosystem = lazy(() => import("@/components/cyryx/ProductEcosystem").then(m => ({ default: m.ProductEcosystem })));
-const ProcessTimeline = lazy(() => import("@/components/cyryx/ProcessTimeline").then(m => ({ default: m.ProcessTimeline })));
-const CTASection = lazy(() => import("@/components/cyryx/CTASection").then(m => ({ default: m.CTASection })));
-const AppliedAILab = lazy(() => import("@/components/cyryx/AppliedAILab").then(m => ({ default: m.AppliedAILab })));
-const WhoWeServe = lazy(() => import("@/components/cyryx/WhoWeServe").then(m => ({ default: m.WhoWeServe })));
-const Ecosystem = lazy(() => import("@/components/cyryx/Ecosystem").then(m => ({ default: m.Ecosystem })));
-const MetricsBand = lazy(() => import("@/components/cyryx/MetricsBand").then(m => ({ default: m.MetricsBand })));
-const ContactSection = lazy(() => import("@/components/cyryx/ContactSection").then(m => ({ default: m.ContactSection })));
-
-const SectionFallback = () => <div aria-hidden style={{ minHeight: 480 }} />;
+const HOME_URL = "https://cyryxlabs.com/";
+const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
+const HOME_DESCRIPTION =
+  "Cyryx Labs advises, builds, and operates governed AI systems that turn enterprise strategy into controlled execution—with ownership, evidence, and cost visibility.";
+const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cyryx Labs — AI Execution Systems for the Agentic Era" },
-      {
-        name: "description",
-        content:
-          "Cyryx Labs builds proprietary AI products, custom automation systems, and agentic workflows that turn AI into governed execution.",
-      },
-      { property: "og:title", content: "Cyryx Labs — AI Products & Execution Systems" },
-      {
-        property: "og:description",
-        content:
-          "Proprietary AI products, custom AI systems, and agentic workflows for the agentic era.",
-      },
+      { title: HOME_TITLE },
+      { name: "description", content: HOME_DESCRIPTION },
+      { property: "og:title", content: HOME_TITLE },
+      { property: "og:description", content: HOME_DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: HOME_URL },
+      { property: "og:image", content: HOME_SOCIAL_IMAGE },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Cyryx Labs — AI Products & Execution Systems" },
-      {
-        name: "twitter:description",
-        content:
-          "The execution layer for operational AI. AI products, agentic workflow systems, and governed execution infrastructure.",
-      },
+      { name: "twitter:title", content: HOME_TITLE },
+      { name: "twitter:description", content: HOME_DESCRIPTION },
+      { name: "twitter:image", content: HOME_SOCIAL_IMAGE },
       { name: "theme-color", content: "#050607" },
     ],
     links: [
       {
         rel: "preload",
         as: "image",
-        href: hero1920.url,
-        imageSrcSet: `${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`,
-        imageSizes: "(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px",
+        href: heroPoster1920,
+        imageSrcSet: `${heroPoster960} 960w, ${heroPoster1920} 1920w`,
+        imageSizes: "100vw",
         fetchPriority: "high",
       },
-      { rel: "canonical", href: "/" },
+      { rel: "canonical", href: HOME_URL },
     ],
     scripts: [
       {
@@ -77,130 +61,111 @@ export const Route = createFileRoute("/")({
               "@id": "https://cyryxlabs.com/#organization",
               name: "Cyryx Labs",
               legalName: "Cyryx Labs",
-              alternateName: ["Cyryx", "Cyryx AI"],
+              alternateName: "Cyryx",
               url: "https://cyryxlabs.com/",
               description:
-                "Cyryx Labs is an AI product and systems company building proprietary AI products, governed agentic workflow systems, and execution infrastructure.",
-              slogan: "The execution layer for operational AI.",
-              foundingDate: "2024",
+                "Cyryx Labs is an AI lab and systems company that advises, builds, and operates governed AI systems for organizations moving from strategy to controlled execution.",
+              slogan: "The execution layer for enterprise AI.",
               industry: "Artificial Intelligence",
-              areaServed: "Worldwide",
               email: "contact@cyryxlabs.com",
-              sameAs: [
-                "https://www.linkedin.com/company/cyryx-labs",
-                "https://x.com/cyryxlabs",
-                "https://github.com/cyryxlabs",
-              ],
-              makesOffer: [
-                { "@type": "Offer", name: "MAAX Studio", itemOffered: { "@id": "https://cyryxlabs.com/#maax-studio" } },
-              ],
               knowsAbout: [
-                "Operational AI",
+                "AI strategy and advisory",
                 "Agentic workflow systems",
                 "AI execution infrastructure",
-                "Governed autonomy",
-                "MAAX Runtime",
+                "AI governance and operations",
                 "MAAX Studio",
-                "Proprietary AI products",
               ],
+              logo: {
+                "@type": "ImageObject",
+                url: new URL(brandMark, HOME_URL).href,
+                width: "320",
+                height: "512",
+              },
             },
             {
               "@type": "WebSite",
               "@id": "https://cyryxlabs.com/#website",
               url: "https://cyryxlabs.com/",
               name: "Cyryx Labs",
-              publisher: { "@id": "https://cyryxlabs.com/#organization" },
-              inLanguage: "en",
+              publisher: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
             },
             {
               "@type": "WebPage",
               "@id": "https://cyryxlabs.com/#webpage",
               url: "https://cyryxlabs.com/",
-              name: "Cyryx Labs — AI Products & Execution Systems for the Agentic Era",
-              isPartOf: { "@id": "https://cyryxlabs.com/#website" },
-              about: { "@id": "https://cyryxlabs.com/#organization" },
+              name: "Cyryx Labs — The Execution Layer for Enterprise AI",
+              isPartOf: {
+                "@id": "https://cyryxlabs.com/#website",
+              },
+              about: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
               description:
-                "Proprietary AI products, governed agentic workflows, and execution infrastructure for teams operationalizing AI.",
+                "Cyryx Labs advises, builds, and operates governed AI systems that turn enterprise strategy into controlled execution—with ownership, evidence, and cost visibility.",
             },
             {
               "@type": "SoftwareApplication",
               "@id": "https://cyryxlabs.com/#maax-studio",
               name: "MAAX Studio",
-              alternateName: "MAAX Studio (Runtime-first)",
               applicationCategory: "DeveloperApplication",
               applicationSubCategory: "Agentic Execution Environment",
-              operatingSystem: "macOS, Windows, Linux",
-              softwareRequirements: "MAAX Runtime",
-              featureList: [
-                "Runtime-first agentic execution",
-                "Governed autonomy",
-                "Local-first execution context",
-                "Auditable workflow runtime",
-              ],
-              audience: { "@type": "Audience", audienceType: "Teams operationalizing AI" },
-              creator: { "@id": "https://cyryxlabs.com/#organization" },
-              publisher: { "@id": "https://cyryxlabs.com/#organization" },
+              audience: {
+                "@type": "Audience",
+                audienceType: "Software teams evaluating an active-development environment",
+              },
+              creator: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
+              publisher: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
               description:
-                "MAAX Studio is a runtime-first agentic execution environment for operational AI, powered by the MAAX Runtime.",
-              brand: { "@id": "https://cyryxlabs.com/#organization" },
-              offers: { "@type": "Offer", availability: "https://schema.org/PreOrder", price: "0", priceCurrency: "USD" },
+                "MAAX Studio is an agentic software execution environment in active development at Cyryx Labs.",
+              brand: {
+                "@id": "https://cyryxlabs.com/#organization",
+              },
             },
           ],
         }),
       },
     ],
   }),
-  component: Index,
+  component: IndexPage,
 });
 
-function Index() {
+function IndexPage() {
   useCyryxScrollAnimations();
+
   return (
-    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
-      <a
-        href="#main-content"
-        className="skip-link"
-        onClick={(event) => {
-          const main = document.getElementById("main-content");
-          if (!main) return;
-          event.preventDefault();
-          main.focus({ preventScroll: true });
-          main.scrollIntoView({ block: "start" });
-          window.history.replaceState(null, "", "#main-content");
-        }}
-      >
-        Skip to content
-      </a>
+    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">
+      <StickyMobileCTA />
       <Header />
-      <BackgroundMonolith />
-      <main id="main-content" role="main" tabIndex={-1} className="relative z-10 focus:outline-none">
-        {/* Continuous teal core line drawn by scroll (desktop only) */}
-        <span
-          aria-hidden
-          data-core-line
-          className="cx-core-line hidden lg:block"
-        />
+      <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero />
-        <CapabilityStrip />
-        <Suspense fallback={<SectionFallback />}>
-          <WhyCyryx />
-          <CoreCapabilities />
-          <ProductEcosystem />
-          <MAAXStudioSpotlight />
-          <CommandLayerSection />
-          <AppliedAILab />
-          <ProcessTimeline />
-          <MetricsBand />
-          <WhoWeServe />
-          <Ecosystem />
-          <CTASection />
-          <ContactSection />
-        </Suspense>
+        <div className="cx-story relative" data-story-root>
+          <StoryProgress />
+          <StoryChapter index="01" label="Reality">
+            <ExecutionGap />
+          </StoryChapter>
+          <StoryChapter index="02" label="Execution system">
+            <ControlledExecution />
+          </StoryChapter>
+          <StoryChapter index="03" label="Delivery">
+            <OperatingModel />
+          </StoryChapter>
+          <StoryChapter index="04" label="Governance and product">
+            <SecurityPosture />
+            <MAAXStudioSpotlight />
+          </StoryChapter>
+          <StoryChapter index="05" label="Evidence and start">
+            <EvidenceBeforeClaims />
+            <CompactStart />
+          </StoryChapter>
+        </div>
       </main>
       <Footer />
-      <StickyMobileCTA />
-      <PerfToggle />
-      <DiagnosticsOverlay />
     </div>
   );
 }

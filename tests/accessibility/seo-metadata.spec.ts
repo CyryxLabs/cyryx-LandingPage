@@ -1,17 +1,17 @@
 import { expect, test } from "@playwright/test";
 
 const EXPECTED = {
-  title: /Cyryx Labs.*(AI Products|Execution Systems)/i,
-  description: /Cyryx Labs.*(proprietary AI products|agentic|governed execution)/i,
+  title: /Cyryx Labs.*Execution Layer for Enterprise AI/i,
+  description: /Cyryx Labs.*governed AI systems.*(ownership|evidence|cost visibility)/i,
   ogTitle: /Cyryx Labs/,
-  ogDescription: /(Proprietary AI products|agentic|execution)/i,
+  ogDescription: /(governed AI systems|ownership|evidence|cost visibility)/i,
   ogUrl: /\/$/,
   twitterTitle: /Cyryx Labs/,
-  twitterDescription: /(execution|operational AI|agentic)/i,
+  twitterDescription: /(governed AI systems|ownership|evidence|cost visibility)/i,
 };
 
 test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
 
   await expect(page).toHaveTitle(EXPECTED.title);
 
@@ -29,8 +29,10 @@ test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async 
   expect(await link('link[rel="canonical"]')).toMatch(/\/$/);
 });
 
-test("JSON-LD schema.org graph exposes Organization, WebSite, WebPage, MAAX Studio", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
+test("JSON-LD exposes the organization, site, page, and approved MAAX Studio product entity", async ({
+  page,
+}) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
   const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
   expect(blocks.length).toBeGreaterThan(0);
 
@@ -47,6 +49,6 @@ test("JSON-LD schema.org graph exposes Organization, WebSite, WebPage, MAAX Stud
 
   const org = graph.find((n) => n["@type"] === "Organization");
   expect(org?.name).toBe("Cyryx Labs");
-  const app = graph.find((n) => n["@type"] === "SoftwareApplication");
-  expect(app?.name).toBe("MAAX Studio");
+  const apps = graph.filter((n) => n["@type"] === "SoftwareApplication");
+  expect(apps.map((app) => app.name)).toEqual(["MAAX Studio"]);
 });

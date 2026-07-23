@@ -14,13 +14,13 @@ test.describe("Initial scroll restoration", () => {
     expect(y).toBeLessThanOrEqual(2);
   });
 
-  test("strips hash and stays at top when visiting /#contact directly", async ({ page }) => {
+  test("preserves direct section links and lands on the requested section", async ({ page }) => {
     await page.goto("/#contact");
     await page.waitForLoadState("domcontentloaded");
     await page.waitForTimeout(200);
     const y = await page.evaluate(() => window.scrollY);
     const hash = await page.evaluate(() => window.location.hash);
-    expect(y).toBeLessThanOrEqual(2);
-    expect(hash).toBe("");
+    expect(y).toBeGreaterThan(100);
+    expect(hash).toBe("#contact");
   });
 });

@@ -1,20 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import hero640 from "@/assets/cyryx-hero-monolith-v2-640.webp.asset.json";
-import hero1280 from "@/assets/cyryx-hero-monolith-v2-1280.webp.asset.json";
-import hero1920 from "@/assets/cyryx-hero-monolith-v2-1920.webp.asset.json";
+import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
+import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { trackCta } from "@/lib/track-cta";
 
-// Register only in the browser. Calling registerPlugin at module scope
-// during Cloudflare Workers SSR triggers "Disallowed operation called
-// within global scope" and blanks the page.
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(useGSAP, ScrollTrigger);
+const HERO_VIDEO_MOBILE = "/media/cyryx-hero-720.mp4";
+const HERO_VIDEO_DESKTOP = "/media/cyryx-hero-1080.mp4";
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeToReducedMotion(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+  mediaQuery.addEventListener("change", onStoreChange);
+  return () => mediaQuery.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+function getServerReducedMotionSnapshot() {
+  return false;
 }
 
 export function Hero() {
@@ -22,7 +29,37 @@ export function Hero() {
   const copy = getCopy(useCopyVariant()).hero;
   const [debug, setDebug] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
-  const [parallax, setParallax] = useState({ y: 0, scale: 1, progress: 0 });
+  const reducedMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    getServerReducedMotionSnapshot,
+  );
+  const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const parallax = { y: 0, scale: 1, progress: 0 };
+
+  // The film is a scroll-controlled surface. Never fall back to autoplay:
+  // without ScrollTrigger the poster remains visible instead of changing the
+  // approved composition on its own.
+  useEffect(() => {
+    if (typeof window === "undefined" || reducedMotion) return;
+    const host = root.current;
+    if (!host) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const v = videoRef.current;
+        if (entry.isIntersecting) {
+          if (v?.readyState && v.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+            setVideoReady(true);
+          }
+        }
+        v?.pause();
+      },
+      { threshold: 0.05 },
+    );
+    io.observe(host);
+    return () => io.disconnect();
+  }, [reducedMotion]);
 
   // Enable debug via ?heroDebug=1 or pressing "D"
   useEffect(() => {
@@ -42,150 +79,6 @@ export function Hero() {
     return () => window.removeEventListener("keydown", onKey);
   }, [debug]);
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia();
-      mm.add(
-        {
-          isMobile: "(max-width: 767px)",
-          isTablet: "(min-width: 768px) and (max-width: 1023px)",
-          isDesktop: "(min-width: 1024px)",
-          isAbove768: "(min-width: 768px)",
-          reduceMotion: "(prefers-reduced-motion: reduce)",
-        },
-        (ctx) => {
-          const { isMobile, isDesktop, isAbove768, reduceMotion } = ctx.conditions as {
-            isMobile: boolean;
-            isDesktop: boolean;
-            isAbove768: boolean;
-            reduceMotion: boolean;
-          };
-
-          if (reduceMotion) {
-            // Fully disable GSAP/ScrollTrigger work — snap to final state, no loops.
-            gsap.set(
-              [
-                ".cx-bg",
-                ".cx-bg-img",
-                ".cx-eyebrow",
-                ".cx-line",
-                ".cx-sub",
-                ".cx-cta",
-                ".cx-meta",
-                ".cx-scroll",
-                ".cx-scroll-dot",
-                ".cx-stage",
-              ],
-              { clearProps: "all", opacity: 1, y: 0, x: 0, scale: 1 },
-            );
-            // Kill any ScrollTriggers that may have been created elsewhere on the page.
-            ScrollTrigger.getAll().forEach((t) => t.kill());
-            gsap.globalTimeline.clear();
-            return;
-          }
-
-          const tl = gsap.timeline({
-            defaults: {
-              ease: "power3.out",
-              duration: isMobile ? 0.7 : 0.9,
-            },
-          });
-
-          tl.from(".cx-bg", { opacity: 0, duration: 1.4, ease: "power2.out" })
-            .from(
-              ".cx-line",
-              {
-                opacity: 0,
-                y: isMobile ? 18 : 28,
-                duration: isMobile ? 0.7 : 0.95,
-                stagger: isMobile ? 0.08 : 0.12,
-              },
-              "-=0.55",
-            )
-            .from(
-              ".cx-sub",
-              { opacity: 0, y: isMobile ? 12 : 18, duration: 0.65 },
-              "-=0.55",
-            )
-            .from(
-              ".cx-cta",
-              { opacity: 0, y: 12, duration: 0.55, stagger: 0.08 },
-              "-=0.45",
-            )
-            .from(
-              ".cx-meta",
-              { opacity: 0, y: 8, duration: 0.5, stagger: 0.05 },
-              "-=0.35",
-            )
-            .from(
-              ".cx-scroll",
-              { opacity: 0, duration: 0.6 },
-              "-=0.3",
-            );
-
-          gsap.to(".cx-scroll-dot", {
-            y: 14,
-            opacity: 0.2,
-            duration: 1.6,
-            ease: "power1.inOut",
-            repeat: -1,
-            yoyo: true,
-          });
-
-          // Core line glow — reinforces the vertical teal axis of the monolith.
-          gsap.fromTo(
-            ".cx-hero-line-glow",
-            { opacity: 0.25 },
-            {
-              opacity: 0.55,
-              duration: 2.4,
-              ease: "sine.inOut",
-              repeat: -1,
-              yoyo: true,
-            },
-          );
-
-          // Same parallax shape across all breakpoints — tuned per device.
-          // Mobile keeps the transform; we just dial back the travel/scale.
-          const bannerY = isDesktop ? -10 : isMobile ? -7 : -6;
-          const bannerScale = isDesktop ? 1.06 : isMobile ? 1.05 : 1.04;
-          const stageY = isDesktop ? -6 : isMobile ? -4 : -3;
-          const stageOpacity = isDesktop ? 0.4 : isMobile ? 0.5 : 0.6;
-
-          gsap.to(".cx-bg-img", {
-            yPercent: bannerY,
-            scale: bannerScale,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: isDesktop ? 0.6 : 0.4,
-              onUpdate: (self) =>
-                setParallax({
-                  y: bannerY * self.progress,
-                  scale: 1 + (bannerScale - 1) * self.progress,
-                  progress: self.progress,
-                }),
-            },
-          });
-          gsap.to(".cx-stage", {
-            yPercent: stageY,
-            opacity: stageOpacity,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: true,
-            },
-          });
-        },
-      );
-    },
-    { scope: root },
-  );
-
   return (
     <section
       ref={root}
@@ -195,38 +88,62 @@ export function Hero() {
       className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-black"
     >
       {/* Background */}
-      <div aria-hidden className="cx-bg absolute inset-0 -z-10" data-hide-overlay={hideOverlay || undefined}>
-        <img
-          src={hero1920.url}
-          srcSet={`${hero640.url} 640w, ${hero1280.url} 1280w, ${hero1920.url} 1920w`}
-          alt=""
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 1920px"
-          width={1920}
-          height={1080}
-          data-no3d="1"
-          className="cx-bg-img absolute inset-0 h-full w-full object-cover object-center will-change-transform"
-          draggable={false}
-        />
-        {/* deep vignette to anchor copy — vertical on mobile, horizontal on desktop */}
+      <div
+        aria-hidden
+        className="cx-bg cx-hero-media-frame absolute inset-0 -z-10 overflow-hidden"
+        data-hero-media-frame
+        data-hide-overlay={hideOverlay || undefined}
+      >
+        {/* Always-on local poster — instant LCP and fallback when reduced motion or video stalls. */}
+        <picture>
+          <source
+            type="image/webp"
+            srcSet={`${heroPoster960} 960w, ${heroPoster1920} 1920w`}
+            sizes="100vw"
+          />
+          <img
+            src={heroPoster1920}
+            alt=""
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+            width={1920}
+            height={1080}
+            data-no3d="1"
+            data-hero-poster
+            className="cx-bg-img cx-hero-media absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+            draggable={false}
+          />
+        </picture>
+        {!reducedMotion && (
+          <video
+            ref={videoRef}
+            muted
+            playsInline
+            preload="metadata"
+            disablePictureInPicture
+            disableRemotePlayback
+            onLoadedData={() => setVideoReady(true)}
+            onCanPlay={() => setVideoReady(true)}
+            onPlaying={() => setVideoReady(true)}
+            aria-hidden="true"
+            data-no3d="1"
+            data-hero-video
+            className={`cx-bg-img cx-hero-media absolute inset-0 h-full w-full object-cover object-center will-change-transform transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
+          >
+            <source media="(max-width: 767px)" src={HERO_VIDEO_MOBILE} type="video/mp4" />
+            <source src={HERO_VIDEO_DESKTOP} type="video/mp4" />
+          </video>
+        )}
+        {/* Responsive grade: preserves a stable, high-contrast reading field without hiding the film. */}
         <div
-          className="cx-hero-overlay absolute inset-0 data-[hide=true]:hidden"
+          className="cx-hero-overlay cx-hero-grade absolute inset-0 data-[hide=true]:hidden"
           data-hide={hideOverlay ? "true" : "false"}
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.08) 60%, rgba(0,0,0,0.78) 100%)",
-          }}
         />
         {/* top/bottom feather */}
         <div
-          className="cx-hero-overlay absolute inset-0 data-[hide=true]:hidden"
+          className="cx-hero-overlay cx-hero-feather absolute inset-0 data-[hide=true]:hidden"
           data-hide={hideOverlay ? "true" : "false"}
-          style={{
-            background:
-              "linear-gradient(180deg, #000 0%, transparent 14%, transparent 78%, #000 100%)",
-          }}
         />
         {/* subtle horizontal teal line */}
         <div
@@ -279,6 +196,7 @@ export function Hero() {
       {/* Teal aura behind banner */}
       <div
         aria-hidden
+        data-hero-aura
         className="cx-stage pointer-events-none absolute left-1/2 top-[58%] -z-[5] h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rounded-full lg:top-1/2"
         style={{
           background:
@@ -288,90 +206,75 @@ export function Hero() {
       />
 
       {/* Foreground content */}
-      <div className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-28 sm:px-10 sm:pt-40 sm:pb-28 lg:px-14">
+      <div
+        data-hero-content
+        className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-28 sm:px-10 sm:pt-40 sm:pb-28 lg:px-14"
+      >
         <div className="mx-auto w-full max-w-[68rem] sm:mx-0">
           <div className="cx-hero-panel">
-          {/* Headline */}
-          <h1
-            id="hero-heading"
-            className="cx-hero-heading font-orbitron font-bold tracking-[0.01em] text-silver-gradient [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
-          >
-            <span className="cx-line cx-hero-title-line block text-chrome-gradient">
-              {copy.headline}
-            </span>
-          </h1>
-
-          {/* Sub */}
-          <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-[var(--silver-dim)] [text-shadow:0_1px_12px_rgba(0,0,0,0.7)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
-            {copy.sub}
-          </p>
-
-          {/* CTAs */}
-          <div className="cx-hero-ctas mt-8 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:gap-5">
-            <a
-              href="#contact"
-              aria-label="Start a Project with Cyryx Labs"
-              className="cx-cta cx-cta-primary cx-liquid-glass group relative inline-flex min-h-[48px] w-full items-center justify-center gap-2 overflow-hidden rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--accent-glow)] shadow-[0_10px_30px_-12px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
-              onClick={() => trackCta({ cta: "start_project", section: "hero", href: "#contact" })}
+            {/* Headline */}
+            <h1
+              id="hero-heading"
+              className="cx-hero-heading font-orbitron font-bold tracking-[0.01em] text-silver-gradient [text-shadow:0_2px_24px_rgba(0,0,0,0.6)]"
             >
-              <span>{copy.ctaPrimary}</span>
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </a>
-            <a
-              href="#maax"
-              aria-label="Explore MAAX Studio — flagship product"
-              className="cx-cta cx-cta-ghost cx-liquid-glass group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-silver-gradient transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
-              onClick={() => trackCta({ cta: "explore_maax", section: "hero", href: "#maax" })}
-            >
-              <span>{copy.ctaSecondary}</span>
-              <ArrowUpRight
-                className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                aria-hidden="true"
-              />
-            </a>
-          </div>
-          </div>
-
-        {/* Bottom meta rail */}
-        <div
-          aria-label="Cyryx platform pillars and operating posture"
-          role="group"
-          className="mt-20 flex flex-col gap-4 border-t border-white/10 pt-6 sm:mt-24"
-        >
-          <ul className="flex list-none flex-col gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8 md:gap-y-3">
-            {copy.meta.map((m) => (
-              <li
-                key={m}
-                className="cx-meta flex items-center font-mono text-[11px] uppercase tracking-[0.32em]"
+              <span
+                data-hero-line
+                className="cx-line cx-hero-title-line block text-chrome-gradient"
               >
-                <span aria-hidden="true" className="mr-3 text-[var(--accent-glow)]">/</span>
-                <span className="text-metal">{m}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="cx-meta flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center font-mono text-[10.5px] uppercase tracking-[0.3em]">
-            {copy.rail.map((item, i) => (
-              <span key={item} className="flex items-center gap-x-3">
-                {i > 0 && (
-                  <span aria-hidden="true" className="text-[var(--accent-glow)]/60">·</span>
-                )}
-                <span className="text-metal-dim">{item}</span>
+                {copy.headline}
               </span>
-            ))}
-          </p>
-        </div>
+            </h1>
+
+            {/* Sub */}
+            <p className="cx-sub cx-hero-sub mt-5 max-w-[34ch] text-[15px] leading-[1.55] text-[rgba(230,238,239,0.82)] [text-shadow:0_1px_16px_rgba(0,0,0,0.9)] sm:mt-8 sm:max-w-xl sm:text-lg sm:leading-relaxed">
+              {copy.sub}
+            </p>
+
+            {/* CTAs */}
+            <div className="cx-hero-ctas mt-8 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:gap-5">
+              <a
+                href="#contact"
+                aria-label="Start a Project with Cyryx Labs"
+                className="cx-cta cx-cta-primary cx-liquid-glass group relative inline-flex min-h-[48px] w-full items-center justify-center gap-2 overflow-hidden rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--accent-glow)] shadow-[0_10px_30px_-12px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
+                onClick={() =>
+                  trackCta({ cta: "start_project", section: "hero", href: "#contact" })
+                }
+              >
+                <span>{copy.ctaPrimary}</span>
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <a
+                href="#maax"
+                aria-label="Explore MAAX Studio — flagship product"
+                className="cx-cta cx-cta-ghost cx-liquid-glass group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-silver-gradient transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
+                onClick={() => trackCta({ cta: "explore_maax", section: "hero", href: "#maax" })}
+              >
+                <span>{copy.ctaSecondary}</span>
+                <ArrowUpRight
+                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  aria-hidden="true"
+                />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Scroll cue */}
+      {/* A minimal affordance makes the pinned, scroll-driven sequence discoverable. */}
       <div
         aria-hidden="true"
-        className="cx-scroll pointer-events-none absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
+        data-hero-scroll-cue
+        className="cx-hero-scroll-cue pointer-events-none absolute bottom-6 right-5 flex items-center gap-3 sm:bottom-8 sm:right-8 sm:gap-4 xl:bottom-10 xl:right-12"
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.36em] text-[var(--silver-dim)]">
-          Scroll
+        <span className="hidden font-mono text-[9px] uppercase tracking-[0.28em] text-white/55 sm:inline">
+          Scroll to execute
         </span>
-        <span className="cx-scroll-dot h-6 w-px bg-gradient-to-b from-[var(--accent-glow)] to-transparent" />
+        <span className="cx-hero-scroll-track relative block h-px w-16 overflow-hidden bg-white/15 sm:w-24">
+          <span
+            data-scroll-progress
+            className="absolute inset-0 origin-left scale-x-[0.06] bg-[var(--accent-glow)] will-change-transform"
+          />
+        </span>
       </div>
     </section>
   );

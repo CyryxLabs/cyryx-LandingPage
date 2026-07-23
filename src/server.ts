@@ -1,5 +1,6 @@
 import "./lib/error-capture";
 
+import appCss from "./styles.css?url";
 import { BUILD_VERSION } from "./lib/build-info";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
@@ -46,9 +47,23 @@ function withCacheHeaders(request: Request, response: Response): Response {
   const contentType = headers.get("content-type") ?? "";
 
   headers.set("x-cyryx-build", BUILD_VERSION);
-  if (url.pathname.startsWith("/assets/")) {
+  if (headers.get("x-cyryx-rescue") === "latest-css") {
+    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+    headers.set("pragma", "no-cache");
+    headers.set("expires", "0");
+  } else if (url.pathname.startsWith("/assets/styles-") && contentType.includes("text/css")) {
+    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+    headers.set("pragma", "no-cache");
+    headers.set("expires", "0");
+    headers.set("x-cyryx-cache-policy", "stylesheet-no-store");
+  } else if (url.pathname.startsWith("/assets/") && response.ok) {
     headers.set("cache-control", "public, max-age=31536000, immutable");
     headers.set("x-cyryx-cache-policy", "hashed-asset-immutable");
+  } else if (url.pathname.startsWith("/assets/")) {
+    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+    headers.set("pragma", "no-cache");
+    headers.set("expires", "0");
+    headers.set("x-cyryx-cache-policy", "missing-asset-no-store");
   } else if (contentType.includes("text/html")) {
     headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
     headers.set("pragma", "no-cache");
@@ -66,12 +81,43 @@ function withCacheHeaders(request: Request, response: Response): Response {
   });
 }
 
+async function rescueStaleStylesheetRequest(request: Request, response: Response): Promise<Response> {
+  if (response.status !== 404) return response;
+  if (request.method !== "GET" && request.method !== "HEAD") return response;
+
+  const url = new URL(request.url);
+  if (!/^\/assets\/styles-[^/]+\.css$/.test(url.pathname)) return response;
+
+  const latestCssUrl = new URL(appCss, url.origin);
+  const latestCss = await fetch(latestCssUrl.toString(), {
+    headers: { accept: "text/css,*/*" },
+  }).catch(() => undefined);
+
+  if (!latestCss?.ok) return response;
+
+  const headers = new Headers(latestCss.headers);
+  headers.set("content-type", "text/css; charset=utf-8");
+  headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+  headers.set("pragma", "no-cache");
+  headers.set("expires", "0");
+  headers.set("x-cyryx-cache-policy", "stale-css-rescue");
+  headers.set("x-cyryx-rescue", "latest-css");
+
+  return new Response(request.method === "HEAD" ? null : latestCss.body, {
+    status: 200,
+    statusText: "OK",
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return withCacheHeaders(request, await normalizeCatastrophicSsrResponse(response));
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      const rescued = await rescueStaleStylesheetRequest(request, normalized);
+      return withCacheHeaders(request, rescued);
     } catch (error) {
       console.error(error);
       return withCacheHeaders(request, new Response(renderErrorPage(), {

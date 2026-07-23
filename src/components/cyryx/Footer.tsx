@@ -1,141 +1,142 @@
-import { Linkedin, Twitter, Youtube, Github, ArrowRight } from "lucide-react";
-import { CyryxWordmark } from "./primitives/CyryxMark";
-import { HudLabel } from "./primitives/HudLabel";
+import { Link } from "@tanstack/react-router";
+import { CyryxLockup } from "./primitives/CyryxMark";
+import { PRIMARY_NAVIGATION, PRIMARY_NAVIGATION_CTA, type NavigationItem } from "@/lib/navigation";
+import { cn } from "@/lib/utils";
 
-const COLUMNS = [
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "/company" },
-      { label: "Products", href: "/products" },
-      { label: "Solutions", href: "/solutions" },
-      { label: "Applied AI Lab", href: "/research" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    title: "Products",
-    links: [
-      { label: "MAAX Studio", href: "/products/maax-studio" },
-      { label: "Applied AI Lab", href: "/research" },
-      { label: "Solutions", href: "/solutions" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { label: "Research", href: "/research" },
-      { label: "Documentation", href: "#" },
-      { label: "Brand", href: "#" },
-      { label: "Early Access", href: "/contact" },
-    ],
-  },
-];
+type FooterItem = NavigationItem & {
+  external?: boolean;
+  mailto?: boolean;
+};
+
+function isInternal(href: string) {
+  return href.startsWith("/") && !href.startsWith("//");
+}
+
+function FooterLink({ item, className }: { item: FooterItem; className?: string }) {
+  const external = item.external;
+  const mailto = item.mailto || item.href.startsWith("mailto:");
+
+  if (mailto || external) {
+    return (
+      <a
+        href={item.href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        className={cn(
+          "text-sm sm:text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] rounded-sm whitespace-normal break-words",
+
+          className,
+        )}
+      >
+        {item.label}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      to={item.href}
+      className={cn(
+        "text-sm sm:text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] rounded-sm whitespace-normal break-words",
+        className,
+      )}
+      activeOptions={{ exact: true }}
+    >
+      {item.label}
+    </Link>
+  );
+}
 
 export function Footer() {
+  const year = new Date().getFullYear();
+
+  // Social links preserved as external
+  const SOCIAL: FooterItem[] = [
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/cyryx-labs", external: true },
+    { label: "X", href: "https://x.com/cyryxlabs", external: true },
+    { label: "GitHub", href: "https://github.com/cyryxlabs", external: true },
+  ];
+
+  // Legal row items
+  const LEGAL: FooterItem[] = [
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "Press", href: "mailto:press@cyryxlabs.com" },
+    { label: "Security", href: "mailto:security@cyryxlabs.com?subject=Security%20inquiry" },
+  ];
+
   return (
-    <footer className="relative border-t border-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] bg-[var(--graphite)]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-12 pb-[max(env(safe-area-inset-bottom),3rem)] lg:py-20">
-        <div className="cx-stagger grid gap-10 lg:grid-cols-[1.3fr_2.2fr_1.5fr]">
-          {/* Brand */}
-          <div className="cx-stagger-item">
-            <CyryxWordmark className="h-10" />
-            <p className="mt-5 text-sm leading-relaxed text-[var(--silver-dim)] max-w-xs">
-              AI products, execution systems, and applied research.
+    <footer
+      role="contentinfo"
+      className="relative border-t border-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] bg-[var(--graphite)]"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-14 pb-[max(env(safe-area-inset-bottom),2.5rem)] lg:pt-20 lg:pb-14 overflow-hidden">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2.8fr)]">
+          {/* Brand area */}
+          <div className="flex flex-col items-start">
+            <CyryxLockup className="h-14" />
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--silver-dim)]">
+              The execution layer for enterprise AI. Advisory, engineering, products, research, and
+              optional operations for controlled execution.
             </p>
-            <p className="mt-6 font-display text-sm tracking-[0.32em] uppercase text-[var(--silver-dim)]">
-              Built to achieve. <span className="text-[var(--accent-glow)]">Not just to generate.</span>
-            </p>
-            <p className="mt-8 text-xs text-[var(--silver-dim)]">
-              &copy; 2026 Cyryx Labs. All rights reserved.
-            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">
+              <Link
+                to={PRIMARY_NAVIGATION_CTA.href}
+                className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] text-sm font-medium tracking-wide transition-all hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+              >
+                {PRIMARY_NAVIGATION_CTA.label}
+                <span aria-hidden className="text-[var(--accent-glow)] text-lg">
+                  →
+                </span>
+              </Link>
+            </div>
+
+            <div className="mt-10">
+              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-50">
+                Follow
+              </div>
+              <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+                {SOCIAL.map((s) => (
+                  <li key={s.label}>
+                    <FooterLink item={s} />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          {/* Link columns */}
-          <div className="cx-stagger-item grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {COLUMNS.map((col) => (
-              <div key={col.title}>
-                <HudLabel>{col.title}</HudLabel>
-                <ul className="mt-4 space-y-3">
-                  {col.links.map((l) => (
-                    <li key={l.label}>
-                      <a href={l.href} className="text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)] transition-colors">
-                        {l.label}
-                      </a>
+          {/* Sitemap columns */}
+          <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-4 min-[400px]:grid-cols-2 gap-x-1">
+            {PRIMARY_NAVIGATION.map((group) => (
+              <nav key={group.id} aria-label={group.label}>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-50">
+                  {group.label}
+                </div>
+                <ul className="mt-6 space-y-4">
+                  {group.children.map((item) => (
+                    <li key={item.label}>
+                      <FooterLink item={item} />
                     </li>
                   ))}
                 </ul>
-              </div>
+              </nav>
             ))}
-          </div>
-
-          {/* Newsletter */}
-          <div className="cx-stagger-item">
-            <HudLabel>Stay Connected</HudLabel>
-            <p className="mt-4 text-sm text-[var(--silver-dim)]">
-              Get updates on our latest systems, research, and launches.
-            </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="mt-5 flex items-stretch gap-0 rounded-md border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] focus-within:border-[var(--accent-glow)] focus-within:shadow-[var(--shadow-glow-teal)] transition-all"
-            >
-              <label htmlFor="newsletter-email" className="sr-only">Email address</label>
-              <input
-                id="newsletter-email"
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 min-w-0 bg-transparent px-4 py-3 text-sm text-[var(--silver)] placeholder:text-[var(--silver-dim)] outline-none"
-              />
-              <button
-                type="submit"
-                aria-label="Subscribe"
-                className="grid w-12 place-items-center bg-[color-mix(in_oklab,var(--accent-glow)_14%,transparent)] hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)] text-[var(--accent-glow)] transition"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </form>
-
-            <div className="mt-6 flex items-center gap-2">
-              {[
-                { Icon: Linkedin, label: "LinkedIn" },
-                { Icon: Twitter, label: "X" },
-                { Icon: Youtube, label: "YouTube" },
-                { Icon: Github, label: "GitHub" },
-              ].map(({ Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  aria-disabled="true"
-                  tabIndex={-1}
-                  data-no-smooth-scroll="true"
-                  onClick={(e) => e.preventDefault()}
-                  className="grid h-11 w-11 place-items-center rounded-md border border-[color-mix(in_oklab,var(--silver)_12%,transparent)] text-[var(--silver-dim)] hover:text-[var(--accent-glow)] hover:border-[var(--accent-glow)] transition"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-            <span className="hud-label text-[var(--silver-dim)]">
-              Cyryx Labs — Built to achieve. Not just to generate.
-            </span>
-            <span className="inline-flex items-center gap-1.5 hud-label text-[var(--accent-glow)]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)] animate-pulse" />
-              SYS_STATUS: OPTIMAL
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {["Privacy", "Terms", "Security"].map((l) => (
-              <a key={l} href="#" className="hud-label text-[var(--silver-dim)] hover:text-[var(--silver)] transition">
-                {l}
-              </a>
+        {/* Bottom row */}
+        <div className="mt-20 flex flex-col gap-6 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)] pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs tracking-wide text-[var(--silver-dim)] font-medium">
+            &copy; {year} Cyryx Labs. All rights reserved.
+          </p>
+          <ul className="flex flex-wrap gap-x-6 gap-y-3">
+            {LEGAL.map((item) => (
+              <li key={item.label}>
+                <FooterLink item={item} className="text-xs" />
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </footer>

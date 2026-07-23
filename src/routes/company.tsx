@@ -1,23 +1,206 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { StubPage } from "@/components/cyryx/StubPage";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+import { Header } from "@/components/cyryx/Header";
+import { Footer } from "@/components/cyryx/Footer";
+import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
+import {
+  buildBreadcrumbJsonLd,
+  buildHead,
+  buildOrganizationJsonLd,
+} from "@/components/cyryx/seo/seo";
+import { START_PROJECT_HREF } from "@/lib/cta";
+import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
+
+const PATH = "/company";
+const TITLE = "Company — Cyryx Labs";
+const DESC =
+  "Cyryx Labs advises, builds, and operates AI-enabled products and systems, while developing MAAX Studio and applied research.";
+
+const UNITS = [
+  [
+    "Advise",
+    "AI strategy, opportunity framing, architecture direction, governance, and operating-model design.",
+    "/solutions/ai-strategy-advisory",
+  ],
+  [
+    "Build",
+    "Digital systems, workflows, internal assistants, and custom AI products designed around the business outcome.",
+    "/solutions",
+  ],
+  [
+    "Operate",
+    "Defined monitoring, maintenance, optimization, escalation, and transition for selected launched systems.",
+    "/managed-operations",
+  ],
+  [
+    "Products",
+    "MAAX Studio: an active product program exploring governed software execution.",
+    "/products",
+  ],
+  [
+    "Research",
+    "Applied investigation into execution, context, evaluation, cost, control, and human authority.",
+    "/research",
+  ],
+] as const;
+
+const PRINCIPLES = [
+  [
+    "Business problem before model",
+    "We begin with the decision, workflow, customer, and operating constraint—not a predetermined AI feature.",
+  ],
+  [
+    "AI and software as one system",
+    "Probabilistic intelligence, deterministic logic, data, integrations, interfaces, and people are designed together.",
+  ],
+  [
+    "Authority must be explicit",
+    "The system, the operator, and the owner each need a clear boundary for action, review, escalation, and change.",
+  ],
+  [
+    "Evidence before expansion",
+    "A compelling demonstration is a starting point. Expansion should follow representative validation and documented limitations.",
+  ],
+  [
+    "Ownership survives launch",
+    "The work is not complete until the system has an operating owner, change path, and support model appropriate to its impact.",
+  ],
+] as const;
 
 export const Route = createFileRoute("/company")({
-  head: () => ({
-    meta: [
-      { title: "Company — Cyryx Labs" },
-      { name: "description", content: "Cyryx Labs is an AI product and solutions company building the systems that turn AI from scattered experimentation into governed execution." },
-      { property: "og:title", content: "Company — Cyryx Labs" },
-      { property: "og:description", content: "An AI product and solutions company for the agentic era." },
-      { property: "og:url", content: "/company" },
-    ],
-    links: [{ rel: "canonical", href: "/company" }],
-  }),
-  component: () => (
-    <StubPage
-      eyebrow="About Cyryx Labs"
-      title="Builders of governed AI execution."
-      description="Cyryx Labs combines product architecture, applied AI research, automation engineering, and execution governance. We build proprietary AI products and partner with founders, agencies, and businesses to operationalize AI inside real workflows."
-      status="Company Page Coming Soon"
-    />
-  ),
+  head: () =>
+    buildHead({ title: TITLE, description: DESC, path: PATH }, [
+      buildBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Company", path: PATH },
+      ]),
+      buildOrganizationJsonLd(),
+    ]),
+  component: CompanyPage,
 });
+
+function CompanyPage() {
+  useCyryxScrollAnimations();
+
+  return (
+    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
+      <Header />
+      <main id="main-content" tabIndex={-1} className="outline-none">
+        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
+          <div className="mx-auto max-w-7xl">
+            <HudLabel withDot>Cyryx Labs / Company</HudLabel>
+            <div className="mt-8 grid gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-end lg:gap-24">
+              <h1 className="max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
+                AI value is created by the system around the model.
+              </h1>
+              <div className="lg:pb-2">
+                <p className="text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
+                  Cyryx Labs is an AI lab and systems company. We help organizations decide where AI
+                  belongs, build the product or workflow around it, and establish the controls and
+                  ownership required to operate it.
+                </p>
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--accent-glow)]">
+                  Advise. Build. Operate.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+          <div className="cx-reveal grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
+            <div>
+              <HudLabel>The execution gap</HudLabel>
+              <h2 className="mt-6 max-w-[12ch] font-display text-4xl font-medium tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
+                The model is rarely the whole problem.
+              </h2>
+            </div>
+            <div className="space-y-6 text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+              <p>
+                Organizations can access capable models. The harder work is turning that capability
+                into a dependable product, workflow, or operating decision: the right context,
+                deterministic software, interfaces, integrations, evaluation, human authority, and
+                post-launch ownership.
+              </p>
+              <p>
+                Cyryx exists for that gap. We connect executive intent to system design and system
+                design to the operating day, without pretending that every problem needs AI or that
+                every prototype deserves to scale.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-y border-white/10 bg-[var(--obsidian)] px-5 py-24 sm:px-8 sm:py-32">
+          <div className="mx-auto max-w-7xl">
+            <HudLabel>One company / five connected practices</HudLabel>
+            <div className="cx-stagger mt-12 divide-y divide-white/10 border-y border-white/10">
+              {UNITS.map(([title, body, href], index) => (
+                <Link
+                  key={title}
+                  to={href}
+                  className="cx-stagger-item group grid gap-4 py-7 sm:grid-cols-[4rem_0.65fr_1.35fr_auto] sm:items-center sm:gap-8 sm:py-9"
+                >
+                  <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h2 className="font-display text-3xl tracking-[-0.035em] text-[var(--silver)]">
+                    {title}
+                  </h2>
+                  <p className="max-w-2xl text-sm leading-relaxed text-[var(--silver-dim)]">
+                    {body}
+                  </p>
+                  <ArrowRight
+                    className="hidden h-5 w-5 text-[var(--steel)] transition group-hover:translate-x-1 group-hover:text-[var(--accent-glow)] sm:block"
+                    aria-hidden
+                  />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+          <div className="cx-reveal grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
+            <div>
+              <HudLabel>How we think</HudLabel>
+              <h2 className="mt-6 font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
+                Principles before promises.
+              </h2>
+            </div>
+            <ol className="divide-y divide-white/10 border-y border-white/10">
+              {PRINCIPLES.map(([title, body], index) => (
+                <li
+                  key={title}
+                  className="grid gap-3 py-6 sm:grid-cols-[3rem_0.8fr_1.2fr] sm:gap-8"
+                >
+                  <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                    0{index + 1}
+                  </span>
+                  <h3 className="text-sm font-medium text-[var(--silver)]">{title}</h3>
+                  <p className="text-sm leading-relaxed text-[var(--silver-dim)]">{body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <section className="bg-[var(--graphite)] px-5 py-24 sm:px-8 sm:py-32">
+          <div className="cx-reveal mx-auto max-w-5xl text-center">
+            <HudLabel withDot>Start with the decision</HudLabel>
+            <h2 className="mx-auto mt-7 max-w-[17ch] font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-6xl">
+              Bring the opportunity, constraint, or workflow—not a predetermined answer.
+            </h2>
+            <a
+              href={START_PROJECT_HREF}
+              className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
+            >
+              Discuss the initiative <ArrowRight className="h-4 w-4" aria-hidden />
+            </a>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}

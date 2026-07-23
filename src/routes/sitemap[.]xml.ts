@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
+import { PUBLICATIONS } from "@/data/publications";
 
 const BASE_URL = "https://cyryxlabs.com";
 
@@ -19,9 +20,55 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/products", changefreq: "monthly", priority: "0.8" },
           { path: "/products/maax-studio", changefreq: "monthly", priority: "0.9" },
           { path: "/solutions", changefreq: "monthly", priority: "0.8" },
+          { path: "/solutions/ai-strategy-advisory", changefreq: "monthly", priority: "0.8" },
+          { path: "/solutions/digital-web-systems", changefreq: "monthly", priority: "0.7" },
+          { path: "/solutions/workflow-automation", changefreq: "monthly", priority: "0.7" },
+          { path: "/solutions/internal-ai-assistants", changefreq: "monthly", priority: "0.7" },
+          {
+            path: "/solutions/custom-ai-product-development",
+            changefreq: "monthly",
+            priority: "0.7",
+          },
+          { path: "/solutions/ai-governance-cost-control", changefreq: "monthly", priority: "0.7" },
+          { path: "/managed-operations", changefreq: "monthly", priority: "0.7" },
+          { path: "/engagement-model", changefreq: "monthly", priority: "0.7" },
           { path: "/research", changefreq: "monthly", priority: "0.6" },
+          { path: "/answers", changefreq: "monthly", priority: "0.6" },
+          {
+            path: "/answers/what-is-governed-ai-execution",
+            changefreq: "monthly",
+            priority: "0.7",
+          },
+          {
+            path: "/answers/ai-execution-system-vs-ai-automation",
+            changefreq: "monthly",
+            priority: "0.7",
+          },
+          {
+            path: "/answers/what-are-command-gates-in-ai-systems",
+            changefreq: "monthly",
+            priority: "0.7",
+          },
+          {
+            path: "/answers/what-is-goal-grounded-generation",
+            changefreq: "monthly",
+            priority: "0.7",
+          },
+          {
+            path: "/answers/how-to-measure-ai-output-quality",
+            changefreq: "monthly",
+            priority: "0.7",
+          },
+          { path: "/start", changefreq: "monthly", priority: "0.8" },
           { path: "/contact", changefreq: "monthly", priority: "0.6" },
+          { path: "/careers", changefreq: "monthly", priority: "0.5" },
           { path: "/privacy", changefreq: "yearly", priority: "0.3" },
+          { path: "/terms", changefreq: "yearly", priority: "0.3" },
+          ...PUBLICATIONS.filter((p) => p.status !== "draft").map((p) => ({
+            path: `/research/${p.slug}`,
+            changefreq: "monthly" as const,
+            priority: "0.6",
+          })),
         ];
 
         const urls = entries.map((e) =>

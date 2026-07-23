@@ -38,9 +38,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
+      - name: TypeScript typecheck
+        run: bun run typecheck
       - run: bunx playwright install --with-deps chromium
       - name: Validate forbidden-terms config + list active rules
         run: node scripts/validate-forbidden-terms.mjs
+      - name: Audit /admin link references (must be 0)
+        run: node scripts/audit-admin-links.mjs
       - name: Build production bundle (for bundle scan)
         run: bun run build
       - name: Run Playwright suite (a11y · content · SEO · bundle scan)

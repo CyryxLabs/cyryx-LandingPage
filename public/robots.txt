@@ -1,4 +1,32 @@
+# Cyryx Labs — robots policy
+# Standard crawlers
 User-agent: *
 Allow: /
 
+# AI answer engines (explicitly allowed for AEO/AGEO citation)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 Sitemap: https://cyryxlabs.com/sitemap.xml
+Sitemap: https://cyryxlabs.com/sitemap-index.xml

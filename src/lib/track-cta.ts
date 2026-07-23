@@ -10,7 +10,21 @@ export type CtaName =
   | "start_project"
   | "request_early_access"
   | "request_maax_access"
-  | "explore_maax";
+  | "explore_maax"
+  | "see_delivery"
+  | "careers_talent_network"
+  | "careers_email"
+  | "talent_network_signup"
+  | "explore_products"
+  | "contact_email"
+  | "view_research"
+  | "read_cgp"
+  | "maax_waitlist_view"
+  | "maax_waitlist_started"
+  | "maax_waitlist_submitted"
+  | "maax_waitlist_error"
+  | "qualification_form_submitted"
+  | "qualification_form_error";
 
 export type CtaSection =
   | "hero"
@@ -18,17 +32,27 @@ export type CtaSection =
   | "mobile_menu"
   | "sticky"
   | "maax_spotlight"
-  | "final_cta";
+  | "final_cta"
+  | "paths"
+  | "solutions"
+  | "careers"
+  | "contact"
+  | "footer"
+  | "research_band"
+  | "maax_product"
+  | "start";
 
 export interface TrackCtaInput {
   cta: CtaName;
   section: CtaSection;
   href?: string;
+  /** Non-PII metadata (project type, investment band, timeline, decision status). */
+  metadata?: Record<string, string | number | boolean | null | undefined>;
 }
 
 const ENDPOINT = "/api/public/cta-events";
 
-export function trackCta({ cta, section, href }: TrackCtaInput): void {
+export function trackCta({ cta, section, href, metadata }: TrackCtaInput): void {
   if (typeof window === "undefined") return;
   try {
     const body = JSON.stringify({
@@ -38,13 +62,11 @@ export function trackCta({ cta, section, href }: TrackCtaInput): void {
       href: href ?? null,
       variant: getActiveCopyVariant(),
       referrer: document.referrer || null,
+      metadata: metadata ?? null,
     });
     const ok =
       typeof navigator.sendBeacon === "function" &&
-      navigator.sendBeacon(
-        ENDPOINT,
-        new Blob([body], { type: "application/json" }),
-      );
+      navigator.sendBeacon(ENDPOINT, new Blob([body], { type: "application/json" }));
     if (!ok) {
       void fetch(ENDPOINT, {
         method: "POST",

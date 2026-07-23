@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { BUILD_LABEL } from "../lib/build-info";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { initWebVitals } from "../lib/web-vitals";
 import { syncCopyVariantToDocument } from "../lib/copy-variant";
@@ -83,23 +84,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { httpEquiv: "Cache-Control", content: "no-store, no-cache, must-revalidate" },
       { httpEquiv: "Pragma", content: "no-cache" },
-      { title: "Cyryx Labs — AI Execution Systems" },
-      { name: "description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Cyryx Labs — AI Execution Systems" },
-      { property: "og:description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
+      { name: "author", content: "Cyryx Labs" },
+      { name: "google-site-verification", content: "Bc35xHMHU3j3kg9Iuj2it5vGwLp4IIXwzz_m-VSIk8g" },
+      { property: "og:site_name", content: "Cyryx Labs" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Cyryx Labs — AI Execution Systems" },
-      { name: "twitter:description", content: "Cyryx Labs builds AI products, agentic workflow systems, and governed execution infrastructure for teams moving from AI experiments to operations." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/pqDYh1E7STSD3pG3DZTBMfMwqsS2/social-images/social-1782497606213-ChatGPT_Image_Jun_25,_2026,_08_57_05_PM.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/pqDYh1E7STSD3pG3DZTBMfMwqsS2/social-images/social-1782497606213-ChatGPT_Image_Jun_25,_2026,_08_57_05_PM.webp" },
     ],
     links: [
       {
         rel: "stylesheet",
-        href: appCss,
+        href: `${appCss}?v=${BUILD_LABEL}`,
       },
       {
         rel: "preconnect",
@@ -115,12 +108,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "preload",
         as: "style",
-        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500&family=Orbitron:wght@500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        crossOrigin: "anonymous",
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500&family=Orbitron:wght@500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        crossOrigin: "anonymous",
       },
+      // Font files are discovered from the Google Fonts stylesheet. Avoid a
+      // version-specific direct preload URL, which can become stale upstream.
     ],
   }),
   shellComponent: RootShell,
@@ -160,13 +157,20 @@ function RootShell({ children }: { children: ReactNode }) {
               "window.process=window.process||{};window.process.env=Object.assign({TSS_SERVER_FN_BASE:'/_serverFn',NODE_ENV:'production'},window.process.env||{});",
           }}
         />
-        {/* Always open new page loads at the very top. Disables the browser's
-            automatic scroll restoration and strips any hash from the URL so a
-            shared/refreshed `/#contact` link doesn't auto-jump to the form. */}
+        {/* Keep reload behavior deterministic without breaking deep links such
+            as /#contact or /#maax. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var h=window.location.hash;if(h){history.replaceState(null,'',window.location.pathname+window.location.search);}window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});}catch(e){}})();",
+              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}if(!window.location.hash){window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});}}catch(e){}})();",
+          }}
+        />
+        {/* Subdomain routing: workspace.<domain> serves the internal console.
+            Redirect pre-hydration so the landing page never flashes. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var h=window.location.hostname||'';if(/^workspace\\./i.test(h)){var p=window.location.pathname;if(p==='/'||p===''){window.location.replace('/workspace'+window.location.search+window.location.hash);}}}catch(e){}})();",
           }}
         />
       </head>
@@ -189,6 +193,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <Toaster position="top-center" richColors closeButton />
