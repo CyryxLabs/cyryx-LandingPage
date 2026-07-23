@@ -63,10 +63,12 @@ export type Database = {
         Row: {
           company: string | null
           consent_given_at: string
+          consent_version: string
           created_at: string
           email: string
           handled_at: string | null
           id: string
+          interest: string | null
           ip_hash: string | null
           message: string
           name: string
@@ -76,10 +78,12 @@ export type Database = {
         Insert: {
           company?: string | null
           consent_given_at?: string
+          consent_version?: string
           created_at?: string
           email: string
           handled_at?: string | null
           id?: string
+          interest?: string | null
           ip_hash?: string | null
           message: string
           name: string
@@ -89,10 +93,12 @@ export type Database = {
         Update: {
           company?: string | null
           consent_given_at?: string
+          consent_version?: string
           created_at?: string
           email?: string
           handled_at?: string | null
           id?: string
+          interest?: string | null
           ip_hash?: string | null
           message?: string
           name?: string
@@ -197,6 +203,7 @@ export type Database = {
       crm_contacts: {
         Row: {
           company_id: string | null
+          country: string | null
           created_at: string
           email: string | null
           full_name: string
@@ -211,6 +218,7 @@ export type Database = {
         }
         Insert: {
           company_id?: string | null
+          country?: string | null
           created_at?: string
           email?: string | null
           full_name: string
@@ -225,6 +233,7 @@ export type Database = {
         }
         Update: {
           company_id?: string | null
+          country?: string | null
           created_at?: string
           email?: string | null
           full_name?: string
@@ -1056,6 +1065,96 @@ export type Database = {
           },
         ]
       }
+      maax_waitlist: {
+        Row: {
+          consent_given_at: string
+          consent_version: string
+          country: string
+          created_at: string
+          crm_contact_id: string | null
+          email: string
+          full_name: string
+          id: string
+          ip_hash: string | null
+          landing_path: string | null
+          marketing_lead_id: string | null
+          phone: string
+          referrer: string | null
+          source: string
+          status: string
+          updated_at: string
+          user_agent_hash: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          consent_given_at?: string
+          consent_version: string
+          country: string
+          created_at?: string
+          crm_contact_id?: string | null
+          email: string
+          full_name: string
+          id?: string
+          ip_hash?: string | null
+          landing_path?: string | null
+          marketing_lead_id?: string | null
+          phone: string
+          referrer?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          user_agent_hash?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          consent_given_at?: string
+          consent_version?: string
+          country?: string
+          created_at?: string
+          crm_contact_id?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          ip_hash?: string | null
+          landing_path?: string | null
+          marketing_lead_id?: string | null
+          phone?: string
+          referrer?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          user_agent_hash?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maax_waitlist_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maax_waitlist_marketing_lead_id_fkey"
+            columns: ["marketing_lead_id"]
+            isOneToOne: false
+            referencedRelation: "mkt_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mkt_attribution_audit: {
         Row: {
           affected_deal_ids: string[]
@@ -1858,6 +1957,26 @@ export type Database = {
         }
         Returns: boolean
       }
+      join_maax_waitlist: {
+        Args: {
+          p_consent_version: string
+          p_country: string
+          p_email: string
+          p_full_name: string
+          p_ip_hash?: string
+          p_landing_path?: string
+          p_phone: string
+          p_referrer?: string
+          p_source?: string
+          p_user_agent_hash?: string
+          p_utm_campaign?: string
+          p_utm_content?: string
+          p_utm_medium?: string
+          p_utm_source?: string
+          p_utm_term?: string
+        }
+        Returns: Json
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
@@ -1874,6 +1993,19 @@ export type Database = {
           msg_id: number
           read_ct: number
         }[]
+      }
+      submit_contact_public: {
+        Args: {
+          p_company: string
+          p_consent_version?: string
+          p_email: string
+          p_interest?: string
+          p_ip_hash?: string
+          p_message: string
+          p_name: string
+          p_user_agent_hash?: string
+        }
+        Returns: Json
       }
     }
     Enums: {
