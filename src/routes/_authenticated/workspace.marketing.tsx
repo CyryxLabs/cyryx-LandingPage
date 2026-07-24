@@ -14,7 +14,7 @@ import { z } from "zod";
 import { zodValidator } from "@tanstack/zod-adapter";
 
 const marketingSearchSchema = z.object({
-  mktTab: z.enum(["dashboard", "campaigns", "channels", "leads", "attribution"]).optional(),
+  mktTab: z.enum(["dashboard", "campaigns", "channels", "leads", "maax", "attribution"]).optional(),
   range: z.string().refine(isRange).optional(),
   ch: z.string().optional(),
   cp: z.string().optional(),

@@ -1,18 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect } from "react";
-import {
-  ArrowDown,
-  ArrowRight,
-  Check,
-  GitBranch,
-  History,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowDown, ArrowRight, Check, GitBranch, History, ShieldCheck, Users } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
-import { MaaxWaitlistForm } from "@/components/cyryx/maax/MaaxWaitlistForm";
+import { MaaxWaitlistDialog } from "@/components/cyryx/maax/MaaxWaitlistDialog";
 import {
   buildBreadcrumbJsonLd,
   buildHead,
@@ -49,10 +41,19 @@ const OUTCOMES = [
 ] as const;
 
 const LOOP = [
-  ["Define", "Turn the outcome, constraints, repository context, and completion criteria into a mission."],
+  [
+    "Define",
+    "Turn the outcome, constraints, repository context, and completion criteria into a mission.",
+  ],
   ["Coordinate", "Organize specialized agents and tools around the same bounded unit of work."],
-  ["Review", "Inspect progress and apply the human or automated gates appropriate to the environment."],
-  ["Continue", "Preserve the operating record so the next decision starts with context, not reconstruction."],
+  [
+    "Review",
+    "Inspect progress and apply the human or automated gates appropriate to the environment.",
+  ],
+  [
+    "Continue",
+    "Preserve the operating record so the next decision starts with context, not reconstruction.",
+  ],
 ] as const;
 
 const EARLY_ACCESS_VALUE = [
@@ -99,9 +100,21 @@ export const Route = createFileRoute("/products/maax-studio")({
 });
 
 function MaaxStudioPage() {
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+
   useEffect(() => {
     trackCta({ cta: "maax_waitlist_view", section: "maax_product" });
   }, []);
+
+  const openWaitlist = (surface: string) => {
+    trackCta({
+      cta: "request_maax_access",
+      section: "maax_product",
+      href: "#maax-waitlist-dialog",
+      metadata: { surface },
+    });
+    setWaitlistOpen(true);
+  };
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
@@ -116,7 +129,10 @@ function MaaxStudioPage() {
                 "radial-gradient(circle at 73% 31%, color-mix(in oklab, var(--accent-glow) 15%, transparent), transparent 27%), linear-gradient(115deg, transparent 48%, color-mix(in oklab, var(--accent-glow) 5%, transparent) 50%, transparent 52%)",
             }}
           />
-          <div className="pointer-events-none absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" aria-hidden />
+          <div
+            className="pointer-events-none absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent"
+            aria-hidden
+          />
 
           <div className="relative mx-auto flex min-h-[calc(92svh-10rem)] max-w-7xl flex-col">
             <nav
@@ -153,19 +169,13 @@ function MaaxStudioPage() {
                   context, coordinated execution, deliberate review, and an operating record.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href="#early-access"
-                    onClick={() =>
-                      trackCta({
-                        cta: "request_maax_access",
-                        section: "maax_product",
-                        href: "#early-access",
-                      })
-                    }
+                  <button
+                    type="button"
+                    onClick={() => openWaitlist("maax_product_hero")}
                     className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
                   >
                     Join early access <ArrowRight className="h-4 w-4" aria-hidden />
-                  </a>
+                  </button>
                   <a
                     href="#product"
                     className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/15 px-7 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
@@ -186,7 +196,10 @@ function MaaxStudioPage() {
                     key={item}
                     className="flex min-h-16 items-center gap-3 bg-[color-mix(in_oklab,var(--onyx)_92%,transparent)] px-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--silver-dim)]"
                   >
-                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)]" aria-hidden />
+                    <span
+                      className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)]"
+                      aria-hidden
+                    />
                     {item}
                   </div>
                 ),
@@ -312,7 +325,10 @@ function MaaxStudioPage() {
               <ul className="mt-9 space-y-4">
                 {EARLY_ACCESS_VALUE.map((item) => (
                   <li key={item} className="flex gap-3 text-[15px] text-[var(--silver-dim)]">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent-glow)]" aria-hidden />
+                    <Check
+                      className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent-glow)]"
+                      aria-hidden
+                    />
                     {item}
                   </li>
                 ))}
@@ -323,17 +339,37 @@ function MaaxStudioPage() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-[var(--graphite)] p-6 shadow-2xl shadow-black/30 sm:p-9">
-              <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
-                Join the list
-              </p>
-              <h3 className="mt-4 font-display text-3xl font-semibold tracking-[-0.035em] text-[var(--silver)]">
-                Tell us where to reach you.
-              </h3>
-              <p className="mb-7 mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                Four fields. No application essay. We will use your details only as described below.
-              </p>
-              <MaaxWaitlistForm />
+            <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[var(--graphite)] p-7 shadow-2xl shadow-black/30 sm:p-10">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(circle at 82% 22%, color-mix(in oklab, var(--accent-glow) 15%, transparent), transparent 34%)",
+                }}
+              />
+              <div className="relative">
+                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
+                  Private early-access list
+                </p>
+                <h3 className="mt-5 max-w-md font-display text-4xl font-semibold leading-[1.02] tracking-[-0.04em] text-[var(--silver)]">
+                  Four fields. One focused next step.
+                </h3>
+                <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-[var(--silver-dim)]">
+                  Tell us where to reach you. The application opens in a secure window and takes
+                  less than a minute.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => openWaitlist("maax_product_early_access")}
+                  className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white sm:w-auto"
+                >
+                  Open early-access form <ArrowRight className="h-4 w-4" aria-hidden />
+                </button>
+                <p className="mt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]">
+                  No application essay · Invitations open in waves
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -365,17 +401,19 @@ function MaaxStudioPage() {
               ))}
             </div>
             <div className="mt-10 text-center">
-              <a
-                href="#early-access"
+              <button
+                type="button"
+                onClick={() => openWaitlist("maax_product_faq")}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-[var(--accent-glow)] px-7 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
               >
                 Join the early-access list <ArrowRight className="h-4 w-4" aria-hidden />
-              </a>
+              </button>
             </div>
           </div>
         </section>
       </main>
       <Footer />
+      <MaaxWaitlistDialog open={waitlistOpen} onOpenChange={setWaitlistOpen} />
     </div>
   );
 }

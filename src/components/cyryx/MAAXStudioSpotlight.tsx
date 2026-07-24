@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 import maaxDevices from "@/assets/cyryx-maax-devices-1200.jpg";
 import maaxDevices480Jpg from "@/assets/cyryx-maax-devices-480.jpg";
 import maaxDevices800Jpg from "@/assets/cyryx-maax-devices-800.jpg";
@@ -9,8 +10,8 @@ import maaxDevices800Webp from "@/assets/cyryx-maax-devices-800.webp";
 import maaxDevices1200Webp from "@/assets/cyryx-maax-devices-1200.webp";
 import maaxLogo from "@/assets/maax-studio-logo-exact.svg";
 import { HudLabel } from "./primitives/HudLabel";
-import { setContactIntent } from "@/lib/contact-intent";
 import { trackCta } from "@/lib/track-cta";
+import { MaaxWaitlistDialog } from "./maax/MaaxWaitlistDialog";
 
 const PRODUCT_LAYERS = [
   {
@@ -72,94 +73,99 @@ function ProductPreview() {
 }
 
 export function MAAXStudioSpotlight() {
-  return (
-    <section
-      id="maax"
-      aria-labelledby="maax-heading"
-      data-story-section
-      className="relative overflow-hidden bg-[var(--graphite)] py-20 sm:py-24 lg:py-28"
-    >
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-px bg-[color-mix(in_oklab,var(--accent-glow)_22%,transparent)]"
-      />
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        <div className="cx-reveal max-w-4xl">
-          <HudLabel withDot>Cyryx Labs / Flagship product</HudLabel>
-          <img
-            src={maaxLogo}
-            alt="MAAX Studio"
-            width={1794}
-            height={222}
-            loading="lazy"
-            decoding="async"
-            className="mt-7 block h-auto w-full object-contain"
-            style={{ maxWidth: 500 }}
-          />
-          <h2
-            id="maax-heading"
-            className="mt-8 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
-          >
-            A command environment for agentic software execution.
-          </h2>
-          <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-            Separate from client delivery, MAAX Studio is Cyryx Labs&apos; product program for
-            coordinating software missions, project context, review, and controlled action — with
-            the operator in command.
-          </p>
-        </div>
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
 
-        <div className="mt-14 grid gap-12 lg:mt-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-20">
-          <div className="cx-reveal lg:sticky lg:top-28">
-            <ProductPreview />
+  return (
+    <>
+      <section
+        id="maax"
+        aria-labelledby="maax-heading"
+        data-story-section
+        className="relative overflow-hidden bg-[var(--graphite)] py-20 sm:py-24 lg:py-28"
+      >
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-px bg-[color-mix(in_oklab,var(--accent-glow)_22%,transparent)]"
+        />
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          <div className="cx-reveal max-w-4xl">
+            <HudLabel withDot>Cyryx Labs / Flagship product</HudLabel>
+            <img
+              src={maaxLogo}
+              alt="MAAX Studio"
+              width={1794}
+              height={222}
+              loading="lazy"
+              decoding="async"
+              className="mt-7 block h-auto w-full object-contain"
+              style={{ maxWidth: 500 }}
+            />
+            <h2
+              id="maax-heading"
+              className="mt-8 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
+            >
+              A command environment for agentic software execution.
+            </h2>
+            <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+              Separate from client delivery, MAAX Studio is Cyryx Labs&apos; product program for
+              coordinating software missions, project context, review, and controlled action — with
+              the operator in command.
+            </p>
           </div>
 
-          <div className="cx-stagger lg:pt-4">
-            {PRODUCT_LAYERS.map((layer) => (
-              <article
-                key={layer.n}
-                data-maax-step
-                className="cx-stagger-item border-t border-[color-mix(in_oklab,var(--steel)_18%,transparent)] py-7 first:pt-0 lg:py-8"
-              >
-                <div className="flex items-baseline gap-4">
-                  <span className="font-mono text-[10px] tracking-[0.24em] text-[var(--accent-glow)]">
-                    {layer.n}
-                  </span>
-                  <h3 className="font-display text-2xl font-medium tracking-[-0.025em] text-[var(--silver)] sm:text-3xl">
-                    {layer.title}
-                  </h3>
-                </div>
-                <p className="mt-4 text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base">
-                  {layer.body}
-                </p>
-              </article>
-            ))}
+          <div className="mt-14 grid gap-12 lg:mt-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-20">
+            <div className="cx-reveal lg:sticky lg:top-28">
+              <ProductPreview />
+            </div>
 
-            <div className="cx-reveal mt-4 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="/start"
-                onClick={() => {
-                  setContactIntent("maax-early-access");
-                  trackCta({
-                    cta: "request_early_access",
-                    section: "maax_spotlight",
-                    href: "/start",
-                  });
-                }}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--graphite)]"
-              >
-                Request an early-access review <ArrowRight className="h-4 w-4" aria-hidden />
-              </a>
-              <Link
-                to="/products/maax-studio"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_22%,transparent)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
-              >
-                Explore MAAX Studio <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
+            <div className="cx-stagger lg:pt-4">
+              {PRODUCT_LAYERS.map((layer) => (
+                <article
+                  key={layer.n}
+                  data-maax-step
+                  className="cx-stagger-item border-t border-[color-mix(in_oklab,var(--steel)_18%,transparent)] py-7 first:pt-0 lg:py-8"
+                >
+                  <div className="flex items-baseline gap-4">
+                    <span className="font-mono text-[10px] tracking-[0.24em] text-[var(--accent-glow)]">
+                      {layer.n}
+                    </span>
+                    <h3 className="font-display text-2xl font-medium tracking-[-0.025em] text-[var(--silver)] sm:text-3xl">
+                      {layer.title}
+                    </h3>
+                  </div>
+                  <p className="mt-4 text-[15px] leading-relaxed text-[var(--silver-dim)] sm:text-base">
+                    {layer.body}
+                  </p>
+                </article>
+              ))}
+
+              <div className="cx-reveal mt-4 flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackCta({
+                      cta: "request_early_access",
+                      section: "maax_spotlight",
+                      href: "#maax-waitlist-dialog",
+                    });
+                    setWaitlistOpen(true);
+                  }}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--graphite)]"
+                >
+                  Request an early-access review <ArrowRight className="h-4 w-4" aria-hidden />
+                </button>
+                <Link
+                  to="/products/maax-studio"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--silver)_22%,transparent)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+                >
+                  Explore MAAX Studio <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <MaaxWaitlistDialog open={waitlistOpen} onOpenChange={setWaitlistOpen} />
+    </>
   );
 }
