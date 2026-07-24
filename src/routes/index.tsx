@@ -21,7 +21,7 @@ const HOME_URL = "https://cyryxlabs.com/";
 const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
 const HOME_DESCRIPTION =
   "Cyryx Labs advises, builds, and operates governed AI systems that turn enterprise strategy into controlled execution—with ownership, evidence, and cost visibility.";
-const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png";
+const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png?v=20260723-1";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,10 +33,16 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: HOME_URL },
       { property: "og:image", content: HOME_SOCIAL_IMAGE },
+      { property: "og:image:secure_url", content: HOME_SOCIAL_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:alt", content: "Cyryx Labs" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: HOME_TITLE },
       { name: "twitter:description", content: HOME_DESCRIPTION },
       { name: "twitter:image", content: HOME_SOCIAL_IMAGE },
+      { name: "twitter:image:alt", content: "Cyryx Labs" },
       { name: "theme-color", content: "#050607" },
     ],
     links: [

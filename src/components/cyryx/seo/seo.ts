@@ -18,8 +18,7 @@ export interface PageMetaInput {
   ogType?: "website" | "article" | "product";
 }
 
-const DEFAULT_OG_IMAGE =
-  "https://storage.googleapis.com/gpt-engineer-file-uploads/pqDYh1E7STSD3pG3DZTBMfMwqsS2/social-images/social-1782497606213-ChatGPT_Image_Jun_25,_2026,_08_57_05_PM.webp";
+const DEFAULT_OG_IMAGE = `${BASE}/cyryx-og.png?v=20260723-1`;
 
 /**
  * Build the standard meta + canonical entries for a route head().
@@ -42,10 +41,16 @@ export function pageMeta(input: PageMetaInput) {
       { property: "og:url", content: url },
       { property: "og:type", content: input.ogType ?? "website" },
       { property: "og:image", content: image },
+      { property: "og:image:secure_url", content: image },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:alt", content: "Cyryx Labs" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: input.title },
       { name: "twitter:description", content: input.description },
       { name: "twitter:image", content: image },
+      { name: "twitter:image:alt", content: "Cyryx Labs" },
     ],
     links: [{ rel: "canonical", href: url }],
   };

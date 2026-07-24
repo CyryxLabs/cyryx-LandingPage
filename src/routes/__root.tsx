@@ -95,6 +95,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: `${appCss}?v=${BUILD_LABEL}`,
       },
       {
+        rel: "icon",
+        href: "/favicon.ico?v=20260723-1",
+        sizes: "any",
+      },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "32x32",
+        href: "/favicon-32x32.png?v=20260723-1",
+      },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "16x16",
+        href: "/favicon-16x16.png?v=20260723-1",
+      },
+      {
+        rel: "apple-touch-icon",
+        sizes: "180x180",
+        href: "/apple-touch-icon.png?v=20260723-1",
+      },
+      {
         rel: "preconnect",
         href: "https://fonts.googleapis.com",
       },
@@ -128,7 +150,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
         {/* Low-end device detection — sets html.cx-low-perf so CSS can

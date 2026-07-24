@@ -242,6 +242,7 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
 
 test("Forced-colors keeps Hero text and focus indicators system-readable", async ({ page }) => {
   await page.emulateMedia({ forcedColors: "active" });
+  await page.reload({ waitUntil: "networkidle" });
   const headlineColor = await page
     .locator(".cx-hero-title-line")
     .first()

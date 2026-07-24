@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
+import { PUBLICATIONS } from "@/data/publications";
 
 const AREAS = [
   [
@@ -88,6 +89,77 @@ function ResearchHub() {
                 expected to support real products, workflows, and decisions. The purpose is
                 practical: better architectures, better evidence, and clearer limits.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-white/10 bg-[var(--obsidian)] px-5 py-20 sm:px-8 sm:py-28">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-end lg:gap-20">
+              <div>
+                <HudLabel withDot>Published research</HudLabel>
+                <h2 className="mt-6 max-w-[13ch] font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-6xl">
+                  Public records, not presentation claims.
+                </h2>
+              </div>
+              <p className="max-w-xl text-base leading-relaxed text-[var(--silver-dim)]">
+                Released work is listed with its public identifier, source record, publication date,
+                and license so readers can verify and cite it independently.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-5">
+              {PUBLICATIONS.map((publication) => (
+                <article
+                  key={publication.id}
+                  className="group relative overflow-hidden rounded-xl border border-white/10 bg-[var(--graphite)] p-7 transition hover:border-[color-mix(in_oklab,var(--accent-glow)_42%,transparent)] sm:p-10"
+                >
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 88% 18%, color-mix(in oklab, var(--accent-glow) 12%, transparent), transparent 30%)",
+                    }}
+                  />
+                  <div className="relative grid gap-10 lg:grid-cols-[1fr_0.34fr] lg:items-end">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-3 font-mono text-[8px] uppercase tracking-[0.17em]">
+                        <span className="text-[var(--accent-glow)]">{publication.category}</span>
+                        <span className="text-[var(--steel)]">{publication.license}</span>
+                        <span className="text-[var(--steel)]">{publication.date}</span>
+                      </div>
+                      <h3 className="mt-6 max-w-[24ch] font-display text-3xl font-medium leading-[1.04] tracking-[-0.04em] text-[var(--silver)] sm:text-5xl">
+                        {publication.title}
+                      </h3>
+                      <p className="mt-5 max-w-3xl line-clamp-3 text-sm leading-relaxed text-[var(--silver-dim)] sm:text-base">
+                        {publication.abstract}
+                      </p>
+                    </div>
+
+                    <div className="space-y-3">
+                      <Link
+                        to="/research/$slug"
+                        params={{ slug: publication.slug }}
+                        className="flex min-h-12 items-center justify-between rounded-md bg-[var(--silver)] px-5 font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--onyx)] transition hover:bg-white"
+                      >
+                        Read the protocol <ArrowRight className="h-4 w-4" aria-hidden />
+                      </Link>
+                      {publication.doiUrl && (
+                        <a
+                          href={publication.doiUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex min-h-12 items-center justify-between rounded-md border border-white/15 px-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+                        >
+                          DOI {publication.doi}
+                          <ArrowUpRight className="h-4 w-4" aria-hidden />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>

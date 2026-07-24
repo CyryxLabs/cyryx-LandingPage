@@ -32,6 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     permissions:
+      actions: read
       contents: read
       security-events: write
     steps:
@@ -66,9 +67,17 @@ jobs:
       - name: Convert axe violations to SARIF
         if: always()
         run: node scripts/axe-to-sarif.mjs a11y-report a11y-report/axe.sarif
-      - name: Upload SARIF to GitHub code scanning
+      - name: Upload SARIF artifact
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: actions/upload-artifact@v4
+        with:
+          name: axe-sarif
+          path: a11y-report/axe.sarif
+          if-no-files-found: warn
+      - name: Upload SARIF to GitHub code scanning
+        # Enable after Code Scanning is active in repository settings.
+        if: always() && vars.ENABLE_CODE_SCANNING_SARIF == '1'
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: a11y-report/axe.sarif
           category: axe-core
@@ -104,11 +113,14 @@ jobs:
           {
             echo "### Accessibility artifacts"
             echo ""
-            echo "- 🔎 Code scanning (axe SARIF): ${{ github.server_url }}/${{ github.repository }}/security/code-scanning?query=tool%3Aaxe-core"
             echo "- 📦 Run artifacts (SARIF + raw axe JSON + reports): ${RUN_URL}#artifacts"
             echo "  - \`a11y-report\` — full JSON + HTML report"
             echo "  - \`axe-raw-json\` — raw axe-core JSON per page"
+            echo "  - \`axe-sarif\` — SARIF export for code-scanning ingestion"
             echo "  - \`playwright-report\` — Playwright HTML report"
+            if [[ "${{ vars.ENABLE_CODE_SCANNING_SARIF }}" == "1" ]]; then
+              echo "- 🔎 Code scanning (axe SARIF): ${{ github.server_url }}/${{ github.repository }}/security/code-scanning?query=tool%3Aaxe-core"
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
   lighthouse:
@@ -133,10 +145,34 @@ jobs:
           name: lighthouse-report-${{ matrix.form_factor }}
           path: lighthouse-report/${{ matrix.form_factor }}
 
+  visual-regression:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install chromium
+      - name: Compare approved Windows desktop baselines
+        env:
+          CI: "1"
+        run: bunx playwright test tests/accessibility/visual-regression.spec.ts --project=hero-a11y-chromium
+      - name: Upload visual regression report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-report
+          path: playwright-report/a11y
+          if-no-files-found: warn
+
   summarize:
-    needs: [a11y-content-seo, lighthouse]
+    needs: [a11y-content-seo, lighthouse, visual-regression]
     if: always() && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4

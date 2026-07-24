@@ -17,10 +17,13 @@ test.describe("Initial scroll restoration", () => {
   test("preserves direct section links and lands on the requested section", async ({ page }) => {
     await page.goto("/#contact");
     await page.waitForLoadState("domcontentloaded");
-    await page.waitForTimeout(200);
-    const y = await page.evaluate(() => window.scrollY);
-    const hash = await page.evaluate(() => window.location.hash);
-    expect(y).toBeGreaterThan(100);
-    expect(hash).toBe("#contact");
+    await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#contact");
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY), {
+        message: "the initial hash should scroll to the contact section after hydration",
+        timeout: 5_000,
+      })
+      .toBeGreaterThan(100);
+    await expect(page.locator("#contact")).toBeInViewport();
   });
 });
