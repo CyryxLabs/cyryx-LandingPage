@@ -23,9 +23,17 @@ test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async 
   expect(await meta('meta[property="og:description"]')).toMatch(EXPECTED.ogDescription);
   expect(await meta('meta[property="og:type"]')).toBe("website");
   expect(await meta('meta[property="og:url"]')).toMatch(EXPECTED.ogUrl);
+  expect(await meta('meta[property="og:image"]')).toMatch(/\/cyryx-og\.png\?v=20260723-1$/);
+  expect(await meta('meta[property="og:image:secure_url"]')).toMatch(
+    /\/cyryx-og\.png\?v=20260723-1$/,
+  );
   expect(await meta('meta[name="twitter:card"]')).toBe("summary_large_image");
   expect(await meta('meta[name="twitter:title"]')).toMatch(EXPECTED.twitterTitle);
   expect(await meta('meta[name="twitter:description"]')).toMatch(EXPECTED.twitterDescription);
+  expect(await meta('meta[name="twitter:image"]')).toMatch(/\/cyryx-og\.png\?v=20260723-1$/);
+  expect(await link('link[rel="icon"][sizes="any"]')).toBe("/favicon.ico?v=20260723-1");
+  expect(await link('link[rel="icon"][sizes="32x32"]')).toBe("/favicon-32x32.png?v=20260723-1");
+  expect(await link('link[rel="apple-touch-icon"]')).toBe("/apple-touch-icon.png?v=20260723-1");
   expect(await link('link[rel="canonical"]')).toMatch(/\/$/);
 });
 

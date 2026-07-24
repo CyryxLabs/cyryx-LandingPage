@@ -18,7 +18,7 @@ export interface PageMetaInput {
   ogType?: "website" | "article" | "product";
 }
 
-const DEFAULT_OG_IMAGE = `${BASE}/cyryx-og.png`;
+const DEFAULT_OG_IMAGE = `${BASE}/cyryx-og.png?v=20260723-1`;
 
 /**
  * Build the standard meta + canonical entries for a route head().
@@ -41,6 +41,7 @@ export function pageMeta(input: PageMetaInput) {
       { property: "og:url", content: url },
       { property: "og:type", content: input.ogType ?? "website" },
       { property: "og:image", content: image },
+      { property: "og:image:secure_url", content: image },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:type", content: "image/png" },
