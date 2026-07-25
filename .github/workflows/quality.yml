@@ -41,7 +41,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: TypeScript typecheck
         run: bun run typecheck
-      - run: bunx playwright install --with-deps chromium webkit
+      - run: bunx playwright install --with-deps chromium
       - name: Validate forbidden-terms config + list active rules
         run: node scripts/validate-forbidden-terms.mjs
       - name: Audit /admin link references (must be 0)
@@ -52,7 +52,11 @@ jobs:
         env:
           CI: "1"
           A11Y_REPORT_DIR: a11y-report
-        run: bun run test:a11y
+        run: >-
+          bunx playwright test
+          --project=hero-a11y-chromium
+          --project=hero-a11y-mobile-360
+          --project=hero-high-contrast
       - name: Upload accessibility report (JSON + HTML)
         if: always()
         uses: actions/upload-artifact@v4
@@ -123,6 +127,29 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
+  safari-mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps webkit
+      - name: Validate Safari mobile layout and initial form position
+        env:
+          CI: "1"
+        run: >-
+          bunx playwright test
+          tests/accessibility/webkit-mobile-layout.spec.ts
+          --project=safari-mobile
+      - name: Upload Safari mobile Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: safari-mobile-playwright-report
+          path: playwright-report/a11y
+          if-no-files-found: warn
+
   lighthouse:
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -166,7 +193,7 @@ jobs:
           if-no-files-found: warn
 
   summarize:
-    needs: [a11y-content-seo, lighthouse, visual-regression]
+    needs: [a11y-content-seo, safari-mobile, lighthouse, visual-regression]
     if: always() && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:

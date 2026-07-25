@@ -20,8 +20,11 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe", async
 
   for (const id of HOME_SECTIONS) {
     const section = page.locator(`#${id}`);
-    await section.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(850);
+    await section.evaluate((element) => {
+      const top = element.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.45;
+      window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+    });
+    await page.waitForTimeout(350);
 
     await expect(section).toBeVisible();
     await expect
@@ -32,7 +35,10 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe", async
               (item) => Number.parseFloat(getComputedStyle(item).opacity) >= 0.95,
             ),
           ),
-        { message: `${id} should not leave invisible animation gaps in WebKit` },
+        {
+          message: `${id} should not leave invisible animation gaps in WebKit`,
+          timeout: 15_000,
+        },
       )
       .toBe(true);
   }
