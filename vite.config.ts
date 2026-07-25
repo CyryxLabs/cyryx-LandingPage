@@ -7,10 +7,11 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 const buildVersion = process.env.LOVABLE_DEPLOYMENT_ID ?? new Date().toISOString();
+const isLighthouseBuild = process.env.LIGHTHOUSE_BUILD === "1";
 
 export default defineConfig({
   nitro: {
-    preset: "vercel",
+    preset: isLighthouseBuild ? "node" : "vercel",
   },
   vite: {
     define: {
