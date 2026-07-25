@@ -49,6 +49,8 @@ export function Header() {
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
         setOpenGroup("");
       }
     };
