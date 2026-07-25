@@ -49,10 +49,13 @@ export function Header() {
   useEffect(() => {
     if (!openGroup) return;
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpenGroup("");
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpenGroup("");
+      }
     };
-    document.addEventListener("keydown", closeOnEscape);
-    return () => document.removeEventListener("keydown", closeOnEscape);
+    document.addEventListener("keydown", closeOnEscape, true);
+    return () => document.removeEventListener("keydown", closeOnEscape, true);
   }, [openGroup]);
 
   const handleClose = () => setOpenGroup("");
