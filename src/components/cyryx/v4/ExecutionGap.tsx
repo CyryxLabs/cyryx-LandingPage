@@ -43,7 +43,7 @@ export function ExecutionGap() {
       id="execution-gap"
       aria-labelledby="execution-gap-heading"
       data-story-section
-      className="relative overflow-hidden border-y border-[color-mix(in_oklab,var(--silver)_12%,transparent)] bg-[var(--obsidian)] py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden border-y border-[color-mix(in_oklab,var(--silver)_12%,transparent)] bg-[var(--obsidian)] py-12 sm:py-24 lg:py-28"
     >
       <div
         aria-hidden
@@ -55,7 +55,7 @@ export function ExecutionGap() {
       />
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        <div className="cx-reveal grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-24">
+        <div className="cx-reveal grid gap-8 sm:gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-24">
           <div>
             <HudLabel withDot>The enterprise AI reality</HudLabel>
             <p className="mt-7 max-w-md text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
@@ -71,7 +71,7 @@ export function ExecutionGap() {
           </h2>
         </div>
 
-        <div className="cx-stagger mt-14 grid gap-px overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--silver)_14%,transparent)] sm:mt-16 lg:grid-cols-2">
+        <div className="cx-stagger mt-10 grid gap-px overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--silver)_14%,transparent)] sm:mt-16 lg:grid-cols-2">
           {EVIDENCE.map((item, index) => (
             <article
               key={item.value}
@@ -107,7 +107,7 @@ export function ExecutionGap() {
           ))}
         </div>
 
-        <div className="cx-reveal mt-12 grid gap-6 border-t border-[color-mix(in_oklab,var(--silver)_14%,transparent)] pt-9 sm:mt-16 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-10">
+        <div className="cx-reveal mt-10 grid gap-5 border-t border-[color-mix(in_oklab,var(--silver)_14%,transparent)] pt-7 sm:mt-16 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-10 sm:pt-9">
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--accent-glow)]">
             Cyryx thesis
           </span>
@@ -116,7 +116,7 @@ export function ExecutionGap() {
           </p>
         </div>
 
-        <div className="cx-reveal mt-10 overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_78%,transparent)] sm:mt-12">
+        <div className="cx-reveal mt-8 overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_78%,transparent)] sm:mt-12">
           <div className="grid border-b border-white/10 px-6 py-7 sm:px-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-16 lg:px-10 lg:py-9">
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--accent-glow)]">
               Why Cyryx now

@@ -41,7 +41,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: TypeScript typecheck
         run: bun run typecheck
-      - run: bunx playwright install --with-deps chromium
+      - run: bunx playwright install --with-deps chromium webkit
       - name: Validate forbidden-terms config + list active rules
         run: node scripts/validate-forbidden-terms.mjs
       - name: Audit /admin link references (must be 0)
