@@ -10,19 +10,26 @@ const HOME_SECTIONS = [
   "contact",
 ] as const;
 
-test("Safari mobile keeps the homepage compact, visible, and scroll-safe", async ({
+test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lower-end devices", async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "safari-mobile", "This contract targets WebKit mobile.");
   test.setTimeout(120_000);
 
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "hardwareConcurrency", {
+      configurable: true,
+      get: () => 2,
+    });
+  });
   await page.goto("/", { waitUntil: "networkidle" });
+  await expect(page.locator("html")).toHaveClass(/cx-low-perf/);
 
   for (const id of HOME_SECTIONS) {
     const section = page.locator(`#${id}`);
     await section.evaluate((element) => {
       const top = element.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.45;
-      window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+      window.scrollTo(0, Math.max(0, top));
     });
     await page.waitForTimeout(350);
 
