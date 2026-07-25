@@ -29,6 +29,7 @@ export function Header() {
   const pathname = useMemo(() => location.pathname, [location.pathname]);
   const activeGroupId = useMemo(() => getActiveNavigationGroup(pathname), [pathname]);
   const prevPathname = useRef(pathname);
+  const escapeDismissedNavigation = useRef(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -45,18 +46,6 @@ export function Header() {
       prevPathname.current = pathname;
     }
   }, [pathname]);
-
-  useEffect(() => {
-    if (!openGroup) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        setOpenGroup("");
-      }
-    };
-    document.addEventListener("keydown", closeOnEscape, true);
-    return () => document.removeEventListener("keydown", closeOnEscape, true);
-  }, [openGroup]);
 
   const handleClose = () => setOpenGroup("");
 
@@ -80,7 +69,29 @@ export function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center" aria-label="Primary">
-            <NavigationMenu value={openGroup} onValueChange={setOpenGroup}>
+            <NavigationMenu
+              value={openGroup}
+              onValueChange={(nextGroup) => {
+                if (nextGroup && escapeDismissedNavigation.current) return;
+                setOpenGroup(nextGroup);
+              }}
+              onPointerDownCapture={() => {
+                escapeDismissedNavigation.current = false;
+              }}
+              onPointerLeave={() => {
+                escapeDismissedNavigation.current = false;
+              }}
+              onKeyDownCapture={(event) => {
+                if (event.key === "Escape" && openGroup) {
+                  escapeDismissedNavigation.current = true;
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setOpenGroup("");
+                } else {
+                  escapeDismissedNavigation.current = false;
+                }
+              }}
+            >
               <NavigationMenuList className="gap-7 xl:gap-8">
                 {PRIMARY_NAVIGATION.map((group) => (
                   <HeaderDropdown
