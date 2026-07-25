@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import { Header } from "@/components/cyryx/Header";
 import { Hero } from "@/components/cyryx/Hero";
@@ -143,6 +144,45 @@ export const Route = createFileRoute("/")({
 
 function IndexPage() {
   useCyryxScrollAnimations();
+
+  useEffect(() => {
+    let cancelled = false;
+    let secondFrame = 0;
+
+    const scrollToCurrentHash = () => {
+      if (cancelled || !window.location.hash) return;
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      const root = document.documentElement;
+      const body = document.body;
+      const rootBehavior = root.style.scrollBehavior;
+      const bodyBehavior = body.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      body.style.scrollBehavior = "auto";
+      const headerOffset = window.innerWidth >= 1024 ? 96 : 64;
+      const top = target.getBoundingClientRect().top + window.scrollY - headerOffset - 8;
+      window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+      requestAnimationFrame(() => {
+        root.style.scrollBehavior = rootBehavior;
+        body.style.scrollBehavior = bodyBehavior;
+      });
+    };
+
+    const firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(scrollToCurrentHash);
+    });
+    void document.fonts?.ready.then(scrollToCurrentHash).catch(() => {});
+    window.addEventListener("hashchange", scrollToCurrentHash);
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(firstFrame);
+      if (secondFrame) cancelAnimationFrame(secondFrame);
+      window.removeEventListener("hashchange", scrollToCurrentHash);
+    };
+  }, []);
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">

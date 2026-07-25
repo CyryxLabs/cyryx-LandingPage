@@ -157,7 +157,7 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await expect(secondary).toBeFocused();
 
   const primaryHref = await primary.getAttribute("href");
-  expect(primaryHref).toBe("#contact");
+  expect(primaryHref).toBe("/start");
 
   const secondaryHref = await secondary.getAttribute("href");
   expect(secondaryHref).toBe("#maax");
@@ -254,7 +254,7 @@ test("Forced-colors keeps Hero text and focus indicators system-readable", async
   expect(headlineColor).not.toBe("rgba(0, 0, 0, 0)");
   expect(textFill).not.toBe("rgba(0, 0, 0, 0)");
 
-  const primaryAnchor = page.locator('section[data-hero] a[href="#contact"]').first();
+  const primaryAnchor = page.locator('section[data-hero] a[href="/start"]').first();
   await expect(primaryAnchor).toBeVisible();
   await primaryAnchor.focus();
   const focusIndicator = await primaryAnchor.evaluate((el) => {

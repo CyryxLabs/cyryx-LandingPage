@@ -226,8 +226,8 @@ function ResearchPublicationPage() {
               </p>
             </div>
 
-            <div className="mt-10 overflow-x-auto rounded-lg border border-white/10">
-              <table className="w-full min-w-[840px] border-collapse text-left">
+            <div className="mt-10 max-w-full overflow-x-auto rounded-lg border border-white/10">
+              <table className="w-full border-collapse text-left" style={{ minWidth: 840 }}>
                 <thead className="bg-[var(--graphite)] font-mono text-[8px] uppercase tracking-[0.14em] text-[var(--steel)]">
                   <tr>
                     <th className="px-5 py-4">CGP domain</th>
@@ -279,8 +279,8 @@ function ResearchPublicationPage() {
         )}
 
         <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-10">
-          <div className="grid gap-10 rounded-xl border border-white/10 bg-[var(--obsidian)] p-7 sm:p-10 lg:grid-cols-[0.45fr_0.55fr] lg:gap-16">
-            <div>
+          <div className="grid min-w-0 gap-10 rounded-xl border border-white/10 bg-[var(--obsidian)] p-7 sm:p-10 lg:grid-cols-[0.45fr_0.55fr] lg:gap-16">
+            <div className="min-w-0">
               <HudLabel>Publication record</HudLabel>
               <h2 className="mt-6 font-display text-4xl tracking-[-0.045em] text-[var(--silver)]">
                 Open, citable, versioned.
@@ -299,11 +299,11 @@ function ResearchPublicationPage() {
                 />
               </dl>
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-[var(--steel)]">
                 Suggested citation
               </p>
-              <p className="mt-4 rounded-lg border border-white/10 bg-[var(--onyx)] p-5 font-mono text-xs leading-relaxed text-[var(--silver-dim)]">
+              <p className="mt-4 break-words rounded-lg border border-white/10 bg-[var(--onyx)] p-5 font-mono text-xs leading-relaxed text-[var(--silver-dim)]">
                 {citation}
               </p>
               <button
@@ -342,19 +342,19 @@ function copyWithTemporaryTextarea(value: string) {
 function RecordRow({ label, value, href }: { label: string; value?: string; href?: string }) {
   if (!value) return null;
   return (
-    <div className="grid grid-cols-[7rem_1fr] gap-4 border-t border-white/10 pt-4">
+    <div className="grid min-w-0 grid-cols-1 gap-2 border-t border-white/10 pt-4 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-4">
       <dt className="font-mono text-[8px] uppercase tracking-[0.16em] text-[var(--steel)]">
         {label}
       </dt>
-      <dd>
+      <dd className="min-w-0">
         {href ? (
           <a
             href={href}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1 text-[var(--silver)] hover:text-[var(--accent-glow)]"
+            className="inline-flex max-w-full items-start gap-1 break-all text-[var(--silver)] hover:text-[var(--accent-glow)]"
           >
-            {value} <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+            {value} <ArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
           </a>
         ) : (
           value

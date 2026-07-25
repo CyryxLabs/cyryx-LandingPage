@@ -18,26 +18,20 @@ import {
   isPrimaryNavigationCTAActive,
 } from "@/lib/navigation";
 
-export function MobileMenu({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
+export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const pathname = useMemo(() => location.pathname, [location.pathname]);
-  
+
   // Accordion state
   const activeGroup = useMemo(() => getActiveNavigationGroup(pathname), [pathname]);
-  const [expandedGroup, setExpandedGroup] = useState<string | undefined>(undefined);
+  const [expandedGroup, setExpandedGroup] = useState("");
 
   // Sync expanded group with current route on open
   useEffect(() => {
     if (open) {
-      setExpandedGroup(activeGroup || undefined);
+      setExpandedGroup(activeGroup ?? "");
     }
   }, [open, activeGroup]);
 
@@ -46,7 +40,7 @@ export function MobileMenu({
     if (!open) return;
     document.body.style.overflow = "hidden";
     document.body.style.touchAction = "none";
-    
+
     let cancelled = false;
     let ctx: { revert: () => void } | null = null;
 
@@ -60,7 +54,7 @@ export function MobileMenu({
           gsap.fromTo(
             panelRef.current,
             { opacity: 0, y: -16 },
-            { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }
+            { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" },
           );
         }, panelRef);
       });
@@ -101,11 +95,13 @@ export function MobileMenu({
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Tab" || !panelRef.current) return;
       const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
       );
-      const visibleFocusable = Array.from(focusable).filter(el => {
+      const visibleFocusable = Array.from(focusable).filter((el) => {
         const style = window.getComputedStyle(el);
-        return style.display !== 'none' && style.visibility !== 'hidden' && el.offsetParent !== null;
+        return (
+          style.display !== "none" && style.visibility !== "hidden" && el.offsetParent !== null
+        );
       });
 
       if (visibleFocusable.length === 0) return;
@@ -146,7 +142,7 @@ export function MobileMenu({
       }}
     >
       <div className="absolute inset-0 grid-floor opacity-30 pointer-events-none" aria-hidden />
-      
+
       <div className="relative flex min-h-full flex-col px-6 pt-[max(env(safe-area-inset-top),1.25rem)] pb-[max(env(safe-area-inset-bottom),2.5rem)]">
         <div className="flex items-center justify-between h-12 shrink-0">
           <div className="flex items-center gap-2.5">
@@ -165,10 +161,10 @@ export function MobileMenu({
         </div>
 
         <nav className="mt-14 flex flex-col gap-1" aria-label="Mobile primary">
-          <Accordion 
-            type="single" 
-            collapsible 
-            value={expandedGroup} 
+          <Accordion
+            type="single"
+            collapsible
+            value={expandedGroup}
             onValueChange={setExpandedGroup}
             className="w-full"
           >
@@ -176,11 +172,11 @@ export function MobileMenu({
               const isActive = activeGroup === group.id;
               return (
                 <AccordionItem key={group.id} value={group.id} className="border-none">
-                  <AccordionTrigger 
+                  <AccordionTrigger
                     className={cn(
                       "hud-label text-[var(--silver)] hover:text-white py-5 min-h-[44px]",
                       isActive && "text-[var(--accent-glow)]",
-                      expandedGroup === group.id && "text-white"
+                      expandedGroup === group.id && "text-white",
                     )}
                   >
                     {group.label}
@@ -192,15 +188,18 @@ export function MobileMenu({
                         <Link
                           key={item.href}
                           to={item.href}
+                          resetScroll
                           onClick={onClose}
                           className={cn(
                             "flex items-center min-h-[44px] px-4 py-3 rounded-md transition-colors",
                             "text-[var(--silver)] hover:text-white hover:bg-[color-mix(in_oklab,var(--silver)_5%,transparent)]",
-                            isItemActive && "text-[var(--accent-glow)] font-medium"
+                            isItemActive && "text-[var(--accent-glow)] font-medium",
                           )}
                           aria-current={isItemActive ? "page" : undefined}
                         >
-                          <span className="hud-label text-sm uppercase tracking-wider">{item.label}</span>
+                          <span className="hud-label text-sm uppercase tracking-wider">
+                            {item.label}
+                          </span>
                         </Link>
                       );
                     })}
@@ -213,8 +212,13 @@ export function MobileMenu({
           <div className="mt-6 pt-6 border-t border-[color-mix(in_oklab,var(--silver)_8%,transparent)]">
             <Link
               to={PRIMARY_NAVIGATION_CTA.href}
+              resetScroll
               onClick={() => {
-                trackCta({ cta: "start_project", section: "mobile_menu", href: PRIMARY_NAVIGATION_CTA.href });
+                trackCta({
+                  cta: "start_project",
+                  section: "mobile_menu",
+                  href: PRIMARY_NAVIGATION_CTA.href,
+                });
                 onClose();
               }}
               aria-current={isPrimaryNavigationCTAActive(pathname) ? "page" : undefined}
@@ -222,11 +226,13 @@ export function MobileMenu({
                 "cx-btn cx-liquid-glass flex min-h-[44px] w-full items-center justify-center rounded-md hud-label text-[var(--silver)] transition-all",
                 isPrimaryNavigationCTAActive(pathname)
                   ? "border-[var(--accent-glow)] text-white shadow-[0_0_12px_var(--accent-glow)]"
-                  : "hover:text-white"
+                  : "hover:text-white",
               )}
             >
               {PRIMARY_NAVIGATION_CTA.label}
-              <span aria-hidden className="ml-2 text-[var(--accent-glow)]">→</span>
+              <span aria-hidden className="ml-2 text-[var(--accent-glow)]">
+                →
+              </span>
             </Link>
           </div>
         </nav>

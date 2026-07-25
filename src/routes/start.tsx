@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
@@ -83,6 +83,11 @@ function StartPage() {
   const [status, setStatus] = useState<"idle" | "submitting" | "ok" | "err">("idle");
   const [error, setError] = useState<string | null>(null);
   const successRef = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (window.location.hash) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
 
   useEffect(() => {
     if (status !== "ok") return;
@@ -169,7 +174,7 @@ function StartPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" className="relative">
-        <section className="mx-auto max-w-4xl px-5 sm:px-8 lg:px-12 pt-32 pb-24 lg:pt-44">
+        <section className="mx-auto max-w-4xl px-5 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-32 lg:px-12 lg:pt-44">
           <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
             <Link to="/" className="hover:text-[var(--accent-glow)]">
               Home
@@ -189,164 +194,180 @@ function StartPage() {
             automation, an AI product, managed operations, or no build at all.
           </p>
 
-          <ol className="mt-12 grid border-y border-[color-mix(in_oklab,var(--silver)_14%,transparent)] lg:grid-cols-3">
-            {NEXT_STEPS.map((step) => (
-              <li
-                key={step.n}
-                className="border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-7 last:border-b-0 lg:border-b-0 lg:border-r lg:px-7 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
-              >
-                <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
-                  {step.n}
-                </span>
-                <h2 className="mt-4 font-display text-xl tracking-[-0.02em] text-[var(--silver)]">
-                  {step.title}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">{step.body}</p>
-              </li>
-            ))}
-          </ol>
-
-          {status === "ok" ? (
-            <div
-              ref={successRef}
-              tabIndex={-1}
-              role="status"
-              aria-live="polite"
-              className="mt-10 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-6 outline-none backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
-            >
-              <HudLabel className="text-[var(--accent-glow)]">Received</HudLabel>
-              <p className="mt-3 text-[15px] leading-relaxed text-[var(--silver)]">
-                Thank you. Your submission has been recorded. Our response may confirm fit, ask for
-                context, recommend a different next step, or decline the opportunity.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  to="/engagement-model"
-                  className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
-                >
-                  Read our engagement model
-                  <span aria-hidden className="text-[var(--accent-glow)]">
-                    →
-                  </span>
-                </Link>
-                <Link
-                  to="/"
-                  className="inline-flex items-center h-11 px-3 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)]"
-                >
-                  Back to home
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <form onSubmit={onSubmit} className="mt-10 space-y-6">
-              {/* Honeypot */}
-              <input
-                type="text"
-                name="website"
+          <div className="mt-10 flex flex-col lg:mt-12">
+            {status === "ok" ? (
+              <div
+                ref={successRef}
                 tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-                className="hidden"
-              />
-
-              <div className="grid gap-6 sm:grid-cols-2">
-                <Field label="Full name" name="name" required autoComplete="name" />
-                <Field label="Work email" name="email" type="email" required autoComplete="email" />
-                <Field label="Company" name="company" required autoComplete="organization" />
-                <Select label="Project type" name="projectType" options={PROJECT_TYPES} />
-              </div>
-
-              <TextArea
-                label="Primary problem"
-                name="problem"
-                required
-                rows={4}
-                placeholder="What's broken, missing, or slowing you down?"
-              />
-              <TextArea
-                label="Desired outcome"
-                name="outcome"
-                rows={3}
-                placeholder="What would be materially different if this work succeeds?"
-              />
-
-              <details className="group rounded-md border border-white/10 bg-[color-mix(in_oklab,var(--graphite)_35%,transparent)]">
-                <summary className="cursor-pointer list-none px-5 py-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--accent-glow)]">
-                  Add planning context <span className="text-[var(--accent-glow)]">/ optional</span>
-                </summary>
-                <div className="grid gap-6 border-t border-white/10 p-5 sm:grid-cols-2">
-                  <Field label="Role" name="role" autoComplete="organization-title" />
-                  <Field
-                    label="Company website"
-                    name="companyWebsite"
-                    type="url"
-                    placeholder="https://"
-                  />
-                  <Field
-                    label="Current stage"
-                    name="stage"
-                    placeholder="e.g. exploring or in production"
-                  />
-                  <Select label="Investment range" name="investment" options={INVESTMENT_RANGES} />
-                  <Select label="Desired timeline" name="timeline" options={TIMELINES} />
-                  <Select label="Decision-maker status" name="decision" options={DECISION} />
-                  <div className="sm:col-span-2">
-                    <TextArea
-                      label="Systems or data involved"
-                      name="systems"
-                      rows={2}
-                      placeholder="e.g. HubSpot CRM, Postgres warehouse, Google Workspace"
-                    />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <TextArea label="Additional context" name="notes" rows={3} />
-                  </div>
-                </div>
-              </details>
-
-              <label className="flex items-start gap-3 text-sm text-[var(--silver-dim)]">
-                <input
-                  type="checkbox"
-                  name="consent"
-                  required
-                  className="mt-1 h-4 w-4 accent-[var(--accent-glow)]"
-                />
-                <span>
-                  I consent to Cyryx Labs contacting me about this submission in accordance with the{" "}
-                  <Link to="/privacy" className="text-[var(--accent-glow)] hover:underline">
-                    Privacy Policy
+                role="status"
+                aria-live="polite"
+                className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-6 outline-none backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+              >
+                <HudLabel className="text-[var(--accent-glow)]">Received</HudLabel>
+                <p className="mt-3 text-[15px] leading-relaxed text-[var(--silver)]">
+                  Thank you. Your submission has been recorded. Our response may confirm fit, ask
+                  for context, recommend a different next step, or decline the opportunity.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link
+                    to="/engagement-model"
+                    className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
+                  >
+                    Read our engagement model
+                    <span aria-hidden className="text-[var(--accent-glow)]">
+                      →
+                    </span>
                   </Link>
-                  .
-                </span>
-              </label>
-
-              {status === "err" && error && (
-                <p
-                  role="alert"
-                  className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200"
-                >
-                  {error}
-                </p>
-              )}
-
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="submit"
-                  disabled={status === "submitting"}
-                  className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-12 px-6 rounded-md text-[var(--silver)] hud-label disabled:opacity-60"
-                >
-                  {status === "submitting" ? "Sending…" : "Submit for review"}
-                  <span aria-hidden className="text-[var(--accent-glow)]">
-                    →
-                  </span>
-                </button>
-                <p className="text-xs text-[var(--silver-dim)]">
-                  Acceptance, scope, timing, ownership, licensing, support, and commercial terms are
-                  defined separately for each engagement.
-                </p>
+                  <Link
+                    to="/"
+                    className="inline-flex items-center h-11 px-3 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)]"
+                  >
+                    Back to home
+                  </Link>
+                </div>
               </div>
-            </form>
-          )}
+            ) : (
+              <form onSubmit={onSubmit} className="space-y-6">
+                {/* Honeypot */}
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hidden"
+                />
+
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <Field label="Full name" name="name" required autoComplete="name" />
+                  <Field
+                    label="Work email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                  />
+                  <Field label="Company" name="company" required autoComplete="organization" />
+                  <Select label="Project type" name="projectType" options={PROJECT_TYPES} />
+                </div>
+
+                <TextArea
+                  label="Primary problem"
+                  name="problem"
+                  required
+                  rows={4}
+                  placeholder="What's broken, missing, or slowing you down?"
+                />
+                <TextArea
+                  label="Desired outcome"
+                  name="outcome"
+                  rows={3}
+                  placeholder="What would be materially different if this work succeeds?"
+                />
+
+                <details className="group rounded-md border border-white/10 bg-[color-mix(in_oklab,var(--graphite)_35%,transparent)]">
+                  <summary className="cursor-pointer list-none px-5 py-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--accent-glow)]">
+                    Add planning context{" "}
+                    <span className="text-[var(--accent-glow)]">/ optional</span>
+                  </summary>
+                  <div className="grid gap-6 border-t border-white/10 p-5 sm:grid-cols-2">
+                    <Field label="Role" name="role" autoComplete="organization-title" />
+                    <Field
+                      label="Company website"
+                      name="companyWebsite"
+                      type="url"
+                      placeholder="https://"
+                    />
+                    <Field
+                      label="Current stage"
+                      name="stage"
+                      placeholder="e.g. exploring or in production"
+                    />
+                    <Select
+                      label="Investment range"
+                      name="investment"
+                      options={INVESTMENT_RANGES}
+                    />
+                    <Select label="Desired timeline" name="timeline" options={TIMELINES} />
+                    <Select label="Decision-maker status" name="decision" options={DECISION} />
+                    <div className="sm:col-span-2">
+                      <TextArea
+                        label="Systems or data involved"
+                        name="systems"
+                        rows={2}
+                        placeholder="e.g. HubSpot CRM, Postgres warehouse, Google Workspace"
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <TextArea label="Additional context" name="notes" rows={3} />
+                    </div>
+                  </div>
+                </details>
+
+                <label className="flex items-start gap-3 text-sm text-[var(--silver-dim)]">
+                  <input
+                    type="checkbox"
+                    name="consent"
+                    required
+                    className="mt-1 h-4 w-4 accent-[var(--accent-glow)]"
+                  />
+                  <span>
+                    I consent to Cyryx Labs contacting me about this submission in accordance with
+                    the{" "}
+                    <Link to="/privacy" className="text-[var(--accent-glow)] hover:underline">
+                      Privacy Policy
+                    </Link>
+                    .
+                  </span>
+                </label>
+
+                {status === "err" && error && (
+                  <p
+                    role="alert"
+                    className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200"
+                  >
+                    {error}
+                  </p>
+                )}
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={status === "submitting"}
+                    className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-12 px-6 rounded-md text-[var(--silver)] hud-label disabled:opacity-60"
+                  >
+                    {status === "submitting" ? "Sending…" : "Submit for review"}
+                    <span aria-hidden className="text-[var(--accent-glow)]">
+                      →
+                    </span>
+                  </button>
+                  <p className="text-xs text-[var(--silver-dim)]">
+                    Acceptance, scope, timing, ownership, licensing, support, and commercial terms
+                    are defined separately for each engagement.
+                  </p>
+                </div>
+              </form>
+            )}
+
+            <ol className="mt-14 grid border-y border-[color-mix(in_oklab,var(--silver)_14%,transparent)] lg:grid-cols-3">
+              {NEXT_STEPS.map((step) => (
+                <li
+                  key={step.n}
+                  className="border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-7 last:border-b-0 lg:border-b-0 lg:border-r lg:px-7 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
+                >
+                  <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
+                    {step.n}
+                  </span>
+                  <h2 className="mt-4 font-display text-xl tracking-[-0.02em] text-[var(--silver)]">
+                    {step.title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
+                    {step.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
       </main>
       <Footer />

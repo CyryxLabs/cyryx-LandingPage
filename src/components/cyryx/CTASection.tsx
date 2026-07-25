@@ -4,6 +4,7 @@ import lobby from "@/assets/cyryx-cta-lobby.jpg";
 import { CyryxMark } from "./primitives/CyryxMark";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
+import { START_PROJECT_HREF } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
 import { MaaxWaitlistDialog } from "./maax/MaaxWaitlistDialog";
 
@@ -55,10 +56,10 @@ export function CTASection() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a
-              href="#contact"
+              href={START_PROJECT_HREF}
               aria-label={`${copy.ctaPrimary} — open contact form`}
               onClick={() =>
-                trackCta({ cta: "start_project", section: "final_cta", href: "#contact" })
+                trackCta({ cta: "start_project", section: "final_cta", href: START_PROJECT_HREF })
               }
               className="cx-liquid-glass inline-flex h-12 min-h-11 w-full sm:w-auto items-center justify-center gap-2 rounded-md px-6 hud-label text-[var(--accent-glow)] font-semibold shadow-[var(--shadow-glow-teal)] hover:brightness-110 transition"
             >

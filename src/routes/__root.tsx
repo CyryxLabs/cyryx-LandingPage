@@ -184,7 +184,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}if(!window.location.hash){window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});}}catch(e){}})();",
+              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var r=document.documentElement;if(!window.location.hash){window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});return;}r.style.scrollBehavior='auto';var j=function(){try{var id=decodeURIComponent(window.location.hash.slice(1)),el=document.getElementById(id);if(!el)return;var h=matchMedia('(min-width:1024px)').matches?96:64;window.scrollTo(0,Math.max(0,el.getBoundingClientRect().top+window.scrollY-h-8));requestAnimationFrame(function(){requestAnimationFrame(function(){r.style.scrollBehavior='';});});}catch(e){}};document.addEventListener('DOMContentLoaded',j,{once:true});window.addEventListener('load',j,{once:true});}catch(e){}})();",
           }}
         />
         {/* Subdomain routing: workspace.<domain> serves the internal console.
@@ -210,6 +210,10 @@ function RootComponent() {
   useEffect(() => {
     initWebVitals();
     syncCopyVariantToDocument();
+    document.documentElement.dataset.cyryxHydrated = "true";
+    return () => {
+      delete document.documentElement.dataset.cyryxHydrated;
+    };
   }, []);
   useSmoothScroll();
 
