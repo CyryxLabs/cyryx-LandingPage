@@ -1,4 +1,12 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+async function expectPageTop(page: Page) {
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY), {
+      message: "a fresh route navigation should start at the top",
+    })
+    .toBeLessThanOrEqual(2);
+}
 
 test("every public route renders its core shell without runtime or layout failures", async ({
   baseURL,
@@ -85,4 +93,40 @@ test("mobile menu reaches Start a Project and exposes the form above the fold", 
   await expect(page).toHaveURL(/\/start$/);
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(2);
   await expect(page.locator('input[name="name"]')).toBeInViewport();
+});
+
+test("mobile navigation starts fresh routes at the top and preserves Back restoration", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("html")).toHaveAttribute("data-cyryx-hydrated", "true");
+  await page.waitForLoadState("load");
+
+  const footer = page.locator('footer[role="contentinfo"]');
+  await footer.scrollIntoViewIfNeeded();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(1_000);
+  const homeScrollY = await page.evaluate(() => window.scrollY);
+
+  await footer.getByRole("link", { name: "Research", exact: true }).click();
+  await expect(page).toHaveURL(/\/research$/);
+  await expectPageTop(page);
+  await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
+
+  await page.goBack({ waitUntil: "domcontentloaded" });
+  await expect(page).toHaveURL(/\/$/);
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY), {
+      message: "Back should restore the prior homepage reading position",
+    })
+    .toBeGreaterThan(homeScrollY * 0.5);
+
+  await page.getByRole("button", { name: "Open menu" }).click();
+  const mobileNavigation = page.getByRole("navigation", { name: "Mobile primary" });
+  await mobileNavigation.getByRole("button", { name: "Solutions", exact: true }).click();
+  await mobileNavigation.getByRole("link", { name: "Workflow Automation", exact: true }).click();
+
+  await expect(page).toHaveURL(/\/solutions\/workflow-automation$/);
+  await expectPageTop(page);
+  await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
 });
