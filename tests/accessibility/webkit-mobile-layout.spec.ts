@@ -10,6 +10,13 @@ const HOME_SECTIONS = [
   "contact",
 ] as const;
 
+function isTransparentColor(value: string) {
+  const normalized = value.replaceAll(" ", "").toLowerCase();
+  return (
+    normalized === "transparent" || normalized === "rgba(0,0,0,0)" || normalized.endsWith(",0)")
+  );
+}
+
 test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lower-end devices", async ({
   page,
 }, testInfo) => {
@@ -24,6 +31,18 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   });
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveClass(/cx-low-perf/);
+
+  const maaxCtaLabel = page.locator('a[href="#maax"] > span');
+  await expect(maaxCtaLabel).toHaveText("MAAX Studio →");
+  const maaxCtaColors = await maaxCtaLabel.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      color: style.color,
+      textFillColor: style.webkitTextFillColor,
+    };
+  });
+  expect(isTransparentColor(maaxCtaColors.color)).toBe(false);
+  expect(isTransparentColor(maaxCtaColors.textFillColor)).toBe(false);
 
   for (const id of HOME_SECTIONS) {
     const section = page.locator(`#${id}`);
