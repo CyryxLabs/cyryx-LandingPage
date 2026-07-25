@@ -18,7 +18,7 @@ export function StoryChapter({ index, label, children }: StoryChapterProps) {
   return (
     <div className="cx-story-chapter relative" data-story-chapter={index}>
       <div
-        className="cx-story-chapter-marker relative z-20 mx-auto flex max-w-7xl items-center gap-4 px-5 py-7 sm:px-8 lg:px-10"
+        className="cx-story-chapter-marker relative z-20 mx-auto flex max-w-7xl items-center gap-4 px-5 py-4 sm:px-8 sm:py-7 lg:px-10"
         aria-hidden="true"
       >
         <span

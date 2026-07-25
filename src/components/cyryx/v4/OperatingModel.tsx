@@ -32,10 +32,10 @@ export function OperatingModel() {
       id="operating-model"
       aria-labelledby="operating-model-heading"
       data-story-section
-      className="relative bg-[var(--graphite)] py-20 sm:py-24 lg:py-28"
+      className="relative bg-[var(--graphite)] py-12 sm:py-24 lg:py-28"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        <div className="cx-reveal grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end lg:gap-20">
+        <div className="cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end lg:gap-20">
           <div>
             <HudLabel withDot>How Cyryx works</HudLabel>
             <h2
@@ -51,7 +51,7 @@ export function OperatingModel() {
           </p>
         </div>
 
-        <ol className="cx-stagger relative mt-14 grid gap-10 sm:mt-16 lg:grid-cols-3 lg:gap-0">
+        <ol className="cx-stagger relative mt-10 grid gap-8 sm:mt-16 sm:gap-10 lg:grid-cols-3 lg:gap-0">
           <div
             aria-hidden
             className="absolute left-0 right-0 top-4 hidden h-px bg-[color-mix(in_oklab,var(--silver)_18%,transparent)] lg:block"
@@ -69,10 +69,10 @@ export function OperatingModel() {
                   {stage.name}
                 </span>
               </div>
-              <h3 className="mt-10 max-w-[14ch] font-display text-3xl font-medium leading-[1.02] tracking-[-0.035em] text-[var(--silver)]">
+              <h3 className="mt-8 max-w-[14ch] font-display text-3xl font-medium leading-[1.02] tracking-[-0.035em] text-[var(--silver)] sm:mt-10">
                 {stage.promise}
               </h3>
-              <div className="mt-8 border-t border-[color-mix(in_oklab,var(--silver)_12%,transparent)] pt-6">
+              <div className="mt-6 border-t border-[color-mix(in_oklab,var(--silver)_12%,transparent)] pt-5 sm:mt-8 sm:pt-6">
                 <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--steel)]">
                   What the client receives
                 </p>
@@ -96,7 +96,7 @@ export function OperatingModel() {
             </li>
           ))}
         </ol>
-        <div className="cx-reveal mt-10 flex flex-wrap gap-6 border-t border-white/10 pt-8">
+        <div className="cx-reveal mt-8 flex flex-wrap gap-5 border-t border-white/10 pt-7 sm:mt-10 sm:gap-6 sm:pt-8">
           <Link
             to="/engagement-model"
             className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--accent-glow)]"

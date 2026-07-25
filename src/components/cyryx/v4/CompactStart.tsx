@@ -9,7 +9,7 @@ export function CompactStart() {
       id="contact"
       aria-labelledby="contact-heading"
       data-story-section
-      className="relative overflow-hidden py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden py-12 sm:py-24 lg:py-28"
     >
       <div
         aria-hidden
@@ -20,15 +20,15 @@ export function CompactStart() {
           <HudLabel withDot>Start with the constraint</HudLabel>
           <h2
             id="contact-heading"
-            className="mx-auto mt-7 max-w-[15ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
+            className="mx-auto mt-6 max-w-[15ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:mt-7 sm:text-5xl lg:text-7xl"
           >
             Is the opportunity worth building?
           </h2>
-          <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:mt-7 sm:text-lg">
             Bring us the workflow, product opportunity, or operational constraint. We will identify
             the clearest next step — or recommend no build.
           </p>
-          <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:mt-9 sm:flex-row">
             <Link
               to="/start"
               onClick={() =>

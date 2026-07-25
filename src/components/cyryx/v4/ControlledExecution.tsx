@@ -15,7 +15,7 @@ export function ControlledExecution() {
       aria-labelledby="controlled-execution-heading"
       data-story-section
       data-execution-system
-      className="relative overflow-hidden py-20 sm:py-24 lg:py-32"
+      className="relative overflow-hidden py-12 sm:py-24 lg:py-32"
     >
       <div
         aria-hidden
@@ -36,7 +36,7 @@ export function ControlledExecution() {
           </p>
         </div>
 
-        <div className="relative mt-14 sm:mt-20">
+        <div className="relative mt-10 sm:mt-20">
           <div
             aria-hidden
             className="absolute bottom-5 left-[1.15rem] top-5 w-px bg-white/10 lg:bottom-auto lg:left-[10%] lg:right-[10%] lg:top-[1.15rem] lg:h-px lg:w-auto"
@@ -51,7 +51,7 @@ export function ControlledExecution() {
             />
           </div>
 
-          <ol className="relative grid gap-9 lg:grid-cols-5 lg:gap-5">
+          <ol className="relative grid gap-7 sm:gap-9 lg:grid-cols-5 lg:gap-5">
             {STAGES.map(([n, title, body]) => (
               <li
                 key={title}
@@ -72,7 +72,7 @@ export function ControlledExecution() {
           </ol>
         </div>
 
-        <p className="cx-reveal mt-14 border-t border-white/10 pt-8 text-center font-display text-2xl tracking-[-0.025em] text-[var(--silver)] sm:mt-20 sm:text-3xl">
+        <p className="cx-reveal mt-10 border-t border-white/10 pt-7 text-center font-display text-2xl tracking-[-0.025em] text-[var(--silver)] sm:mt-20 sm:pt-8 sm:text-3xl">
           From intent to action. From action to evidence.
         </p>
       </div>

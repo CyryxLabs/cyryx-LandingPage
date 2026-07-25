@@ -2,8 +2,8 @@
   "ci": {
     "collect": {
       "url": ["http://127.0.0.1:4175/"],
-      "startServerCommand": "bun run dev --host 127.0.0.1 --port 4175",
-      "startServerReadyPattern": "ready in",
+      "startServerCommand": "bun run build:lighthouse && bun scripts/serve-lighthouse.mjs",
+      "startServerReadyPattern": "Local:",
       "numberOfRuns": 3,
       "settings": {
         "preset": "desktop",

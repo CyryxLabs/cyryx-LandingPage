@@ -81,7 +81,7 @@ export function MAAXStudioSpotlight() {
         id="maax"
         aria-labelledby="maax-heading"
         data-story-section
-        className="relative overflow-hidden bg-[var(--graphite)] py-20 sm:py-24 lg:py-28"
+        className="relative overflow-hidden bg-[var(--graphite)] py-12 sm:py-24 lg:py-28"
       >
         <div
           aria-hidden
@@ -97,23 +97,23 @@ export function MAAXStudioSpotlight() {
               height={222}
               loading="lazy"
               decoding="async"
-              className="mt-7 block h-auto w-full object-contain"
+              className="mt-6 block h-auto w-full object-contain sm:mt-7"
               style={{ maxWidth: 500 }}
             />
             <h2
               id="maax-heading"
-              className="mt-8 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
+              className="mt-7 max-w-[18ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:mt-8 sm:text-5xl lg:text-7xl"
             >
               A command environment for agentic software execution.
             </h2>
-            <p className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:mt-7 sm:text-lg">
               Separate from client delivery, MAAX Studio is Cyryx Labs&apos; product program for
               coordinating software missions, project context, review, and controlled action — with
               the operator in command.
             </p>
           </div>
 
-          <div className="mt-14 grid gap-12 lg:mt-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-20">
+          <div className="mt-10 grid gap-10 sm:mt-14 sm:gap-12 lg:mt-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-20">
             <div className="cx-reveal lg:sticky lg:top-28">
               <ProductPreview />
             </div>
@@ -123,7 +123,7 @@ export function MAAXStudioSpotlight() {
                 <article
                   key={layer.n}
                   data-maax-step
-                  className="cx-stagger-item border-t border-[color-mix(in_oklab,var(--steel)_18%,transparent)] py-7 first:pt-0 lg:py-8"
+                  className="cx-stagger-item border-t border-[color-mix(in_oklab,var(--steel)_18%,transparent)] py-6 first:pt-0 sm:py-7 lg:py-8"
                 >
                   <div className="flex items-baseline gap-4">
                     <span className="font-mono text-[10px] tracking-[0.24em] text-[var(--accent-glow)]">

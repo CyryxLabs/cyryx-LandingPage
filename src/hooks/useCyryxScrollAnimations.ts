@@ -137,12 +137,14 @@ export function useCyryxScrollAnimations() {
           const heroSub = document.querySelector<HTMLElement>(".cx-hero-sub");
           const heroCtas = document.querySelector<HTMLElement>(".cx-hero-ctas");
 
-          if (heroLine && heroSub && heroCtas) {
+          if (heroLine && heroSub && heroCtas && !lowPerf) {
             const heroSequence = gsap.timeline({ defaults: { ease: "power3.out" } });
             heroSequence
               .from(heroLine, { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
               .from(heroSub, { opacity: 0, y: 16, duration: 0.65 }, "-=0.45")
               .from(heroCtas, { opacity: 0, y: 14, duration: 0.6 }, "-=0.4");
+          } else if (heroLine && heroSub && heroCtas) {
+            gsap.set([heroLine, heroSub, heroCtas], { opacity: 1, x: 0, y: 0 });
           }
 
           /*
@@ -260,66 +262,75 @@ export function useCyryxScrollAnimations() {
             });
           }
 
-          gsap.utils.toArray<HTMLElement>("[data-story-section]").forEach((section) => {
-            const reveals = section.querySelectorAll<HTMLElement>(".cx-reveal");
-            if (!reveals.length) return;
-
-            gsap.from(reveals, {
-              opacity: 0,
-              y: mobile ? 22 : 34,
-              duration: mobile ? 0.7 : 0.85,
-              stagger: mobile ? 0.04 : 0.08,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: section,
-                start: mobile ? "top 90%" : "top 84%",
-                once: true,
-              },
+          if (lowPerf) {
+            gsap.set(".cx-reveal, .cx-stagger-item, [data-chapter-text]", {
+              opacity: 1,
+              x: 0,
+              y: 0,
             });
-          });
+            gsap.set("[data-chapter-line]", { scaleX: 1 });
+          } else {
+            gsap.utils.toArray<HTMLElement>("[data-story-section]").forEach((section) => {
+              const reveals = section.querySelectorAll<HTMLElement>(".cx-reveal");
+              if (!reveals.length) return;
 
-          gsap.utils.toArray<HTMLElement>(".cx-stagger").forEach((group) => {
-            const items = group.querySelectorAll<HTMLElement>(".cx-stagger-item");
-            if (!items.length) return;
-
-            gsap.from(items, {
-              opacity: 0,
-              y: mobile ? 16 : 24,
-              duration: mobile ? 0.55 : 0.7,
-              stagger: mobile ? 0.04 : 0.07,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: group,
-                start: mobile ? "top 91%" : "top 86%",
-                once: true,
-              },
-            });
-          });
-
-          gsap.utils.toArray<HTMLElement>("[data-story-chapter]").forEach((chapter) => {
-            const marker = chapter.querySelector<HTMLElement>(".cx-story-chapter-marker");
-            const line = chapter.querySelector<HTMLElement>("[data-chapter-line]");
-            if (!marker || !line) return;
-
-            const markerText = marker.querySelectorAll<HTMLElement>("[data-chapter-text]");
-            const chapterSequence = gsap.timeline({
-              scrollTrigger: {
-                trigger: marker,
-                start: mobile ? "top 94%" : "top 88%",
-                once: true,
-              },
-            });
-
-            chapterSequence
-              .from(markerText, {
+              gsap.from(reveals, {
                 opacity: 0,
-                x: mobile ? -8 : -14,
-                duration: 0.5,
-                stagger: 0.06,
+                y: mobile ? 22 : 34,
+                duration: mobile ? 0.7 : 0.85,
+                stagger: mobile ? 0.04 : 0.08,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: section,
+                  start: mobile ? "top 90%" : "top 84%",
+                  once: true,
+                },
+              });
+            });
+
+            gsap.utils.toArray<HTMLElement>(".cx-stagger").forEach((group) => {
+              const items = group.querySelectorAll<HTMLElement>(".cx-stagger-item");
+              if (!items.length) return;
+
+              gsap.from(items, {
+                opacity: 0,
+                y: mobile ? 16 : 24,
+                duration: mobile ? 0.55 : 0.7,
+                stagger: mobile ? 0.04 : 0.07,
                 ease: "power2.out",
-              })
-              .to(line, { scaleX: 1, duration: 0.9, ease: "power3.out" }, 0.08);
-          });
+                scrollTrigger: {
+                  trigger: group,
+                  start: mobile ? "top 91%" : "top 86%",
+                  once: true,
+                },
+              });
+            });
+
+            gsap.utils.toArray<HTMLElement>("[data-story-chapter]").forEach((chapter) => {
+              const marker = chapter.querySelector<HTMLElement>(".cx-story-chapter-marker");
+              const line = chapter.querySelector<HTMLElement>("[data-chapter-line]");
+              if (!marker || !line) return;
+
+              const markerText = marker.querySelectorAll<HTMLElement>("[data-chapter-text]");
+              const chapterSequence = gsap.timeline({
+                scrollTrigger: {
+                  trigger: marker,
+                  start: mobile ? "top 94%" : "top 88%",
+                  once: true,
+                },
+              });
+
+              chapterSequence
+                .from(markerText, {
+                  opacity: 0,
+                  x: mobile ? -8 : -14,
+                  duration: 0.5,
+                  stagger: 0.06,
+                  ease: "power2.out",
+                })
+                .to(line, { scaleX: 1, duration: 0.9, ease: "power3.out" }, 0.08);
+            });
+          }
 
           if ((desktop || tablet) && !lowPerf) {
             const executionSystem = document.querySelector<HTMLElement>("[data-execution-system]");

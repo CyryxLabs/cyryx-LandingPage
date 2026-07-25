@@ -17,11 +17,11 @@ export function SecurityPosture() {
       aria-labelledby="security-heading"
       data-story-section
       data-governance-system
-      className="relative overflow-hidden py-20 sm:py-24 lg:py-32"
+      className="relative overflow-hidden py-12 sm:py-24 lg:py-32"
     >
       <CapabilityMonolith />
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        <div className="relative z-10 cx-reveal grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-20">
+        <div className="relative z-10 cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-20">
           <div>
             <HudLabel withDot>Governance by design</HudLabel>
             <h2
@@ -37,8 +37,8 @@ export function SecurityPosture() {
           </p>
         </div>
 
-        <div className="relative z-10 mt-16 grid gap-12 sm:mt-20 lg:grid-cols-[0.96fr_1.04fr] lg:gap-20">
-          <figure className="cx-reveal relative min-h-[32rem] overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--obsidian)_90%,transparent)] p-6 sm:p-10">
+        <div className="relative z-10 mt-10 grid gap-10 sm:mt-20 sm:gap-12 lg:grid-cols-[0.96fr_1.04fr] lg:gap-20">
+          <figure className="cx-reveal relative min-h-[26rem] overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--obsidian)_90%,transparent)] p-6 sm:min-h-[32rem] sm:p-10">
             <figcaption className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--steel)]">
               Control architecture / engagement-specific
             </figcaption>
@@ -96,7 +96,7 @@ export function SecurityPosture() {
                 <li
                   key={n}
                   data-governance-control
-                  className="cx-stagger-item grid grid-cols-[2.5rem_1fr] gap-5 border-b border-white/10 py-7"
+                  className="cx-stagger-item grid grid-cols-[2.5rem_1fr] gap-5 border-b border-white/10 py-6 sm:py-7"
                 >
                   <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
                     {n}

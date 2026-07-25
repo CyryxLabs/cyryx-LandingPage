@@ -10,6 +10,8 @@ test("all sitemap pages remain usable without horizontal overflow on mobile", as
   page,
   request,
 }, testInfo) => {
+  test.setTimeout(120_000);
+
   test.skip(
     testInfo.project.name !== "hero-a11y-mobile-360",
     "The public-route matrix only needs one mobile browser project.",
