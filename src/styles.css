@@ -184,7 +184,13 @@
 @layer base {
   html {
     color-scheme: dark;
-    scroll-behavior: smooth;
+    /*
+     * Route changes must reset synchronously. A document-wide smooth scroll
+     * makes WebKit keep the previous page offset while the next route is
+     * rendering (most visible when navigating from the footer). In-page
+     * anchors still opt into smooth motion through useSmoothScroll().
+     */
+    scroll-behavior: auto;
     overflow-anchor: none;
   }
 

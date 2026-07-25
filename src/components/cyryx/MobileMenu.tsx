@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { X } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { CyryxMark, CyryxWordmark } from "./primitives/CyryxMark";
@@ -21,8 +21,25 @@ import {
 export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const bodyStyleRef = useRef<{ overflow: string; touchAction: string } | null>(null);
   const location = useLocation();
   const pathname = useMemo(() => location.pathname, [location.pathname]);
+
+  const releasePageScrollLock = useCallback(() => {
+    const previousStyle = bodyStyleRef.current;
+    if (!previousStyle) return;
+    document.body.style.overflow = previousStyle.overflow;
+    document.body.style.touchAction = previousStyle.touchAction;
+    bodyStyleRef.current = null;
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    // Release the lock before TanStack Router resets the destination scroll.
+    // WebKit can ignore that reset if the body is still locked during Link's
+    // navigation handler.
+    releasePageScrollLock();
+    onClose();
+  }, [onClose, releasePageScrollLock]);
 
   // Accordion state
   const activeGroup = useMemo(() => getActiveNavigationGroup(pathname), [pathname]);
@@ -38,6 +55,10 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
   // Entrance/Exit Animation
   useEffect(() => {
     if (!open) return;
+    bodyStyleRef.current = {
+      overflow: document.body.style.overflow,
+      touchAction: document.body.style.touchAction,
+    };
     document.body.style.overflow = "hidden";
     document.body.style.touchAction = "none";
 
@@ -69,22 +90,21 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
     return () => {
       cancelled = true;
       ctx?.revert();
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
+      releasePageScrollLock();
     };
-  }, [open]);
+  }, [open, releasePageScrollLock]);
 
   // Escape to close
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onClose();
+        closeMenu();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+  }, [closeMenu, open]);
 
   // Focus trap
   useEffect(() => {
@@ -152,7 +172,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
           <button
             ref={closeRef}
             type="button"
-            onClick={onClose}
+            onClick={closeMenu}
             aria-label="Close menu"
             className="cx-btn cx-liquid-glass inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--silver)]"
           >
@@ -189,7 +209,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                           key={item.href}
                           to={item.href}
                           resetScroll
-                          onClick={onClose}
+                          onClick={closeMenu}
                           className={cn(
                             "flex items-center min-h-[44px] px-4 py-3 rounded-md transition-colors",
                             "text-[var(--silver)] hover:text-white hover:bg-[color-mix(in_oklab,var(--silver)_5%,transparent)]",
@@ -219,7 +239,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                   section: "mobile_menu",
                   href: PRIMARY_NAVIGATION_CTA.href,
                 });
-                onClose();
+                closeMenu();
               }}
               aria-current={isPrimaryNavigationCTAActive(pathname) ? "page" : undefined}
               className={cn(
