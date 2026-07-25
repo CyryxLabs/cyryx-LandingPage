@@ -171,12 +171,10 @@ export function useCyryxScrollAnimations() {
               return { start, end: Math.max(start, duration - 0.12) };
             };
 
-            let heroScrollTimeline: gsap.core.Timeline;
-            const syncVideoToScroll = () => {
+            const syncVideoToScroll = (timeline: gsap.core.Timeline) => {
               const range = videoRange();
               if (!heroVideo || !range) return;
-              const nextTime =
-                range.start + (range.end - range.start) * heroScrollTimeline.progress();
+              const nextTime = range.start + (range.end - range.start) * timeline.progress();
               if (Math.abs(heroVideo.currentTime - nextTime) > 0.025) {
                 heroVideo.currentTime = nextTime;
               }
@@ -188,18 +186,16 @@ export function useCyryxScrollAnimations() {
               if (!heroVideo || !range) return;
               heroVideo.pause();
               heroVideo.currentTime = range.start;
-              syncVideoToScroll();
+              syncVideoToScroll(heroScrollTimeline);
             };
 
-            heroScrollTimeline = gsap.timeline({
-              onUpdate: syncVideoToScroll,
+            const heroScrollTimeline = gsap.timeline({
+              onUpdate: () => syncVideoToScroll(heroScrollTimeline),
               scrollTrigger: {
                 trigger: hero,
                 start: "top top",
                 end: () =>
-                  `+=${Math.round(
-                    window.innerHeight * (desktop ? 1.75 : tablet ? 1.35 : 0.95),
-                  )}`,
+                  `+=${Math.round(window.innerHeight * (desktop ? 1.75 : tablet ? 1.35 : 0.95))}`,
                 pin: !mobile,
                 pinSpacing: !mobile,
                 scrub: desktop ? 0.65 : tablet ? 0.45 : 0.3,
@@ -250,10 +246,7 @@ export function useCyryxScrollAnimations() {
             }
 
             heroVideo?.addEventListener("loadedmetadata", initializeVideoFrame);
-            if (
-              heroVideo?.readyState &&
-              heroVideo.readyState >= HTMLMediaElement.HAVE_METADATA
-            ) {
+            if (heroVideo?.readyState && heroVideo.readyState >= HTMLMediaElement.HAVE_METADATA) {
               initializeVideoFrame();
             } else {
               heroVideo?.load();
@@ -355,19 +348,17 @@ export function useCyryxScrollAnimations() {
 
               if (desktop) {
                 executionSequence
-                  .fromTo(
-                    executionRail,
-                    { scaleX: 0 },
-                    { scaleX: 1, duration: 1, ease: "none" },
-                    0,
-                  )
+                  .fromTo(executionRail, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: "none" }, 0)
                   .fromTo(
                     executionPulse,
                     { autoAlpha: 0, x: 0 },
                     {
                       autoAlpha: 1,
                       x: () =>
-                        Math.max(0, (executionTrack?.offsetWidth ?? 0) - executionPulse.offsetWidth),
+                        Math.max(
+                          0,
+                          (executionTrack?.offsetWidth ?? 0) - executionPulse.offsetWidth,
+                        ),
                       duration: 1,
                       ease: "none",
                     },
@@ -375,12 +366,7 @@ export function useCyryxScrollAnimations() {
                   );
               } else {
                 executionSequence
-                  .fromTo(
-                    executionRail,
-                    { scaleY: 0 },
-                    { scaleY: 1, duration: 1, ease: "none" },
-                    0,
-                  )
+                  .fromTo(executionRail, { scaleY: 0 }, { scaleY: 1, duration: 1, ease: "none" }, 0)
                   .fromTo(
                     executionPulse,
                     { autoAlpha: 0, y: 0 },
@@ -642,7 +628,7 @@ export function useCyryxScrollAnimations() {
           }
 
           const productVisual = document.querySelector<HTMLElement>("[data-maax-visual]");
-          if (productVisual && !lowPerf) {
+          if (productVisual && !lowPerf && !mobile) {
             gsap.fromTo(
               productVisual,
               { yPercent: mobile ? 1 : 2, scale: mobile ? 0.996 : 0.992 },

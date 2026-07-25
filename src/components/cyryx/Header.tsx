@@ -93,6 +93,7 @@ export function Header() {
 
           <Link
             to={PRIMARY_NAVIGATION_CTA.href}
+            resetScroll
             aria-label={PRIMARY_NAVIGATION_CTA.label}
             onClick={() =>
               trackCta({

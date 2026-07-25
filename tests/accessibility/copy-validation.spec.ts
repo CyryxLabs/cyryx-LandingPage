@@ -107,7 +107,7 @@ test.describe("Hero — enterprise value proposition", () => {
     await expect(page.locator("#hero-heading")).toHaveText(APPROVED.headline);
     await expect(hero).toContainText(APPROVED.sub);
     const primary = hero.getByRole("link", { name: /Start a Project with Cyryx Labs/i });
-    await expect(primary).toHaveAttribute("href", "#contact");
+    await expect(primary).toHaveAttribute("href", "/start");
     await expect(primary).toContainText(APPROVED.ctaPrimary);
     const secondary = hero.getByRole("link", { name: /Explore MAAX Studio/i });
     await expect(secondary).toHaveAttribute("href", "#maax");

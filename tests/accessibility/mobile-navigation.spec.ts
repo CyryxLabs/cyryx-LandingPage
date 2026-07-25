@@ -141,6 +141,8 @@ test.describe("Mobile Navigation Accessibility", () => {
   });
 
   test("20-21. CTA behavior", async ({ page }) => {
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
     await page.getByRole("button", { name: /open menu/i }).click();
     const nav = getNav(page);
 
@@ -153,6 +155,8 @@ test.describe("Mobile Navigation Accessibility", () => {
     await cta.click();
     await expect(page).toHaveURL(/\/start/);
     await expect(getMobileMenu(page)).not.toBeVisible();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(2);
+    await expect(page.getByLabel("Full name")).toBeInViewport();
   });
 
   test("22-24. Closing: Escape and focus", async ({ page }) => {
