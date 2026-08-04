@@ -136,6 +136,7 @@ function SolutionsHub() {
         <InternalHero
           eyebrow="AI systems · Advisory · Engineering · Operations"
           title="From unresolved AI opportunity to an owned operating capability."
+          titleScale="compact"
           body="Cyryx combines advisory, digital and AI engineering, control design, and optional managed operations. The engagement begins with the business constraint—not a predetermined tool."
           primaryCta={{
             label: "Start a fit review",

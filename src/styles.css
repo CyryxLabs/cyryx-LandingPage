@@ -83,6 +83,11 @@
   --emerald-accent: #0f6b68;
   --accent-glow: #19c7c0;
 
+  /* Governed typography exception: InternalHero H1 only. Body, UI, and all
+   * other display surfaces remain on the locked Space Grotesk / Inter stack. */
+  --font-editorial-hero:
+    "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+
   /* Semantic tokens (dark only) */
   --background: var(--onyx);
   --foreground: var(--silver);

@@ -1,46 +1,42 @@
-# Design QA — Structural Aperture Internal Heroes
+# Design QA — Approved Structural Aperture Internal Heroes
 
-## Visual truth
+## Visual contract
 
-- Source target: `C:\Users\ppetr\.codex\generated_images\019fc93a-d787-7123-bf8f-510c22d52b9f\exec-dc366aef-18b5-4ca4-b14e-926e46f7c86f.png`
-- Source pixels: 1487 × 1058 PNG, treated as a 1x desktop composition.
-- Implemented comparison capture: `C:\Users\ppetr\.codex\visualizations\2026\08\03\019fc93a-d787-7123-bf8f-510c22d52b9f\cyryx-option-3-implementation\company-desktop-1440x1024-v2.png`
-- Implemented capture pixels: 1425 × 1013 JPEG from the in-app browser content frame at the 1440 × 1024 desktop viewport preset.
-- Normalization: the source and implementation have matching aspect ratios (1.405 and 1.407). The source was proportionally normalized beside the implementation; no non-uniform scaling was used.
-- Mobile proof: `C:\Users\ppetr\.codex\visualizations\2026\08\03\019fc93a-d787-7123-bf8f-510c22d52b9f\cyryx-option-3-implementation\company-production-mobile-390x844.png` (375 × 812 captured content frame at the 390 × 844 preset).
-- State: `/company`, page top, default theme, no open menus or focus overlays.
+- Source of truth: `C:\Users\ppetr\.codex\generated_images\019fc93a-d787-7123-bf8f-510c22d52b9f\exec-dc366aef-18b5-4ca4-b14e-926e46f7c86f.png` (approved Option 3, 1487 × 1058).
+- The approved composition is the contract: editorial serif headline, visible Structural Aperture, quiet near-black field, narrow vertical lifecycle rail, and outlined primary CTA.
+- Brand governance exception: Cormorant Garamond is limited to internal-hero H1s. Space Grotesk, Inter, and IBM Plex Mono remain the product/brand UI stack elsewhere.
+- The reference image is implemented as a real responsive WebP, not recreated with CSS.
 
-## Comparison evidence
+## Corrected implementation evidence
 
-- Full-view comparison, reference left and implementation right: `C:\Users\ppetr\.codex\visualizations\2026\08\03\019fc93a-d787-7123-bf8f-510c22d52b9f\cyryx-option-3-implementation\company-reference-left-implementation-right.png`
-- Focused hero comparison, reference left and implementation right: `C:\Users\ppetr\.codex\visualizations\2026\08\03\019fc93a-d787-7123-bf8f-510c22d52b9f\cyryx-option-3-implementation\company-focus-reference-left-implementation-right.png`
-- Production desktop proof: `C:\Users\ppetr\.codex\visualizations\2026\08\03\019fc93a-d787-7123-bf8f-510c22d52b9f\cyryx-option-3-implementation\company-production-desktop-1440x1024.png`
-- Migrated desktop routes: `C:\Users\ppetr\.codex\visualizations\2026\08\03\019fc93a-d787-7123-bf8f-510c22d52b9f\cyryx-option-3-implementation\migrated-heroes-desktop-contact-sheet.png`
+| Surface           | Result | Evidence                                                                                                                                                                                                              |
+| ----------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Composition       | Passed | Desktop content begins at approximately 19vw, the default headline is constrained to 42vw, and the lifecycle rail sits near 75vw.                                                                                     |
+| Typography        | Passed | Company H1 renders in Cormorant Garamond at 89.6px / 86.016px in the tested 1280px viewport and preserves the approved four-line rhythm.                                                                              |
+| Structural asset  | Passed | Aperture opacity is 0.52 on desktop with a reduced 0.48 black overlay, so the approved material is visible without becoming a game-like neon field.                                                                   |
+| Copy hierarchy    | Passed | Company uses the exact approved headline, then a concrete company description, the Advise / Build / Control / Operate sequence, CTA pair, scope boundary, and vertical operating-model rail.                          |
+| CTA treatment     | Passed | The hero primary action uses an outlined treatment; the secondary action remains visually subordinate. The final Company CTA reaches the context-aware `/start?source=company&intent=operating-capability` route.     |
+| Solutions fit     | Passed | `/solutions` uses the governed `compact` title scale: 64px, 380px maximum width, five lines at 1280 × 720, with no horizontal overflow. Other internal routes retain the default approved scale.                      |
+| Responsive layout | Passed | At 390 × 844, the hero remains overflow-free, the aperture is retained at 0.48 opacity, and the mobile navigation opens with the body lock applied.                                                                   |
+| Runtime integrity | Passed | The production-style Node build served `/company`, `/solutions`, and `/start` with HTTP 200; all three hydrated (`data-cyryx-hydrated="true"`). The Company CTA navigation and form render were exercised in-browser. |
+| Accessibility     | Passed | Semantic headings and landmarks, descriptive links, readable contrast, restrained motion, and touch targets remain intact.                                                                                            |
 
-## Required fidelity surfaces
+## Correction history
 
-| Surface            | Result | Evidence                                                                                                                                    |
-| ------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Composition        | Passed | Editorial left column, architectural right edge, boundary note, and four-step rail preserve the approved Structural Aperture hierarchy.     |
-| Typography         | Passed | The mockup serif was intentionally replaced with brand-approved Space Grotesk; Inter and IBM Plex Mono complete the moodboard stack.        |
-| Color and material | Passed | Near-black and matte gunmetal dominate; teal is limited to traces and interaction emphasis. No neon field or game-HUD treatment remains.    |
-| Asset quality      | Passed | The production WebP is a real 1920 × 1200 raster asset with a safe center and responsive crops; no CSS-drawn substitute is used.            |
-| Copy hierarchy     | Passed | Category, outcome-led H1, concrete company description, CTAs, scope boundary, and lifecycle rail establish a clear enterprise-AI narrative. |
-| Responsive layout  | Passed | The 390 × 844 state has no horizontal overflow; the primary CTA is 44 px high and remains in the first viewport.                            |
-| Accessibility      | Passed | Semantic heading order, descriptive links, 44 px targets, restrained motion, and readable contrast are preserved.                           |
-| Core interactions  | Passed | Primary CTA reached the context-aware `/start` form; secondary CTA reached `/solutions`; the form was not submitted during QA.              |
-| Runtime integrity  | Passed | Production preview rendered desktop and mobile with no console errors or warnings during the tested journey.                                |
+1. The first implementation over-adapted the reference: it replaced the approved serif with Space Grotesk, reduced the aperture to near invisibility, used a generic wide SaaS headline, and filled the primary CTA.
+2. The user correctly rejected that result. The prior visual PASS was superseded by corrective UX and Brand gates.
+3. The current implementation treats Option 3 as the source of truth and restores its essential hierarchy while keeping public claims evidence-bounded and mobile behavior intact.
+4. `/solutions` received only a compact title-scale variant because its longer sentence exceeded the reference composition at the default scale.
 
-## Comparison history
+## Measured browser checks
 
-1. Original Option 3 established the architectural aperture, but the serif display face, brighter glow, and stronger central geometry created avoidable luxury-editorial and sci-fi risk.
-2. The refined visual target reduced geometry and glow, moved the structure toward the periphery, and kept the center quiet for copy.
-3. The implementation aligned the concept to the official moodboard by using Space Grotesk, adding evidence-safe company language, preserving restrained teal, and validating the conversion journey in the production build.
+- `/company`, 1280 × 720: H1 x=243.2, y=231, width=537.6, four lines; page width 1265/1265; no horizontal overflow.
+- `/solutions`, 1280 × 720: H1 x=243.2, y=167, width=380, height=307.2, five lines; hero height 747.7; no horizontal overflow.
+- `/solutions`, 390 × 844 preset: content width 375/375; no horizontal overflow; mobile menu opens and body overflow becomes `hidden`.
+- `/start`: one form rendered with the contextual source and intent preserved after CTA navigation.
 
-## Remaining observations
+## Scope boundary
 
-- The architectural asset is deliberately subtle on desktop. Increasing its contrast would add spectacle but also increase cyberpunk/gaming risk.
-- Long solution-detail titles create taller mobile heroes, but they remain readable, overflow-free, and conversion-capable.
-- This report gates the Structural Aperture visual implementation. It does not waive the broader story's existing repository-wide lint and live Supabase persistence requirements.
+This document passes the corrected Structural Aperture visual/runtime gate only. It does not waive the story's existing release-readiness blockers: repository-wide lint debt and execution of the Supabase migration/persistence boundary against an authorized database.
 
 final result: passed
