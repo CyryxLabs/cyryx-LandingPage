@@ -8,13 +8,13 @@ import {
   buildHead,
   buildOrganizationJsonLd,
 } from "@/components/cyryx/seo/seo";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 const PATH = "/company";
 const TITLE = "Company — Cyryx Labs";
 const DESC =
-  "Cyryx Labs advises, builds, and operates AI-enabled products and systems, while developing MAAX Studio and applied research.";
+  "Cyryx Labs advises, builds, controls, and operates AI-enabled products and systems, informed by products and applied research.";
 
 const UNITS = [
   [
@@ -26,6 +26,11 @@ const UNITS = [
     "Build",
     "Digital systems, workflows, internal assistants, and custom AI products designed around the business outcome.",
     "/solutions",
+  ],
+  [
+    "Control",
+    "Authority, evaluation, evidence, cost boundaries, review, escalation, and change control.",
+    "/solutions/ai-governance-cost-control",
   ],
   [
     "Operate",
@@ -81,6 +86,7 @@ export const Route = createFileRoute("/company")({
 
 function CompanyPage() {
   useCyryxScrollAnimations();
+  const startHref = buildStartProjectHref({ source: "company", intent: "operating-capability" });
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
@@ -95,12 +101,12 @@ function CompanyPage() {
               </h1>
               <div className="lg:pb-2">
                 <p className="text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
-                  Cyryx Labs is an AI lab and systems company. We help organizations decide where AI
-                  belongs, build the product or workflow around it, and establish the controls and
-                  ownership required to operate it.
+                  Cyryx Labs is an AI lab and systems company. We advise organizations on the
+                  decision, build the capability, establish control, and define the path to operate
+                  it.
                 </p>
                 <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--accent-glow)]">
-                  Advise. Build. Operate.
+                  Advise. Build. Control. Operate.
                 </p>
               </div>
             </div>
@@ -133,7 +139,7 @@ function CompanyPage() {
 
         <section className="border-y border-white/10 bg-[var(--obsidian)] px-5 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-7xl">
-            <HudLabel>One company / five connected practices</HudLabel>
+            <HudLabel>One company / four lifecycle stages + two transversal capabilities</HudLabel>
             <div className="cx-stagger mt-12 divide-y divide-white/10 border-y border-white/10">
               {UNITS.map(([title, body, href], index) => (
                 <Link
@@ -192,10 +198,10 @@ function CompanyPage() {
               Bring the opportunity, constraint, or workflow—not a predetermined answer.
             </h2>
             <a
-              href={START_PROJECT_HREF}
+              href={startHref}
               className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
             >
-              Discuss the initiative <ArrowRight className="h-4 w-4" aria-hidden />
+              Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
           </div>
         </section>

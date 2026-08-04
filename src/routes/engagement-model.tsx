@@ -4,12 +4,12 @@ import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
 
 const PATH = "/engagement-model";
 const TITLE = "How We Work — Cyryx Labs";
 const DESC =
-  "The Cyryx engagement lifecycle: discover the business problem, design the system, build, validate, launch, transfer, and optionally operate under defined terms.";
+  "The Cyryx engagement lifecycle: discover the problem, design the system, build, validate, launch, transfer, and optionally operate under defined terms.";
 
 const STEPS = [
   [
@@ -56,6 +56,10 @@ export const Route = createFileRoute("/engagement-model")({
 });
 
 function EngagementModelPage() {
+  const startHref = buildStartProjectHref({
+    source: "engagement-model",
+    intent: "operating-capability",
+  });
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
@@ -142,10 +146,10 @@ function EngagementModelPage() {
           </h2>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <a
-              href={START_PROJECT_HREF}
+              href={startHref}
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
             >
-              Start a project <ArrowRight className="h-4 w-4" aria-hidden />
+              Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
             <Link
               to="/solutions"

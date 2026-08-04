@@ -110,9 +110,9 @@ export function buildOrganizationJsonLd() {
     name: "Cyryx Labs",
     alternateName: "Cyryx",
     url: `${BASE}/`,
-    slogan: "The execution layer for enterprise AI.",
+    slogan: "From AI opportunity to operating capability.",
     description:
-      "Cyryx Labs is an AI lab and systems company that advises, builds, and operates digital and AI systems for organizations moving from strategy to controlled execution.",
+      "Cyryx Labs is an AI lab and systems company. Client work can enter through Advise, Build, Control, or Operate as individual capabilities or a connected evidence-led program; Cyryx products and Applied Research remain distinct.",
     email: "contact@cyryxlabs.com",
   };
 }

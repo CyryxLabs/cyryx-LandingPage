@@ -52,6 +52,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-onyx: var(--onyx);
   --color-graphite: var(--graphite);
+  --color-gunmetal: var(--gunmetal);
   --color-charcoal: var(--charcoal);
   --color-deep-space: var(--deep-space);
   --color-silver: var(--silver);
@@ -72,7 +73,8 @@
   --onyx: #050607;
   --obsidian: #0a0d0f;
   --graphite: #11161a;
-  --charcoal: #1b2227;
+  --gunmetal: #1b2227;
+  --charcoal: var(--gunmetal);
   --deep-space: #1b2227;
   --steel: #8c949e;
   --silver: #c7c9cc;

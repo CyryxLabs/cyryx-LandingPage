@@ -4,7 +4,7 @@ import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
 import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
 
 const HERO_VIDEO_MOBILE = "/media/cyryx-hero-720.mp4";
@@ -234,11 +234,18 @@ export function Hero() {
             {/* CTAs */}
             <div className="cx-hero-ctas mt-8 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:gap-5">
               <a
-                href={START_PROJECT_HREF}
-                aria-label="Start a Project with Cyryx Labs"
+                href={buildStartProjectHref({ source: "home", intent: "operating-capability" })}
+                aria-label="Start a fit review with Cyryx Labs"
                 className="cx-cta cx-cta-primary cx-liquid-glass group relative inline-flex min-h-[48px] w-full items-center justify-center gap-2 overflow-hidden rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--accent-glow)] shadow-[0_10px_30px_-12px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
                 onClick={() =>
-                  trackCta({ cta: "start_project", section: "hero", href: START_PROJECT_HREF })
+                  trackCta({
+                    cta: "start_project",
+                    section: "hero",
+                    href: buildStartProjectHref({
+                      source: "home",
+                      intent: "operating-capability",
+                    }),
+                  })
                 }
               >
                 <span>{copy.ctaPrimary}</span>
@@ -246,8 +253,8 @@ export function Hero() {
               </a>
               <a
                 href="#maax"
-                aria-label="Explore MAAX Studio — flagship product"
-                className="cx-cta cx-cta-ghost cx-liquid-glass group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-md px-6 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--silver)] transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto sm:px-7 sm:py-3.5 sm:text-[11.5px] sm:tracking-[0.26em]"
+                aria-label="Explore MAAX Studio — product in active development"
+                className="cx-cta group inline-flex min-h-[44px] w-auto self-start items-center justify-start gap-2 px-1 py-2 text-left text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--silver-dim)] transition hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:px-2 sm:text-[10.5px] sm:tracking-[0.24em]"
                 onClick={() => trackCta({ cta: "explore_maax", section: "hero", href: "#maax" })}
               >
                 <span>{copy.ctaSecondary}</span>

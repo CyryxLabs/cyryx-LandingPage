@@ -49,6 +49,7 @@ export const Route = createFileRoute("/solutions/custom-ai-product-development")
     ]),
   component: () => (
     <SolutionPage
+      startIntent="custom-ai-product"
       eyebrow="Custom AI Products"
       title="Turn an AI product thesis into an operating product."
       directAnswer="Cyryx helps teams frame, design, build, validate, and launch custom AI-enabled products. We connect the customer promise to the system architecture and operating model so the product can move beyond an impressive demonstration."

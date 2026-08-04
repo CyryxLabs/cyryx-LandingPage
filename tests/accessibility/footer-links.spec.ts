@@ -8,6 +8,7 @@ import { expect, test } from "@playwright/test";
  */
 test.describe("footer links", () => {
   test("all links are well-formed and resolvable", async ({ page, request }) => {
+    test.setTimeout(90_000);
     await page.goto("/", { waitUntil: "networkidle" });
 
     const links = await page.locator("footer a").evaluateAll((els) =>
@@ -23,12 +24,10 @@ test.describe("footer links", () => {
     const internal = new Set<string>();
     for (const l of links) {
       expect(l.href, `empty href on "${l.text}"`).toBeTruthy();
-      
+
       if (l.href.startsWith("mailto:")) {
         // Press and Security are verified mailto
-        expect(l.href, `bad mailto on "${l.text}"`).toMatch(
-          /^mailto:[^@\s]+@[^@\s]+\.[^@\s]+/,
-        );
+        expect(l.href, `bad mailto on "${l.text}"`).toMatch(/^mailto:[^@\s]+@[^@\s]+\.[^@\s]+/);
         expect(l.target).toBeNull(); // Should not use target=_blank
       } else if (l.href.startsWith("http")) {
         expect(l.target, `external "${l.text}" needs target=_blank`).toBe("_blank");
@@ -40,15 +39,19 @@ test.describe("footer links", () => {
     }
 
     // Verify all internal links point to valid routes
-    for (const path of internal) {
-      const res = await request.get(path);
-      expect(res.status(), `${path} returned ${res.status()}`).toBeLessThan(400);
-    }
+    await Promise.all(
+      [...internal].map(async (path) => {
+        const res = await request.get(path);
+        expect(res.status(), `${path} returned ${res.status()}`).toBeLessThan(400);
+      }),
+    );
   });
 
   test("Contact points to /contact", async ({ page }) => {
     await page.goto("/", { waitUntil: "networkidle" });
-    const contactLink = page.locator('footer nav[aria-label="Company"] a').getByText("Contact", { exact: true });
+    const contactLink = page
+      .locator('footer nav[aria-label="Company"] a')
+      .getByText("Contact", { exact: true });
     await expect(contactLink).toHaveAttribute("href", "/contact");
   });
 

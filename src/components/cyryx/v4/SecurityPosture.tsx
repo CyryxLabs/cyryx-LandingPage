@@ -23,7 +23,7 @@ export function SecurityPosture() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="relative z-10 cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-20">
           <div>
-            <HudLabel withDot>Governance by design</HudLabel>
+            <HudLabel withDot>Control before scale</HudLabel>
             <h2
               id="security-heading"
               className="mt-7 max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl"
@@ -32,8 +32,8 @@ export function SecurityPosture() {
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg lg:pb-2">
-            AI becomes operational when every consequential action has authority, limits, evidence,
-            and an owner.
+            Before AI can act inside an operation, its authority, limits, evidence, cost, and owner
+            must be explicit.
           </p>
         </div>
 

@@ -52,7 +52,7 @@ test("all sitemap pages remain usable without horizontal overflow on mobile", as
   }
 });
 
-test("Start a Project keeps its first field in the initial mobile viewport", async ({
+test("Start a fit review keeps its first field in the initial mobile viewport", async ({
   page,
 }, testInfo) => {
   test.skip(

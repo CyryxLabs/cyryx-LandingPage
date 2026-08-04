@@ -4,7 +4,7 @@ import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { HudLabel } from "../primitives/HudLabel";
 import { GlassPanel } from "../primitives/GlassPanel";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref, type StartContextIntent } from "@/lib/cta";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 export interface DeliverablePhase {
@@ -30,6 +30,7 @@ export interface FaqItem {
 }
 
 export interface SolutionPageProps {
+  startIntent: StartContextIntent;
   eyebrow: string;
   title: string;
   directAnswer: string;
@@ -51,6 +52,7 @@ export interface SolutionPageProps {
 
 export function SolutionPage(p: SolutionPageProps) {
   useCyryxScrollAnimations();
+  const startHref = buildStartProjectHref({ source: "solutions", intent: p.startIntent });
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
@@ -274,10 +276,10 @@ export function SolutionPage(p: SolutionPageProps) {
 
             <div className="flex flex-wrap gap-3 border-t border-white/10 pt-8 lg:col-span-2">
               <a
-                href={START_PROJECT_HREF}
+                href={startHref}
                 className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
               >
-                Start a project
+                Start a fit review
                 <span aria-hidden className="text-[var(--accent-glow)]">
                   →
                 </span>

@@ -1,0 +1,57 @@
+{
+  "story": "website-excellence-2026-08-03",
+  "step_5_5": {
+    "status": "completed",
+    "predicted_bugs": [
+      {
+        "risk": "Contextual /start URLs break exact-href and route-scroll tests",
+        "mitigation": "Updated selectors and added allowlisted parser/build contract coverage."
+      },
+      {
+        "risk": "Client qualification accepts fields that the server silently drops",
+        "mitigation": "Shared FitReviewSchema and server-side message formatter now define both boundaries."
+      },
+      {
+        "risk": "MAAX UI and RPC disagree on required fields or optional telephone",
+        "mitigation": "Shared schema, v2 RPC argument mapping, generated types, admin fields, and focused tests use the same semantics."
+      },
+      {
+        "risk": "Security headers are added to an inactive host file or cache authenticated responses",
+        "mitigation": "Headers are applied in src/server.ts and the default cache branch now fails closed with private, no-store."
+      }
+    ],
+    "edge_cases": [
+      "Unknown, repeated, or array-shaped CTA query values",
+      "Backend persistence failure after valid client-side form submission",
+      "Historical MAAX rows without newly added qualification fields",
+      "Local HTTPS previews that must not receive production HSTS",
+      "Safari mobile navigation while the body scroll lock is active"
+    ],
+    "evidence_review": [
+      "Publication record is distinct from implementation, conformance, and certification.",
+      "MAAX active-development copy does not promise access, launch timing, or current conformance.",
+      "Privacy wording is limited to implemented data flows and avoids unsupported fixed schedules or safeguards."
+    ]
+  },
+  "step_6_5": {
+    "status": "completed_with_handoff_items",
+    "failed_checks": [
+      "Repository-wide lint is blocked by pre-existing Prettier debt in untouched files and legacy no-explicit-any errors in workspace.marketing.tsx.",
+      "The final repository-wide lint attempt timed out after 124 seconds; earlier runs identified pre-existing formatting and legacy no-explicit-any debt."
+    ],
+    "fixes": [
+      "Corrected a Playwright Company-field selector that collided with the Footer navigation landmark.",
+      "Formatted and checked every changed owned source, test, JSON, and story file.",
+      "Changed runtime fallback caching from short-lived public caching to private, no-store.",
+      "Removed an analytics metadata payload that the server contract did not accept or persist.",
+      "Added a shared Playwright global setup that warms the Vite client environment and waits for the TanStack virtual client entry before browser workers start.",
+      "Made interactive Playwright checks wait for the root hydration signal before clicking SSR-rendered controls.",
+      "Made MAAX persistence fail closed, pinned the public RPC to the exact consent version, and preserved reviewed statuses on duplicate submissions."
+    ],
+    "remaining_risks": [
+      "QA must perform clean full accessibility, cross-browser, and visual reruns against the quiescent tree; the final focused browser slice passed 12/12 with no hydration errors.",
+      "The additive migration is generated and reviewed locally but has not been applied to a connected database.",
+      "CodeRabbit and Lighthouse were not completed in this implementation handoff."
+    ]
+  }
+}

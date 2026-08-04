@@ -8,6 +8,11 @@ test.describe("verified research publication record", () => {
     expect(CGP_V1.doi).toBe("10.5281/zenodo.21045760");
     expect(CGP_V1.conceptDoi).toBe("10.5281/zenodo.21045759");
     expect(CGP_V1.recordUrl).toBe("https://zenodo.org/records/21045760");
+    expect(CGP_V1.evidence.publicationRecord.state).toBe("verified");
+    expect(CGP_V1.evidence.implementation.state).toBe("qualified");
+    expect(CGP_V1.evidence.conformance.state).toBe("qualified");
+    expect(CGP_V1.evidence.certification.state).toBe("withheld");
+    expect(CGP_V1.evidence.implementation.summary).toMatch(/not implementation evidence/i);
   });
 
   test("lists the publication from the Research hub", async ({ page }) => {
@@ -41,5 +46,11 @@ test.describe("verified research publication record", () => {
 
     await expect(page.getByRole("button", { name: "Copy citation" })).toBeVisible();
     await expect(page.getByText(/CYRYX Labs\. \(2026\).*10\.5281\/zenodo\.21045760/)).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        name: "Publication is not implementation, conformance, or certification.",
+      }),
+    ).toBeVisible();
+    await expect(page.getByText(/No third-party CGP certification/i)).toBeVisible();
   });
 });

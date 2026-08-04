@@ -28,11 +28,11 @@ export function ControlledExecution() {
             id="controlled-execution-heading"
             className="mt-7 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
           >
-            Capability becomes value when the enterprise can control the action.
+            Value begins when intent becomes controlled action.
           </h2>
           <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-            Cyryx designs the execution layer between an AI model and the operation it is expected
-            to change.
+            Cyryx designs the execution layer between AI models and the workflows, systems, data,
+            and people they are expected to affect.
           </p>
         </div>
 

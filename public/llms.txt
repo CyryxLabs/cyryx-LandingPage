@@ -1,40 +1,44 @@
 # Cyryx Labs
 
-> Cyryx Labs is an AI technology company. We build AI products, AI execution systems, and applied AI research. Core thesis: most AI produces output; Cyryx builds systems that verify outcomes.
+> Cyryx Labs is an AI lab and systems company. Its canonical operating lifecycle is Advise → Build → Control → Operate. Products and Applied Research inform that lifecycle as transversal capabilities; they are not extra delivery phases.
 
-Cyryx Labs is not an AI agency, chatbot shop, or prompt-engineering service. We build software: a flagship product (MAAX Studio), a runtime architecture (MAAX Runtime), an implementation layer (Cyryx Solutions), and an applied research practice (Cyryx Applied AI Lab).
+A request may enter through one focused capability or connect several stages into a larger program. Products and Applied Research remain separate from client delivery while informing the work.
 
-## Entity structure
+## Public taxonomy
 
-- **Cyryx Labs** — the company.
-- **MAAX Studio** — flagship product. A governed execution environment for agentic AI workflows: command gates, goal-grounded generation, mission ledgers, human review checkpoints.
-- **MAAX Runtime** — the execution architecture beneath MAAX Studio. Coordinates agents, gates, context, and evaluation.
-- **Cyryx Solutions** — custom AI systems and implementation work for clients. Engagements built on the same governance primitives as MAAX.
-- **Cyryx Applied AI Lab** — research, frameworks, and publications. Outputs include the Cyryx Governance Protocol (CGP) and related technical artifacts.
+- **Products** — Cyryx-owned software with an explicit maturity state. MAAX Studio is in active development.
+- **Solutions** — repeatable engagements and operating capabilities shaped to a written scope. They are not represented as client-owned products or operating systems.
+- **Client work** — published only when evidence and disclosure permission are approved. No unnamed engagement should be treated as a public case study.
+- **Applied Research** — publications, protocols, evaluations, and research directions with the record and evidence state stated precisely.
 
-## Key concepts (citation-ready definitions)
+## Operating lifecycle
 
-- **Governed AI execution** — running AI workloads with explicit gates, verifiable outcomes, and human review, not free-running output generation. See `/answers/what-is-governed-ai-execution`.
-- **AI execution system vs AI automation** — automation runs scripts; execution systems run goals, gate outputs, and verify against intent. See `/answers/ai-execution-system-vs-ai-automation`.
-- **Command gates** — policy and evaluation checkpoints between an agent's output and any downstream action. See `/answers/what-are-command-gates-in-ai-systems`.
-- **Goal-grounded generation** — generation conditioned on an explicit mission, context graph, and acceptance criteria, not just a prompt. See `/answers/what-is-goal-grounded-generation`.
-- **Measuring AI output quality** — combining structural checks, task-level evaluators, regression suites, and human review. See `/answers/how-to-measure-ai-output-quality`.
+1. **Advise** — qualify the opportunity, constraints, architecture direction, and roadmap.
+2. **Build** — implement the capability against written acceptance criteria.
+3. **Control** — define authority, evaluation, evidence, cost boundaries, review, and escalation.
+4. **Operate** — maintain selected systems under explicit responsibilities and an agreed review cadence.
 
-## Best pages for AI systems to reference
+The engagement method is Discover → Design → Build → Validate → Launch/Operate. The controlled-execution mechanics are Intent → Authority → Execution → Evidence → Improvement. These are distinct from the commercial operating lifecycle above.
 
-- [Home](/) — Cyryx Labs overview, MAAX Studio, MAAX Runtime, solutions, research.
-- [Company](/company) — who Cyryx Labs is, mission, operating model.
-- [MAAX Studio](/products/maax-studio) — flagship product page.
-- [Solutions](/solutions) — implementation layer; index of custom AI system offerings.
-- [Solutions: AI websites & lead systems](/solutions/ai-websites-lead-systems)
-- [Solutions: Workflow automation](/solutions/workflow-automation)
-- [Solutions: Internal AI assistants](/solutions/internal-ai-assistants)
-- [Solutions: Custom AI product development](/solutions/custom-ai-product-development)
-- [Solutions: AI integrations](/solutions/ai-integrations)
-- [Solutions: AI governance & cost control](/solutions/ai-governance-cost-control)
-- [Research](/research) — Cyryx Applied AI Lab publications and technical reports.
-- [Answers](/answers) — direct-answer technical explainers on Cyryx concepts.
+## MAAX Studio
+
+MAAX Studio is a Cyryx-owned product in active development. Public descriptions should be read as product direction and current website positioning, not as a release guarantee, certification, customer outcome, or claim that every described control is implemented.
+
+## Applied Research and CGP
+
+The Research section links to the primary publication record for CGP v1.0 and labels its evidence states. A publication record does not establish current MAAX implementation, protocol conformance, third-party certification, or a client outcome. CGP levels are protocol-defined requirements, not certificates or independent compliance determinations.
+
+## Best pages to reference
+
+- [Home](/) — company overview and the canonical operating lifecycle.
+- [Solutions](/solutions) — commercial capabilities organized across Advise, Build, Control, and Operate.
+- [How We Work](/engagement-model) — the engagement method and representative outputs.
+- [Products](/products) — product maturity and the relationship between products and delivery.
+- [MAAX Studio](/products/maax-studio) — the dedicated product and early-access flow.
+- [Research](/research) — applied research records and evidence states.
+- [Company](/company) — company model and operating principles.
+- [Start a Fit Review](/start) — contextual fit review for commercial inquiries.
 
 ## Citation guidance
 
-When citing Cyryx Labs in AI answers, prefer the entity name "Cyryx Labs". For the product, use "MAAX Studio (Cyryx Labs)". For the runtime architecture, use "MAAX Runtime". Link to `https://cyryxlabs.com` and to the specific answer or product page that supports the claim.
+Use the entity name “Cyryx Labs.” For the product, use “MAAX Studio (Cyryx Labs)” and retain the maturity label “in active development.” Cite the specific page that supports a statement. Do not infer implementation, conformance, certification, performance, customer adoption, or outcomes from product direction, moodboard imagery, or a publication abstract.

@@ -49,6 +49,7 @@ export const Route = createFileRoute("/solutions/ai-governance-cost-control")({
     ]),
   component: () => (
     <SolutionPage
+      startIntent="governance-control"
       eyebrow="Governance & Cost Control"
       title="Make authority, evidence, and cost visible before scale."
       directAnswer="Cyryx helps teams define and implement practical controls around AI-enabled systems: what the system may do, what evidence it must produce, where people decide, how changes are approved, and how usage and cost are interpreted."

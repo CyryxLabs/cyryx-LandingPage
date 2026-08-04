@@ -4,7 +4,9 @@ import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead, buildServiceJsonLd } from "@/components/cyryx/seo/seo";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
+
+const START_HREF = buildStartProjectHref({ source: "solutions", intent: "strategy-advisory" });
 
 const PATH = "/solutions/ai-strategy-advisory";
 const TITLE = "AI Strategy & Advisory — Cyryx Labs";
@@ -129,7 +131,7 @@ function AiStrategyAdvisoryPage() {
                   execution.
                 </p>
                 <a
-                  href={START_PROJECT_HREF}
+                  href={START_HREF}
                   className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
                 >
                   Start an advisory conversation <ArrowRight className="h-4 w-4" aria-hidden />
@@ -246,7 +248,7 @@ function AiStrategyAdvisoryPage() {
             Bring the opportunity, workflow, or unresolved architecture question.
           </h2>
           <a
-            href={START_PROJECT_HREF}
+            href={START_HREF}
             className="mt-9 inline-flex min-h-12 items-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
           >
             Start a conversation <ArrowRight className="h-4 w-4" aria-hidden />

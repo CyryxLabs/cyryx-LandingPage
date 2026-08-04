@@ -19,9 +19,9 @@ import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
 import brandMark from "@/assets/cyryx-brand-mark.png";
 
 const HOME_URL = "https://cyryxlabs.com/";
-const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
+const HOME_TITLE = "Cyryx Labs — AI Systems from Strategy to Operations";
 const HOME_DESCRIPTION =
-  "Cyryx Labs advises, builds, and operates governed AI systems that turn enterprise strategy into controlled execution—with ownership, evidence, and cost visibility.";
+  "Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs.";
 const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png?v=20260723-1";
 
 export const Route = createFileRoute("/")({
@@ -71,8 +71,8 @@ export const Route = createFileRoute("/")({
               alternateName: "Cyryx",
               url: "https://cyryxlabs.com/",
               description:
-                "Cyryx Labs is an AI lab and systems company that advises, builds, and operates governed AI systems for organizations moving from strategy to controlled execution.",
-              slogan: "The execution layer for enterprise AI.",
+                "Cyryx Labs is an AI lab and systems company. Client work can enter through Advise, Build, Control, or Operate as individual capabilities or a connected evidence-led program; Cyryx products and Applied Research remain distinct.",
+              slogan: "From AI opportunity to operating capability.",
               industry: "Artificial Intelligence",
               email: "contact@cyryxlabs.com",
               knowsAbout: [
@@ -102,7 +102,7 @@ export const Route = createFileRoute("/")({
               "@type": "WebPage",
               "@id": "https://cyryxlabs.com/#webpage",
               url: "https://cyryxlabs.com/",
-              name: "Cyryx Labs — The Execution Layer for Enterprise AI",
+              name: HOME_TITLE,
               isPartOf: {
                 "@id": "https://cyryxlabs.com/#website",
               },
@@ -110,7 +110,7 @@ export const Route = createFileRoute("/")({
                 "@id": "https://cyryxlabs.com/#organization",
               },
               description:
-                "Cyryx Labs advises, builds, and operates governed AI systems that turn enterprise strategy into controlled execution—with ownership, evidence, and cost visibility.",
+                "Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs.",
             },
             {
               "@type": "SoftwareApplication",
@@ -192,20 +192,20 @@ function IndexPage() {
         <Hero />
         <div className="cx-story relative" data-story-root>
           <StoryProgress />
-          <StoryChapter index="01" label="Reality">
+          <StoryChapter index="01" label="The execution gap">
             <ExecutionGap />
           </StoryChapter>
-          <StoryChapter index="02" label="Execution system">
+          <StoryChapter index="02" label="Controlled execution">
             <ControlledExecution />
           </StoryChapter>
-          <StoryChapter index="03" label="Delivery">
+          <StoryChapter index="03" label="Ways to engage">
             <OperatingModel />
           </StoryChapter>
-          <StoryChapter index="04" label="Governance and product">
+          <StoryChapter index="04" label="Control and product">
             <SecurityPosture />
             <MAAXStudioSpotlight />
           </StoryChapter>
-          <StoryChapter index="05" label="Evidence and start">
+          <StoryChapter index="05" label="Evidence and decision">
             <EvidenceBeforeClaims />
             <CompactStart />
           </StoryChapter>

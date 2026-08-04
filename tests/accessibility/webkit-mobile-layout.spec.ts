@@ -33,7 +33,7 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   await expect(page.locator("html")).toHaveClass(/cx-low-perf/);
 
   const maaxCtaLabel = page.locator('a[href="#maax"] > span');
-  await expect(maaxCtaLabel).toHaveText("MAAX Studio →");
+  await expect(maaxCtaLabel).toHaveText("MAAX Studio");
   const maaxCtaColors = await maaxCtaLabel.evaluate((element) => {
     const style = getComputedStyle(element);
     return {
@@ -83,7 +83,7 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   );
 });
 
-test("Safari mobile opens Start a Project at the form", async ({ page }, testInfo) => {
+test("Safari mobile opens Start a fit review at the form", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "safari-mobile", "This contract targets WebKit mobile.");
 
   await page.goto("/start", { waitUntil: "networkidle" });

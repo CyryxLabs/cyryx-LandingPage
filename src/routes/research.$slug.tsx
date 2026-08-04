@@ -28,7 +28,7 @@ export const Route = createFileRoute("/research/$slug")({
     }
 
     const path = `/research/${publication.slug}`;
-    const description = publication.abstract.split("\n\n")[0].slice(0, 155);
+    const description = publication.publicSummary;
     return buildHead(
       {
         title: `${publication.documentId} — Cyryx Labs Research`,
@@ -59,7 +59,10 @@ export const Route = createFileRoute("/research/$slug")({
 function ResearchPublicationPage() {
   const { publication } = Route.useLoaderData();
   const [copied, setCopied] = useState(false);
-  const citation = `${publication.authors.join(", ")}. (${publication.publishedAt.slice(0, 4)}). ${publication.title} (Version ${publication.version}, Technical Report ${publication.documentId}). ${publication.affiliation}. ${publication.doiUrl}`;
+  const recordVerified = publication.evidence.publicationRecord.state === "verified";
+  const citation = recordVerified
+    ? `${publication.authors.join(", ")}. (${publication.publishedAt.slice(0, 4)}). ${publication.title} (Version ${publication.version}, Technical Report ${publication.documentId}). ${publication.affiliation}. ${publication.doiUrl}`
+    : "";
 
   async function copyCitation() {
     try {
@@ -130,7 +133,7 @@ function ResearchPublicationPage() {
             </div>
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              {publication.doiUrl && (
+              {publication.doiUrl && recordVerified && (
                 <a
                   href={publication.doiUrl}
                   target="_blank"
@@ -140,7 +143,7 @@ function ResearchPublicationPage() {
                   Open DOI record <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </a>
               )}
-              {publication.sourceUrl && (
+              {publication.sourceUrl && recordVerified && (
                 <a
                   href={publication.sourceUrl}
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/15 px-6 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
@@ -152,12 +155,47 @@ function ResearchPublicationPage() {
           </div>
         </section>
 
+        <section
+          aria-labelledby="research-evidence-heading"
+          className="border-b border-white/10 bg-[var(--obsidian)] px-5 py-12 sm:px-8 sm:py-16"
+        >
+          <div className="mx-auto max-w-7xl">
+            <HudLabel>Evidence states</HudLabel>
+            <h2
+              id="research-evidence-heading"
+              className="mt-5 max-w-[18ch] font-display text-3xl tracking-[-0.035em] text-[var(--silver)] sm:text-4xl"
+            >
+              Publication is not implementation, conformance, or certification.
+            </h2>
+            <div className="mt-8 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 md:grid-cols-2 xl:grid-cols-4">
+              {Object.values(publication.evidence).map((item) => (
+                <article key={item.label} className="bg-[var(--graphite)] p-5 sm:p-6">
+                  <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
+                    {item.state}
+                  </p>
+                  <h3 className="mt-4 font-display text-xl text-[var(--silver)]">{item.label}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
+                    {item.summary}
+                  </p>
+                  {item.checkedAt ? (
+                    <p className="mt-4 font-mono text-[8px] uppercase tracking-[0.14em] text-[var(--steel)]">
+                      Reviewed {item.checkedAt}
+                    </p>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-10">
           <div className="grid gap-12 lg:grid-cols-[0.34fr_0.66fr] lg:gap-24">
             <div>
-              <HudLabel>Abstract</HudLabel>
+              <HudLabel>Website summary of the publication</HudLabel>
               <p className="mt-6 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]">
-                DOI {publication.doi}
+                {recordVerified && publication.doi
+                  ? `DOI ${publication.doi}`
+                  : "Record unavailable"}
               </p>
             </div>
             <div className="space-y-6 text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
@@ -286,11 +324,15 @@ function ResearchPublicationPage() {
                 Open, citable, versioned.
               </h2>
               <dl className="mt-8 space-y-4 text-sm">
-                <RecordRow label="DOI" value={publication.doi} href={publication.doiUrl} />
+                <RecordRow
+                  label="DOI"
+                  value={recordVerified ? publication.doi : undefined}
+                  href={recordVerified ? publication.doiUrl : undefined}
+                />
                 <RecordRow
                   label="Concept DOI"
-                  value={publication.conceptDoi}
-                  href={publication.conceptDoiUrl}
+                  value={recordVerified ? publication.conceptDoi : undefined}
+                  href={recordVerified ? publication.conceptDoiUrl : undefined}
                 />
                 <RecordRow
                   label="License"
@@ -304,11 +346,14 @@ function ResearchPublicationPage() {
                 Suggested citation
               </p>
               <p className="mt-4 break-words rounded-lg border border-white/10 bg-[var(--onyx)] p-5 font-mono text-xs leading-relaxed text-[var(--silver-dim)]">
-                {citation}
+                {recordVerified
+                  ? citation
+                  : "The publication record is not currently available for citation."}
               </p>
               <button
                 type="button"
                 onClick={copyCitation}
+                disabled={!recordVerified}
                 className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-md border border-white/15 px-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
               >
                 {copied ? (

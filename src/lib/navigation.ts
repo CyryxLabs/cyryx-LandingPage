@@ -59,7 +59,7 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
 ] as const;
 
 export const PRIMARY_NAVIGATION_CTA: NavigationCTA = {
-  label: "Start a Project",
+  label: "Start a fit review",
   href: "/start",
 } as const;
 

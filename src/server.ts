@@ -39,39 +39,50 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
-function withCacheHeaders(request: Request, response: Response): Response {
-  if (request.method !== "GET" && request.method !== "HEAD") return response;
-
+function withRuntimeHeaders(request: Request, response: Response): Response {
   const url = new URL(request.url);
   const headers = new Headers(response.headers);
   const contentType = headers.get("content-type") ?? "";
 
+  headers.set("x-content-type-options", "nosniff");
+  headers.set("referrer-policy", "strict-origin-when-cross-origin");
+  headers.set("permissions-policy", "camera=(), microphone=(), geolocation=(), payment=()");
+  headers.set("x-frame-options", "DENY");
+  if (
+    url.protocol === "https:" &&
+    (url.hostname === "cyryxlabs.com" || url.hostname === "www.cyryxlabs.com")
+  ) {
+    headers.set("strict-transport-security", "max-age=31536000");
+  }
+
   headers.set("x-cyryx-build", BUILD_VERSION);
-  if (headers.get("x-cyryx-rescue") === "latest-css") {
-    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
-    headers.set("pragma", "no-cache");
-    headers.set("expires", "0");
-  } else if (url.pathname.startsWith("/assets/styles-") && contentType.includes("text/css")) {
-    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
-    headers.set("pragma", "no-cache");
-    headers.set("expires", "0");
-    headers.set("x-cyryx-cache-policy", "stylesheet-no-store");
-  } else if (url.pathname.startsWith("/assets/") && response.ok) {
-    headers.set("cache-control", "public, max-age=31536000, immutable");
-    headers.set("x-cyryx-cache-policy", "hashed-asset-immutable");
-  } else if (url.pathname.startsWith("/assets/")) {
-    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
-    headers.set("pragma", "no-cache");
-    headers.set("expires", "0");
-    headers.set("x-cyryx-cache-policy", "missing-asset-no-store");
-  } else if (contentType.includes("text/html")) {
-    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
-    headers.set("pragma", "no-cache");
-    headers.set("expires", "0");
-    headers.set("x-cyryx-cache-policy", "html-no-store");
-  } else {
-    headers.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
-    headers.set("x-cyryx-cache-policy", "short-lived");
+  if (request.method === "GET" || request.method === "HEAD") {
+    if (headers.get("x-cyryx-rescue") === "latest-css") {
+      headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+      headers.set("pragma", "no-cache");
+      headers.set("expires", "0");
+    } else if (url.pathname.startsWith("/assets/styles-") && contentType.includes("text/css")) {
+      headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+      headers.set("pragma", "no-cache");
+      headers.set("expires", "0");
+      headers.set("x-cyryx-cache-policy", "stylesheet-no-store");
+    } else if (url.pathname.startsWith("/assets/") && response.ok) {
+      headers.set("cache-control", "public, max-age=31536000, immutable");
+      headers.set("x-cyryx-cache-policy", "hashed-asset-immutable");
+    } else if (url.pathname.startsWith("/assets/")) {
+      headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+      headers.set("pragma", "no-cache");
+      headers.set("expires", "0");
+      headers.set("x-cyryx-cache-policy", "missing-asset-no-store");
+    } else if (contentType.includes("text/html")) {
+      headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+      headers.set("pragma", "no-cache");
+      headers.set("expires", "0");
+      headers.set("x-cyryx-cache-policy", "html-no-store");
+    } else {
+      headers.set("cache-control", "private, no-store");
+      headers.set("x-cyryx-cache-policy", "fail-closed-no-store");
+    }
   }
 
   return new Response(response.body, {
@@ -81,7 +92,10 @@ function withCacheHeaders(request: Request, response: Response): Response {
   });
 }
 
-async function rescueStaleStylesheetRequest(request: Request, response: Response): Promise<Response> {
+async function rescueStaleStylesheetRequest(
+  request: Request,
+  response: Response,
+): Promise<Response> {
   if (response.status !== 404) return response;
   if (request.method !== "GET" && request.method !== "HEAD") return response;
 
@@ -117,13 +131,16 @@ export default {
       const response = await handler.fetch(request, env, ctx);
       const normalized = await normalizeCatastrophicSsrResponse(response);
       const rescued = await rescueStaleStylesheetRequest(request, normalized);
-      return withCacheHeaders(request, rescued);
+      return withRuntimeHeaders(request, rescued);
     } catch (error) {
       console.error(error);
-      return withCacheHeaders(request, new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      }));
+      return withRuntimeHeaders(
+        request,
+        new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+      );
     }
   },
 };

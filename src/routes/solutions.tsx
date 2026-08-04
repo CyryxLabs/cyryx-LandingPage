@@ -4,12 +4,16 @@ import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead, buildServiceJsonLd } from "@/components/cyryx/seo/seo";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
 
 const PATH = "/solutions";
 const TITLE = "AI Advisory, Digital Systems & Engineering — Cyryx Labs";
 const DESC =
   "Explore Cyryx Labs advisory, digital systems, automation, internal assistants, custom AI products, governance, and managed operations.";
+const SOLUTIONS_START_HREF = buildStartProjectHref({
+  source: "solutions",
+  intent: "operating-capability",
+});
 
 const CAPABILITIES = [
   {
@@ -76,6 +80,29 @@ const CAPABILITIES = [
   },
 ] as const;
 
+const BUYER_TRIGGERS = [
+  {
+    need: "A promising pilot must become an operable product.",
+    label: "Build / Custom AI Product Development",
+    href: "/solutions/custom-ai-product-development",
+  },
+  {
+    need: "A cross-system workflow is slow, fragmented, or exception-heavy.",
+    label: "Build / Workflow Automation",
+    href: "/solutions/workflow-automation",
+  },
+  {
+    need: "Authority, evidence, evaluation, or cost boundaries are unclear.",
+    label: "Control / AI Governance & Cost Control",
+    href: "/solutions/ai-governance-cost-control",
+  },
+  {
+    need: "A launched system lacks a named owner, review cadence, or transition path.",
+    label: "Operate / Managed Operations",
+    href: "/managed-operations",
+  },
+] as const;
+
 export const Route = createFileRoute("/solutions")({
   head: ({ matches }) => {
     const leafPath = matches.at(-1)?.pathname.replace(/\/$/, "") || "/";
@@ -104,25 +131,30 @@ function SolutionsHub() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content">
-        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
+        <section className="border-b border-white/10 px-5 pb-20 pt-28 sm:px-8 sm:pb-24 sm:pt-32 lg:pb-28 lg:pt-36">
           <div className="mx-auto max-w-7xl">
             <HudLabel withDot>Cyryx Labs / Commercial capabilities</HudLabel>
             <div className="mt-8 grid gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-end lg:gap-24">
-              <h1 className="max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-[var(--silver)] sm:text-6xl lg:text-8xl">
-                From unresolved AI opportunity to an owned operating system.
+              <h1 className="max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl">
+                From unresolved AI opportunity to an owned operating capability.
               </h1>
               <div className="lg:pb-2">
                 <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
-                  Cyryx combines advisory, digital and AI engineering, proprietary product work,
-                  applied research, and optional managed operations. The engagement begins with the
-                  business constraint — not a predetermined tool.
+                  Cyryx combines advisory, digital and AI engineering, control design, and optional
+                  managed operations. Products and applied research inform the work without defining
+                  client scope. The engagement begins with the business constraint — not a
+                  predetermined tool.
+                </p>
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--steel)]">
+                  Here, owned means a named operating owner and change path; intellectual property,
+                  licensing, support, and commercial terms are defined per engagement.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a
-                    href={START_PROJECT_HREF}
+                    href={SOLUTIONS_START_HREF}
                     className="inline-flex min-h-12 items-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
                   >
-                    Discuss the opportunity <ArrowRight className="h-4 w-4" aria-hidden />
+                    Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
                   </a>
                   <Link
                     to="/engagement-model"
@@ -132,6 +164,45 @@ function SolutionsHub() {
                   </Link>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="solutions-trigger-heading"
+          className="border-b border-white/10 bg-[var(--obsidian)] px-5 py-10 sm:px-8 sm:py-12"
+        >
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <HudLabel>Start with the operating need</HudLabel>
+                <h2
+                  id="solutions-trigger-heading"
+                  className="mt-4 font-display text-2xl tracking-[-0.03em] text-[var(--silver)] sm:text-3xl"
+                >
+                  Which situation is closest to yours?
+                </h2>
+              </div>
+              <p className="max-w-lg text-sm leading-relaxed text-[var(--silver-dim)]">
+                These are navigation cues, not promises about scope or outcome.
+              </p>
+            </div>
+            <div className="mt-7 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 md:grid-cols-2 xl:grid-cols-4">
+              {BUYER_TRIGGERS.map((trigger) => (
+                <Link
+                  key={trigger.need}
+                  to={trigger.href}
+                  className="group flex min-h-48 flex-col bg-[var(--graphite)] p-5 transition-colors hover:bg-[var(--charcoal)] sm:p-6"
+                >
+                  <p className="font-display text-xl leading-snug tracking-[-0.02em] text-[var(--silver)]">
+                    {trigger.need}
+                  </p>
+                  <span className="mt-auto flex items-center justify-between gap-3 pt-8 font-mono text-[8px] uppercase leading-relaxed tracking-[0.16em] text-[var(--steel)] transition-colors group-hover:text-[var(--accent-glow)]">
+                    {trigger.label}
+                    <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
         </section>

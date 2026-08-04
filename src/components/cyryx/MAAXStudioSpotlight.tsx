@@ -47,7 +47,7 @@ function ProductPreview() {
           src={maaxDevices}
           srcSet={`${maaxDevices480Jpg} 480w, ${maaxDevices800Jpg} 800w, ${maaxDevices1200Jpg} 1200w`}
           sizes="(min-width: 1024px) 54vw, 100vw"
-          alt="MAAX Studio agentic IDE on a desktop monitor and laptop"
+          alt="MAAX Studio product direction shown across desktop and laptop interfaces"
           width={1200}
           height={896}
           loading="lazy"
@@ -61,11 +61,11 @@ function ProductPreview() {
       />
       <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 border-t border-white/10 bg-[color-mix(in_oklab,var(--onyx)_78%,transparent)] px-4 py-3 backdrop-blur-md sm:px-5">
         <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--silver)]">
-          MAAX Studio / Product preview
+          MAAX Studio / Product direction
         </span>
         <span className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
           <span className="h-1.5 w-1.5 rounded-full bg-current shadow-[0_0_10px_currentColor]" />{" "}
-          Active development
+          Conceptual · Active development
         </span>
       </figcaption>
     </figure>
@@ -89,7 +89,7 @@ export function MAAXStudioSpotlight() {
         />
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
           <div className="cx-reveal max-w-4xl">
-            <HudLabel withDot>Cyryx Labs / Flagship product</HudLabel>
+            <HudLabel withDot>Cyryx Labs / Product in active development</HudLabel>
             <img
               src={maaxLogo}
               alt="MAAX Studio"
@@ -107,7 +107,7 @@ export function MAAXStudioSpotlight() {
               A command environment for agentic software execution.
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:mt-7 sm:text-lg">
-              Separate from client delivery, MAAX Studio is Cyryx Labs&apos; product program for
+              MAAX Studio is not a client-delivery phase. It is Cyryx Labs&apos; product program for
               coordinating software missions, project context, review, and controlled action — with
               the operator in command.
             </p>
@@ -152,7 +152,7 @@ export function MAAXStudioSpotlight() {
                   }}
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--graphite)]"
                 >
-                  Request an early-access review <ArrowRight className="h-4 w-4" aria-hidden />
+                  Request early-access review <ArrowRight className="h-4 w-4" aria-hidden />
                 </button>
                 <Link
                   to="/products/maax-studio"

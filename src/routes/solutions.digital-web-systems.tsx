@@ -49,6 +49,7 @@ export const Route = createFileRoute("/solutions/digital-web-systems")({
     ]),
   component: () => (
     <SolutionPage
+      startIntent="digital-system"
       eyebrow="Digital & Web Systems"
       title="Make the digital experience earn attention—and support the operation."
       directAnswer="Cyryx designs and engineers websites and connected digital systems that help the right audience understand the business, trust the offer, and take the next step. Behind the interface, we establish the content, measurement, integration, and ownership foundations required to keep the system useful."

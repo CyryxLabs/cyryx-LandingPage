@@ -16,7 +16,7 @@ test.describe("Navigation Model", () => {
   });
 
   test("B. CTA", () => {
-    expect(PRIMARY_NAVIGATION_CTA).toEqual({ label: "Start a Project", href: "/start" });
+    expect(PRIMARY_NAVIGATION_CTA).toEqual({ label: "Start a fit review", href: "/start" });
   });
 
   test("D. Uniqueness", () => {

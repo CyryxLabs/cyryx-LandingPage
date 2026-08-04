@@ -126,6 +126,9 @@ function ResearchHub() {
                     <div>
                       <div className="flex flex-wrap items-center gap-3 font-mono text-[8px] uppercase tracking-[0.17em]">
                         <span className="text-[var(--accent-glow)]">{publication.category}</span>
+                        <span className="text-[var(--silver)]">
+                          Record {publication.evidence.publicationRecord.state}
+                        </span>
                         <span className="text-[var(--steel)]">{publication.license}</span>
                         <span className="text-[var(--steel)]">{publication.date}</span>
                       </div>
@@ -133,7 +136,7 @@ function ResearchHub() {
                         {publication.title}
                       </h3>
                       <p className="mt-5 max-w-3xl line-clamp-3 text-sm leading-relaxed text-[var(--silver-dim)] sm:text-base">
-                        {publication.abstract}
+                        {publication.publicSummary}
                       </p>
                     </div>
 
@@ -145,17 +148,18 @@ function ResearchHub() {
                       >
                         Read the protocol <ArrowRight className="h-4 w-4" aria-hidden />
                       </Link>
-                      {publication.doiUrl && (
-                        <a
-                          href={publication.doiUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex min-h-12 items-center justify-between rounded-md border border-white/15 px-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
-                        >
-                          DOI {publication.doi}
-                          <ArrowUpRight className="h-4 w-4" aria-hidden />
-                        </a>
-                      )}
+                      {publication.doiUrl &&
+                        publication.evidence.publicationRecord.state === "verified" && (
+                          <a
+                            href={publication.doiUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex min-h-12 items-center justify-between rounded-md border border-white/15 px-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+                          >
+                            DOI {publication.doi}
+                            <ArrowUpRight className="h-4 w-4" aria-hidden />
+                          </a>
+                        )}
                     </div>
                   </div>
                 </article>

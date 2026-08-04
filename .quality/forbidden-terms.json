@@ -12,6 +12,17 @@
     { "label": "Competitor: Cursor", "pattern": "\\bCursor\\b", "flags": "" },
     { "label": "Competitor: Windsurf", "pattern": "\\bWindsurf\\b", "flags": "" },
     { "label": "Competitor: Copilot", "pattern": "\\bCopilot\\b", "flags": "" },
-    { "label": "VS Code plugin framing", "pattern": "\\bVS\\s?Code\\s+plugin\\b", "flags": "i" }
+    { "label": "VS Code plugin framing", "pattern": "\\bVS\\s?Code\\s+plugin\\b", "flags": "i" },
+    { "label": "Unsupported flagship claim", "pattern": "\\bflagship\\s+product\\b", "flags": "i" },
+    {
+      "label": "Solution as operating system",
+      "pattern": "\\bowned\\s+operating\\s+system\\b",
+      "flags": "i"
+    },
+    {
+      "label": "Unsupported response SLA",
+      "pattern": "\\btypically\\s+(reply|respond)\\s+within\\s+24\\s*(h|hours?)\\b",
+      "flags": "i"
+    }
   ]
 }

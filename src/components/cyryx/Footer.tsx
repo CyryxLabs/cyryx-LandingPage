@@ -76,8 +76,9 @@ export function Footer() {
           <div className="flex flex-col items-start">
             <CyryxLockup className="h-14" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--silver-dim)]">
-              The execution layer for enterprise AI. Advisory, engineering, products, research, and
-              optional operations for controlled execution.
+              From AI opportunity to operating capability. Engage Advise, Build, Control, or Operate
+              individually or as a connected program; Cyryx products and Applied Research remain
+              distinct.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">
@@ -93,7 +94,7 @@ export function Footer() {
             </div>
 
             <div className="mt-10">
-              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-50">
+              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-70">
                 Follow
               </div>
               <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
@@ -110,7 +111,7 @@ export function Footer() {
           <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-4 min-[400px]:grid-cols-2 gap-x-1">
             {PRIMARY_NAVIGATION.map((group) => (
               <nav key={group.id} aria-label={group.label}>
-                <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-50">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-70">
                   {group.label}
                 </div>
                 <ul className="mt-6 space-y-4">

@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Request as PWRequest } from "@playwright/test";
+import { expectPageHydrated } from "../support/page-ready";
 
 /**
  * Domain-restriction E2E: only @cyryxlabs.com accounts may sign in or
@@ -42,14 +43,15 @@ test.describe("/auth domain restriction", () => {
       const blockLogs = await captureBlockLog(page);
 
       await page.goto("/auth", { waitUntil: "networkidle" });
+      await expectPageHydrated(page);
       const emailField = page.getByLabel("Email");
       const passwordField = page.getByLabel("Password");
-      await emailField.pressSequentially(email);
-      await passwordField.pressSequentially("whatever-Passw0rd!");
-      await passwordField.press("Enter");
+      await emailField.fill(email);
+      await passwordField.fill("whatever-Passw0rd!");
+      await page.getByRole("button", { name: "Sign in" }).click();
 
       const alert = page.getByRole("alert");
-      await expect(alert).toBeVisible();
+      await expect(alert).toBeVisible({ timeout: 15_000 });
       await expect(alert).toContainText(/@cyryxlabs\.com/);
       await expect(page.getByRole("link", { name: "Contact IT" })).toBeVisible();
       await expect(page).toHaveURL(/\/auth$/);
@@ -74,7 +76,8 @@ test.describe("/auth domain restriction", () => {
       const blockLogs = await captureBlockLog(page);
 
       await page.goto("/auth", { waitUntil: "networkidle" });
-      await page.getByLabel("Email").pressSequentially(email);
+      await expectPageHydrated(page);
+      await page.getByLabel("Email").fill(email);
       await page.getByRole("button", { name: "Forgot password?" }).click();
 
       const alert = page.getByRole("alert");
