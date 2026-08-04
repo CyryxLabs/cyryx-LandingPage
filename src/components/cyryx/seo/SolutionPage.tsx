@@ -2,10 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, ChevronRight } from "lucide-react";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
+import { InternalHero } from "../InternalHero";
 import { HudLabel } from "../primitives/HudLabel";
 import { GlassPanel } from "../primitives/GlassPanel";
 import { buildStartProjectHref, type StartContextIntent } from "@/lib/cta";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
+import { trackCta } from "@/lib/track-cta";
 
 export interface DeliverablePhase {
   phase: string;
@@ -58,37 +60,29 @@ export function SolutionPage(p: SolutionPageProps) {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" tabIndex={-1} className="relative focus:outline-none">
-        <section className="mx-auto max-w-7xl px-5 pb-24 pt-32 sm:px-8 lg:px-12 lg:pb-32 lg:pt-44">
-          <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="hover:text-[var(--accent-glow)]">
-              Home
-            </Link>
-            <span className="mx-2 opacity-60">/</span>
-            <Link to="/solutions" className="hover:text-[var(--accent-glow)]">
-              Solutions
-            </Link>
-            <span className="mx-2 opacity-60">/</span>
-            <span aria-current="page" className="text-[var(--silver)]">
-              {p.eyebrow}
-            </span>
-          </nav>
+        <InternalHero
+          eyebrow={`Solutions · ${p.eyebrow}`}
+          title={p.title}
+          body={p.directAnswer}
+          primaryCta={{
+            label: "Start a fit review",
+            to: startHref,
+            onClick: () =>
+              trackCta({ cta: "start_project", section: "solutions", href: startHref }),
+          }}
+          secondaryCta={{ label: "All solutions", to: "/solutions" }}
+          boundaryNote="The architecture, delivery scope, ownership, and operating responsibilities are defined against the real environment—not a predetermined tool."
+          lifecycleLabel="Solution lifecycle"
+          lifecycle={[
+            { number: "01", label: "Problem", active: true },
+            { number: "02", label: "System" },
+            { number: "03", label: "Evidence" },
+            { number: "04", label: "Operate" },
+          ]}
+        />
 
-          <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
-            {p.eyebrow}
-          </HudLabel>
-
-          <div className="mt-6 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-20">
-            <h1 className="max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
-              {p.title}
-            </h1>
-            <div className="border-l border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] pl-6 lg:mb-2">
-              <p className="text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-                {p.directAnswer}
-              </p>
-            </div>
-          </div>
-
-          <div className="mx-auto mt-20 grid max-w-7xl gap-x-16 gap-y-14 lg:mt-28 lg:grid-cols-2 lg:gap-y-20">
+        <section className="mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-8 sm:pt-24 lg:px-12 lg:pb-32 lg:pt-28">
+          <div className="mx-auto grid max-w-7xl gap-x-16 gap-y-14 lg:grid-cols-2 lg:gap-y-20">
             <Sec heading="What this is">
               <p className="mt-4 text-base leading-relaxed text-[var(--silver-dim)]">
                 {p.whatItIs}

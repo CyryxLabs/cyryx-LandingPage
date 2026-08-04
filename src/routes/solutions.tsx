@@ -2,9 +2,11 @@ import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-r
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
+import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead, buildServiceJsonLd } from "@/components/cyryx/seo/seo";
 import { buildStartProjectHref } from "@/lib/cta";
+import { trackCta } from "@/lib/track-cta";
 
 const PATH = "/solutions";
 const TITLE = "AI Advisory, Digital Systems & Engineering — Cyryx Labs";
@@ -131,42 +133,26 @@ function SolutionsHub() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content">
-        <section className="border-b border-white/10 px-5 pb-20 pt-28 sm:px-8 sm:pb-24 sm:pt-32 lg:pb-28 lg:pt-36">
-          <div className="mx-auto max-w-7xl">
-            <HudLabel withDot>Cyryx Labs / Commercial capabilities</HudLabel>
-            <div className="mt-8 grid gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-end lg:gap-24">
-              <h1 className="max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl">
-                From unresolved AI opportunity to an owned operating capability.
-              </h1>
-              <div className="lg:pb-2">
-                <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
-                  Cyryx combines advisory, digital and AI engineering, control design, and optional
-                  managed operations. Products and applied research inform the work without defining
-                  client scope. The engagement begins with the business constraint — not a
-                  predetermined tool.
-                </p>
-                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--steel)]">
-                  Here, owned means a named operating owner and change path; intellectual property,
-                  licensing, support, and commercial terms are defined per engagement.
-                </p>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <a
-                    href={SOLUTIONS_START_HREF}
-                    className="inline-flex min-h-12 items-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
-                  >
-                    Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
-                  </a>
-                  <Link
-                    to="/engagement-model"
-                    className="inline-flex min-h-12 items-center gap-2 rounded-md border border-white/15 px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
-                  >
-                    How we work
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <InternalHero
+          eyebrow="AI systems · Advisory · Engineering · Operations"
+          title="From unresolved AI opportunity to an owned operating capability."
+          body="Cyryx combines advisory, digital and AI engineering, control design, and optional managed operations. The engagement begins with the business constraint—not a predetermined tool."
+          primaryCta={{
+            label: "Start a fit review",
+            to: SOLUTIONS_START_HREF,
+            onClick: () =>
+              trackCta({ cta: "start_project", section: "solutions", href: SOLUTIONS_START_HREF }),
+          }}
+          secondaryCta={{ label: "How we work", to: "/engagement-model" }}
+          boundaryNote="Products and Applied Research inform the work; client scope remains independent. Ownership, licensing, support, and commercial terms are defined per engagement."
+          lifecycleLabel="Operating capability lifecycle"
+          lifecycle={[
+            { number: "01", label: "Advise", active: true },
+            { number: "02", label: "Build" },
+            { number: "03", label: "Control" },
+            { number: "04", label: "Operate" },
+          ]}
+        />
 
         <section
           aria-labelledby="solutions-trigger-heading"

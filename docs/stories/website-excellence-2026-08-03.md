@@ -384,6 +384,8 @@ The developer must replace this anticipated list with the exact final list. File
 | 2026-08-03 | 1.4.0   | QA re-review: site/browser evidence cleared; FAIL retained for two release gates.   | Argus (`@qa`)   |
 | 2026-08-03 | 1.5.0   | Refined the homepage storytelling, hierarchy, and evidence-led decision flow.       | Vulcan (`@dev`) |
 | 2026-08-03 | 1.6.0   | Added fail-safe fit-review notification and sender-confirmation email queueing.     | Vulcan (`@dev`) |
+| 2026-08-04 | 1.7.0   | Applied the approved Structural Aperture hero system across internal page families. | Vulcan (`@dev`) |
+| 2026-08-04 | 1.8.0   | Excluded generated Vercel output and captured the definitive full-lint baseline.    | Vulcan (`@dev`) |
 
 ## Dev Agent Record
 
@@ -403,6 +405,8 @@ GPT-5.6
 - Responsive storytelling evidence: desktop browser review found no horizontal overflow or console errors; the final focused storytelling command passed 41/41, comprising 39 copy/contrast/mobile-360 checks plus 2 Safari-mobile layout/start checks. This supports Task 7 while leaving Task 9 open for the repository-wide lint and real persistence blockers.
 - Self-critique evidence: `plan/self-critique-website-excellence.json` records Step 5.5 predictions, Step 6.5 fixes, and remaining QA risks.
 - Figma decision/audit board reference: <https://www.figma.com/design/Yvc1sj5JQDQNg5XacpksOs?node-id=4-3>. This is a production-homepage capture and executive recommendation board, not production artwork, a code dependency, or evidence of shipped capability.
+- IDS `SEARCH → ADAPT/CREATE`: the existing internal-page hero patterns, brand tokens, CTA tracking, TanStack links, and solution-page wrapper were reviewed before creating `InternalHero.tsx`. The approved Structural Aperture concept was adapted to Space Grotesk, Inter, IBM Plex Mono, matte gunmetal, limited teal, a real responsive raster asset, explicit scope boundaries, and page-specific lifecycle rails. The visual comparison and production-browser evidence are recorded in `design-qa.md`.
+- Quality-gate diagnosis: `eslint.config.js` already ignored `.output` but not the generated `.vercel` build tree. Adding that generated-artifact boundary reduced the exact `npm run lint` execution from a five-minute timeout to a definitive 46.9-second result. The gate now reports 3,194 existing repository problems (3,167 errors and 27 warnings), predominantly Prettier debt in scripts, legacy routes, and tests; focused ESLint over the Structural Aperture change set remains green.
 
 ### Completion Notes List
 
@@ -418,20 +422,24 @@ GPT-5.6
 - Runtime responses set `nosniff`, strict-origin referrer policy, a bounded permissions policy, and frame denial. HSTS is exact-host HTTPS-only (`cyryxlabs.com`/`www.cyryxlabs.com`) with no `includeSubDomains` or preload. Dynamic fallback caching is `private, no-store`; successful hashed assets remain immutable.
 - The old “The execution layer for enterprise AI” Footer/schema slogan was retired in favor of the canonical “From AI opportunity to operating capability” line. Controlled execution remains a section-level thesis. CSP was not introduced because compatible allowed origins were not fully evidenced.
 - Green before tree freeze: changed-owned-files Prettier check; focused changed-file ESLint; `bun run typecheck`; `bun run test:unit` (34/34 before the final exact-consent contract assertion); focused MAAX unit/contract tests after that assertion (13/13); `bun run quality:validate-terms` (14 rules); and `bun run build`.
-- Repository-wide `bun run lint` remains blocked by pre-existing formatting debt in untouched files such as `scripts/compliance-self-check.mjs` and `src/components/cyryx/AppliedAILab.tsx`; `workspace.marketing.tsx` also retains 16 pre-existing `no-explicit-any` findings. The final full-lint attempt timed out after 124 seconds without producing additional output.
-- The Vite/TanStack virtual client-entry race is handled by a shared Playwright global setup that warms the resolved client environment before browser workers begin; interactive tests also wait for the root hydration signal before acting on SSR controls. Full accessibility, cross-browser, visual-regression, and Lighthouse evidence is green in QA; the final focused storytelling command additionally passed 41/41 (39 copy/contrast/mobile-360 checks and 2 Safari-mobile layout/start checks) with no browser-console errors. Task 9 remains open because the repository-wide lint attempt timed out after 124 seconds and the migration/persistence boundary was not executed against a real Supabase target.
+- Repository-wide `npm run lint` now completes after `.vercel` generated output was excluded, but remains blocked by 3,194 baseline problems (3,167 errors and 27 warnings) across unrelated scripts, legacy routes, and tests. The Structural Aperture files pass focused ESLint; bulk-formatting unrelated files was intentionally not performed.
+- The Vite/TanStack virtual client-entry race is handled by a shared Playwright global setup that warms the resolved client environment before browser workers begin; interactive tests also wait for the root hydration signal before acting on SSR controls. Full accessibility, cross-browser, visual-regression, and Lighthouse evidence is green in QA; the final focused storytelling command additionally passed 41/41 (39 copy/contrast/mobile-360 checks and 2 Safari-mobile layout/start checks) with no browser-console errors. Task 9 remains open because repository-wide lint completes with the documented 3,194 baseline findings and the migration/persistence boundary was not executed against a real Supabase target.
+- Internal overview, solution, managed-operations, engagement, product, research, company, career, and shared solution-detail pages now use one responsive Structural Aperture hero system. The company journey was verified at desktop and 390 × 844 mobile widths: no horizontal overflow or console errors, a 44 px primary target, the contextual fit-review CTA reached `/start`, and the secondary CTA reached `/solutions`. The implementation-specific visual gate passed; the broader release blockers above remain unchanged.
 
 ### Final File List
 
 - `.quality/forbidden-terms.json`
+- `design-qa.md` (created)
 - `docs/stories/website-excellence-2026-08-03.md` (created)
 - `docs/website-claim-inventory-2026-08-03.md` (created)
+- `eslint.config.js`
 - `package.json`
 - `plan/self-critique-website-excellence.json` (created)
 - `playwright.config.ts`
 - `playwright.cross-browser.config.ts`
 - `public/llms.txt`
 - `src/components/cyryx/Hero.tsx`
+- `src/components/cyryx/InternalHero.tsx` (created)
 - `src/components/cyryx/MAAXStudioSpotlight.tsx`
 - `src/components/cyryx/ProductEcosystem.tsx`
 - `src/components/cyryx/StickyMobileCTA.tsx`
@@ -447,6 +455,7 @@ GPT-5.6
 - `src/components/cyryx/v4/OperatingModel.tsx`
 - `src/components/cyryx/v4/SecurityPosture.tsx`
 - `src/copy/v3.ts`
+- `src/assets/cyryx-structural-aperture-1920.webp` (created)
 - `src/data/publications.ts`
 - `src/data/site-taxonomy.ts` (created)
 - `src/integrations/supabase/types.ts` (generated)
@@ -463,10 +472,12 @@ GPT-5.6
 - `src/lib/public-location.ts` (created)
 - `src/lib/track-cta.ts`
 - `src/routes/_authenticated/workspace.marketing.tsx`
+- `src/routes/__root.tsx`
 - `src/routes/api/public/contact.ts`
 - `src/routes/api/public/cta-events.ts`
 - `src/routes/api/public/maax-waitlist.ts`
 - `src/routes/company.tsx`
+- `src/routes/careers.tsx`
 - `src/routes/contact.tsx`
 - `src/routes/engagement-model.tsx`
 - `src/routes/index.tsx`

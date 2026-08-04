@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
+import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import {
   buildBreadcrumbJsonLd,
@@ -9,6 +10,7 @@ import {
   buildOrganizationJsonLd,
 } from "@/components/cyryx/seo/seo";
 import { buildStartProjectHref } from "@/lib/cta";
+import { trackCta } from "@/lib/track-cta";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 const PATH = "/company";
@@ -92,26 +94,29 @@ function CompanyPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
-        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
-          <div className="mx-auto max-w-7xl">
-            <HudLabel withDot>Cyryx Labs / Company</HudLabel>
-            <div className="mt-8 grid gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-end lg:gap-24">
-              <h1 className="max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
-                AI value is created by the system around the model.
-              </h1>
-              <div className="lg:pb-2">
-                <p className="text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
-                  Cyryx Labs is an AI lab and systems company. We advise organizations on the
-                  decision, build the capability, establish control, and define the path to operate
-                  it.
-                </p>
-                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--accent-glow)]">
-                  Advise. Build. Control. Operate.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <InternalHero
+          eyebrow="AI systems · Product engineering · Governed operations"
+          title="AI value is created by the system around the model."
+          body="Cyryx Labs advises, builds, controls, and operates AI-enabled products and systems—from strategy and workflow design through launch and managed operations."
+          primaryCta={{
+            label: "Start a fit review",
+            to: startHref,
+            onClick: () => trackCta({ cta: "start_project", section: "hero", href: startHref }),
+          }}
+          secondaryCta={{
+            label: "Explore capabilities",
+            to: "/solutions",
+            onClick: () => trackCta({ cta: "see_delivery", section: "hero", href: "/solutions" }),
+          }}
+          boundaryNote="Products and Applied Research inform the work; client scope remains independent."
+          lifecycleLabel="Operating model"
+          lifecycle={[
+            { number: "01", label: "Advise" },
+            { number: "02", label: "Build" },
+            { number: "03", label: "Control" },
+            { number: "04", label: "Operate" },
+          ]}
+        />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
           <div className="cx-reveal grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">

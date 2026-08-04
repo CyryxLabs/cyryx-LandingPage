@@ -62,7 +62,7 @@
   --color-accent-glow: var(--accent-glow);
   --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --font-orbitron: "Space Grotesk", "Inter", system-ui, sans-serif;
 }
 

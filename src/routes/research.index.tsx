@@ -2,10 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
+import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import { PUBLICATIONS } from "@/data/publications";
+import { trackCta } from "@/lib/track-cta";
 
 const AREAS = [
   [
@@ -77,23 +79,36 @@ function ResearchHub() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
-        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
-          <div className="mx-auto max-w-7xl">
-            <HudLabel withDot>Applied Research</HudLabel>
-            <div className="mt-8 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-24">
-              <h1 className="max-w-[11ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
-                Research for systems that must leave the lab.
-              </h1>
-              <p className="text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl lg:pb-2">
-                Cyryx investigates the engineering and operating questions that appear when AI is
-                expected to support real products, workflows, and decisions. The purpose is
-                practical: better architectures, better evidence, and clearer limits.
-              </p>
-            </div>
-          </div>
-        </section>
+        <InternalHero
+          eyebrow="Applied Research"
+          title="Research for systems that must leave the lab."
+          body="Cyryx investigates the engineering and operating questions that appear when AI is expected to support real products, workflows, and decisions. The purpose is practical: better architectures, better evidence, and clearer limits."
+          primaryCta={{
+            label: "View published research",
+            href: "#published-research",
+            onClick: () =>
+              trackCta({ cta: "view_research", section: "hero", href: "#published-research" }),
+          }}
+          secondaryCta={{
+            label: "Explore research areas",
+            href: "#research-directions",
+            onClick: () =>
+              trackCta({ cta: "view_research", section: "hero", href: "#research-directions" }),
+          }}
+          boundaryNote="A publication record is not current implementation, conformance, certification, or client-outcome evidence."
+          lifecycleLabel="Research discipline"
+          lifecycle={[
+            { number: "01", label: "Question" },
+            { number: "02", label: "Method" },
+            { number: "03", label: "Evidence" },
+            { number: "04", label: "Limits" },
+          ]}
+        />
 
-        <section className="border-b border-white/10 bg-[var(--obsidian)] px-5 py-20 sm:px-8 sm:py-28">
+        <section
+          id="published-research"
+          className="scroll-mt-24 border-b border-white/10 bg-[var(--obsidian)] px-5 py-20 sm:px-8 sm:py-28"
+        >
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-end lg:gap-20">
               <div>
@@ -168,7 +183,10 @@ function ResearchHub() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+        <section
+          id="research-directions"
+          className="mx-auto max-w-7xl scroll-mt-24 px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40"
+        >
           <div className="cx-reveal grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
             <div>
               <HudLabel>Research directions</HudLabel>
