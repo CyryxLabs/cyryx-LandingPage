@@ -386,6 +386,7 @@ The developer must replace this anticipated list with the exact final list. File
 | 2026-08-03 | 1.6.0   | Added fail-safe fit-review notification and sender-confirmation email queueing.     | Vulcan (`@dev`) |
 | 2026-08-04 | 1.7.0   | Applied the approved Structural Aperture hero system across internal page families. | Vulcan (`@dev`) |
 | 2026-08-04 | 1.8.0   | Excluded generated Vercel output and captured the definitive full-lint baseline.    | Vulcan (`@dev`) |
+| 2026-08-04 | 1.9.0   | Reviewed and updated the intentional solution-page visual baseline.                 | Vulcan (`@dev`) |
 
 ## Dev Agent Record
 
@@ -425,6 +426,7 @@ GPT-5.6
 - Repository-wide `npm run lint` now completes after `.vercel` generated output was excluded, but remains blocked by 3,194 baseline problems (3,167 errors and 27 warnings) across unrelated scripts, legacy routes, and tests. The Structural Aperture files pass focused ESLint; bulk-formatting unrelated files was intentionally not performed.
 - The Vite/TanStack virtual client-entry race is handled by a shared Playwright global setup that warms the resolved client environment before browser workers begin; interactive tests also wait for the root hydration signal before acting on SSR controls. Full accessibility, cross-browser, visual-regression, and Lighthouse evidence is green in QA; the final focused storytelling command additionally passed 41/41 (39 copy/contrast/mobile-360 checks and 2 Safari-mobile layout/start checks) with no browser-console errors. Task 9 remains open because repository-wide lint completes with the documented 3,194 baseline findings and the migration/persistence boundary was not executed against a real Supabase target.
 - Internal overview, solution, managed-operations, engagement, product, research, company, career, and shared solution-detail pages now use one responsive Structural Aperture hero system. The company journey was verified at desktop and 390 × 844 mobile widths: no horizontal overflow or console errors, a 44 px primary target, the contextual fit-review CTA reached `/start`, and the secondary CTA reached `/solutions`. The implementation-specific visual gate passed; the broader release blockers above remain unchanged.
+- The intentional `solution-workflow-automation` Windows desktop visual baseline was reviewed and regenerated after the shared solution hero migration; the complete focused visual-regression suite then passed 3/3. Vercel Preview `dpl_sKYqgk2txHgkXcn2PcoXrm9Am2iQ` reached `READY`; `/`, `/company`, `/solutions`, and the contextual `/start` route returned HTTP 200, the CTA carried the expected context, and browser console review was clean. Production aliases were not changed.
 
 ### Final File List
 
@@ -511,6 +513,7 @@ GPT-5.6
 - `tests/accessibility/scroll-restoration.spec.ts`
 - `tests/accessibility/security-headers.spec.ts` (created)
 - `tests/accessibility/webkit-mobile-layout.spec.ts`
+- `tests/accessibility/visual-regression.spec.ts-snapshots/solution-workflow-automation-hero-a11y-chromium-win32.png`
 - `tests/cross-browser/compatibility.spec.ts`
 - `tests/maax-waitlist-contract.test.ts` (created)
 - `tests/maax-waitlist.test.ts`
