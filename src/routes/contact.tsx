@@ -4,22 +4,22 @@ import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
-import { CONTACT_EMAIL } from "@/lib/cta";
+import { buildStartProjectHref, CONTACT_EMAIL } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
 
 const PATH = "/contact";
 const TITLE = "Contact Cyryx Labs";
 const DESC =
-  "Contact Cyryx Labs for general, research, partnership, product, privacy, or careers inquiries. Project opportunities begin through the dedicated qualification route.";
+  "Contact Cyryx Labs about general, research, partnership, product, privacy, or careers matters. Project opportunities begin with a dedicated fit review.";
 
 const CONTACT_PATHS = [
   {
     label: "Project opportunities",
     title: "Bring us the business constraint.",
     body: "Use the project brief for advisory, digital systems, automation, internal assistants, custom AI products, governance, or managed operations.",
-    action: "Start a project",
+    action: "Start a fit review",
     cta: "start_project",
-    href: "/start",
+    href: buildStartProjectHref({ source: "contact", intent: "operating-capability" }),
   },
   {
     label: "Products",

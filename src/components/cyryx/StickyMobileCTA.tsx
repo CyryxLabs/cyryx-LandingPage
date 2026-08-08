@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
 
 /**
@@ -13,6 +13,7 @@ import { trackCta } from "@/lib/track-cta";
 export function StickyMobileCTA() {
   const [visible, setVisible] = useState(false);
   const headerCta = getCopy(useCopyVariant()).header.cta;
+  const startHref = buildStartProjectHref({ source: "home", intent: "operating-capability" });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -54,11 +55,9 @@ export function StickyMobileCTA() {
     <div className="cx-sticky-cta lg:hidden" data-visible role="region" aria-label="Quick actions">
       <div className="mx-auto flex max-w-7xl items-center">
         <a
-          href={START_PROJECT_HREF}
+          href={startHref}
           aria-label={headerCta}
-          onClick={() =>
-            trackCta({ cta: "start_project", section: "sticky", href: START_PROJECT_HREF })
-          }
+          onClick={() => trackCta({ cta: "start_project", section: "sticky", href: startHref })}
           className="cx-liquid-glass inline-flex h-12 min-h-11 w-full items-center justify-center gap-2 rounded-md px-4 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] active:brightness-95"
         >
           {headerCta}

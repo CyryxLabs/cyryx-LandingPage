@@ -3,8 +3,12 @@ import { ArrowRight } from "lucide-react";
 import { HudLabel } from "../primitives/HudLabel";
 
 const ARTIFACTS = [
-  ["01", "Architecture brief", "How the system should work."],
-  ["02", "Acceptance matrix", "What must pass before release."],
+  [
+    "01",
+    "Architecture brief",
+    "What should exist, how it should work, and where its limits begin.",
+  ],
+  ["02", "Acceptance matrix", "What must be true before the system can be trusted to advance."],
   ["03", "Operating record", "What happened, who approved it, and what it cost."],
 ] as const;
 
@@ -19,7 +23,7 @@ export function EvidenceBeforeClaims() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-end lg:gap-20">
           <div>
-            <HudLabel withDot>Evidence before claims</HudLabel>
+            <HudLabel withDot>Proof before expansion</HudLabel>
             <h2
               id="evidence-heading"
               className="mt-7 max-w-[15ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-6xl"
@@ -28,8 +32,9 @@ export function EvidenceBeforeClaims() {
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-            Cyryx treats evidence as part of delivery. Architecture decisions, acceptance criteria,
-            operating boundaries, and ownership are made explicit before trust expands.
+            Every engagement should leave a reviewable evidence trail. Cyryx makes architecture
+            decisions, acceptance criteria, operating boundaries, and ownership explicit before
+            trust expands.
           </p>
         </div>
 

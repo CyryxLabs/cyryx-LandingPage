@@ -45,14 +45,17 @@ test("every public route renders its core shell without runtime or layout failur
   expect(pageErrors, `runtime errors: ${pageErrors.join(" | ")}`).toEqual([]);
 });
 
-test("Start a Project navigation and form controls work", async ({ page }) => {
+test("contextual fit-review navigation and form controls work", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expect(page.locator("html")).toHaveAttribute("data-cyryx-hydrated", "true");
-  const primaryCta = page.getByRole("link", { name: "Start a Project with Cyryx Labs" });
-  await expect(primaryCta).toHaveAttribute("href", "/start");
+  const primaryCta = page.getByRole("link", { name: "Start a fit review with Cyryx Labs" });
+  await expect(primaryCta).toHaveAttribute(
+    "href",
+    "/start?source=home&intent=operating-capability",
+  );
   await primaryCta.click();
 
-  await expect(page).toHaveURL(/\/start$/);
+  await expect(page).toHaveURL(/\/start\?source=home&intent=operating-capability$/);
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(2);
 
   const name = page.locator('input[name="name"]');
@@ -64,6 +67,9 @@ test("Start a Project navigation and form controls work", async ({ page }) => {
   await expect(email).toBeVisible();
   await expect(company).toBeVisible();
   await expect(projectType).toBeVisible();
+  await expect(page.getByText("Context carried into this review")).toBeVisible();
+  await expect(page.getByText("Homepage / Owned operating capability")).toBeVisible();
+  await expect(projectType).toHaveValue("Other");
 
   await name.fill("Compatibility Test");
   await email.fill("compatibility@example.com");
@@ -75,7 +81,29 @@ test("Start a Project navigation and form controls work", async ({ page }) => {
   await expect(projectType).toHaveValue("AI Governance & Cost Control");
 });
 
-test("mobile menu reaches Start a Project and exposes the form above the fold", async ({
+test("Solutions hub keeps its decision rail usable at mobile and desktop widths", async ({
+  page,
+}) => {
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 1440, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/solutions", { waitUntil: "domcontentloaded" });
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Which situation is closest to yours?" }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: /Start a fit review/i }).first()).toBeVisible();
+    const dimensions = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
+  }
+});
+
+test("mobile menu reaches the fit review and exposes the form above the fold", async ({
   page,
 }, testInfo) => {
   test.skip(
@@ -86,7 +114,7 @@ test("mobile menu reaches Start a Project and exposes the form above the fold", 
   await expect(page.locator("html")).toHaveAttribute("data-cyryx-hydrated", "true");
   await page.getByRole("button", { name: "Open menu" }).click({ force: true });
   const mobileNavigation = page.getByRole("navigation", { name: "Mobile primary" });
-  const startLink = mobileNavigation.getByRole("link", { name: "Start a Project" });
+  const startLink = mobileNavigation.getByRole("link", { name: "Start a fit review" });
   await expect(startLink).toBeVisible();
   await startLink.click();
 

@@ -49,6 +49,7 @@ export const Route = createFileRoute("/solutions/workflow-automation")({
     ]),
   component: () => (
     <SolutionPage
+      startIntent="workflow-automation"
       eyebrow="Workflow Automation"
       title="Move work through the business with clearer control."
       directAnswer="Cyryx designs AI-enabled workflows around the real operating path: inputs, decisions, systems, owners, exceptions, and evidence. The goal is not automation for its own sake. It is a workflow the business can understand, supervise, and improve."

@@ -5,6 +5,21 @@ export type PublicationCategory =
   | "Architecture";
 
 export type PublicationStatus = "published" | "new" | "draft";
+export type ResearchEvidenceState = "verified" | "qualified" | "withheld";
+
+export interface ResearchEvidenceItem {
+  state: ResearchEvidenceState;
+  label: string;
+  summary: string;
+  checkedAt?: string;
+}
+
+export interface PublicationEvidence {
+  publicationRecord: ResearchEvidenceItem;
+  implementation: ResearchEvidenceItem;
+  conformance: ResearchEvidenceItem;
+  certification: ResearchEvidenceItem;
+}
 
 export interface ControlDomain {
   id: string;
@@ -32,6 +47,7 @@ export interface Publication {
   slug: string;
   title: string;
   subtitle: string;
+  publicSummary: string;
   authors: string[];
   affiliation?: string;
   date: string;
@@ -54,7 +70,7 @@ export interface Publication {
   controlDomains?: ControlDomain[];
   frameworkMapping?: FrameworkMappingRow[];
   conformanceLevels?: ConformanceLevel[];
-  referenceImplementation?: string;
+  evidence: PublicationEvidence;
 }
 
 /**
@@ -66,6 +82,8 @@ export const CGP_V1: Publication = {
   slug: "cgp-v1",
   title: "CGP: Cyryx Governance Protocol for Agentic AI Execution",
   subtitle: "Version 1.0 — Technical Report CGP-2026-001",
+  publicSummary:
+    "A published technical report defining seven protocol control domains and a protocol-level conformance model for agentic AI execution.",
   authors: ["CYRYX Labs"],
   affiliation: "Cyryx Labs LLC, United States of America",
   date: "June 29, 2026",
@@ -94,7 +112,7 @@ export const CGP_V1: Publication = {
   ],
   abstract: `Existing AI governance frameworks — the EU AI Act, the NIST AI Risk Management Framework (AI RMF), and ISO/IEC 42001 — were designed for AI systems operating under continuous human supervision: classifiers, recommenders, and single-turn generators. None were designed for agentic AI systems that autonomously decompose goals into multi-step plans, execute sequences of environment-modifying actions, coordinate multiple specialized sub-agents, and maintain state across sessions. Singapore's Model AI Governance Framework (January 2026) is the only published governance document that acknowledges this gap, identifying three unaddressed risks: cascading failure propagation, emergent scope expansion, and attribution gaps across agent chains.
 
-This document introduces the Cyryx Governance Protocol (CGP) v1.0, a technical framework that fills these gaps with seven control domains and twenty-eight normative controls (MUST/SHOULD/MAY). CGP is designed as an extension to existing frameworks — not a replacement — with explicit mapping to EU AI Act Articles 9, 12, 13, 14, and 15; NIST AI RMF functions GOVERN, MAP, MEASURE, and MANAGE; and ISO 42001 Clause 6, 7, 8, and 9 controls. Every control in CGP v1.0 has a reference implementation in MAAX Studio by Cyryx Labs. CGP is published under Creative Commons Attribution 4.0 (CC BY 4.0) for open community adoption and review.`,
+This document introduces the Cyryx Governance Protocol (CGP) v1.0, a technical framework with seven control domains and twenty-eight normative controls (MUST/SHOULD/MAY). CGP is presented as an extension to existing frameworks — not a replacement — with mappings to selected provisions in the EU AI Act, NIST AI RMF, and ISO/IEC 42001. The published abstract includes author assertions about MAAX Studio implementation; this website does not treat those assertions as current implementation, conformance, certification, or client-outcome evidence. CGP is published under Creative Commons Attribution 4.0 (CC BY 4.0) for open community adoption and review.`,
   controlDomains: [
     { id: "CD1", name: "Mission Authorization", controls: 4, mustControls: 3 },
     { id: "CD2", name: "Scope Boundary Enforcement", controls: 4, mustControls: 4 },
@@ -168,7 +186,33 @@ This document introduces the Cyryx Governance Protocol (CGP) v1.0, a technical f
       badge: "Enterprise",
     },
   ],
-  referenceImplementation: "MAAX Studio by Cyryx Labs",
+  evidence: {
+    publicationRecord: {
+      state: "verified",
+      label: "Publication record",
+      summary:
+        "The Zenodo record, bibliographic metadata, DOI, source file, publication date, and license were reviewed for this release.",
+      checkedAt: "2026-08-03",
+    },
+    implementation: {
+      state: "qualified",
+      label: "Current implementation",
+      summary:
+        "No current, reviewable implementation package is linked here for every protocol control. The publication abstract is not implementation evidence.",
+    },
+    conformance: {
+      state: "qualified",
+      label: "Protocol conformance",
+      summary:
+        "CGP levels define protocol requirements. This page does not assert that MAAX Studio or a client system currently meets a level.",
+    },
+    certification: {
+      state: "withheld",
+      label: "Third-party certification",
+      summary:
+        "No third-party CGP certification or independent compliance determination is claimed.",
+    },
+  },
 };
 
 export const PUBLICATIONS: Publication[] = [CGP_V1];

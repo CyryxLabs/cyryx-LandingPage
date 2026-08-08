@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
+import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { submitContact } from "@/lib/contact.functions";
@@ -76,34 +77,41 @@ function CareersPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" className="relative">
-        <section className="mx-auto max-w-6xl px-5 pb-20 pt-32 sm:px-8 lg:px-12 lg:pb-28 lg:pt-44">
-          <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="transition-colors hover:text-[var(--accent-glow)]">
-              Home
-            </Link>
-            <span className="mx-2 opacity-60">/</span>
-            <span className="text-[var(--silver)]">Careers</span>
-          </nav>
+        <InternalHero
+          eyebrow="Careers · Talent network"
+          title="Build systems that deserve trust."
+          body="Cyryx brings together applied research, product engineering, design, and systems delivery. There are no active openings today; the talent network is the honest starting point for future opportunities."
+          primaryCta={{
+            label: "Join the talent network",
+            href: "#talent-network-heading",
+            onClick: () =>
+              trackCta({
+                cta: "careers_talent_network",
+                section: "hero",
+                href: "#talent-network-heading",
+              }),
+          }}
+          secondaryCta={{
+            label: "Email careers",
+            href: `mailto:${CAREERS_EMAIL}?subject=${encodeURIComponent("Talent network — introduction")}`,
+            onClick: (event) =>
+              trackCta({ cta: "careers_email", section: "hero", href: event.currentTarget.href }),
+          }}
+          boundaryNote="Current status · No open roles"
+          lifecycleLabel="Working standard"
+          lifecycle={[
+            { number: "01", label: "Craft" },
+            { number: "02", label: "Judgment" },
+            { number: "03", label: "Evidence" },
+            { number: "04", label: "Ownership" },
+          ]}
+          nextChapter={{
+            title: "The standard comes before the headcount.",
+            body: "We begin with the quality of the work, the clarity of the judgment, and the responsibility to operate what we build.",
+          }}
+        />
 
-          <div className="mt-10 grid gap-12 border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] pb-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(18rem,0.65fr)] lg:items-end lg:gap-20 lg:pb-24">
-            <div>
-              <HudLabel withDot>Careers · Talent network</HudLabel>
-              <h1 className="mt-7 max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
-                Build systems that deserve trust.
-              </h1>
-            </div>
-            <div>
-              <p className="text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-                Cyryx brings together applied research, product engineering, design, and systems
-                delivery. There are no active openings today; the talent network is the honest
-                starting point for future opportunities.
-              </p>
-              <span className="mt-7 inline-flex min-h-10 items-center border border-[color-mix(in_oklab,var(--silver)_18%,transparent)] px-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver-dim)]">
-                Current status · No open roles
-              </span>
-            </div>
-          </div>
-
+        <div className="mx-auto max-w-6xl px-5 pb-20 sm:px-8 lg:px-12">
           <section aria-labelledby="careers-principles-heading" className="py-20 lg:py-28">
             <HudLabel>How we think about the work</HudLabel>
             <h2
@@ -185,7 +193,7 @@ function CareersPage() {
               ))}
             </dl>
           </section>
-        </section>
+        </div>
       </main>
       <Footer />
     </div>
@@ -254,7 +262,7 @@ function TalentNetworkForm() {
       <div
         role="status"
         tabIndex={-1}
-        className="border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_55%,transparent)] p-7 sm:p-9"
+        className="cx-material-panel border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] p-7 sm:p-9"
       >
         <CheckCircle2 className="h-8 w-8 text-[var(--accent-glow)]" aria-hidden />
         <h3 className="mt-5 font-display text-2xl text-[var(--silver)]">Introduction received.</h3>
@@ -274,11 +282,7 @@ function TalentNetworkForm() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      noValidate
-      className="border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_42%,transparent)] p-6 sm:p-9"
-    >
+    <form onSubmit={onSubmit} noValidate className="cx-material-panel border p-6 sm:p-9">
       <div aria-hidden="true" className="absolute -left-[10000px] h-0 w-0 overflow-hidden">
         <label htmlFor="talent-website">Website</label>
         <input id="talent-website" name="website" type="text" tabIndex={-1} autoComplete="off" />

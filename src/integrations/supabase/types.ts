@@ -1280,6 +1280,108 @@ export type Database = {
           },
         ]
       }
+      maax_waitlist: {
+        Row: {
+          company: string | null
+          consent_given_at: string
+          consent_version: string
+          country: string
+          created_at: string
+          crm_contact_id: string | null
+          email: string
+          full_name: string
+          id: string
+          ip_hash: string | null
+          landing_path: string | null
+          marketing_lead_id: string | null
+          operating_constraint: string | null
+          phone: string | null
+          referrer: string | null
+          role: string | null
+          source: string
+          status: string
+          updated_at: string
+          use_case: string | null
+          user_agent_hash: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          company?: string | null
+          consent_given_at?: string
+          consent_version: string
+          country: string
+          created_at?: string
+          crm_contact_id?: string | null
+          email: string
+          full_name: string
+          id?: string
+          ip_hash?: string | null
+          landing_path?: string | null
+          marketing_lead_id?: string | null
+          operating_constraint?: string | null
+          phone?: string | null
+          referrer?: string | null
+          role?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          use_case?: string | null
+          user_agent_hash?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          company?: string | null
+          consent_given_at?: string
+          consent_version?: string
+          country?: string
+          created_at?: string
+          crm_contact_id?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          ip_hash?: string | null
+          landing_path?: string | null
+          marketing_lead_id?: string | null
+          operating_constraint?: string | null
+          phone?: string | null
+          referrer?: string | null
+          role?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          use_case?: string | null
+          user_agent_hash?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maax_waitlist_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maax_waitlist_marketing_lead_id_fkey"
+            columns: ["marketing_lead_id"]
+            isOneToOne: false
+            referencedRelation: "mkt_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       newsletter_subscribers: {
         Row: {
           confirm_token: string | null
@@ -1857,6 +1959,50 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      join_maax_waitlist: {
+        Args: {
+          p_consent_version: string
+          p_country: string
+          p_email: string
+          p_full_name: string
+          p_ip_hash?: string | null
+          p_landing_path?: string | null
+          p_phone: string
+          p_referrer?: string | null
+          p_source?: string | null
+          p_user_agent_hash?: string | null
+          p_utm_campaign?: string | null
+          p_utm_content?: string | null
+          p_utm_medium?: string | null
+          p_utm_source?: string | null
+          p_utm_term?: string | null
+        }
+        Returns: Json
+      }
+      join_maax_waitlist_v2: {
+        Args: {
+          p_company: string
+          p_consent_version: string
+          p_country: string
+          p_email: string
+          p_full_name: string
+          p_ip_hash?: string | null
+          p_landing_path?: string | null
+          p_operating_constraint: string
+          p_phone?: string | null
+          p_referrer?: string | null
+          p_role: string
+          p_source?: string | null
+          p_use_case: string
+          p_user_agent_hash?: string | null
+          p_utm_campaign?: string | null
+          p_utm_content?: string | null
+          p_utm_medium?: string | null
+          p_utm_source?: string | null
+          p_utm_term?: string | null
+        }
+        Returns: Json
       }
       move_to_dlq: {
         Args: {

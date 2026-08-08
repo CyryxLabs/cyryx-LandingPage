@@ -1,13 +1,13 @@
 import { expect, test } from "@playwright/test";
 
 const EXPECTED = {
-  title: /Cyryx Labs.*Execution Layer for Enterprise AI/i,
-  description: /Cyryx Labs.*governed AI systems.*(ownership|evidence|cost visibility)/i,
+  title: /Cyryx Labs.*AI Systems from Strategy to Operations/i,
+  description: /Cyryx Labs.*advises, builds, controls, and operates AI-enabled systems/i,
   ogTitle: /Cyryx Labs/,
-  ogDescription: /(governed AI systems|ownership|evidence|cost visibility)/i,
+  ogDescription: /advises, builds, controls, and operates AI-enabled systems/i,
   ogUrl: /\/$/,
   twitterTitle: /Cyryx Labs/,
-  twitterDescription: /(governed AI systems|ownership|evidence|cost visibility)/i,
+  twitterDescription: /advises, builds, controls, and operates AI-enabled systems/i,
 };
 
 test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async ({ page }) => {

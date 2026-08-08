@@ -5,6 +5,7 @@
  * Endpoint: POST /api/public/cta-events (anon-insertable, admins-read-only).
  */
 import { getActiveCopyVariant } from "./copy-variant";
+import { publicDestination, publicPath, publicReferrer } from "./public-location";
 
 export type CtaName =
   | "start_project"
@@ -46,23 +47,20 @@ export interface TrackCtaInput {
   cta: CtaName;
   section: CtaSection;
   href?: string;
-  /** Non-PII metadata (project type, investment band, timeline, decision status). */
-  metadata?: Record<string, string | number | boolean | null | undefined>;
 }
 
 const ENDPOINT = "/api/public/cta-events";
 
-export function trackCta({ cta, section, href, metadata }: TrackCtaInput): void {
+export function trackCta({ cta, section, href }: TrackCtaInput): void {
   if (typeof window === "undefined") return;
   try {
     const body = JSON.stringify({
       cta,
       section,
-      path: window.location.pathname + window.location.search,
-      href: href ?? null,
+      path: publicPath(window.location.href),
+      href: publicDestination(href),
       variant: getActiveCopyVariant(),
-      referrer: document.referrer || null,
-      metadata: metadata ?? null,
+      referrer: publicReferrer(document.referrer) || null,
     });
     const ok =
       typeof navigator.sendBeacon === "function" &&

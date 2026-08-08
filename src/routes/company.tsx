@@ -2,19 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
+import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import {
   buildBreadcrumbJsonLd,
   buildHead,
   buildOrganizationJsonLd,
 } from "@/components/cyryx/seo/seo";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
+import { trackCta } from "@/lib/track-cta";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 const PATH = "/company";
 const TITLE = "Company — Cyryx Labs";
 const DESC =
-  "Cyryx Labs advises, builds, and operates AI-enabled products and systems, while developing MAAX Studio and applied research.";
+  "Cyryx Labs advises, builds, controls, and operates AI-enabled products and systems, informed by products and applied research.";
 
 const UNITS = [
   [
@@ -26,6 +28,11 @@ const UNITS = [
     "Build",
     "Digital systems, workflows, internal assistants, and custom AI products designed around the business outcome.",
     "/solutions",
+  ],
+  [
+    "Control",
+    "Authority, evaluation, evidence, cost boundaries, review, escalation, and change control.",
+    "/solutions/ai-governance-cost-control",
   ],
   [
     "Operate",
@@ -81,31 +88,39 @@ export const Route = createFileRoute("/company")({
 
 function CompanyPage() {
   useCyryxScrollAnimations();
+  const startHref = buildStartProjectHref({ source: "company", intent: "operating-capability" });
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
-        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
-          <div className="mx-auto max-w-7xl">
-            <HudLabel withDot>Cyryx Labs / Company</HudLabel>
-            <div className="mt-8 grid gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-end lg:gap-24">
-              <h1 className="max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
-                AI value is created by the system around the model.
-              </h1>
-              <div className="lg:pb-2">
-                <p className="text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
-                  Cyryx Labs is an AI lab and systems company. We help organizations decide where AI
-                  belongs, build the product or workflow around it, and establish the controls and
-                  ownership required to operate it.
-                </p>
-                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--accent-glow)]">
-                  Advise. Build. Operate.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <InternalHero
+          eyebrow="AI systems · Product engineering · Governed operations"
+          title="AI value is created by the system around the model."
+          body="Cyryx Labs advises, builds, controls, and operates AI-enabled products and systems—from strategy and workflow design through launch and managed operations."
+          primaryCta={{
+            label: "Start a fit review",
+            to: startHref,
+            onClick: () => trackCta({ cta: "start_project", section: "hero", href: startHref }),
+          }}
+          secondaryCta={{
+            label: "Explore capabilities",
+            to: "/solutions",
+            onClick: () => trackCta({ cta: "see_delivery", section: "hero", href: "/solutions" }),
+          }}
+          boundaryNote="Products and Applied Research inform the work; client scope remains independent."
+          lifecycleLabel="Operating model"
+          lifecycle={[
+            { number: "01", label: "Advise" },
+            { number: "02", label: "Build" },
+            { number: "03", label: "Control" },
+            { number: "04", label: "Operate" },
+          ]}
+          nextChapter={{
+            title: "The execution gap.",
+            body: "Most organizations underestimate what it takes to operationalize AI. The gap is not the model; it is the system.",
+          }}
+        />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
           <div className="cx-reveal grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
@@ -133,7 +148,7 @@ function CompanyPage() {
 
         <section className="border-y border-white/10 bg-[var(--obsidian)] px-5 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-7xl">
-            <HudLabel>One company / five connected practices</HudLabel>
+            <HudLabel>One company / four lifecycle stages + two transversal capabilities</HudLabel>
             <div className="cx-stagger mt-12 divide-y divide-white/10 border-y border-white/10">
               {UNITS.map(([title, body, href], index) => (
                 <Link
@@ -192,10 +207,10 @@ function CompanyPage() {
               Bring the opportunity, constraint, or workflow—not a predetermined answer.
             </h2>
             <a
-              href={START_PROJECT_HREF}
+              href={startHref}
               className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
             >
-              Discuss the initiative <ArrowRight className="h-4 w-4" aria-hidden />
+              Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
           </div>
         </section>

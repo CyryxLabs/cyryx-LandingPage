@@ -1,12 +1,13 @@
 import { test, expect, type Page } from "@playwright/test";
+import { expectPageHydrated } from "../support/page-ready";
 
 test.describe("Mobile Navigation Accessibility", () => {
   test.beforeEach(async ({ page }) => {
     // Force mobile viewport if not already set by project
     await page.setViewportSize({ width: 360, height: 800 });
     await page.goto("/");
-    // Wait for hydration
     await page.waitForLoadState("networkidle");
+    await expectPageHydrated(page);
   });
 
   const getMobileMenu = (page: Page) => page.locator("#cyryx-mobile-navigation");
@@ -125,6 +126,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     // 17. Active group expands on open
     await page.goto("/products/maax-studio");
     await page.waitForLoadState("networkidle");
+    await expectPageHydrated(page);
     await page.getByRole("button", { name: /open menu/i }).click();
     const nav = getNav(page);
 
@@ -147,7 +149,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     // 20. CTA label and href
-    const cta = nav.getByRole("link", { name: "Start a Project" });
+    const cta = nav.getByRole("link", { name: "Start a fit review" });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "/start");
 
@@ -183,7 +185,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     for (let i = 0; i < 5; i++) {
       await page.keyboard.press("Tab");
     }
-    const cta = nav.getByRole("link", { name: "Start a Project" });
+    const cta = nav.getByRole("link", { name: "Start a fit review" });
     await expect(cta).toBeFocused();
 
     await page.keyboard.press("Tab");
@@ -246,14 +248,14 @@ test.describe("Mobile Navigation Accessibility", () => {
 
   test("32. Reduced-motion functionality", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.getByRole("button", { name: /open menu/i }).click();
+    await page.getByRole("button", { name: /open menu/i }).press("Enter");
     const panel = getMobileMenu(page);
     await expect(panel).toBeVisible();
     await expect(panel).toHaveCSS("opacity", "1");
   });
 
   test("33. Axe with dialog open", async ({ page }) => {
-    await page.getByRole("button", { name: /open menu/i }).click();
+    await page.getByRole("button", { name: /open menu/i }).press("Enter");
     await expect(page.getByRole("dialog")).toHaveAttribute("aria-label", /navigation/i);
     await expect(getNav(page)).toBeVisible();
   });

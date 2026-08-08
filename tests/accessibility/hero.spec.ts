@@ -146,8 +146,8 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await page.keyboard.press("Enter");
   await expect(page.locator("#main-content")).toBeFocused();
 
-  const primaryLabel = "Start a Project with Cyryx Labs";
-  const secondaryLabel = "Explore MAAX Studio — flagship product";
+  const primaryLabel = "Start a fit review with Cyryx Labs";
+  const secondaryLabel = "Explore MAAX Studio — product in active development";
   const primary = page.locator(`section[data-hero] a[aria-label="${primaryLabel}"]`);
   const secondary = page.locator(`section[data-hero] a[aria-label="${secondaryLabel}"]`);
 
@@ -157,7 +157,7 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await expect(secondary).toBeFocused();
 
   const primaryHref = await primary.getAttribute("href");
-  expect(primaryHref).toBe("/start");
+  expect(primaryHref).toBe("/start?source=home&intent=operating-capability");
 
   const secondaryHref = await secondary.getAttribute("href");
   expect(secondaryHref).toBe("#maax");
@@ -254,7 +254,7 @@ test("Forced-colors keeps Hero text and focus indicators system-readable", async
   expect(headlineColor).not.toBe("rgba(0, 0, 0, 0)");
   expect(textFill).not.toBe("rgba(0, 0, 0, 0)");
 
-  const primaryAnchor = page.locator('section[data-hero] a[href="/start"]').first();
+  const primaryAnchor = page.locator('section[data-hero] a[href^="/start?"]').first();
   await expect(primaryAnchor).toBeVisible();
   await primaryAnchor.focus();
   const focusIndicator = await primaryAnchor.evaluate((el) => {

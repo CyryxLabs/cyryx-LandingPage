@@ -6,25 +6,25 @@ import type { CopyDocument } from "./types";
  */
 export const v3: CopyDocument = {
   hero: {
-    headline: "The execution layer for enterprise AI.",
-    sub: "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
+    headline: "From AI opportunity to operating capability.",
+    sub: "Cyryx Labs turns AI opportunities into controlled execution. Start with Advise, Build, Control, or Operate—or connect the capabilities through an evidence-led program.",
     meta: [],
     rail: [],
-    ctaPrimary: "Start a project",
-    ctaSecondary: "MAAX Studio →",
+    ctaPrimary: "Start a fit review",
+    ctaSecondary: "MAAX Studio",
   },
   header: {
-    cta: "Start a project",
+    cta: "Start a fit review",
   },
   maaxSpotlight: {
-    eyebrow: "FLAGSHIP PRODUCT · IN DEVELOPMENT",
-    cta: "Request early access",
+    eyebrow: "CYRYX PRODUCT · ACTIVE DEVELOPMENT",
+    cta: "Request early-access review",
   },
   finalCta: {
     headline: "Ready to make AI an",
     headlineAccent: "operating capability?",
     body: "Bring us the workflow, product opportunity, or operational constraint. We will help determine whether AI belongs there — and what it takes to make the result durable.",
-    ctaPrimary: "Start a project",
+    ctaPrimary: "Start a fit review",
     ctaSecondary: "Request access",
     tagline: "From prompt chaos to governed AI execution.",
   },

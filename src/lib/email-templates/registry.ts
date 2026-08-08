@@ -1,16 +1,18 @@
-import type { ComponentType } from 'react'
-import { template as contactConfirmation } from './contact-confirmation'
-import { template as contactNotification } from './contact-notification'
-import { template as newsletterConfirm } from './newsletter-confirm'
-import { template as newsletterWelcome } from './newsletter-welcome'
+import type { ElementType } from "react";
+import { template as contactConfirmation } from "./contact-confirmation";
+import { template as contactNotification } from "./contact-notification";
+import { template as fitReviewConfirmation } from "./fit-review-confirmation";
+import { template as fitReviewNotification } from "./fit-review-notification";
+import { template as newsletterConfirm } from "./newsletter-confirm";
+import { template as newsletterWelcome } from "./newsletter-welcome";
 
 export interface TemplateEntry {
-  component: ComponentType<any>
-  subject: string | ((data: Record<string, any>) => string)
-  displayName?: string
-  previewData?: Record<string, any>
+  component: ElementType;
+  subject: string | ((data: Record<string, unknown>) => string);
+  displayName?: string;
+  previewData?: Record<string, unknown>;
   /** Fixed recipient — overrides caller-provided recipientEmail when set. */
-  to?: string
+  to?: string;
 }
 
 /**
@@ -22,8 +24,10 @@ export interface TemplateEntry {
  *   // then add to TEMPLATES: 'welcome': welcomeTemplate
  */
 export const TEMPLATES: Record<string, TemplateEntry> = {
-  'contact-confirmation': contactConfirmation,
-  'contact-notification': contactNotification,
-  'newsletter-confirm': newsletterConfirm,
-  'newsletter-welcome': newsletterWelcome,
-}
+  "contact-confirmation": contactConfirmation,
+  "contact-notification": contactNotification,
+  "fit-review-confirmation": fitReviewConfirmation,
+  "fit-review-notification": fitReviewNotification,
+  "newsletter-confirm": newsletterConfirm,
+  "newsletter-welcome": newsletterWelcome,
+};

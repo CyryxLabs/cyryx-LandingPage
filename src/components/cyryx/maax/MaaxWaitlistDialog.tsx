@@ -93,10 +93,11 @@ export function MaaxWaitlistDialog({ open, onOpenChange }: MaaxWaitlistDialogPro
                 Join the list
               </p>
               <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.035em] text-[var(--silver)]">
-                Tell us where to reach you.
+                Tell us about the team and intended use.
               </h2>
               <p className="mb-7 mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                Four fields. No application essay. No public launch date.
+                The qualification context helps us assess fit for a reviewed access wave. No public
+                launch date is promised.
               </p>
               <MaaxWaitlistForm />
             </div>

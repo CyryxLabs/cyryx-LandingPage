@@ -2,9 +2,11 @@ import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-r
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
+import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { MAAX_STUDIO_PRODUCT } from "@/data/site-taxonomy";
+import { trackCta } from "@/lib/track-cta";
 
 const PATH = "/products";
 const TITLE = "Products — Cyryx Labs";
@@ -14,11 +16,7 @@ const DESC =
 const PRODUCTS = [
   {
     n: "01",
-    name: "MAAX Studio",
-    maturity: "In active development",
-    identity: "Agentic software execution environment",
-    description:
-      "A command environment intended to coordinate software missions, agents, project context, review, and controlled execution.",
+    ...MAAX_STUDIO_PRODUCT,
     focus: ["Mission-based work", "Project context", "Review and execution controls"],
     href: "/products/maax-studio",
     cta: "Explore MAAX Studio",
@@ -47,27 +45,41 @@ function ProductsPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content">
-        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
-          <div className="mx-auto max-w-7xl">
-            <HudLabel withDot>Cyryx Labs / Product infrastructure</HudLabel>
-            <div className="mt-8 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-24">
-              <h1 className="max-w-[11ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-[var(--silver)] sm:text-6xl lg:text-8xl">
-                Products for controlled execution.
-              </h1>
-              <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl lg:pb-2">
-                MAAX Studio is Cyryx Labs&apos; active product program for coordinating software
-                missions, agents, project context, review, and controlled execution.
-              </p>
-            </div>
-          </div>
-        </section>
+        <InternalHero
+          eyebrow="Cyryx Labs / Product"
+          title="MAAX Studio, in active development."
+          body="MAAX Studio is Cyryx Labs' active product program for coordinating software missions, agents, project context, review, and controlled execution."
+          primaryCta={{
+            label: "Explore MAAX Studio",
+            to: "/products/maax-studio",
+            onClick: () =>
+              trackCta({ cta: "explore_maax", section: "hero", href: "/products/maax-studio" }),
+          }}
+          secondaryCta={{
+            label: "Explore solutions",
+            to: "/solutions",
+            onClick: () => trackCta({ cta: "see_delivery", section: "hero", href: "/solutions" }),
+          }}
+          boundaryNote="Product research informs delivery. Client scope remains independent."
+          lifecycleLabel="Product path"
+          lifecycle={[
+            { number: "01", label: "Program" },
+            { number: "02", label: "Authority" },
+            { number: "03", label: "Evidence" },
+            { number: "04", label: "Release" },
+          ]}
+          nextChapter={{
+            title: "One active product program.",
+            body: "MAAX Studio is where Cyryx explores governed software missions, project context, and controlled execution.",
+          }}
+        />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
           <div className="mx-auto max-w-4xl overflow-hidden rounded-lg border border-white/10 bg-white/10">
             {PRODUCTS.map((product) => (
               <article
                 key={product.name}
-                className="flex min-h-[38rem] flex-col bg-[var(--obsidian)] p-8 sm:p-12"
+                className="cx-material-panel flex min-h-[38rem] flex-col border p-8 sm:p-12"
               >
                 <div className="flex items-center justify-between gap-4">
                   <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
@@ -126,12 +138,12 @@ function ProductsPage() {
                 >
                   Explore solutions <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                 </Link>
-                <a
-                  href={START_PROJECT_HREF}
+                <Link
+                  to="/engagement-model"
                   className="inline-flex min-h-11 items-center px-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--steel)] transition hover:text-[var(--accent-glow)]"
                 >
-                  Start a project
-                </a>
+                  How we work
+                </Link>
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import { publicDestination, publicPath, publicReferrer } from "@/lib/public-location";
 
 const Schema = z.object({
   cta: z.string().trim().min(1).max(64),
@@ -44,10 +45,10 @@ export const Route = createFileRoute("/api/public/cta-events")({
         const { error } = await supabase.from("cta_events").insert({
           cta: parsed.data.cta,
           section: parsed.data.section,
-          path: parsed.data.path,
-          href: parsed.data.href ?? null,
+          path: publicPath(parsed.data.path),
+          href: publicDestination(parsed.data.href),
           variant: parsed.data.variant ?? null,
-          referrer: parsed.data.referrer ?? null,
+          referrer: publicReferrer(parsed.data.referrer ?? "") || null,
           user_agent: userAgent,
         });
         if (error) {

@@ -2,9 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
+import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead, buildServiceJsonLd } from "@/components/cyryx/seo/seo";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
+import { trackCta } from "@/lib/track-cta";
+
+const START_HREF = buildStartProjectHref({ source: "solutions", intent: "managed-operations" });
 
 const PATH = "/managed-operations";
 const TITLE = "Managed Operations — Cyryx Labs";
@@ -63,36 +67,39 @@ function ManagedOperationsPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content">
-        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
-          <div className="mx-auto max-w-7xl">
-            <HudLabel withDot>Operate / Engagement-specific</HudLabel>
-            <div className="mt-8 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-end lg:gap-24">
-              <h1 className="max-w-[11ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-[var(--silver)] sm:text-6xl lg:text-8xl">
-                Keep the system useful after launch.
-              </h1>
-              <div className="lg:pb-2">
-                <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
-                  Cyryx can monitor, maintain, optimize, and evolve selected systems when continuing
-                  operational responsibility is part of the engagement. Coverage is never assumed:
-                  systems, owners, response expectations, exclusions, and transition are defined in
-                  writing.
-                </p>
-                <a
-                  href={START_PROJECT_HREF}
-                  className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
-                >
-                  Discuss managed coverage <ArrowRight className="h-4 w-4" aria-hidden />
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <InternalHero
+          eyebrow="Operate · Engagement-specific responsibility"
+          title="Keep the system useful after launch."
+          body="Cyryx can monitor, maintain, optimize, and evolve selected systems when continuing operational responsibility is part of the engagement."
+          primaryCta={{
+            label: "Discuss managed coverage",
+            to: START_HREF,
+            onClick: () =>
+              trackCta({ cta: "start_project", section: "solutions", href: START_HREF }),
+          }}
+          secondaryCta={{ label: "Review the lifecycle", to: "/engagement-model" }}
+          boundaryNote="Coverage is never assumed: systems, owners, response expectations, exclusions, and transition are defined in writing."
+          lifecycleLabel="Managed operating lifecycle"
+          lifecycle={[
+            { number: "01", label: "Monitor", active: true },
+            { number: "02", label: "Maintain" },
+            { number: "03", label: "Optimize" },
+            { number: "04", label: "Transition" },
+          ]}
+          nextChapter={{
+            title: "The operating layer.",
+            body: "Launch is a handoff point, not the end of the system. Control must continue through its real operating life.",
+          }}
+        />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
           <HudLabel>What can be operated</HudLabel>
           <div className="mt-10 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 lg:grid-cols-3">
             {OPERATING_AREAS.map(([title, body], index) => (
-              <article key={title} className="min-h-80 bg-[var(--obsidian)] p-8 sm:p-10">
+              <article
+                key={title}
+                className="cx-material-panel min-h-80 border border-transparent p-8 sm:p-10"
+              >
                 <span className="font-mono text-[9px] text-[var(--accent-glow)]">
                   {String(index + 1).padStart(2, "0")}
                 </span>

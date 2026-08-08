@@ -18,25 +18,6 @@ const EVIDENCE = [
   },
 ] as const;
 
-const EXECUTIVE_OUTCOMES = [
-  {
-    title: "Reduce operational risk",
-    body: "Bound consequential AI actions before they reach production.",
-  },
-  {
-    title: "Control spend before scale",
-    body: "Connect workload cost to business value and operating ownership.",
-  },
-  {
-    title: "Create decision evidence",
-    body: "Know what happened, who approved it, and why.",
-  },
-  {
-    title: "Move beyond pilots",
-    body: "Establish acceptance criteria, accountability, and an operating path.",
-  },
-] as const;
-
 export function ExecutionGap() {
   return (
     <section
@@ -112,44 +93,9 @@ export function ExecutionGap() {
             Cyryx thesis
           </span>
           <p className="max-w-4xl font-display text-2xl font-medium leading-snug tracking-[-0.025em] text-[var(--silver)] sm:text-3xl">
-            The model is not the operating system.
+            A capable model is not yet an operating capability. The missing layer is controlled
+            execution.
           </p>
-        </div>
-
-        <div className="cx-reveal mt-8 overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_78%,transparent)] sm:mt-12">
-          <div className="grid border-b border-white/10 px-6 py-7 sm:px-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-16 lg:px-10 lg:py-9">
-            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--accent-glow)]">
-              Why Cyryx now
-            </span>
-            <h3
-              id="executive-outcomes-heading"
-              className="mt-4 max-w-[24ch] font-display text-2xl font-medium leading-tight tracking-[-0.03em] text-[var(--silver)] sm:text-3xl lg:mt-0"
-            >
-              Turn AI investment into controlled operating capability.
-            </h3>
-          </div>
-
-          <div
-            aria-labelledby="executive-outcomes-heading"
-            className="cx-stagger grid sm:grid-cols-2 lg:grid-cols-4"
-          >
-            {EXECUTIVE_OUTCOMES.map((outcome, index) => (
-              <article
-                key={outcome.title}
-                className="cx-stagger-item border-t border-white/10 p-6 first:border-t-0 sm:p-7 sm:[&:nth-child(2)]:border-t-0 lg:border-l lg:border-t-0 lg:first:border-l-0"
-              >
-                <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h4 className="mt-5 font-display text-xl font-medium tracking-[-0.025em] text-[var(--silver)]">
-                  {outcome.title}
-                </h4>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                  {outcome.body}
-                </p>
-              </article>
-            ))}
-          </div>
         </div>
       </div>
     </section>

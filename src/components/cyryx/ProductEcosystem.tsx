@@ -5,10 +5,9 @@ import architectureImg from "@/assets/cyryx-macbook-ide.jpg";
 const PRODUCTS = [
   {
     name: "MAAX Studio",
-    status: "Flagship Product",
+    status: "Active Development",
     statusTone: "accent" as const,
-    copy:
-      "A native agentic command workbench for governed software execution. Built for founders, builders, agencies, and product teams — coordinating software work through missions, operators, memory, gates, evidence, and human-governed delivery.",
+    copy: "A native agentic command workbench for governed software execution. Built for founders, builders, agencies, and product teams — coordinating software work through missions, operators, memory, gates, evidence, and human-governed delivery.",
     cta: "Explore MAAX Studio",
     href: "/products/maax-studio",
   },
@@ -16,8 +15,7 @@ const PRODUCTS = [
     name: "Cyryx Applied AI Lab",
     status: "Research & Development",
     statusTone: "accent" as const,
-    copy:
-      "The applied R&D layer behind every Cyryx system. Cyryx Applied AI Lab develops the protocols, architectures, evaluation methods, and execution patterns behind our products and client solutions.",
+    copy: "The applied R&D layer behind every Cyryx system. Cyryx Applied AI Lab develops the protocols, architectures, evaluation methods, and execution patterns behind our products and client solutions.",
     cta: "Explore the Lab",
     href: "/research",
   },
@@ -26,7 +24,10 @@ const PRODUCTS = [
 export function ProductEcosystem() {
   return (
     <section id="product-ecosystem" className="relative py-14 sm:py-20 lg:py-32 bg-[var(--onyx)]">
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] to-transparent" />
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--accent-glow)_30%,transparent)] to-transparent"
+      />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="max-w-3xl cx-reveal">
@@ -35,13 +36,11 @@ export function ProductEcosystem() {
             A technology company built around AI execution.
           </h2>
           <p className="mt-5 text-[15px] sm:text-base text-[var(--silver-dim)] max-w-2xl">
-            Cyryx Labs combines proprietary product development, applied AI
-            research, and real-world implementation capability. Our flagship
-            product, MAAX Studio, is being built as a native agentic command
-            workbench for AI-native software execution. Through Cyryx Solutions,
-            we help businesses implement practical AI systems today. Through
-            the Applied AI Lab, we turn research and architecture into reusable
-            systems.
+            Cyryx Labs combines proprietary product development, applied AI research, and
+            implementation capability. MAAX Studio is being built as a native agentic command
+            workbench for AI-native software execution. Through Cyryx Solutions, we help businesses
+            implement practical AI systems today. Through the Applied AI Lab, we turn research and
+            architecture into reusable systems.
           </p>
         </div>
 
@@ -63,10 +62,26 @@ export function ProductEcosystem() {
               />
               {/* Region labels — positioned over the laptop screen area, sm+ only */}
               {[
-                { label: "Explorer", title: "File explorer — runtime, agents, gates, evals", pos: "left-[24%] top-[20%]" },
-                { label: "Editor + Tabs", title: "Multi-tab editor with syntax highlighting and minimap", pos: "left-[40%] top-[20%]" },
-                { label: "Execution Graph", title: "Agentic step graph with governance gates", pos: "left-[58%] top-[20%]" },
-                { label: "Eval Terminal", title: "Terminal / problems / evaluation: tokens, latency and cost", pos: "left-[40%] top-[54%]" },
+                {
+                  label: "Explorer",
+                  title: "File explorer — runtime, agents, gates, evals",
+                  pos: "left-[24%] top-[20%]",
+                },
+                {
+                  label: "Editor + Tabs",
+                  title: "Multi-tab editor with syntax highlighting and minimap",
+                  pos: "left-[40%] top-[20%]",
+                },
+                {
+                  label: "Execution Graph",
+                  title: "Agentic step graph with governance gates",
+                  pos: "left-[58%] top-[20%]",
+                },
+                {
+                  label: "Eval Terminal",
+                  title: "Terminal / problems / evaluation: tokens, latency and cost",
+                  pos: "left-[40%] top-[54%]",
+                },
               ].map((r) => (
                 <span
                   key={r.label}
@@ -74,17 +89,29 @@ export function ProductEcosystem() {
                   aria-label={r.title}
                   className={`hidden sm:inline-flex absolute ${r.pos} items-center gap-1.5 rounded-sm border border-[color-mix(in_oklab,var(--accent-glow)_40%,transparent)] bg-[color-mix(in_oklab,var(--onyx)_75%,transparent)] px-2 py-1 backdrop-blur-sm hud-label text-[10px] text-[var(--accent-glow)] shadow-[0_0_12px_color-mix(in_oklab,var(--accent-glow)_25%,transparent)] transition-opacity duration-300 opacity-70 hover:opacity-100`}
                 >
-                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_6px_var(--accent-glow)]" />
+                  <span
+                    aria-hidden
+                    className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_6px_var(--accent-glow)]"
+                  />
                   {r.label}
                 </span>
               ))}
             </div>
           </div>
           <figcaption className="mt-3 grid gap-1 text-[11px] text-[var(--silver-dim)] sm:hidden">
-            <span><span className="text-[var(--accent-glow)]">Explorer</span> · Files, agents, and gates</span>
-            <span><span className="text-[var(--accent-glow)]">Editor</span> · Tabs and minimap</span>
-            <span><span className="text-[var(--accent-glow)]">Execution Graph</span> · Quality gates</span>
-            <span><span className="text-[var(--accent-glow)]">Eval Terminal</span> · Tokens, latency, and cost</span>
+            <span>
+              <span className="text-[var(--accent-glow)]">Explorer</span> · Files, agents, and gates
+            </span>
+            <span>
+              <span className="text-[var(--accent-glow)]">Editor</span> · Tabs and minimap
+            </span>
+            <span>
+              <span className="text-[var(--accent-glow)]">Execution Graph</span> · Quality gates
+            </span>
+            <span>
+              <span className="text-[var(--accent-glow)]">Eval Terminal</span> · Tokens, latency,
+              and cost
+            </span>
           </figcaption>
         </figure>
 

@@ -9,7 +9,12 @@ const webkitMobileLayoutSpec = /webkit-mobile-layout\.spec\.ts/;
 
 export default defineConfig({
   testDir: "./tests/accessibility",
+  globalSetup: "./tests/support/vite-client-ready.ts",
   outputDir: "test-results/a11y",
+  // The TanStack/Vite development server can miss or re-register virtual
+  // client modules when this heavy browser matrix saturates the host. Keep CI
+  // concurrent, but below the point where dev-server hydration becomes flaky.
+  workers: process.env.CI ? 4 : undefined,
   reporter: process.env.CI
     ? [["list"], ["html", { outputFolder: "playwright-report/a11y", open: "never" }]]
     : "list",

@@ -2,14 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
+import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref } from "@/lib/cta";
+import { trackCta } from "@/lib/track-cta";
 
 const PATH = "/engagement-model";
 const TITLE = "How We Work — Cyryx Labs";
 const DESC =
-  "The Cyryx engagement lifecycle: discover the business problem, design the system, build, validate, launch, transfer, and optionally operate under defined terms.";
+  "The Cyryx engagement lifecycle: discover the problem, design the system, build, validate, launch, transfer, and optionally operate under defined terms.";
 
 const STEPS = [
   [
@@ -56,25 +58,38 @@ export const Route = createFileRoute("/engagement-model")({
 });
 
 function EngagementModelPage() {
+  const startHref = buildStartProjectHref({
+    source: "engagement-model",
+    intent: "operating-capability",
+  });
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content">
-        <section className="border-b border-white/10 px-5 pb-24 pt-32 sm:px-8 lg:pb-32 lg:pt-44">
-          <div className="mx-auto max-w-7xl">
-            <HudLabel withDot>How We Work</HudLabel>
-            <div className="mt-8 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-end lg:gap-24">
-              <h1 className="max-w-[11ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-[var(--silver)] sm:text-6xl lg:text-8xl">
-                Decisions first. Evidence throughout. Ownership at launch.
-              </h1>
-              <p className="max-w-2xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl lg:pb-2">
-                Every engagement is shaped around the actual problem and authority of the system.
-                Scope, commercial terms, ownership, licensing, support, acceptance, and operational
-                responsibility are defined in writing for that engagement.
-              </p>
-            </div>
-          </div>
-        </section>
+        <InternalHero
+          eyebrow="How we work · Controlled delivery"
+          title="Decisions first. Evidence throughout. Ownership at launch."
+          body="Every engagement is shaped around the actual problem, authority, and operating life of the system."
+          primaryCta={{
+            label: "Start a fit review",
+            to: startHref,
+            onClick: () =>
+              trackCta({ cta: "start_project", section: "solutions", href: startHref }),
+          }}
+          secondaryCta={{ label: "Explore capabilities", to: "/solutions" }}
+          boundaryNote="Scope, commercial terms, ownership, licensing, support, acceptance, and operational responsibility are defined in writing for each engagement."
+          lifecycleLabel="Delivery lifecycle"
+          lifecycle={[
+            { number: "01", label: "Discover", active: true },
+            { number: "02", label: "Design" },
+            { number: "03", label: "Build" },
+            { number: "04", label: "Validate" },
+          ]}
+          nextChapter={{
+            title: "A controlled delivery lifecycle.",
+            body: "Each stage turns ambiguity into written decisions, testable evidence, and explicit ownership.",
+          }}
+        />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
           <ol className="relative">
@@ -142,10 +157,10 @@ function EngagementModelPage() {
           </h2>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <a
-              href={START_PROJECT_HREF}
+              href={startHref}
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
             >
-              Start a project <ArrowRight className="h-4 w-4" aria-hidden />
+              Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
             <Link
               to="/solutions"

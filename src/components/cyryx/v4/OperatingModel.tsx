@@ -1,30 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { HudLabel } from "../primitives/HudLabel";
-
-const STAGES = [
-  {
-    n: "01",
-    name: "Decide",
-    promise: "Qualify the opportunity before committing capital.",
-    receives: ["Opportunity assessment", "Architecture direction", "Prioritized roadmap"],
-    href: "/solutions/ai-strategy-advisory",
-  },
-  {
-    n: "02",
-    name: "Build",
-    promise: "Engineer the capability around real workflows and controls.",
-    receives: ["Working system", "Acceptance evidence", "Operational documentation"],
-    href: "/solutions",
-  },
-  {
-    n: "03",
-    name: "Operate",
-    promise: "Maintain defined systems under explicit responsibilities.",
-    receives: ["Defined coverage", "Review cadence", "Transition path"],
-    href: "/managed-operations",
-  },
-] as const;
+import { OPERATING_LIFECYCLE, TRANSVERSAL_CAPABILITIES } from "@/data/site-taxonomy";
 
 export function OperatingModel() {
   return (
@@ -32,34 +9,35 @@ export function OperatingModel() {
       id="operating-model"
       aria-labelledby="operating-model-heading"
       data-story-section
-      className="relative bg-[var(--graphite)] py-12 sm:py-24 lg:py-28"
+      className="relative bg-[var(--graphite)] py-10 sm:py-24 lg:py-28"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end lg:gap-20">
           <div>
-            <HudLabel withDot>How Cyryx works</HudLabel>
+            <HudLabel withDot>Choose the right entry point</HudLabel>
             <h2
               id="operating-model-heading"
-              className="mt-7 max-w-[12ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl"
+              className="mt-5 max-w-[12ch] font-display text-3xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:mt-7 sm:text-5xl lg:text-7xl"
             >
-              One operating model from decision to operation.
+              Advise. Build. Control. Operate.
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg lg:pb-2">
-            Engage Cyryx to qualify the opportunity, engineer the system, and establish the
-            operating path after launch.
+            Engage Advise, Build, Control, or Operate as a focused capability, or connect stages
+            into a larger program. Products and Applied Research remain separate from client
+            delivery and inform the work without becoming extra phases.
           </p>
         </div>
 
-        <ol className="cx-stagger relative mt-10 grid gap-8 sm:mt-16 sm:gap-10 lg:grid-cols-3 lg:gap-0">
+        <ol className="cx-stagger relative mt-8 grid gap-6 sm:mt-16 sm:gap-10 lg:grid-cols-4 lg:gap-0">
           <div
             aria-hidden
             className="absolute left-0 right-0 top-4 hidden h-px bg-[color-mix(in_oklab,var(--silver)_18%,transparent)] lg:block"
           />
-          {STAGES.map((stage) => (
+          {OPERATING_LIFECYCLE.map((stage) => (
             <li
               key={stage.name}
-              className="cx-stagger-item relative flex flex-col border-l border-[color-mix(in_oklab,var(--silver)_18%,transparent)] pl-6 lg:min-h-[25rem] lg:border-l-0 lg:border-r lg:px-8 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
+              className="cx-stagger-item relative flex flex-col border-l border-[color-mix(in_oklab,var(--silver)_18%,transparent)] pl-5 sm:pl-6 lg:min-h-[27rem] lg:border-l-0 lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
             >
               <div className="relative z-10 flex items-center gap-4">
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--accent-glow)] bg-[var(--graphite)] font-mono text-[9px] text-[var(--accent-glow)]">
@@ -69,14 +47,14 @@ export function OperatingModel() {
                   {stage.name}
                 </span>
               </div>
-              <h3 className="mt-8 max-w-[14ch] font-display text-3xl font-medium leading-[1.02] tracking-[-0.035em] text-[var(--silver)] sm:mt-10">
+              <h3 className="mt-5 max-w-[16ch] font-display text-2xl font-medium leading-[1.02] tracking-[-0.035em] text-[var(--silver)] sm:mt-10 sm:max-w-[14ch] sm:text-3xl">
                 {stage.promise}
               </h3>
-              <div className="mt-6 border-t border-[color-mix(in_oklab,var(--silver)_12%,transparent)] pt-5 sm:mt-8 sm:pt-6">
+              <div className="mt-4 border-t border-[color-mix(in_oklab,var(--silver)_12%,transparent)] pt-4 sm:mt-8 sm:pt-6">
                 <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--steel)]">
                   What the client receives
                 </p>
-                <ul className="mt-4 space-y-2 text-sm text-[var(--silver-dim)]">
+                <ul className="mt-3 space-y-1.5 text-sm text-[var(--silver-dim)] sm:mt-4 sm:space-y-2">
                   {stage.receives.map((item) => (
                     <li key={item} className="flex gap-3">
                       <span aria-hidden className="text-[var(--accent-glow)]">
@@ -89,25 +67,50 @@ export function OperatingModel() {
               </div>
               <Link
                 to={stage.href}
-                className="mt-auto inline-flex min-h-11 items-center gap-2 pt-8 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+                className="mt-auto inline-flex min-h-11 items-center gap-2 pt-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)] sm:pt-8"
               >
-                Explore {stage.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                {stage.cta} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
               </Link>
             </li>
           ))}
         </ol>
-        <div className="cx-reveal mt-8 flex flex-wrap gap-5 border-t border-white/10 pt-7 sm:mt-10 sm:gap-6 sm:pt-8">
-          <Link
-            to="/engagement-model"
-            className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--accent-glow)]"
-          >
-            Explore the engagement model <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-          </Link>
+        <aside
+          aria-label="Capabilities that inform every lifecycle stage"
+          className="cx-reveal mt-8 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:mt-10 sm:grid-cols-2"
+        >
+          {TRANSVERSAL_CAPABILITIES.map((capability) => (
+            <Link
+              key={capability.name}
+              to={capability.href}
+              className="group bg-[var(--obsidian)] p-5 transition-colors hover:bg-[var(--charcoal)] sm:p-7"
+            >
+              <p className="hidden font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--accent-glow)] sm:block">
+                Informs every lifecycle stage
+              </p>
+              <h3 className="font-display text-xl tracking-[-0.03em] text-[var(--silver)] sm:mt-4 sm:text-2xl">
+                {capability.name}
+              </h3>
+              <p className="mt-3 hidden max-w-xl text-sm leading-relaxed text-[var(--silver-dim)] sm:block">
+                {capability.description}
+              </p>
+              <span className="mt-2 inline-flex min-h-11 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--silver)] transition group-hover:text-[var(--accent-glow)] sm:mt-5 sm:min-h-0">
+                Explore {capability.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              </span>
+            </Link>
+          ))}
+        </aside>
+        <div className="cx-reveal mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-5 sm:mt-10 sm:gap-6 sm:pt-8">
           <Link
             to="/solutions"
+            className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--accent-glow)]"
+          >
+            Find the right entry point <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+          </Link>
+          <Link
+            to="/engagement-model"
             className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver-dim)] transition-colors hover:text-[var(--silver)]"
           >
-            Explore capabilities <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+            See how engagements run <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
         </div>
       </div>

@@ -69,7 +69,10 @@ export async function enqueueInternalEmail(opts: {
       .insert({ email: recipient, token: unsubscribeToken });
   }
 
-  const element = React.createElement(template.component, {
+  const TemplateComponent = template.component as unknown as React.ComponentType<
+    Record<string, unknown>
+  >;
+  const element = React.createElement(TemplateComponent, {
     ...data,
     unsubscribeUrl: unsubscribeToken
       ? `https://cyryxlabs.com/unsubscribe?token=${unsubscribeToken}`

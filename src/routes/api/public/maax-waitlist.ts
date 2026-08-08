@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
-import { MaaxWaitlistSchema } from "@/lib/maax-waitlist.schema";
+import { isSuccessfulMaaxWaitlistRpcResult, MaaxWaitlistSchema } from "@/lib/maax-waitlist.schema";
 import { clientIpHash, userAgentHash } from "@/lib/security/request.server";
 
 const RESPONSE_HEADERS = {
@@ -35,6 +35,11 @@ export const Route = createFileRoute("/api/public/maax-waitlist")({
           );
         }
 
+        // Honeypot submissions receive the generic success response without persistence.
+        if (parsed.data.website) {
+          return json({ ok: true, message: "Your request has been received." }, 200);
+        }
+
         const elapsed = Date.now() - parsed.data.formStartedAt;
         if (elapsed < 1_500 || elapsed > 24 * 60 * 60 * 1_000) {
           return json({ ok: false, message: "Please reload the page and try again." }, 400);
@@ -50,12 +55,16 @@ export const Route = createFileRoute("/api/public/maax-waitlist")({
           auth: { persistSession: false, autoRefreshToken: false },
         });
 
-        const { data, error } = await supabase.rpc("join_maax_waitlist", {
+        const { data, error } = await supabase.rpc("join_maax_waitlist_v2", {
           p_full_name: parsed.data.fullName,
           p_email: parsed.data.email,
-          p_phone: parsed.data.phone,
+          p_company: parsed.data.company,
+          p_role: parsed.data.role,
+          p_use_case: parsed.data.useCase,
+          p_operating_constraint: parsed.data.operatingConstraint,
           p_country: parsed.data.country,
           p_consent_version: parsed.data.consentVersion,
+          p_phone: parsed.data.phone ?? null,
           p_source: parsed.data.source,
           p_landing_path: parsed.data.landingPath,
           p_referrer: parsed.data.referrer || null,
@@ -70,7 +79,10 @@ export const Route = createFileRoute("/api/public/maax-waitlist")({
 
         if (error) {
           const rateLimited = /rate_limited/i.test(error.message);
-          console.error("[maax-waitlist] submission failed", rateLimited ? "rate_limited" : error.code);
+          console.error(
+            "[maax-waitlist] submission failed",
+            rateLimited ? "rate_limited" : error.code,
+          );
           return json(
             {
               ok: false,
@@ -82,13 +94,15 @@ export const Route = createFileRoute("/api/public/maax-waitlist")({
           );
         }
 
-        return json(
-          {
-            ok: data?.ok === true,
-            message: "You are on the MAAX Studio early-access list.",
-          },
-          200,
-        );
+        if (!isSuccessfulMaaxWaitlistRpcResult(data)) {
+          console.error("[maax-waitlist] RPC returned an unsuccessful result");
+          return json(
+            { ok: false, message: "We could not save your request. Please try again." },
+            500,
+          );
+        }
+
+        return json({ ok: true, message: "Early-access request received for review." }, 200);
       },
     },
   },

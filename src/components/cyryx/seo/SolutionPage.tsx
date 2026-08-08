@@ -2,10 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, ChevronRight } from "lucide-react";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
+import { InternalHero } from "../InternalHero";
 import { HudLabel } from "../primitives/HudLabel";
 import { GlassPanel } from "../primitives/GlassPanel";
-import { START_PROJECT_HREF } from "@/lib/cta";
+import { buildStartProjectHref, type StartContextIntent } from "@/lib/cta";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
+import { trackCta } from "@/lib/track-cta";
 
 export interface DeliverablePhase {
   phase: string;
@@ -30,6 +32,7 @@ export interface FaqItem {
 }
 
 export interface SolutionPageProps {
+  startIntent: StartContextIntent;
   eyebrow: string;
   title: string;
   directAnswer: string;
@@ -51,42 +54,39 @@ export interface SolutionPageProps {
 
 export function SolutionPage(p: SolutionPageProps) {
   useCyryxScrollAnimations();
+  const startHref = buildStartProjectHref({ source: "solutions", intent: p.startIntent });
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" tabIndex={-1} className="relative focus:outline-none">
-        <section className="mx-auto max-w-7xl px-5 pb-24 pt-32 sm:px-8 lg:px-12 lg:pb-32 lg:pt-44">
-          <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="hover:text-[var(--accent-glow)]">
-              Home
-            </Link>
-            <span className="mx-2 opacity-60">/</span>
-            <Link to="/solutions" className="hover:text-[var(--accent-glow)]">
-              Solutions
-            </Link>
-            <span className="mx-2 opacity-60">/</span>
-            <span aria-current="page" className="text-[var(--silver)]">
-              {p.eyebrow}
-            </span>
-          </nav>
+        <InternalHero
+          eyebrow={`Solutions · ${p.eyebrow}`}
+          title={p.title}
+          body={p.directAnswer}
+          primaryCta={{
+            label: "Start a fit review",
+            to: startHref,
+            onClick: () =>
+              trackCta({ cta: "start_project", section: "solutions", href: startHref }),
+          }}
+          secondaryCta={{ label: "All solutions", to: "/solutions" }}
+          boundaryNote="The architecture, delivery scope, ownership, and operating responsibilities are defined against the real environment—not a predetermined tool."
+          lifecycleLabel="Solution lifecycle"
+          lifecycle={[
+            { number: "01", label: "Problem", active: true },
+            { number: "02", label: "System" },
+            { number: "03", label: "Evidence" },
+            { number: "04", label: "Operate" },
+          ]}
+          nextChapter={{
+            title: "Start with the operating problem.",
+            body: "The capability is shaped around the environment, the authority to act, and the evidence needed to own the result.",
+          }}
+        />
 
-          <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
-            {p.eyebrow}
-          </HudLabel>
-
-          <div className="mt-6 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-20">
-            <h1 className="max-w-[12ch] font-display text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-silver-gradient sm:text-6xl lg:text-8xl">
-              {p.title}
-            </h1>
-            <div className="border-l border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] pl-6 lg:mb-2">
-              <p className="text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-                {p.directAnswer}
-              </p>
-            </div>
-          </div>
-
-          <div className="mx-auto mt-20 grid max-w-7xl gap-x-16 gap-y-14 lg:mt-28 lg:grid-cols-2 lg:gap-y-20">
+        <section className="mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-8 sm:pt-24 lg:px-12 lg:pb-32 lg:pt-28">
+          <div className="mx-auto grid max-w-7xl gap-x-16 gap-y-14 lg:grid-cols-2 lg:gap-y-20">
             <Sec heading="What this is">
               <p className="mt-4 text-base leading-relaxed text-[var(--silver-dim)]">
                 {p.whatItIs}
@@ -133,7 +133,7 @@ export function SolutionPage(p: SolutionPageProps) {
               <Sec heading="Reference architecture" wide>
                 <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {p.architecture.map((layer) => (
-                    <GlassPanel key={layer.name} className="p-5">
+                    <GlassPanel key={layer.name} className="cx-material-panel p-5">
                       <div className="text-xs uppercase tracking-[0.14em] text-[var(--accent-glow)]">
                         {layer.name}
                       </div>
@@ -150,10 +150,7 @@ export function SolutionPage(p: SolutionPageProps) {
               <Sec heading="Engagement phases and deliverables" wide>
                 <ol className="mt-6 grid gap-4 lg:grid-cols-2">
                   {p.deliverables.map((d, i) => (
-                    <li
-                      key={i}
-                      className="rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_45%,transparent)] p-5"
-                    >
+                    <li key={i} className="cx-material-panel rounded-md border p-5">
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         <div className="hud-label text-[var(--silver)]">
                           <span className="text-[var(--accent-glow)]">0{i + 1}</span> — {d.phase}
@@ -203,10 +200,7 @@ export function SolutionPage(p: SolutionPageProps) {
               <Sec heading="How we measure success">
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   {p.kpis.map((k, i) => (
-                    <div
-                      key={i}
-                      className="rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_45%,transparent)] p-4"
-                    >
+                    <div key={i} className="cx-material-panel rounded-md border p-4">
                       <div className="font-display text-sm font-semibold text-[var(--silver)]">
                         {k.metric}
                       </div>
@@ -235,7 +229,7 @@ export function SolutionPage(p: SolutionPageProps) {
 
             {p.faq && p.faq.length > 0 && (
               <Sec heading="Questions decision-makers ask us" wide>
-                <div className="mt-4 divide-y divide-[color-mix(in_oklab,var(--silver)_10%,transparent)] rounded-md border border-[color-mix(in_oklab,var(--silver)_10%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_40%,transparent)]">
+                <div className="cx-material-panel mt-4 divide-y divide-[color-mix(in_oklab,var(--silver)_10%,transparent)] rounded-md border">
                   {p.faq.map((f, i) => (
                     <details key={i} className="group p-5" open={i === 0}>
                       <summary className="cursor-pointer list-none rounded-sm text-sm font-medium text-[var(--silver)] hover:text-[var(--accent-glow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--onyx)]">
@@ -274,10 +268,10 @@ export function SolutionPage(p: SolutionPageProps) {
 
             <div className="flex flex-wrap gap-3 border-t border-white/10 pt-8 lg:col-span-2">
               <a
-                href={START_PROJECT_HREF}
+                href={startHref}
                 className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
               >
-                Start a project
+                Start a fit review
                 <span aria-hidden className="text-[var(--accent-glow)]">
                   →
                 </span>

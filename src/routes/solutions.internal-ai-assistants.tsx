@@ -49,6 +49,7 @@ export const Route = createFileRoute("/solutions/internal-ai-assistants")({
     ]),
   component: () => (
     <SolutionPage
+      startIntent="internal-assistant"
       eyebrow="Internal AI Assistants"
       title="Give teams intelligence inside the work they already own."
       directAnswer="Cyryx designs internal assistants around defined jobs, approved context, role boundaries, and review. Instead of launching a generic chat surface, we start with the decisions and tasks where better access to intelligence can materially improve the operating day."

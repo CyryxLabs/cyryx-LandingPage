@@ -1,15 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
-import { z } from "zod";
-
-const Schema = z.object({
-  name: z.string().trim().min(1).max(100),
-  email: z.string().trim().email().max(255),
-  company: z.string().trim().max(120).optional().default(""),
-  message: z.string().trim().min(10).max(2000),
-  consent: z.literal(true),
-  website: z.string().max(0).optional().default(""), // honeypot
-});
+import {
+  CONTACT_CONSENT_VERSION,
+  FitReviewSchema,
+  formatFitReviewMessage,
+} from "@/lib/contact.schema";
 
 export const Route = createFileRoute("/api/public/contact")({
   server: {
@@ -21,10 +16,15 @@ export const Route = createFileRoute("/api/public/contact")({
         } catch {
           return Response.json({ error: "Invalid JSON" }, { status: 400 });
         }
-        const parsed = Schema.safeParse(body);
+        const parsed = FitReviewSchema.safeParse(body);
         if (!parsed.success) {
-          // Generic message — no field-level leakage to prevent probing.
-          return Response.json({ error: "Invalid submission" }, { status: 400 });
+          return Response.json(
+            {
+              error: "Check the highlighted fields and try again.",
+              issues: parsed.error.flatten().fieldErrors,
+            },
+            { status: 400 },
+          );
         }
         const data = parsed.data;
 
@@ -33,9 +33,7 @@ export const Route = createFileRoute("/api/public/contact")({
           return Response.json({ ok: true });
         }
 
-        const { clientIpHash, userAgentHash } = await import(
-          "@/lib/security/request.server"
-        );
+        const { clientIpHash, userAgentHash } = await import("@/lib/security/request.server");
         const ipHash = clientIpHash(request);
         const uaHash = userAgentHash(request);
         const url = process.env.SUPABASE_URL;
@@ -47,13 +45,15 @@ export const Route = createFileRoute("/api/public/contact")({
           auth: { persistSession: false, autoRefreshToken: false },
         });
         const normalizedEmail = data.email.toLowerCase();
-        const { error } = await supabase.rpc("submit_contact_public", {
+        const submittedAt = new Date().toISOString();
+        const message = formatFitReviewMessage(data);
+        const { data: submission, error } = await supabase.rpc("submit_contact_public", {
           p_name: data.name,
           p_email: normalizedEmail,
           p_company: data.company || "",
-          p_message: data.message,
+          p_message: message,
           p_interest: "project",
-          p_consent_version: "website-contact-v1-2026-07-23",
+          p_consent_version: CONTACT_CONSENT_VERSION,
           p_ip_hash: ipHash,
           p_user_agent_hash: uaHash,
         });
@@ -61,12 +61,43 @@ export const Route = createFileRoute("/api/public/contact")({
           const rateLimited = /rate_limited/i.test(error.message);
           console.error("[contact] RPC failed", rateLimited ? "rate_limited" : error.code);
           return Response.json(
-            { error: rateLimited ? "Too many submissions — please try again later." : "Could not save submission" },
+            {
+              error: rateLimited
+                ? "Too many submissions — please try again later."
+                : "Could not save submission",
+            },
             { status: rateLimited ? 429 : 500 },
           );
         }
 
-        return Response.json({ ok: true });
+        let confirmationQueued = false;
+        try {
+          const { enqueueFitReviewEmails } =
+            await import("@/lib/email/fit-review-notifications.server");
+          const submissionId =
+            submission &&
+            typeof submission === "object" &&
+            "id" in submission &&
+            typeof submission.id === "string"
+              ? submission.id
+              : crypto.randomUUID();
+          const delivery = await enqueueFitReviewEmails({
+            submissionId,
+            name: data.name,
+            email: normalizedEmail,
+            company: data.company,
+            message,
+            submittedAt,
+          });
+          confirmationQueued = delivery.confirmation === "queued";
+          if (delivery.notification !== "queued" || delivery.confirmation !== "queued") {
+            console.warn("[contact] fit-review email delivery incomplete", delivery);
+          }
+        } catch (emailError) {
+          console.error("[contact] optional fit-review email queue failed", emailError);
+        }
+
+        return Response.json({ ok: true, confirmationQueued });
       },
     },
   },

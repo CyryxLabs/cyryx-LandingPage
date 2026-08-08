@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests/cross-browser",
+  globalSetup: "./tests/support/vite-client-ready.ts",
   outputDir: "test-results/cross-browser",
   reporter: "line",
   timeout: 120_000,

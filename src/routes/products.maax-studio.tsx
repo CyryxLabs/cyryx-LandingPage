@@ -20,7 +20,7 @@ import maaxDevices1200 from "@/assets/cyryx-maax-devices-1200.webp";
 const PATH = "/products/maax-studio";
 const TITLE = "MAAX Studio — Build with Agents. Keep Humans in Command.";
 const DESC =
-  "Join the MAAX Studio early-access list. Turn agentic software work into governed missions with coordinated execution, review, and an operating record.";
+  "MAAX Studio is in active development as an agentic software execution environment for shared context, coordinated work, human review, and an operating record.";
 
 const OUTCOMES = [
   {
@@ -106,12 +106,11 @@ function MaaxStudioPage() {
     trackCta({ cta: "maax_waitlist_view", section: "maax_product" });
   }, []);
 
-  const openWaitlist = (surface: string) => {
+  const openWaitlist = () => {
     trackCta({
       cta: "request_maax_access",
       section: "maax_product",
       href: "#maax-waitlist-dialog",
-      metadata: { surface },
     });
     setWaitlistOpen(true);
   };
@@ -148,7 +147,7 @@ function MaaxStudioPage() {
 
             <div className="my-auto grid items-center gap-12 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
               <div>
-                <HudLabel withDot>Flagship product · Active development</HudLabel>
+                <HudLabel withDot>Cyryx product · Active development</HudLabel>
                 <img
                   src={maaxLogo}
                   alt="MAAX Studio"
@@ -165,16 +164,16 @@ function MaaxStudioPage() {
 
               <div className="border-l border-white/10 pl-6 sm:pl-9 lg:mt-24">
                 <p className="max-w-xl text-lg leading-relaxed text-[var(--silver-dim)] sm:text-xl">
-                  MAAX Studio turns agentic software work into governed missions — with shared
-                  context, coordinated execution, deliberate review, and an operating record.
+                  MAAX Studio is being built as an agentic software execution environment for shared
+                  context, coordinated work, deliberate review, and an operating record.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
-                    onClick={() => openWaitlist("maax_product_hero")}
+                    onClick={openWaitlist}
                     className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
                   >
-                    Join early access <ArrowRight className="h-4 w-4" aria-hidden />
+                    Request early-access review <ArrowRight className="h-4 w-4" aria-hidden />
                   </button>
                   <a
                     href="#product"
@@ -353,21 +352,21 @@ function MaaxStudioPage() {
                   Private early-access list
                 </p>
                 <h3 className="mt-5 max-w-md font-display text-4xl font-semibold leading-[1.02] tracking-[-0.04em] text-[var(--silver)]">
-                  Four fields. One focused next step.
+                  Share your team context and operating constraint.
                 </h3>
                 <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-[var(--silver-dim)]">
-                  Tell us where to reach you. The application opens in a secure window and takes
-                  less than a minute.
+                  Tell us about your role, intended use case, and current constraint. We use that
+                  context to review fit for a future access wave.
                 </p>
                 <button
                   type="button"
-                  onClick={() => openWaitlist("maax_product_early_access")}
+                  onClick={openWaitlist}
                   className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white sm:w-auto"
                 >
                   Open early-access form <ArrowRight className="h-4 w-4" aria-hidden />
                 </button>
                 <p className="mt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]">
-                  No application essay · Invitations open in waves
+                  No public launch date · Any access is limited and review-based
                 </p>
               </div>
             </div>
@@ -403,7 +402,7 @@ function MaaxStudioPage() {
             <div className="mt-10 text-center">
               <button
                 type="button"
-                onClick={() => openWaitlist("maax_product_faq")}
+                onClick={openWaitlist}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-[var(--accent-glow)] px-7 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
               >
                 Join the early-access list <ArrowRight className="h-4 w-4" aria-hidden />

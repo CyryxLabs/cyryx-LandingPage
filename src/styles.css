@@ -52,6 +52,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-onyx: var(--onyx);
   --color-graphite: var(--graphite);
+  --color-gunmetal: var(--gunmetal);
   --color-charcoal: var(--charcoal);
   --color-deep-space: var(--deep-space);
   --color-silver: var(--silver);
@@ -61,7 +62,7 @@
   --color-accent-glow: var(--accent-glow);
   --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --font-orbitron: "Space Grotesk", "Inter", system-ui, sans-serif;
 }
 
@@ -72,7 +73,8 @@
   --onyx: #050607;
   --obsidian: #0a0d0f;
   --graphite: #11161a;
-  --charcoal: #1b2227;
+  --gunmetal: #1b2227;
+  --charcoal: var(--gunmetal);
   --deep-space: #1b2227;
   --steel: #8c949e;
   --silver: #c7c9cc;
@@ -80,6 +82,41 @@
   --teal: #0f6b68;
   --emerald-accent: #0f6b68;
   --accent-glow: #19c7c0;
+
+  /* Structural material system: brushed steel is architecture, teal is signal. */
+  --material-steel-highlight: #b4b6b5;
+  --material-steel-mid: #64696b;
+  --material-steel-shadow: #202527;
+  --material-steel-edge: color-mix(in oklab, var(--silver) 28%, transparent);
+  --material-steel-edge-soft: color-mix(in oklab, var(--silver) 12%, transparent);
+  --material-steel-sheen: linear-gradient(
+    102deg,
+    transparent 0%,
+    color-mix(in oklab, var(--silver) 7%, transparent) 28%,
+    transparent 54%
+  );
+  --material-steel-brush: repeating-linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--silver) 2.5%, transparent) 0,
+    color-mix(in oklab, var(--silver) 2.5%, transparent) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  --material-panel-base: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--gunmetal) 68%, var(--onyx)) 0%,
+    color-mix(in oklab, var(--graphite) 74%, var(--onyx)) 58%,
+    var(--obsidian) 100%
+  );
+  --material-panel-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--silver) 9%, transparent),
+    inset 1px 0 0 color-mix(in oklab, var(--silver) 4%, transparent),
+    0 24px 60px -36px rgba(0, 0, 0, 0.92);
+
+  /* Governed typography exception: InternalHero H1 only. Body, UI, and all
+   * other display surfaces remain on the locked Space Grotesk / Inter stack. */
+  --font-editorial-hero:
+    "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
 
   /* Semantic tokens (dark only) */
   --background: var(--onyx);
@@ -178,6 +215,45 @@
     );
     --shadow-glow-teal: 0 0 48px -8px rgba(0, 230, 208, 0.35);
     --shadow-panel: 0 1px 0 0 rgba(199, 201, 204, 0.06) inset, 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+    --material-steel-edge: rgba(199, 201, 204, 0.28);
+    --material-steel-edge-soft: rgba(199, 201, 204, 0.12);
+    --material-steel-sheen: linear-gradient(
+      102deg,
+      transparent 0%,
+      rgba(199, 201, 204, 0.07) 28%,
+      transparent 54%
+    );
+    --material-steel-brush: repeating-linear-gradient(
+      90deg,
+      rgba(199, 201, 204, 0.025) 0,
+      rgba(199, 201, 204, 0.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+    --material-panel-base: linear-gradient(145deg, #171c1f 0%, #0d1113 58%, #0a0d0f 100%);
+    --material-panel-shadow:
+      inset 0 1px 0 rgba(199, 201, 204, 0.09), inset 1px 0 0 rgba(199, 201, 204, 0.04),
+      0 24px 60px -36px rgba(0, 0, 0, 0.92);
+  }
+
+  .cx-internal-chapter {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(32, 37, 39, 0.46),
+        transparent 15%,
+        transparent 85%,
+        rgba(32, 37, 39, 0.46)
+      ),
+      linear-gradient(180deg, var(--obsidian), var(--onyx));
+  }
+
+  .cx-material-panel::after {
+    background: linear-gradient(180deg, rgba(199, 201, 204, 0.04), transparent 24%);
+  }
+
+  .cx-material-panel-interactive:hover {
+    border-color: rgba(25, 199, 192, 0.34);
   }
 }
 
@@ -410,6 +486,215 @@ html.cx-low-perf .glass-panel {
 
 .cx-hero-scroll-track > span {
   box-shadow: 0 0 12px color-mix(in oklab, var(--accent-glow) 72%, transparent);
+}
+
+/* Internal-page Structural Aperture
+ * The edge material stays visible while a directional grade protects the
+ * reading field. This is intentionally architectural rather than luminous. */
+.cx-internal-hero::before,
+.cx-internal-hero::after {
+  position: absolute;
+  inset-block: 0;
+  z-index: -5;
+  width: clamp(0.75rem, 4vw, 1.125rem);
+  pointer-events: none;
+  content: "";
+  opacity: 0.78;
+}
+
+.cx-internal-hero::before {
+  left: 0;
+  border-right: 1px solid var(--material-steel-edge);
+  background:
+    var(--material-steel-sheen), var(--material-steel-brush),
+    linear-gradient(
+      90deg,
+      var(--material-steel-highlight),
+      var(--material-steel-mid) 44%,
+      var(--material-steel-shadow)
+    );
+}
+
+.cx-internal-hero::after {
+  right: 0;
+  border-left: 1px solid var(--material-steel-edge-soft);
+  background:
+    var(--material-steel-sheen), var(--material-steel-brush),
+    linear-gradient(
+      90deg,
+      var(--material-steel-shadow),
+      color-mix(in oklab, var(--material-steel-mid) 46%, var(--onyx))
+    );
+}
+
+.cx-internal-hero-media {
+  opacity: 0.64;
+  filter: saturate(0.68) contrast(1.14) brightness(0.9);
+  object-position: left center;
+  transform: scale(1.005);
+}
+
+.cx-internal-hero-grade {
+  background:
+    linear-gradient(180deg, rgba(5, 6, 7, 0.34) 0%, transparent 18%, transparent 72%, #050607 100%),
+    linear-gradient(
+      90deg,
+      rgba(5, 6, 7, 0.28) 0%,
+      rgba(5, 6, 7, 0.68) 18%,
+      rgba(5, 6, 7, 0.82) 52%,
+      rgba(5, 6, 7, 0.76) 76%,
+      rgba(5, 6, 7, 0.3) 100%
+    );
+}
+
+.cx-internal-hero-datum {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 47%,
+    var(--accent-glow) 47%,
+    var(--accent-glow) 53%,
+    transparent 53%,
+    transparent 100%
+  );
+  opacity: 0.62;
+}
+
+.cx-internal-chapter {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--material-steel-shadow) 46%, transparent),
+      transparent 15%,
+      transparent 85%,
+      color-mix(in oklab, var(--material-steel-shadow) 46%, transparent)
+    ),
+    linear-gradient(180deg, var(--obsidian), var(--onyx));
+  box-shadow: inset 0 1px 0 var(--material-steel-edge-soft);
+}
+
+.cx-internal-chapter::before,
+.cx-internal-chapter::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+  width: clamp(1rem, 7vw, 7rem);
+  content: "";
+  background: var(--material-steel-sheen), var(--material-steel-brush), var(--material-panel-base);
+  opacity: 0.72;
+}
+
+.cx-internal-chapter::before {
+  left: 0;
+  border-right: 1px solid var(--material-steel-edge-soft);
+}
+
+.cx-internal-chapter::after {
+  right: 0;
+  border-left: 1px solid var(--material-steel-edge-soft);
+  transform: scaleX(-1);
+}
+
+.cx-material-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-color: var(--material-steel-edge-soft);
+  background: var(--material-steel-sheen), var(--material-steel-brush), var(--material-panel-base);
+  box-shadow: var(--material-panel-shadow);
+}
+
+.cx-material-panel::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--silver) 4%, transparent),
+    transparent 24%
+  );
+}
+
+.cx-material-panel-interactive {
+  transition:
+    border-color 220ms ease,
+    background-color 220ms ease,
+    transform 220ms ease;
+}
+
+.cx-material-panel-interactive:hover {
+  border-color: color-mix(in oklab, var(--accent-glow) 34%, var(--material-steel-edge-soft));
+}
+
+@media (min-width: 640px) {
+  .cx-internal-hero::before,
+  .cx-internal-hero::after {
+    display: none;
+  }
+
+  .cx-internal-hero-media {
+    opacity: 0.68;
+    object-position: center;
+  }
+
+  .cx-internal-hero-grade {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 6, 7, 0.3) 0%,
+        transparent 16%,
+        transparent 74%,
+        #050607 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(5, 6, 7, 0.16) 0%,
+        rgba(5, 6, 7, 0.38) 12%,
+        rgba(5, 6, 7, 0.76) 26%,
+        rgba(5, 6, 7, 0.79) 68%,
+        rgba(5, 6, 7, 0.32) 84%,
+        rgba(5, 6, 7, 0.12) 100%
+      );
+  }
+}
+
+@media (min-width: 1024px) {
+  .cx-internal-hero-media {
+    opacity: 0.76;
+    filter: saturate(0.64) contrast(1.16) brightness(0.94);
+  }
+
+  .cx-internal-hero-grade {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 6, 7, 0.22) 0%,
+        transparent 15%,
+        transparent 78%,
+        #050607 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(5, 6, 7, 0.08) 0%,
+        rgba(5, 6, 7, 0.18) 9%,
+        rgba(5, 6, 7, 0.62) 15%,
+        rgba(5, 6, 7, 0.68) 66%,
+        rgba(5, 6, 7, 0.26) 78%,
+        rgba(5, 6, 7, 0.08) 100%
+      );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cx-material-panel-interactive {
+    transition: none;
+  }
 }
 
 @media (min-width: 1024px) {

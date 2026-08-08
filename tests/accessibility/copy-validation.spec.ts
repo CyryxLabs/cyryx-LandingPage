@@ -77,10 +77,10 @@ test("primary navigation uses the official mark and wordmark lockup", async ({ p
 
 test.describe("Hero — enterprise value proposition", () => {
   const APPROVED = {
-    headline: "The execution layer for enterprise AI.",
-    sub: "Cyryx Labs builds AI products and execution systems — governed agents, automated workflows, and operational infrastructure engineered for accountability, auditability, and cost control.",
-    ctaPrimary: "Start a project",
-    ctaSecondary: "MAAX Studio →",
+    headline: "From AI opportunity to operating capability.",
+    sub: "Cyryx Labs turns AI opportunities into controlled execution. Start with Advise, Build, Control, or Operate—or connect the capabilities through an evidence-led program.",
+    ctaPrimary: "Start a fit review",
+    ctaSecondary: "MAAX Studio",
   } as const;
 
   test("v3 hero copy matches the approved source of truth exactly", () => {
@@ -106,8 +106,8 @@ test.describe("Hero — enterprise value proposition", () => {
     await expect(hero).toBeVisible();
     await expect(page.locator("#hero-heading")).toHaveText(APPROVED.headline);
     await expect(hero).toContainText(APPROVED.sub);
-    const primary = hero.getByRole("link", { name: /Start a Project with Cyryx Labs/i });
-    await expect(primary).toHaveAttribute("href", "/start");
+    const primary = hero.getByRole("link", { name: /Start a fit review with Cyryx Labs/i });
+    await expect(primary).toHaveAttribute("href", "/start?source=home&intent=operating-capability");
     await expect(primary).toContainText(APPROVED.ctaPrimary);
     const secondary = hero.getByRole("link", { name: /Explore MAAX Studio/i });
     await expect(secondary).toHaveAttribute("href", "#maax");
@@ -138,27 +138,39 @@ test.describe("Hero — enterprise value proposition", () => {
     );
   });
 
-  test("homepage translates the execution thesis into executive outcomes", async ({ page }) => {
+  test("homepage connects cited execution risk directly to the Cyryx thesis", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const section = page.locator("#execution-gap");
 
-    await expect(section).toContainText("Turn AI investment into controlled operating capability.");
-    for (const outcome of [
-      "Reduce operational risk",
-      "Control spend before scale",
-      "Create decision evidence",
-      "Move beyond pilots",
-    ]) {
-      await expect(section).toContainText(outcome);
-    }
+    await expect(section).toContainText("The missing layer is controlled execution.");
+    await expect(section).toContainText("A capable model is not yet an operating capability.");
+    await expect(section.locator("article")).toHaveCount(2);
   });
 
   test("MAAX Studio is presented as a distinct Cyryx product program", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const section = page.locator("#maax");
 
-    await expect(section).toContainText("Cyryx Labs / Flagship product");
-    await expect(section).toContainText("Separate from client delivery");
-    await expect(section).toContainText("Active development");
+    await expect(section).toContainText("Cyryx Labs / Product in active development");
+    await expect(section).toContainText("not a client-delivery phase");
+    await expect(section).toContainText("Product direction");
+    await expect(section).toContainText("Conceptual · Active development");
+  });
+
+  test("homepage explains focused entry points and connected programs without merging product tracks", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const operatingModel = page.locator("#operating-model");
+
+    await expect(operatingModel).toContainText(
+      "Engage Advise, Build, Control, or Operate as a focused capability",
+    );
+    await expect(operatingModel).toContainText(
+      "Products and Applied Research remain separate from client delivery",
+    );
+    await expect(
+      operatingModel.getByRole("link", { name: "Find the right entry point" }),
+    ).toHaveAttribute("href", "/solutions");
   });
 });

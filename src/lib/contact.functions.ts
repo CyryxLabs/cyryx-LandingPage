@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { createClient } from "@supabase/supabase-js";
-import { ContactSchema, CONTACT_INTERESTS } from "./contact.schema";
+import { CONTACT_CONSENT_VERSION, ContactSchema, CONTACT_INTERESTS } from "./contact.schema";
 import { clientIpHash, userAgentHash } from "./security/request.server";
 export { ContactSchema } from "./contact.schema";
 export type { ContactInput } from "./contact.schema";
@@ -36,7 +36,7 @@ export const submitContact = createServerFn({ method: "POST" })
         p_company: data.company || "",
         p_message: messageWithIntent,
         p_interest: data.interest,
-        p_consent_version: "website-contact-v1-2026-07-23",
+        p_consent_version: CONTACT_CONSENT_VERSION,
         p_ip_hash: clientIpHash(request),
         p_user_agent_hash: userAgentHash(request),
       });
