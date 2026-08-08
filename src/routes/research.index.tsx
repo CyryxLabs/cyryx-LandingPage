@@ -103,6 +103,10 @@ function ResearchHub() {
             { number: "03", label: "Evidence" },
             { number: "04", label: "Limits" },
           ]}
+          nextChapter={{
+            title: "Evidence before presentation.",
+            body: "Published work begins with a precise question and keeps its method, limitations, and public record visible.",
+          }}
         />
 
         <section
@@ -127,7 +131,7 @@ function ResearchHub() {
               {PUBLICATIONS.map((publication) => (
                 <article
                   key={publication.id}
-                  className="group relative overflow-hidden rounded-xl border border-white/10 bg-[var(--graphite)] p-7 transition hover:border-[color-mix(in_oklab,var(--accent-glow)_42%,transparent)] sm:p-10"
+                  className="cx-material-panel cx-material-panel-interactive group relative overflow-hidden rounded-xl border p-7 sm:p-10"
                 >
                   <div
                     aria-hidden
@@ -198,7 +202,7 @@ function ResearchHub() {
               {AREAS.map(([title, body], index) => (
                 <article
                   key={title}
-                  className="cx-stagger-item min-h-64 bg-[var(--obsidian)] p-7 sm:p-8"
+                  className="cx-material-panel cx-stagger-item min-h-64 border border-transparent p-7 sm:p-8"
                 >
                   <span className="font-mono text-[9px] text-[var(--accent-glow)]">
                     0{index + 1}

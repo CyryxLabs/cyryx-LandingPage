@@ -375,21 +375,22 @@ The developer must replace this anticipated list with the exact final list. File
 
 ## Change Log
 
-| Date       | Version | Description                                                                          | Author          |
-| ---------- | ------- | ------------------------------------------------------------------------------------ | --------------- |
-| 2026-08-03 | 1.0     | Created implementation-ready story from the completed audit and official moodboard.  | Chronos (`@sm`) |
-| 2026-08-03 | 1.1.0   | Development started (yolo mode) — Status: Ready → InProgress.                        | Vulcan (`@dev`) |
-| 2026-08-03 | 1.2.0   | Implementation handoff with focused checks green and explicit QA rerun items.        | Vulcan (`@dev`) |
-| 2026-08-03 | 1.3.0   | QA gate FAIL; returned to InProgress for mandatory gate and persistence evidence.    | Argus (`@qa`)   |
-| 2026-08-03 | 1.4.0   | QA re-review: site/browser evidence cleared; FAIL retained for two release gates.    | Argus (`@qa`)   |
-| 2026-08-03 | 1.5.0   | Refined the homepage storytelling, hierarchy, and evidence-led decision flow.        | Vulcan (`@dev`) |
-| 2026-08-03 | 1.6.0   | Added fail-safe fit-review notification and sender-confirmation email queueing.      | Vulcan (`@dev`) |
-| 2026-08-04 | 1.7.0   | Applied the approved Structural Aperture hero system across internal page families.  | Vulcan (`@dev`) |
-| 2026-08-04 | 1.8.0   | Excluded generated Vercel output and captured the definitive full-lint baseline.     | Vulcan (`@dev`) |
-| 2026-08-04 | 1.9.0   | Reviewed and updated the intentional solution-page visual baseline.                  | Vulcan (`@dev`) |
-| 2026-08-04 | 2.0.0   | Superseded the first visual PASS after the user rejected its Option 3 fidelity.      | Vulcan (`@dev`) |
-| 2026-08-04 | 2.1.0   | Restored the approved serif, aperture, rail, outline CTA, and compact Solutions fit. | Vulcan (`@dev`) |
-| 2026-08-04 | 2.2.0   | Regenerated and re-ran the approved solution-page visual baseline.                   | Vulcan (`@dev`) |
+| Date       | Version | Description                                                                                                          | Author                     |
+| ---------- | ------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| 2026-08-03 | 1.0     | Created implementation-ready story from the completed audit and official moodboard.                                  | Chronos (`@sm`)            |
+| 2026-08-03 | 1.1.0   | Development started (yolo mode) — Status: Ready → InProgress.                                                        | Vulcan (`@dev`)            |
+| 2026-08-03 | 1.2.0   | Implementation handoff with focused checks green and explicit QA rerun items.                                        | Vulcan (`@dev`)            |
+| 2026-08-03 | 1.3.0   | QA gate FAIL; returned to InProgress for mandatory gate and persistence evidence.                                    | Argus (`@qa`)              |
+| 2026-08-03 | 1.4.0   | QA re-review: site/browser evidence cleared; FAIL retained for two release gates.                                    | Argus (`@qa`)              |
+| 2026-08-03 | 1.5.0   | Refined the homepage storytelling, hierarchy, and evidence-led decision flow.                                        | Vulcan (`@dev`)            |
+| 2026-08-03 | 1.6.0   | Added fail-safe fit-review notification and sender-confirmation email queueing.                                      | Vulcan (`@dev`)            |
+| 2026-08-04 | 1.7.0   | Applied the approved Structural Aperture hero system across internal page families.                                  | Vulcan (`@dev`)            |
+| 2026-08-04 | 1.8.0   | Excluded generated Vercel output and captured the definitive full-lint baseline.                                     | Vulcan (`@dev`)            |
+| 2026-08-04 | 1.9.0   | Reviewed and updated the intentional solution-page visual baseline.                                                  | Vulcan (`@dev`)            |
+| 2026-08-04 | 2.0.0   | Superseded the first visual PASS after the user rejected its Option 3 fidelity.                                      | Vulcan (`@dev`)            |
+| 2026-08-04 | 2.1.0   | Restored the approved serif, aperture, rail, outline CTA, and compact Solutions fit.                                 | Vulcan (`@dev`)            |
+| 2026-08-04 | 2.2.0   | Regenerated and re-ran the approved solution-page visual baseline.                                                   | Vulcan (`@dev`)            |
+| 2026-08-08 | 2.3.0   | Extended the approved internal system with governed brushed-steel material tokens and narrative chapter transitions. | Iris (`@ux-design-expert`) |
 
 ## Dev Agent Record
 
@@ -410,6 +411,7 @@ GPT-5.6
 - Self-critique evidence: `plan/self-critique-website-excellence.json` records Step 5.5 predictions, Step 6.5 fixes, and remaining QA risks.
 - Figma decision/audit board reference: <https://www.figma.com/design/Yvc1sj5JQDQNg5XacpksOs?node-id=4-3>. This is a production-homepage capture and executive recommendation board, not production artwork, a code dependency, or evidence of shipped capability.
 - IDS `SEARCH → ADAPT/CREATE`: the existing internal-page hero patterns, brand tokens, CTA tracking, TanStack links, and solution-page wrapper were reviewed before creating `InternalHero.tsx`. The first implementation over-adapted Option 3 and was correctly rejected by the user. The corrected implementation now treats the approved composition as the contract: a Cormorant Garamond H1-only exception, visible responsive Structural Aperture asset, restrained gunmetal/teal field, outlined primary CTA, vertical lifecycle rail, and evidence-safe page copy. `/solutions` alone uses a compact title scale to accommodate its longer sentence. Corrective comparison and production-style browser evidence are recorded in `design-qa.md`.
+- Iris brownfield workflow `audit → extract tokens → extend pattern → accessibility review`: the approved Structural Aperture asset was retained; the uniform dark grade was replaced with a directional reading-field grade; brushed-steel material tokens and reusable panel classes were added; and a shared, page-specific “Next chapter” transition was extended through every `InternalHero` consumer. Material panels were deliberately limited to decision/evidence surfaces to avoid decorative noise or a game/HUD aesthetic. Current screenshots and the explicit browser-harness limitation are recorded in `design-qa.md`.
 - Quality-gate diagnosis: `eslint.config.js` already ignored `.output` but not the generated `.vercel` build tree. Adding that generated-artifact boundary reduced the exact `npm run lint` execution from a five-minute timeout to a definitive 46.9-second result. The gate now reports 3,194 existing repository problems (3,167 errors and 27 warnings), predominantly Prettier debt in scripts, legacy routes, and tests; focused ESLint over the Structural Aperture change set remains green.
 
 ### Completion Notes List
@@ -430,6 +432,7 @@ GPT-5.6
 - The Vite/TanStack virtual client-entry race is handled by a shared Playwright global setup that warms the resolved client environment before browser workers begin; interactive tests also wait for the root hydration signal before acting on SSR controls. Full accessibility, cross-browser, visual-regression, and Lighthouse evidence is green in QA; the final focused storytelling command additionally passed 41/41 (39 copy/contrast/mobile-360 checks and 2 Safari-mobile layout/start checks) with no browser-console errors. Task 9 remains open because repository-wide lint completes with the documented 3,194 baseline findings and the migration/persistence boundary was not executed against a real Supabase target.
 - Internal overview, solution, managed-operations, engagement, product, research, company, career, and shared solution-detail pages now use one responsive Structural Aperture hero system. After the initial implementation failed the user's approved-reference fidelity check, the Company hero was corrected to the exact four-line editorial headline, governed Cormorant display face, visible aperture, outline CTA, and narrow vertical operating rail. `/solutions` received the compact title-scale variant and now fits in five lines at 1280 × 720. The production-style local build returned HTTP 200 and hydrated on `/company`, `/solutions`, and the contextual `/start` route; CTA navigation, form rendering, 390 × 844 mobile layout, menu body lock, and no-horizontal-overflow behavior were exercised. The corrected visual/runtime gate passed; the broader release blockers above remain unchanged.
 - The intentional `solution-workflow-automation` Windows desktop visual baseline was reviewed and regenerated again after the approved Option 3 fidelity correction; the focused snapshot passed on the clean rerun. The current production-style Node preview on port 4177 returned HTTP 200 and hydrated on `/company`, `/solutions`, and the contextual `/start` route; CTAs carried the expected context and the browser journeys were clean. The earlier Vercel Preview remains a historical pre-correction artifact, and production aliases were not changed.
+- The brushed-steel extension adds material architecture rather than more imagery, cards, or effects: edge steel is more legible, the center stays quiet for editorial copy, and selective dark-metal panels distinguish decision/evidence surfaces. Company, Solutions, Careers, Engagement Model, Managed Operations, Products, Research, and all eleven shared solution-detail pages now carry a page-specific narrative transition below the hero. Typecheck, 37 unit tests, focused ESLint, production build, and desktop/mobile visual reviews passed; the attempted extended Chromium route matrix was withheld from passing evidence after its local browser-launch timeout.
 
 ### Final File List
 

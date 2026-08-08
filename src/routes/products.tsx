@@ -68,6 +68,10 @@ function ProductsPage() {
             { number: "03", label: "Evidence" },
             { number: "04", label: "Release" },
           ]}
+          nextChapter={{
+            title: "One active product program.",
+            body: "MAAX Studio is where Cyryx explores governed software missions, project context, and controlled execution.",
+          }}
         />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
@@ -75,7 +79,7 @@ function ProductsPage() {
             {PRODUCTS.map((product) => (
               <article
                 key={product.name}
-                className="flex min-h-[38rem] flex-col bg-[var(--obsidian)] p-8 sm:p-12"
+                className="cx-material-panel flex min-h-[38rem] flex-col border p-8 sm:p-12"
               >
                 <div className="flex items-center justify-between gap-4">
                   <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">

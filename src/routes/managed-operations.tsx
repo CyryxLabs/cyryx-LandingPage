@@ -86,13 +86,20 @@ function ManagedOperationsPage() {
             { number: "03", label: "Optimize" },
             { number: "04", label: "Transition" },
           ]}
+          nextChapter={{
+            title: "The operating layer.",
+            body: "Launch is a handoff point, not the end of the system. Control must continue through its real operating life.",
+          }}
         />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
           <HudLabel>What can be operated</HudLabel>
           <div className="mt-10 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 lg:grid-cols-3">
             {OPERATING_AREAS.map(([title, body], index) => (
-              <article key={title} className="min-h-80 bg-[var(--obsidian)] p-8 sm:p-10">
+              <article
+                key={title}
+                className="cx-material-panel min-h-80 border border-transparent p-8 sm:p-10"
+              >
                 <span className="font-mono text-[9px] text-[var(--accent-glow)]">
                   {String(index + 1).padStart(2, "0")}
                 </span>

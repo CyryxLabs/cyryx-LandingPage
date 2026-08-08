@@ -116,6 +116,10 @@ function CompanyPage() {
             { number: "03", label: "Control" },
             { number: "04", label: "Operate" },
           ]}
+          nextChapter={{
+            title: "The execution gap.",
+            body: "Most organizations underestimate what it takes to operationalize AI. The gap is not the model; it is the system.",
+          }}
         />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">

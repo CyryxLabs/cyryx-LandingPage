@@ -105,6 +105,10 @@ function CareersPage() {
             { number: "03", label: "Evidence" },
             { number: "04", label: "Ownership" },
           ]}
+          nextChapter={{
+            title: "The standard comes before the headcount.",
+            body: "We begin with the quality of the work, the clarity of the judgment, and the responsibility to operate what we build.",
+          }}
         />
 
         <div className="mx-auto max-w-6xl px-5 pb-20 sm:px-8 lg:px-12">
@@ -258,7 +262,7 @@ function TalentNetworkForm() {
       <div
         role="status"
         tabIndex={-1}
-        className="border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_55%,transparent)] p-7 sm:p-9"
+        className="cx-material-panel border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] p-7 sm:p-9"
       >
         <CheckCircle2 className="h-8 w-8 text-[var(--accent-glow)]" aria-hidden />
         <h3 className="mt-5 font-display text-2xl text-[var(--silver)]">Introduction received.</h3>
@@ -278,11 +282,7 @@ function TalentNetworkForm() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      noValidate
-      className="border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_42%,transparent)] p-6 sm:p-9"
-    >
+    <form onSubmit={onSubmit} noValidate className="cx-material-panel border p-6 sm:p-9">
       <div aria-hidden="true" className="absolute -left-[10000px] h-0 w-0 overflow-hidden">
         <label htmlFor="talent-website">Website</label>
         <input id="talent-website" name="website" type="text" tabIndex={-1} autoComplete="off" />

@@ -153,6 +153,10 @@ function SolutionsHub() {
             { number: "03", label: "Control" },
             { number: "04", label: "Operate" },
           ]}
+          nextChapter={{
+            title: "Start with the operating need.",
+            body: "The right capability follows the constraint, the decision context, and the operating life of the system.",
+          }}
         />
 
         <section
@@ -179,7 +183,7 @@ function SolutionsHub() {
                 <Link
                   key={trigger.need}
                   to={trigger.href}
-                  className="group flex min-h-48 flex-col bg-[var(--graphite)] p-5 transition-colors hover:bg-[var(--charcoal)] sm:p-6"
+                  className="cx-material-panel cx-material-panel-interactive group flex min-h-48 flex-col border border-transparent p-5 sm:p-6"
                 >
                   <p className="font-display text-xl leading-snug tracking-[-0.02em] text-[var(--silver)]">
                     {trigger.need}

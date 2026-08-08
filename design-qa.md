@@ -39,4 +39,23 @@
 
 This document passes the corrected Structural Aperture visual/runtime gate only. It does not waive the story's existing release-readiness blockers: repository-wide lint debt and execution of the Supabase migration/persistence boundary against an authorized database.
 
+## Brushed-steel enterprise extension — 2026-08-08
+
+- The approved Structural Aperture remains the source image; no decorative replacement or game-like visual field was introduced.
+- New governed material tokens define highlight, midtone, shadow, edge, directional sheen, brush, panel base, and inset shadow. Components consume reusable classes instead of route-specific material values.
+- The internal-hero grade is now directional: it protects the central reading field while revealing the brushed-steel architecture at the left and right edges.
+- A shared “Next chapter” transition continues the narrative below every primary internal hero. Company, Solutions, Careers, Engagement Model, Managed Operations, Products, Research, and the shared wrapper for eleven solution-detail routes each provide page-specific transition copy.
+- Brushed dark-steel panels are limited to buyer-choice, product, research, operating-area, form, architecture, phase, KPI, and FAQ surfaces. Teal remains a signal color rather than an ambient glow.
+- Mobile uses narrow generated steel edges plus the responsive source asset, preserving the material language without narrowing the readable content column.
+
+### Current validation evidence
+
+- `bun run typecheck` — PASS.
+- `bun run test:unit` — PASS, 37 tests / 120 expectations.
+- Focused ESLint over the nine changed TS/TSX implementation files — PASS.
+- `bun run build` — PASS; existing plugin-timing and large-chunk warnings remain unchanged.
+- Desktop visual review: Company at 1440 × 1000 and Solutions at 1440 × 1000 — PASS for reference fidelity, hierarchy, material restraint, and storytelling transition.
+- Mobile visual review: Company at 390 × 844 — PASS after increasing the visibility of the narrow structural steel edges.
+- The attempted extended Playwright route matrix was not counted as passing evidence because the local Chromium headless harness timed out during browser launch. This does not supersede the passing screenshots or existing responsive gate; a clean full-browser rerun remains appropriate before publication.
+
 final result: passed

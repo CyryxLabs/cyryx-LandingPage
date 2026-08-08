@@ -85,6 +85,10 @@ function EngagementModelPage() {
             { number: "03", label: "Build" },
             { number: "04", label: "Validate" },
           ]}
+          nextChapter={{
+            title: "A controlled delivery lifecycle.",
+            body: "Each stage turns ambiguity into written decisions, testable evidence, and explicit ownership.",
+          }}
         />
 
         <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
