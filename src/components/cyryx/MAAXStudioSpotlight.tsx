@@ -59,15 +59,6 @@ function ProductPreview() {
         aria-hidden
         className="absolute inset-0 bg-gradient-to-t from-[var(--onyx)]/80 via-transparent to-transparent"
       />
-      <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 border-t border-white/10 bg-[color-mix(in_oklab,var(--onyx)_78%,transparent)] px-4 py-3 backdrop-blur-md sm:px-5">
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--silver)]">
-          MAAX Studio / Product direction
-        </span>
-        <span className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
-          <span className="h-1.5 w-1.5 rounded-full bg-current shadow-[0_0_10px_currentColor]" />{" "}
-          Conceptual · Active development
-        </span>
-      </figcaption>
     </figure>
   );
 }

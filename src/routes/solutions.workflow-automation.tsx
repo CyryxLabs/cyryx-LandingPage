@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SolutionPage } from "@/components/cyryx/seo/SolutionPage";
+import workflowVisualSmall from "@/assets/solutions/solution-workflow-768.webp";
+import workflowVisualLarge from "@/assets/solutions/solution-workflow-1440.webp";
 import {
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
@@ -181,6 +183,15 @@ export const Route = createFileRoute("/solutions/workflow-automation")({
       ]}
       faq={FAQ}
       engagementNote="Scope, timing, commercial terms, ownership, licensing, acceptance, support, and operational coverage are defined in writing for each engagement."
+      visual={{
+        imageSmall: workflowVisualSmall,
+        imageLarge: workflowVisualLarge,
+        alt: "A sequence of bounded mechanical modules connected along a single operating line",
+        diagramVariant: "flow",
+        diagramLabel: "The controlled workflow path",
+        diagramCaption:
+          "The workflow contract, context, execution, control, and operating layers remain visible as work moves from qualified input to owned outcome.",
+      }}
       relatedAnswers={[
         {
           label: "AI execution system vs AI automation",

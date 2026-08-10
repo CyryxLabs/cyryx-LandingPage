@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SolutionPage } from "@/components/cyryx/seo/SolutionPage";
+import productVisualSmall from "@/assets/solutions/solution-product-768.webp";
+import productVisualLarge from "@/assets/solutions/solution-product-1440.webp";
 import {
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
@@ -182,6 +184,15 @@ export const Route = createFileRoute("/solutions/custom-ai-product-development")
       ]}
       faq={FAQ}
       engagementNote="Team structure, scope, timing, commercial terms, code and intellectual-property treatment, third-party costs, acceptance, support, and post-launch responsibility are defined for each engagement."
+      visual={{
+        imageSmall: productVisualSmall,
+        imageLarge: productVisualLarge,
+        alt: "Modular product components assembled in layers around a transparent teal system path",
+        diagramVariant: "stack",
+        diagramLabel: "The product system stack",
+        diagramCaption:
+          "Product experience, application logic, intelligence, controls, and the operating model are designed as one releaseable system.",
+      }}
       relatedAnswers={[
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
         {

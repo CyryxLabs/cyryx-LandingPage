@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SolutionPage } from "@/components/cyryx/seo/SolutionPage";
+import digitalVisualSmall from "@/assets/solutions/solution-digital-768.webp";
+import digitalVisualLarge from "@/assets/solutions/solution-digital-1440.webp";
 import {
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
@@ -182,6 +184,15 @@ export const Route = createFileRoute("/solutions/digital-web-systems")({
       ]}
       faq={FAQ}
       engagementNote="Scope, timing, commercial terms, content responsibilities, revision and acceptance process, platform and third-party costs, ownership, licensing, support, and continuing care are defined for each engagement."
+      visual={{
+        imageSmall: digitalVisualSmall,
+        imageLarge: digitalVisualLarge,
+        alt: "Connected glass display forms above modular control inputs in a dark technical environment",
+        diagramVariant: "flow",
+        diagramLabel: "The connected digital system",
+        diagramCaption:
+          "Narrative, experience, platform, connections, and operations form one accountable path from audience understanding to an owned digital capability.",
+      }}
       relatedAnswers={[
         { label: "Explore workflow automation", href: "/solutions/workflow-automation" },
         { label: "Explore custom AI products", href: "/solutions/custom-ai-product-development" },

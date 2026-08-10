@@ -153,8 +153,7 @@ test.describe("Hero — enterprise value proposition", () => {
 
     await expect(section).toContainText("Cyryx Labs / Product in active development");
     await expect(section).toContainText("not a client-delivery phase");
-    await expect(section).toContainText("Product direction");
-    await expect(section).toContainText("Conceptual · Active development");
+    await expect(section.locator("figure figcaption")).toHaveCount(0);
   });
 
   test("homepage explains focused entry points and connected programs without merging product tracks", async ({
