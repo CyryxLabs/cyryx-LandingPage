@@ -184,7 +184,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var r=document.documentElement;if(!window.location.hash){var z=function(){r.style.scrollBehavior='auto';window.scrollTo(0,0);};z();document.addEventListener('DOMContentLoaded',z,{once:true});window.addEventListener('load',function(){z();requestAnimationFrame(function(){z();requestAnimationFrame(z);});},{once:true});window.addEventListener('pageshow',function(){z();setTimeout(function(){z();r.dataset.cyryxScrollReady='true';requestAnimationFrame(function(){r.style.scrollBehavior='';});},100);},{once:true});return;}r.style.scrollBehavior='auto';var j=function(){try{var id=decodeURIComponent(window.location.hash.slice(1)),el=document.getElementById(id);if(!el)return;var h=matchMedia('(min-width:1024px)').matches?96:64;window.scrollTo(0,Math.max(0,el.getBoundingClientRect().top+window.scrollY-h-8));requestAnimationFrame(function(){requestAnimationFrame(function(){r.style.scrollBehavior='';});});}catch(e){}};document.addEventListener('DOMContentLoaded',j,{once:true});window.addEventListener('load',j,{once:true});}catch(e){}})();",
+              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var r=document.documentElement,s=function(){r.dataset.cyryxBootScrollSettled='true';window.dispatchEvent(new Event('cyryx:boot-scroll-settled'));};r.style.scrollBehavior='auto';if(!window.location.hash){window.scrollTo(0,0);window.addEventListener('pageshow',s,{once:true});return;}var j=function(){try{var id=decodeURIComponent(window.location.hash.slice(1)),el=document.getElementById(id);if(!el)return;var h=matchMedia('(min-width:1024px)').matches?96:64;window.scrollTo(0,Math.max(0,el.getBoundingClientRect().top+window.scrollY-h-8));requestAnimationFrame(function(){requestAnimationFrame(function(){r.style.scrollBehavior='';});});}catch(e){}};document.addEventListener('DOMContentLoaded',j,{once:true});window.addEventListener('load',j,{once:true});window.addEventListener('pageshow',s,{once:true});}catch(e){}})();",
           }}
         />
         {/* Subdomain routing: workspace.<domain> serves the internal console.
@@ -210,9 +210,39 @@ function RootComponent() {
   useEffect(() => {
     initWebVitals();
     syncCopyVariantToDocument();
-    document.documentElement.dataset.cyryxHydrated = "true";
+    const root = document.documentElement;
+    let firstFrame = 0;
+    let secondFrame = 0;
+
+    const publishScrollReady = () => {
+      if (root.dataset.cyryxScrollReady === "true") return;
+      if (!window.location.hash) {
+        root.style.scrollBehavior = "auto";
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+
+      firstFrame = window.requestAnimationFrame(() => {
+        secondFrame = window.requestAnimationFrame(() => {
+          if (!window.location.hash) {
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+          }
+          root.style.scrollBehavior = "";
+          root.dataset.cyryxScrollReady = "true";
+        });
+      });
+    };
+
+    root.dataset.cyryxHydrated = "true";
+    if (root.dataset.cyryxBootScrollSettled === "true" || document.readyState === "complete") {
+      publishScrollReady();
+    } else window.addEventListener("cyryx:boot-scroll-settled", publishScrollReady, { once: true });
+
     return () => {
-      delete document.documentElement.dataset.cyryxHydrated;
+      window.removeEventListener("cyryx:boot-scroll-settled", publishScrollReady);
+      if (firstFrame) window.cancelAnimationFrame(firstFrame);
+      if (secondFrame) window.cancelAnimationFrame(secondFrame);
+      delete root.dataset.cyryxScrollReady;
+      delete root.dataset.cyryxHydrated;
     };
   }, []);
   useSmoothScroll();

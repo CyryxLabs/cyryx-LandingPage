@@ -43,6 +43,7 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 - `src/components/cyryx/Hero.tsx`
 - `src/copy/v3.ts`
 - `src/hooks/useCyryxScrollAnimations.ts`
+- `src/router.tsx`
 - `src/routes/__root.tsx`
 - `src/routes/index.tsx`
 - `src/styles.css`
@@ -69,4 +70,4 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 - The first remote PR run passed Safari mobile, visual regression, and both Lighthouse profiles, while its global Playwright job exposed CI contention plus a deterministic low-performance contract mismatch (630 passed, 40 skipped, 14 failed). The sequence now honors `cx-low-perf`, preloads in four abortable low-priority batches, yields to hydration/GSAP, and the affected three-project rerun passed 131 existing scenarios; the explicit high-performance, low-performance, reduced-motion, and readability contract then passed 15/15.
 - The second remote run preserved all non-global gates and reduced the global result to one historical MAAX modal timing failure (649 passed, 40 skipped, 1 failed). The homepage funnel test now scopes the exact MAAX trigger and uses the existing 15-second interaction budget used for loaded CI states.
 - The browser matrix now runs against the production Node bundle in CI, eliminating Vite development-server contention while retaining Vite-only readiness handling for development jobs. The final local production matrix passed 653/653 applicable scenarios across Chromium, 360px mobile, and forced-colors profiles; 37 profile-inapplicable scenarios were skipped by design.
-- Reload and route-entry scroll restoration now expose a deterministic readiness boundary. After the remote mobile runner exposed a second redundant post-hydration reset, that duplicate was removed; the focused mobile restoration suite then passed 60/60 repeated scenarios. The execution rail passed 9/9 repeated scenarios before the full matrix run.
+- Reload and route-entry scroll restoration now expose a deterministic readiness boundary. The document bootstrap owns initial no-hash positioning, while TanStack resumes ownership after hydration for SPA and browser-history navigation; no reset can run after `data-cyryx-scroll-ready="true"`. The final focused stress run passed 120/120 scenarios across desktop and 360px mobile with 14 concurrent workers, followed by 653/653 applicable scenarios in the full production-node matrix (37 profile-inapplicable skips).
