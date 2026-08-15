@@ -2,45 +2,48 @@ import { test, expect } from "@playwright/test";
 
 test.describe.configure({ mode: "serial" });
 
-const VIDEO_URL_RE = /cyryx-hero-(?:720|1080)\.mp4/i;
+const SEQUENCE_URL_RE = /\/media\/hero-sequence\/(?:desktop|mobile)\/cyryx-hero-frame-\d{3}\.webp/i;
 
-test("Hero video is NOT downloaded on routes without the hero", async ({ page }) => {
+test("Hero sequence is not downloaded on routes without the hero", async ({ page }) => {
   const hits: string[] = [];
-  page.on("request", (req) => {
-    if (VIDEO_URL_RE.test(req.url())) hits.push(req.url());
+  page.on("request", (request) => {
+    if (SEQUENCE_URL_RE.test(request.url())) hits.push(request.url());
   });
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/contact", { waitUntil: "networkidle", timeout: 60_000 });
   expect(hits).toEqual([]);
 });
 
-test("Hero video only downloads after IntersectionObserver fires on /", async ({ page }) => {
-  const hits: { url: string; at: number }[] = [];
-  const start = Date.now();
-  page.on("request", (req) => {
-    if (VIDEO_URL_RE.test(req.url())) hits.push({ url: req.url(), at: Date.now() - start });
+test("Hero activates canvas playback only after all 40 desktop frames preload", async ({
+  page,
+}) => {
+  const hits = new Set<string>();
+  page.on("request", (request) => {
+    const url = request.url();
+    if (url.includes("/media/hero-sequence/desktop/")) hits.add(url);
   });
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded", timeout: 60_000 });
 
-  // Video element renders with no src until IO observes intersection
-  const video = page.locator("section[data-hero] video[data-hero-video]");
-  await expect(video).toHaveCount(1);
-
-  // Wait for src to be wired up by the observer, then for the network hit
-  await expect
-    .poll(() => video.evaluate((el: HTMLVideoElement) => el.currentSrc || el.src || ""))
-    .toMatch(VIDEO_URL_RE);
-  await expect.poll(() => hits.length, { timeout: 10_000 }).toBeGreaterThan(0);
+  const sequence = page.locator("section[data-hero] [data-hero-sequence]");
+  await expect(sequence).toHaveAttribute("data-sequence-ready", "true", { timeout: 20_000 });
+  expect(hits.size).toBe(40);
+  await expect(page.locator("section[data-hero] [data-hero-loader]")).toHaveCount(0);
 });
 
-test("Hero video preloads metadata after IO so scroll scrubbing is deterministic", async ({
+test("A failed frame keeps the deterministic poster fallback instead of partial playback", async ({
   page,
 }) => {
+  await page.route("**/hero-sequence/desktop/cyryx-hero-frame-020.webp", (route) => route.abort());
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded", timeout: 60_000 });
-  const preload = await page
-    .locator("section[data-hero] video[data-hero-video]")
-    .getAttribute("preload");
-  expect(preload).toBe("metadata");
+
+  const hero = page.locator("section[data-hero]");
+  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
+    "data-sequence-mode",
+    "fallback",
+    { timeout: 20_000 },
+  );
+  await expect(hero.locator("canvas[data-hero-canvas]")).toHaveCSS("opacity", "0");
+  await expect(hero.locator("img[data-hero-poster]")).toBeVisible();
 });

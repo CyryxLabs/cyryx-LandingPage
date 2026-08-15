@@ -2,12 +2,15 @@ import { expect, test } from "@playwright/test";
 
 const EXPECTED = {
   title: /Cyryx Labs.*AI Systems from Strategy to Operations/i,
-  description: /Cyryx Labs.*advises, builds, controls, and operates AI-enabled systems/i,
+  description:
+    /Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs\./i,
   ogTitle: /Cyryx Labs/,
-  ogDescription: /advises, builds, controls, and operates AI-enabled systems/i,
+  ogDescription:
+    /helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs\./i,
   ogUrl: /\/$/,
   twitterTitle: /Cyryx Labs/,
-  twitterDescription: /advises, builds, controls, and operates AI-enabled systems/i,
+  twitterDescription:
+    /helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs\./i,
 };
 
 test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async ({ page }) => {

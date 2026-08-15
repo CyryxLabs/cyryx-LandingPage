@@ -9,7 +9,11 @@ export const v3: CopyDocument = {
     headline: "From AI opportunity to operating capability.",
     sub: "Cyryx Labs turns AI opportunities into controlled execution. Start with Advise, Build, Control, or Operate—or connect the capabilities through an evidence-led program.",
     meta: [],
-    rail: [],
+    rail: [
+      "Advise. Build.",
+      "Control. Operate.",
+      "From intent to action. From action to evidence.",
+    ],
     ctaPrimary: "Start a fit review",
     ctaSecondary: "MAAX Studio",
   },

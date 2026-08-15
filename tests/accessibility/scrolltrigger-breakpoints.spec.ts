@@ -2,8 +2,8 @@ import { expect, test } from "@playwright/test";
 
 /**
  * Smoke-tests that home-route GSAP ScrollTrigger timelines render across
- * mobile/tablet/desktop breakpoints without runtime errors and without
- * introducing heavy pinning (spacer elements / position:fixed hero) on mobile.
+ * mobile/tablet/desktop breakpoints without runtime errors. The hero uses
+ * native CSS sticky positioning, so GSAP pin spacers are never expected.
  */
 const VIEWPORTS = [
   { name: "mobile", width: 390, height: 800 },
@@ -36,11 +36,10 @@ for (const vp of VIEWPORTS) {
     const relevant = errors.filter((e) => /gsap|scrolltrigger|react|invariant/i.test(e));
     expect(relevant, `runtime errors on ${vp.name}: ${relevant.join(" | ")}`).toEqual([]);
 
-    // Heavy-pinning check: GSAP inserts .pin-spacer elements when pin:true is used.
-    // Mobile must not use pinning; tablet/desktop may.
+    // Native sticky scrollytelling must not create GSAP pin spacers.
     const pinSpacers = await page.locator(".pin-spacer").count();
+    expect(pinSpacers, `${vp.name} must not use ScrollTrigger pinning`).toBe(0);
     if (vp.name === "mobile") {
-      expect(pinSpacers, "mobile must not use ScrollTrigger pinning").toBe(0);
       // No horizontal transforms on the hero either.
       const heroTransform = await page.locator("section[data-hero]").evaluate((el) => {
         const m = new DOMMatrixReadOnly(getComputedStyle(el).transform);
@@ -89,93 +88,110 @@ for (const vp of VIEWPORTS) {
   });
 }
 
-test("desktop Hero pins and scrubs the cinematic video with scroll", async ({ page }) => {
+test("desktop Hero uses native sticky positioning and scrubs the canvas sequence", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   const hero = page.locator("section[data-hero]");
-  const video = hero.locator("[data-hero-video]");
+  const canvas = hero.locator("[data-hero-canvas]");
   await expect(hero.locator("[data-scroll-progress]")).toHaveCount(1);
   await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
-  await expect(page.locator(".pin-spacer")).toHaveCount(1);
+  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
+    "data-sequence-ready",
+    "true",
+    { timeout: 20_000 },
+  );
+  await expect(page.locator(".pin-spacer")).toHaveCount(0);
+  await expect(canvas).toHaveAttribute("data-frame-index", "1");
 
-  const duration = await video.evaluate((element) => (element as HTMLVideoElement).duration);
-  expect(duration).toBeGreaterThan(1);
-
-  await page.evaluate(() => window.scrollTo(0, 650));
+  await page.evaluate(() => {
+    const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
+    const range = (heroElement?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+    window.scrollTo(0, range * 0.5);
+  });
   await page.waitForTimeout(900);
 
   const state = await page.evaluate(() => {
     const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
-    const videoElement = heroElement?.querySelector<HTMLVideoElement>("[data-hero-video]");
+    const stickyElement = heroElement?.querySelector<HTMLElement>("[data-hero-sticky]");
+    const canvasElement = heroElement?.querySelector<HTMLCanvasElement>("[data-hero-canvas]");
     const progress = heroElement?.querySelector<HTMLElement>("[data-scroll-progress]");
     const matrix = progress
       ? new DOMMatrixReadOnly(getComputedStyle(progress).transform)
       : new DOMMatrixReadOnly();
     return {
-      currentTime: videoElement?.currentTime ?? 0,
-      heroTop: heroElement?.getBoundingClientRect().top ?? Number.NaN,
+      frameIndex: Number(canvasElement?.dataset.frameIndex ?? 0),
+      stickyTop: stickyElement?.getBoundingClientRect().top ?? Number.NaN,
       progressScale: matrix.a,
     };
   });
 
-  expect(state.currentTime).toBeGreaterThan(1);
-  expect(Math.abs(state.heroTop)).toBeLessThan(2);
+  expect(state.frameIndex).toBeGreaterThan(12);
+  expect(Math.abs(state.stickyTop)).toBeLessThan(2);
   expect(state.progressScale).toBeGreaterThan(0.1);
 });
 
 for (const viewport of [
-  { name: "tablet", width: 768, height: 1024, shouldPin: true },
-  { name: "mobile", width: 390, height: 800, shouldPin: false },
+  { name: "tablet", width: 768, height: 1024 },
+  { name: "mobile", width: 390, height: 800 },
 ]) {
-  test(`${viewport.name} Hero scrubs with scroll without autoplay fallback`, async ({ page }) => {
+  test(`${viewport.name} Hero scrubs the preloaded canvas without GSAP pinning`, async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const hero = page.locator("section[data-hero]");
-    const video = hero.locator("[data-hero-video]");
+    const canvas = hero.locator("[data-hero-canvas]");
     await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
-    await expect(page.locator(".pin-spacer")).toHaveCount(viewport.shouldPin ? 1 : 0);
-    await expect
-      .poll(() => video.evaluate((element) => (element as HTMLVideoElement).duration))
-      .toBeGreaterThan(1);
+    await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
+      "data-sequence-ready",
+      "true",
+      { timeout: 20_000 },
+    );
+    await expect(page.locator(".pin-spacer")).toHaveCount(0);
+    await expect(canvas).toHaveAttribute("data-frame-index", "1");
 
-    const initial = await video.evaluate((element) => {
-      const media = element as HTMLVideoElement;
-      return { paused: media.paused, currentTime: media.currentTime };
+    await page.evaluate(() => {
+      const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
+      const range = (heroElement?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+      window.scrollTo(0, range * 0.55);
     });
-    expect(initial.paused, `${viewport.name}: video must not autoplay`).toBe(true);
-    expect(initial.currentTime).toBeLessThan(0.25);
-
-    await page.evaluate((distance) => window.scrollTo(0, distance), viewport.height * 0.72);
     await page.waitForTimeout(900);
 
     const scrubbed = await page.evaluate(() => {
-      const media = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+      const canvasElement = document.querySelector<HTMLCanvasElement>("[data-hero-canvas]");
       const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
       const matrix = progress
         ? new DOMMatrixReadOnly(getComputedStyle(progress).transform)
         : new DOMMatrixReadOnly();
       return {
-        paused: media?.paused ?? false,
-        currentTime: media?.currentTime ?? 0,
+        frameIndex: Number(canvasElement?.dataset.frameIndex ?? 0),
         progressScale: matrix.a,
       };
     });
 
-    expect(scrubbed.paused, `${viewport.name}: scroll scrub must keep playback paused`).toBe(true);
-    expect(scrubbed.currentTime).toBeGreaterThan(0.5);
+    expect(scrubbed.frameIndex, `${viewport.name}: frame must advance with scroll`).toBeGreaterThan(
+      12,
+    );
     expect(scrubbed.progressScale).toBeGreaterThan(0.2);
   });
 }
 
-test("reduced motion removes Hero pinning and video scrubbing", async ({ page }) => {
+test("reduced motion removes Hero sequence scrubbing and extended scroll", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
   await expect(page.locator("section[data-hero]")).toBeVisible();
   await expect(page.locator(".pin-spacer")).toHaveCount(0);
-  await expect(page.locator("[data-hero-video]")).toHaveCount(0);
+  await expect(page.locator("[data-hero-canvas]")).toHaveCount(0);
+  await expect(page.locator("section[data-hero]")).not.toHaveAttribute("data-scroll-scrub", "true");
+  const height = await page
+    .locator("section[data-hero]")
+    .evaluate((element) => element.getBoundingClientRect().height);
+  expect(height).toBeLessThanOrEqual(901);
 });
 
 /**
@@ -227,9 +243,11 @@ test("desktop execution rail progresses through the governed operating sequence"
   await expect(nodes).toHaveCount(5);
   await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
   await system.evaluate((element) => {
-    element.scrollIntoView({ behavior: "auto", block: "center" });
+    const bottomAtCompletion = window.innerHeight * 0.34;
+    const top = element.getBoundingClientRect().bottom + window.scrollY - bottomAtCompletion;
+    window.scrollTo({ top, behavior: "auto" });
   });
-  await page.waitForTimeout(700);
+  await page.waitForTimeout(900);
 
   const railTransform = await rail.evaluate((element) => getComputedStyle(element).transform);
   const visibleNodes = await nodes.evaluateAll(

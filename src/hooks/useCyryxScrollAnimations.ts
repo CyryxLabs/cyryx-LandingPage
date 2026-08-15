@@ -148,60 +148,41 @@ export function useCyryxScrollAnimations() {
           }
 
           /*
-           * The Hero is a deterministic scroll scene at every breakpoint.
-           * Desktop/tablet pin the scene; mobile keeps native flow while still
-           * scrubbing the film and visual layers. Metadata only enriches the
-           * scene — it never gates ScrollTrigger creation.
+           * The Hero uses native CSS sticky positioning over a 400svh scene.
+           * ScrollTrigger owns only the normalized playhead and compositor-safe
+           * text/media transforms; the canvas renderer coalesces frame draws in
+           * its own requestAnimationFrame loop.
            */
           const hero = document.querySelector<HTMLElement>("[data-hero]");
-          const heroVideo = hero?.querySelector<HTMLVideoElement>("[data-hero-video]");
           const heroMediaFrame = hero?.querySelector<HTMLElement>("[data-hero-media-frame]");
           const heroGrade = hero?.querySelector<HTMLElement>(".cx-hero-grade");
           const heroAura = hero?.querySelector<HTMLElement>("[data-hero-aura]");
           const heroContent = hero?.querySelector<HTMLElement>("[data-hero-content]");
           const heroScrollCue = hero?.querySelector<HTMLElement>("[data-hero-scroll-cue]");
           const scrollProgress = hero?.querySelector<HTMLElement>("[data-scroll-progress]");
+          const heroStoryPanels = hero
+            ? gsap.utils.toArray<HTMLElement>("[data-hero-story-panel]", hero)
+            : [];
 
-          if (hero && heroMediaFrame && heroGrade && heroContent) {
+          if (hero && heroMediaFrame && heroGrade && heroContent && !lowPerf) {
             hero.dataset.scrollScrub = "true";
-            heroVideo?.pause();
-
-            const videoRange = () => {
-              const duration = heroVideo?.duration ?? Number.NaN;
-              if (!Number.isFinite(duration) || duration <= 0.5) return null;
-              const start = Math.min(0.08, duration * 0.01);
-              return { start, end: Math.max(start, duration - 0.12) };
-            };
-
-            const syncVideoToScroll = (timeline: gsap.core.Timeline) => {
-              const range = videoRange();
-              if (!heroVideo || !range) return;
-              const nextTime = range.start + (range.end - range.start) * timeline.progress();
-              if (Math.abs(heroVideo.currentTime - nextTime) > 0.025) {
-                heroVideo.currentTime = nextTime;
-              }
-              heroVideo.pause();
-            };
-
-            const initializeVideoFrame = () => {
-              const range = videoRange();
-              if (!heroVideo || !range) return;
-              heroVideo.pause();
-              heroVideo.currentTime = range.start;
-              syncVideoToScroll(heroScrollTimeline);
-            };
+            if (heroStoryPanels.length) {
+              gsap.set(heroStoryPanels, { autoAlpha: 0, y: mobile ? 14 : 24 });
+            }
 
             const heroScrollTimeline = gsap.timeline({
-              onUpdate: () => syncVideoToScroll(heroScrollTimeline),
+              onUpdate: () => {
+                window.dispatchEvent(
+                  new CustomEvent("cyryx:hero-sequence-progress", {
+                    detail: { progress: heroScrollTimeline.progress() },
+                  }),
+                );
+              },
               scrollTrigger: {
                 trigger: hero,
                 start: "top top",
-                end: () =>
-                  `+=${Math.round(window.innerHeight * (desktop ? 1.75 : tablet ? 1.35 : 0.95))}`,
-                pin: !mobile,
-                pinSpacing: !mobile,
+                end: "bottom bottom",
                 scrub: desktop ? 0.65 : tablet ? 0.45 : 0.3,
-                anticipatePin: mobile ? 0 : 1,
                 refreshPriority: -20,
                 invalidateOnRefresh: true,
               },
@@ -218,13 +199,53 @@ export function useCyryxScrollAnimations() {
               .to(
                 heroContent,
                 {
-                  y: mobile ? -24 : -44,
-                  autoAlpha: mobile ? 0.25 : 0.08,
+                  y: mobile ? -18 : -32,
+                  autoAlpha: 0,
                   ease: "power1.in",
-                  duration: 0.34,
+                  duration: 0.12,
                 },
-                0.62,
+                0.08,
               );
+
+            const storyWindows = [
+              { enter: 0.25, leave: 0.43 },
+              { enter: 0.5, leave: 0.69 },
+              { enter: 0.79, leave: null },
+            ] as const;
+
+            heroStoryPanels.forEach((panel, index) => {
+              const storyWindow = storyWindows[index];
+              if (!storyWindow) return;
+              heroScrollTimeline.fromTo(
+                panel,
+                {
+                  autoAlpha: 0,
+                  y: mobile ? 14 : 24,
+                  filter: mobile ? "none" : "blur(8px)",
+                },
+                {
+                  autoAlpha: 1,
+                  y: 0,
+                  filter: "blur(0px)",
+                  duration: 0.07,
+                  ease: "power2.out",
+                },
+                storyWindow.enter,
+              );
+              if (storyWindow.leave !== null) {
+                heroScrollTimeline.to(
+                  panel,
+                  {
+                    autoAlpha: 0,
+                    y: mobile ? -10 : -18,
+                    filter: mobile ? "none" : "blur(6px)",
+                    duration: 0.07,
+                    ease: "power1.in",
+                  },
+                  storyWindow.leave,
+                );
+              }
+            });
 
             if (heroAura) {
               heroScrollTimeline.fromTo(
@@ -247,19 +268,14 @@ export function useCyryxScrollAnimations() {
               heroScrollTimeline.to(scrollProgress, { scaleX: 1, ease: "none", duration: 1 }, 0);
             }
 
-            heroVideo?.addEventListener("loadedmetadata", initializeVideoFrame);
-            if (heroVideo?.readyState && heroVideo.readyState >= HTMLMediaElement.HAVE_METADATA) {
-              initializeVideoFrame();
-            } else {
-              heroVideo?.load();
-            }
-
             localCleanups.push(() => {
-              heroVideo?.removeEventListener("loadedmetadata", initializeVideoFrame);
-              heroVideo?.pause();
               delete hero.dataset.scrollScrub;
               heroScrollTimeline.kill();
             });
+          } else if (hero && heroContent) {
+            delete hero.dataset.scrollScrub;
+            gsap.set(heroContent, { autoAlpha: 1, x: 0, y: 0 });
+            if (heroStoryPanels.length) gsap.set(heroStoryPanels, { autoAlpha: 0 });
           }
 
           if (lowPerf) {
