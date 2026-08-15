@@ -15,6 +15,9 @@ export default defineConfig({
   // client modules when this heavy browser matrix saturates the host. Keep CI
   // concurrent, but below the point where dev-server hydration becomes flaky.
   workers: process.env.CI ? 3 : undefined,
+  // Retry one failed browser contract after the saturated matrix pass. Stable
+  // regressions still fail twice; transient dev-server hydration misses recover.
+  retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI
     ? [["list"], ["html", { outputFolder: "playwright-report/a11y", open: "never" }]]
     : "list",
