@@ -184,7 +184,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var r=document.documentElement;if(!window.location.hash){window.scrollTo(0,0);window.addEventListener('load',function(){window.scrollTo(0,0);},{once:true});return;}r.style.scrollBehavior='auto';var j=function(){try{var id=decodeURIComponent(window.location.hash.slice(1)),el=document.getElementById(id);if(!el)return;var h=matchMedia('(min-width:1024px)').matches?96:64;window.scrollTo(0,Math.max(0,el.getBoundingClientRect().top+window.scrollY-h-8));requestAnimationFrame(function(){requestAnimationFrame(function(){r.style.scrollBehavior='';});});}catch(e){}};document.addEventListener('DOMContentLoaded',j,{once:true});window.addEventListener('load',j,{once:true});}catch(e){}})();",
+              "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var r=document.documentElement;if(!window.location.hash){var z=function(){r.style.scrollBehavior='auto';window.scrollTo(0,0);};z();document.addEventListener('DOMContentLoaded',z,{once:true});window.addEventListener('load',function(){z();requestAnimationFrame(function(){z();requestAnimationFrame(z);});},{once:true});window.addEventListener('pageshow',function(){z();setTimeout(function(){z();r.dataset.cyryxScrollReady='true';requestAnimationFrame(function(){r.style.scrollBehavior='';});},100);},{once:true});return;}r.style.scrollBehavior='auto';var j=function(){try{var id=decodeURIComponent(window.location.hash.slice(1)),el=document.getElementById(id);if(!el)return;var h=matchMedia('(min-width:1024px)').matches?96:64;window.scrollTo(0,Math.max(0,el.getBoundingClientRect().top+window.scrollY-h-8));requestAnimationFrame(function(){requestAnimationFrame(function(){r.style.scrollBehavior='';});});}catch(e){}};document.addEventListener('DOMContentLoaded',j,{once:true});window.addEventListener('load',j,{once:true});}catch(e){}})();",
           }}
         />
         {/* Subdomain routing: workspace.<domain> serves the internal console.
@@ -208,6 +208,16 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   useEffect(() => {
+    if (!window.location.hash) {
+      const root = document.documentElement;
+      root.style.scrollBehavior = "auto";
+      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          root.style.scrollBehavior = "";
+        });
+      });
+    }
     initWebVitals();
     syncCopyVariantToDocument();
     document.documentElement.dataset.cyryxHydrated = "true";

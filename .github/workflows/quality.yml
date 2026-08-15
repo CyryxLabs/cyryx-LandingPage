@@ -47,11 +47,16 @@ jobs:
       - name: Audit /admin link references (must be 0)
         run: node scripts/audit-admin-links.mjs
       - name: Build production bundle (for bundle scan)
+        env:
+          LIGHTHOUSE_BUILD: "1"
         run: bun run build
       - name: Run Playwright suite (a11y · content · SEO · bundle scan)
         env:
           CI: "1"
           A11Y_REPORT_DIR: a11y-report
+          HOST: "127.0.0.1"
+          PORT: "4175"
+          PLAYWRIGHT_USE_PRODUCTION_SERVER: "1"
         run: >-
           bunx playwright test
           --project=hero-a11y-chromium

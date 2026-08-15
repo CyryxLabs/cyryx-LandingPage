@@ -6,6 +6,7 @@ const chromiumExecutablePath =
   process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ??
   (existsSync(sandboxChromium) ? sandboxChromium : undefined);
 const webkitMobileLayoutSpec = /webkit-mobile-layout\.spec\.ts/;
+const useProductionServer = process.env.PLAYWRIGHT_USE_PRODUCTION_SERVER === "1";
 
 export default defineConfig({
   testDir: "./tests/accessibility",
@@ -27,7 +28,9 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "bun run dev --host 127.0.0.1 --port 4175",
+    command: useProductionServer
+      ? "node .output/server/index.mjs"
+      : "bun run dev --host 127.0.0.1 --port 4175",
     url: "http://127.0.0.1:4175",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

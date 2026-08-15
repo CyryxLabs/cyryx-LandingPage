@@ -33,6 +33,7 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 ## File List
 
 - `bun.lock`
+- `.github/workflows/quality.yml`
 - `docs/stories/hero-canvas-scrollytelling-experiment-2026-08-14.md`
 - `package.json`
 - `playwright.config.ts`
@@ -42,6 +43,7 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 - `src/components/cyryx/Hero.tsx`
 - `src/copy/v3.ts`
 - `src/hooks/useCyryxScrollAnimations.ts`
+- `src/routes/__root.tsx`
 - `src/routes/index.tsx`
 - `src/styles.css`
 - `tests/accessibility/copy-validation.spec.ts`
@@ -49,8 +51,10 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 - `tests/accessibility/hero-video.spec.ts`
 - `tests/accessibility/header-dropdown.spec.ts`
 - `tests/accessibility/maax-waitlist.spec.ts`
+- `tests/accessibility/scroll-restoration.spec.ts`
 - `tests/accessibility/scrolltrigger-breakpoints.spec.ts`
 - `tests/accessibility/seo-metadata.spec.ts`
+- `tests/support/vite-client-ready.ts`
 
 ## Notes
 
@@ -64,3 +68,5 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 - A pre-release `bun audit` identified critical advisory `GHSA-mv8w-475r-vwqw` through transitive `seroval@1.5.2`. A root override now pins patched `seroval@1.6.2`; the lockfile resolves one patched version and `bun audit --audit-level=critical` passes.
 - The first remote PR run passed Safari mobile, visual regression, and both Lighthouse profiles, while its global Playwright job exposed CI contention plus a deterministic low-performance contract mismatch (630 passed, 40 skipped, 14 failed). The sequence now honors `cx-low-perf`, preloads in four abortable low-priority batches, yields to hydration/GSAP, and the affected three-project rerun passed 131 existing scenarios; the explicit high-performance, low-performance, reduced-motion, and readability contract then passed 15/15.
 - The second remote run preserved all non-global gates and reduced the global result to one historical MAAX modal timing failure (649 passed, 40 skipped, 1 failed). The homepage funnel test now scopes the exact MAAX trigger and uses the existing 15-second interaction budget used for loaded CI states.
+- The browser matrix now runs against the production Node bundle in CI, eliminating Vite development-server contention while retaining Vite-only readiness handling for development jobs. The final local production matrix passed 653/653 applicable scenarios across Chromium, 360px mobile, and forced-colors profiles; 37 profile-inapplicable scenarios were skipped by design.
+- Reload and route-entry scroll restoration now expose a deterministic readiness boundary. The focused restoration suite passed 27/27 repeated scenarios, and the execution rail passed 9/9 repeated scenarios before the full matrix run.

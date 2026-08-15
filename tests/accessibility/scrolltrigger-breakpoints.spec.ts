@@ -266,6 +266,7 @@ test("desktop execution rail progresses through the governed operating sequence"
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
+  await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
   await expect(page.locator("section[data-hero]")).toHaveAttribute("data-scroll-scrub", "true", {
     timeout: 10_000,
   });
