@@ -944,7 +944,17 @@ html.cx-low-perf .glass-panel {
   }
 }
 
-@media (min-width: 360px) and (max-width: 767px) {
+@media (max-width: 767px) {
+  .cx-hero-content-layer {
+    border-top: 1px solid color-mix(in oklab, var(--accent-glow) 16%, transparent);
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--accent-glow) 4%, var(--obsidian)) 0%,
+      var(--obsidian) 10rem
+    );
+    box-shadow: 0 -24px 64px -52px color-mix(in oklab, var(--accent-glow) 46%, transparent);
+  }
+
   .cx-hero-heading {
     line-height: 1.12;
     letter-spacing: -0.03em;
@@ -1064,7 +1074,7 @@ html.cx-low-perf .glass-panel {
 
 /* Reduced motion: drop expensive hero effects + animations. */
 @media (prefers-reduced-motion: reduce) {
-  [data-hero] {
+  [data-hero-scroll-scene] {
     height: 100svh !important;
   }
 
@@ -1110,7 +1120,7 @@ html.cx-low-perf .cx-hero-line-glow,
 html.cx-low-perf .cx-stage {
   display: none !important;
 }
-html.cx-low-perf [data-hero] {
+html.cx-low-perf [data-hero-scroll-scene] {
   height: 100svh !important;
 }
 html.cx-low-perf [data-hero-sticky] {
@@ -1263,6 +1273,9 @@ html.cx-low-perf .cx-liquid-glass {
   [data-hero] {
     background: Canvas;
     color: CanvasText;
+  }
+
+  [data-hero-scroll-scene] {
     height: 100svh !important;
   }
 
