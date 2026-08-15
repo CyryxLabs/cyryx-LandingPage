@@ -5,6 +5,8 @@ const RESOLVED_CLIENT_ENTRY_PATH = "/@id/__x00__virtual:tanstack-start-client-en
 const READY_TIMEOUT_MS = 30_000;
 
 export default async function waitForViteClient(config: FullConfig) {
+  if (process.env.PLAYWRIGHT_USE_PRODUCTION_SERVER === "1") return;
+
   const baseURL = config.projects[0]?.use.baseURL;
   if (typeof baseURL !== "string") {
     throw new Error("Playwright baseURL is required for Vite client readiness.");

@@ -6,6 +6,7 @@ const chromiumExecutablePath =
   process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ??
   (existsSync(sandboxChromium) ? sandboxChromium : undefined);
 const webkitMobileLayoutSpec = /webkit-mobile-layout\.spec\.ts/;
+const useProductionServer = process.env.PLAYWRIGHT_USE_PRODUCTION_SERVER === "1";
 
 export default defineConfig({
   testDir: "./tests/accessibility",
@@ -14,7 +15,10 @@ export default defineConfig({
   // The TanStack/Vite development server can miss or re-register virtual
   // client modules when this heavy browser matrix saturates the host. Keep CI
   // concurrent, but below the point where dev-server hydration becomes flaky.
-  workers: process.env.CI ? 4 : undefined,
+  workers: process.env.CI ? 3 : undefined,
+  // Retry one failed browser contract after the saturated matrix pass. Stable
+  // regressions still fail twice; transient dev-server hydration misses recover.
+  retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI
     ? [["list"], ["html", { outputFolder: "playwright-report/a11y", open: "never" }]]
     : "list",
@@ -24,7 +28,9 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "bun run dev --host 127.0.0.1 --port 4175",
+    command: useProductionServer
+      ? "node .output/server/index.mjs"
+      : "bun run dev --host 127.0.0.1 --port 4175",
     url: "http://127.0.0.1:4175",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

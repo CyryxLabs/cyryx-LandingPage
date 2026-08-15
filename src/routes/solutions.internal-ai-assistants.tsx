@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SolutionPage } from "@/components/cyryx/seo/SolutionPage";
+import assistantVisualSmall from "@/assets/solutions/solution-assistants-768.webp";
+import assistantVisualLarge from "@/assets/solutions/solution-assistants-1440.webp";
 import {
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
@@ -178,6 +180,15 @@ export const Route = createFileRoute("/solutions/internal-ai-assistants")({
       ]}
       faq={FAQ}
       engagementNote="Data access, identity integration, scope, ownership, licensing, support, acceptance, and operational coverage are defined for the specific engagement."
+      visual={{
+        imageSmall: assistantVisualSmall,
+        imageLarge: assistantVisualLarge,
+        alt: "A central brushed-metal module connected to bounded context, task, and control structures",
+        diagramVariant: "radial",
+        diagramLabel: "The bounded assistant system",
+        diagramCaption:
+          "Experience, context, identity, task runtime, and controls surround one defined job rather than an unrestricted general-purpose chat surface.",
+      }}
       relatedAnswers={[
         {
           label: "What is goal-grounded generation?",

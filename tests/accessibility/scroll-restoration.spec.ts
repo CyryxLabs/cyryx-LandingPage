@@ -1,17 +1,17 @@
 import { expect, test } from "@playwright/test";
+import { expectPageHydrated } from "../support/page-ready";
 
 test.describe("Initial scroll restoration", () => {
   test("opens at top after scrolling and reloading", async ({ page }) => {
     await page.goto("/");
-    await page.waitForLoadState("domcontentloaded");
+    await expectPageHydrated(page);
+    await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
     await page.evaluate(() => window.scrollTo(0, 2000));
-    await page.waitForTimeout(150);
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
     await page.reload();
-    await page.waitForLoadState("domcontentloaded");
-    // Give the inline restore script a tick to run
-    await page.waitForTimeout(150);
-    const y = await page.evaluate(() => window.scrollY);
-    expect(y).toBeLessThanOrEqual(2);
+    await expectPageHydrated(page);
+    await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(2);
   });
 
   test("preserves direct section links and lands on the requested section", async ({ page }) => {
@@ -32,7 +32,8 @@ test.describe("Initial scroll restoration", () => {
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
-    await page.waitForLoadState("domcontentloaded");
+    await expectPageHydrated(page);
+    await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
 

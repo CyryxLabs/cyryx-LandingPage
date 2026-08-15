@@ -168,6 +168,14 @@ Additionally:
 3. Generated snapshots/types are updated only when source changes intentionally require them, and their diffs are reviewed.
 4. CodeRabbit reports no unresolved CRITICAL issue; HIGH issues are fixed or explicitly handed to QA under the configured policy.
 
+### AC12 — Canonical solution-family visual depth
+
+1. Each of the six canonical `/solutions/*` routes renders one route-specific responsive editorial image using stable intrinsic dimensions, a 768/1440 WebP source set, and descriptive alternative text. Editorial images render without visible captions or qualification overlays.
+2. Each canonical route renders a code-native system diagram with an accessible heading, description, and semantic list or table. Flow, stack, radial, and matrix relationships remain understandable without color and collapse to a vertical sequence on mobile without page overflow.
+3. The shared solution renderer uses distinct editorial chapters for media, context, system view, failure modes/outcomes, build/work sequence, engagement phases, evidence, operating boundary, FAQ, related content, and CTA instead of one uniform two-column card grid.
+4. AI Strategy & Advisory uses the shared solution system while preserving its canonical metadata, Service/Breadcrumb JSON-LD, fit-review intent, existing claims, and evidence boundaries.
+5. `InternalHero`, the approved Structural Aperture, redirect routes, canonical paths, CTA intents, global synchronous route scrolling, and Safari/WebKit navigation behavior remain unchanged.
+
 ## Exclusions
 
 - No deployment, DNS change, Vercel/Lovable cutover, commit, push, PR creation/merge, release, or published-history rewrite.
@@ -219,6 +227,12 @@ Additionally:
   - [ ] Run available Lighthouse checks and review accessibility/SEO/performance evidence.
   - [ ] Run CodeRabbit and resolve blocking findings.
   - [x] Update this checklist, Dev Agent Record, Completion Notes, and final File List with actual changes.
+- [x] 10. Add visual depth across the canonical solution family (AC12)
+  - [x] Add reusable responsive editorial media and accessible flow/stack/radial/matrix diagram organisms.
+  - [x] Replace the uniform post-hero grid with distinct shared editorial chapters.
+  - [x] Migrate all six canonical routes, including AI Strategy & Advisory, without changing SEO, JSON-LD, CTA intent, redirects, or `InternalHero`.
+  - [x] Add focused 390px/desktop solution-family coverage for media, semantics, diagram variants, headings, and horizontal overflow.
+  - [x] Review and regenerate the intentional workflow-automation visual baseline only after root visual QA approves the new composition.
 
 ## Dev Notes
 
@@ -238,6 +252,17 @@ Additionally:
 - `src/routeTree.gen.ts` is generated. Do not edit it manually.
 - Existing Safari/WebKit tests encode the merged navigation fix at `7ca39e4`; treat them as a regression contract.
 - Environment variables remain the existing Supabase server/client variables. Do not add or expose credentials merely to complete this story; document any genuinely required new variable before use.
+
+### Solution visual-depth asset provenance — 2026-08-08
+
+- Shared production prompt frame: restrained editorial studio study in brushed dark metal and black glass, 8:5 composition, silver hierarchy with teal used only as a system signal, no people, logos, readable interface text, customer artifacts, metrics, or proof claims.
+- Strategy variation: modular decision markers arranged across a transparent planning table — `src/assets/solutions/solution-strategy-{768,1440}.webp`.
+- Digital variation: connected responsive display forms above modular operating inputs — `src/assets/solutions/solution-digital-{768,1440}.webp`.
+- Workflow variation: bounded mechanical stages connected along one operating path — `src/assets/solutions/solution-workflow-{768,1440}.webp`.
+- Assistants variation: a central module connected to bounded context, task, identity, and control structures — `src/assets/solutions/solution-assistants-{768,1440}.webp`.
+- Product variation: modular product layers assembled around a restrained transparent system path — `src/assets/solutions/solution-product-{768,1440}.webp`.
+- Governance variation: concentric control rings with visible checkpoints and restrained signals — `src/assets/solutions/solution-governance-{768,1440}.webp`.
+- These assets are atmospheric editorial imagery. They contain no customer artifacts, metrics, certification marks, or proof claims, and the interface does not add visible qualification captions over or below them.
 
 ## Testing
 
@@ -375,22 +400,24 @@ The developer must replace this anticipated list with the exact final list. File
 
 ## Change Log
 
-| Date       | Version | Description                                                                                                          | Author                     |
-| ---------- | ------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| 2026-08-03 | 1.0     | Created implementation-ready story from the completed audit and official moodboard.                                  | Chronos (`@sm`)            |
-| 2026-08-03 | 1.1.0   | Development started (yolo mode) — Status: Ready → InProgress.                                                        | Vulcan (`@dev`)            |
-| 2026-08-03 | 1.2.0   | Implementation handoff with focused checks green and explicit QA rerun items.                                        | Vulcan (`@dev`)            |
-| 2026-08-03 | 1.3.0   | QA gate FAIL; returned to InProgress for mandatory gate and persistence evidence.                                    | Argus (`@qa`)              |
-| 2026-08-03 | 1.4.0   | QA re-review: site/browser evidence cleared; FAIL retained for two release gates.                                    | Argus (`@qa`)              |
-| 2026-08-03 | 1.5.0   | Refined the homepage storytelling, hierarchy, and evidence-led decision flow.                                        | Vulcan (`@dev`)            |
-| 2026-08-03 | 1.6.0   | Added fail-safe fit-review notification and sender-confirmation email queueing.                                      | Vulcan (`@dev`)            |
-| 2026-08-04 | 1.7.0   | Applied the approved Structural Aperture hero system across internal page families.                                  | Vulcan (`@dev`)            |
-| 2026-08-04 | 1.8.0   | Excluded generated Vercel output and captured the definitive full-lint baseline.                                     | Vulcan (`@dev`)            |
-| 2026-08-04 | 1.9.0   | Reviewed and updated the intentional solution-page visual baseline.                                                  | Vulcan (`@dev`)            |
-| 2026-08-04 | 2.0.0   | Superseded the first visual PASS after the user rejected its Option 3 fidelity.                                      | Vulcan (`@dev`)            |
-| 2026-08-04 | 2.1.0   | Restored the approved serif, aperture, rail, outline CTA, and compact Solutions fit.                                 | Vulcan (`@dev`)            |
-| 2026-08-04 | 2.2.0   | Regenerated and re-ran the approved solution-page visual baseline.                                                   | Vulcan (`@dev`)            |
-| 2026-08-08 | 2.3.0   | Extended the approved internal system with governed brushed-steel material tokens and narrative chapter transitions. | Iris (`@ux-design-expert`) |
+| Date       | Version | Description                                                                                                                        | Author                     |
+| ---------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| 2026-08-03 | 1.0     | Created implementation-ready story from the completed audit and official moodboard.                                                | Chronos (`@sm`)            |
+| 2026-08-03 | 1.1.0   | Development started (yolo mode) — Status: Ready → InProgress.                                                                      | Vulcan (`@dev`)            |
+| 2026-08-03 | 1.2.0   | Implementation handoff with focused checks green and explicit QA rerun items.                                                      | Vulcan (`@dev`)            |
+| 2026-08-03 | 1.3.0   | QA gate FAIL; returned to InProgress for mandatory gate and persistence evidence.                                                  | Argus (`@qa`)              |
+| 2026-08-03 | 1.4.0   | QA re-review: site/browser evidence cleared; FAIL retained for two release gates.                                                  | Argus (`@qa`)              |
+| 2026-08-03 | 1.5.0   | Refined the homepage storytelling, hierarchy, and evidence-led decision flow.                                                      | Vulcan (`@dev`)            |
+| 2026-08-03 | 1.6.0   | Added fail-safe fit-review notification and sender-confirmation email queueing.                                                    | Vulcan (`@dev`)            |
+| 2026-08-04 | 1.7.0   | Applied the approved Structural Aperture hero system across internal page families.                                                | Vulcan (`@dev`)            |
+| 2026-08-04 | 1.8.0   | Excluded generated Vercel output and captured the definitive full-lint baseline.                                                   | Vulcan (`@dev`)            |
+| 2026-08-04 | 1.9.0   | Reviewed and updated the intentional solution-page visual baseline.                                                                | Vulcan (`@dev`)            |
+| 2026-08-04 | 2.0.0   | Superseded the first visual PASS after the user rejected its Option 3 fidelity.                                                    | Vulcan (`@dev`)            |
+| 2026-08-04 | 2.1.0   | Restored the approved serif, aperture, rail, outline CTA, and compact Solutions fit.                                               | Vulcan (`@dev`)            |
+| 2026-08-04 | 2.2.0   | Regenerated and re-ran the approved solution-page visual baseline.                                                                 | Vulcan (`@dev`)            |
+| 2026-08-08 | 2.3.0   | Extended the approved internal system with governed brushed-steel material tokens and narrative chapter transitions.               | Iris (`@ux-design-expert`) |
+| 2026-08-08 | 2.4.0   | Added responsive editorial media, accessible system diagrams, and varied shared chapters across all six canonical solution routes. | Vulcan (`@dev`)            |
+| 2026-08-08 | 2.4.1   | Approved the workflow visual baseline and strengthened explicit mobile/desktop matrix visibility coverage.                         | Vulcan (`@dev`)            |
 
 ## Dev Agent Record
 
@@ -413,12 +440,18 @@ GPT-5.6
 - IDS `SEARCH → ADAPT/CREATE`: the existing internal-page hero patterns, brand tokens, CTA tracking, TanStack links, and solution-page wrapper were reviewed before creating `InternalHero.tsx`. The first implementation over-adapted Option 3 and was correctly rejected by the user. The corrected implementation now treats the approved composition as the contract: a Cormorant Garamond H1-only exception, visible responsive Structural Aperture asset, restrained gunmetal/teal field, outlined primary CTA, vertical lifecycle rail, and evidence-safe page copy. `/solutions` alone uses a compact title scale to accommodate its longer sentence. Corrective comparison and production-style browser evidence are recorded in `design-qa.md`.
 - Iris brownfield workflow `audit → extract tokens → extend pattern → accessibility review`: the approved Structural Aperture asset was retained; the uniform dark grade was replaced with a directional reading-field grade; brushed-steel material tokens and reusable panel classes were added; and a shared, page-specific “Next chapter” transition was extended through every `InternalHero` consumer. Material panels were deliberately limited to decision/evidence surfaces to avoid decorative noise or a game/HUD aesthetic. Current screenshots and the explicit browser-harness limitation are recorded in `design-qa.md`.
 - Quality-gate diagnosis: `eslint.config.js` already ignored `.output` but not the generated `.vercel` build tree. Adding that generated-artifact boundary reduced the exact `npm run lint` execution from a five-minute timeout to a definitive 46.9-second result. The gate now reports 3,194 existing repository problems (3,167 errors and 27 warnings), predominantly Prettier debt in scripts, legacy routes, and tests; focused ESLint over the Structural Aperture change set remains green.
+- IDS `SEARCH → ADAPT/CREATE`: visual-depth implementation searched `SolutionPage.tsx`, `InternalHero.tsx`, `MAAXStudioSpotlight.tsx`, `ProductEcosystem.tsx`, `HudLabel`, existing `<picture>/<figcaption>` patterns, material CSS, and all canonical solution routes. `InternalHero`, CTA/SEO contracts, route files, and existing architecture arrays were adapted; `SolutionMedia.tsx` and `SolutionDiagram.tsx` were created because no equivalent responsive editorial-media or accessible multi-variant diagram organism existed. Root-supplied assets under `src/assets/solutions/` were consumed without editing.
+- IDS `SEARCH → ADAPT`: the AI Strategy one-off reused its exact canonical head metadata, Service/Breadcrumb JSON-LD, decision questions, capabilities, deliverables, formats, boundary language, and `strategy-advisory` intent while moving into the shared renderer. No redirect, route-tree generator, sitemap, navigation, or `InternalHero` source was changed.
+- IDS `SEARCH → ADAPT`: the existing `SolutionDiagram` breakpoint contract (`dl sm:hidden` plus the desktop `hidden sm:block` table wrapper), `solution-family.spec.ts`, and the Windows-only visual-regression harness were reviewed before extending the existing focused spec. The matrix assertions now verify the visible mobile definition list and hidden desktop wrapper/table at 390px, then the inverse at 1280px. The approved baseline workflow updated only the existing workflow PNG; Privacy and Terms retained their exact pre-run SHA-256 hashes.
+- Self-critique Step 5.5: predicted lazy media could report `naturalWidth=0` before entering the viewport, a desktop matrix could force mobile page overflow, and radial relationships could disappear in forced-color/reduced-motion contexts. The focused test scrolls media into view before validating load; matrix uses a mobile semantic definition list; and every non-matrix diagram remains an ordered numbered list independent of decorative connectors or color. Edge cases considered: six-node strategy matrix, five-node radial layout, 390px viewport, missing/failed image loads, and duplicate hidden desktop/mobile semantics.
+- Focused visual-depth gates: scoped Prettier write PASS; `npm run typecheck` PASS; focused ESLint over the two organisms, shared renderer, six routes, and new Playwright spec PASS; `solution-family.spec.ts` PASS, 6/6, covering all canonical routes at 390px and 1280px, including explicit inverse visibility for each matrix representation. The first Playwright attempt exposed an over-restrictive test-only alt matcher that required one 12-character word; it was corrected to validate a descriptive attribute of at least 24 characters, then the complete matrix passed. The intentional Windows workflow baseline was regenerated alone and the complete visual spec passed 3/3 without changing Privacy or Terms.
+- Self-critique Step 6.5: shared file placement, naming, imports, semantic figure/list/table patterns, intrinsic image dimensions, responsive sources, and solution-scoped CSS match repository conventions; no dependency, endpoint, timeout, feature flag, console output, debug artifact, or secret was added. Focused tests cover load failure detection, semantic labels/descriptions, all four variants, explicit matrix visibility at both breakpoints, mobile/desktop overflow, and the six route contracts. Root visual approval and the clean 3/3 snapshot rerun close the intentional workflow-baseline subtask.
 
 ### Completion Notes List
 
 - The homepage now follows a deliberate narrative arc: opportunity → execution gap → controlled action → the right entry point → control and product context → reviewable evidence → the next decision.
 - Advise, Build, Control, and Operate are explicit focused entry points that can be engaged individually or connected as a larger program. Products and Applied Research remain distinct from client delivery while informing the work.
-- The hero was shortened, the MAAX CTA was made tertiary, its image is explicitly framed as conceptual product direction, and a redundant four-outcome block was removed to improve mobile pacing without adding unsupported proof, cards, or decorative media.
+- The hero was shortened, the MAAX CTA was made tertiary, and a redundant four-outcome block was removed to improve mobile pacing without adding unsupported proof, cards, or decorative media. Public image captions and qualification overlays were removed by direct user request.
 - `/solutions` uses the exact audited phrase, qualifies “owned,” exposes four need-led buyer triggers, and carries allowlisted buyer intent into `/start`.
 - `/start` now uses shared client/server qualification, required outcome/why-now context, accessible errors, sensitive-data warning, truth-preserving persistence handling, and no response SLA.
 - After a fit review is persisted, the API independently queues an internal notification to `contact@cyryxlabs.com` and a receipt-only confirmation to the sender. The UI mentions confirmation only when that queue operation succeeds; it does not claim acceptance, scope, timing, availability, commercial terms, or actual inbox delivery. Local live delivery was not exercised because `SUPABASE_SERVICE_ROLE_KEY` is absent, so deployed delivery still requires the configured queue processor/provider boundary.
@@ -433,9 +466,13 @@ GPT-5.6
 - Internal overview, solution, managed-operations, engagement, product, research, company, career, and shared solution-detail pages now use one responsive Structural Aperture hero system. After the initial implementation failed the user's approved-reference fidelity check, the Company hero was corrected to the exact four-line editorial headline, governed Cormorant display face, visible aperture, outline CTA, and narrow vertical operating rail. `/solutions` received the compact title-scale variant and now fits in five lines at 1280 × 720. The production-style local build returned HTTP 200 and hydrated on `/company`, `/solutions`, and the contextual `/start` route; CTA navigation, form rendering, 390 × 844 mobile layout, menu body lock, and no-horizontal-overflow behavior were exercised. The corrected visual/runtime gate passed; the broader release blockers above remain unchanged.
 - The intentional `solution-workflow-automation` Windows desktop visual baseline was reviewed and regenerated again after the approved Option 3 fidelity correction; the focused snapshot passed on the clean rerun. The current production-style Node preview on port 4177 returned HTTP 200 and hydrated on `/company`, `/solutions`, and the contextual `/start` route; CTAs carried the expected context and the browser journeys were clean. The earlier Vercel Preview remains a historical pre-correction artifact, and production aliases were not changed.
 - The brushed-steel extension adds material architecture rather than more imagery, cards, or effects: edge steel is more legible, the center stays quiet for editorial copy, and selective dark-metal panels distinguish decision/evidence surfaces. Company, Solutions, Careers, Engagement Model, Managed Operations, Products, Research, and all eleven shared solution-detail pages now carry a page-specific narrative transition below the hero. Typecheck, 37 unit tests, focused ESLint, production build, and desktop/mobile visual reviews passed; the attempted extended Chromium route matrix was withheld from passing evidence after its local browser-launch timeout.
+- The six canonical solution routes now pair the unchanged Structural Aperture hero with route-specific responsive editorial media and a semantic system diagram. The shared renderer places route-specific media directly after the hero transition, loads it immediately, gives it a taller mobile crop, and then varies rhythm across asymmetric context, system view, failure/outcome, numbered build/work, delivery, evidence, boundary, FAQ, related content, and CTA chapters. AI Strategy now participates in that same system without changing its canonical metadata, JSON-LD, or fit-review intent. By explicit user direction, editorial images render cleanly without visible captions; descriptive alternative text remains available to assistive technology.
+- Root browser review covered all six route-specific desktop images and diagrams, the governance matrix as a vertical mobile sequence, and zero horizontal overflow. The production build passed. Because `vite preview` is incompatible with the Vercel-oriented build output, runtime hydration was verified through the development server after the existing readiness warm-up. The intentional Windows `solution-workflow-automation` baseline was regenerated alone, reviewed, and the full three-page visual spec passed; Task 10 is complete while Task 9/AC11 remain open for their pre-existing release blockers.
+- PR #12 remote evidence confirmed the Safari mobile test and both Lighthouse executions before their optional report-upload steps failed. The corrected visual baseline then passed locally 3/3 and remotely. Optional `upload-artifact` steps now continue on storage/reporting errors while their underlying quality commands remain blocking, so artifact-service availability cannot misreport successful browser, Lighthouse, or visual gates as product failures.
 
 ### Final File List
 
+- `.github/workflows/quality.yml`
 - `.quality/forbidden-terms.json`
 - `design-qa.md` (created)
 - `docs/stories/website-excellence-2026-08-03.md` (created)
@@ -455,6 +492,8 @@ GPT-5.6
 - `src/components/cyryx/maax/MaaxWaitlistDialog.tsx`
 - `src/components/cyryx/maax/MaaxWaitlistForm.tsx`
 - `src/components/cyryx/seo/SolutionPage.tsx`
+- `src/components/cyryx/solutions/SolutionDiagram.tsx` (created)
+- `src/components/cyryx/solutions/SolutionMedia.tsx` (created)
 - `src/components/cyryx/seo/seo.ts`
 - `src/components/cyryx/v4/CompactStart.tsx`
 - `src/components/cyryx/v4/ControlledExecution.tsx`
@@ -464,6 +503,18 @@ GPT-5.6
 - `src/components/cyryx/v4/SecurityPosture.tsx`
 - `src/copy/v3.ts`
 - `src/assets/cyryx-structural-aperture-1920.webp` (created)
+- `src/assets/solutions/solution-assistants-1440.webp` (created)
+- `src/assets/solutions/solution-assistants-768.webp` (created)
+- `src/assets/solutions/solution-digital-1440.webp` (created)
+- `src/assets/solutions/solution-digital-768.webp` (created)
+- `src/assets/solutions/solution-governance-1440.webp` (created)
+- `src/assets/solutions/solution-governance-768.webp` (created)
+- `src/assets/solutions/solution-product-1440.webp` (created)
+- `src/assets/solutions/solution-product-768.webp` (created)
+- `src/assets/solutions/solution-strategy-1440.webp` (created)
+- `src/assets/solutions/solution-strategy-768.webp` (created)
+- `src/assets/solutions/solution-workflow-1440.webp` (created)
+- `src/assets/solutions/solution-workflow-768.webp` (created)
 - `src/data/publications.ts`
 - `src/data/site-taxonomy.ts` (created)
 - `src/integrations/supabase/types.ts` (generated)
@@ -518,6 +569,7 @@ GPT-5.6
 - `tests/accessibility/research-citation.spec.ts`
 - `tests/accessibility/scroll-restoration.spec.ts`
 - `tests/accessibility/security-headers.spec.ts` (created)
+- `tests/accessibility/solution-family.spec.ts` (created)
 - `tests/accessibility/webkit-mobile-layout.spec.ts`
 - `tests/accessibility/visual-regression.spec.ts-snapshots/solution-workflow-automation-hero-a11y-chromium-win32.png`
 - `tests/cross-browser/compatibility.spec.ts`

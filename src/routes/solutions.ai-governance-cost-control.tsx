@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SolutionPage } from "@/components/cyryx/seo/SolutionPage";
+import governanceVisualSmall from "@/assets/solutions/solution-governance-768.webp";
+import governanceVisualLarge from "@/assets/solutions/solution-governance-1440.webp";
 import {
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
@@ -174,6 +176,15 @@ export const Route = createFileRoute("/solutions/ai-governance-cost-control")({
       ]}
       faq={FAQ}
       engagementNote="This service does not provide legal advice, certification, or independent assurance. Scope, applicable requirements, responsibilities, evidence, and any continuing review are defined for each engagement."
+      visual={{
+        imageSmall: governanceVisualSmall,
+        imageLarge: governanceVisualLarge,
+        alt: "Concentric mechanical control rings with visible checkpoints and restrained teal signals",
+        diagramVariant: "matrix",
+        diagramLabel: "The operating control matrix",
+        diagramCaption:
+          "Inventory, authority, evidence, change, and economics are reviewed together so policy intent can be connected to system behavior.",
+      }}
       relatedAnswers={[
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
         {

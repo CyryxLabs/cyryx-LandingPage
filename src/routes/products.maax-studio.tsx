@@ -240,10 +240,6 @@ function MaaxStudioPage() {
                   decoding="async"
                 />
               </picture>
-              <figcaption className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 px-5 py-4 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]">
-                <span>Current product direction</span>
-                <span>Interface and capabilities remain subject to change</span>
-              </figcaption>
             </figure>
           </div>
         </section>

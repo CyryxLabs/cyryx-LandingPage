@@ -81,6 +81,11 @@ test.describe("Hero — enterprise value proposition", () => {
     sub: "Cyryx Labs turns AI opportunities into controlled execution. Start with Advise, Build, Control, or Operate—or connect the capabilities through an evidence-led program.",
     ctaPrimary: "Start a fit review",
     ctaSecondary: "MAAX Studio",
+    rail: [
+      "Advise. Build.",
+      "Control. Operate.",
+      "From intent to action. From action to evidence.",
+    ],
   } as const;
 
   test("v3 hero copy matches the approved source of truth exactly", () => {
@@ -89,6 +94,7 @@ test.describe("Hero — enterprise value proposition", () => {
     expect(hero.sub).toBe(APPROVED.sub);
     expect(hero.ctaPrimary).toBe(APPROVED.ctaPrimary);
     expect(hero.ctaSecondary).toBe(APPROVED.ctaSecondary);
+    expect(hero.rail).toEqual(APPROVED.rail);
   });
 
   test("v3 hero does not contain the forbidden 'business AI' variant", () => {
@@ -153,8 +159,7 @@ test.describe("Hero — enterprise value proposition", () => {
 
     await expect(section).toContainText("Cyryx Labs / Product in active development");
     await expect(section).toContainText("not a client-delivery phase");
-    await expect(section).toContainText("Product direction");
-    await expect(section).toContainText("Conceptual · Active development");
+    await expect(section.locator("figure figcaption")).toHaveCount(0);
   });
 
   test("homepage explains focused entry points and connected programs without merging product tracks", async ({

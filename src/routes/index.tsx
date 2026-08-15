@@ -14,8 +14,6 @@ import { ControlledExecution } from "@/components/cyryx/v4/ControlledExecution";
 import { EvidenceBeforeClaims } from "@/components/cyryx/v4/EvidenceBeforeClaims";
 import { CompactStart } from "@/components/cyryx/v4/CompactStart";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
-import heroPoster960 from "@/assets/cyryx-hero-poster-960.webp";
-import heroPoster1920 from "@/assets/cyryx-hero-poster-1920.webp";
 import brandMark from "@/assets/cyryx-brand-mark.png";
 
 const HOME_URL = "https://cyryxlabs.com/";
@@ -50,8 +48,9 @@ export const Route = createFileRoute("/")({
       {
         rel: "preload",
         as: "image",
-        href: heroPoster1920,
-        imageSrcSet: `${heroPoster960} 960w, ${heroPoster1920} 1920w`,
+        href: "/media/hero-sequence/desktop/cyryx-hero-frame-001.webp",
+        imageSrcSet:
+          "/media/hero-sequence/mobile/cyryx-hero-frame-001.webp 960w, /media/hero-sequence/desktop/cyryx-hero-frame-001.webp 1920w",
         imageSizes: "100vw",
         fetchPriority: "high",
       },

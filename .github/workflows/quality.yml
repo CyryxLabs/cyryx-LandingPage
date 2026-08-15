@@ -47,11 +47,16 @@ jobs:
       - name: Audit /admin link references (must be 0)
         run: node scripts/audit-admin-links.mjs
       - name: Build production bundle (for bundle scan)
+        env:
+          LIGHTHOUSE_BUILD: "1"
         run: bun run build
       - name: Run Playwright suite (a11y · content · SEO · bundle scan)
         env:
           CI: "1"
           A11Y_REPORT_DIR: a11y-report
+          HOST: "127.0.0.1"
+          PORT: "4175"
+          PLAYWRIGHT_USE_PRODUCTION_SERVER: "1"
         run: >-
           bunx playwright test
           --project=hero-a11y-chromium
@@ -59,10 +64,12 @@ jobs:
           --project=hero-high-contrast
       - name: Upload accessibility report (JSON + HTML)
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with: { name: a11y-report, path: a11y-report }
       - name: Upload raw axe-core JSON reports
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: axe-raw-json
@@ -73,6 +80,7 @@ jobs:
         run: node scripts/axe-to-sarif.mjs a11y-report a11y-report/axe.sarif
       - name: Upload SARIF artifact
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: axe-sarif
@@ -87,10 +95,12 @@ jobs:
           category: axe-core
       - name: Upload Playwright HTML report
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with: { name: playwright-report, path: playwright-report }
       - name: Upload regenerated JSON-LD snapshot (workflow_dispatch only)
         if: always() && env.UPDATE_JSONLD_SNAPSHOT == '1'
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: jsonld-snapshot-updated
@@ -105,6 +115,7 @@ jobs:
           echo '```' >> "$GITHUB_STEP_SUMMARY"
       - name: Upload JSON-LD diff artifact (UPDATE_JSONLD_SNAPSHOT only)
         if: always() && env.UPDATE_JSONLD_SNAPSHOT == '1'
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: jsonld-snapshot-diff
@@ -144,6 +155,7 @@ jobs:
           --project=safari-mobile
       - name: Upload Safari mobile Playwright report
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: safari-mobile-playwright-report
@@ -167,6 +179,7 @@ jobs:
         run: bunx @lhci/cli@0.14.x autorun --config=./lhci.runtime.json
       - name: Upload Lighthouse report
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report-${{ matrix.form_factor }}
@@ -186,6 +199,7 @@ jobs:
         run: bunx playwright test tests/accessibility/visual-regression.spec.ts --project=hero-a11y-chromium
       - name: Upload visual regression report
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: visual-regression-report
@@ -218,6 +232,7 @@ jobs:
         run: node scripts/summarize-quality.mjs
       - name: Upload combined HTML quality report
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: quality-report-html

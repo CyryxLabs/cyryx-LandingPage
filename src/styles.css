@@ -458,6 +458,51 @@ html.cx-low-perf .glass-panel {
   will-change: transform;
 }
 
+.cx-hero-sequence,
+.cx-hero-sequence-poster,
+.cx-hero-sequence-canvas {
+  background: #020506;
+}
+
+.cx-hero-sequence-poster,
+.cx-hero-sequence-canvas {
+  filter: saturate(0.88) contrast(1.06) brightness(0.82);
+}
+
+.cx-hero-sequence-canvas {
+  contain: strict;
+  transform: translateZ(0);
+}
+
+.cx-hero-sequence-spinner {
+  animation: cx-hero-sequence-spin 0.8s linear infinite;
+  box-shadow: 0 0 16px color-mix(in oklab, var(--accent-glow) 34%, transparent);
+}
+
+.cx-hero-story-panel {
+  will-change: transform, opacity, filter;
+}
+
+.cx-hero-story-panel[data-story-index="0"] p {
+  max-width: 8ch;
+}
+
+.cx-hero-story-panel[data-story-index="1"] p {
+  max-width: 8ch;
+  margin-left: auto;
+}
+
+.cx-hero-story-panel[data-story-index="2"] p {
+  max-width: 15ch;
+  margin-inline: auto;
+}
+
+@keyframes cx-hero-sequence-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 .cx-hero-media {
   filter: saturate(0.86) contrast(1.08) brightness(0.78);
   transform: scale(1.025);
@@ -697,6 +742,172 @@ html.cx-low-perf .glass-panel {
   }
 }
 
+/* Solution editorial system: imagery carries atmosphere; semantic HTML carries
+   the system relationships so every diagram survives mobile and forced color. */
+.cx-solution-media img {
+  filter: saturate(0.76) contrast(1.06) brightness(0.98);
+}
+
+.cx-solution-media-stage {
+  background-image:
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--silver) 5%, transparent),
+      transparent 11%,
+      transparent 89%,
+      color-mix(in oklab, var(--silver) 4%, transparent)
+    ),
+    linear-gradient(180deg, transparent, color-mix(in oklab, var(--teal) 2.5%, transparent));
+}
+
+.cx-solution-media {
+  box-shadow:
+    0 1.5rem 4rem rgb(0 0 0 / 36%),
+    inset 0 1px color-mix(in oklab, var(--silver) 8%, transparent);
+}
+
+.cx-solution-diagram-list {
+  display: grid;
+  gap: 0;
+  margin-top: 2rem;
+  border-top: 1px solid color-mix(in oklab, var(--silver) 10%, transparent);
+}
+
+.cx-solution-diagram-node {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--silver) 10%, transparent);
+}
+
+.cx-solution-diagram-index {
+  padding-top: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: var(--accent-glow);
+}
+
+.cx-solution-radial-core {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .cx-solution-diagram-list[data-variant="flow"] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    border-bottom: 1px solid color-mix(in oklab, var(--silver) 10%, transparent);
+  }
+
+  .cx-solution-diagram-list[data-variant="flow"] .cx-solution-diagram-node {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    border-right: 1px solid color-mix(in oklab, var(--silver) 10%, transparent);
+    border-bottom: 0;
+  }
+
+  .cx-solution-diagram-list[data-variant="flow"] .cx-solution-diagram-node:last-child {
+    border-right: 0;
+  }
+
+  .cx-solution-diagram-list[data-variant="flow"] .cx-solution-diagram-node:not(:last-child)::after {
+    position: absolute;
+    top: 2.1rem;
+    right: -0.33rem;
+    z-index: 2;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-top: 1px solid var(--accent-glow);
+    border-right: 1px solid var(--accent-glow);
+    background: var(--onyx);
+    content: "";
+    transform: rotate(45deg);
+  }
+
+  .cx-solution-diagram-list[data-variant="stack"] {
+    margin-inline: auto;
+    max-width: 56rem;
+  }
+
+  .cx-solution-diagram-list[data-variant="stack"] .cx-solution-diagram-node {
+    grid-template-columns: 4rem minmax(0, 1fr);
+    padding-inline: 1.5rem;
+    border-right: 1px solid color-mix(in oklab, var(--silver) 10%, transparent);
+    border-left: 1px solid color-mix(in oklab, var(--silver) 10%, transparent);
+    background: linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--graphite) 64%, transparent),
+      transparent
+    );
+  }
+
+  .cx-solution-diagram-list[data-variant="stack"] .cx-solution-diagram-node:nth-child(2) {
+    margin-inline: 1rem;
+  }
+
+  .cx-solution-diagram-list[data-variant="stack"] .cx-solution-diagram-node:nth-child(3) {
+    margin-inline: 2rem;
+  }
+
+  .cx-solution-diagram-list[data-variant="stack"] .cx-solution-diagram-node:nth-child(4) {
+    margin-inline: 3rem;
+  }
+
+  .cx-solution-diagram-list[data-variant="stack"] .cx-solution-diagram-node:nth-child(5) {
+    margin-inline: 4rem;
+  }
+
+  .cx-solution-diagram-list[data-variant="radial"] {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1rem;
+    padding-top: 9rem;
+    border-top: 0;
+  }
+
+  .cx-solution-diagram-list[data-variant="radial"] .cx-solution-diagram-node {
+    grid-column: span 2;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    padding: 1.25rem;
+    border: 1px solid color-mix(in oklab, var(--silver) 12%, transparent);
+    background: color-mix(in oklab, var(--obsidian) 84%, transparent);
+  }
+
+  .cx-solution-diagram-list[data-variant="radial"] .cx-solution-diagram-node:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .cx-solution-radial-core {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    display: grid;
+    width: 7rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid color-mix(in oklab, var(--accent-glow) 48%, transparent);
+    border-radius: 999px;
+    background: var(--obsidian);
+    box-shadow:
+      0 0 0 1.25rem color-mix(in oklab, var(--accent-glow) 5%, transparent),
+      0 0 0 2.5rem color-mix(in oklab, var(--silver) 3%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    line-height: 1.5;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--silver);
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .cx-solution-media img {
+    filter: none;
+  }
+}
+
 @media (min-width: 1024px) {
   .cx-hero-grade {
     background:
@@ -853,13 +1064,23 @@ html.cx-low-perf .glass-panel {
 
 /* Reduced motion: drop expensive hero effects + animations. */
 @media (prefers-reduced-motion: reduce) {
+  [data-hero] {
+    height: 100svh !important;
+  }
+
+  [data-hero-sticky] {
+    position: relative !important;
+  }
+
   .cx-hero-panel {
     backdrop-filter: none;
     background: color-mix(in oklab, #000 55%, transparent);
   }
   .cx-hero-noise,
   .cx-hero-line-glow,
-  .cx-hero-scroll-cue {
+  .cx-hero-scroll-cue,
+  .cx-hero-sequence-loader,
+  .cx-hero-story-panel {
     display: none !important;
   }
   .cx-cta,
@@ -887,6 +1108,16 @@ html.cx-low-perf .cx-hero-panel {
 html.cx-low-perf .cx-hero-noise,
 html.cx-low-perf .cx-hero-line-glow,
 html.cx-low-perf .cx-stage {
+  display: none !important;
+}
+html.cx-low-perf [data-hero] {
+  height: 100svh !important;
+}
+html.cx-low-perf [data-hero-sticky] {
+  position: relative !important;
+}
+html.cx-low-perf .cx-hero-scroll-cue,
+html.cx-low-perf .cx-hero-story-panel {
   display: none !important;
 }
 html.cx-low-perf header {
@@ -1032,6 +1263,11 @@ html.cx-low-perf .cx-liquid-glass {
   [data-hero] {
     background: Canvas;
     color: CanvasText;
+    height: 100svh !important;
+  }
+
+  [data-hero-sticky] {
+    position: relative !important;
   }
 
   [data-hero] .text-chrome-gradient,
@@ -1068,6 +1304,12 @@ html.cx-low-perf .cx-liquid-glass {
 
   [data-hero] img {
     opacity: 0;
+  }
+
+  [data-hero] canvas,
+  [data-hero] [data-hero-loader],
+  [data-hero] [data-hero-story] {
+    display: none !important;
   }
 
   [data-hero] a {
