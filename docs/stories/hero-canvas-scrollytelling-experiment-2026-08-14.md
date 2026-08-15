@@ -35,6 +35,7 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 - `bun.lock`
 - `docs/stories/hero-canvas-scrollytelling-experiment-2026-08-14.md`
 - `package.json`
+- `playwright.config.ts`
 - `public/media/hero-sequence/desktop/*.webp` (40 optimized frames)
 - `public/media/hero-sequence/mobile/*.webp` (40 optimized frames)
 - `src/components/cyryx/CyryxHeroSequence.tsx`
@@ -46,6 +47,8 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 - `tests/accessibility/copy-validation.spec.ts`
 - `tests/accessibility/hero-video-lazy.spec.ts`
 - `tests/accessibility/hero-video.spec.ts`
+- `tests/accessibility/header-dropdown.spec.ts`
+- `tests/accessibility/maax-waitlist.spec.ts`
 - `tests/accessibility/scrolltrigger-breakpoints.spec.ts`
 - `tests/accessibility/seo-metadata.spec.ts`
 
@@ -59,3 +62,4 @@ The owner requested a local hero experiment using the 40-frame Cyryx image seque
 - Local review URL: `http://127.0.0.1:4184/`. The owner approved production publication after reviewing this runtime; commit, push, deployment, and live smoke-test evidence must be appended before the story can be marked Done.
 - The complete local CI matrix initially passed 644 scenarios and reproduced six failures from two shared causes: a decorative CSS percentage collided with the fake-metric guard, and the SEO test still expected retired metadata wording. After correcting both contracts, the release-focused three-project matrix passed 126/126; the remote PR workflow remains the final full-matrix authority.
 - A pre-release `bun audit` identified critical advisory `GHSA-mv8w-475r-vwqw` through transitive `seroval@1.5.2`. A root override now pins patched `seroval@1.6.2`; the lockfile resolves one patched version and `bun audit --audit-level=critical` passes.
+- The first remote PR run passed Safari mobile, visual regression, and both Lighthouse profiles, while its global Playwright job exposed CI contention plus a deterministic low-performance contract mismatch (630 passed, 40 skipped, 14 failed). The sequence now honors `cx-low-perf`, preloads in four abortable low-priority batches, yields to hydration/GSAP, and the affected three-project rerun passed 131 existing scenarios; the explicit high-performance, low-performance, reduced-motion, and readability contract then passed 15/15.

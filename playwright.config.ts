@@ -14,7 +14,7 @@ export default defineConfig({
   // The TanStack/Vite development server can miss or re-register virtual
   // client modules when this heavy browser matrix saturates the host. Keep CI
   // concurrent, but below the point where dev-server hydration becomes flaky.
-  workers: process.env.CI ? 4 : undefined,
+  workers: process.env.CI ? 3 : undefined,
   reporter: process.env.CI
     ? [["list"], ["html", { outputFolder: "playwright-report/a11y", open: "never" }]]
     : "list",

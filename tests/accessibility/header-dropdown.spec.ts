@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { expectPageHydrated } from "../support/page-ready";
 
 async function openHydrated(page: Page, path = "/") {
-  await page.goto(path, { waitUntil: "networkidle" });
+  await page.goto(path, { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
 }
 

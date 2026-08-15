@@ -36,6 +36,12 @@ export function useCyryxScrollAnimations() {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lowPerf = document.documentElement.classList.contains("cx-low-perf");
+    const heroRoot = document.querySelector<HTMLElement>("[data-hero]");
+
+    if (heroRoot) {
+      if (!reduceMotion && !lowPerf) heroRoot.dataset.scrollScrub = "true";
+      else delete heroRoot.dataset.scrollScrub;
+    }
 
     const publishDiagnostics = (
       gsapStats: { tweenCount: number; scrollTriggerCount: number } = {
@@ -105,6 +111,7 @@ export function useCyryxScrollAnimations() {
       showFinalStates();
       return () => {
         if (diagnosticRaf) cancelAnimationFrame(diagnosticRaf);
+        if (heroRoot) delete heroRoot.dataset.scrollScrub;
       };
     }
 
@@ -709,6 +716,7 @@ export function useCyryxScrollAnimations() {
     return () => {
       cancelled = true;
       cleanup?.();
+      if (heroRoot) delete heroRoot.dataset.scrollScrub;
     };
   }, []);
 }

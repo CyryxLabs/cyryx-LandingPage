@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 const FRAME_COUNT = 40;
+const PRELOAD_BATCH_SIZE = 4;
 const FRAME_BACKGROUND = "#020506";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const MOBILE_QUERY = "(max-width: 767px)";
@@ -30,18 +31,42 @@ function frameSource(variant: FrameVariant, frame: number) {
   return `/media/hero-sequence/${variant}/cyryx-hero-frame-${String(frame).padStart(3, "0")}.webp`;
 }
 
-function loadFrame(src: string, highPriority: boolean) {
+function loadFrame(src: string, highPriority: boolean, signal: AbortSignal) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
+    let settled = false;
+
+    const finish = (callback: () => void) => {
+      if (settled) return;
+      settled = true;
+      signal.removeEventListener("abort", onAbort);
+      callback();
+    };
+    const onAbort = () => {
+      image.onload = null;
+      image.onerror = null;
+      image.src = "";
+      finish(() => reject(new DOMException("Hero frame load aborted", "AbortError")));
+    };
+
+    if (signal.aborted) {
+      onAbort();
+      return;
+    }
+
+    signal.addEventListener("abort", onAbort, { once: true });
     image.decoding = "async";
-    if (highPriority) image.fetchPriority = "high";
+    image.fetchPriority = highPriority ? "high" : "low";
     image.onload = () => {
       void image
         .decode()
         .catch(() => undefined)
-        .finally(() => resolve(image));
+        .finally(() => {
+          if (signal.aborted) return;
+          finish(() => resolve(image));
+        });
     };
-    image.onerror = () => reject(new Error(`Unable to load hero frame: ${src}`));
+    image.onerror = () => finish(() => reject(new Error(`Unable to load hero frame: ${src}`)));
     image.src = src;
   });
 }
@@ -56,6 +81,7 @@ export function CyryxHeroSequence() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [lowPerformance, setLowPerformance] = useState(false);
   const reducedMotion = useSyncExternalStore(
     subscribeToReducedMotion,
     getReducedMotionSnapshot,
@@ -122,15 +148,19 @@ export function CyryxHeroSequence() {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || !variant) {
+    setLowPerformance(document.documentElement.classList.contains("cx-low-perf"));
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion || lowPerformance || !variant) {
       framesRef.current = [];
-      setLoadProgress(reducedMotion ? 100 : 0);
+      setLoadProgress(reducedMotion || lowPerformance ? 100 : 0);
       setReady(false);
       setFailed(false);
       return;
     }
 
-    let cancelled = false;
+    const controller = new AbortController();
     let loadedCount = 0;
     setReady(false);
     setFailed(false);
@@ -138,39 +168,52 @@ export function CyryxHeroSequence() {
     framesRef.current = [];
 
     const loadSequence = async () => {
-      const results = await Promise.allSettled(
-        Array.from({ length: FRAME_COUNT }, (_, index) =>
-          loadFrame(frameSource(variant, index + 1), index === 0).then((image) => {
-            loadedCount += 1;
-            if (!cancelled) setLoadProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
-            return image;
-          }),
-        ),
-      );
-      if (cancelled) return;
+      const loadedFrames: HTMLImageElement[] = [];
 
-      const rejected = results.some((result) => result.status === "rejected");
-      if (rejected) {
+      try {
+        for (let offset = 0; offset < FRAME_COUNT; offset += PRELOAD_BATCH_SIZE) {
+          const batchSize = Math.min(PRELOAD_BATCH_SIZE, FRAME_COUNT - offset);
+          const batch = await Promise.all(
+            Array.from({ length: batchSize }, (_, batchIndex) => {
+              const frameIndex = offset + batchIndex;
+              return loadFrame(
+                frameSource(variant, frameIndex + 1),
+                frameIndex === 0,
+                controller.signal,
+              );
+            }),
+          );
+
+          if (controller.signal.aborted) return;
+          loadedFrames.push(...batch);
+          loadedCount += batch.length;
+          setLoadProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
+
+          if (loadedCount < FRAME_COUNT) {
+            await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+          }
+        }
+      } catch (error) {
+        if (controller.signal.aborted) return;
         framesRef.current = [];
         setFailed(true);
         setReady(false);
         return;
       }
 
-      framesRef.current = results.map(
-        (result) => (result as PromiseFulfilledResult<HTMLImageElement>).value,
-      );
+      framesRef.current = loadedFrames;
       setLoadProgress(100);
       setReady(true);
       window.dispatchEvent(new CustomEvent("cyryx:hero-sequence-ready"));
     };
 
-    void loadSequence();
+    const loadTimer = window.setTimeout(() => void loadSequence(), 0);
     return () => {
-      cancelled = true;
+      window.clearTimeout(loadTimer);
+      controller.abort();
       framesRef.current = [];
     };
-  }, [reducedMotion, variant]);
+  }, [lowPerformance, reducedMotion, variant]);
 
   useEffect(() => {
     const onProgress = (event: Event) => {
@@ -199,7 +242,8 @@ export function CyryxHeroSequence() {
     [],
   );
 
-  const mode = reducedMotion ? "still" : ready ? "sequence" : failed ? "fallback" : "loading";
+  const stillMode = reducedMotion || lowPerformance;
+  const mode = stillMode ? "still" : ready ? "sequence" : failed ? "fallback" : "loading";
 
   return (
     <div
@@ -212,10 +256,10 @@ export function CyryxHeroSequence() {
       <picture className="absolute inset-0">
         <source
           media="(max-width: 767px)"
-          srcSet={frameSource("mobile", reducedMotion ? FRAME_COUNT : 1)}
+          srcSet={frameSource("mobile", stillMode ? FRAME_COUNT : 1)}
         />
         <img
-          src={frameSource("desktop", reducedMotion ? FRAME_COUNT : 1)}
+          src={frameSource("desktop", stillMode ? FRAME_COUNT : 1)}
           alt=""
           fetchPriority="high"
           loading="eager"
@@ -229,7 +273,7 @@ export function CyryxHeroSequence() {
         />
       </picture>
 
-      {!reducedMotion && (
+      {!stillMode && (
         <canvas
           ref={canvasRef}
           aria-hidden="true"
@@ -239,7 +283,7 @@ export function CyryxHeroSequence() {
         />
       )}
 
-      {!reducedMotion && !ready && !failed && (
+      {!stillMode && !ready && !failed && (
         <div
           role="status"
           aria-live="polite"

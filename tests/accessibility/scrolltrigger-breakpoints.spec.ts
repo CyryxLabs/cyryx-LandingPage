@@ -1,4 +1,12 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+import { expectPageHydrated } from "../support/page-ready";
+
+async function useHighPerformanceProfile(page: Page) {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, value: 8 });
+    Object.defineProperty(navigator, "deviceMemory", { configurable: true, value: 8 });
+  });
+}
 
 /**
  * Smoke-tests that home-route GSAP ScrollTrigger timelines render across
@@ -21,6 +29,7 @@ for (const vp of VIEWPORTS) {
 
     await page.setViewportSize({ width: vp.width, height: vp.height });
     await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expectPageHydrated(page);
     await expect(page.locator("section[data-hero]")).toBeVisible();
 
     // Scroll through the page in stages so ScrollTrigger has to run.
@@ -93,6 +102,7 @@ test("desktop Hero uses native sticky positioning and scrubs the canvas sequence
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
   const hero = page.locator("section[data-hero]");
   const canvas = hero.locator("[data-hero-canvas]");
   await expect(hero.locator("[data-scroll-progress]")).toHaveCount(1);
@@ -111,6 +121,16 @@ test("desktop Hero uses native sticky positioning and scrubs the canvas sequence
     window.scrollTo(0, range * 0.5);
   });
   await page.waitForTimeout(900);
+
+  await expect
+    .poll(
+      () =>
+        canvas.evaluate((element) =>
+          Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
+        ),
+      { timeout: 5_000 },
+    )
+    .toBeGreaterThan(12);
 
   const state = await page.evaluate(() => {
     const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
@@ -136,11 +156,13 @@ for (const viewport of [
   { name: "tablet", width: 768, height: 1024 },
   { name: "mobile", width: 390, height: 800 },
 ]) {
-  test(`${viewport.name} Hero scrubs the preloaded canvas without GSAP pinning`, async ({
+  test(`${viewport.name} Hero follows the device performance policy without GSAP pinning`, async ({
     page,
   }) => {
+    await useHighPerformanceProfile(page);
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expectPageHydrated(page);
 
     const hero = page.locator("section[data-hero]");
     const canvas = hero.locator("[data-hero-canvas]");
@@ -159,6 +181,16 @@ for (const viewport of [
       window.scrollTo(0, range * 0.55);
     });
     await page.waitForTimeout(900);
+
+    await expect
+      .poll(
+        () =>
+          canvas.evaluate((element) =>
+            Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
+          ),
+        { timeout: 5_000 },
+      )
+      .toBeGreaterThan(12);
 
     const scrubbed = await page.evaluate(() => {
       const canvasElement = document.querySelector<HTMLCanvasElement>("[data-hero-canvas]");
@@ -183,6 +215,7 @@ test("reduced motion removes Hero sequence scrubbing and extended scroll", async
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
 
   await expect(page.locator("section[data-hero]")).toBeVisible();
   await expect(page.locator(".pin-spacer")).toHaveCount(0);
@@ -232,6 +265,7 @@ test("desktop execution rail progresses through the governed operating sequence"
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
   await expect(page.locator("section[data-hero]")).toHaveAttribute("data-scroll-scrub", "true", {
     timeout: 10_000,
   });
@@ -250,12 +284,17 @@ test("desktop execution rail progresses through the governed operating sequence"
   await page.waitForTimeout(900);
 
   const railTransform = await rail.evaluate((element) => getComputedStyle(element).transform);
-  const visibleNodes = await nodes.evaluateAll(
-    (items) =>
-      items.filter((item) => Number.parseFloat(getComputedStyle(item).opacity) > 0.6).length,
-  );
+  await expect
+    .poll(
+      () =>
+        nodes.evaluateAll(
+          (items) =>
+            items.filter((item) => Number.parseFloat(getComputedStyle(item).opacity) > 0.6).length,
+        ),
+      { timeout: 5_000 },
+    )
+    .toBe(5);
 
   expect(railTransform).not.toBe("none");
-  expect(visibleNodes).toBe(5);
   await expect(system).toContainText("From intent to action. From action to evidence.");
 });

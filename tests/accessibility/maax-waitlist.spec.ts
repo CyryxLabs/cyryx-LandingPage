@@ -61,7 +61,6 @@ test.describe("MAAX Studio early-access funnel", () => {
   test("opens the dedicated waitlist from the homepage MAAX call to action", async ({ page }) => {
     await page.goto("/");
     await expectPageHydrated(page);
-    await page.waitForLoadState("networkidle");
 
     await page.getByRole("button", { name: "Request early-access review" }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
