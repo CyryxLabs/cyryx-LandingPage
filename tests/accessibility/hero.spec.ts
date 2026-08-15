@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import axeCore from "axe-core";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { expectPageHydrated } from "../support/page-ready";
 
 declare global {
   interface Window {
