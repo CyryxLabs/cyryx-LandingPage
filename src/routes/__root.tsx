@@ -208,16 +208,6 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   useEffect(() => {
-    if (!window.location.hash) {
-      const root = document.documentElement;
-      root.style.scrollBehavior = "auto";
-      window.scrollTo(0, 0);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          root.style.scrollBehavior = "";
-        });
-      });
-    }
     initWebVitals();
     syncCopyVariantToDocument();
     document.documentElement.dataset.cyryxHydrated = "true";
