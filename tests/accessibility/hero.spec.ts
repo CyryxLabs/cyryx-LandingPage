@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import axeCore from "axe-core";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { expectPageHydrated } from "../support/page-ready";
 
 declare global {
   interface Window {
@@ -178,6 +179,8 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
 
     const metrics = await page.locator("#hero-heading").evaluate((heading) => {
       const headingRect = heading.getBoundingClientRect();
+      const scrollScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+      const sceneRect = scrollScene?.getBoundingClientRect();
       const lineRects = Array.from(heading.querySelectorAll(".cx-hero-title-line")).map((line) => {
         const rect = line.getBoundingClientRect();
         const style = getComputedStyle(line);
@@ -201,6 +204,14 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
           left: headingRect.left,
           overflow: getComputedStyle(heading).overflow,
         },
+        scene: sceneRect
+          ? {
+              top: sceneRect.top,
+              right: sceneRect.right,
+              bottom: sceneRect.bottom,
+              left: sceneRect.left,
+            }
+          : null,
         lineRects,
         documentWidth: document.documentElement.scrollWidth,
         viewportWidth: window.innerWidth,
@@ -234,10 +245,62 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
       );
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
       expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
-      expect(line.top).toBeGreaterThanOrEqual(0);
-      expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
+      if (metrics.viewportWidth < 768) {
+        expect(metrics.scene).not.toBeNull();
+        expect(line.top).toBeGreaterThanOrEqual((metrics.scene?.bottom ?? 0) - 1);
+      } else {
+        expect(line.top).toBeGreaterThanOrEqual(0);
+        expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
+      }
     }
   }
+});
+
+test("Mobile Hero places its content panel after the media scene", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, value: 8 });
+    Object.defineProperty(navigator, "deviceMemory", { configurable: true, value: 8 });
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
+
+  const layout = await page.evaluate(() => {
+    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+    const media = document.querySelector<HTMLElement>("[data-hero-media-frame]");
+    const content = document.querySelector<HTMLElement>("[data-hero-content-layer]");
+    const panel = document.querySelector<HTMLElement>(".cx-hero-panel");
+    const rect = (element: HTMLElement | null) => {
+      const bounds = element?.getBoundingClientRect();
+      return bounds
+        ? {
+            top: bounds.top + window.scrollY,
+            right: bounds.right,
+            bottom: bounds.bottom + window.scrollY,
+            left: bounds.left,
+          }
+        : null;
+    };
+    return {
+      scene: rect(scene),
+      media: rect(media),
+      content: rect(content),
+      panel: rect(panel),
+      headingCount: document.querySelectorAll("#hero-heading").length,
+      primaryCtaCount: document.querySelectorAll(
+        'section[data-hero] a[aria-label="Start a fit review with Cyryx Labs"]',
+      ).length,
+    };
+  });
+
+  expect(layout.scene).not.toBeNull();
+  expect(layout.media).not.toBeNull();
+  expect(layout.content).not.toBeNull();
+  expect(layout.panel).not.toBeNull();
+  expect(layout.content!.top).toBeGreaterThanOrEqual(layout.scene!.bottom - 1);
+  expect(layout.panel!.top).toBeGreaterThanOrEqual(layout.media!.bottom - 1);
+  expect(layout.headingCount).toBe(1);
+  expect(layout.primaryCtaCount).toBe(1);
 });
 
 test("Forced-colors keeps Hero text and focus indicators system-readable", async ({ page }) => {

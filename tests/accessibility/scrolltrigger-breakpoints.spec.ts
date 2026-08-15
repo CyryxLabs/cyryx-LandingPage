@@ -116,8 +116,8 @@ test("desktop Hero uses native sticky positioning and scrubs the canvas sequence
   await expect(canvas).toHaveAttribute("data-frame-index", "1");
 
   await page.evaluate(() => {
-    const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
-    const range = (heroElement?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+    const heroScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+    const range = (heroScene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
     window.scrollTo(0, range * 0.5);
   });
   await page.waitForTimeout(900);
@@ -176,8 +176,8 @@ for (const viewport of [
     await expect(canvas).toHaveAttribute("data-frame-index", "1");
 
     await page.evaluate(() => {
-      const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
-      const range = (heroElement?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+      const heroScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+      const range = (heroScene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
       window.scrollTo(0, range * 0.55);
     });
     await page.waitForTimeout(900);
@@ -211,6 +211,71 @@ for (const viewport of [
   });
 }
 
+test("Hero reserves late sequence frames for an unobstructed brand reveal", async ({ page }) => {
+  await useHighPerformanceProfile(page);
+
+  for (const viewport of [
+    { name: "mobile", width: 390, height: 800 },
+    { name: "desktop", width: 1280, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expectPageHydrated(page);
+
+    const hero = page.locator("section[data-hero]");
+    const canvas = hero.locator("[data-hero-canvas]");
+    const storyPanels = hero.locator("[data-hero-story-panel]");
+    const finalStory = storyPanels.last();
+    await expect(storyPanels).toHaveCount(3);
+    await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
+      "data-sequence-ready",
+      "true",
+      { timeout: 20_000 },
+    );
+
+    await page.evaluate(() => {
+      const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+      const range = (scene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+      window.scrollTo(0, range * 0.67);
+    });
+    await page.waitForTimeout(500);
+    await expect
+      .poll(
+        () =>
+          finalStory.evaluate((element) => Number.parseFloat(getComputedStyle(element).opacity)),
+        { timeout: 3_000 },
+      )
+      .toBeGreaterThan(0.5);
+
+    await page.evaluate(() => {
+      const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+      const range = (scene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+      window.scrollTo(0, range * 0.9);
+    });
+    await page.waitForTimeout(500);
+
+    await expect
+      .poll(
+        () =>
+          canvas.evaluate((element) =>
+            Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
+          ),
+        { timeout: 5_000 },
+      )
+      .toBeGreaterThanOrEqual(34);
+
+    const finalOverlayState = await finalStory.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        opacity: Number.parseFloat(style.opacity),
+        visibility: style.visibility,
+      };
+    });
+    expect(finalOverlayState.opacity, `${viewport.name}: final story opacity`).toBeLessThan(0.02);
+    expect(finalOverlayState.visibility, `${viewport.name}: final story visibility`).toBe("hidden");
+  }
+});
+
 test("reduced motion removes Hero sequence scrubbing and extended scroll", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1280, height: 900 });
@@ -222,7 +287,7 @@ test("reduced motion removes Hero sequence scrubbing and extended scroll", async
   await expect(page.locator("[data-hero-canvas]")).toHaveCount(0);
   await expect(page.locator("section[data-hero]")).not.toHaveAttribute("data-scroll-scrub", "true");
   const height = await page
-    .locator("section[data-hero]")
+    .locator("[data-hero-scroll-scene]")
     .evaluate((element) => element.getBoundingClientRect().height);
   expect(height).toBeLessThanOrEqual(901);
 });

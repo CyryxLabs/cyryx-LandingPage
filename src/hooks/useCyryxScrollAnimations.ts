@@ -144,7 +144,7 @@ export function useCyryxScrollAnimations() {
           const heroSub = document.querySelector<HTMLElement>(".cx-hero-sub");
           const heroCtas = document.querySelector<HTMLElement>(".cx-hero-ctas");
 
-          if (heroLine && heroSub && heroCtas && !lowPerf) {
+          if (heroLine && heroSub && heroCtas && !lowPerf && !mobile) {
             const heroSequence = gsap.timeline({ defaults: { ease: "power3.out" } });
             heroSequence
               .from(heroLine, { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
@@ -161,6 +161,7 @@ export function useCyryxScrollAnimations() {
            * its own requestAnimationFrame loop.
            */
           const hero = document.querySelector<HTMLElement>("[data-hero]");
+          const heroScrollScene = hero?.querySelector<HTMLElement>("[data-hero-scroll-scene]");
           const heroMediaFrame = hero?.querySelector<HTMLElement>("[data-hero-media-frame]");
           const heroGrade = hero?.querySelector<HTMLElement>(".cx-hero-grade");
           const heroAura = hero?.querySelector<HTMLElement>("[data-hero-aura]");
@@ -171,7 +172,7 @@ export function useCyryxScrollAnimations() {
             ? gsap.utils.toArray<HTMLElement>("[data-hero-story-panel]", hero)
             : [];
 
-          if (hero && heroMediaFrame && heroGrade && heroContent && !lowPerf) {
+          if (hero && heroScrollScene && heroMediaFrame && heroGrade && heroContent && !lowPerf) {
             hero.dataset.scrollScrub = "true";
             if (heroStoryPanels.length) {
               gsap.set(heroStoryPanels, { autoAlpha: 0, y: mobile ? 14 : 24 });
@@ -186,7 +187,7 @@ export function useCyryxScrollAnimations() {
                 );
               },
               scrollTrigger: {
-                trigger: hero,
+                trigger: heroScrollScene,
                 start: "top top",
                 end: "bottom bottom",
                 scrub: desktop ? 0.65 : tablet ? 0.45 : 0.3,
@@ -202,22 +203,27 @@ export function useCyryxScrollAnimations() {
                 { scale: 1, ease: "none", duration: 1 },
                 0,
               )
-              .to(heroGrade, { opacity: 0.88, ease: "none", duration: 1 }, 0)
-              .to(
+              .to(heroGrade, { opacity: 0.88, ease: "none", duration: 1 }, 0);
+
+            if (!mobile) {
+              heroScrollTimeline.to(
                 heroContent,
                 {
-                  y: mobile ? -18 : -32,
+                  y: -32,
                   autoAlpha: 0,
                   ease: "power1.in",
                   duration: 0.12,
                 },
                 0.08,
               );
+            } else {
+              gsap.set(heroContent, { autoAlpha: 1, x: 0, y: 0 });
+            }
 
             const storyWindows = [
-              { enter: 0.25, leave: 0.43 },
-              { enter: 0.5, leave: 0.69 },
-              { enter: 0.79, leave: null },
+              { enter: 0.25, leave: 0.43, enterDuration: 0.07, leaveDuration: 0.07 },
+              { enter: 0.46, leave: 0.58, enterDuration: 0.07, leaveDuration: 0.07 },
+              { enter: 0.6, leave: 0.71, enterDuration: 0.05, leaveDuration: 0.04 },
             ] as const;
 
             heroStoryPanels.forEach((panel, index) => {
@@ -234,7 +240,7 @@ export function useCyryxScrollAnimations() {
                   autoAlpha: 1,
                   y: 0,
                   filter: "blur(0px)",
-                  duration: 0.07,
+                  duration: storyWindow.enterDuration,
                   ease: "power2.out",
                 },
                 storyWindow.enter,
@@ -246,7 +252,7 @@ export function useCyryxScrollAnimations() {
                     autoAlpha: 0,
                     y: mobile ? -10 : -18,
                     filter: mobile ? "none" : "blur(6px)",
-                    duration: 0.07,
+                    duration: storyWindow.leaveDuration,
                     ease: "power1.in",
                   },
                   storyWindow.leave,
