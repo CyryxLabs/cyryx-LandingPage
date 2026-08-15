@@ -62,8 +62,12 @@ test.describe("MAAX Studio early-access funnel", () => {
     await page.goto("/");
     await expectPageHydrated(page);
 
-    await page.getByRole("button", { name: "Request early-access review" }).click();
-    await expect(page.getByRole("dialog")).toBeVisible();
+    const trigger = page
+      .locator("#maax")
+      .getByRole("button", { name: "Request early-access review", exact: true });
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('input[name="fullName"]')).toBeVisible();
   });
 
