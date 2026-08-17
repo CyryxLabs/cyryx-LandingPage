@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnswerPage } from "@/components/cyryx/seo/AnswerPage";
-import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
+  buildHead,
+  buildTechArticleJsonLd,
+} from "@/components/cyryx/seo/seo";
 
 const PATH = "/answers/what-are-command-gates-in-ai-systems";
 const TITLE = "What are command gates in AI systems? | Cyryx Labs";
@@ -31,6 +36,16 @@ export const Route = createFileRoute("/answers/what-are-command-gates-in-ai-syst
         { name: "Command gates", path: PATH },
       ]),
       buildFaqJsonLd(faqs),
+      buildTechArticleJsonLd({
+        headline: "What are command gates in AI systems?",
+        description: DESC,
+        path: PATH,
+        datePublished: "2026-08-17",
+        dateModified: "2026-08-17",
+        authors: ["Cyryx Labs"],
+        authorType: "Organization",
+        keywords: ["AI command gates", "AI policy gates", "agentic AI governance"],
+      }),
     ]),
   component: () => (
     <AnswerPage
@@ -64,6 +79,20 @@ export const Route = createFileRoute("/answers/what-are-command-gates-in-ai-syst
         "Adding gates without owners — unowned gates rot and silently weaken.",
       ]}
       faqs={faqs}
+      publishedAt="2026-08-17"
+      reviewedAt="2026-08-17"
+      primarySources={[
+        {
+          title: "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+          publisher: "U.S. National Institute of Standards and Technology",
+          url: "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10",
+        },
+        {
+          title: "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+          publisher: "Official Journal of the European Union",
+          url: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+        },
+      ]}
       related={[
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
         {

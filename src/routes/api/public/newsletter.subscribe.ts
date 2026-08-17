@@ -106,7 +106,7 @@ export const Route = createFileRoute("/api/public/newsletter/subscribe")({
           });
         }
 
-        const confirmUrl = `https://cyryxlabs.com/newsletter/confirm?token=${confirmToken}`;
+        const confirmUrl = `https://www.cyryxlabs.com/newsletter/confirm?token=${confirmToken}`;
         await enqueueInternalEmail({
           templateName: "newsletter-confirm",
           recipientEmail: normalized,

@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnswerPage } from "@/components/cyryx/seo/AnswerPage";
-import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
+  buildHead,
+  buildTechArticleJsonLd,
+} from "@/components/cyryx/seo/seo";
 
 const PATH = "/answers/what-is-governed-ai-execution";
 const TITLE = "What is governed AI execution? | Cyryx Labs";
@@ -31,6 +36,16 @@ export const Route = createFileRoute("/answers/what-is-governed-ai-execution")({
         { name: "Governed AI execution", path: PATH },
       ]),
       buildFaqJsonLd(faqs),
+      buildTechArticleJsonLd({
+        headline: "What is governed AI execution?",
+        description: DESC,
+        path: PATH,
+        datePublished: "2026-08-17",
+        dateModified: "2026-08-17",
+        authors: ["Cyryx Labs"],
+        authorType: "Organization",
+        keywords: ["governed AI execution", "AI governance", "AI control gates"],
+      }),
     ]),
   component: () => (
     <AnswerPage
@@ -64,6 +79,25 @@ export const Route = createFileRoute("/answers/what-is-governed-ai-execution")({
         "Letting a single model evaluate its own output without an independent check.",
       ]}
       faqs={faqs}
+      publishedAt="2026-08-17"
+      reviewedAt="2026-08-17"
+      primarySources={[
+        {
+          title: "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+          publisher: "U.S. National Institute of Standards and Technology",
+          url: "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10",
+        },
+        {
+          title: "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+          publisher: "Official Journal of the European Union",
+          url: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+        },
+        {
+          title: "ISO/IEC 42001:2023 — AI management systems",
+          publisher: "International Organization for Standardization",
+          url: "https://www.iso.org/standard/42001",
+        },
+      ]}
       related={[
         {
           label: "AI execution system vs AI automation",

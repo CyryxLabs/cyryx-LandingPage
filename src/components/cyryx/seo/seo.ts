@@ -1,4 +1,9 @@
-const BASE = "https://cyryxlabs.com";
+import { absoluteSiteUrl, SITE_URL } from "@/lib/site-url";
+import {
+  buildCyryxOrganizationNode,
+  CYRYX_ORGANIZATION_ID,
+  CYRYX_WEBSITE_ID,
+} from "@/data/seo-entities";
 
 export interface Crumb {
   name: string;
@@ -18,14 +23,14 @@ export interface PageMetaInput {
   ogType?: "website" | "article" | "product";
 }
 
-const DEFAULT_OG_IMAGE = `${BASE}/cyryx-og.png?v=20260723-1`;
+const DEFAULT_OG_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20260723-1");
 
 /**
  * Build the standard meta + canonical entries for a route head().
  * Enforces title <60 / description <160 at dev time via console.warn.
  */
 export function pageMeta(input: PageMetaInput) {
-  const url = `${BASE}${input.path}`;
+  const url = absoluteSiteUrl(input.path);
   const image = input.image ?? DEFAULT_OG_IMAGE;
   if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production") {
     if (input.title.length >= 60) console.warn(`[seo] title ≥60 chars: ${input.title}`);
@@ -64,7 +69,7 @@ export function buildBreadcrumbJsonLd(crumbs: Crumb[]) {
       "@type": "ListItem",
       position: i + 1,
       name: c.name,
-      item: `${BASE}${c.path}`,
+      item: absoluteSiteUrl(c.path),
     })),
   };
 }
@@ -93,11 +98,12 @@ export function buildServiceJsonLd(input: {
     name: input.name,
     serviceType: input.serviceType,
     description: input.description,
-    url: `${BASE}${input.path}`,
+    url: absoluteSiteUrl(input.path),
     provider: {
       "@type": "Organization",
+      "@id": CYRYX_ORGANIZATION_ID,
       name: "Cyryx Labs",
-      url: BASE,
+      url: SITE_URL,
     },
   };
 }
@@ -105,37 +111,37 @@ export function buildServiceJsonLd(input: {
 export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${BASE}/#organization`,
-    name: "Cyryx Labs",
-    alternateName: "Cyryx",
-    url: `${BASE}/`,
-    slogan: "From AI opportunity to operating capability.",
-    description:
-      "Cyryx Labs is an AI lab and systems company. Client work can enter through Advise, Build, Control, or Operate as individual capabilities or a connected evidence-led program; Cyryx products and Applied Research remain distinct.",
-    email: "contact@cyryxlabs.com",
+    ...buildCyryxOrganizationNode(),
   };
 }
 
-export function buildSoftwareApplicationJsonLd(input: {
+export function buildWebPageJsonLd(input: {
   name: string;
   description: string;
   path: string;
-  applicationSubCategory: string;
+  dateModified?: string;
 }) {
   return {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "WebPage",
+    "@id": `${absoluteSiteUrl(input.path)}#webpage`,
     name: input.name,
-    applicationCategory: "DeveloperApplication",
-    applicationSubCategory: input.applicationSubCategory,
     description: input.description,
-    url: `${BASE}${input.path}`,
-    creator: {
-      "@type": "Organization",
+    url: absoluteSiteUrl(input.path),
+    inLanguage: "en",
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": CYRYX_WEBSITE_ID,
+      url: SITE_URL,
       name: "Cyryx Labs",
-      url: `${BASE}/`,
     },
+    publisher: {
+      "@type": "Organization",
+      "@id": CYRYX_ORGANIZATION_ID,
+      name: "Cyryx Labs",
+      url: SITE_URL,
+    },
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
   };
 }
 
@@ -144,23 +150,38 @@ export function buildTechArticleJsonLd(input: {
   description: string;
   path: string;
   datePublished?: string;
+  dateModified?: string;
   authors?: string[];
+  authorType?: "Person" | "Organization";
+  identifier?: string;
+  license?: string;
+  keywords?: string[];
 }) {
+  const url = absoluteSiteUrl(input.path);
+  const organizationAuthor = input.authorType === "Organization";
   return {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     headline: input.headline,
     description: input.description,
-    url: `${BASE}${input.path}`,
+    "@id": `${url}#article`,
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${url}#webpage` },
     ...(input.datePublished ? { datePublished: input.datePublished } : {}),
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
+    ...(input.identifier ? { identifier: input.identifier } : {}),
+    ...(input.license ? { license: input.license } : {}),
+    ...(input.keywords?.length ? { keywords: input.keywords } : {}),
     author: (input.authors ?? ["Cyryx Labs"]).map((name) => ({
-      "@type": "Person",
+      "@type": organizationAuthor ? "Organization" : "Person",
+      ...(organizationAuthor ? { "@id": CYRYX_ORGANIZATION_ID } : {}),
       name,
     })),
     publisher: {
       "@type": "Organization",
+      "@id": CYRYX_ORGANIZATION_ID,
       name: "Cyryx Labs",
-      url: BASE,
+      url: SITE_URL,
     },
   };
 }
@@ -170,23 +191,8 @@ export function buildLegalPageJsonLd(input: {
   description: string;
   path: string;
   dateModified?: string;
-  type?: "PrivacyPolicy" | "TermsOfService" | "WebPage";
 }) {
-  return {
-    "@context": "https://schema.org",
-    "@type": input.type ?? "WebPage",
-    name: input.name,
-    description: input.description,
-    url: `${BASE}${input.path}`,
-    inLanguage: "en",
-    isPartOf: { "@type": "WebSite", url: BASE, name: "Cyryx Labs" },
-    publisher: {
-      "@type": "Organization",
-      name: "Cyryx Labs",
-      url: BASE,
-    },
-    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
-  };
+  return buildWebPageJsonLd(input);
 }
 
 export function jsonLdScript(obj: unknown) {

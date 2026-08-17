@@ -48,6 +48,12 @@ export const Route = createFileRoute("/research/$slug")({
           path,
           datePublished: publication.publishedAt,
           authors: publication.authors,
+          authorType: publication.authors.some((author) => /cyryx labs/i.test(author))
+            ? "Organization"
+            : "Person",
+          identifier: publication.doi ? `https://doi.org/${publication.doi}` : undefined,
+          license: publication.licenseUrl,
+          keywords: publication.keywords,
         }),
       ],
     );

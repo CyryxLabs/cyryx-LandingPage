@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { crawlSitemaps, PRIMARY_SITEMAP } from "../support/seo-site-contract";
 
 const MOBILE_VIEWPORTS = [
   { width: 320, height: 800 },
@@ -17,12 +18,8 @@ test("all sitemap pages remain usable without horizontal overflow on mobile", as
     "The public-route matrix only needs one mobile browser project.",
   );
 
-  const sitemap = await request.get(`${baseURL}/sitemap.xml`);
-  expect(sitemap.status()).toBe(200);
-  const xml = await sitemap.text();
-  const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
-    (match) => new URL(match[1].trim()).pathname,
-  );
+  const inventory = await crawlSitemaps(request, baseURL!, PRIMARY_SITEMAP);
+  const paths = inventory.pageUrls.map((url) => new URL(url).pathname);
 
   expect(paths.length).toBeGreaterThan(20);
 

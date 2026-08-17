@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnswerPage } from "@/components/cyryx/seo/AnswerPage";
-import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
+  buildHead,
+  buildTechArticleJsonLd,
+} from "@/components/cyryx/seo/seo";
 
 const PATH = "/answers/what-is-goal-grounded-generation";
 const TITLE = "What is goal-grounded generation? | Cyryx Labs";
@@ -31,6 +36,16 @@ export const Route = createFileRoute("/answers/what-is-goal-grounded-generation"
         { name: "Goal-grounded generation", path: PATH },
       ]),
       buildFaqJsonLd(faqs),
+      buildTechArticleJsonLd({
+        headline: "What is goal-grounded generation?",
+        description: DESC,
+        path: PATH,
+        datePublished: "2026-08-17",
+        dateModified: "2026-08-17",
+        authors: ["Cyryx Labs"],
+        authorType: "Organization",
+        keywords: ["goal-grounded generation", "AI context grounding", "AI evaluation"],
+      }),
     ]),
   component: () => (
     <AnswerPage
@@ -64,6 +79,15 @@ export const Route = createFileRoute("/answers/what-is-goal-grounded-generation"
         "Re-prompting on failure without updating the context the model saw.",
       ]}
       faqs={faqs}
+      publishedAt="2026-08-17"
+      reviewedAt="2026-08-17"
+      primarySources={[
+        {
+          title: "Artificial Intelligence Risk Management Framework: Generative AI Profile",
+          publisher: "U.S. National Institute of Standards and Technology",
+          url: "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence",
+        },
+      ]}
       related={[
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
         {

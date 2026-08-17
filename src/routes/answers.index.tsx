@@ -7,6 +7,12 @@ import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 
 const ANSWERS = [
   {
+    slug: "what-is-ai-governance",
+    title: "What is AI governance?",
+    blurb:
+      "The decision rights, rules, evidence, and oversight used to direct and control AI across its lifecycle.",
+  },
+  {
     slug: "what-is-governed-ai-execution",
     title: "What is governed AI execution?",
     blurb:
@@ -42,9 +48,9 @@ export const Route = createFileRoute("/answers/")({
   head: () =>
     buildHead(
       {
-        title: "Cyryx Answers — Direct answers on governed AI execution",
+        title: "Cyryx Answers — AI governance and governed execution",
         description:
-          "Direct, citation-ready explainers from Cyryx Labs on governed AI execution, command gates, goal-grounded generation, and AI output quality.",
+          "Source-grounded explainers from Cyryx Labs on AI governance, governed AI execution, command gates, goal-grounded generation, and output quality.",
         path: "/answers",
       },
       [
@@ -69,9 +75,9 @@ function AnswersHub() {
           Direct answers on governed AI execution.
         </h1>
         <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-          Cyryx Labs publishes precise, citation-ready explainers for the concepts behind our
-          products, runtime, and research. Each page leads with a direct answer, then defines the
-          concept, shows how it works, and links to related ideas.
+          Cyryx Labs publishes precise, source-grounded explainers for the concepts behind our
+          products, runtime, and research. Each page leads with a direct answer, distinguishes
+          evidence from the Cyryx perspective, and exposes its latest editorial review sources.
         </p>
 
         <ul className="mt-12 grid gap-4">

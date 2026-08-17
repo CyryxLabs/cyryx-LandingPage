@@ -75,7 +75,7 @@ export async function enqueueInternalEmail(opts: {
   const element = React.createElement(TemplateComponent, {
     ...data,
     unsubscribeUrl: unsubscribeToken
-      ? `https://cyryxlabs.com/unsubscribe?token=${unsubscribeToken}`
+      ? `https://www.cyryxlabs.com/unsubscribe?token=${unsubscribeToken}`
       : undefined,
   });
   const html = await render(element);

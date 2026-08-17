@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnswerPage } from "@/components/cyryx/seo/AnswerPage";
-import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
+  buildHead,
+  buildTechArticleJsonLd,
+} from "@/components/cyryx/seo/seo";
 
 const PATH = "/answers/ai-execution-system-vs-ai-automation";
 const TITLE = "AI execution system vs AI automation — Cyryx Labs";
@@ -31,6 +36,16 @@ export const Route = createFileRoute("/answers/ai-execution-system-vs-ai-automat
         { name: "Execution system vs automation", path: PATH },
       ]),
       buildFaqJsonLd(faqs),
+      buildTechArticleJsonLd({
+        headline: "AI execution system vs AI automation",
+        description: DESC,
+        path: PATH,
+        datePublished: "2026-08-17",
+        dateModified: "2026-08-17",
+        authors: ["Cyryx Labs"],
+        authorType: "Organization",
+        keywords: ["AI execution system", "AI automation", "agentic systems"],
+      }),
     ]),
   component: () => (
     <AnswerPage
@@ -64,6 +79,15 @@ export const Route = createFileRoute("/answers/ai-execution-system-vs-ai-automat
         "Hiding replans and remediations from observability dashboards.",
       ]}
       faqs={faqs}
+      publishedAt="2026-08-17"
+      reviewedAt="2026-08-17"
+      primarySources={[
+        {
+          title: "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+          publisher: "U.S. National Institute of Standards and Technology",
+          url: "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10",
+        },
+      ]}
       related={[
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
         {

@@ -50,11 +50,9 @@ function FooterLink({ item, className }: { item: FooterItem; className?: string 
 export function Footer() {
   const year = new Date().getFullYear();
 
-  // Social links preserved as external
   const SOCIAL: FooterItem[] = [
-    { label: "LinkedIn", href: "https://www.linkedin.com/company/cyryx-labs", external: true },
     { label: "X", href: "https://x.com/cyryxlabs", external: true },
-    { label: "GitHub", href: "https://github.com/cyryxlabs", external: true },
+    { label: "GitHub", href: "https://github.com/CyryxLabs", external: true },
   ];
 
   // Legal row items

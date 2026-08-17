@@ -40,7 +40,7 @@ test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async 
   expect(await link('link[rel="canonical"]')).toMatch(/\/$/);
 });
 
-test("JSON-LD exposes the organization, site, page, and approved MAAX Studio product entity", async ({
+test("JSON-LD exposes truthful organization, site, and page entities without unsupported rich-result claims", async ({
   page,
 }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -56,10 +56,9 @@ test("JSON-LD exposes the organization, site, page, and approved MAAX Studio pro
   expect(types).toContain("Organization");
   expect(types).toContain("WebSite");
   expect(types).toContain("WebPage");
-  expect(types).toContain("SoftwareApplication");
+  expect(types).not.toContain("SoftwareApplication");
+  expect(types).not.toContain("Product");
 
   const org = graph.find((n) => n["@type"] === "Organization");
   expect(org?.name).toBe("Cyryx Labs");
-  const apps = graph.filter((n) => n["@type"] === "SoftwareApplication");
-  expect(apps.map((app) => app.name)).toEqual(["MAAX Studio"]);
 });

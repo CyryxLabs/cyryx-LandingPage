@@ -4,7 +4,7 @@
 // sitemap). Safe to call from CI after a deploy.
 //
 //   node scripts/post-deploy-verify-gsc.mjs \
-//     --site=https://cyryxlabs.com/ \
+//     --site=https://www.cyryxlabs.com/ \
 //     --token=Bc35xHMHU3j3kg9Iuj2it5vGwLp4IIXwzz_m-VSIk8g \
 //     --timeout=600
 
@@ -15,7 +15,7 @@ const args = Object.fromEntries(
   }),
 );
 
-const SITE = (args.site || "https://cyryxlabs.com/").replace(/\/?$/, "/");
+const SITE = (args.site || "https://www.cyryxlabs.com/").replace(/\/?$/, "/");
 const TOKEN = args.token || "Bc35xHMHU3j3kg9Iuj2it5vGwLp4IIXwzz_m-VSIk8g";
 const TIMEOUT_S = Number(args.timeout || 600);
 const INTERVAL_S = Number(args.interval || 15);

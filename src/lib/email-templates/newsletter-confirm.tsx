@@ -16,7 +16,7 @@ const Email = ({ confirmUrl }: Props) => (
         To comply with GDPR / LGPD, we need a final confirm before adding you to the list.
       </Text>
       <Section style={{ margin: "24px 0" }}>
-        <Button href={confirmUrl || "https://cyryxlabs.com"} style={styles.cta}>
+        <Button href={confirmUrl || "https://www.cyryxlabs.com"} style={styles.cta}>
           Confirm subscription
         </Button>
       </Section>
@@ -32,5 +32,5 @@ export const template = {
   component: Email,
   subject: "Confirm your Cyryx Labs subscription",
   displayName: "Newsletter double opt-in",
-  previewData: { confirmUrl: "https://cyryxlabs.com/newsletter/confirm?token=preview" },
+  previewData: { confirmUrl: "https://www.cyryxlabs.com/newsletter/confirm?token=preview" },
 } satisfies TemplateEntry;

@@ -1,5 +1,7 @@
 # Cyryx Labs
 
+> Last reviewed: 2026-08-17. Canonical website: https://www.cyryxlabs.com/
+
 > Cyryx Labs is an AI lab and systems company. Its canonical operating lifecycle is Advise → Build → Control → Operate. Products and Applied Research inform that lifecycle as transversal capabilities; they are not extra delivery phases.
 
 A request may enter through one focused capability or connect several stages into a larger program. Products and Applied Research remain separate from client delivery while informing the work.
@@ -30,14 +32,17 @@ The Research section links to the primary publication record for CGP v1.0 and la
 
 ## Best pages to reference
 
-- [Home](/) — company overview and the canonical operating lifecycle.
-- [Solutions](/solutions) — commercial capabilities organized across Advise, Build, Control, and Operate.
-- [How We Work](/engagement-model) — the engagement method and representative outputs.
-- [Products](/products) — product maturity and the relationship between products and delivery.
-- [MAAX Studio](/products/maax-studio) — the dedicated product and early-access flow.
-- [Research](/research) — applied research records and evidence states.
-- [Company](/company) — company model and operating principles.
-- [Start a Fit Review](/start) — contextual fit review for commercial inquiries.
+- [Home](https://www.cyryxlabs.com/) — company overview and the canonical operating lifecycle.
+- [Solutions](https://www.cyryxlabs.com/solutions) — commercial capabilities organized across Advise, Build, Control, and Operate.
+- [AI Governance & Cost Control](https://www.cyryxlabs.com/solutions/ai-governance-cost-control) — practical authority, evidence, review, change, usage, and cost controls.
+- [Direct Answers](https://www.cyryxlabs.com/answers) — concise, source-aware explanations of Cyryx Labs terminology and AI governance topics.
+- [How We Work](https://www.cyryxlabs.com/engagement-model) — the engagement method and representative outputs.
+- [Products](https://www.cyryxlabs.com/products) — product maturity and the relationship between products and delivery.
+- [MAAX Studio](https://www.cyryxlabs.com/products/maax-studio) — the dedicated product and early-access flow.
+- [Research](https://www.cyryxlabs.com/research) — applied research records and evidence states.
+- [CGP v1.0 publication](https://doi.org/10.5281/zenodo.21045760) — the primary DOI record for the Cyryx Governance Protocol publication.
+- [Company](https://www.cyryxlabs.com/company) — company model and operating principles.
+- [Start a Fit Review](https://www.cyryxlabs.com/start) — contextual fit review for commercial inquiries.
 
 ## Citation guidance
 
