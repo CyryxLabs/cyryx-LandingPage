@@ -83,7 +83,7 @@ export function BrandShell({ children }: { children: React.ReactNode }) {
           For privacy questions, contact{" "}
           <a href="mailto:privacy@cyryxlabs.com" style={styles.link}>privacy@cyryxlabs.com</a>{" "}
           · See our{" "}
-          <a href="https://cyryxlabs.com/privacy" style={styles.link}>Privacy Policy</a>.
+          <a href="https://www.cyryxlabs.com/privacy" style={styles.link}>Privacy Policy</a>.
         </Text>
       </Container>
     </Body>

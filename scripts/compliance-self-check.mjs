@@ -7,9 +7,9 @@
  *  3. /api/public/contact and /api/public/newsletter/subscribe respond.
  *  4. (Optional) Recent email_send_log shows no DLQ/failures (requires SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY).
  *
- * Usage: BASE_URL=https://cyryxlabs.com node scripts/compliance-self-check.mjs
+ * Usage: BASE_URL=https://www.cyryxlabs.com node scripts/compliance-self-check.mjs
  */
-const BASE = process.env.BASE_URL || "https://cyryxlabs.com";
+const BASE = process.env.BASE_URL || "https://www.cyryxlabs.com";
 const results = [];
 function ok(name) { results.push({ name, ok: true }); console.log("✅", name); }
 function fail(name, msg) { results.push({ name, ok: false, msg }); console.error("❌", name, "—", msg); }

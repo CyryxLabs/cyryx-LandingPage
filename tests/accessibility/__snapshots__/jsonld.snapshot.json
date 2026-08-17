@@ -1,28 +1,34 @@
 {
   "Organization": {
     "@type": "Organization",
-    "@id": "https://cyryxlabs.com/#organization",
+    "@id": "https://www.cyryxlabs.com/#organization",
     "name": "Cyryx Labs",
-    "legalName": "Cyryx Labs",
+    "legalName": "Cyryx Labs LLC",
     "alternateName": "Cyryx",
-    "url": "https://cyryxlabs.com/",
+    "url": "https://www.cyryxlabs.com/",
     "slogan": "From AI opportunity to operating capability.",
-    "industry": "Artificial Intelligence",
     "email": "contact@cyryxlabs.com",
     "knowsAbout": [
       "AI strategy and advisory",
+      "AI product engineering",
       "Agentic workflow systems",
-      "AI execution infrastructure",
-      "AI governance and operations",
-      "MAAX Studio"
+      "AI governance and cost control",
+      "AI execution systems",
+      "Applied AI research"
     ],
-    "sameAsCount": 0
+    "sameAsCount": 2
   },
-  "SoftwareApplication": {
-    "@type": "SoftwareApplication",
-    "@id": "https://cyryxlabs.com/#maax-studio",
-    "name": "MAAX Studio",
-    "applicationCategory": "DeveloperApplication",
-    "applicationSubCategory": "Agentic Execution Environment"
+  "WebSite": {
+    "@type": "WebSite",
+    "@id": "https://www.cyryxlabs.com/#website",
+    "url": "https://www.cyryxlabs.com/",
+    "name": "Cyryx Labs"
+  },
+  "WebPage": {
+    "@type": "WebPage",
+    "@id": "https://www.cyryxlabs.com/#webpage",
+    "url": "https://www.cyryxlabs.com/",
+    "name": "Cyryx Labs — AI Systems from Strategy to Operations",
+    "description": "Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs."
   }
 }

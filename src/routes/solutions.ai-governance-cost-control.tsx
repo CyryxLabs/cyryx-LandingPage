@@ -10,7 +10,7 @@ import {
 } from "@/components/cyryx/seo/seo";
 
 const PATH = "/solutions/ai-governance-cost-control";
-const TITLE = "AI Governance & Cost Control — Cyryx Labs";
+const TITLE = "AI Governance Consulting & Cost Control — Cyryx Labs";
 const DESC =
   "Practical control design for AI systems: authority, evidence, review, change, provider dependencies, usage, and cost.";
 
@@ -186,6 +186,7 @@ export const Route = createFileRoute("/solutions/ai-governance-cost-control")({
           "Inventory, authority, evidence, change, and economics are reviewed together so policy intent can be connected to system behavior.",
       }}
       relatedAnswers={[
+        { label: "What is AI governance?", href: "/answers/what-is-ai-governance" },
         { label: "What is governed AI execution?", href: "/answers/what-is-governed-ai-execution" },
         {
           label: "What are command gates in AI systems?",
@@ -194,6 +195,10 @@ export const Route = createFileRoute("/solutions/ai-governance-cost-control")({
         {
           label: "How to measure AI output quality",
           href: "/answers/how-to-measure-ai-output-quality",
+        },
+        {
+          label: "Cyryx Governance Protocol v1.0",
+          href: "/research/cgp-v1",
         },
       ]}
     />

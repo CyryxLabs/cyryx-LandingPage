@@ -8,13 +8,14 @@ import {
   buildBreadcrumbJsonLd,
   buildHead,
   buildOrganizationJsonLd,
+  buildWebPageJsonLd,
 } from "@/components/cyryx/seo/seo";
 import { buildStartProjectHref } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 
 const PATH = "/company";
-const TITLE = "Company — Cyryx Labs";
+const TITLE = "AI Systems & Governance Company — Cyryx Labs";
 const DESC =
   "Cyryx Labs advises, builds, controls, and operates AI-enabled products and systems, informed by products and applied research.";
 
@@ -82,6 +83,7 @@ export const Route = createFileRoute("/company")({
         { name: "Company", path: PATH },
       ]),
       buildOrganizationJsonLd(),
+      buildWebPageJsonLd({ name: TITLE, description: DESC, path: PATH }),
     ]),
   component: CompanyPage,
 });

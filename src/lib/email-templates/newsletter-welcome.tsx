@@ -33,5 +33,5 @@ export const template = {
   component: Email,
   subject: "You're in — welcome to Cyryx Labs",
   displayName: "Newsletter welcome",
-  previewData: { unsubscribeUrl: "https://cyryxlabs.com/unsubscribe?token=preview" },
+  previewData: { unsubscribeUrl: "https://www.cyryxlabs.com/unsubscribe?token=preview" },
 } satisfies TemplateEntry;

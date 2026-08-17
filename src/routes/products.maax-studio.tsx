@@ -5,11 +5,7 @@ import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { MaaxWaitlistDialog } from "@/components/cyryx/maax/MaaxWaitlistDialog";
-import {
-  buildBreadcrumbJsonLd,
-  buildHead,
-  buildSoftwareApplicationJsonLd,
-} from "@/components/cyryx/seo/seo";
+import { buildBreadcrumbJsonLd, buildHead, buildWebPageJsonLd } from "@/components/cyryx/seo/seo";
 import { trackCta } from "@/lib/track-cta";
 import maaxLogo from "@/assets/maax-studio-logo-exact.svg";
 import maaxDevices from "@/assets/cyryx-maax-devices-1200.jpg";
@@ -89,11 +85,10 @@ export const Route = createFileRoute("/products/maax-studio")({
         { name: "Products", path: "/products" },
         { name: "MAAX Studio", path: PATH },
       ]),
-      buildSoftwareApplicationJsonLd({
+      buildWebPageJsonLd({
         name: "MAAX Studio",
         description: DESC,
         path: PATH,
-        applicationSubCategory: "Agentic software execution environment",
       }),
     ]),
   component: MaaxStudioPage,

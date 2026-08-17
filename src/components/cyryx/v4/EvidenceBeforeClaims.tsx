@@ -65,6 +65,14 @@ export function EvidenceBeforeClaims() {
           >
             Read Cyryx Answers <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
+          <Link
+            to="/research/$slug"
+            params={{ slug: "cgp-v1" }}
+            className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver-dim)] transition-colors hover:text-[var(--silver)]"
+          >
+            Read the Cyryx Governance Protocol
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+          </Link>
         </div>
       </div>
     </section>

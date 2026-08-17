@@ -2,31 +2,116 @@
 # Standard crawlers
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
-# AI answer engines (explicitly allowed for AEO/AGEO citation)
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
+
+# AI search and user-directed retrieval agents
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
 User-agent: GPTBot
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
-User-agent: Claude-Web
+User-agent: Claude-SearchBot
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
+User-agent: Claude-User
+Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
+
+User-agent: Applebot
+Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
+
+# Model-training controls. Allowing these does not confer ranking or citation priority.
 User-agent: Google-Extended
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /api/
+Disallow: /_serverFn/
+Disallow: /workspace
+Disallow: /auth
+Disallow: /lovable/
 
-Sitemap: https://cyryxlabs.com/sitemap.xml
-Sitemap: https://cyryxlabs.com/sitemap-index.xml
+Sitemap: https://www.cyryxlabs.com/sitemap.xml

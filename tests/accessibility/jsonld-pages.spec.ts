@@ -7,8 +7,8 @@ import { expect, test } from "@playwright/test";
  */
 const PAGES: { path: string; required: string[] }[] = [
   { path: "/", required: ["Organization", "WebSite"] },
-  { path: "/company", required: ["Organization"] },
-  { path: "/products/maax-studio", required: ["SoftwareApplication", "BreadcrumbList"] },
+  { path: "/company", required: ["Organization", "WebPage"] },
+  { path: "/products/maax-studio", required: ["WebPage", "BreadcrumbList"] },
   { path: "/solutions", required: ["BreadcrumbList"] },
   { path: "/solutions/ai-strategy-advisory", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/digital-web-systems", required: ["Service", "BreadcrumbList"] },
@@ -21,21 +21,34 @@ const PAGES: { path: string; required: string[] }[] = [
   { path: "/start", required: ["BreadcrumbList"] },
   { path: "/contact", required: ["BreadcrumbList"] },
   { path: "/careers", required: ["BreadcrumbList"] },
-  { path: "/privacy", required: ["PrivacyPolicy", "BreadcrumbList"] },
-  { path: "/terms", required: ["TermsOfService", "BreadcrumbList"] },
+  { path: "/privacy", required: ["WebPage", "BreadcrumbList"] },
+  { path: "/terms", required: ["WebPage", "BreadcrumbList"] },
   { path: "/research", required: ["BreadcrumbList"] },
   { path: "/answers", required: ["BreadcrumbList"] },
-  { path: "/answers/what-is-governed-ai-execution", required: ["FAQPage", "BreadcrumbList"] },
+  {
+    path: "/answers/what-is-ai-governance",
+    required: ["FAQPage", "BreadcrumbList", "TechArticle"],
+  },
+  {
+    path: "/answers/what-is-governed-ai-execution",
+    required: ["FAQPage", "BreadcrumbList", "TechArticle"],
+  },
   {
     path: "/answers/ai-execution-system-vs-ai-automation",
-    required: ["FAQPage", "BreadcrumbList"],
+    required: ["FAQPage", "BreadcrumbList", "TechArticle"],
   },
   {
     path: "/answers/what-are-command-gates-in-ai-systems",
-    required: ["FAQPage", "BreadcrumbList"],
+    required: ["FAQPage", "BreadcrumbList", "TechArticle"],
   },
-  { path: "/answers/what-is-goal-grounded-generation", required: ["FAQPage", "BreadcrumbList"] },
-  { path: "/answers/how-to-measure-ai-output-quality", required: ["FAQPage", "BreadcrumbList"] },
+  {
+    path: "/answers/what-is-goal-grounded-generation",
+    required: ["FAQPage", "BreadcrumbList", "TechArticle"],
+  },
+  {
+    path: "/answers/how-to-measure-ai-output-quality",
+    required: ["FAQPage", "BreadcrumbList", "TechArticle"],
+  },
 ];
 
 function collectTypes(nodes: unknown[]): Set<string> {
@@ -140,9 +153,9 @@ for (const { path, required } of PAGES) {
         expect((n.provider as Record<string, unknown>)?.["@type"]).toBe("Organization");
       }
 
-      if (typeStr === "PrivacyPolicy" || typeStr === "TermsOfService") {
-        expect(typeof n.name, `${path}: ${typeStr}.name missing`).toBe("string");
-        expect(typeof n.description, `${path}: ${typeStr}.description missing`).toBe("string");
+      if (typeStr === "WebPage") {
+        expect(typeof n.name, `${path}: WebPage.name missing`).toBe("string");
+        expect(typeof n.description, `${path}: WebPage.description missing`).toBe("string");
         expect(typeof n.url).toBe("string");
         expect((n.publisher as Record<string, unknown>)?.["@type"]).toBe("Organization");
       }

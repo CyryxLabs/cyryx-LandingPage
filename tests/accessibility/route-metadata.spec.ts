@@ -28,7 +28,7 @@ const ROUTES = [
   "/careers",
 ];
 
-const BASE = "https://cyryxlabs.com";
+const BASE = "https://www.cyryxlabs.com";
 
 const seen = { titles: new Map<string, string>(), descs: new Map<string, string>() };
 
@@ -53,8 +53,10 @@ for (const route of ROUTES) {
     expect(title, `${route}: empty title`).toBeTruthy();
     expect(title.length, `${route}: title too long`).toBeLessThan(70);
     expect(title).not.toBe("Lovable App");
-    expect(description.length, `${route}: description empty`).toBeGreaterThan(20);
-    expect(description.length, `${route}: description too long`).toBeLessThan(170);
+    expect(description.length, `${route}: below Cyryx editorial minimum`).toBeGreaterThanOrEqual(
+      100,
+    );
+    expect(description.length, `${route}: description too long`).toBeLessThan(160);
     expect(description).not.toBe("Lovable Generated Project");
 
     // Uniqueness across routes (each page should own its story)

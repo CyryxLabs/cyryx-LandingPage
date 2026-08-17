@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnswerPage } from "@/components/cyryx/seo/AnswerPage";
-import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildHead } from "@/components/cyryx/seo/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
+  buildHead,
+  buildTechArticleJsonLd,
+} from "@/components/cyryx/seo/seo";
 
 const PATH = "/answers/how-to-measure-ai-output-quality";
 const TITLE = "How to measure AI output quality — Cyryx Labs";
@@ -31,6 +36,16 @@ export const Route = createFileRoute("/answers/how-to-measure-ai-output-quality"
         { name: "Measuring AI output quality", path: PATH },
       ]),
       buildFaqJsonLd(faqs),
+      buildTechArticleJsonLd({
+        headline: "How to measure AI output quality",
+        description: DESC,
+        path: PATH,
+        datePublished: "2026-08-17",
+        dateModified: "2026-08-17",
+        authors: ["Cyryx Labs"],
+        authorType: "Organization",
+        keywords: ["AI output quality", "AI evaluation", "AI regression testing"],
+      }),
     ]),
   component: () => (
     <AnswerPage
@@ -64,6 +79,20 @@ export const Route = createFileRoute("/answers/how-to-measure-ai-output-quality"
         "Skipping human sampling once the automated scores look good.",
       ]}
       faqs={faqs}
+      publishedAt="2026-08-17"
+      reviewedAt="2026-08-17"
+      primarySources={[
+        {
+          title: "Artificial Intelligence Risk Management Framework: Generative AI Profile",
+          publisher: "U.S. National Institute of Standards and Technology",
+          url: "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence",
+        },
+        {
+          title: "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+          publisher: "U.S. National Institute of Standards and Technology",
+          url: "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10",
+        },
+      ]}
       related={[
         {
           label: "What are command gates in AI systems?",

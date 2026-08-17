@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { HudLabel } from "../primitives/HudLabel";
@@ -15,6 +15,12 @@ export interface AnswerRelated {
   href: string;
 }
 
+export interface AnswerPrimarySource {
+  title: string;
+  publisher: string;
+  url: string;
+}
+
 export interface AnswerPageProps {
   /** Page slug, used for breadcrumb display only. */
   eyebrow: string;
@@ -22,7 +28,7 @@ export interface AnswerPageProps {
   title: string;
   /** 40–80 word direct answer rendered immediately after the H1. */
   directAnswer: string;
-  definition: string;
+  definition: string | string[];
   whyItMatters: string | string[];
   howItWorks: string[];
   example: string;
@@ -31,6 +37,12 @@ export interface AnswerPageProps {
   mistakes: string[];
   faqs: FaqQA[];
   related: AnswerRelated[];
+  /** Date of the latest substantive editorial review, formatted as YYYY-MM-DD. */
+  reviewedAt?: string;
+  /** Original publication date, formatted as YYYY-MM-DD. */
+  publishedAt?: string;
+  /** Authoritative material used to review the explainer. */
+  primarySources?: AnswerPrimarySource[];
 }
 
 function Paragraphs({ body }: { body: string | string[] }) {
@@ -53,9 +65,13 @@ export function AnswerPage(props: AnswerPageProps) {
       <main className="relative">
         <article className="mx-auto max-w-3xl px-5 sm:px-8 lg:px-12 pt-32 pb-24 lg:pt-44">
           <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
-            <Link to="/" className="hover:text-[var(--accent-glow)]">Home</Link>
+            <Link to="/" className="hover:text-[var(--accent-glow)]">
+              Home
+            </Link>
             <span className="mx-2 opacity-60">/</span>
-            <Link to="/answers" className="hover:text-[var(--accent-glow)]">Answers</Link>
+            <Link to="/answers" className="hover:text-[var(--accent-glow)]">
+              Answers
+            </Link>
             <span className="mx-2 opacity-60">/</span>
             <span className="text-[var(--silver)]">{props.eyebrow}</span>
           </nav>
@@ -70,41 +86,82 @@ export function AnswerPage(props: AnswerPageProps) {
 
           {/* Direct answer — 40–80 words, surfaced first for AI answer engines */}
           <div className="mt-8 rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_25%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-6 backdrop-blur-sm">
-            <p className="text-[15px] leading-relaxed text-[var(--silver)]">
-              {props.directAnswer}
-            </p>
+            <p className="text-[15px] leading-relaxed text-[var(--silver)]">{props.directAnswer}</p>
           </div>
 
-          <Section heading="Definition"><Paragraphs body={props.definition} /></Section>
-          <Section heading="Why it matters"><Paragraphs body={props.whyItMatters} /></Section>
+          {props.publishedAt || props.reviewedAt ? (
+            <p className="mt-4 text-xs text-[var(--silver-dim)]">
+              {props.publishedAt ? (
+                <>
+                  Published{" "}
+                  <time dateTime={props.publishedAt}>{formatEditorialDate(props.publishedAt)}</time>
+                </>
+              ) : null}
+              {props.publishedAt && props.reviewedAt ? <span aria-hidden="true"> · </span> : null}
+              {props.reviewedAt ? (
+                <>
+                  Editorially reviewed by Cyryx Labs on{" "}
+                  <time dateTime={props.reviewedAt}>{formatEditorialDate(props.reviewedAt)}</time>
+                </>
+              ) : null}
+              .
+            </p>
+          ) : null}
+
+          <Section heading="Definition">
+            <Paragraphs body={props.definition} />
+          </Section>
+          <Section heading="Why it matters">
+            <Paragraphs body={props.whyItMatters} />
+          </Section>
 
           <Section heading="How it works">
             <ol className="mt-4 list-decimal space-y-3 pl-5 text-base leading-relaxed text-[var(--silver-dim)] marker:text-[var(--accent-glow)]">
-              {props.howItWorks.map((step, i) => <li key={i}>{step}</li>)}
+              {props.howItWorks.map((step, i) => (
+                <li key={i}>{step}</li>
+              ))}
             </ol>
           </Section>
 
-          <Section heading="Example"><Paragraphs body={props.example} /></Section>
+          <Section heading="Example">
+            <Paragraphs body={props.example} />
+          </Section>
 
           <Section heading="Cyryx perspective">
             <Paragraphs body={props.cyryxPerspective} />
             <p className="mt-4 text-sm text-[var(--silver-dim)]">
               This is the lens Cyryx Labs applies across{" "}
-              <Link to="/products/maax-studio" className="text-[var(--accent-glow)] hover:underline">MAAX Studio</Link>,{" "}
-              <Link to="/solutions" className="text-[var(--accent-glow)] hover:underline">Cyryx Solutions</Link>, and the{" "}
-              <Link to="/research" className="text-[var(--accent-glow)] hover:underline">Cyryx Applied AI Lab</Link>.
+              <Link
+                to="/products/maax-studio"
+                className="text-[var(--accent-glow)] hover:underline"
+              >
+                MAAX Studio
+              </Link>
+              ,{" "}
+              <Link to="/solutions" className="text-[var(--accent-glow)] hover:underline">
+                Cyryx Solutions
+              </Link>
+              , and the{" "}
+              <Link to="/research" className="text-[var(--accent-glow)] hover:underline">
+                Cyryx Applied AI Lab
+              </Link>
+              .
             </p>
           </Section>
 
           <Section heading="Metrics to track">
             <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-[var(--silver-dim)] marker:text-[var(--accent-glow)]">
-              {props.metrics.map((m, i) => <li key={i}>{m}</li>)}
+              {props.metrics.map((m, i) => (
+                <li key={i}>{m}</li>
+              ))}
             </ul>
           </Section>
 
           <Section heading="Common mistakes">
             <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-[var(--silver-dim)] marker:text-[var(--accent-glow)]">
-              {props.mistakes.map((m, i) => <li key={i}>{m}</li>)}
+              {props.mistakes.map((m, i) => (
+                <li key={i}>{m}</li>
+              ))}
             </ul>
           </Section>
 
@@ -118,6 +175,34 @@ export function AnswerPage(props: AnswerPageProps) {
               ))}
             </div>
           </Section>
+
+          {props.primarySources?.length ? (
+            <Section heading="Primary sources">
+              <p className="mt-4 text-sm leading-relaxed text-[var(--silver-dim)]">
+                Authoritative references used for the latest editorial review. External links open
+                in a new tab.
+              </p>
+              <ul className="mt-4 space-y-3">
+                {props.primarySources.map((source) => (
+                  <li key={source.url}>
+                    <a
+                      href={source.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-start gap-2 text-sm leading-relaxed text-[var(--silver)] underline decoration-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)] underline-offset-4 hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+                    >
+                      <span>
+                        {source.title}{" "}
+                        <span className="text-[var(--silver-dim)]">— {source.publisher}</span>
+                        <span className="sr-only"> (opens in a new tab)</span>
+                      </span>
+                      <ExternalLink aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+          ) : null}
 
           <Section heading="Related">
             <ul className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -149,6 +234,15 @@ export function AnswerPage(props: AnswerPageProps) {
       <Footer />
     </div>
   );
+}
+
+function formatEditorialDate(value: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${value}T00:00:00Z`));
 }
 
 function Section({ heading, children }: { heading: string; children: React.ReactNode }) {

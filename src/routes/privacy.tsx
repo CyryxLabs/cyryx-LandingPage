@@ -8,7 +8,7 @@ import { buildBreadcrumbJsonLd, buildHead, buildLegalPageJsonLd } from "@/compon
 const PATH = "/privacy";
 const TITLE = "Privacy Policy — Cyryx Labs";
 const DESC =
-  "How Cyryx Labs collects, uses, and protects information from visitors and clients of cyryxlabs.com.";
+  "Learn how Cyryx Labs collects, uses, protects, retains, and handles information across its website, fit reviews, product access, and client inquiries.";
 const LAST_UPDATED = "August 3, 2026";
 const DATE_MODIFIED_ISO = "2026-08-03";
 
@@ -24,7 +24,6 @@ export const Route = createFileRoute("/privacy")({
         description: DESC,
         path: PATH,
         dateModified: DATE_MODIFIED_ISO,
-        type: "PrivacyPolicy",
       }),
     ]),
   component: PrivacyPage,
@@ -74,7 +73,7 @@ function PrivacyPage() {
               protect information when you visit{" "}
               <a
                 className="text-[var(--silver)] underline underline-offset-4 hover:text-[var(--accent-glow)]"
-                href="https://cyryxlabs.com"
+                href="/"
               >
                 cyryxlabs.com
               </a>

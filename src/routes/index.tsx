@@ -14,13 +14,18 @@ import { ControlledExecution } from "@/components/cyryx/v4/ControlledExecution";
 import { EvidenceBeforeClaims } from "@/components/cyryx/v4/EvidenceBeforeClaims";
 import { CompactStart } from "@/components/cyryx/v4/CompactStart";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
-import brandMark from "@/assets/cyryx-brand-mark.png";
+import { absoluteSiteUrl, SITE_URL } from "@/lib/site-url";
+import {
+  buildCyryxOrganizationNode,
+  CYRYX_ORGANIZATION_ID,
+  CYRYX_WEBSITE_ID,
+} from "@/data/seo-entities";
 
-const HOME_URL = "https://cyryxlabs.com/";
+const HOME_URL = SITE_URL;
 const HOME_TITLE = "Cyryx Labs — AI Systems from Strategy to Operations";
 const HOME_DESCRIPTION =
   "Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs.";
-const HOME_SOCIAL_IMAGE = "https://cyryxlabs.com/cyryx-og.png?v=20260723-1";
+const HOME_SOCIAL_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20260723-1");
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -62,76 +67,35 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@graph": [
-            {
-              "@type": "Organization",
-              "@id": "https://cyryxlabs.com/#organization",
-              name: "Cyryx Labs",
-              legalName: "Cyryx Labs",
-              alternateName: "Cyryx",
-              url: "https://cyryxlabs.com/",
-              description:
-                "Cyryx Labs is an AI lab and systems company. Client work can enter through Advise, Build, Control, or Operate as individual capabilities or a connected evidence-led program; Cyryx products and Applied Research remain distinct.",
-              slogan: "From AI opportunity to operating capability.",
-              industry: "Artificial Intelligence",
-              email: "contact@cyryxlabs.com",
-              knowsAbout: [
-                "AI strategy and advisory",
-                "Agentic workflow systems",
-                "AI execution infrastructure",
-                "AI governance and operations",
-                "MAAX Studio",
-              ],
-              logo: {
-                "@type": "ImageObject",
-                url: new URL(brandMark, HOME_URL).href,
-                width: "320",
-                height: "512",
-              },
-            },
+            buildCyryxOrganizationNode(),
             {
               "@type": "WebSite",
-              "@id": "https://cyryxlabs.com/#website",
-              url: "https://cyryxlabs.com/",
+              "@id": CYRYX_WEBSITE_ID,
+              url: HOME_URL,
               name: "Cyryx Labs",
               publisher: {
-                "@id": "https://cyryxlabs.com/#organization",
+                "@id": CYRYX_ORGANIZATION_ID,
               },
             },
             {
               "@type": "WebPage",
-              "@id": "https://cyryxlabs.com/#webpage",
-              url: "https://cyryxlabs.com/",
+              "@id": `${HOME_URL}#webpage`,
+              url: HOME_URL,
               name: HOME_TITLE,
               isPartOf: {
-                "@id": "https://cyryxlabs.com/#website",
+                "@id": CYRYX_WEBSITE_ID,
               },
               about: {
-                "@id": "https://cyryxlabs.com/#organization",
+                "@id": CYRYX_ORGANIZATION_ID,
+              },
+              publisher: {
+                "@type": "Organization",
+                "@id": CYRYX_ORGANIZATION_ID,
+                name: "Cyryx Labs",
+                url: HOME_URL,
               },
               description:
                 "Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs.",
-            },
-            {
-              "@type": "SoftwareApplication",
-              "@id": "https://cyryxlabs.com/#maax-studio",
-              name: "MAAX Studio",
-              applicationCategory: "DeveloperApplication",
-              applicationSubCategory: "Agentic Execution Environment",
-              audience: {
-                "@type": "Audience",
-                audienceType: "Software teams evaluating an active-development environment",
-              },
-              creator: {
-                "@id": "https://cyryxlabs.com/#organization",
-              },
-              publisher: {
-                "@id": "https://cyryxlabs.com/#organization",
-              },
-              description:
-                "MAAX Studio is an agentic software execution environment in active development at Cyryx Labs.",
-              brand: {
-                "@id": "https://cyryxlabs.com/#organization",
-              },
             },
           ],
         }),

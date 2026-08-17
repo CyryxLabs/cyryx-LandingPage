@@ -26,6 +26,7 @@
     "seo:self-check": "node scripts/seo-self-check.mjs",
     "seo:lighthouse": "node scripts/lighthouse-seo-audit.mjs",
     "seo:post-deploy": "node scripts/post-deploy-verify-gsc.mjs",
+    "seo:indexnow": "node scripts/indexnow-submit.mjs",
     "compliance:self-check": "node scripts/compliance-self-check.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",

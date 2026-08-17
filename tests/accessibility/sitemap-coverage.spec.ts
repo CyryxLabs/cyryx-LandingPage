@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { crawlSitemaps, PRIMARY_SITEMAP } from "../support/seo-site-contract";
 
 /**
  * Enforces that public page routes (src/routes/*.tsx) are present in the
@@ -41,12 +42,8 @@ test("sitemap.xml includes every public page route in src/routes/", async ({
   const files = await readdir(ROUTES_DIR);
   const expected = files.map(fileToPath).filter((p): p is string => Boolean(p));
 
-  const res = await request.get(`${baseURL}/sitemap.xml`);
-  expect(res.status()).toBe(200);
-  const xml = await res.text();
-  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
-    (m) => new URL(m[1].trim()).pathname.replace(/\/$/, "") || "/",
-  );
+  const inventory = await crawlSitemaps(request, baseURL!, PRIMARY_SITEMAP);
+  const locs = inventory.pageUrls.map((loc) => new URL(loc).pathname.replace(/\/$/, "") || "/");
   const locSet = new Set(locs);
 
   const missing = expected.filter((p) => !locSet.has(p));
@@ -59,9 +56,9 @@ test("robots.txt Sitemap: directive points at a reachable sitemap", async ({
 }) => {
   const robots = await request.get(`${baseURL}/robots.txt`);
   const body = await robots.text();
-  const match = body.match(/Sitemap:\s*(\S+)/i);
-  expect(match, "robots.txt must include Sitemap: directive").toBeTruthy();
-  const sitemapPath = new URL(match![1]).pathname;
+  const matches = [...body.matchAll(/^Sitemap:\s*(\S+)\s*$/gim)];
+  expect(matches, "robots.txt must include exactly one Sitemap directive").toHaveLength(1);
+  const sitemapPath = new URL(matches[0][1]).pathname;
   const r = await request.get(`${baseURL}${sitemapPath}`);
   expect(r.status()).toBe(200);
 });

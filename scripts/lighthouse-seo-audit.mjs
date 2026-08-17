@@ -2,7 +2,7 @@
 // Runs Lighthouse against the live (or local) URL for both mobile + desktop,
 // then prints remaining audit failures grouped by priority.
 //
-//   node scripts/lighthouse-seo-audit.mjs --url=https://cyryxlabs.com/
+//   node scripts/lighthouse-seo-audit.mjs --url=https://www.cyryxlabs.com/
 //
 // Requires Chrome/Chromium on PATH. Uses `npx lighthouse` so no global install.
 import { spawnSync } from "node:child_process";
@@ -15,7 +15,7 @@ const args = Object.fromEntries(
     return [k, v.join("=") || "true"];
   }),
 );
-const URL = args.url || "https://cyryxlabs.com/";
+const URL = args.url || "https://www.cyryxlabs.com/";
 const OUT = args.out || "lighthouse-report/seo-audit";
 mkdirSync(OUT, { recursive: true });
 
