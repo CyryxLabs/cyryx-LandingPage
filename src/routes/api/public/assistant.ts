@@ -55,6 +55,8 @@ export const Route = createFileRoute("/api/public/assistant")({
           })),
           maxOutputTokens: 400,
           temperature: 0.3,
+          timeoutMs: 20_000,
+          totalTimeoutMs: 40_000,
         });
         if (!stream) {
           return Response.json({ error: "assistant_unavailable" }, { status: 503 });

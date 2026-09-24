@@ -35,8 +35,19 @@ describe("getGeminiConfig", () => {
     expect(getGeminiConfig({ GEMINI_API_KEY: " k " })).toEqual({
       apiKey: "k",
       model: DEFAULT_GEMINI_MODEL,
+      fallbackModels: ["gemini-3.5-flash"],
     });
     expect(getGeminiConfig({ GEMINI_API_KEY: "k", GEMINI_MODEL: "custom" })?.model).toBe("custom");
+  });
+
+  test("reads GEMINI_FALLBACK_MODELS and never repeats the primary model", () => {
+    expect(
+      getGeminiConfig({
+        GEMINI_API_KEY: "k",
+        GEMINI_MODEL: "a",
+        GEMINI_FALLBACK_MODELS: " b, a ,c,, ",
+      })?.fallbackModels,
+    ).toEqual(["b", "c"]);
   });
 });
 
@@ -121,6 +132,92 @@ describe("generateText", () => {
       expect(await generateText(config, request, failing)).toBeNull();
       expect(await generateText(config, request, throwing)).toBeNull();
       expect(await generateText(config, request, empty)).toBeNull();
+    } finally {
+      console.error = quiet;
+    }
+  });
+});
+
+describe("model fallback", () => {
+  const chained = { apiKey: "k", model: "primary", fallbackModels: ["backup"] };
+
+  test("generateText moves to the next model on 503 and stops on 400", async () => {
+    const quiet = console.error;
+    console.error = () => undefined;
+    try {
+      const urls: string[] = [];
+      const overloaded = (async (url: string) => {
+        urls.push(url);
+        return url.includes("/primary:")
+          ? new Response("busy", { status: 503 })
+          : new Response(JSON.stringify(chunk("From backup")), { status: 200 });
+      }) as unknown as typeof fetch;
+      expect(await generateText(chained, { system: "s", turns: [] }, overloaded)).toBe(
+        "From backup",
+      );
+      // The primary gets one quick retry before the backup model.
+      expect(urls.map((u) => u.split("/").pop())).toEqual([
+        "primary:generateContent",
+        "primary:generateContent",
+        "backup:generateContent",
+      ]);
+
+      let calls = 0;
+      const badRequest = (async () => {
+        calls += 1;
+        return new Response("bad", { status: 400 });
+      }) as unknown as typeof fetch;
+      expect(await generateText(chained, { system: "s", turns: [] }, badRequest)).toBeNull();
+      expect(calls).toBe(1);
+    } finally {
+      console.error = quiet;
+    }
+  });
+
+  test("a slow model times out and the next one answers within the total budget", async () => {
+    const quiet = console.error;
+    console.error = () => undefined;
+    try {
+      const slowPrimary = (async (url: string, init: RequestInit) => {
+        if (url.includes("/backup:")) {
+          return new Response(JSON.stringify(chunk("fast")), { status: 200 });
+        }
+        return new Promise<Response>((_, reject) =>
+          init.signal?.addEventListener("abort", () =>
+            reject(new DOMException("aborted", "AbortError")),
+          ),
+        );
+      }) as unknown as typeof fetch;
+      const text = await generateText(
+        chained,
+        { system: "s", turns: [], timeoutMs: 1600, totalTimeoutMs: 6000 },
+        slowPrimary,
+      );
+      expect(text).toBe("fast");
+    } finally {
+      console.error = quiet;
+    }
+  });
+
+  test("streamText moves to the next model when the primary is unavailable", async () => {
+    const quiet = console.error;
+    console.error = () => undefined;
+    try {
+      const encoder = new TextEncoder();
+      const fakeFetch = (async (url: string) =>
+        url.includes("/primary:")
+          ? new Response("busy", { status: 503 })
+          : new Response(
+              new ReadableStream<Uint8Array>({
+                start(controller) {
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify(chunk("ok"))}\n\n`));
+                  controller.close();
+                },
+              }),
+              { status: 200 },
+            )) as unknown as typeof fetch;
+      const stream = await streamText(chained, { system: "s", turns: [] }, fakeFetch);
+      expect(await readAll(stream!)).toBe("ok");
     } finally {
       console.error = quiet;
     }

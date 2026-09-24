@@ -61,7 +61,8 @@ export const Route = createFileRoute("/api/public/brief/assist")({
           ],
           maxOutputTokens: 2000,
           temperature: 0.2,
-          timeoutMs: 20_000,
+          timeoutMs: 30_000,
+          totalTimeoutMs: 50_000,
           responseMimeType: "application/json",
         });
         if (!text) return Response.json({ error: "assist_unavailable" }, { status: 503 });

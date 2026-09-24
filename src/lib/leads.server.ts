@@ -214,7 +214,8 @@ export async function draftFirstReply(
       turns: [{ role: "user", text: `Project brief:\n${brief.slice(0, 4000)}` }],
       maxOutputTokens: 320,
       temperature: 0.3,
-      timeoutMs: 7000,
+      timeoutMs: 9000,
+      totalTimeoutMs: 14_000,
     },
     fetchImpl,
   );
