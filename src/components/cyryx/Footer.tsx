@@ -196,13 +196,7 @@ export function Footer() {
           </div>
         </div>
 
-        <p aria-hidden className="cx-footer-wordmark mt-20 select-none lg:mt-28">
-          The execution layer
-          <br />
-          for enterprise AI.
-        </p>
-
-        <div className="mt-8 flex flex-col gap-5 border-t border-white/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-5 border-t border-white/10 pt-7 sm:flex-row sm:items-center sm:justify-between lg:mt-24">
           <p className="text-xs tracking-wide text-[var(--silver-dim)]">
             &copy; {year} Cyryx Labs. All rights reserved.
           </p>

@@ -1855,68 +1855,67 @@ html.cx-low-perf .cx-sticky-cta {
 /* CTA system: one filled primary, one outlined secondary, same everywhere.
  * In the components layer so utilities such as `hidden lg:inline-flex` win. */
 @layer components {
-.cx-btn-primary,
-.cx-btn-secondary {
-  display: inline-flex;
-  min-height: 48px;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 6px;
-  padding: 0.75rem 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease,
-    box-shadow 160ms ease;
-}
-
-.cx-btn-primary {
-  background: var(--accent-glow);
-  color: var(--onyx);
-  box-shadow: 0 12px 32px -14px color-mix(in oklab, var(--accent-glow) 70%, transparent);
-}
-
-.cx-btn-primary:hover {
-  background: color-mix(in oklab, var(--accent-glow) 86%, white);
-}
-
-.cx-btn-secondary {
-  border: 1px solid color-mix(in oklab, var(--silver) 26%, transparent);
-  background: color-mix(in oklab, var(--onyx) 55%, transparent);
-  color: var(--silver);
-}
-
-.cx-btn-secondary:hover {
-  border-color: var(--accent-glow);
-  color: var(--accent-glow);
-}
-
-.cx-btn-primary:focus-visible,
-.cx-btn-secondary:focus-visible {
-  outline: 2px solid var(--accent-glow);
-  outline-offset: 3px;
-}
-
-.cx-btn-sm {
-  min-height: 44px;
-  padding: 0.6rem 1.1rem;
-  font-size: 11px;
-}
-
-@media (max-width: 639px) {
-  .cx-hero-ctas .cx-btn-primary,
-  .cx-hero-ctas .cx-btn-secondary {
-    width: 100%;
+  .cx-btn-primary,
+  .cx-btn-secondary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease,
+      box-shadow 160ms ease;
   }
-}
 
+  .cx-btn-primary {
+    background: var(--accent-glow);
+    color: var(--onyx);
+    box-shadow: 0 12px 32px -14px color-mix(in oklab, var(--accent-glow) 70%, transparent);
+  }
+
+  .cx-btn-primary:hover {
+    background: color-mix(in oklab, var(--accent-glow) 86%, white);
+  }
+
+  .cx-btn-secondary {
+    border: 1px solid color-mix(in oklab, var(--silver) 26%, transparent);
+    background: color-mix(in oklab, var(--onyx) 55%, transparent);
+    color: var(--silver);
+  }
+
+  .cx-btn-secondary:hover {
+    border-color: var(--accent-glow);
+    color: var(--accent-glow);
+  }
+
+  .cx-btn-primary:focus-visible,
+  .cx-btn-secondary:focus-visible {
+    outline: 2px solid var(--accent-glow);
+    outline-offset: 3px;
+  }
+
+  .cx-btn-sm {
+    min-height: 44px;
+    padding: 0.6rem 1.1rem;
+    font-size: 11px;
+  }
+
+  @media (max-width: 639px) {
+    .cx-hero-ctas .cx-btn-primary,
+    .cx-hero-ctas .cx-btn-secondary {
+      width: 100%;
+    }
+  }
 }
 
 /* Header: opaque enough that content never reads through it while scrolling. */
@@ -2592,7 +2591,11 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
 /* AEXOS simulations */
 .cx-sim {
   background:
-    radial-gradient(120% 80% at 0% 0%, color-mix(in oklab, var(--accent-glow) 7%, transparent), transparent 55%),
+    radial-gradient(
+      120% 80% at 0% 0%,
+      color-mix(in oklab, var(--accent-glow) 7%, transparent),
+      transparent 55%
+    ),
     linear-gradient(160deg, color-mix(in oklab, var(--graphite) 92%, transparent), var(--onyx));
   box-shadow:
     inset 0 1px 0 color-mix(in oklab, var(--silver) 8%, transparent),
@@ -2736,7 +2739,11 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
 /* Footer */
 .cx-footer {
   background:
-    radial-gradient(90% 60% at 50% 0%, color-mix(in oklab, var(--accent-glow) 7%, transparent), transparent 60%),
+    radial-gradient(
+      90% 60% at 50% 0%,
+      color-mix(in oklab, var(--accent-glow) 7%, transparent),
+      transparent 60%
+    ),
     linear-gradient(180deg, var(--graphite) 0%, var(--onyx) 100%);
   border-top: 1px solid color-mix(in oklab, var(--accent-glow) 16%, transparent);
 }
@@ -2749,28 +2756,23 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
   width: min(60rem, 90vw);
   translate: -50% 0;
   border-radius: 999px;
-  background: radial-gradient(closest-side, color-mix(in oklab, var(--accent-glow) 14%, transparent), transparent);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--accent-glow) 14%, transparent),
+    transparent
+  );
   filter: blur(30px);
   pointer-events: none;
-}
-
-.cx-footer-grid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.35;
-  background-image:
-    linear-gradient(color-mix(in oklab, var(--silver) 5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in oklab, var(--silver) 5%, transparent) 1px, transparent 1px);
-  background-size: 64px 64px;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
 }
 
 .cx-footer-cta {
   border-color: color-mix(in oklab, var(--accent-glow) 22%, transparent);
   background:
-    radial-gradient(80% 120% at 100% 0%, color-mix(in oklab, var(--accent-glow) 10%, transparent), transparent 60%),
+    radial-gradient(
+      80% 120% at 100% 0%,
+      color-mix(in oklab, var(--accent-glow) 10%, transparent),
+      transparent 60%
+    ),
     color-mix(in oklab, var(--obsidian) 88%, transparent);
   box-shadow:
     inset 0 1px 0 color-mix(in oklab, var(--silver) 8%, transparent),
@@ -2816,36 +2818,7 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
   outline: none;
 }
 
-.cx-footer-wordmark {
-  position: relative;
-  margin-inline: -0.04em;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2.6rem, 8.4vw, 8.25rem);
-  line-height: 0.94;
-  letter-spacing: -0.05em;
-  padding-bottom: 0.08em;
-  color: transparent;
-  background:
-    linear-gradient(
-      100deg,
-      transparent 30%,
-      color-mix(in oklab, var(--accent-glow) 70%, white) 45%,
-      transparent 60%
-    ),
-    linear-gradient(180deg, color-mix(in oklab, var(--silver) 22%, transparent), color-mix(in oklab, var(--silver) 3%, transparent));
-  background-size:
-    250% 100%,
-    100% 100%;
-  background-position:
-    150% 0,
-    0 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: cx-wordmark-sheen 9s ease-in-out infinite;
-}
-
-@keyframes cx-wordmark-sheen {
+@keyframes cx-sheen-sweep {
   0%,
   55% {
     background-position:
@@ -2859,19 +2832,33 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .cx-footer-wordmark {
-    animation: none;
-  }
-}
-
-html.cx-low-perf .cx-footer-wordmark {
-  animation: none;
-}
-
-@media (forced-colors: active) {
-  .cx-footer-wordmark {
-    color: CanvasText;
-    background: none;
+/* Hero H1: the chrome headline gets a slow light sweep. Only when motion is
+ * welcome and colours are not forced; every other mode keeps the static chrome. */
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) and (prefers-contrast: no-preference) {
+  html:not(.cx-low-perf) .cx-hero-title-line.text-chrome-gradient {
+    background-image:
+      linear-gradient(
+        100deg,
+        transparent 38%,
+        color-mix(in oklab, var(--accent-glow) 55%, white) 47%,
+        oklch(0.99 0.002 240) 50%,
+        transparent 60%
+      ),
+      linear-gradient(
+        180deg,
+        oklch(0.98 0.002 240) 0%,
+        oklch(0.92 0.004 240) 28%,
+        oklch(0.74 0.006 240) 52%,
+        oklch(0.86 0.005 240) 72%,
+        oklch(0.96 0.003 240) 100%
+      );
+    background-size:
+      250% 100%,
+      100% 100%;
+    background-repeat: no-repeat;
+    background-position:
+      150% 0,
+      0 0;
+    animation: cx-sheen-sweep 8s ease-in-out 1.4s infinite;
   }
 }
