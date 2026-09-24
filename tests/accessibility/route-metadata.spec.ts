@@ -9,7 +9,7 @@ const ROUTES = [
   "/",
   "/company",
   "/products",
-  "/products/maax-studio",
+  "/products/aexos",
   "/solutions",
   "/solutions/ai-strategy-advisory",
   "/solutions/digital-web-systems",

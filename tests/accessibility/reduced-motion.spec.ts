@@ -10,7 +10,8 @@ const PAGES = [
   { path: "/privacy", label: "Privacy" },
   { path: "/terms", label: "Terms" },
   { path: "/careers", label: "Careers" },
-  { path: "/products/maax-studio", label: "MAAXStudio" },
+  { path: "/products", label: "Products" },
+  { path: "/products/aexos", label: "AEXOS" },
 ];
 
 for (const { path, label } of PAGES) {

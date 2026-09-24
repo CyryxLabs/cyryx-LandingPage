@@ -24,7 +24,7 @@ test.describe("footer navigation model", () => {
 
     const expectedProducts = [
       { label: "Products Overview", href: "/products" },
-      { label: "MAAX Studio", href: "/products/maax-studio" },
+      { label: "AEXOS", href: "/products/aexos" },
     ];
 
     for (const item of expectedProducts) {
@@ -32,6 +32,9 @@ test.describe("footer navigation model", () => {
       await expect(link).toBeVisible();
       await expect(link).toHaveAttribute("href", item.href);
     }
+
+    // The discontinued MAAX program must not be linked from the footer.
+    await expect(page.locator('footer a[href*="maax" i]')).toHaveCount(0);
   });
 
   test("solutions group content", async ({ page }) => {

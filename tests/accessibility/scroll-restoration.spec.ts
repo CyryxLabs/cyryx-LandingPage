@@ -27,7 +27,7 @@ test.describe("Initial scroll restoration", () => {
     await expect(page.locator("#contact")).toBeInViewport();
   });
 
-  test("Start a fit review opens at the top after leaving the bottom of the homepage", async ({
+  test("Start a project opens at the top after leaving the bottom of the homepage", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
@@ -39,7 +39,7 @@ test.describe("Initial scroll restoration", () => {
 
     await page
       .locator('footer[role="contentinfo"]')
-      .getByRole("link", { name: "Start a fit review", exact: true })
+      .getByRole("link", { name: "Start a project", exact: true })
       .click();
 
     await expect(page).toHaveURL(/\/start$/);

@@ -54,9 +54,9 @@ test.describe("Mobile Navigation Accessibility", () => {
       "href",
       "/products",
     );
-    await expect(nav.getByRole("link", { name: "MAAX Studio", exact: true })).toHaveAttribute(
+    await expect(nav.getByRole("link", { name: "AEXOS", exact: true })).toHaveAttribute(
       "href",
-      "/products/maax-studio",
+      "/products/aexos",
     );
 
     // 10. Products closes when solutions opens
@@ -108,6 +108,7 @@ test.describe("Mobile Navigation Accessibility", () => {
 
     // 16. Forbidden labels absent
     const forbidden = [
+      "MAAX Studio",
       "MAAX Runtime",
       "Documentation",
       "Enterprise Lead Systems",
@@ -124,7 +125,7 @@ test.describe("Mobile Navigation Accessibility", () => {
 
   test("17-19. Active group and current page behavior", async ({ page }) => {
     // 17. Active group expands on open
-    await page.goto("/products/maax-studio");
+    await page.goto("/products/aexos");
     await page.waitForLoadState("networkidle");
     await expectPageHydrated(page);
     await page.getByRole("button", { name: /open menu/i }).click();
@@ -134,7 +135,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     await expect(productsTrigger).toHaveAttribute("aria-expanded", "true");
 
     // 18. Current child has aria-current
-    const activeLink = nav.getByRole("link", { name: "MAAX Studio", exact: true });
+    const activeLink = nav.getByRole("link", { name: "AEXOS", exact: true });
     await expect(activeLink).toHaveAttribute("aria-current", "page");
 
     // 19. Child selection closes
@@ -149,7 +150,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     // 20. CTA label and href
-    const cta = nav.getByRole("link", { name: "Start a fit review" });
+    const cta = nav.getByRole("link", { name: "Start a project" });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "/start");
 
@@ -185,7 +186,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     for (let i = 0; i < 5; i++) {
       await page.keyboard.press("Tab");
     }
-    const cta = nav.getByRole("link", { name: "Start a fit review" });
+    const cta = nav.getByRole("link", { name: "Start a project" });
     await expect(cta).toBeFocused();
 
     await page.keyboard.press("Tab");
@@ -209,7 +210,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     for (let i = 0; i < 10; i++) {
       await page.keyboard.press("Tab");
       const active = await page.evaluate(() => document.activeElement?.textContent);
-      if (active?.includes("MAAX Studio") || active?.includes("Products Overview")) {
+      if (active?.includes("AEXOS") || active?.includes("Products Overview")) {
         foundHiddenLink = true;
       }
     }

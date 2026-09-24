@@ -147,21 +147,28 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await page.keyboard.press("Enter");
   await expect(page.locator("#main-content")).toBeFocused();
 
-  const primaryLabel = "Start a fit review with Cyryx Labs";
-  const secondaryLabel = "Explore MAAX Studio — product in active development";
-  const primary = page.locator(`section[data-hero] a[aria-label="${primaryLabel}"]`);
-  const secondary = page.locator(`section[data-hero] a[aria-label="${secondaryLabel}"]`);
+  const primary = page.locator('section[data-hero] a[data-cta="primary"]');
+  const secondary = page.locator('section[data-hero] a[data-cta="secondary"]');
+  await expect(primary).toHaveAccessibleName(/^Start a project/);
+  await expect(secondary).toHaveAccessibleName(/^See how we work/);
 
   await primary.focus();
   await expect(primary).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(secondary).toBeFocused();
 
-  const primaryHref = await primary.getAttribute("href");
-  expect(primaryHref).toBe("/start?source=home&intent=operating-capability");
+  // With the assistant enabled, the "ask a question first" entry point is the
+  // next stop after the two CTAs.
+  const assistantEntry = page
+    .locator("section[data-hero]")
+    .getByRole("button", { name: /Have a question first\? Ask the Cyryx assistant/ });
+  if ((await assistantEntry.count()) > 0) {
+    await page.keyboard.press("Tab");
+    await expect(assistantEntry).toBeFocused();
+  }
 
-  const secondaryHref = await secondary.getAttribute("href");
-  expect(secondaryHref).toBe("#maax");
+  expect(await primary.getAttribute("href")).toBe("/start?source=home");
+  expect(await secondary.getAttribute("href")).toBe("/engagement-model");
 });
 
 test("Hero headline typography stays unclipped from 360px to 1024px", async ({ page }) => {
@@ -245,62 +252,93 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
       );
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
       expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
-      if (metrics.viewportWidth < 768) {
-        expect(metrics.scene).not.toBeNull();
-        expect(line.top).toBeGreaterThanOrEqual((metrics.scene?.bottom ?? 0) - 1);
-      } else {
-        expect(line.top).toBeGreaterThanOrEqual(0);
-        expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
-      }
+      // The headline sits inside the first viewport at every breakpoint: on
+      // phones there is no media scene above it any more.
+      expect(metrics.scene).not.toBeNull();
+      expect(line.top).toBeGreaterThanOrEqual(0);
+      expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
     }
   }
 });
 
-test("Mobile Hero places its content panel after the media scene", async ({ page }) => {
+test("Mobile hero shows headline and primary CTA inside the first viewport", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, value: 8 });
     Object.defineProperty(navigator, "deviceMemory", { configurable: true, value: 8 });
   });
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
+  for (const viewport of [
+    { width: 360, height: 800 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expectPageHydrated(page);
 
-  const layout = await page.evaluate(() => {
-    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-    const media = document.querySelector<HTMLElement>("[data-hero-media-frame]");
-    const content = document.querySelector<HTMLElement>("[data-hero-content-layer]");
-    const panel = document.querySelector<HTMLElement>(".cx-hero-panel");
-    const rect = (element: HTMLElement | null) => {
-      const bounds = element?.getBoundingClientRect();
-      return bounds
-        ? {
-            top: bounds.top + window.scrollY,
-            right: bounds.right,
-            bottom: bounds.bottom + window.scrollY,
-            left: bounds.left,
-          }
-        : null;
-    };
-    return {
-      scene: rect(scene),
-      media: rect(media),
-      content: rect(content),
-      panel: rect(panel),
-      headingCount: document.querySelectorAll("#hero-heading").length,
-      primaryCtaCount: document.querySelectorAll(
-        'section[data-hero] a[aria-label="Start a fit review with Cyryx Labs"]',
-      ).length,
-    };
-  });
+    const layout = await page.evaluate(() => {
+      const rect = (element: Element | null) => {
+        const bounds = element?.getBoundingClientRect();
+        return bounds
+          ? { top: bounds.top, bottom: bounds.bottom, left: bounds.left, right: bounds.right }
+          : null;
+      };
+      return {
+        scrollY: window.scrollY,
+        viewportHeight: window.innerHeight,
+        viewportWidth: window.innerWidth,
+        heading: rect(document.querySelector("#hero-heading")),
+        sub: rect(document.querySelector("section[data-hero] .cx-hero-sub")),
+        primary: rect(document.querySelector('section[data-hero] a[data-cta="primary"]')),
+        headingCount: document.querySelectorAll("#hero-heading").length,
+        primaryCtaCount: document.querySelectorAll('section[data-hero] a[data-cta="primary"]')
+          .length,
+      };
+    });
 
-  expect(layout.scene).not.toBeNull();
-  expect(layout.media).not.toBeNull();
-  expect(layout.content).not.toBeNull();
-  expect(layout.panel).not.toBeNull();
-  expect(layout.content!.top).toBeGreaterThanOrEqual(layout.scene!.bottom - 1);
-  expect(layout.panel!.top).toBeGreaterThanOrEqual(layout.media!.bottom - 1);
-  expect(layout.headingCount).toBe(1);
-  expect(layout.primaryCtaCount).toBe(1);
+    expect(layout.scrollY).toBe(0);
+    expect(layout.headingCount).toBe(1);
+    expect(layout.primaryCtaCount).toBe(1);
+    for (const [name, box] of Object.entries({
+      heading: layout.heading,
+      sub: layout.sub,
+      primary: layout.primary,
+    })) {
+      expect(box, `${name} missing at ${viewport.width}px`).not.toBeNull();
+      expect(box!.top, `${name} above the fold at ${viewport.width}px`).toBeGreaterThanOrEqual(0);
+      expect(box!.bottom, `${name} below the fold at ${viewport.width}px`).toBeLessThanOrEqual(
+        layout.viewportHeight + 1,
+      );
+      expect(box!.right).toBeLessThanOrEqual(layout.viewportWidth + 1);
+    }
+    await expect(page.locator('section[data-hero] a[data-cta="primary"]')).toHaveAttribute(
+      "href",
+      "/start?source=home",
+    );
+  }
+});
+
+test("Illustrative execution trace follows the hero copy on smaller screens", async ({ page }) => {
+  for (const viewport of [
+    { width: 390, height: 844, inHero: false },
+    { width: 1280, height: 900, inHero: true },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expectPageHydrated(page);
+    const traces = page.locator('section[data-hero] [aria-label^="Illustrative example"]');
+    const visible = traces.filter({ visible: true });
+    await expect(visible).toHaveCount(1);
+    await expect(visible).toContainText("Illustrative example");
+    const position = await visible.evaluate((trace) => {
+      const sticky = document.querySelector("[data-hero-sticky]");
+      const heading = document.querySelector("#hero-heading")!.getBoundingClientRect();
+      return {
+        insideSticky: Boolean(sticky?.contains(trace)),
+        belowHeadline: trace.getBoundingClientRect().top >= heading.bottom,
+      };
+    });
+    expect(position.insideSticky, `${viewport.width}px`).toBe(viewport.inHero);
+    if (!viewport.inHero) expect(position.belowHeadline).toBe(true);
+  }
 });
 
 test("Forced-colors keeps Hero text and focus indicators system-readable", async ({ page }) => {
@@ -336,6 +374,6 @@ test("Forced-colors keeps Hero text and focus indicators system-readable", async
     `Expected system-readable focus indicator on primary Hero CTA; received ${JSON.stringify(focusIndicator)}`,
   ).toBeTruthy();
 
-  const secondaryAnchor = page.locator('section[data-hero] a[href="#maax"]').first();
+  const secondaryAnchor = page.locator('section[data-hero] a[href="/engagement-model"]').first();
   await expect(secondaryAnchor).toBeVisible();
 });

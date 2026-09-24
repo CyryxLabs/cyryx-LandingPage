@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "test:a11y": "playwright test --config=playwright.config.ts",
     "test:cross-browser": "playwright test --config=playwright.cross-browser.config.ts",
-    "test:unit": "bun test tests/attribution.test.ts tests/marketing-search.test.ts tests/maax-waitlist.test.ts tests/maax-waitlist-contract.test.ts tests/site-contracts.test.ts",
+    "test:unit": "bun test tests/attribution.test.ts tests/marketing-search.test.ts tests/site-contracts.test.ts tests/leads.test.ts tests/gemini.test.ts",
     "test:a11y:update-jsonld": "UPDATE_JSONLD_SNAPSHOT=1 playwright test --config=playwright.config.ts --grep \"JSON-LD\"",
     "test:a11y:ci": "A11Y_REPORT_DIR=a11y-report playwright test --config=playwright.config.ts",
     "quality:validate-terms": "node scripts/validate-forbidden-terms.mjs",

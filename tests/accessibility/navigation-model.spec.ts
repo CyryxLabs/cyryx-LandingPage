@@ -15,8 +15,20 @@ test.describe("Navigation Model", () => {
     expect(labels).toEqual(["Products", "Solutions", "Research", "Company"]);
   });
 
+  test("A2. Products group lists the overview and AEXOS only", () => {
+    const products = PRIMARY_NAVIGATION.find((g) => g.id === "products");
+    expect(products?.children).toEqual([
+      { label: "Products Overview", href: "/products" },
+      { label: "AEXOS", href: "/products/aexos" },
+    ]);
+    const allLabels = PRIMARY_NAVIGATION.flatMap((g) => g.children.map((c) => c.label));
+    const allHrefs = PRIMARY_NAVIGATION.flatMap((g) => g.children.map((c) => c.href));
+    expect(allLabels.join("|")).not.toMatch(/MAAX/i);
+    expect(allHrefs.join("|")).not.toMatch(/maax/i);
+  });
+
   test("B. CTA", () => {
-    expect(PRIMARY_NAVIGATION_CTA).toEqual({ label: "Start a fit review", href: "/start" });
+    expect(PRIMARY_NAVIGATION_CTA).toEqual({ label: "Start a project", href: "/start" });
   });
 
   test("D. Uniqueness", () => {
@@ -41,6 +53,7 @@ test.describe("Navigation Model", () => {
       "/solutions/ai-integrations",
       "/auth",
       "/workspace",
+      "/products/maax-studio",
     ];
     const allHrefs = PRIMARY_NAVIGATION.flatMap((g) => g.children.map((c) => c.href));
     forbidden.forEach((route) => {
@@ -51,7 +64,7 @@ test.describe("Navigation Model", () => {
   test("F. Group matching", () => {
     // PRODUCTS
     expect(getActiveNavigationGroup("/products")).toBe("products");
-    expect(getActiveNavigationGroup("/products/maax-studio")).toBe("products");
+    expect(getActiveNavigationGroup("/products/aexos")).toBe("products");
 
     // SOLUTIONS
     expect(getActiveNavigationGroup("/solutions")).toBe("solutions");
@@ -86,11 +99,11 @@ test.describe("Navigation Model", () => {
   test("H. Child specificity", () => {
     // At /products
     expect(isNavigationItemActive("/products", "/products")).toBe(true);
-    expect(isNavigationItemActive("/products", "/products/maax-studio")).toBe(false);
+    expect(isNavigationItemActive("/products", "/products/aexos")).toBe(false);
 
-    // At /products/maax-studio
-    expect(isNavigationItemActive("/products/maax-studio", "/products/maax-studio")).toBe(true);
-    expect(isNavigationItemActive("/products/maax-studio", "/products")).toBe(false);
+    // At /products/aexos
+    expect(isNavigationItemActive("/products/aexos", "/products/aexos")).toBe(true);
+    expect(isNavigationItemActive("/products/aexos", "/products")).toBe(false);
 
     // At /research/article
     // Section 11 implies "Research" child is active on descendants,
@@ -105,8 +118,8 @@ test.describe("Navigation Model", () => {
 
   test("I. Query/hash normalization", () => {
     expect(normalizePathname("/products/?ref=test")).toBe("/products");
-    expect(normalizePathname("/products/maax-studio#details")).toBe("/products/maax-studio");
-    expect(normalizePathname("products/maax-studio")).toBe("products/maax-studio");
+    expect(normalizePathname("/products/aexos#details")).toBe("/products/aexos");
+    expect(normalizePathname("products/aexos")).toBe("products/aexos");
   });
 
   test("J. Internal-route isolation", () => {
