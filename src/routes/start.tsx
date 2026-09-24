@@ -289,6 +289,14 @@ function StartPage() {
             </li>
           </ol>
 
+          <p className="mt-5 text-sm text-[var(--silver-dim)]">
+            Already have detailed requirements, wireframes or documents?{" "}
+            <Link to="/brief" className="text-[var(--accent-glow)] underline underline-offset-4">
+              Send a full project brief
+            </Link>
+            .
+          </p>
+
           {context.source || context.intent ? (
             <p className="mt-5 text-sm text-[var(--silver-dim)]">
               Coming from{" "}
@@ -343,6 +351,9 @@ function StartPage() {
                       <MessageSquare className="h-4 w-4" aria-hidden /> Ask a follow-up now
                     </button>
                   )}
+                  <Link to="/brief" className="cx-btn-secondary cx-btn-sm">
+                    Add requirements and files
+                  </Link>
                   <Link to="/engagement-model" className="cx-btn-secondary cx-btn-sm">
                     How engagements run
                   </Link>

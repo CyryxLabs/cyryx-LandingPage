@@ -22,6 +22,8 @@ export type GeminiRequest = {
   maxOutputTokens?: number;
   temperature?: number;
   timeoutMs?: number;
+  /** "application/json" asks the model for a JSON-only response. */
+  responseMimeType?: string;
 };
 
 export type GeminiConfig = { apiKey: string; model: string };
@@ -42,6 +44,7 @@ export function buildGeminiBody(request: GeminiRequest) {
     generationConfig: {
       temperature: request.temperature ?? 0.3,
       maxOutputTokens: request.maxOutputTokens ?? 400,
+      ...(request.responseMimeType ? { responseMimeType: request.responseMimeType } : {}),
     },
   };
 }

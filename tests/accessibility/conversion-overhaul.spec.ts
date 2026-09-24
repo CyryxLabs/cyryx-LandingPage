@@ -11,7 +11,12 @@ import { expectPageHydrated } from "../support/page-ready";
  */
 const MOCK_ORIGIN = process.env.MOCK_GEMINI_ORIGIN ?? "http://127.0.0.1:4599";
 
-type RecordedCall = { fn: string; body: Record<string, unknown> | null };
+type RecordedCall = {
+  fn: string;
+  body: Record<string, unknown> | null;
+  signatureValid?: boolean;
+  idempotencyKey?: string | null;
+};
 
 async function openHome(page: Page, path = "/") {
   await page.goto(path, { waitUntil: "domcontentloaded" });
@@ -116,10 +121,34 @@ test("/start two-step brief ends with the instant first read and a structured v2
   const response = await request.get(`${MOCK_ORIGIN}/calls`);
   expect(response.ok()).toBe(true);
   const calls = (await response.json()) as RecordedCall[];
+  // With the CRM intake configured (the production path) the lead is signed
+  // and sent to the CRM; otherwise it goes to the legacy v2 RPC.
+  const crmSubmission = calls.find(
+    (call) =>
+      call.fn === "crm_submit" &&
+      (call.body?.contact as { email?: string } | undefined)?.email === email,
+  );
+  if (crmSubmission) {
+    expect(crmSubmission.signatureValid).toBe(true);
+    expect(crmSubmission.idempotencyKey).toMatch(/^web_project_/);
+    const body = crmSubmission.body as Record<string, any>;
+    expect(body.kind).toBe("project");
+    expect(body.requirements.projectType).toBe("Workflow Automation");
+    expect(body.requirements.technical.existingSystems).toBe("NetSuite, Slack");
+    expect(body.engagement.timeline).toBe("Within 30 days");
+    expect(body.source).toMatchObject({
+      page: "/start",
+      entrySource: "solutions",
+      entryIntent: "workflow-automation",
+    });
+    expect(body.aiFirstReply).toContain("invoice exceptions");
+    expect(body.consent.privacyNoticeVersion).toMatch(/^website-contact-/);
+    return;
+  }
   const submission = calls.find(
     (call) => call.fn === "submit_contact_public_v2" && call.body?.p_email === email,
   );
-  expect(submission, "mock did not record a submit_contact_public_v2 call").toBeTruthy();
+  expect(submission, "mock recorded neither a CRM intake nor a v2 RPC call").toBeTruthy();
   const qualification = submission!.body!.p_qualification as Record<string, unknown>;
   expect(qualification.project_type).toBe("Workflow Automation");
   expect(qualification).toMatchObject({

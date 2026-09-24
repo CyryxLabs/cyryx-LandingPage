@@ -54,6 +54,7 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
       { label: "Company", href: "/company" },
       { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
+      { label: "Project Brief", href: "/brief" },
     ] as const,
   },
 ] as const;

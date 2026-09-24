@@ -41,6 +41,19 @@ export const Route = createFileRoute("/api/public/contact")({
         const submittedAt = new Date().toISOString();
         const message = formatFitReviewMessage(data);
 
+        const brief = [
+          `Project type: ${data.projectType}`,
+          `Problem: ${data.problem}`,
+          data.outcome ? `Desired outcome: ${data.outcome}` : "",
+          data.whyNow ? `Why now: ${data.whyNow}` : "",
+        ]
+          .filter(Boolean)
+          .join("\n");
+        const viaCrm = await leads.crmIntakeEnabled();
+        // With the CRM as system of record, the first read is drafted before
+        // saving so it is stored with the lead; the CRM notifies the team.
+        const earlyReply = viaCrm ? await leads.draftFirstReply(brief) : null;
+
         const saved = await leads.saveLead({
           name: data.name,
           email: normalizedEmail,
@@ -52,23 +65,33 @@ export const Route = createFileRoute("/api/public/contact")({
           userAgentHash: userAgentHash(request),
           qualification: buildQualification(data),
           attribution: data.attribution,
+          details: {
+            projectType: data.projectType,
+            problem: data.problem,
+            outcome: data.outcome,
+            whyNow: data.whyNow,
+            role: data.role,
+            website: data.companyWebsite,
+            stage: data.stage,
+            budget: data.investment,
+            timeline: data.timeline,
+            systems: data.systems,
+            entrySource: data.source,
+            entryIntent: data.intent,
+          },
+          aiFirstReply: earlyReply,
         });
         if (!saved.ok) {
           return Response.json({ error: saved.error }, { status: saved.status });
         }
 
-        // Real-time first read of the brief. Bounded by a short timeout and
-        // always optional: the lead is already saved.
-        const firstReply = await leads.draftFirstReply(
-          [
-            `Project type: ${data.projectType}`,
-            `Problem: ${data.problem}`,
-            data.outcome ? `Desired outcome: ${data.outcome}` : "",
-            data.whyNow ? `Why now: ${data.whyNow}` : "",
-          ]
-            .filter(Boolean)
-            .join("\n"),
-        );
+        if (viaCrm) {
+          return Response.json({ ok: true, confirmationQueued: false, firstReply: earlyReply });
+        }
+
+        // Legacy website database: real-time first read of the brief, bounded
+        // by a short timeout and always optional (the lead is already saved).
+        const firstReply = await leads.draftFirstReply(brief);
         if (firstReply) await leads.recordFirstReply(saved.submissionId, firstReply);
 
         let confirmationQueued = false;

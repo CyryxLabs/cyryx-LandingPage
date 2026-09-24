@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BriefRouteImport } from './routes/brief'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -70,6 +71,9 @@ import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicAuthDomainBlockRouteImport } from './routes/api/public/auth.domain-block'
 import { Route as ApiPublicAuthRecoverRouteImport } from './routes/api/public/auth.recover'
+import { Route as ApiPublicBriefAssistRouteImport } from './routes/api/public/brief/assist'
+import { Route as ApiPublicBriefInitRouteImport } from './routes/api/public/brief/init'
+import { Route as ApiPublicBriefSubmitRouteImport } from './routes/api/public/brief/submit'
 import { Route as ApiPublicNewsletterConfirmRouteImport } from './routes/api/public/newsletter.confirm'
 import { Route as ApiPublicNewsletterSubscribeRouteImport } from './routes/api/public/newsletter.subscribe'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -88,6 +92,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BriefRoute = BriefRouteImport.update({
+  id: '/brief',
+  path: '/brief',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareersRoute = CareersRouteImport.update({
@@ -407,6 +416,21 @@ const ApiPublicAuthRecoverRoute = ApiPublicAuthRecoverRouteImport.update({
   path: '/api/public/auth/recover',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicBriefAssistRoute = ApiPublicBriefAssistRouteImport.update({
+  id: '/api/public/brief/assist',
+  path: '/api/public/brief/assist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBriefInitRoute = ApiPublicBriefInitRouteImport.update({
+  id: '/api/public/brief/init',
+  path: '/api/public/brief/init',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBriefSubmitRoute = ApiPublicBriefSubmitRouteImport.update({
+  id: '/api/public/brief/submit',
+  path: '/api/public/brief/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicNewsletterConfirmRoute =
   ApiPublicNewsletterConfirmRouteImport.update({
     id: '/api/public/newsletter/confirm',
@@ -441,6 +465,7 @@ const LovableEmailTransactionalSendRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/brief': typeof BriefRoute
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
@@ -499,6 +524,9 @@ export interface FileRoutesByFullPath {
   '/workspace/': typeof AuthenticatedWorkspaceIndexRoute
   '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
   '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
+  '/api/public/brief/assist': typeof ApiPublicBriefAssistRoute
+  '/api/public/brief/init': typeof ApiPublicBriefInitRoute
+  '/api/public/brief/submit': typeof ApiPublicBriefSubmitRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -508,6 +536,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/brief': typeof BriefRoute
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
@@ -565,6 +594,9 @@ export interface FileRoutesByTo {
   '/workspace': typeof AuthenticatedWorkspaceIndexRoute
   '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
   '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
+  '/api/public/brief/assist': typeof ApiPublicBriefAssistRoute
+  '/api/public/brief/init': typeof ApiPublicBriefInitRoute
+  '/api/public/brief/submit': typeof ApiPublicBriefSubmitRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -576,6 +608,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/brief': typeof BriefRoute
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
@@ -634,6 +667,9 @@ export interface FileRoutesById {
   '/_authenticated/workspace/': typeof AuthenticatedWorkspaceIndexRoute
   '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
   '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
+  '/api/public/brief/assist': typeof ApiPublicBriefAssistRoute
+  '/api/public/brief/init': typeof ApiPublicBriefInitRoute
+  '/api/public/brief/submit': typeof ApiPublicBriefSubmitRoute
   '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
   '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -645,6 +681,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/brief'
     | '/careers'
     | '/company'
     | '/contact'
@@ -703,6 +740,9 @@ export interface FileRouteTypes {
     | '/workspace/'
     | '/api/public/auth/domain-block'
     | '/api/public/auth/recover'
+    | '/api/public/brief/assist'
+    | '/api/public/brief/init'
+    | '/api/public/brief/submit'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -712,6 +752,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/brief'
     | '/careers'
     | '/company'
     | '/contact'
@@ -769,6 +810,9 @@ export interface FileRouteTypes {
     | '/workspace'
     | '/api/public/auth/domain-block'
     | '/api/public/auth/recover'
+    | '/api/public/brief/assist'
+    | '/api/public/brief/init'
+    | '/api/public/brief/submit'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -779,6 +823,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/brief'
     | '/careers'
     | '/company'
     | '/contact'
@@ -837,6 +882,9 @@ export interface FileRouteTypes {
     | '/_authenticated/workspace/'
     | '/api/public/auth/domain-block'
     | '/api/public/auth/recover'
+    | '/api/public/brief/assist'
+    | '/api/public/brief/init'
+    | '/api/public/brief/submit'
     | '/api/public/newsletter/confirm'
     | '/api/public/newsletter/subscribe'
     | '/lovable/email/queue/process'
@@ -848,6 +896,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BriefRoute: typeof BriefRoute
   CareersRoute: typeof CareersRoute
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
@@ -882,6 +931,9 @@ export interface RootRouteChildren {
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicAuthDomainBlockRoute: typeof ApiPublicAuthDomainBlockRoute
   ApiPublicAuthRecoverRoute: typeof ApiPublicAuthRecoverRoute
+  ApiPublicBriefAssistRoute: typeof ApiPublicBriefAssistRoute
+  ApiPublicBriefInitRoute: typeof ApiPublicBriefInitRoute
+  ApiPublicBriefSubmitRoute: typeof ApiPublicBriefSubmitRoute
   ApiPublicNewsletterConfirmRoute: typeof ApiPublicNewsletterConfirmRoute
   ApiPublicNewsletterSubscribeRoute: typeof ApiPublicNewsletterSubscribeRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -910,6 +962,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brief': {
+      id: '/brief'
+      path: '/brief'
+      fullPath: '/brief'
+      preLoaderRoute: typeof BriefRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/careers': {
@@ -1318,6 +1377,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAuthRecoverRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/brief/assist': {
+      id: '/api/public/brief/assist'
+      path: '/api/public/brief/assist'
+      fullPath: '/api/public/brief/assist'
+      preLoaderRoute: typeof ApiPublicBriefAssistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/brief/init': {
+      id: '/api/public/brief/init'
+      path: '/api/public/brief/init'
+      fullPath: '/api/public/brief/init'
+      preLoaderRoute: typeof ApiPublicBriefInitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/brief/submit': {
+      id: '/api/public/brief/submit'
+      path: '/api/public/brief/submit'
+      fullPath: '/api/public/brief/submit'
+      preLoaderRoute: typeof ApiPublicBriefSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/newsletter/confirm': {
       id: '/api/public/newsletter/confirm'
       path: '/api/public/newsletter/confirm'
@@ -1450,6 +1530,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BriefRoute: BriefRoute,
   CareersRoute: CareersRoute,
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
@@ -1488,6 +1569,9 @@ const rootRouteChildren: RootRouteChildren = {
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicAuthDomainBlockRoute: ApiPublicAuthDomainBlockRoute,
   ApiPublicAuthRecoverRoute: ApiPublicAuthRecoverRoute,
+  ApiPublicBriefAssistRoute: ApiPublicBriefAssistRoute,
+  ApiPublicBriefInitRoute: ApiPublicBriefInitRoute,
+  ApiPublicBriefSubmitRoute: ApiPublicBriefSubmitRoute,
   ApiPublicNewsletterConfirmRoute: ApiPublicNewsletterConfirmRoute,
   ApiPublicNewsletterSubscribeRoute: ApiPublicNewsletterSubscribeRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,

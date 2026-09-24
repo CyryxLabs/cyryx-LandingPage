@@ -15,6 +15,23 @@ export type SaveLeadInput = {
   userAgentHash: string;
   qualification?: Record<string, unknown>;
   attribution?: Record<string, unknown>;
+  /** Structured fields forwarded to the CRM intake (contract v1). */
+  details?: {
+    projectType?: string;
+    problem?: string;
+    outcome?: string;
+    whyNow?: string;
+    role?: string;
+    website?: string;
+    stage?: string;
+    budget?: string;
+    timeline?: string;
+    systems?: string;
+    entrySource?: string;
+    entryIntent?: string;
+  };
+  /** First reply shown to the visitor, stored with the lead in the CRM. */
+  aiFirstReply?: string | null;
 };
 
 export type SaveLeadResult =
@@ -48,10 +65,90 @@ function submissionIdFrom(data: unknown): string {
  * and attribution). Falls back to v1 while the 20260924 migration is not
  * applied, folding the structured data into the readable message.
  */
+/** True when leads go to the Cyryx CRM intake instead of the legacy website database. */
+export async function crmIntakeEnabled(): Promise<boolean> {
+  const { getCrmIntakeConfig } = await import("@/lib/crm-intake.server");
+  return getCrmIntakeConfig() !== null;
+}
+
+async function saveLeadToCrm(input: SaveLeadInput): Promise<SaveLeadResult | null> {
+  const crm = await import("@/lib/crm-intake.server");
+  const config = crm.getCrmIntakeConfig();
+  if (!config) return null;
+  const { idempotencyKeyFor } = await import("@/lib/brief-attribution.server");
+  const d = input.details ?? {};
+  const attribution = (input.attribution ?? {}) as Record<string, unknown>;
+  const text = (value: unknown, max = 300) =>
+    typeof value === "string" ? value.slice(0, max) : "";
+  const utm: Record<string, string> = {};
+  for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"]) {
+    if (text(attribution[key])) utm[key] = text(attribution[key], 120);
+  }
+  const kind = input.interest === "assistant" ? "assistant" : "project";
+  const payload = {
+    kind,
+    source: {
+      site: "cyryxlabs.com",
+      page: kind === "assistant" ? "assistant" : "/start",
+      referrer: text(attribution.referrer),
+      landingPath: text(attribution.landing_path, 200),
+      utm,
+      copyVariant: text(attribution.copy_variant, 20),
+      entrySource: d.entrySource ?? "",
+      entryIntent: d.entryIntent ?? "",
+    },
+    contact: {
+      name: input.name,
+      email: input.email,
+      company: input.company,
+      role: d.role ?? "",
+      website: d.website ?? "",
+    },
+    engagement: {
+      type: "Not sure",
+      budgetBand: d.budget ?? "",
+      timeline: d.timeline ?? "",
+      stage: d.stage ?? "",
+    },
+    requirements: {
+      projectType: d.projectType ?? "",
+      problem: (d.problem || input.message).slice(0, 4000),
+      goals: d.outcome ? [d.outcome.slice(0, 300)] : [],
+      whyNow: (d.whyNow ?? "").slice(0, 1200),
+      technical: { existingSystems: (d.systems ?? "").slice(0, 1500) },
+      freeText: input.message.slice(0, 4000),
+    },
+    attachments: [],
+    aiFirstReply: input.aiFirstReply ?? "",
+    consent: {
+      privacyNoticeVersion: input.consentVersion,
+      processingBasis: "consent",
+      marketingOptIn: false,
+      acceptedAt: new Date().toISOString(),
+      ipHash: input.ipHash,
+      userAgentHash: input.userAgentHash,
+    },
+  };
+  const result = await crm.crmIntakeSubmit(
+    config,
+    payload,
+    idempotencyKeyFor({ ...payload, contact: { email: input.email } }),
+  );
+  if (result.ok) {
+    return { ok: true, submissionId: result.data.requirementsId, structured: true };
+  }
+  return result.status === 429
+    ? { ok: false, status: 429, error: "Too many submissions — please try again later." }
+    : { ok: false, status: 500, error: "We couldn't save your brief right now." };
+}
+
 export async function saveLead(
   input: SaveLeadInput,
   client = publicClient(),
 ): Promise<SaveLeadResult> {
+  // The Cyryx CRM is the system of record when its intake is configured.
+  const viaCrm = await saveLeadToCrm(input);
+  if (viaCrm) return viaCrm;
   if (!client) return { ok: false, status: 503, error: "Backend unavailable" };
 
   const v2 = await client.rpc("submit_contact_public_v2", {

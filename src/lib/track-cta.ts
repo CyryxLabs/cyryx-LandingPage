@@ -50,7 +50,8 @@ export type CtaSection =
   | "product"
   | "evidence"
   | "assistant"
-  | "start";
+  | "start"
+  | "brief";
 
 export interface TrackCtaInput {
   cta: CtaName;
