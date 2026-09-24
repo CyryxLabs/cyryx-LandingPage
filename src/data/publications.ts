@@ -112,7 +112,7 @@ export const CGP_V1: Publication = {
   ],
   abstract: `Existing AI governance frameworks — the EU AI Act, the NIST AI Risk Management Framework (AI RMF), and ISO/IEC 42001 — were designed for AI systems operating under continuous human supervision: classifiers, recommenders, and single-turn generators. None were designed for agentic AI systems that autonomously decompose goals into multi-step plans, execute sequences of environment-modifying actions, coordinate multiple specialized sub-agents, and maintain state across sessions. Singapore's Model AI Governance Framework (January 2026) is the only published governance document that acknowledges this gap, identifying three unaddressed risks: cascading failure propagation, emergent scope expansion, and attribution gaps across agent chains.
 
-This document introduces the Cyryx Governance Protocol (CGP) v1.0, a technical framework with seven control domains and twenty-eight normative controls (MUST/SHOULD/MAY). CGP is presented as an extension to existing frameworks — not a replacement — with mappings to selected provisions in the EU AI Act, NIST AI RMF, and ISO/IEC 42001. The published abstract includes author assertions about MAAX Studio implementation; this website does not treat those assertions as current implementation, conformance, certification, or client-outcome evidence. CGP is published under Creative Commons Attribution 4.0 (CC BY 4.0) for open community adoption and review.`,
+This document introduces the Cyryx Governance Protocol (CGP) v1.0, a technical framework with seven control domains and twenty-eight normative controls (MUST/SHOULD/MAY). CGP is presented as an extension to existing frameworks — not a replacement — with mappings to selected provisions in the EU AI Act, NIST AI RMF, and ISO/IEC 42001. The published abstract includes author assertions about an earlier Cyryx product program; this website does not treat those assertions as current implementation, conformance, certification, or client-outcome evidence. CGP is published under Creative Commons Attribution 4.0 (CC BY 4.0) for open community adoption and review.`,
   controlDomains: [
     { id: "CD1", name: "Mission Authorization", controls: 4, mustControls: 3 },
     { id: "CD2", name: "Scope Boundary Enforcement", controls: 4, mustControls: 4 },
@@ -204,7 +204,7 @@ This document introduces the Cyryx Governance Protocol (CGP) v1.0, a technical f
       state: "qualified",
       label: "Protocol conformance",
       summary:
-        "CGP levels define protocol requirements. This page does not assert that MAAX Studio or a client system currently meets a level.",
+        "CGP levels define protocol requirements. This page does not assert that any Cyryx product or client system currently meets a level.",
     },
     certification: {
       state: "withheld",

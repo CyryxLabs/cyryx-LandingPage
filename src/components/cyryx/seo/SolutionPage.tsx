@@ -68,7 +68,7 @@ export function SolutionPage(p: SolutionPageProps) {
           title={p.title}
           body={p.directAnswer}
           primaryCta={{
-            label: "Start a fit review",
+            label: "Start a project",
             to: startHref,
             onClick: () =>
               trackCta({ cta: "start_project", section: "solutions", href: startHref }),
@@ -315,12 +315,9 @@ export function SolutionPage(p: SolutionPageProps) {
               </h2>
               <p className="mt-5 max-w-3xl text-sm leading-relaxed text-[var(--silver-dim)]">
                 Cyryx connects advisory, product thinking, engineering, and operations so the system
-                can be understood after the first release. Our product work in{" "}
-                <Link
-                  to="/products/maax-studio"
-                  className="text-[var(--accent-glow)] hover:underline"
-                >
-                  MAAX Studio
+                can be understood after the first release. Our product work on{" "}
+                <Link to="/products/aexos" className="text-[var(--accent-glow)] hover:underline">
+                  AEXOS
                 </Link>{" "}
                 informs that perspective without imposing a universal architecture on client work.
               </p>
@@ -413,7 +410,7 @@ export function SolutionPage(p: SolutionPageProps) {
                     }
                     className="cx-btn cx-liquid-glass inline-flex h-11 items-center gap-2 rounded-md px-5 text-[var(--silver)] hud-label"
                   >
-                    Start a fit review
+                    Start a project
                     <span aria-hidden className="text-[var(--accent-glow)]">
                       →
                     </span>

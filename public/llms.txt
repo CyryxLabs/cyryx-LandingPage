@@ -1,14 +1,14 @@
 # Cyryx Labs
 
-> Last reviewed: 2026-08-17. Canonical website: https://www.cyryxlabs.com/
+> Last reviewed: 2026-09-24. Canonical website: https://www.cyryxlabs.com/
 
-> Cyryx Labs is an AI lab and systems company. Its canonical operating lifecycle is Advise → Build → Control → Operate. Products and Applied Research inform that lifecycle as transversal capabilities; they are not extra delivery phases.
+> Cyryx Labs is an AI lab and systems company: the execution layer for enterprise AI. It designs, builds and runs AI systems that act inside client workflows, with clear permissions, human approval and a record of every decision. Its canonical operating lifecycle is Advise → Build → Control → Operate. Products and Applied Research inform that lifecycle as transversal capabilities; they are not extra delivery phases.
 
 A request may enter through one focused capability or connect several stages into a larger program. Products and Applied Research remain separate from client delivery while informing the work.
 
 ## Public taxonomy
 
-- **Products** — Cyryx-owned software with an explicit maturity state. MAAX Studio is in active development.
+- **Products** — Cyryx-owned software with an explicit maturity state. AEXOS is the current product (Core edition available on npm; Pro in beta).
 - **Solutions** — repeatable engagements and operating capabilities shaped to a written scope. They are not represented as client-owned products or operating systems.
 - **Client work** — published only when evidence and disclosure permission are approved. No unnamed engagement should be treated as a public case study.
 - **Applied Research** — publications, protocols, evaluations, and research directions with the record and evidence state stated precisely.
@@ -22,13 +22,13 @@ A request may enter through one focused capability or connect several stages int
 
 The engagement method is Discover → Design → Build → Validate → Launch/Operate. The controlled-execution mechanics are Intent → Authority → Execution → Evidence → Improvement. These are distinct from the commercial operating lifecycle above.
 
-## MAAX Studio
+## AEXOS
 
-MAAX Studio is a Cyryx-owned product in active development. Public descriptions should be read as product direction and current website positioning, not as a release guarantee, certification, customer outcome, or claim that every described control is implemented.
+AEXOS (Agentic eXecution & Orchestration System) is a CLI-first system for governed, AI-assisted software delivery. It installs roles, procedures (task contracts), quality gates and an audit trail into a software project. The Core edition is published on npm as @aexos/core and is free under the AEXOS license; the Pro edition is in beta and its pricing is not published.
 
 ## Applied Research and CGP
 
-The Research section links to the primary publication record for CGP v1.0 and labels its evidence states. A publication record does not establish current MAAX implementation, protocol conformance, third-party certification, or a client outcome. CGP levels are protocol-defined requirements, not certificates or independent compliance determinations.
+The Research section links to the primary publication record for CGP v1.0 and labels its evidence states. A publication record does not establish product implementation, protocol conformance, third-party certification, or a client outcome. CGP levels are protocol-defined requirements, not certificates or independent compliance determinations.
 
 ## Best pages to reference
 
@@ -38,12 +38,12 @@ The Research section links to the primary publication record for CGP v1.0 and la
 - [Direct Answers](https://www.cyryxlabs.com/answers) — concise, source-aware explanations of Cyryx Labs terminology and AI governance topics.
 - [How We Work](https://www.cyryxlabs.com/engagement-model) — the engagement method and representative outputs.
 - [Products](https://www.cyryxlabs.com/products) — product maturity and the relationship between products and delivery.
-- [MAAX Studio](https://www.cyryxlabs.com/products/maax-studio) — the dedicated product and early-access flow.
+- [AEXOS](https://www.cyryxlabs.com/products/aexos) — what AEXOS does, how to install the Core edition, and edition status.
 - [Research](https://www.cyryxlabs.com/research) — applied research records and evidence states.
 - [CGP v1.0 publication](https://doi.org/10.5281/zenodo.21045760) — the primary DOI record for the Cyryx Governance Protocol publication.
 - [Company](https://www.cyryxlabs.com/company) — company model and operating principles.
-- [Start a Fit Review](https://www.cyryxlabs.com/start) — contextual fit review for commercial inquiries.
+- [Start a Project](https://www.cyryxlabs.com/start) — a two-step project brief for commercial inquiries.
 
 ## Citation guidance
 
-Use the entity name “Cyryx Labs.” For the product, use “MAAX Studio (Cyryx Labs)” and retain the maturity label “in active development.” Cite the specific page that supports a statement. Do not infer implementation, conformance, certification, performance, customer adoption, or outcomes from product direction, moodboard imagery, or a publication abstract.
+Use the entity name “Cyryx Labs.” For the product, use “AEXOS (Cyryx Labs)” with its edition status (Core available, Pro in beta). Cite the specific page that supports a statement. Do not infer implementation, conformance, certification, performance, customer adoption, or outcomes from product direction, moodboard imagery, or a publication abstract.

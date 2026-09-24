@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     q: "Where does Cyryx Labs implement this?",
-    a: "Cyryx applies these principles in relevant solution engagements and explores them through MAAX Studio, which remains in active development, and applied research.",
+    a: "Cyryx applies these principles in relevant solution engagements, in AEXOS (its product for governed AI-assisted software delivery) and in applied research.",
   },
 ];
 
@@ -107,7 +107,7 @@ export const Route = createFileRoute("/answers/what-is-governed-ai-execution")({
           label: "What are command gates in AI systems?",
           href: "/answers/what-are-command-gates-in-ai-systems",
         },
-        { label: "MAAX Studio (Cyryx Labs)", href: "/products/maax-studio" },
+        { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
         { label: "Cyryx Applied Research", href: "/research" },
       ]}

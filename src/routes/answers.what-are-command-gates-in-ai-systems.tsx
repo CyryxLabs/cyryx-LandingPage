@@ -99,7 +99,7 @@ export const Route = createFileRoute("/answers/what-are-command-gates-in-ai-syst
           label: "How to measure AI output quality",
           href: "/answers/how-to-measure-ai-output-quality",
         },
-        { label: "MAAX Studio (Cyryx Labs)", href: "/products/maax-studio" },
+        { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
         { label: "Cyryx Applied Research", href: "/research" },
       ]}

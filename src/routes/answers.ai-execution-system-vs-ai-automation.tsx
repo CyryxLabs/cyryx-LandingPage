@@ -22,8 +22,8 @@ const faqs = [
     a: "When the task is deterministic, well-specified, and rarely changes. Reserve execution systems for work where intent matters more than steps and where outcomes need verification.",
   },
   {
-    q: "Where does MAAX Studio sit?",
-    a: "MAAX Studio is an agentic software execution environment in active development, intended to coordinate software missions, agents, project context, review, and controlled execution.",
+    q: "Where does AEXOS sit?",
+    a: "AEXOS, the Cyryx Labs product for governed AI-assisted software delivery, applies execution-system principles to software work: task contracts, quality gates and a record of what shipped. The Core edition is available on npm.",
   },
 ];
 
@@ -94,7 +94,7 @@ export const Route = createFileRoute("/answers/ai-execution-system-vs-ai-automat
           label: "What is goal-grounded generation?",
           href: "/answers/what-is-goal-grounded-generation",
         },
-        { label: "MAAX Studio (Cyryx Labs)", href: "/products/maax-studio" },
+        { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
         { label: "Cyryx Applied Research", href: "/research" },
       ]}

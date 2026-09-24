@@ -18,7 +18,7 @@ import { z } from "zod";
 import { zodValidator } from "@tanstack/zod-adapter";
 
 const marketingSearchSchema = z.object({
-  mktTab: z.enum(["dashboard", "campaigns", "channels", "leads", "maax", "attribution"]).optional(),
+  mktTab: z.enum(["dashboard", "campaigns", "channels", "leads", "waitlist-archive", "attribution"]).optional(),
   range: z.string().refine(isRange).optional(),
   ch: z.string().optional(),
   cp: z.string().optional(),
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/_authenticated/workspace/marketing")({
   component: MarketingPage,
 });
 
-const TABS = ["dashboard", "campaigns", "channels", "leads", "maax", "attribution"] as const;
+const TABS = ["dashboard", "campaigns", "channels", "leads", "waitlist-archive", "attribution"] as const;
 type Tab = (typeof TABS)[number];
 
 function MarketingPage() {
@@ -138,7 +138,7 @@ function MarketingPage() {
         />
       )}
 
-      {tab === "maax" && (
+      {tab === "waitlist-archive" && (
         <DataTable
           tableName="maax_waitlist"
           queryKey="maax_waitlist"

@@ -42,7 +42,7 @@ const UNITS = [
   ],
   [
     "Products",
-    "MAAX Studio: an active product program exploring governed software execution.",
+    "AEXOS: a CLI-first system for governed, AI-assisted software delivery. Core edition available on npm.",
     "/products",
   ],
   [
@@ -90,7 +90,7 @@ export const Route = createFileRoute("/company")({
 
 function CompanyPage() {
   useCyryxScrollAnimations();
-  const startHref = buildStartProjectHref({ source: "company", intent: "operating-capability" });
+  const startHref = buildStartProjectHref({ source: "company" });
 
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
@@ -101,7 +101,7 @@ function CompanyPage() {
           title="AI value is created by the system around the model."
           body="Cyryx Labs advises, builds, controls, and operates AI-enabled products and systems—from strategy and workflow design through launch and managed operations."
           primaryCta={{
-            label: "Start a fit review",
+            label: "Start a project",
             to: startHref,
             onClick: () => trackCta({ cta: "start_project", section: "hero", href: startHref }),
           }}
@@ -212,7 +212,7 @@ function CompanyPage() {
               href={startHref}
               className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
             >
-              Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
+              Start a project <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
           </div>
         </section>

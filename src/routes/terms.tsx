@@ -9,7 +9,7 @@ const PATH = "/terms";
 const TITLE = "Terms of Service — Cyryx Labs";
 const DESC =
   "Review the terms governing use of the Cyryx Labs website, pre-release products, acceptable use, intellectual property, and client engagement boundaries.";
-const DATE_MODIFIED_ISO = "2026-06-26";
+const DATE_MODIFIED_ISO = "2026-09-24";
 
 export const Route = createFileRoute("/terms")({
   head: () =>
@@ -32,7 +32,7 @@ const SECTIONS: Array<{ id: string; n: string; title: string }> = [
   { id: "acceptance", n: "01", title: "Acceptance of terms" },
   { id: "eligibility", n: "02", title: "Eligibility & accounts" },
   { id: "msa", n: "03", title: "Engagements & Master Service Agreement" },
-  { id: "prerelease", n: "04", title: "Pre-release products (MAAX Studio)" },
+  { id: "prerelease", n: "04", title: "Pre-release products" },
   { id: "ip", n: "05", title: "Intellectual property" },
   { id: "feedback", n: "06", title: "Feedback license" },
   { id: "acceptable", n: "07", title: "Acceptable use" },
@@ -139,9 +139,9 @@ function TermsPage() {
                 </p>
               </Panel>
 
-              <Panel id="prerelease" n="04" title="Pre-release products (MAAX Studio)">
+              <Panel id="prerelease" n="04" title="Pre-release products">
                 <p>
-                  MAAX Studio and other products marked as pre-release, alpha,
+                  Products or features marked as pre-release, alpha,
                   beta, preview, or early access are provided for evaluation
                   purposes only, without warranty, and may be modified,
                   suspended, or discontinued at any time. Availability of

@@ -52,20 +52,6 @@ export const OPERATING_LIFECYCLE = [
   cta: string;
 }[];
 
-export const TRANSVERSAL_CAPABILITIES = [
-  {
-    name: "Products",
-    description:
-      "Cyryx-owned software, separate from client delivery, with an explicit maturity state. MAAX Studio is in active development.",
-    href: "/products",
-  },
-  {
-    name: "Applied Research",
-    description:
-      "Published records and qualified research directions, separate from client delivery, that inform decisions without implying implementation or certification.",
-    href: "/research",
-  },
-] as const;
 
 export const PUBLIC_CONTENT_DEFINITIONS: readonly PublicContentDefinition[] = [
   {
@@ -91,11 +77,32 @@ export const PUBLIC_CONTENT_DEFINITIONS: readonly PublicContentDefinition[] = [
   },
 ];
 
-export const MAAX_STUDIO_PRODUCT = {
-  name: "MAAX Studio",
+
+/**
+ * AEXOS — the Cyryx product shown on the public site.
+ * Every fact below was verified on 2026-09-24 against the published npm
+ * package (@aexos/core) and the AEXOS product brief. Pro/Team pricing is not
+ * published: it is still a recommendation being validated with launch partners.
+ */
+export const AEXOS_PRODUCT = {
+  name: "AEXOS",
+  fullName: "Agentic eXecution & Orchestration System",
   kind: "Product" as const,
-  maturity: "In active development",
-  identity: "Agentic software execution environment",
+  identity: "Governed execution for AI-assisted software delivery",
+  maturity: "Core available · Pro in beta",
   description:
-    "A command environment intended to coordinate software missions, agents, project context, review, and controlled execution.",
+    "A CLI-first system that installs roles, procedures, quality gates and an audit trail into a software project, so AI coding agents work from task contracts instead of loose prompts.",
+  focus: [
+    "Task contracts with inputs, outputs and completion checklists",
+    "Quality gates that stop work when critical checks fail",
+    "Story files and QA verdicts as the record of what shipped",
+  ],
+  npmPackage: "@aexos/core",
+  npmUrl: "https://www.npmjs.com/package/@aexos/core",
+  productSiteUrl: "https://aexos.cyryxlabs.com/",
+  installCommand: "npx @aexos/core init my-project",
+  existingProjectCommand: "npx @aexos/core install",
+  runtime: "Node.js 18+",
+  // Named hosts are limited to non-competitor environments (see .quality/forbidden-terms.json).
+  hosts: ["Claude", "Codex", "Gemini"],
 } as const;

@@ -65,7 +65,7 @@ export const Route = createFileRoute("/answers/what-is-goal-grounded-generation"
         "Gates evaluate against the same acceptance criteria the model was given.",
       ]}
       example="Instead of 'write a release note for v2.1', the system passes the v2.1 mission, the shipped PRs, the user-facing changes, the brand voice, the forbidden-claims list, and the acceptance criteria (must mention every user-facing change, must be under 200 words, must link to docs). The model writes against that, and the gate scores against the same criteria."
-      cyryxPerspective="MAAX Studio is being designed to coordinate software missions, project context, review, and controlled execution. Goal, context, and acceptance criteria are part of that active-development direction, not a generally available guarantee."
+      cyryxPerspective="Cyryx applies goal-grounded generation in client systems where outputs must meet explicit acceptance criteria. Goal, context and acceptance criteria are defined per engagement, not offered as a generic guarantee."
       metrics={[
         "Acceptance-criteria coverage — fraction of criteria explicitly addressed in the output.",
         "Context resolution recall — did the resolver include the inputs the model actually needed?",
@@ -94,7 +94,7 @@ export const Route = createFileRoute("/answers/what-is-goal-grounded-generation"
           label: "AI execution system vs AI automation",
           href: "/answers/ai-execution-system-vs-ai-automation",
         },
-        { label: "MAAX Studio (Cyryx Labs)", href: "/products/maax-studio" },
+        { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
         { label: "Cyryx Applied Research", href: "/research" },
       ]}

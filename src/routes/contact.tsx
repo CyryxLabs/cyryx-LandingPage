@@ -10,24 +10,16 @@ import { trackCta } from "@/lib/track-cta";
 const PATH = "/contact";
 const TITLE = "Contact Cyryx Labs";
 const DESC =
-  "Contact Cyryx Labs about general, research, partnership, product, privacy, or careers matters. Project opportunities begin with a dedicated fit review.";
+  "Contact Cyryx Labs about projects, research, partnerships, privacy or careers. Project opportunities start with a short project brief.";
 
 const CONTACT_PATHS = [
   {
     label: "Project opportunities",
     title: "Bring us the business constraint.",
     body: "Use the project brief for advisory, digital systems, automation, internal assistants, custom AI products, governance, or managed operations.",
-    action: "Start a fit review",
+    action: "Start a project",
     cta: "start_project",
-    href: buildStartProjectHref({ source: "contact", intent: "operating-capability" }),
-  },
-  {
-    label: "Products",
-    title: "Discuss MAAX Studio.",
-    body: "Review the current product maturity and access model first, then contact us with the use case or research question you want to explore.",
-    action: "Explore products",
-    cta: "explore_products",
-    href: "/products",
+    href: buildStartProjectHref({ source: "contact" }),
   },
   {
     label: "Research and collaboration",
@@ -90,7 +82,7 @@ function ContactPage() {
               </h1>
             </div>
             <p className="max-w-xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-              Project qualification, product access, research, privacy, and careers follow different
+              Projects, research, privacy and careers follow different
               paths. Choose the context below so your inquiry reaches the right workflow.
             </p>
           </div>
