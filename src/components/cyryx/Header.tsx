@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useState, useMemo, useRef } from "react";
 import { Menu } from "lucide-react";
 import { Link, useRouterState, useLocation } from "@tanstack/react-router";
 import { CyryxLockup } from "./primitives/CyryxMark";
@@ -30,6 +30,18 @@ export function Header() {
   const activeGroupId = useMemo(() => getActiveNavigationGroup(pathname), [pathname]);
   const prevPathname = useRef(pathname);
   const escapeDismissedNavigation = useRef(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  // The shared dropdown viewport opens under the trigger that owns it.
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    if (!nav || !openGroup) return;
+    const trigger = nav.querySelector<HTMLElement>(`[id$="-trigger-${openGroup}"]`);
+    const root = nav.querySelector<HTMLElement>("[data-orientation]") ?? nav;
+    if (!trigger) return;
+    const offset = trigger.getBoundingClientRect().left - root.getBoundingClientRect().left;
+    nav.style.setProperty("--cx-nav-offset", `${Math.max(0, Math.round(offset - 16))}px`);
+  }, [openGroup]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -68,7 +80,7 @@ export function Header() {
             <CyryxLockup priority className="h-10 lg:h-14" />
           </Link>
 
-          <nav className="hidden lg:flex items-center" aria-label="Primary">
+          <nav ref={navRef} className="hidden lg:flex items-center" aria-label="Primary">
             <NavigationMenu
               value={openGroup}
               onValueChange={(nextGroup) => {

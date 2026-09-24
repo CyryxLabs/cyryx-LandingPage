@@ -147,7 +147,7 @@ describe("saveLead", () => {
     expect(await saveLead(lead, client)).toEqual({
       ok: false,
       status: 500,
-      error: "Could not save submission",
+      error: "We couldn't save your brief right now.",
     });
     expect(calls).toHaveLength(1);
   });
@@ -167,7 +167,7 @@ describe("saveLead", () => {
       submit_contact_public: { data: null, error: { code: "500", message: "boom" } },
     });
     const result = await saveLead(lead, client);
-    expect(result).toEqual({ ok: false, status: 500, error: "Could not save submission" });
+    expect(result).toEqual({ ok: false, status: 500, error: "We couldn't save your brief right now." });
   });
 
   test("generates a submission id when the RPC returns none", async () => {

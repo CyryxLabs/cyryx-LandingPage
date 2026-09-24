@@ -96,7 +96,7 @@ function rpcFailure(error: { message?: string; code?: string }): SaveLeadResult 
   console.error("[leads] RPC failed", rateLimited ? "rate_limited" : error.code);
   return rateLimited
     ? { ok: false, status: 429, error: "Too many submissions — please try again later." }
-    : { ok: false, status: 500, error: "Could not save submission" };
+    : { ok: false, status: 500, error: "We couldn't save your brief right now." };
 }
 
 /**

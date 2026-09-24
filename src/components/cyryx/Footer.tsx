@@ -75,7 +75,6 @@ export function Footer() {
     <footer role="contentinfo" className="cx-footer relative overflow-hidden">
       <span aria-hidden className="cx-sweep-line absolute inset-x-0 top-0 block h-px" />
       <div aria-hidden className="cx-footer-glow" />
-      <div aria-hidden className="cx-footer-grid" />
 
       <div className="relative mx-auto max-w-7xl px-5 pb-[max(env(safe-area-inset-bottom),6rem)] pt-16 sm:px-8 lg:px-10 lg:pb-10 lg:pt-24">
         {showCtaBand ? (
@@ -126,9 +125,8 @@ export function Footer() {
           <div className="flex flex-col items-start">
             <CyryxLockup className="h-14" />
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-[var(--silver-dim)]">
-              The execution layer for enterprise AI. We design, build and run AI systems that act
-              inside your workflows, with clear permissions, human approval and a record of every
-              decision.
+              We design, build and run AI systems that act inside your workflows, with clear
+              permissions, human approval and a record of every decision.
             </p>
             {showCtaBand ? null : (
               <a
@@ -199,7 +197,9 @@ export function Footer() {
         </div>
 
         <p aria-hidden className="cx-footer-wordmark mt-20 select-none lg:mt-28">
-          CYRYX LABS
+          The execution layer
+          <br />
+          for enterprise AI.
         </p>
 
         <div className="mt-8 flex flex-col gap-5 border-t border-white/10 pt-7 sm:flex-row sm:items-center sm:justify-between">

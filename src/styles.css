@@ -2820,11 +2820,11 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
   position: relative;
   margin-inline: -0.04em;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(3rem, 13.2vw, 11.5rem);
-  line-height: 0.82;
-  letter-spacing: -0.045em;
-  white-space: nowrap;
+  font-weight: 600;
+  font-size: clamp(2.6rem, 8.4vw, 8.25rem);
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+  padding-bottom: 0.08em;
   color: transparent;
   background:
     linear-gradient(

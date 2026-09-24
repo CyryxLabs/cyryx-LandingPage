@@ -74,6 +74,8 @@ function StartPage() {
   const [reachedStepTwo, setReachedStepTwo] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "ok" | "err">("idle");
   const [error, setError] = useState<string | null>(null);
+  // When the brief cannot be saved, the visitor can still send it by email.
+  const [fallbackMailto, setFallbackMailto] = useState<string | null>(null);
   const [confirmationQueued, setConfirmationQueued] = useState(false);
   const [firstReply, setFirstReply] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -197,6 +199,7 @@ function StartPage() {
     }
 
     setStatus("submitting");
+    setFallbackMailto(null);
 
     try {
       const response = await fetch("/api/public/contact", {
@@ -224,6 +227,20 @@ function StartPage() {
       setStatus("err");
       setError(
         err instanceof Error ? err.message : "We could not send your brief. Please try again.",
+      );
+      const brief = parsed.data;
+      const body = [
+        `Name: ${brief.name}`,
+        `Company: ${brief.company}`,
+        `Type of work: ${brief.projectType}`,
+        "",
+        "What we want to change:",
+        brief.problem,
+      ].join("\n");
+      setFallbackMailto(
+        `mailto:contact@cyryxlabs.com?subject=${encodeURIComponent(
+          `Project brief — ${brief.company}`,
+        )}&body=${encodeURIComponent(body.slice(0, 1500))}`,
       );
       trackCta({ cta: "qualification_form_error", section: "start", href: PATH });
     }
@@ -518,6 +535,19 @@ function StartPage() {
                     className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200"
                   >
                     {error}
+                    {fallbackMailto ? (
+                      <>
+                        {" "}
+                        You can also{" "}
+                        <a
+                          href={fallbackMailto}
+                          className="font-medium text-white underline underline-offset-4"
+                        >
+                          send the brief by email
+                        </a>
+                        ; nothing you typed is lost.
+                      </>
+                    ) : null}
                   </p>
                 )}
 
