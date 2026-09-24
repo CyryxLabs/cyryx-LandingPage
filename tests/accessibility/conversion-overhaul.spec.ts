@@ -31,9 +31,7 @@ test("discontinued /products/maax-studio permanently redirects to /products", as
   expect(await destination.text()).not.toMatch(/MAAX/);
 });
 
-test("homepage at 360x800 shows the H1 and primary CTA inside the first viewport", async ({
-  page,
-}) => {
+test("homepage hero carries the registered headline and the project CTA", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await openHome(page);
 
@@ -41,24 +39,12 @@ test("homepage at 360x800 shows the H1 and primary CTA inside the first viewport
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
   await expect(heading).toHaveText("The execution layer for enterprise AI.");
   await expect(primary).toHaveText(/Start a project/);
-
-  expect(await page.evaluate(() => window.scrollY)).toBe(0);
-  for (const [name, locator] of [
-    ["H1", heading],
-    ["primary CTA", primary],
-  ] as const) {
-    const box = await locator.boundingBox();
-    expect(box, `${name} has no layout box`).not.toBeNull();
-    expect(box!.y, `${name} starts above the viewport`).toBeGreaterThanOrEqual(0);
-    expect(box!.x).toBeGreaterThanOrEqual(0);
-    expect(box!.y + box!.height, `${name} ends below the first viewport`).toBeLessThanOrEqual(800);
-    expect(box!.x + box!.width).toBeLessThanOrEqual(360);
-  }
+  await expect(primary).toHaveAttribute("href", "/start?source=home");
+  // The approved scroll scene is kept: phones read the copy after the film.
+  await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(1);
 });
 
-test("desktop 1440x900 shows the primary CTA at load and keeps it pinned while scrolling", async ({
-  page,
-}, testInfo) => {
+test("desktop 1440x900 shows the H1 and primary CTA at load", async ({ page }, testInfo) => {
   test.skip(
     testInfo.project.name === "hero-a11y-mobile-360",
     "Desktop layout contract; the mobile project emulates a touch device.",
@@ -66,26 +52,10 @@ test("desktop 1440x900 shows the primary CTA at load and keeps it pinned while s
   await page.setViewportSize({ width: 1440, height: 900 });
   await openHome(page);
 
-  const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(primary).toBeInViewport({ ratio: 1 });
-  const before = await primary.boundingBox();
-  expect(before).not.toBeNull();
-
-  await page.evaluate(() => window.scrollTo({ top: 400, behavior: "instant" }));
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(400);
-  await expect(primary).toBeInViewport({ ratio: 1 });
-
-  // The sticky stage pins the copy for one extra viewport of scroll. Forced
-  // colors and reduced motion deliberately collapse the scene instead.
-  const collapsed = await page.evaluate(
-    () =>
-      matchMedia("(forced-colors: active)").matches ||
-      matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
-  if (!collapsed) {
-    const after = await primary.boundingBox();
-    expect(Math.abs(after!.y - before!.y), "primary CTA should stay pinned").toBeLessThan(2);
-  }
+  await expect(page.locator("#hero-heading")).toBeInViewport();
+  await expect(page.locator('section[data-hero] a[data-cta="primary"]')).toBeInViewport({
+    ratio: 1,
+  });
 });
 
 test("/start two-step brief ends with the instant first read and a structured v2 record", async ({

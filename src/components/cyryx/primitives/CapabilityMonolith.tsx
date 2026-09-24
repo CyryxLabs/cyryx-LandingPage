@@ -3,17 +3,21 @@
  * Unlike the legacy page-fixed monolith, this visual is clipped to one
  * narrative surface so it never crosses unrelated content or the form.
  */
-export function CapabilityMonolith() {
+export function CapabilityMonolith({
+  className = "pointer-events-none absolute inset-y-0 left-1/2 z-0 hidden w-[min(46rem,58vw)] -translate-x-1/2 overflow-hidden lg:block",
+  surfaceOpacity = "opacity-[0.075]",
+}: {
+  /** Positioning of the visual. Defaults to the full-section background. */
+  className?: string;
+  /** Opacity utility for the steel surfaces. */
+  surfaceOpacity?: string;
+} = {}) {
   return (
-    <div
-      data-capability-monolith
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-y-0 left-1/2 z-0 hidden w-[min(46rem,58vw)] -translate-x-1/2 overflow-hidden lg:block"
-    >
+    <div data-capability-monolith aria-hidden="true" className={className}>
       <svg
         viewBox="0 0 600 1100"
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 h-full w-full opacity-[0.075]"
+        preserveAspectRatio="xMidYMid meet"
+        className={`absolute inset-0 h-full w-full ${surfaceOpacity}`}
       >
         <defs>
           <linearGradient id="cx-capability-steel-left" x1="0" y1="0" x2="1" y2="0">

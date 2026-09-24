@@ -105,7 +105,7 @@ function ResearchPublicationPage() {
               className="inline-flex min-h-11 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--silver-dim)] transition hover:text-[var(--accent-glow)]"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
-              Applied Research
+              Applied AI Lab
             </Link>
 
             <div className="mt-8 grid gap-12 lg:grid-cols-[1.16fr_0.84fr] lg:items-end lg:gap-20">

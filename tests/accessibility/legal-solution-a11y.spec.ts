@@ -65,7 +65,9 @@ for (const { path, label } of PAGES) {
         });
         if (key) seen.add(key);
       }
-      expect(seen.size, "tabbing did not advance focus across distinct elements").toBeGreaterThan(2);
+      expect(seen.size, "tabbing did not advance focus across distinct elements").toBeGreaterThan(
+        2,
+      );
     });
 
     test("current breadcrumb is marked with aria-current=page", async ({ page }) => {

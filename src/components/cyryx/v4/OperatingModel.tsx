@@ -11,9 +11,10 @@ export function OperatingModel() {
       id="operating-model"
       aria-labelledby="operating-model-heading"
       data-story-section
-      className="relative bg-[var(--graphite)] py-12 sm:py-20 lg:py-24"
+      className="relative overflow-hidden bg-[var(--graphite)] py-12 sm:py-20 lg:py-24"
     >
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+      <div aria-hidden className="cx-aurora opacity-60" />
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end lg:gap-20">
           <div>
             <HudLabel withDot>Ways to engage</HudLabel>
@@ -33,7 +34,7 @@ export function OperatingModel() {
         <ol className="cx-stagger relative mt-8 grid gap-6 sm:mt-16 sm:gap-10 lg:grid-cols-4 lg:gap-0">
           <div
             aria-hidden
-            className="absolute left-0 right-0 top-4 hidden h-px bg-[color-mix(in_oklab,var(--silver)_18%,transparent)] lg:block"
+            className="cx-sweep-line absolute left-0 right-0 top-4 hidden h-px bg-[color-mix(in_oklab,var(--silver)_18%,transparent)] lg:block"
           />
           {OPERATING_LIFECYCLE.map((stage) => (
             <li
@@ -87,7 +88,8 @@ export function OperatingModel() {
             }
             className="inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--accent-glow)]"
           >
-            Not sure where to start? Tell us the problem <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+            Not sure where to start? Tell us the problem{" "}
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </a>
           <Link
             to="/engagement-model"

@@ -109,7 +109,7 @@ export const Route = createFileRoute("/answers/what-is-governed-ai-execution")({
         },
         { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
-        { label: "Cyryx Applied Research", href: "/research" },
+        { label: "Cyryx Applied AI Lab", href: "/research" },
       ]}
     />
   ),

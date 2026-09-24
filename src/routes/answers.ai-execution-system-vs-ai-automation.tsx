@@ -96,7 +96,7 @@ export const Route = createFileRoute("/answers/ai-execution-system-vs-ai-automat
         },
         { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
-        { label: "Cyryx Applied Research", href: "/research" },
+        { label: "Cyryx Applied AI Lab", href: "/research" },
       ]}
     />
   ),

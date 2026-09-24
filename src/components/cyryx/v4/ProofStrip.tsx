@@ -73,7 +73,7 @@ export function ProofStrip() {
           const onClick = () =>
             trackCta({ cta: "proof_link", section: "proof_strip", href: item.href });
           return (
-            <li key={item.label} className="bg-[var(--obsidian)]">
+            <li key={item.label} className="cx-spotlight bg-[var(--obsidian)]">
               {item.external ? (
                 <a
                   href={item.href}

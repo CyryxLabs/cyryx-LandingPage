@@ -88,14 +88,14 @@ export const AEXOS_PRODUCT = {
   name: "AEXOS",
   fullName: "Agentic eXecution & Orchestration System",
   kind: "Product" as const,
-  identity: "Governed execution for AI-assisted software delivery",
-  maturity: "Core available · Pro in beta",
+  identity: "Agentic orchestration for AI-assisted delivery",
+  maturity: "Core available on npm · Pro by commercial license",
   description:
-    "A CLI-first system that installs roles, procedures, quality gates and an audit trail into a software project, so AI coding agents work from task contracts instead of loose prompts.",
+    "A CLI-first framework that installs specialised AI agents, the procedures they follow and the quality gates they must pass into your project. You talk to one orchestrator; it routes the work to the specialist that owns it.",
   focus: [
-    "Task contracts with inputs, outputs and completion checklists",
-    "Quality gates that stop work when critical checks fail",
-    "Story files and QA verdicts as the record of what shipped",
+    "Stories that carry context from plan to push",
+    "Procedures with inputs, outputs and completion checklists",
+    "Gates that stop work when a critical check fails",
   ],
   npmPackage: "@aexos/core",
   npmUrl: "https://www.npmjs.com/package/@aexos/core",
@@ -104,5 +104,5 @@ export const AEXOS_PRODUCT = {
   existingProjectCommand: "npx @aexos/core install",
   runtime: "Node.js 18+",
   // Named hosts are limited to non-competitor environments (see .quality/forbidden-terms.json).
-  hosts: ["Claude", "Codex", "Gemini"],
+  hosts: ["Claude Code", "Gemini CLI", "Codex CLI"],
 } as const;

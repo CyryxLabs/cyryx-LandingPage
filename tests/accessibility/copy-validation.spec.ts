@@ -50,7 +50,15 @@ test.describe("Copy variants — shape validation", () => {
     for (const variant of AVAILABLE_COPY_VARIANTS) {
       const copy = getCopy(variant) as unknown as Record<string, Record<string, unknown>>;
       expect(Object.keys(copy.hero).sort()).toEqual(
-        ["assistantNote", "ctaPrimary", "ctaSecondary", "eyebrow", "headline", "sub"].sort(),
+        [
+          "assistantNote",
+          "ctaPrimary",
+          "ctaSecondary",
+          "eyebrow",
+          "headline",
+          "rail",
+          "sub",
+        ].sort(),
       );
       expect(copy).not.toHaveProperty("maaxSpotlight");
       expect(JSON.stringify(copy)).not.toMatch(/MAAX/i);
@@ -139,53 +147,29 @@ test.describe("Hero — enterprise value proposition", () => {
     await expect(hero.locator('a[href*="maax" i], a[href="#maax"]')).toHaveCount(0);
   });
 
-  test("execution-gap evidence preserves Gartner qualifiers and original sources", async ({
-    page,
-  }) => {
+  test("execution gap names the four breaks without third-party statistics", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const section = page.locator("#execution-gap");
     await expect(section).toBeVisible();
-    await expect(section).toContainText("Gartner predicts");
-    await expect(section).toContainText("more than 40% of agentic AI projects");
-    await expect(section).toContainText("by the end of 2027");
-    await expect(section).toContainText(
-      "60% of organizations that don't address the cultural challenges of data and analytics governance will fail to govern AI successfully",
-    );
-    await expect(section).toContainText("Gartner · September 2026");
-    await expect(section).toContainText("Gartner · June 2025");
-
-    const sources = section.locator('a[href^="https://www.gartner.com/en/newsroom/"]');
-    await expect(sources).toHaveCount(2);
-    const sourceAttributes = await sources.evaluateAll((anchors) =>
-      anchors.map((anchor) => ({
-        href: anchor.getAttribute("href"),
-        target: anchor.getAttribute("target"),
-        rel: anchor.getAttribute("rel"),
-      })),
-    );
-    expect(sourceAttributes).toEqual([
-      {
-        href: expect.stringContaining("/press-releases/2026-09-21-gartner-predicts-60-percent"),
-        target: "_blank",
-        rel: "noopener noreferrer",
-      },
-      {
-        href: expect.stringContaining(
-          "/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects",
-        ),
-        target: "_blank",
-        rel: "noopener noreferrer",
-      },
-    ]);
+    await expect(section).not.toContainText(/Gartner/);
+    const breaks = section.locator(".cx-gap-item");
+    await expect(breaks).toHaveCount(4);
+    for (const title of [
+      "Data the system can trust",
+      "Permissions someone decided",
+      "Cost someone watches",
+      "An owner for the outcome",
+    ]) {
+      await expect(section.getByRole("heading", { name: title })).toBeVisible();
+    }
   });
 
-  test("homepage connects cited execution risk directly to the Cyryx thesis", async ({ page }) => {
+  test("homepage connects the execution gap directly to the Cyryx thesis", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const section = page.locator("#execution-gap");
 
     await expect(section).toContainText("A capable model is not yet a working system.");
     await expect(section).toContainText("The missing layer is controlled execution");
-    await expect(section.locator("article")).toHaveCount(2);
   });
 
   test("homepage presents no discontinued MAAX product section", async ({ page }) => {

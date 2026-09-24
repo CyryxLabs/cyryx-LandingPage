@@ -40,7 +40,7 @@ describe("public taxonomy contract", () => {
   test("presents AEXOS as the public product with its real maturity", () => {
     expect(AEXOS_PRODUCT.name).toBe("AEXOS");
     expect(AEXOS_PRODUCT.kind).toBe("Product");
-    expect(AEXOS_PRODUCT.maturity).toBe("Core available · Pro in beta");
+    expect(AEXOS_PRODUCT.maturity).toBe("Core available on npm · Pro by commercial license");
     expect(AEXOS_PRODUCT.npmPackage).toBe("@aexos/core");
     expect(AEXOS_PRODUCT.npmUrl).toBe("https://www.npmjs.com/package/@aexos/core");
   });

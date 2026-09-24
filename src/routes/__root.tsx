@@ -17,6 +17,7 @@ import { syncCopyVariantToDocument } from "../lib/copy-variant";
 import { captureFirstTouch } from "../lib/lead-attribution";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import { Toaster } from "@/components/ui/sonner";
+import { useSiteMotion } from "@/hooks/useSiteMotion";
 import { AssistantWidget } from "@/components/cyryx/AssistantWidget";
 
 function NotFoundComponent() {
@@ -134,12 +135,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "preload",
         as: "style",
-        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
         crossOrigin: "anonymous",
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
         crossOrigin: "anonymous",
       },
       // Font files are discovered from the Google Fonts stylesheet. Avoid a
@@ -251,6 +252,7 @@ function RootComponent() {
     };
   }, []);
   useSmoothScroll();
+  useSiteMotion();
 
   return (
     <QueryClientProvider client={queryClient}>

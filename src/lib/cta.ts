@@ -17,6 +17,7 @@ export const START_CONTEXT_SOURCES = [
   "company",
   "contact",
   "engagement-model",
+  "footer",
 ] as const;
 
 export const START_CONTEXT_INTENTS = [
@@ -47,6 +48,7 @@ export const START_CONTEXT_SOURCE_LABELS: Record<StartContextSource, string> = {
   company: "Company overview",
   contact: "Contact inquiry paths",
   "engagement-model": "Engagement model",
+  footer: "Site footer",
 };
 
 export const START_CONTEXT_INTENT_LABELS: Record<StartContextIntent, string> = {

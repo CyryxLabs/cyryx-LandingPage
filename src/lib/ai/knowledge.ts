@@ -7,7 +7,7 @@ import { AEXOS_PRODUCT, OPERATING_LIFECYCLE } from "@/data/site-taxonomy";
 export const CYRYX_KNOWLEDGE = `
 # Cyryx Labs — public facts
 
-Cyryx Labs is an AI lab and systems company. It designs, builds and runs AI systems that act inside
+Cyryx Labs is a technology company building AI products and execution systems. It designs, builds and runs AI systems that act inside
 a client's workflows, with clear permissions, human approval where it matters and a record of every
 decision. Positioning: "The execution layer for enterprise AI." It is not a generic agency or a
 chatbot factory.
@@ -27,8 +27,8 @@ ${OPERATING_LIFECYCLE.map((s) => `- ${s.name}: ${s.promise} You receive: ${s.rec
 ## How an engagement runs (/engagement-model)
 Discover → Design → Build → Validate → Launch & Operate. Each stage produces written decisions and
 evidence: architecture direction, acceptance criteria and evidence, known limitations, handover.
-Every engagement leaves three reviewable documents: an architecture brief, an acceptance matrix and
-an operating record. Sometimes the right recommendation is not to build.
+Build engagements are documented through an architecture brief, an acceptance matrix and, once the
+system runs, an operating record. Sometimes the right recommendation is not to build.
 
 ## Method (how systems run)
 Intent (define the business outcome) → Authority (who and what may act) → Execution (connect models,
@@ -38,7 +38,7 @@ cost and exceptions).
 ## Product
 - ${AEXOS_PRODUCT.name} (${AEXOS_PRODUCT.fullName}), page /products/aexos: ${AEXOS_PRODUCT.description}
   Stage: ${AEXOS_PRODUCT.maturity}. Core edition is free under the AEXOS license and installs with
-  "${AEXOS_PRODUCT.installCommand}" (${AEXOS_PRODUCT.runtime}). Pro is in beta; its pricing is not published.
+  "${AEXOS_PRODUCT.installCommand}" (${AEXOS_PRODUCT.runtime}). Pro is available under a paid commercial license; pricing is not published. AEXOS is proprietary; Core is free to use, including for commercial work.
   Works with ${AEXOS_PRODUCT.hosts.join(", ")} and other AI development environments.
 
 ## Research

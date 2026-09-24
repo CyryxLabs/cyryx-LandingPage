@@ -27,9 +27,7 @@ const MODULES = [
 
 test("workspace parent route validates and retains ?w and ?tab", () => {
   const src = readFileSync(PARENT, "utf8");
-  expect(src, "parent must define validateSearch for ?w/?tab").toMatch(
-    /validateSearch\s*:/,
-  );
+  expect(src, "parent must define validateSearch for ?w/?tab").toMatch(/validateSearch\s*:/);
   expect(src, "parent must retain ?w and ?tab across navigation").toMatch(
     /retainSearchParams\(\s*\[\s*["']w["']\s*,\s*["']tab["']\s*\]\s*\)/,
   );

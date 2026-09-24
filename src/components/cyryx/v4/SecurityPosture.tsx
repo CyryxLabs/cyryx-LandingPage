@@ -19,7 +19,6 @@ export function SecurityPosture() {
       data-governance-system
       className="relative overflow-hidden py-12 sm:py-20 lg:py-24"
     >
-      <CapabilityMonolith />
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="relative z-10 cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-20">
           <div>
@@ -38,54 +37,17 @@ export function SecurityPosture() {
         </div>
 
         <div className="relative z-10 mt-10 grid gap-10 sm:mt-20 sm:gap-12 lg:grid-cols-[0.96fr_1.04fr] lg:gap-20">
-          <figure className="cx-reveal relative min-h-[26rem] overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--obsidian)_90%,transparent)] p-6 sm:min-h-[28rem] sm:p-10">
-            <figcaption className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--steel)]">
-              Control architecture / engagement-specific
-            </figcaption>
-            <div aria-hidden className="cx-governance-visual">
-              <span className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent-glow)_9%,transparent),transparent_68%)] blur-2xl" />
-              <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white/10">
-                <span
-                  data-governance-core
-                  className="absolute inset-0 origin-top bg-[linear-gradient(180deg,transparent,var(--accent-glow),white,var(--accent-glow),transparent)] opacity-80 shadow-[0_0_26px_color-mix(in_oklab,var(--accent-glow)_55%,transparent)]"
-                />
-                <span
-                  data-governance-pulse
-                  className="absolute left-1/2 top-0 h-24 w-[3px] -translate-x-1/2 bg-[linear-gradient(180deg,transparent,var(--accent-glow),white,var(--accent-glow),transparent)] opacity-0 shadow-[0_0_28px_color-mix(in_oklab,var(--accent-glow)_68%,transparent)]"
-                />
-              </span>
-              {CONTROL_FLOW.map(([n, title], index) => {
-                const top = [16, 39, 62, 85][index];
-                const isLeft = index % 2 === 0;
-
-                return (
-                  <div key={n} className="cx-governance-level" style={{ top: `${top}%` }}>
-                    <span
-                      data-governance-gate
-                      className="cx-governance-gate bg-[linear-gradient(90deg,transparent,color-mix(in_oklab,var(--silver)_45%,transparent),transparent)]"
-                    />
-                    <span
-                      data-governance-node
-                      className="cx-governance-node border border-[color-mix(in_oklab,var(--accent-glow)_74%,transparent)] bg-[var(--obsidian)] shadow-[0_0_16px_color-mix(in_oklab,var(--accent-glow)_32%,transparent)]"
-                    />
-                    <span
-                      data-governance-label
-                      className={`cx-governance-label ${
-                        isLeft ? "cx-governance-label--left" : "cx-governance-label--right"
-                      }`}
-                    >
-                      <span className="font-mono text-[10px] tracking-[0.16em] text-[var(--accent-glow)]">
-                        {n}
-                      </span>
-                      <span className="font-display text-xs font-medium tracking-[0.01em] text-[var(--silver)] sm:text-sm">
-                        {title}
-                      </span>
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </figure>
+          {/* One governance visual: the monolith core scrubs with the scroll. */}
+          <div className="cx-reveal relative hidden min-h-[34rem] lg:block">
+            <CapabilityMonolith
+              className="pointer-events-none absolute inset-0 overflow-hidden"
+              surfaceOpacity="opacity-[0.22]"
+            />
+            <span
+              aria-hidden
+              className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent-glow)_12%,transparent),transparent_68%)] blur-2xl"
+            />
+          </div>
 
           <div>
             <ol className="cx-stagger border-t border-white/10">

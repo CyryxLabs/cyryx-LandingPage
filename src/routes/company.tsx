@@ -42,11 +42,11 @@ const UNITS = [
   ],
   [
     "Products",
-    "AEXOS: a CLI-first system for governed, AI-assisted software delivery. Core edition available on npm.",
+    "AEXOS: a CLI-first framework that puts specialised AI agents to work under procedures and quality gates. Core edition available on npm.",
     "/products",
   ],
   [
-    "Research",
+    "Applied AI Lab",
     "Applied investigation into execution, context, evaluation, cost, control, and human authority.",
     "/research",
   ],
@@ -110,7 +110,7 @@ function CompanyPage() {
             to: "/solutions",
             onClick: () => trackCta({ cta: "see_delivery", section: "hero", href: "/solutions" }),
           }}
-          boundaryNote="Products and Applied Research inform the work; client scope remains independent."
+          boundaryNote="Products and the Applied AI Lab inform the work; client scope remains independent."
           lifecycleLabel="Operating model"
           lifecycle={[
             { number: "01", label: "Advise" },
@@ -120,7 +120,7 @@ function CompanyPage() {
           ]}
           nextChapter={{
             title: "The execution gap.",
-            body: "Most organizations underestimate what it takes to operationalize AI. The gap is not the model; it is the system.",
+            body: "Access to a capable model is the easy part. The work is the system around it.",
           }}
         />
 
@@ -150,7 +150,7 @@ function CompanyPage() {
 
         <section className="border-y border-white/10 bg-[var(--obsidian)] px-5 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-7xl">
-            <HudLabel>One company / four lifecycle stages + two transversal capabilities</HudLabel>
+            <HudLabel>Solutions (Advise · Build · Control · Operate) · Products · Applied AI Lab</HudLabel>
             <div className="cx-stagger mt-12 divide-y divide-white/10 border-y border-white/10">
               {UNITS.map(([title, body, href], index) => (
                 <Link

@@ -21,10 +21,7 @@ const APP_ORIGIN = process.env.APP_URL || "http://localhost:8080";
 const shouldRun = Boolean(SUPABASE_URL && SERVICE_ROLE_KEY && TEST_EMAIL);
 
 test.describe("admin magic-link invite → /workspace preserves ?w and ?tab", () => {
-  test.skip(
-    !shouldRun,
-    "requires SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, TEST_INVITE_EMAIL",
-  );
+  test.skip(!shouldRun, "requires SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, TEST_INVITE_EMAIL");
 
   test("magic link with ?w & ?tab redirects into /workspace", async ({ page }) => {
     const admin = createClient(SUPABASE_URL!, SERVICE_ROLE_KEY!, {
@@ -33,9 +30,7 @@ test.describe("admin magic-link invite → /workspace preserves ?w and ?tab", ()
 
     // Ensure the target user exists and is confirmed (magic link requires it).
     const { data: list } = await admin.auth.admin.listUsers({ perPage: 200 });
-    let user = list?.users.find(
-      (u) => u.email?.toLowerCase() === TEST_EMAIL!.toLowerCase(),
-    );
+    let user = list?.users.find((u) => u.email?.toLowerCase() === TEST_EMAIL!.toLowerCase());
     if (!user) {
       const { data, error } = await admin.auth.admin.createUser({
         email: TEST_EMAIL!,
@@ -75,7 +70,9 @@ test.describe("admin magic-link invite → /workspace preserves ?w and ?tab", ()
 
     // Session should be live in the browser.
     const hasSession = await page.evaluate(() =>
-      Object.keys(window.localStorage).some((k) => k.startsWith("sb-") && k.endsWith("-auth-token")),
+      Object.keys(window.localStorage).some(
+        (k) => k.startsWith("sb-") && k.endsWith("-auth-token"),
+      ),
     );
     expect(hasSession).toBe(true);
   });

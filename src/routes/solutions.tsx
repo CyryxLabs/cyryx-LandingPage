@@ -142,7 +142,7 @@ function SolutionsHub() {
               trackCta({ cta: "start_project", section: "solutions", href: SOLUTIONS_START_HREF }),
           }}
           secondaryCta={{ label: "How we work", to: "/engagement-model" }}
-          boundaryNote="Products and Applied Research inform the work; client scope remains independent. Ownership, licensing, support, and commercial terms are defined per engagement."
+          boundaryNote="Products and the Applied AI Lab inform the work; client scope remains independent. Ownership, licensing, support, and commercial terms are defined per engagement."
           lifecycleLabel="Operating capability lifecycle"
           lifecycle={[
             { number: "01", label: "Advise", active: true },

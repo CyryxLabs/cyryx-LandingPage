@@ -112,14 +112,12 @@ test.describe("footer navigation model", () => {
     );
 
     // Email actions
-    await expect(footer.getByRole("link", { name: "Press", exact: true })).toHaveAttribute(
-      "href",
-      "mailto:press@cyryxlabs.com",
-    );
-    await expect(footer.getByRole("link", { name: "Security", exact: true })).toHaveAttribute(
-      "href",
-      "mailto:security@cyryxlabs.com?subject=Security%20inquiry",
-    );
+    await expect(
+      footer.getByRole("link", { name: "press@cyryxlabs.com", exact: true }),
+    ).toHaveAttribute("href", "mailto:press@cyryxlabs.com");
+    await expect(
+      footer.getByRole("link", { name: "security@cyryxlabs.com", exact: true }),
+    ).toHaveAttribute("href", "mailto:security@cyryxlabs.com?subject=Security%20inquiry");
   });
 
   test("temporary stubs are absent", async ({ page }) => {

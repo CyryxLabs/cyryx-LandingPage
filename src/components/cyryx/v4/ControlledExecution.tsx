@@ -1,4 +1,5 @@
 import { HudLabel } from "../primitives/HudLabel";
+import { ExecutionTrace } from "../ExecutionTrace";
 
 const STAGES = [
   ["01", "Intent", "Define the business outcome."],
@@ -70,6 +71,22 @@ export function ControlledExecution() {
               </li>
             ))}
           </ol>
+        </div>
+
+        <div className="cx-reveal mt-14 grid gap-8 sm:mt-24 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
+              One run, end to end
+            </p>
+            <h3 className="mt-4 font-display text-3xl font-semibold leading-[1.05] tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
+              Every step is scoped, reviewed where it matters, and recorded.
+            </h3>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-[var(--silver-dim)]">
+              The system works inside the limits it was given. Exceptions stop for a person. What
+              happened, who approved it and what it cost stays on the record.
+            </p>
+          </div>
+          <ExecutionTrace />
         </div>
 
         <p className="cx-reveal mt-10 border-t border-white/10 pt-7 text-center font-display text-2xl tracking-[-0.025em] text-[var(--silver)] sm:mt-20 sm:pt-8 sm:text-3xl">

@@ -57,7 +57,7 @@ export const Route = createFileRoute("/research/")({
   head: () =>
     buildHead(
       {
-        title: "Applied Research — Cyryx Labs",
+        title: "Applied AI Lab — Cyryx Labs",
         description:
           "Applied research at Cyryx Labs explores AI execution architecture, context, evaluation, authority, cost, and human-system interaction.",
         path: "/research",
@@ -80,7 +80,7 @@ function ResearchHub() {
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
         <InternalHero
-          eyebrow="Applied Research"
+          eyebrow="Applied AI Lab"
           title="Research for systems that must leave the lab."
           body="Cyryx investigates the engineering and operating questions that appear when AI is expected to support real products, workflows, and decisions. The purpose is practical: better architectures, better evidence, and clearer limits."
           primaryCta={{
@@ -195,7 +195,7 @@ function ResearchHub() {
             <div>
               <HudLabel>Research directions</HudLabel>
               <h2 className="mt-6 max-w-[12ch] font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
-                Six questions behind one operating system.
+                Six questions behind governed AI execution.
               </h2>
             </div>
             <div className="cx-stagger grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:grid-cols-2">

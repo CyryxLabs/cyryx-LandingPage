@@ -65,3 +65,16 @@ Branch: `feat/conversion-overhaul` (from `main` @ 88fd3e7). Not pushed, not depl
 - Unit tests (bun): 54 passing, including leads fallback, sanitizer and Gemini helpers.
 - Playwright (chromium desktop, mobile 360, forced colors) against a production build with local mocks for Supabase RPC and Gemini (`tests/support/mock-gemini-server.mjs`). See final run log in the delivery note.
 - Not verified here: WebKit/Safari project (browser not installed), real Gemini and Supabase calls, real email delivery, Vercel headers in production.
+
+## Revision 2 — founder feedback (2026-09-24)
+
+| Feedback | Change |
+| --- | --- |
+| Hero scroll/motion method was broken | Restored the approved scene from `main`: 400svh sticky scene, 40-frame desktop and mobile sequences, GSAP entrance, content hand-off, the three story statements (Cormorant) and the logo reveal. Only the copy and CTAs changed. Cormorant is back for internal hero titles too (typography change reverted). |
+| Execution Trace must not be in the hero | Moved to "How it runs" (ControlledExecution) as an animated "one run, end to end" example. |
+| Outdated/unrelated content (Gartner) | ExecutionGap no longer quotes third-party statistics: four breaks (data, authority, cost, ownership) close as the section scrolls. Content sweep: lab naming ("Applied AI Lab"), company page lines, engagement-model hero (5 steps), managed-operations CTA, goal-grounded-generation answer (no internal architecture vocabulary, no client claim), terms version date, llms.txt, assistant knowledge, Organization description. |
+| Governance duplicated elements | Kept one visual (the monolith with its scrubbed core); removed the second core/gates figure that repeated the list. |
+| Static content, footer not premium | `useSiteMotion` (site-wide reveals, counters, draw lines, parallax, pointer spotlight), CSS entrance for internal heroes, ambient light, sweeps. New footer: CTA band, contact column, animated wordmark, back-to-top. |
+| Products/AEXOS page poor | `/products/aexos` rebuilt from the published package (v5.3.0): what it is, what it is for, cycle simulation, routing simulation, package counts, concepts, roles and squads, gates and principles, install, editions (Core / Pro), FAQ. `/products` gets an install preview, publishing rules and stage track. No internal GTM, prices or roadmap. |
+
+Open decision (not changed): `/solutions/digital-web-systems` is a web/brand offer outside the stated positioning. Options: keep, rewrite, or 308 to `/solutions/workflow-automation`.

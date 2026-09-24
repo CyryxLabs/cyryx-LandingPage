@@ -1,7 +1,97 @@
 {
-  "generatedAt": "2026-07-15T14:27:32.006Z",
+  "generatedAt": "2026-09-24T16:27:11.146Z",
   "scannedRegion": "section[data-hero]",
   "criticalViolationCount": 0,
   "criticalViolations": [],
-  "violations": []
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#19c7c0",
+                "bgColor": "#ffffff",
+                "contrastRatio": 2.1,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"cx-hero-overlay cx-hero-feather absolute inset-0\"></div>",
+                  "target": [
+                    ".cx-hero-feather"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 2.1 (foreground color: #19c7c0, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<p class=\"font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)] sm:text-xs\">AI systems · Advise · Build · Control · Operate</p>",
+          "target": [
+            ".sm\\:text-xs"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.1 (foreground color: #19c7c0, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#8c949e",
+                "bgColor": "#ffffff",
+                "contrastRatio": 3.06,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"cx-hero-overlay cx-hero-feather absolute inset-0\"></div>",
+                  "target": [
+                    ".cx-hero-feather"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element has insufficient color contrast of 3.06 (foreground color: #8c949e, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button type=\"button\" class=\"mt-5 inline-flex min-h-11 items-center gap-2 text-left text-sm text-[var(--silver-dim)] underline-offset-4 transition-colors hover:text-[var(--accent-glow)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]\">",
+          "target": [
+            ".underline-offset-4.hover\\:underline.text-left"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.06 (foreground color: #8c949e, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    }
+  ]
 }

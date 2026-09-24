@@ -22,6 +22,7 @@ export function CompactStart() {
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,color-mix(in_oklab,var(--accent-glow)_10%,transparent),transparent_42%)]"
       />
+      <div aria-hidden className="cx-aurora" />
       <div className="relative mx-auto max-w-5xl px-5 text-center sm:px-8 lg:px-10">
         <div className="cx-reveal">
           <HudLabel withDot>{copy.eyebrow}</HudLabel>

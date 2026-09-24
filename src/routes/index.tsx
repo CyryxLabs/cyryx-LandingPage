@@ -55,6 +55,9 @@ export const Route = createFileRoute("/")({
         rel: "preload",
         as: "image",
         href: "/media/hero-sequence/desktop/cyryx-hero-frame-001.webp",
+        imageSrcSet:
+          "/media/hero-sequence/mobile/cyryx-hero-frame-001.webp 960w, /media/hero-sequence/desktop/cyryx-hero-frame-001.webp 1920w",
+        imageSizes: "100vw",
         fetchPriority: "high",
       },
       { rel: "canonical", href: HOME_URL },

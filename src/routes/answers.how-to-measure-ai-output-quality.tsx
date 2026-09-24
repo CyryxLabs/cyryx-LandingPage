@@ -104,7 +104,7 @@ export const Route = createFileRoute("/answers/how-to-measure-ai-output-quality"
         },
         { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
-        { label: "Cyryx Applied Research", href: "/research" },
+        { label: "Cyryx Applied AI Lab", href: "/research" },
       ]}
     />
   ),

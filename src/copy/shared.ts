@@ -6,6 +6,7 @@ export const SHARED_COPY: Omit<CopyDocument, "hero"> & {
 } = {
   heroBase: {
     eyebrow: "AI systems · Advise · Build · Control · Operate",
+    rail: ["Advise. Build.", "Control. Operate.", "From intent to action. From action to evidence."],
     ctaPrimary: "Start a project",
     ctaSecondary: "See how we work",
     assistantNote: "Have a question first? Ask the Cyryx assistant. It answers in seconds.",

@@ -19,7 +19,10 @@ const TEST_PASSWORD = process.env.TEST_SIGNUP_PASSWORD;
 const shouldRun = Boolean(SUPABASE_URL && SERVICE_ROLE_KEY && TEST_EMAIL && TEST_PASSWORD);
 
 test.describe("auth → workspace preserves ?w and ?tab", () => {
-  test.skip(!shouldRun, "requires SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, TEST_SIGNUP_EMAIL, TEST_SIGNUP_PASSWORD");
+  test.skip(
+    !shouldRun,
+    "requires SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, TEST_SIGNUP_EMAIL, TEST_SIGNUP_PASSWORD",
+  );
 
   test("/auth?w=90&tab=overview → /workspace?w=90&tab=overview", async ({ page }) => {
     const admin = createClient(SUPABASE_URL!, SERVICE_ROLE_KEY!, {

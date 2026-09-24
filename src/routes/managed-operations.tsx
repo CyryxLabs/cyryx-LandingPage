@@ -72,14 +72,14 @@ function ManagedOperationsPage() {
           title="Keep the system useful after launch."
           body="Cyryx can monitor, maintain, optimize, and evolve selected systems when continuing operational responsibility is part of the engagement."
           primaryCta={{
-            label: "Discuss managed coverage",
+            label: "Start a project",
             to: START_HREF,
             onClick: () =>
               trackCta({ cta: "start_project", section: "solutions", href: START_HREF }),
           }}
           secondaryCta={{ label: "Review the lifecycle", to: "/engagement-model" }}
           boundaryNote="Coverage is never assumed: systems, owners, response expectations, exclusions, and transition are defined in writing."
-          lifecycleLabel="Managed operating lifecycle"
+          lifecycleLabel="Key stages"
           lifecycle={[
             { number: "01", label: "Monitor", active: true },
             { number: "02", label: "Maintain" },

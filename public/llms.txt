@@ -2,16 +2,16 @@
 
 > Last reviewed: 2026-09-24. Canonical website: https://www.cyryxlabs.com/
 
-> Cyryx Labs is an AI lab and systems company: the execution layer for enterprise AI. It designs, builds and runs AI systems that act inside client workflows, with clear permissions, human approval and a record of every decision. Its canonical operating lifecycle is Advise → Build → Control → Operate. Products and Applied Research inform that lifecycle as transversal capabilities; they are not extra delivery phases.
+> Cyryx Labs is a technology company building AI products and execution systems: the execution layer for enterprise AI. It designs, builds and runs AI systems that act inside client workflows, with clear permissions, human approval and a record of every decision. Its canonical operating lifecycle is Advise → Build → Control → Operate. Products and the Applied AI Lab inform that lifecycle as transversal capabilities; they are not extra delivery phases.
 
-A request may enter through one focused capability or connect several stages into a larger program. Products and Applied Research remain separate from client delivery while informing the work.
+A request may enter through one focused capability or connect several stages into a larger program. Products and the Applied AI Lab remain separate from client delivery while informing the work.
 
 ## Public taxonomy
 
-- **Products** — Cyryx-owned software with an explicit maturity state. AEXOS is the current product (Core edition available on npm; Pro in beta).
+- **Products** — Cyryx-owned software with an explicit maturity state. AEXOS is the current product (Core edition available on npm; Pro under a commercial license).
 - **Solutions** — repeatable engagements and operating capabilities shaped to a written scope. They are not represented as client-owned products or operating systems.
 - **Client work** — published only when evidence and disclosure permission are approved. No unnamed engagement should be treated as a public case study.
-- **Applied Research** — publications, protocols, evaluations, and research directions with the record and evidence state stated precisely.
+- **Applied AI Lab** — publications, protocols, evaluations, and research directions with the record and evidence state stated precisely.
 
 ## Operating lifecycle
 
@@ -24,9 +24,9 @@ The engagement method is Discover → Design → Build → Validate → Launch/O
 
 ## AEXOS
 
-AEXOS (Agentic eXecution & Orchestration System) is a CLI-first system for governed, AI-assisted software delivery. It installs roles, procedures (task contracts), quality gates and an audit trail into a software project. The Core edition is published on npm as @aexos/core and is free under the AEXOS license; the Pro edition is in beta and its pricing is not published.
+AEXOS (Agentic eXecution & Orchestration System) is a CLI-first framework that installs specialised AI agents, the procedures they follow and the quality gates they must pass into a project; one orchestrator routes each request to the specialist that owns it. It is proprietary software. The Core edition is published on npm as @aexos/core and is free to use under the AEXOS license, including for commercial work; Pro is available under a paid commercial license and its pricing is not published.
 
-## Applied Research and CGP
+## Applied AI Lab and CGP
 
 The Research section links to the primary publication record for CGP v1.0 and labels its evidence states. A publication record does not establish product implementation, protocol conformance, third-party certification, or a client outcome. CGP levels are protocol-defined requirements, not certificates or independent compliance determinations.
 
@@ -46,4 +46,4 @@ The Research section links to the primary publication record for CGP v1.0 and la
 
 ## Citation guidance
 
-Use the entity name “Cyryx Labs.” For the product, use “AEXOS (Cyryx Labs)” with its edition status (Core available, Pro in beta). Cite the specific page that supports a statement. Do not infer implementation, conformance, certification, performance, customer adoption, or outcomes from product direction, moodboard imagery, or a publication abstract.
+Use the entity name “Cyryx Labs.” For the product, use “AEXOS (Cyryx Labs)” with its edition status (Core available on npm, Pro under a commercial license). Cite the specific page that supports a statement. Do not infer implementation, conformance, certification, performance, customer adoption, or outcomes from product direction, illustrative imagery, or a publication abstract.

@@ -18,6 +18,7 @@ export const CopyDocumentSchema = z.object({
     eyebrow: nonEmpty("hero.eyebrow", 80),
     headline: nonEmpty("hero.headline", 90),
     sub: nonEmpty("hero.sub", 260),
+    rail: z.array(nonEmpty("hero.rail[]", 60)).max(3),
     ctaPrimary: nonEmpty("hero.ctaPrimary", 32),
     ctaSecondary: nonEmpty("hero.ctaSecondary", 32),
     assistantNote: nonEmpty("hero.assistantNote", 90),

@@ -14,9 +14,7 @@ const ROOT = "src/routes/__root.tsx";
 
 function extractRedirectScript(): string {
   const src = readFileSync(ROOT, "utf8");
-  const match = src.match(
-    /__html:\s*"((?:[^"\\]|\\.)*workspace\\\\\.(?:[^"\\]|\\.)*)"/,
-  );
+  const match = src.match(/__html:\s*"((?:[^"\\]|\\.)*workspace\\\\\.(?:[^"\\]|\\.)*)"/);
   if (!match) throw new Error("workspace subdomain redirect script not found");
   // Unescape the JS string literal so it can be executed in the browser.
   // eslint-disable-next-line no-eval
@@ -162,10 +160,7 @@ test("authenticated visit to /workspace?w=90d&tab=overview stays on /workspace w
   const storageKey = process.env.LOVABLE_BROWSER_SUPABASE_STORAGE_KEY;
   const sessionJson = process.env.LOVABLE_BROWSER_SUPABASE_SESSION_JSON;
   const cookiesJson = process.env.LOVABLE_BROWSER_SUPABASE_COOKIES_JSON;
-  test.skip(
-    !storageKey || !sessionJson,
-    "No managed Supabase session available in this sandbox",
-  );
+  test.skip(!storageKey || !sessionJson, "No managed Supabase session available in this sandbox");
 
   if (cookiesJson) {
     const cookies = (JSON.parse(cookiesJson) as Array<Record<string, unknown>>).map((c) => ({
@@ -178,10 +173,10 @@ test("authenticated visit to /workspace?w=90d&tab=overview stays on /workspace w
 
   // Establish the localhost origin before writing to its localStorage.
   await page.goto("/");
-  await page.evaluate(
-    ({ k, v }) => window.localStorage.setItem(k, v),
-    { k: storageKey!, v: sessionJson! },
-  );
+  await page.evaluate(({ k, v }) => window.localStorage.setItem(k, v), {
+    k: storageKey!,
+    v: sessionJson!,
+  });
 
   await page.goto("/workspace?w=90d&tab=overview");
   // Wait for the authenticated layout to resolve (either stays on /workspace

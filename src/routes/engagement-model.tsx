@@ -11,7 +11,7 @@ import { trackCta } from "@/lib/track-cta";
 const PATH = "/engagement-model";
 const TITLE = "How We Work — Cyryx Labs";
 const DESC =
-  "The Cyryx engagement lifecycle: discover the problem, design the system, build, validate, launch, transfer, and optionally operate under defined terms.";
+  "How a Cyryx engagement runs: Discover, Design, Build, Validate, then Launch & Operate under defined terms, with written decisions and evidence at every stage.";
 
 const STEPS = [
   [
@@ -81,6 +81,7 @@ function EngagementModelPage() {
             { number: "02", label: "Design" },
             { number: "03", label: "Build" },
             { number: "04", label: "Validate" },
+            { number: "05", label: "Launch & Operate" },
           ]}
           nextChapter={{
             title: "A controlled delivery lifecycle.",

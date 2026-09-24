@@ -52,7 +52,7 @@ const SECTIONS: Array<{ id: string; n: string; title: string }> = [
 ];
 
 function TermsPage() {
-  const effective = "January 1, 2026";
+  const effective = "September 24, 2026";
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
@@ -65,7 +65,7 @@ function TermsPage() {
                 Legal · Terms
               </HudLabel>
               <span className="hud-label text-[var(--silver-dim)]">
-                v2026.01 · Effective {effective}
+                v2026.09 · Effective {effective}
               </span>
             </div>
             <h1 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">

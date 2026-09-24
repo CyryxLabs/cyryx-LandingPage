@@ -118,7 +118,7 @@ export const Route = createFileRoute("/answers/what-is-ai-governance")({
         },
         { label: "AI Governance & Safety", href: "/solutions/ai-governance-cost-control" },
         { label: "Cyryx Solutions", href: "/solutions" },
-        { label: "Cyryx Applied Research", href: "/research" },
+        { label: "Cyryx Applied AI Lab", href: "/research" },
       ]}
     />
   ),

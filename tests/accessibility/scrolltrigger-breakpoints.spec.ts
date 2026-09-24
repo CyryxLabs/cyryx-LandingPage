@@ -61,78 +61,22 @@ for (const vp of VIEWPORTS) {
     }
 
     if (vp.name !== "desktop") {
-      const governanceVisual = await page.evaluate(() => {
-        const core = document.querySelector<HTMLElement>("[data-governance-core]");
-        const gates = Array.from(document.querySelectorAll<HTMLElement>("[data-governance-gate]"));
-        const labels = Array.from(
-          document.querySelectorAll<HTMLElement>("[data-governance-label]"),
-        );
-
-        const scaleOf = (element: HTMLElement) => {
-          const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
-          return { x: Math.hypot(matrix.a, matrix.b), y: Math.hypot(matrix.c, matrix.d) };
-        };
-
-        return {
-          coreScaleY: core ? scaleOf(core).y : 0,
-          gateScales: gates.map((gate) => scaleOf(gate).x),
-          visibleLabels: labels.filter(
-            (label) => Number.parseFloat(getComputedStyle(label).opacity) > 0.8,
-          ).length,
-        };
-      });
-
-      expect(
-        governanceVisual.coreScaleY,
-        `${vp.name}: governance core must be visible`,
-      ).toBeGreaterThan(0.95);
-      expect(
-        governanceVisual.gateScales.every((scale) => scale > 0.95),
-        `${vp.name}: governance gates must be visible without desktop GSAP`,
-      ).toBe(true);
-      expect(governanceVisual.visibleLabels, `${vp.name}: governance labels must be visible`).toBe(
-        4,
-      );
+      // Governance keeps one visual (the monolith), shown from lg up; below
+      // that the four controls carry the section and must be readable.
+      const controls = page.locator("#security [data-governance-control]");
+      await expect(controls).toHaveCount(4);
+      await controls.last().scrollIntoViewIfNeeded();
+      await expect
+        .poll(
+          () =>
+            controls.evaluateAll((items) =>
+              items.every((item) => Number.parseFloat(getComputedStyle(item).opacity) > 0.8),
+            ),
+          { timeout: 5_000 },
+        )
+        .toBe(true);
     }
   });
-}
-
-async function readFrameIndex(page: Page) {
-  return page
-    .locator("section[data-hero] [data-hero-canvas]")
-    .evaluate((element) => Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0));
-}
-
-async function scrollHeroScene(page: Page, ratio: number) {
-  await page.evaluate((r) => {
-    const heroScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-    const range = (heroScene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
-    window.scrollTo(0, range * r);
-  }, ratio);
-}
-
-async function expectHeroCopyPinnedInViewport(page: Page, label: string) {
-  const hero = page.locator("section[data-hero]");
-  for (const locator of [
-    page.locator("#hero-heading"),
-    hero.locator(".cx-hero-sub"),
-    hero.locator('a[data-cta="primary"]'),
-    hero.locator('a[data-cta="secondary"]'),
-  ]) {
-    await expect(locator, `${label}: hero copy must stay in the first viewport`).toBeInViewport();
-    const opacity = await locator.evaluate((element) => {
-      let node: HTMLElement | null = element as HTMLElement;
-      let value = 1;
-      while (node) {
-        value *= Number.parseFloat(getComputedStyle(node).opacity);
-        node = node.parentElement;
-      }
-      return value;
-    });
-    expect(opacity, `${label}: hero copy must not fade while the scene scrubs`).toBeGreaterThan(
-      0.99,
-    );
-  }
 }
 
 test("desktop Hero uses native sticky positioning and scrubs the canvas sequence", async ({
@@ -140,9 +84,8 @@ test("desktop Hero uses native sticky positioning and scrubs the canvas sequence
 }, testInfo) => {
   test.skip(
     testInfo.project.use.forcedColors === "active",
-    "Forced colors hides the canvas and collapses the scene; covered by the forced-colors test.",
+    "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
   );
-  await useHighPerformanceProfile(page);
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
@@ -158,139 +101,115 @@ test("desktop Hero uses native sticky positioning and scrubs the canvas sequence
   await expect(page.locator(".pin-spacer")).toHaveCount(0);
   await expect(canvas).toHaveAttribute("data-frame-index", "1");
 
-  // 190svh scene: one extra viewport of scrub behind a 100svh sticky stage.
-  const geometry = await page.evaluate(() => {
-    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-    const sticky = document.querySelector<HTMLElement>("[data-hero-sticky]");
-    return {
-      sceneHeight: scene?.getBoundingClientRect().height ?? 0,
-      stickyHeight: sticky?.getBoundingClientRect().height ?? 0,
-      stickyPosition: sticky ? getComputedStyle(sticky).position : "",
-      viewportHeight: window.innerHeight,
-    };
+  await page.evaluate(() => {
+    const heroScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+    const range = (heroScene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+    window.scrollTo(0, range * 0.5);
   });
-  expect(geometry.sceneHeight / geometry.viewportHeight).toBeGreaterThan(1.85);
-  expect(geometry.sceneHeight / geometry.viewportHeight).toBeLessThan(1.95);
-  expect(Math.abs(geometry.stickyHeight - geometry.viewportHeight)).toBeLessThan(2);
-  expect(geometry.stickyPosition).toBe("sticky");
-
-  await scrollHeroScene(page, 0.5);
   await page.waitForTimeout(900);
-  await expect.poll(() => readFrameIndex(page), { timeout: 5_000 }).toBeGreaterThan(4);
-  const midFrame = await readFrameIndex(page);
-  expect(midFrame).toBeLessThan(12);
+
+  await expect
+    .poll(
+      () =>
+        canvas.evaluate((element) =>
+          Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
+        ),
+      { timeout: 5_000 },
+    )
+    .toBeGreaterThan(12);
 
   const state = await page.evaluate(() => {
     const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
     const stickyElement = heroElement?.querySelector<HTMLElement>("[data-hero-sticky]");
+    const canvasElement = heroElement?.querySelector<HTMLCanvasElement>("[data-hero-canvas]");
     const progress = heroElement?.querySelector<HTMLElement>("[data-scroll-progress]");
     const matrix = progress
       ? new DOMMatrixReadOnly(getComputedStyle(progress).transform)
       : new DOMMatrixReadOnly();
     return {
+      frameIndex: Number(canvasElement?.dataset.frameIndex ?? 0),
       stickyTop: stickyElement?.getBoundingClientRect().top ?? Number.NaN,
       progressScale: matrix.a,
     };
   });
+
+  expect(state.frameIndex).toBeGreaterThan(12);
   expect(Math.abs(state.stickyTop)).toBeLessThan(2);
   expect(state.progressScale).toBeGreaterThan(0.1);
-  await expectHeroCopyPinnedInViewport(page, "desktop mid-scene");
-
-  await scrollHeroScene(page, 1);
-  await expect.poll(() => readFrameIndex(page), { timeout: 5_000 }).toBe(15);
-  await expectHeroCopyPinnedInViewport(page, "desktop end of scene");
 });
 
-test("tablet Hero scrubs the short scene with native sticky and no GSAP pinning", async ({
+for (const viewport of [
+  { name: "tablet", width: 768, height: 1024 },
+  { name: "mobile", width: 390, height: 800 },
+]) {
+  test(`${viewport.name} Hero follows the device performance policy without GSAP pinning`, async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.use.forcedColors === "active",
+      "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
+    );
+    await useHighPerformanceProfile(page);
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expectPageHydrated(page);
+
+    const hero = page.locator("section[data-hero]");
+    const canvas = hero.locator("[data-hero-canvas]");
+    await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
+    await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
+      "data-sequence-ready",
+      "true",
+      { timeout: 20_000 },
+    );
+    await expect(page.locator(".pin-spacer")).toHaveCount(0);
+    await expect(canvas).toHaveAttribute("data-frame-index", "1");
+
+    await page.evaluate(() => {
+      const heroScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+      const range = (heroScene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+      window.scrollTo(0, range * 0.55);
+    });
+    await page.waitForTimeout(900);
+
+    await expect
+      .poll(
+        () =>
+          canvas.evaluate((element) =>
+            Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
+          ),
+        { timeout: 5_000 },
+      )
+      .toBeGreaterThan(12);
+
+    const scrubbed = await page.evaluate(() => {
+      const canvasElement = document.querySelector<HTMLCanvasElement>("[data-hero-canvas]");
+      const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
+      const matrix = progress
+        ? new DOMMatrixReadOnly(getComputedStyle(progress).transform)
+        : new DOMMatrixReadOnly();
+      return {
+        frameIndex: Number(canvasElement?.dataset.frameIndex ?? 0),
+        progressScale: matrix.a,
+      };
+    });
+
+    expect(scrubbed.frameIndex, `${viewport.name}: frame must advance with scroll`).toBeGreaterThan(
+      12,
+    );
+    expect(scrubbed.progressScale).toBeGreaterThan(0.2);
+  });
+}
+
+test("Hero reserves late sequence frames for an unobstructed brand reveal", async ({
   page,
 }, testInfo) => {
   test.skip(
     testInfo.project.use.forcedColors === "active",
-    "Forced colors hides the canvas and collapses the scene; covered by the forced-colors test.",
+    "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
   );
   await useHighPerformanceProfile(page);
-  await page.setViewportSize({ width: 768, height: 1024 });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
 
-  const hero = page.locator("section[data-hero]");
-  await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
-  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
-    "data-sequence-ready",
-    "true",
-    { timeout: 20_000 },
-  );
-  await expect(page.locator(".pin-spacer")).toHaveCount(0);
-  await expect(hero.locator("[data-hero-canvas]")).toHaveAttribute("data-frame-index", "1");
-
-  await scrollHeroScene(page, 0.55);
-  await page.waitForTimeout(900);
-  await expect.poll(() => readFrameIndex(page), { timeout: 5_000 }).toBeGreaterThan(4);
-
-  const progressScale = await page.evaluate(() => {
-    const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
-    return progress ? new DOMMatrixReadOnly(getComputedStyle(progress).transform).a : 0;
-  });
-  expect(progressScale).toBeGreaterThan(0.2);
-  await expectHeroCopyPinnedInViewport(page, "tablet mid-scene");
-
-  await scrollHeroScene(page, 1);
-  await expect.poll(() => readFrameIndex(page), { timeout: 5_000 }).toBe(15);
-});
-
-test("forced colors collapses the Hero to a static, readable first screen", async ({ page }) => {
-  await useHighPerformanceProfile(page);
-  await page.emulateMedia({ forcedColors: "active" });
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
-
-  const geometry = await page.evaluate(() => {
-    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-    const sticky = document.querySelector<HTMLElement>("[data-hero-sticky]");
-    const canvas = document.querySelector<HTMLElement>("[data-hero-canvas]");
-    return {
-      sceneHeight: scene?.getBoundingClientRect().height ?? 0,
-      stickyPosition: sticky ? getComputedStyle(sticky).position : "",
-      canvasDisplay: canvas ? getComputedStyle(canvas).display : "none",
-      viewportHeight: window.innerHeight,
-    };
-  });
-  expect(geometry.sceneHeight).toBeLessThanOrEqual(geometry.viewportHeight + 1);
-  expect(geometry.stickyPosition).not.toBe("sticky");
-  expect(geometry.canvasDisplay).toBe("none");
-  await expectHeroCopyPinnedInViewport(page, "forced colors");
-});
-
-test("mobile Hero has no scroll scene, no canvas and no scrubbing", async ({ page }) => {
-  await useHighPerformanceProfile(page);
-  await page.setViewportSize({ width: 390, height: 800 });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
-
-  const hero = page.locator("section[data-hero]");
-  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute("data-sequence-mode", "still");
-  await expect(hero.locator("[data-hero-canvas]")).toHaveCount(0);
-  await expect(page.locator(".pin-spacer")).toHaveCount(0);
-  await expect(hero).not.toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
-
-  const geometry = await page.evaluate(() => {
-    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-    const sticky = document.querySelector<HTMLElement>("[data-hero-sticky]");
-    return {
-      sceneHeight: scene?.getBoundingClientRect().height ?? 0,
-      stickyPosition: sticky ? getComputedStyle(sticky).position : "",
-      viewportHeight: window.innerHeight,
-    };
-  });
-  expect(geometry.stickyPosition).not.toBe("sticky");
-  // The first screen is one viewport of content, not an extended scrub.
-  expect(geometry.sceneHeight).toBeLessThanOrEqual(geometry.viewportHeight * 1.1);
-  await expectHeroCopyPinnedInViewport(page, "mobile first viewport");
-});
-
-test("Hero no longer renders story panels, a rail or a loading indicator", async ({ page }) => {
-  await useHighPerformanceProfile(page);
   for (const viewport of [
     { name: "mobile", width: 390, height: 800 },
     { name: "desktop", width: 1280, height: 900 },
@@ -298,11 +217,58 @@ test("Hero no longer renders story panels, a rail or a loading indicator", async
     await page.setViewportSize(viewport);
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await expectPageHydrated(page);
+
     const hero = page.locator("section[data-hero]");
-    await expect(hero.locator("[data-hero-story-panel]"), viewport.name).toHaveCount(0);
-    await expect(hero.locator(".cx-hero-story-panel"), viewport.name).toHaveCount(0);
-    await expect(hero.locator("[data-hero-loader]"), viewport.name).toHaveCount(0);
-    await expect(hero, viewport.name).not.toContainText("Loading experience");
+    const canvas = hero.locator("[data-hero-canvas]");
+    const storyPanels = hero.locator("[data-hero-story-panel]");
+    const finalStory = storyPanels.last();
+    await expect(storyPanels).toHaveCount(3);
+    await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
+      "data-sequence-ready",
+      "true",
+      { timeout: 20_000 },
+    );
+
+    await page.evaluate(() => {
+      const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+      const range = (scene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+      window.scrollTo(0, range * 0.67);
+    });
+    await page.waitForTimeout(500);
+    await expect
+      .poll(
+        () =>
+          finalStory.evaluate((element) => Number.parseFloat(getComputedStyle(element).opacity)),
+        { timeout: 3_000 },
+      )
+      .toBeGreaterThan(0.5);
+
+    await page.evaluate(() => {
+      const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
+      const range = (scene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
+      window.scrollTo(0, range * 0.9);
+    });
+    await page.waitForTimeout(500);
+
+    await expect
+      .poll(
+        () =>
+          canvas.evaluate((element) =>
+            Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
+          ),
+        { timeout: 5_000 },
+      )
+      .toBeGreaterThanOrEqual(34);
+
+    const finalOverlayState = await finalStory.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        opacity: Number.parseFloat(style.opacity),
+        visibility: style.visibility,
+      };
+    });
+    expect(finalOverlayState.opacity, `${viewport.name}: final story opacity`).toBeLessThan(0.02);
+    expect(finalOverlayState.visibility, `${viewport.name}: final story visibility`).toBe("hidden");
   }
 });
 

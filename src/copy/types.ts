@@ -3,6 +3,8 @@ export interface CopyDocument {
     eyebrow: string;
     headline: string;
     sub: string;
+    /** Statements revealed over the pinned hero film while scrolling. */
+    rail: string[];
     ctaPrimary: string;
     ctaSecondary: string;
     /** Short line under the CTAs. Shown only when the AI assistant is enabled. */

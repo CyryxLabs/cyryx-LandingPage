@@ -13,10 +13,7 @@ import { globby } from "globby";
  * ever leaking into search indexes.
  */
 test("workspace + auth routes emit robots noindex and use buildHead()", async () => {
-  const files = await globby([
-    "src/routes/_authenticated/workspace*.tsx",
-    "src/routes/auth.tsx",
-  ]);
+  const files = await globby(["src/routes/_authenticated/workspace*.tsx", "src/routes/auth.tsx"]);
   expect(files.length).toBeGreaterThan(0);
 
   const failures: string[] = [];

@@ -92,10 +92,10 @@ export function InternalHero({
             </p>
             <h1
               id={headingId}
-              className={`mt-6 max-w-[15ch] font-display text-[clamp(2.3rem,9vw,3.2rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-[var(--silver)] [text-wrap:balance] sm:text-[clamp(2.9rem,6.4vw,4rem)] ${
+              className={`mt-6 max-w-[12.5ch] [font-family:var(--font-editorial-hero)] text-[clamp(3rem,13.5vw,4.5rem)] font-normal leading-[0.96] tracking-[-0.035em] text-[#e4e0d8] sm:max-w-[11.5ch] sm:text-[clamp(4.25rem,9vw,5.75rem)] ${
                 titleScale === "compact"
-                  ? "lg:max-w-[26rem] lg:text-[clamp(2.8rem,3.8vw,3.8rem)]"
-                  : "lg:max-w-[42vw] lg:text-[clamp(3.2rem,4.6vw,4.6rem)]"
+                  ? "lg:max-w-[23.75rem] lg:text-[clamp(4rem,5vw,5.25rem)] lg:tracking-[-0.05em]"
+                  : "lg:max-w-[42vw] lg:text-[clamp(4.5rem,7vw,6.75rem)]"
               }`}
             >
               {title}
@@ -187,7 +187,7 @@ export function InternalHero({
             <p className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--accent-glow)]">
               {nextChapter.label ?? "Next chapter"}
             </p>
-            <p className="mt-3 font-display text-2xl font-semibold leading-tight tracking-[-0.03em] text-[var(--silver)] sm:text-3xl">
+            <p className="mt-3 [font-family:var(--font-editorial-hero)] text-3xl leading-none tracking-[-0.025em] text-[#e4e0d8] sm:text-4xl">
               {nextChapter.title}
             </p>
             <p className="mt-2 max-w-2xl text-xs leading-relaxed text-[var(--silver-dim)] sm:text-sm">
