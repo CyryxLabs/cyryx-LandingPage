@@ -12,10 +12,7 @@ const PATH = "/solutions";
 const TITLE = "AI Advisory, Digital Systems & Engineering — Cyryx Labs";
 const DESC =
   "Explore Cyryx Labs advisory, digital systems, automation, internal assistants, custom AI products, governance, and managed operations.";
-const SOLUTIONS_START_HREF = buildStartProjectHref({
-  source: "solutions",
-  intent: "operating-capability",
-});
+const SOLUTIONS_START_HREF = buildStartProjectHref({ source: "solutions" });
 
 const CAPABILITIES = [
   {
@@ -139,7 +136,7 @@ function SolutionsHub() {
           titleScale="compact"
           body="Cyryx combines advisory, digital and AI engineering, control design, and optional managed operations. The engagement begins with the business constraint—not a predetermined tool."
           primaryCta={{
-            label: "Start a fit review",
+            label: "Start a project",
             to: SOLUTIONS_START_HREF,
             onClick: () =>
               trackCta({ cta: "start_project", section: "solutions", href: SOLUTIONS_START_HREF }),

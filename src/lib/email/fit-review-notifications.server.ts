@@ -18,6 +18,8 @@ export type FitReviewEmailInput = {
   company: string;
   message: string;
   submittedAt: string;
+  /** Instant first reply drafted by the website AI, shown to the lead and the team. */
+  aiReply?: string;
 };
 
 export type FitReviewEmailDelivery = {
@@ -33,6 +35,7 @@ export function buildFitReviewEmailJobs(input: FitReviewEmailInput): [EmailJob, 
     message: input.message,
     submittedAt: input.submittedAt,
     submissionId: input.submissionId,
+    aiReply: input.aiReply ?? "",
   };
 
   return [
@@ -44,7 +47,7 @@ export function buildFitReviewEmailJobs(input: FitReviewEmailInput): [EmailJob, 
     {
       templateName: "fit-review-confirmation",
       recipientEmail: input.email,
-      templateData: { name: input.name },
+      templateData: { name: input.name, aiReply: input.aiReply ?? "" },
       idempotencyKey: `fit-review-confirmation-${input.submissionId}`,
     },
   ];

@@ -9,10 +9,21 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 const buildVersion = process.env.LOVABLE_DEPLOYMENT_ID ?? new Date().toISOString();
 const isLighthouseBuild = process.env.LIGHTHOUSE_BUILD === "1";
 
-export default defineConfig({
-  nitro: {
-    preset: isLighthouseBuild ? "node" : "vercel",
+// Passed through to nitro as-is. Declared as a variable because the wrapper's
+// type only lists preset/output/cloudflare, while nitro accepts routeRules too.
+const nitroOptions = {
+  preset: isLighthouseBuild ? "node" : "vercel",
+  // Hero film frames are static and versioned by filename; let browsers and
+  // the edge keep them instead of revalidating on every visit.
+  routeRules: {
+    "/media/**": {
+      headers: { "cache-control": "public, max-age=604800, stale-while-revalidate=86400" },
+    },
   },
+};
+
+export default defineConfig({
+  nitro: nitroOptions,
   vite: {
     define: {
       __CYRYX_BUILD_VERSION__: JSON.stringify(buildVersion),

@@ -7,15 +7,17 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useMemo, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { BUILD_LABEL } from "../lib/build-info";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { initWebVitals } from "../lib/web-vitals";
 import { syncCopyVariantToDocument } from "../lib/copy-variant";
+import { captureFirstTouch } from "../lib/lead-attribution";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import { Toaster } from "@/components/ui/sonner";
+import { AssistantWidget } from "@/components/cyryx/AssistantWidget";
 
 function NotFoundComponent() {
   return (
@@ -39,7 +41,11 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error: rawError, reset }: { error: unknown; reset: () => void }) {
+  const error = useMemo(
+    () => (rawError instanceof Error ? rawError : new Error(String(rawError))),
+    [rawError],
+  );
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -82,8 +88,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { httpEquiv: "Cache-Control", content: "no-store, no-cache, must-revalidate" },
-      { httpEquiv: "Pragma", content: "no-cache" },
       { name: "author", content: "Cyryx Labs" },
       { name: "google-site-verification", content: "Bc35xHMHU3j3kg9Iuj2it5vGwLp4IIXwzz_m-VSIk8g" },
       { property: "og:site_name", content: "Cyryx Labs" },
@@ -130,12 +134,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "preload",
         as: "style",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
         crossOrigin: "anonymous",
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
         crossOrigin: "anonymous",
       },
       // Font files are discovered from the Google Fonts stylesheet. Avoid a
@@ -180,7 +184,7 @@ function RootShell({ children }: { children: ReactNode }) {
           }}
         />
         {/* Keep reload behavior deterministic without breaking deep links such
-            as /#contact or /#maax. */}
+            as /#contact. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
@@ -210,6 +214,7 @@ function RootComponent() {
   useEffect(() => {
     initWebVitals();
     syncCopyVariantToDocument();
+    captureFirstTouch();
     const root = document.documentElement;
     let firstFrame = 0;
     let secondFrame = 0;
@@ -254,6 +259,7 @@ function RootComponent() {
       </a>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <AssistantWidget />
       <Toaster position="top-center" richColors closeButton />
     </QueryClientProvider>
   );

@@ -68,31 +68,29 @@ export function Footer() {
       role="contentinfo"
       className="relative border-t border-[color-mix(in_oklab,var(--accent-glow)_18%,transparent)] bg-[var(--graphite)]"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-14 pb-[max(env(safe-area-inset-bottom),2.5rem)] lg:pt-20 lg:pb-14 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-14 pb-[max(env(safe-area-inset-bottom),5.5rem)] lg:pt-20 lg:pb-20 overflow-hidden">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2.8fr)]">
           {/* Brand area */}
           <div className="flex flex-col items-start">
             <CyryxLockup className="h-14" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--silver-dim)]">
-              From AI opportunity to operating capability. Engage Advise, Build, Control, or Operate
-              individually or as a connected program; Cyryx products and Applied Research remain
-              distinct.
+              The execution layer for enterprise AI. We design, build and run AI systems that act
+              inside your workflows, with clear permissions, human approval and a record of every
+              decision.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">
               <Link
                 to={PRIMARY_NAVIGATION_CTA.href}
-                className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] text-sm font-medium tracking-wide transition-all hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+                className="cx-btn-primary cx-btn-sm"
               >
                 {PRIMARY_NAVIGATION_CTA.label}
-                <span aria-hidden className="text-[var(--accent-glow)] text-lg">
-                  →
-                </span>
+                <span aria-hidden>→</span>
               </Link>
             </div>
 
             <div className="mt-10">
-              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] font-semibold opacity-70">
+              <div className="text-[11px] uppercase tracking-[0.16em] text-[var(--silver)] font-semibold opacity-80">
                 Follow
               </div>
               <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">

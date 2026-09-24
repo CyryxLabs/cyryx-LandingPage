@@ -1,17 +1,22 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MessageSquare } from "lucide-react";
 import { HudLabel } from "../primitives/HudLabel";
 import { trackCta } from "@/lib/track-cta";
 import { buildStartProjectHref } from "@/lib/cta";
+import { useCopyVariant } from "@/lib/copy-variant";
+import { getCopy } from "@/copy";
+import { isAssistantEnabled, openAssistant } from "@/lib/assistant-client";
 
 export function CompactStart() {
-  const startHref = buildStartProjectHref({ source: "home", intent: "operating-capability" });
+  const copy = getCopy(useCopyVariant()).finalCta;
+  const startHref = buildStartProjectHref({ source: "home" });
+  const assistantEnabled = isAssistantEnabled();
   return (
     <section
       id="contact"
       aria-labelledby="contact-heading"
       data-story-section
-      className="relative overflow-hidden py-12 sm:py-24 lg:py-28"
+      className="relative overflow-hidden py-14 sm:py-24"
     >
       <div
         aria-hidden
@@ -19,35 +24,50 @@ export function CompactStart() {
       />
       <div className="relative mx-auto max-w-5xl px-5 text-center sm:px-8 lg:px-10">
         <div className="cx-reveal">
-          <HudLabel withDot>Choose the next decision</HudLabel>
+          <HudLabel withDot>{copy.eyebrow}</HudLabel>
           <h2
             id="contact-heading"
-            className="mx-auto mt-6 max-w-[15ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:mt-7 sm:text-5xl lg:text-7xl"
+            className="mx-auto mt-6 max-w-[18ch] font-display text-4xl font-semibold leading-[1] tracking-[-0.045em] text-silver-gradient sm:mt-7 sm:text-5xl lg:text-6xl"
           >
-            What should AI be trusted to change?
+            {copy.headline}
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:mt-7 sm:text-lg">
-            Bring the workflow, product opportunity, or operational constraint. A fit review will
-            identify the right entry point — Advise, Build, Control, or Operate — or conclude that
-            no build is warranted.
+            {copy.body}
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:mt-9 sm:flex-row">
             <a
               href={startHref}
+              className="cx-btn-primary"
               onClick={() =>
                 trackCta({ cta: "start_project", section: "final_cta", href: startHref })
               }
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition-colors hover:bg-white"
             >
-              Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
+              {copy.ctaPrimary} <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
             <Link
               to="/engagement-model"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/15 px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--silver)] transition-colors hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+              className="cx-btn-secondary"
+              onClick={() =>
+                trackCta({
+                  cta: "see_how_we_work",
+                  section: "final_cta",
+                  href: "/engagement-model",
+                })
+              }
             >
-              Explore the engagement model <ArrowRight className="h-4 w-4" aria-hidden />
+              {copy.ctaSecondary} <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
+          {assistantEnabled && (
+            <button
+              type="button"
+              onClick={() => openAssistant("final_cta")}
+              className="mx-auto mt-5 inline-flex min-h-11 items-center gap-2 text-sm text-[var(--silver-dim)] underline-offset-4 hover:text-[var(--accent-glow)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+            >
+              <MessageSquare className="h-4 w-4 text-[var(--accent-glow)]" aria-hidden />
+              Prefer to ask first? Chat with the Cyryx assistant.
+            </button>
+          )}
         </div>
       </div>
     </section>

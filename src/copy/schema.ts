@@ -2,13 +2,9 @@ import { z } from "zod";
 import type { CopyDocument } from "./types";
 
 /**
- * Runtime contract for every copy variant. Guarantees that:
- *  - every section + key the components read exists
- *  - strings are non-empty and trimmed
- *  - array-length-sensitive fields (hero.meta / hero.rail) preserve the
- *    layout the components were designed around
- *  - the consent / legal copy still contains its expected anchors so
- *    privacy + contact links don't silently disappear
+ * Runtime contract for every copy variant. Guarantees that every section and
+ * key the components read exists and that strings are non-empty, trimmed and
+ * short enough for the layouts they were designed around.
  */
 const nonEmpty = (label: string, max = 600) =>
   z
@@ -19,27 +15,22 @@ const nonEmpty = (label: string, max = 600) =>
 
 export const CopyDocumentSchema = z.object({
   hero: z.object({
-    headline: nonEmpty("hero.headline", 180),
-    sub: nonEmpty("hero.sub", 400),
-    meta: z.array(nonEmpty("hero.meta[]", 64)).max(4, "hero.meta allows up to 4 pills"),
-    rail: z.array(nonEmpty("hero.rail[]", 64)).max(4, "hero.rail allows up to 4 items"),
-    ctaPrimary: nonEmpty("hero.ctaPrimary", 48),
-    ctaSecondary: nonEmpty("hero.ctaSecondary", 48),
+    eyebrow: nonEmpty("hero.eyebrow", 80),
+    headline: nonEmpty("hero.headline", 90),
+    sub: nonEmpty("hero.sub", 260),
+    ctaPrimary: nonEmpty("hero.ctaPrimary", 32),
+    ctaSecondary: nonEmpty("hero.ctaSecondary", 32),
+    assistantNote: nonEmpty("hero.assistantNote", 90),
   }),
   header: z.object({
     cta: nonEmpty("header.cta", 32),
   }),
-  maaxSpotlight: z.object({
-    eyebrow: nonEmpty("maaxSpotlight.eyebrow", 200),
-    cta: nonEmpty("maaxSpotlight.cta", 48),
-  }),
   finalCta: z.object({
-    headline: nonEmpty("finalCta.headline", 120),
-    headlineAccent: nonEmpty("finalCta.headlineAccent", 80),
-    body: nonEmpty("finalCta.body", 600),
-    ctaPrimary: nonEmpty("finalCta.ctaPrimary", 48),
-    ctaSecondary: nonEmpty("finalCta.ctaSecondary", 48),
-    tagline: nonEmpty("finalCta.tagline", 120),
+    eyebrow: nonEmpty("finalCta.eyebrow", 60),
+    headline: nonEmpty("finalCta.headline", 90),
+    body: nonEmpty("finalCta.body", 400),
+    ctaPrimary: nonEmpty("finalCta.ctaPrimary", 32),
+    ctaSecondary: nonEmpty("finalCta.ctaSecondary", 32),
   }),
 }) satisfies z.ZodType<CopyDocument>;
 
@@ -72,12 +63,9 @@ export function validateCopy(input: unknown): CopyValidationResult {
 export function assertCopy(input: unknown, variantId: string): CopyDocument {
   const result = validateCopy(input);
   if (result.ok) return input as CopyDocument;
-  const summary = result.issues
-    .map((i) => `  - ${i.path}: ${i.message}`)
-    .join("\n");
+  const summary = result.issues.map((i) => `  - ${i.path}: ${i.message}`).join("\n");
   const msg = `[copy] variant "${variantId}" failed validation:\n${summary}`;
   if (import.meta.env?.DEV) throw new Error(msg);
   console.error(msg);
-  // best-effort: return as-is so the caller's fallback path can take over
   return input as CopyDocument;
 }

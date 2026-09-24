@@ -6,12 +6,12 @@ import {
   START_CONTEXT_SOURCE_LABELS,
   type StartContextIntent,
 } from "./cta";
+import { LeadAttributionSchema } from "./lead-attribution";
 
-export const CONTACT_CONSENT_VERSION = "website-contact-v2-2026-08-03";
+export const CONTACT_CONSENT_VERSION = "website-contact-v3-2026-09-24";
 
 export const CONTACT_INTERESTS = {
-  project: "Start a fit review",
-  "maax-early-access": "MAAX Studio early access",
+  project: "Start a project",
   research: "Research & partnerships",
   other: "Something else",
 } as const;
@@ -40,7 +40,7 @@ const BaseSubmissionSchema = z.object({
 export const ContactSchema = BaseSubmissionSchema.extend({
   message: z.string().trim().min(10, "Tell us a bit more").max(2000),
   interest: z
-    .enum(["project", "maax-early-access", "research", "other"])
+    .enum(["project", "research", "other"])
     .optional()
     .default("project"),
 });
@@ -53,13 +53,13 @@ export const FIT_REVIEW_PROJECT_TYPES = [
   "Custom AI Product Development",
   "AI Governance & Cost Control",
   "Managed Operations",
+  "AEXOS (product)",
   "Other",
 ] as const;
 
 export const PROJECT_TYPE_BY_START_INTENT: Partial<
   Record<StartContextIntent, (typeof FIT_REVIEW_PROJECT_TYPES)[number]>
 > = {
-  "operating-capability": "Other",
   "strategy-advisory": "AI Strategy & Advisory",
   "digital-system": "Digital & Web Systems",
   "workflow-automation": "Workflow Automation",
@@ -67,6 +67,7 @@ export const PROJECT_TYPE_BY_START_INTENT: Partial<
   "custom-ai-product": "Custom AI Product Development",
   "governance-control": "AI Governance & Cost Control",
   "managed-operations": "Managed Operations",
+  aexos: "AEXOS (product)",
 };
 
 export const FitReviewSchema = BaseSubmissionSchema.extend({
@@ -81,18 +82,10 @@ export const FitReviewSchema = BaseSubmissionSchema.extend({
   problem: z
     .string()
     .trim()
-    .min(10, "Describe the primary problem in at least 10 characters")
+    .min(10, "Tell us what you want to change (at least 10 characters)")
     .max(2000),
-  outcome: z
-    .string()
-    .trim()
-    .min(10, "Describe the desired outcome in at least 10 characters")
-    .max(2000),
-  whyNow: z
-    .string()
-    .trim()
-    .min(10, "Describe the triggering event or why this matters now")
-    .max(2000),
+  outcome: optionalText(2000),
+  whyNow: optionalText(2000),
   role: optionalText(120),
   companyWebsite: optionalText(500).refine((value) => {
     if (!value) return true;
@@ -111,7 +104,20 @@ export const FitReviewSchema = BaseSubmissionSchema.extend({
   notes: optionalText(1500),
   source: z.enum(START_CONTEXT_SOURCES).optional(),
   intent: z.enum(START_CONTEXT_INTENTS).optional(),
+  attribution: LeadAttributionSchema.optional(),
+  /** Short transcript summary when the lead came from the AI assistant. */
+  assistantSummary: optionalText(2000),
 });
+
+/** Fields required in step 1 of the /start form. Everything else is optional context. */
+export const FIT_REVIEW_STEP_ONE_FIELDS = [
+  "name",
+  "email",
+  "company",
+  "projectType",
+  "problem",
+  "consent",
+] as const;
 
 export type ContactInput = z.infer<typeof ContactSchema>;
 export type FitReviewInput = z.infer<typeof FitReviewSchema>;
@@ -136,12 +142,32 @@ export function formatFitReviewMessage(data: FitReviewInput): string {
     data.problem,
     "",
     "Desired outcome:",
-    data.outcome,
+    data.outcome ?? "—",
     "",
     "Why now / timing context:",
-    data.whyNow,
+    data.whyNow ?? "—",
     "",
     "Additional context:",
     data.notes ?? "—",
+    ...(data.assistantSummary ? ["", "AI assistant conversation summary:", data.assistantSummary] : []),
   ].join("\n");
+}
+
+/** Structured qualification stored alongside the readable message (see migration 20260924). */
+export function buildQualification(data: FitReviewInput) {
+  return {
+    project_type: data.projectType,
+    source: data.source ?? null,
+    intent: data.intent ?? null,
+    stage: data.stage ?? null,
+    investment: data.investment ?? null,
+    timeline: data.timeline ?? null,
+    decision: data.decision ?? null,
+    role: data.role ?? null,
+    company_website: data.companyWebsite ?? null,
+    systems: data.systems ?? null,
+    has_outcome: Boolean(data.outcome),
+    has_why_now: Boolean(data.whyNow),
+    via_assistant: Boolean(data.assistantSummary),
+  };
 }

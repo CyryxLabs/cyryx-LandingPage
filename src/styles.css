@@ -113,10 +113,9 @@
     inset 1px 0 0 color-mix(in oklab, var(--silver) 4%, transparent),
     0 24px 60px -36px rgba(0, 0, 0, 0.92);
 
-  /* Governed typography exception: InternalHero H1 only. Body, UI, and all
-   * other display surfaces remain on the locked Space Grotesk / Inter stack. */
-  --font-editorial-hero:
-    "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  /* Single display voice (Sep 2026): the former Cormorant exception for
+   * internal heroes now resolves to the locked Space Grotesk stack. */
+  --font-editorial-hero: "Space Grotesk", "Inter", system-ui, sans-serif;
 
   /* Semantic tokens (dark only) */
   --background: var(--onyx);
@@ -440,7 +439,7 @@ html.cx-low-perf .glass-panel {
 }
 
 .cx-hero-title-line {
-  font-size: clamp(1.9rem, 4.6vw, 3.75rem);
+  font-size: clamp(2.3rem, 4.4vw, 4.4rem);
   line-height: 1.1;
   letter-spacing: -0.035em;
   font-weight: 600;
@@ -472,35 +471,6 @@ html.cx-low-perf .glass-panel {
 .cx-hero-sequence-canvas {
   contain: strict;
   transform: translateZ(0);
-}
-
-.cx-hero-sequence-spinner {
-  animation: cx-hero-sequence-spin 0.8s linear infinite;
-  box-shadow: 0 0 16px color-mix(in oklab, var(--accent-glow) 34%, transparent);
-}
-
-.cx-hero-story-panel {
-  will-change: transform, opacity, filter;
-}
-
-.cx-hero-story-panel[data-story-index="0"] p {
-  max-width: 8ch;
-}
-
-.cx-hero-story-panel[data-story-index="1"] p {
-  max-width: 8ch;
-  margin-left: auto;
-}
-
-.cx-hero-story-panel[data-story-index="2"] p {
-  max-width: 15ch;
-  margin-inline: auto;
-}
-
-@keyframes cx-hero-sequence-spin {
-  to {
-    transform: rotate(1turn);
-  }
 }
 
 .cx-hero-media {
@@ -945,16 +915,6 @@ html.cx-low-perf .glass-panel {
 }
 
 @media (max-width: 767px) {
-  .cx-hero-content-layer {
-    border-top: 1px solid color-mix(in oklab, var(--accent-glow) 16%, transparent);
-    background: linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--accent-glow) 4%, var(--obsidian)) 0%,
-      var(--obsidian) 10rem
-    );
-    box-shadow: 0 -24px 64px -52px color-mix(in oklab, var(--accent-glow) 46%, transparent);
-  }
-
   .cx-hero-heading {
     line-height: 1.12;
     letter-spacing: -0.03em;
@@ -963,27 +923,10 @@ html.cx-low-perf .glass-panel {
   }
 
   .cx-hero-title-line {
-    font-size: clamp(1.65rem, 7vw, 2.4rem);
+    font-size: clamp(2rem, 8.6vw, 2.6rem);
     line-height: 1.14;
     letter-spacing: -0.03em;
     padding-bottom: 0.08em;
-  }
-
-  /* Mobile glass panel for the hero copy — light, GPU-cheap. */
-  .cx-hero-panel {
-    position: relative;
-    padding: 1.25rem 1.1rem 1.4rem;
-    border-radius: 14px;
-    border: 1px solid color-mix(in oklab, var(--accent-glow) 18%, transparent);
-    background: linear-gradient(
-      180deg,
-      color-mix(in oklab, #000 55%, transparent) 0%,
-      color-mix(in oklab, #000 30%, transparent) 100%
-    );
-    backdrop-filter: blur(8px) saturate(120%);
-    box-shadow:
-      0 1px 0 color-mix(in oklab, var(--accent-glow) 18%, transparent) inset,
-      0 18px 40px -24px rgba(0, 0, 0, 0.7);
   }
 
   .cx-hero-sub {
@@ -1004,7 +947,7 @@ html.cx-low-perf .glass-panel {
    in the hero title/sub/CTAs and reduce panel padding further. */
 @media (max-width: 359px) {
   .cx-hero-title-line {
-    font-size: clamp(1.35rem, 6.6vw, 1.7rem);
+    font-size: clamp(1.7rem, 8vw, 2rem);
     letter-spacing: -0.025em;
   }
 
@@ -1227,7 +1170,7 @@ html.cx-low-perf .cx-liquid-glass {
   }
 
   .cx-hero-title-line {
-    font-size: clamp(2.25rem, 4.8vw, 3rem);
+    font-size: clamp(2.6rem, 5.6vw, 3.4rem);
     line-height: 1.08;
     letter-spacing: -0.035em;
     padding-bottom: 0.08em;
@@ -1845,4 +1788,330 @@ html.cx-low-perf .cx-sticky-cta {
     color: CanvasText;
     background: none !important;
   }
+}
+
+/* ---------------------------------------------------------------------------
+ * Conversion overhaul (Sep 2026)
+ * One CTA system, execution trace, opaque header, AI assistant.
+ * ------------------------------------------------------------------------- */
+
+/* CTA system: one filled primary, one outlined secondary, same everywhere.
+ * In the components layer so utilities such as `hidden lg:inline-flex` win. */
+@layer components {
+.cx-btn-primary,
+.cx-btn-secondary {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.cx-btn-primary {
+  background: var(--accent-glow);
+  color: var(--onyx);
+  box-shadow: 0 12px 32px -14px color-mix(in oklab, var(--accent-glow) 70%, transparent);
+}
+
+.cx-btn-primary:hover {
+  background: color-mix(in oklab, var(--accent-glow) 86%, white);
+}
+
+.cx-btn-secondary {
+  border: 1px solid color-mix(in oklab, var(--silver) 26%, transparent);
+  background: color-mix(in oklab, var(--onyx) 55%, transparent);
+  color: var(--silver);
+}
+
+.cx-btn-secondary:hover {
+  border-color: var(--accent-glow);
+  color: var(--accent-glow);
+}
+
+.cx-btn-primary:focus-visible,
+.cx-btn-secondary:focus-visible {
+  outline: 2px solid var(--accent-glow);
+  outline-offset: 3px;
+}
+
+.cx-btn-sm {
+  min-height: 44px;
+  padding: 0.6rem 1.1rem;
+  font-size: 11px;
+}
+
+@media (max-width: 639px) {
+  .cx-hero-ctas .cx-btn-primary,
+  .cx-hero-ctas .cx-btn-secondary {
+    width: 100%;
+  }
+}
+
+}
+
+/* Header: opaque enough that content never reads through it while scrolling. */
+.cx-site-header {
+  background: color-mix(in oklab, var(--onyx) 90%, transparent) !important;
+}
+
+/* Execution trace (hero) */
+.cx-trace {
+  position: relative;
+  border: 1px solid color-mix(in oklab, var(--silver) 16%, transparent);
+  border-radius: 10px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--graphite) 92%, transparent),
+    color-mix(in oklab, var(--onyx) 94%, transparent)
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--silver) 8%, transparent),
+    0 30px 80px -40px color-mix(in oklab, var(--accent-glow) 45%, transparent);
+  padding: 1.1rem 1.1rem 0.9rem;
+  font-family: var(--font-mono);
+  color: var(--silver);
+  backdrop-filter: blur(10px);
+}
+
+.cx-trace-head,
+.cx-trace-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+.cx-trace-tag {
+  border: 1px solid color-mix(in oklab, var(--silver) 18%, transparent);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.cx-trace-steps {
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.cx-trace-step {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: start;
+  border-radius: 6px;
+  padding: 0.6rem 0.55rem;
+  transition:
+    background-color 240ms ease,
+    opacity 240ms ease;
+}
+
+.cx-trace-step[data-state="pending"] {
+  opacity: 0.45;
+}
+
+.cx-trace-step[data-state="active"] {
+  background: color-mix(in oklab, var(--accent-glow) 8%, transparent);
+}
+
+.cx-trace-dot {
+  margin-top: 0.3rem;
+  height: 9px;
+  width: 9px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--silver) 30%, transparent);
+}
+
+.cx-trace-step[data-state="done"] .cx-trace-dot,
+.cx-trace-step[data-state="active"] .cx-trace-dot {
+  background: var(--accent-glow);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--accent-glow) 70%, transparent);
+}
+
+.cx-trace-step[data-state="active"][data-tone="review"] .cx-trace-dot {
+  background: #d3b36a;
+  box-shadow: 0 0 10px rgba(211, 179, 106, 0.7);
+}
+
+.cx-trace-step[data-state="active"] .cx-trace-dot {
+  animation: cx-trace-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes cx-trace-pulse {
+  50% {
+    transform: scale(1.35);
+  }
+}
+
+.cx-trace-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--silver);
+}
+
+.cx-trace-detail {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--silver-dim);
+}
+
+.cx-trace-status {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--steel);
+  white-space: nowrap;
+}
+
+.cx-trace-step[data-state="done"] .cx-trace-status {
+  color: var(--accent-glow);
+}
+
+.cx-trace-step[data-state="active"][data-tone="review"] .cx-trace-status {
+  color: #d3b36a;
+}
+
+.cx-trace-foot {
+  margin-top: 0.8rem;
+  border-top: 1px solid color-mix(in oklab, var(--silver) 12%, transparent);
+  padding-top: 0.75rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cx-trace-step[data-state="active"] .cx-trace-dot {
+    animation: none;
+  }
+}
+
+html.cx-low-perf .cx-trace {
+  backdrop-filter: none;
+}
+
+/* AI assistant */
+.cx-assistant-launcher {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 55;
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--accent-glow) 45%, transparent);
+  background: color-mix(in oklab, var(--onyx) 92%, transparent);
+  padding: 0 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-glow);
+  box-shadow: 0 16px 40px -18px color-mix(in oklab, var(--accent-glow) 70%, transparent);
+}
+
+@media (max-width: 639px) {
+  .cx-assistant-launcher {
+    width: 48px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .cx-assistant-launcher span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+.cx-assistant-launcher:hover {
+  background: var(--graphite);
+}
+
+.cx-assistant-launcher:focus-visible {
+  outline: 2px solid var(--accent-glow);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1023px) {
+  body[data-sticky-visible="true"] .cx-assistant-launcher {
+    bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.cx-assistant-panel {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 65;
+  display: flex;
+  flex-direction: column;
+  width: min(26rem, calc(100vw - 2rem));
+  height: min(38rem, calc(100dvh - 6rem));
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--silver) 16%, transparent);
+  background: var(--obsidian);
+  box-shadow: 0 30px 90px -30px rgba(0, 0, 0, 0.9);
+}
+
+@media (max-width: 639px) {
+  .cx-assistant-panel {
+    inset: auto 0 0 0;
+    width: 100%;
+    height: min(85dvh, 40rem);
+    border-radius: 14px 14px 0 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+.cx-assistant-msg {
+  max-width: 88%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-radius: 10px;
+  border: 1px solid color-mix(in oklab, var(--silver) 10%, transparent);
+  background: var(--graphite);
+  padding: 0.6rem 0.8rem;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--silver);
+}
+
+.cx-assistant-msg--user {
+  margin-left: auto;
+  border-color: color-mix(in oklab, var(--accent-glow) 30%, transparent);
+  background: color-mix(in oklab, var(--accent-glow) 10%, var(--obsidian));
 }

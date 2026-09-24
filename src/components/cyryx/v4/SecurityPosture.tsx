@@ -17,13 +17,13 @@ export function SecurityPosture() {
       aria-labelledby="security-heading"
       data-story-section
       data-governance-system
-      className="relative overflow-hidden py-12 sm:py-24 lg:py-32"
+      className="relative overflow-hidden py-12 sm:py-20 lg:py-24"
     >
       <CapabilityMonolith />
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="relative z-10 cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-20">
           <div>
-            <HudLabel withDot>Control before scale</HudLabel>
+            <HudLabel withDot>Governance</HudLabel>
             <h2
               id="security-heading"
               className="mt-7 max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl"
@@ -38,8 +38,8 @@ export function SecurityPosture() {
         </div>
 
         <div className="relative z-10 mt-10 grid gap-10 sm:mt-20 sm:gap-12 lg:grid-cols-[0.96fr_1.04fr] lg:gap-20">
-          <figure className="cx-reveal relative min-h-[26rem] overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--obsidian)_90%,transparent)] p-6 sm:min-h-[32rem] sm:p-10">
-            <figcaption className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--steel)]">
+          <figure className="cx-reveal relative min-h-[26rem] overflow-hidden rounded-lg border border-[color-mix(in_oklab,var(--silver)_14%,transparent)] bg-[color-mix(in_oklab,var(--obsidian)_90%,transparent)] p-6 sm:min-h-[28rem] sm:p-10">
+            <figcaption className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--steel)]">
               Control architecture / engagement-specific
             </figcaption>
             <div aria-hidden className="cx-governance-visual">
@@ -74,7 +74,7 @@ export function SecurityPosture() {
                         isLeft ? "cx-governance-label--left" : "cx-governance-label--right"
                       }`}
                     >
-                      <span className="font-mono text-[8px] tracking-[0.18em] text-[var(--accent-glow)]">
+                      <span className="font-mono text-[10px] tracking-[0.16em] text-[var(--accent-glow)]">
                         {n}
                       </span>
                       <span className="font-display text-xs font-medium tracking-[0.01em] text-[var(--silver)] sm:text-sm">
@@ -85,9 +85,6 @@ export function SecurityPosture() {
                 );
               })}
             </div>
-            <p className="absolute bottom-8 left-8 max-w-[16ch] font-display text-2xl leading-tight tracking-[-0.03em] text-[var(--silver)] sm:left-10 sm:text-3xl">
-              Control before scale.
-            </p>
           </figure>
 
           <div>
@@ -98,7 +95,7 @@ export function SecurityPosture() {
                   data-governance-control
                   className="cx-stagger-item grid grid-cols-[2.5rem_1fr] gap-5 border-b border-white/10 py-6 sm:py-7"
                 >
-                  <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[11px] tracking-[0.18em] text-[var(--accent-glow)]">
                     {n}
                   </span>
                   <div>
@@ -113,11 +110,11 @@ export function SecurityPosture() {
               ))}
             </ol>
             <p className="mt-8 font-display text-2xl tracking-[-0.025em] text-[var(--silver)]">
-              AI without control is not an operating capability.
+              Control before scale.
             </p>
             <Link
               to="/solutions/ai-governance-cost-control"
-              className="mt-7 inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+              className="mt-7 inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
             >
               Explore governance architecture <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </Link>

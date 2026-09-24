@@ -15,7 +15,7 @@ export function ControlledExecution() {
       aria-labelledby="controlled-execution-heading"
       data-story-section
       data-execution-system
-      className="relative overflow-hidden py-12 sm:py-24 lg:py-32"
+      className="relative overflow-hidden py-12 sm:py-20 lg:py-24"
     >
       <div
         aria-hidden
@@ -23,7 +23,7 @@ export function ControlledExecution() {
       />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal mx-auto max-w-4xl text-center">
-          <HudLabel withDot>Controlled execution</HudLabel>
+          <HudLabel withDot>How it runs</HudLabel>
           <h2
             id="controlled-execution-heading"
             className="mt-7 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
@@ -58,7 +58,7 @@ export function ControlledExecution() {
                 data-execution-node
                 className="cx-execution-node grid grid-cols-[2.5rem_1fr] gap-5 lg:block lg:text-center"
               >
-                <span className="cx-execution-node-dot relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-[var(--onyx)] font-mono text-[9px] text-[var(--steel)] transition-colors">
+                <span className="cx-execution-node-dot relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-[var(--onyx)] font-mono text-[11px] text-[var(--steel)] transition-colors">
                   {n}
                 </span>
                 <div className="lg:mt-7">

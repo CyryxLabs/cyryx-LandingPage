@@ -58,10 +58,7 @@ export const Route = createFileRoute("/engagement-model")({
 });
 
 function EngagementModelPage() {
-  const startHref = buildStartProjectHref({
-    source: "engagement-model",
-    intent: "operating-capability",
-  });
+  const startHref = buildStartProjectHref({ source: "engagement-model" });
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
@@ -71,7 +68,7 @@ function EngagementModelPage() {
           title="Decisions first. Evidence throughout. Ownership at launch."
           body="Every engagement is shaped around the actual problem, authority, and operating life of the system."
           primaryCta={{
-            label: "Start a fit review",
+            label: "Start a project",
             to: startHref,
             onClick: () =>
               trackCta({ cta: "start_project", section: "solutions", href: startHref }),
@@ -160,7 +157,7 @@ function EngagementModelPage() {
               href={startHref}
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
             >
-              Start a fit review <ArrowRight className="h-4 w-4" aria-hidden />
+              Start a project <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
             <Link
               to="/solutions"

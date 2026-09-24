@@ -11,14 +11,15 @@ interface Props {
   message?: string;
   submittedAt?: string;
   submissionId?: string;
+  aiReply?: string;
 }
 
-const Email = ({ name, email, company, message, submittedAt, submissionId }: Props) => (
+const Email = ({ name, email, company, message, submittedAt, submissionId, aiReply }: Props) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>New fit review from {company || name || "the Cyryx Labs website"}.</Preview>
+    <Preview>New project brief from {company || name || "the Cyryx Labs website"}.</Preview>
     <BrandShell>
-      <Text style={styles.h1}>New fit review received</Text>
+      <Text style={styles.h1}>New project brief received</Text>
       <Text style={styles.p}>
         A prospective client submitted the qualification form on cyryxlabs.com. Review the request
         in the internal workspace before responding.
@@ -30,15 +31,21 @@ const Email = ({ name, email, company, message, submittedAt, submissionId }: Pro
         <Text style={styles.value}>{email || "—"}</Text>
         <Text style={styles.label}>Company</Text>
         <Text style={styles.value}>{company || "—"}</Text>
-        <Text style={styles.label}>Fit-review context</Text>
+        <Text style={styles.label}>Project brief</Text>
         <Text style={{ ...styles.value, whiteSpace: "pre-wrap" }}>{message || "—"}</Text>
         <Text style={styles.label}>Submitted</Text>
         <Text style={styles.value}>{submittedAt || new Date().toISOString()}</Text>
         <Text style={styles.label}>Submission reference</Text>
         <Text style={styles.value}>{submissionId || "—"}</Text>
+        {aiReply ? (
+          <>
+            <Text style={styles.label}>Instant AI first reply (already sent to the lead)</Text>
+            <Text style={{ ...styles.value, whiteSpace: "pre-wrap" }}>{aiReply}</Text>
+          </>
+        ) : null}
       </Section>
       <Text style={styles.p}>
-        Use the work email above after completing the internal fit review.
+        Reply from the work email above once the team has reviewed the brief.
       </Text>
     </BrandShell>
   </Html>
@@ -53,8 +60,8 @@ function subjectValue(value: unknown): string {
 export const template = {
   component: Email,
   subject: (data: Record<string, unknown>) =>
-    `New fit review — ${subjectValue(data.company || data.name)}`,
-  displayName: "Fit-review notification (to Cyryx Labs)",
+    `New project brief — ${subjectValue(data.company || data.name)}`,
+  displayName: "Project brief notification (to Cyryx Labs)",
   to: "contact@cyryxlabs.com",
   previewData: {
     name: "Ada Lovelace",

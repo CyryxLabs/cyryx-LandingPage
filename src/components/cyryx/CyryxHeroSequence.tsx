@@ -1,13 +1,22 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-const FRAME_COUNT = 40;
+// The scrub covers the monolith "ignition" (frames 1–15): the core line lights
+// and the mark appears inside the monolith. The later full-screen logo reveal
+// is not used, so it never competes with the hero copy.
+const FRAME_NUMBERS = Array.from({ length: 15 }, (_, i) => i + 1);
+const FRAME_COUNT = FRAME_NUMBERS.length;
 const PRELOAD_BATCH_SIZE = 4;
+// Frames start loading after the first interaction, or after this idle delay,
+// so they never compete with first paint.
+const LOAD_IDLE_DELAY_MS = 2500;
 const FRAME_BACKGROUND = "#020506";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const MOBILE_QUERY = "(max-width: 767px)";
 const HERO_PROGRESS_EVENT = "cyryx:hero-sequence-progress";
 
 type FrameVariant = "desktop" | "mobile";
+
+const INTERACTION_EVENTS = ["scroll", "wheel", "pointermove", "touchstart", "keydown"] as const;
 
 type HeroProgressDetail = {
   progress: number;
@@ -78,7 +87,6 @@ export function CyryxHeroSequence() {
   const progressRef = useRef(0);
   const rafRef = useRef(0);
   const [variant, setVariant] = useState<FrameVariant | null>(null);
-  const [loadProgress, setLoadProgress] = useState(0);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   const [lowPerformance, setLowPerformance] = useState(false);
@@ -148,13 +156,16 @@ export function CyryxHeroSequence() {
   }, []);
 
   useEffect(() => {
-    setLowPerformance(document.documentElement.classList.contains("cx-low-perf"));
+    // Forced-colors mode hides the canvas, so frames would load for nothing.
+    setLowPerformance(
+      document.documentElement.classList.contains("cx-low-perf") ||
+        window.matchMedia("(forced-colors: active)").matches,
+    );
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || lowPerformance || !variant) {
+    if (reducedMotion || lowPerformance || !variant || variant === "mobile") {
       framesRef.current = [];
-      setLoadProgress(reducedMotion || lowPerformance ? 100 : 0);
       setReady(false);
       setFailed(false);
       return;
@@ -164,7 +175,6 @@ export function CyryxHeroSequence() {
     let loadedCount = 0;
     setReady(false);
     setFailed(false);
-    setLoadProgress(0);
     framesRef.current = [];
 
     const loadSequence = async () => {
@@ -177,7 +187,7 @@ export function CyryxHeroSequence() {
             Array.from({ length: batchSize }, (_, batchIndex) => {
               const frameIndex = offset + batchIndex;
               return loadFrame(
-                frameSource(variant, frameIndex + 1),
+                frameSource(variant, FRAME_NUMBERS[frameIndex]),
                 frameIndex === 0,
                 controller.signal,
               );
@@ -187,7 +197,6 @@ export function CyryxHeroSequence() {
           if (controller.signal.aborted) return;
           loadedFrames.push(...batch);
           loadedCount += batch.length;
-          setLoadProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
 
           if (loadedCount < FRAME_COUNT) {
             await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -202,14 +211,25 @@ export function CyryxHeroSequence() {
       }
 
       framesRef.current = loadedFrames;
-      setLoadProgress(100);
       setReady(true);
       window.dispatchEvent(new CustomEvent("cyryx:hero-sequence-ready"));
     };
 
-    const loadTimer = window.setTimeout(() => void loadSequence(), 0);
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      window.clearTimeout(idleTimer);
+      INTERACTION_EVENTS.forEach((type) => window.removeEventListener(type, start));
+      void loadSequence();
+    };
+    const idleTimer = window.setTimeout(start, LOAD_IDLE_DELAY_MS);
+    INTERACTION_EVENTS.forEach((type) =>
+      window.addEventListener(type, start, { once: true, passive: true }),
+    );
     return () => {
-      window.clearTimeout(loadTimer);
+      window.clearTimeout(idleTimer);
+      INTERACTION_EVENTS.forEach((type) => window.removeEventListener(type, start));
       controller.abort();
       framesRef.current = [];
     };
@@ -242,7 +262,7 @@ export function CyryxHeroSequence() {
     [],
   );
 
-  const stillMode = reducedMotion || lowPerformance;
+  const stillMode = reducedMotion || lowPerformance || variant === "mobile";
   const mode = stillMode ? "still" : ready ? "sequence" : failed ? "fallback" : "loading";
 
   return (
@@ -254,12 +274,8 @@ export function CyryxHeroSequence() {
       data-sequence-ready={ready ? "true" : "false"}
     >
       <picture className="absolute inset-0">
-        <source
-          media="(max-width: 767px)"
-          srcSet={frameSource("mobile", stillMode ? FRAME_COUNT : 1)}
-        />
         <img
-          src={frameSource("desktop", stillMode ? FRAME_COUNT : 1)}
+          src={frameSource("desktop", 1)}
           alt=""
           fetchPriority="high"
           loading="eager"
@@ -268,7 +284,7 @@ export function CyryxHeroSequence() {
           height={1080}
           data-no3d="1"
           data-hero-poster
-          className="cx-hero-sequence-poster absolute inset-0 h-full w-full object-contain sm:object-cover"
+          className="cx-hero-sequence-poster absolute inset-0 h-full w-full object-cover object-[50%_40%] md:object-center"
           draggable={false}
         />
       </picture>
@@ -283,19 +299,6 @@ export function CyryxHeroSequence() {
         />
       )}
 
-      {!stillMode && !ready && !failed && (
-        <div
-          role="status"
-          aria-live="polite"
-          data-hero-loader
-          className="cx-hero-sequence-loader absolute bottom-7 right-5 z-10 flex items-center gap-3 sm:bottom-10 sm:right-10"
-        >
-          <span className="cx-hero-sequence-spinner h-4 w-4 rounded-full border border-white/20 border-t-[var(--accent-glow)]" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-white/55">
-            Loading experience {loadProgress}%
-          </span>
-        </div>
-      )}
 
       {failed && (
         <p className="sr-only" role="status">

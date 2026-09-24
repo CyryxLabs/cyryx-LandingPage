@@ -39,6 +39,25 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
+const PRIVATE_HTML_PREFIXES = [
+  "/workspace",
+  "/auth",
+  "/api/",
+  "/_serverFn",
+  "/newsletter",
+  "/unsubscribe",
+  "/email",
+  "/lovable",
+];
+
+/** Public marketing HTML that is identical for every visitor. */
+function isPublicCacheableHtml(url: URL, response: Response): boolean {
+  if (response.status !== 200) return false;
+  if (response.headers.has("set-cookie")) return false;
+  if (url.search) return false;
+  return !PRIVATE_HTML_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
+}
+
 function withRuntimeHeaders(request: Request, response: Response): Response {
   const url = new URL(request.url);
   const headers = new Headers(response.headers);
@@ -74,6 +93,15 @@ function withRuntimeHeaders(request: Request, response: Response): Response {
       headers.set("pragma", "no-cache");
       headers.set("expires", "0");
       headers.set("x-cyryx-cache-policy", "missing-asset-no-store");
+    } else if (contentType.includes("text/html") && isPublicCacheableHtml(url, response)) {
+      // Browsers always revalidate; the Vercel edge keeps a short shared copy.
+      // Vercel purges the edge cache on every deployment, so a new build never
+      // serves HTML that points at assets from a previous build.
+      headers.set("cache-control", "public, max-age=0, must-revalidate");
+      headers.set("cdn-cache-control", "public, s-maxage=300, stale-while-revalidate=3600");
+      headers.delete("pragma");
+      headers.delete("expires");
+      headers.set("x-cyryx-cache-policy", "html-edge-short");
     } else if (contentType.includes("text/html")) {
       headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
       headers.set("pragma", "no-cache");
