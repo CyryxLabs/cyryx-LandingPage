@@ -2,6 +2,10 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 
 const FRAME_COUNT = 40;
 const PRELOAD_BATCH_SIZE = 4;
+// Portrait pull-back: from this frame to the last, the film eases from a cover
+// fit to a fit that keeps the logo lockup (about 42% of the frame width) visible.
+const PULLBACK_START_FRAME = 32;
+const LOCKUP_WIDTH_RATIO = 0.42;
 const FRAME_BACKGROUND = "#020506";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const MOBILE_QUERY = "(max-width: 767px)";
@@ -108,10 +112,27 @@ export function CyryxHeroSequence() {
         canvas.height = displayHeight;
       }
 
-      const contain = variant === "mobile";
-      const scale = contain
-        ? Math.min(displayWidth / image.naturalWidth, displayHeight / image.naturalHeight)
-        : Math.max(displayWidth / image.naturalWidth, displayHeight / image.naturalHeight);
+      // Full-bleed on every breakpoint, like desktop. On portrait screens the
+      // closing frames pull back so the whole logo lockup (mark + wordmark)
+      // stays inside the viewport instead of being cropped by the cover fit.
+      const coverScale = Math.max(
+        displayWidth / image.naturalWidth,
+        displayHeight / image.naturalHeight,
+      );
+      let scale = coverScale;
+      if (displayWidth < displayHeight) {
+        const lockupScale = Math.min(
+          coverScale,
+          displayWidth / (image.naturalWidth * LOCKUP_WIDTH_RATIO),
+        );
+        const frameNumber = frameIndex + 1;
+        const t = Math.min(
+          1,
+          Math.max(0, (frameNumber - PULLBACK_START_FRAME) / (FRAME_COUNT - PULLBACK_START_FRAME)),
+        );
+        const eased = t * t * (3 - 2 * t);
+        scale = coverScale + (lockupScale - coverScale) * eased;
+      }
       const drawWidth = image.naturalWidth * scale;
       const drawHeight = image.naturalHeight * scale;
       const x = (displayWidth - drawWidth) / 2;
@@ -177,7 +198,9 @@ export function CyryxHeroSequence() {
             Array.from({ length: batchSize }, (_, batchIndex) => {
               const frameIndex = offset + batchIndex;
               return loadFrame(
-                frameSource(variant, frameIndex + 1),
+                // One high-resolution sequence for every screen: phones get the
+                // same full-bleed film as desktop, not a letterboxed variant.
+                frameSource("desktop", frameIndex + 1),
                 frameIndex === 0,
                 controller.signal,
               );
@@ -254,10 +277,6 @@ export function CyryxHeroSequence() {
       data-sequence-ready={ready ? "true" : "false"}
     >
       <picture className="absolute inset-0">
-        <source
-          media="(max-width: 767px)"
-          srcSet={frameSource("mobile", stillMode ? FRAME_COUNT : 1)}
-        />
         <img
           src={frameSource("desktop", stillMode ? FRAME_COUNT : 1)}
           alt=""
@@ -268,7 +287,9 @@ export function CyryxHeroSequence() {
           height={1080}
           data-no3d="1"
           data-hero-poster
-          className="cx-hero-sequence-poster absolute inset-0 h-full w-full object-contain sm:object-cover"
+          className={`cx-hero-sequence-poster absolute inset-0 h-full w-full object-cover ${
+            stillMode ? "[@media(max-aspect-ratio:1/1)]:object-contain" : ""
+          }`}
           draggable={false}
         />
       </picture>
@@ -291,7 +312,7 @@ export function CyryxHeroSequence() {
           className="cx-hero-sequence-loader absolute bottom-7 right-5 z-10 flex items-center gap-3 sm:bottom-10 sm:right-10"
         >
           <span className="cx-hero-sequence-spinner h-4 w-4 rounded-full border border-white/20 border-t-[var(--accent-glow)]" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-white/55">
+          <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-white/55">
             Loading experience {loadProgress}%
           </span>
         </div>

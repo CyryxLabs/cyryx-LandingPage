@@ -13,7 +13,7 @@ import { isAssistantEnabled, openAssistant } from "@/lib/assistant-client";
  * A 400svh scene pins the monolith film while GSAP ScrollTrigger scrubs the
  * frame sequence, the grade, the aura and the three story statements. The
  * message and CTAs open the scene and hand over to the film as the visitor
- * scrolls (tablet/desktop overlay; phones read the copy after the film).
+ * scrolls — the same choreography on phones, tablets and desktops.
  */
 export function Hero() {
   const copy = getCopy(useCopyVariant()).hero;
@@ -117,19 +117,17 @@ export function Hero() {
         </div>
       </div>
 
-      {/*
-       * Mobile: the copy follows the complete media scene in document flow.
-       * Tablet/desktop: the same semantic content becomes a sticky overlay.
-       */}
+      {/* The same sticky overlay on every breakpoint: the message opens the
+          scene and hands over to the film as the visitor scrolls. */}
       <div
         data-hero-content-layer
-        className="cx-hero-content-layer relative z-[8] bg-black px-5 pb-20 pt-10 md:pointer-events-none md:absolute md:inset-0 md:z-[5] md:bg-transparent md:px-0 md:pb-0 md:pt-0"
+        className="cx-hero-content-layer pointer-events-none absolute inset-0 z-[5]"
       >
         <div
           data-hero-content
-          className="relative mx-auto w-full max-w-7xl md:sticky md:top-0 md:flex md:h-[100svh] md:items-center md:px-10 md:pb-28 md:pt-40 lg:px-14"
+          className="relative mx-auto flex h-[100svh] w-full max-w-7xl items-end px-5 pb-24 pt-28 sticky top-0 sm:px-8 md:items-center md:px-10 md:pb-28 md:pt-40 lg:px-14"
         >
-          <div className="mx-auto w-full max-w-[68rem] md:pointer-events-auto md:mx-0">
+          <div className="pointer-events-auto w-full max-w-[68rem]">
             <div className="cx-hero-panel">
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)] sm:text-xs">
                 {copy.eyebrow}

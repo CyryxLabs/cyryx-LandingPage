@@ -158,7 +158,7 @@ function CompanyPage() {
                   to={href}
                   className="cx-stagger-item group grid gap-4 py-7 sm:grid-cols-[4rem_0.65fr_1.35fr_auto] sm:items-center sm:gap-8 sm:py-9"
                 >
-                  <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[11px] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h2 className="font-display text-3xl tracking-[-0.035em] text-[var(--silver)]">
@@ -191,7 +191,7 @@ function CompanyPage() {
                   key={title}
                   className="grid gap-3 py-6 sm:grid-cols-[3rem_0.8fr_1.2fr] sm:gap-8"
                 >
-                  <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[11px] text-[var(--accent-glow)]">
                     0{index + 1}
                   </span>
                   <h3 className="text-sm font-medium text-[var(--silver)]">{title}</h3>
@@ -210,7 +210,7 @@ function CompanyPage() {
             </h2>
             <a
               href={startHref}
-              className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
+              className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
             >
               Start a project <ArrowRight className="h-4 w-4" aria-hidden />
             </a>

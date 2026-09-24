@@ -38,7 +38,7 @@ export function SecurityPosture() {
 
         <div className="relative z-10 mt-10 grid gap-10 sm:mt-20 sm:gap-12 lg:grid-cols-[0.96fr_1.04fr] lg:gap-20">
           {/* One governance visual: the monolith core scrubs with the scroll. */}
-          <div className="cx-reveal relative hidden min-h-[34rem] lg:block">
+          <div className="cx-reveal relative h-80 sm:h-96 lg:h-auto lg:min-h-[34rem]">
             <CapabilityMonolith
               className="pointer-events-none absolute inset-0 overflow-hidden"
               surfaceOpacity="opacity-[0.22]"

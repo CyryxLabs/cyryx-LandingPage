@@ -945,16 +945,6 @@ html.cx-low-perf .glass-panel {
 }
 
 @media (max-width: 767px) {
-  .cx-hero-content-layer {
-    border-top: 1px solid color-mix(in oklab, var(--accent-glow) 16%, transparent);
-    background: linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--accent-glow) 4%, var(--obsidian)) 0%,
-      var(--obsidian) 10rem
-    );
-    box-shadow: 0 -24px 64px -52px color-mix(in oklab, var(--accent-glow) 46%, transparent);
-  }
-
   .cx-hero-heading {
     line-height: 1.12;
     letter-spacing: -0.03em;
@@ -969,34 +959,9 @@ html.cx-low-perf .glass-panel {
     padding-bottom: 0.08em;
   }
 
-  /* Mobile glass panel for the hero copy — light, GPU-cheap. */
-  .cx-hero-panel {
-    position: relative;
-    padding: 1.25rem 1.1rem 1.4rem;
-    border-radius: 14px;
-    border: 1px solid color-mix(in oklab, var(--accent-glow) 18%, transparent);
-    background: linear-gradient(
-      180deg,
-      color-mix(in oklab, #000 55%, transparent) 0%,
-      color-mix(in oklab, #000 30%, transparent) 100%
-    );
-    backdrop-filter: blur(8px) saturate(120%);
-    box-shadow:
-      0 1px 0 color-mix(in oklab, var(--accent-glow) 18%, transparent) inset,
-      0 18px 40px -24px rgba(0, 0, 0, 0.7);
-  }
-
   .cx-hero-sub {
     text-wrap: pretty;
     overflow-wrap: break-word;
-  }
-
-  .cx-hero-ctas > a {
-    min-height: 44px;
-    width: 100%;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    padding: 0.55rem 1.25rem;
   }
 }
 
@@ -1011,18 +976,6 @@ html.cx-low-perf .glass-panel {
   .cx-hero-sub {
     font-size: 14px;
     line-height: 1.5;
-  }
-
-  .cx-hero-panel {
-    padding: 1rem 0.9rem 1.15rem;
-    border-radius: 12px;
-  }
-
-  .cx-hero-ctas > a {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-    letter-spacing: 0.22em;
-    font-size: 10.5px;
   }
 }
 
@@ -1235,13 +1188,6 @@ html.cx-low-perf .cx-liquid-glass {
 
   .cx-hero-ctas {
     gap: 0.875rem;
-  }
-
-  .cx-hero-ctas > a {
-    min-height: 48px;
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    padding: 0.7rem 1.5rem;
   }
 }
 

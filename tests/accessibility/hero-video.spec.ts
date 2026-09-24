@@ -30,9 +30,7 @@ test("Hero canvas sequence is present and fully preloaded on desktop", async ({
   await expect(hero.locator("canvas[data-hero-canvas]")).toHaveAttribute("data-frame-index", "1");
 });
 
-test("Hero selects the mobile sequence and contain-fit canvas surface", async ({
-  page,
-}, testInfo) => {
+test("Phones get the same full-bleed film as desktop", async ({ page }, testInfo) => {
   test.skip(
     testInfo.project.use.forcedColors === "active",
     "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
@@ -49,7 +47,10 @@ test("Hero selects the mobile sequence and contain-fit canvas surface", async ({
   await expect(hero.locator("img[data-hero-poster]")).toBeVisible();
   await expect
     .poll(() => hero.locator("img[data-hero-poster]").evaluate((image) => image.currentSrc))
-    .toContain("/hero-sequence/mobile/");
+    .toContain("/hero-sequence/desktop/");
+  // Cover fit at the opening frame: the film fills the whole portrait stage.
+  const box = await hero.locator("canvas[data-hero-canvas]").boundingBox();
+  expect(box!.height).toBeGreaterThanOrEqual(799);
 });
 
 test("low-performance mobile devices use the still poster without sequence preload", async ({

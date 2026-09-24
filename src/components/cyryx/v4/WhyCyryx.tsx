@@ -52,7 +52,7 @@ export function WhyCyryx() {
               key={n}
               className="cx-stagger-item grid gap-4 border-b border-[color-mix(in_oklab,var(--silver)_16%,transparent)] py-7 sm:grid-cols-[3rem_0.85fr_1.15fr] sm:items-start sm:gap-8 sm:py-9"
             >
-              <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
+              <span className="font-mono text-[11px] tracking-[0.22em] text-[var(--accent-glow)]">
                 {n}
               </span>
               <h3 className="font-display text-xl font-medium tracking-[-0.02em] text-[var(--silver)] sm:text-2xl">

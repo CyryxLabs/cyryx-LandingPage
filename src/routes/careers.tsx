@@ -126,7 +126,7 @@ function CareersPage() {
                   key={principle.n}
                   className="border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-8 last:border-b-0 lg:border-b-0 lg:border-r lg:px-8 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
                 >
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[11px] tracking-[0.2em] text-[var(--accent-glow)]">
                     {principle.n}
                   </span>
                   <h3 className="mt-5 font-display text-2xl tracking-[-0.03em] text-[var(--silver)]">

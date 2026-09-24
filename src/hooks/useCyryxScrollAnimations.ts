@@ -151,7 +151,7 @@ export function useCyryxScrollAnimations() {
           const heroSub = document.querySelector<HTMLElement>(".cx-hero-sub");
           const heroCtas = document.querySelector<HTMLElement>(".cx-hero-ctas");
 
-          if (heroLine && heroSub && heroCtas && !lowPerf && !mobile) {
+          if (heroLine && heroSub && heroCtas && !lowPerf) {
             const heroSequence = gsap.timeline({ defaults: { ease: "power3.out" } });
             heroSequence
               .from(heroLine, { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
@@ -212,20 +212,18 @@ export function useCyryxScrollAnimations() {
               )
               .to(heroGrade, { opacity: 0.88, ease: "none", duration: 1 }, 0);
 
-            if (!mobile) {
-              heroScrollTimeline.to(
-                heroContent,
-                {
-                  y: -32,
-                  autoAlpha: 0,
-                  ease: "power1.in",
-                  duration: 0.12,
-                },
-                0.08,
-              );
-            } else {
-              gsap.set(heroContent, { autoAlpha: 1, x: 0, y: 0 });
-            }
+            // Same hand-off on every breakpoint: the message opens the scene,
+            // then gives way to the film and the story statements.
+            heroScrollTimeline.to(
+              heroContent,
+              {
+                y: mobile ? -24 : -32,
+                autoAlpha: 0,
+                ease: "power1.in",
+                duration: 0.12,
+              },
+              0.08,
+            );
 
             const storyWindows = [
               { enter: 0.25, leave: 0.43, enterDuration: 0.07, leaveDuration: 0.07 },
@@ -368,7 +366,8 @@ export function useCyryxScrollAnimations() {
             });
           }
 
-          if ((desktop || tablet) && !lowPerf) {
+          // Same scroll choreography on phones, tablets and desktops.
+          if (!lowPerf) {
             const executionSystem = document.querySelector<HTMLElement>("[data-execution-system]");
             const executionRail =
               executionSystem?.querySelector<HTMLElement>("[data-execution-rail]");
@@ -525,13 +524,7 @@ export function useCyryxScrollAnimations() {
               ? gsap.utils.toArray<HTMLElement>("[data-governance-label]", capabilitySection)
               : [];
 
-            if (
-              desktop &&
-              capabilitySection &&
-              capabilityMonolith &&
-              capabilityCore &&
-              capabilityPulse
-            ) {
+            if (capabilitySection && capabilityMonolith && capabilityCore && capabilityPulse) {
               const capabilityCoreSequence = gsap.timeline({
                 scrollTrigger: {
                   trigger: capabilitySection,
@@ -629,22 +622,6 @@ export function useCyryxScrollAnimations() {
                     0.08,
                   )
                   .to(governancePulse, { autoAlpha: 0, duration: 0.08, ease: "none" }, 0.92);
-            }
-
-            if (tablet) {
-              if (capabilityCore) gsap.set(capabilityCore, { scaleY: 1 });
-              if (capabilityPulse) gsap.set(capabilityPulse, { autoAlpha: 0 });
-              if (governanceCore) gsap.set(governanceCore, { scaleY: 1 });
-              if (governancePulse) gsap.set(governancePulse, { autoAlpha: 0 });
-              if (governanceGates.length) {
-                gsap.set(governanceGates, { scaleX: 1, autoAlpha: 1 });
-              }
-              if (governanceNodes.length) {
-                gsap.set(governanceNodes, { scale: 1, autoAlpha: 1 });
-              }
-              if (governanceLabels.length) {
-                gsap.set(governanceLabels, { y: 0, autoAlpha: 1 });
-              }
             }
           }
 

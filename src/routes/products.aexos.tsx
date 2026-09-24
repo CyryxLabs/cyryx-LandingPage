@@ -107,7 +107,7 @@ function CommandLine({ label, command }: { label: string; command: string }) {
           type="button"
           onClick={copy}
           aria-label={copied ? "Copied" : `Copy command: ${command}`}
-          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/10 text-[var(--silver-dim)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/10 text-[var(--silver-dim)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
         >
           {copied ? (
             <Check className="h-4 w-4" aria-hidden />

@@ -95,7 +95,7 @@ function ContactPage() {
                   key={path.label}
                   className="grid gap-5 border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-8 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)] lg:grid-cols-[5rem_minmax(16rem,0.65fr)_minmax(18rem,1fr)_auto] lg:items-center lg:gap-10 lg:py-10"
                 >
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[11px] tracking-[0.2em] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>

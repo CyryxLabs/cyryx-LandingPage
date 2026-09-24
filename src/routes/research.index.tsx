@@ -143,7 +143,7 @@ function ResearchHub() {
                   />
                   <div className="relative grid gap-10 lg:grid-cols-[1fr_0.34fr] lg:items-end">
                     <div>
-                      <div className="flex flex-wrap items-center gap-3 font-mono text-[8px] uppercase tracking-[0.17em]">
+                      <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.17em]">
                         <span className="text-[var(--accent-glow)]">{publication.category}</span>
                         <span className="text-[var(--silver)]">
                           Record {publication.evidence.publicationRecord.state}
@@ -163,7 +163,7 @@ function ResearchHub() {
                       <Link
                         to="/research/$slug"
                         params={{ slug: publication.slug }}
-                        className="flex min-h-12 items-center justify-between rounded-md bg-[var(--silver)] px-5 font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--onyx)] transition hover:bg-white"
+                        className="flex min-h-12 items-center justify-between rounded-md bg-[var(--silver)] px-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--onyx)] transition hover:bg-white"
                       >
                         Read the protocol <ArrowRight className="h-4 w-4" aria-hidden />
                       </Link>
@@ -173,7 +173,7 @@ function ResearchHub() {
                             href={publication.doiUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex min-h-12 items-center justify-between rounded-md border border-white/15 px-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+                            className="flex min-h-12 items-center justify-between rounded-md border border-white/15 px-5 font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
                           >
                             DOI {publication.doi}
                             <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -204,7 +204,7 @@ function ResearchHub() {
                   key={title}
                   className="cx-material-panel cx-stagger-item min-h-64 border border-transparent p-7 sm:p-8"
                 >
-                  <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[11px] text-[var(--accent-glow)]">
                     0{index + 1}
                   </span>
                   <h3 className="mt-12 font-display text-2xl tracking-[-0.035em] text-[var(--silver)]">
@@ -237,7 +237,7 @@ function ResearchHub() {
                     key={title}
                     className="grid gap-3 py-6 sm:grid-cols-[3rem_0.7fr_1.3fr] sm:gap-8"
                   >
-                    <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                    <span className="font-mono text-[11px] text-[var(--accent-glow)]">
                       0{index + 1}
                     </span>
                     <h3 className="text-sm font-medium text-[var(--silver)]">{title}</h3>

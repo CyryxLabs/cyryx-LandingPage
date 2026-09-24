@@ -185,7 +185,7 @@ function SolutionsHub() {
                   <p className="font-display text-xl leading-snug tracking-[-0.02em] text-[var(--silver)]">
                     {trigger.need}
                   </p>
-                  <span className="mt-auto flex items-center justify-between gap-3 pt-8 font-mono text-[8px] uppercase leading-relaxed tracking-[0.16em] text-[var(--steel)] transition-colors group-hover:text-[var(--accent-glow)]">
+                  <span className="mt-auto flex items-center justify-between gap-3 pt-8 font-mono text-[11px] uppercase leading-relaxed tracking-[0.16em] text-[var(--steel)] transition-colors group-hover:text-[var(--accent-glow)]">
                     {trigger.label}
                     <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
                   </span>
@@ -215,11 +215,11 @@ function SolutionsHub() {
                     to={capability.href}
                     className="grid gap-5 sm:grid-cols-[3rem_1fr_auto] sm:gap-8"
                   >
-                    <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
+                    <span className="font-mono text-[11px] tracking-[0.22em] text-[var(--accent-glow)]">
                       {capability.n}
                     </span>
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--steel)]">
+                      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--steel)]">
                         {capability.stage}
                       </p>
                       <h3 className="mt-3 font-display text-2xl font-medium tracking-[-0.025em] text-[var(--silver)] sm:text-3xl">

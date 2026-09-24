@@ -50,7 +50,7 @@ const RECORD_LINES: readonly [string, string, string][] = [
 
 function SampleBadge() {
   return (
-    <span className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--steel)]">
+    <span className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--steel)]">
       Sample · illustrative data
     </span>
   );
