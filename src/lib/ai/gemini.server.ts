@@ -12,7 +12,10 @@ export const DEFAULT_GEMINI_MODEL = "gemini-3.8-flash";
 // Measured on the production key (2026-09-24, 4 rounds): 3.5-flash-lite answered
 // every time in 0.6–0.9 s; flash-lite-latest every time in 1–2.5 s; 3.5-flash
 // failed or took 7–30 s under load. Fast, reliable models first.
-export const DEFAULT_GEMINI_FALLBACK_MODELS = ["gemini-3.5-flash-lite", "gemini-flash-lite-latest"] as const;
+export const DEFAULT_GEMINI_FALLBACK_MODELS = [
+  "gemini-3.5-flash-lite",
+  "gemini-flash-lite-latest",
+] as const;
 
 /** Upstream statuses worth retrying on the next model in the chain. */
 export function isRetryableGeminiStatus(status: number): boolean {
@@ -127,6 +130,8 @@ async function postWithFallback(
       });
       if (response.ok && response.body !== null) return { response, controller, timer };
       clearTimeout(timer);
+      // Release the failed attempt's connection instead of leaving its body unread.
+      void response.body?.cancel().catch(() => undefined);
       console.error("[gemini]", method.split("?")[0], "failed", model, response.status);
       if (!isRetryableGeminiStatus(response.status)) return null;
     } catch (error) {
@@ -206,28 +211,38 @@ export async function streamText(
 
   return new ReadableStream<Uint8Array>({
     async pull(streamController) {
+      // Keep reading until this pull delivers text or the upstream ends: a
+      // network chunk can carry only part of an SSE event, and a pull that
+      // returns without enqueuing is never called again (the stream stalls).
       try {
-        const { done, value } = await reader.read();
-        if (done) {
-          clearTimeout(timer);
-          streamController.close();
-          return;
-        }
-        buffer += decoder.decode(value, { stream: true });
-        const events = buffer.split(/\r?\n\r?\n/);
-        buffer = events.pop() ?? "";
-        for (const event of events) {
-          for (const line of event.split(/\r?\n/)) {
-            if (!line.startsWith("data:")) continue;
-            const payload = line.slice(5).trim();
-            if (!payload || payload === "[DONE]") continue;
-            try {
-              const text = textFromChunk(JSON.parse(payload) as GeminiChunk);
-              if (text) streamController.enqueue(encoder.encode(text));
-            } catch {
-              // Ignore malformed keep-alive lines.
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) {
+            clearTimeout(timer);
+            streamController.close();
+            return;
+          }
+          buffer += decoder.decode(value, { stream: true });
+          const events = buffer.split(/\r?\n\r?\n/);
+          buffer = events.pop() ?? "";
+          let delivered = false;
+          for (const event of events) {
+            for (const line of event.split(/\r?\n/)) {
+              if (!line.startsWith("data:")) continue;
+              const payload = line.slice(5).trim();
+              if (!payload || payload === "[DONE]") continue;
+              try {
+                const text = textFromChunk(JSON.parse(payload) as GeminiChunk);
+                if (text) {
+                  streamController.enqueue(encoder.encode(text));
+                  delivered = true;
+                }
+              } catch {
+                // Ignore malformed keep-alive lines.
+              }
             }
           }
+          if (delivered) return;
         }
       } catch (error) {
         clearTimeout(timer);

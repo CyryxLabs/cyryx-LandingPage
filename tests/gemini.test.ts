@@ -255,6 +255,28 @@ describe("streamText", () => {
     expect(seenUrl).toEndWith("/test-model:streamGenerateContent?alt=sse");
   });
 
+  test("keeps reading when a network chunk carries only part of an event", async () => {
+    // Regression: under Node, a pull() that enqueued nothing was never called
+    // again, so the assistant response stayed open after the answer.
+    const encoder = new TextEncoder();
+    const sse = `data: ${JSON.stringify(chunk("Hello "))}\r\n\r\ndata: ${JSON.stringify(chunk("world."))}\r\n\r\n`;
+    const pieces = [sse.slice(0, 10), sse.slice(10, 40), sse.slice(40)];
+    const fakeFetch = (async () =>
+      new Response(
+        new ReadableStream<Uint8Array>({
+          async pull(controller) {
+            const piece = pieces.shift();
+            if (piece === undefined) return controller.close();
+            await new Promise((resolve) => setTimeout(resolve, 5));
+            controller.enqueue(encoder.encode(piece));
+          },
+        }),
+        { status: 200, headers: { "content-type": "text/event-stream" } },
+      )) as unknown as typeof fetch;
+    const stream = await streamText(config, { system: "s", turns: [] }, fakeFetch);
+    expect(await readAll(stream!)).toBe("Hello world.");
+  });
+
   test("returns null when the upstream request fails before streaming", async () => {
     const quiet = console.error;
     console.error = () => undefined;
