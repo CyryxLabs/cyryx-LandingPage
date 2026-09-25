@@ -1,4 +1,4 @@
-import { HudLabel } from "../primitives/HudLabel";
+import { ExecutionTrace } from "../ExecutionTrace";
 
 const STAGES = [
   ["01", "Intent", "Define the business outcome."],
@@ -15,7 +15,7 @@ export function ControlledExecution() {
       aria-labelledby="controlled-execution-heading"
       data-story-section
       data-execution-system
-      className="relative overflow-hidden py-12 sm:py-24 lg:py-32"
+      className="relative overflow-hidden py-12 sm:py-20 lg:py-24"
     >
       <div
         aria-hidden
@@ -23,10 +23,9 @@ export function ControlledExecution() {
       />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal mx-auto max-w-4xl text-center">
-          <HudLabel withDot>Controlled execution</HudLabel>
           <h2
             id="controlled-execution-heading"
-            className="mt-7 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
+            className="font-display text-[1.75rem] sm:text-[2.125rem] lg:text-[2.75rem] xl:text-[3.5rem] font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient"
           >
             Value begins when intent becomes controlled action.
           </h2>
@@ -58,7 +57,7 @@ export function ControlledExecution() {
                 data-execution-node
                 className="cx-execution-node grid grid-cols-[2.5rem_1fr] gap-5 lg:block lg:text-center"
               >
-                <span className="cx-execution-node-dot relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-[var(--onyx)] font-mono text-[9px] text-[var(--steel)] transition-colors">
+                <span className="cx-execution-node-dot relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-[var(--onyx)] font-mono text-[12px] text-[var(--steel)] transition-colors">
                   {n}
                 </span>
                 <div className="lg:mt-7">
@@ -72,9 +71,21 @@ export function ControlledExecution() {
           </ol>
         </div>
 
-        <p className="cx-reveal mt-10 border-t border-white/10 pt-7 text-center font-display text-2xl tracking-[-0.025em] text-[var(--silver)] sm:mt-20 sm:pt-8 sm:text-3xl">
-          From intent to action. From action to evidence.
-        </p>
+        <div className="cx-reveal mt-14 grid gap-8 sm:mt-24 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
+          <div>
+            <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
+              One run, end to end
+            </p>
+            <h3 className="mt-4 font-display text-3xl font-semibold leading-[1.05] tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
+              Every step is scoped, reviewed where it matters, and recorded.
+            </h3>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-[var(--silver-dim)]">
+              The system works inside the limits it was given. Exceptions stop for a person. What
+              happened, who approved it and what it cost stays on the record.
+            </p>
+          </div>
+          <ExecutionTrace />
+        </div>
       </div>
     </section>
   );

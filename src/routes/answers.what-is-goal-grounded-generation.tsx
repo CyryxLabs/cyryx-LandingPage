@@ -10,12 +10,12 @@ import {
 const PATH = "/answers/what-is-goal-grounded-generation";
 const TITLE = "What is goal-grounded generation? | Cyryx Labs";
 const DESC =
-  "Goal-grounded generation conditions a model on an explicit mission, context graph, and acceptance criteria — not just a prompt.";
+  "Goal-grounded generation conditions a model on an explicit goal, the relevant context, and acceptance criteria — not just a prompt.";
 
 const faqs = [
   {
     q: "Is this just better prompting?",
-    a: "No. Prompting is one input. Goal-grounded generation also supplies the mission state, the relevant slice of a context graph, and the acceptance criteria the output will be evaluated against.",
+    a: "No. Prompting is one input. Goal-grounded generation also supplies the goal, the relevant project context, and the acceptance criteria the output will be evaluated against.",
   },
   {
     q: "Does it replace RAG?",
@@ -51,21 +51,21 @@ export const Route = createFileRoute("/answers/what-is-goal-grounded-generation"
     <AnswerPage
       eyebrow="Goal-grounded generation"
       title="What is goal-grounded generation?"
-      directAnswer="Goal-grounded generation is a way of calling a model where the input includes an explicit mission, the relevant slice of a project context graph, and the acceptance criteria the output will be evaluated against. The model is generating against a defined goal and a known evaluator, not just answering a free-text prompt."
-      definition="A goal-grounded generation call has four parts: the mission (what we're trying to accomplish), the context (what the system already knows), the constraints (what must be true), and the acceptance criteria (how the result will be judged). The model sees all four and produces a candidate aligned to them."
+      directAnswer="Goal-grounded generation is a way of calling a model where the input includes an explicit goal, the relevant project context, and the acceptance criteria the output will be evaluated against. The model is generating against a defined goal and a known evaluator, not just answering a free-text prompt."
+      definition="A goal-grounded generation call has four parts: the goal (what we're trying to accomplish), the context (what the system already knows), the constraints (what must be true), and the acceptance criteria (how the result will be judged). The model sees all four and produces a candidate aligned to them."
       whyItMatters={[
         "Quality failures often involve context loss: the model did not receive the relevant goal, evidence, constraints, or definition of done.",
         "Goal-grounded generation closes the loop between generation and evaluation — both stages see the same criteria.",
       ]}
       howItWorks={[
-        "The orchestrator pulls the mission record for the current step.",
-        "A context resolver selects the relevant subgraph from the project's context graph.",
+        "The workflow retrieves the goal defined for the current step.",
+        "Only the context relevant to that step is selected: sources, prior decisions and constraints.",
         "Constraints and acceptance criteria are attached to the call.",
         "The model generates a candidate, knowing exactly how it will be judged.",
         "Gates evaluate against the same acceptance criteria the model was given.",
       ]}
-      example="Instead of 'write a release note for v2.1', the system passes the v2.1 mission, the shipped PRs, the user-facing changes, the brand voice, the forbidden-claims list, and the acceptance criteria (must mention every user-facing change, must be under 200 words, must link to docs). The model writes against that, and the gate scores against the same criteria."
-      cyryxPerspective="MAAX Studio is being designed to coordinate software missions, project context, review, and controlled execution. Goal, context, and acceptance criteria are part of that active-development direction, not a generally available guarantee."
+      example="Instead of 'write a release note for v2.1', the system passes the v2.1 goal, the shipped PRs, the user-facing changes, the brand voice, the forbidden-claims list, and the acceptance criteria (must mention every user-facing change, must be under 200 words, must link to docs). The model writes against that, and the gate scores against the same criteria."
+      cyryxPerspective="Cyryx designs for goal-grounded generation where outputs must meet explicit acceptance criteria. Goal, context and acceptance criteria are defined per engagement, not offered as a generic guarantee."
       metrics={[
         "Acceptance-criteria coverage — fraction of criteria explicitly addressed in the output.",
         "Context resolution recall — did the resolver include the inputs the model actually needed?",
@@ -94,9 +94,9 @@ export const Route = createFileRoute("/answers/what-is-goal-grounded-generation"
           label: "AI execution system vs AI automation",
           href: "/answers/ai-execution-system-vs-ai-automation",
         },
-        { label: "MAAX Studio (Cyryx Labs)", href: "/products/maax-studio" },
+        { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
-        { label: "Cyryx Applied Research", href: "/research" },
+        { label: "Cyryx Applied AI Lab", href: "/research" },
       ]}
     />
   ),

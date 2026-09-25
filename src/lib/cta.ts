@@ -11,10 +11,13 @@ export const START_PROJECT_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURI
 
 export const START_CONTEXT_SOURCES = [
   "home",
+  "products",
+  "assistant",
   "solutions",
   "company",
   "contact",
   "engagement-model",
+  "footer",
 ] as const;
 
 export const START_CONTEXT_INTENTS = [
@@ -26,6 +29,7 @@ export const START_CONTEXT_INTENTS = [
   "custom-ai-product",
   "governance-control",
   "managed-operations",
+  "aexos",
 ] as const;
 
 export type StartContextSource = (typeof START_CONTEXT_SOURCES)[number];
@@ -38,10 +42,13 @@ export type StartProjectContext = {
 
 export const START_CONTEXT_SOURCE_LABELS: Record<StartContextSource, string> = {
   home: "Homepage",
+  products: "Products",
+  assistant: "AI assistant",
   solutions: "Solutions overview",
   company: "Company overview",
   contact: "Contact inquiry paths",
   "engagement-model": "Engagement model",
+  footer: "Site footer",
 };
 
 export const START_CONTEXT_INTENT_LABELS: Record<StartContextIntent, string> = {
@@ -53,6 +60,7 @@ export const START_CONTEXT_INTENT_LABELS: Record<StartContextIntent, string> = {
   "custom-ai-product": "Custom AI Product Development",
   "governance-control": "AI Governance & Cost Control",
   "managed-operations": "Managed Operations",
+  aexos: "AEXOS (product)",
 };
 
 const SOURCE_SET = new Set<string>(START_CONTEXT_SOURCES);

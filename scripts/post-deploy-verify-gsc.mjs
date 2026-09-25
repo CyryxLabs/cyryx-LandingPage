@@ -42,24 +42,9 @@ while ((Date.now() - started) / 1000 < TIMEOUT_S) {
     const { status, body } = await fetchHtml(SITE);
     if (status === 200 && META_RE.test(body)) {
       console.log(`✓ Meta tag live after ${attempt} attempt(s).`);
-      console.log("\nNext steps (run with GSC connector):");
-      console.log(
-        `  curl -X POST '$GW/google_search_console/siteVerification/v1/webResource?verificationMethod=META' \\\n` +
-          `    -H "Authorization: Bearer $LOVABLE_API_KEY" \\\n` +
-          `    -H "X-Connection-Api-Key: $GOOGLE_SEARCH_CONSOLE_API_KEY" \\\n` +
-          `    -H 'Content-Type: application/json' \\\n` +
-          `    -d '{"site":{"identifier":"${SITE}","type":"SITE"}}'`,
-      );
-      console.log(
-        `\n  curl -X PUT '$GW/google_search_console/webmasters/v3/sites/${encodeURIComponent(SITE)}' \\\n` +
-          `    -H "Authorization: Bearer $LOVABLE_API_KEY" \\\n` +
-          `    -H "X-Connection-Api-Key: $GOOGLE_SEARCH_CONSOLE_API_KEY"`,
-      );
-      console.log(
-        `\n  curl -X PUT '$GW/google_search_console/webmasters/v3/sites/${encodeURIComponent(SITE)}/sitemaps/${encodeURIComponent(SITE + "sitemap.xml")}' \\\n` +
-          `    -H "Authorization: Bearer $LOVABLE_API_KEY" \\\n` +
-          `    -H "X-Connection-Api-Key: $GOOGLE_SEARCH_CONSOLE_API_KEY"`,
-      );
+      console.log("\nNext steps in Google Search Console (search.google.com/search-console):");
+      console.log(`  1. Verify ${SITE} with the HTML tag method.`);
+      console.log(`  2. Submit ${SITE}sitemap.xml under Sitemaps.`);
       process.exit(0);
     }
     process.stdout.write(`  attempt ${attempt}: status=${status}, tag not yet present\n`);

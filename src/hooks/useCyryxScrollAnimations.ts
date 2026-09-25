@@ -43,6 +43,12 @@ export function useCyryxScrollAnimations() {
       else delete heroRoot.dataset.scrollScrub;
     }
 
+    // Scroll diagnostics are a development aid: off in production unless the
+    // page is opened with ?cx-diagnostics.
+    const diagnosticsEnabled =
+      Boolean(import.meta.env?.DEV) ||
+      new URLSearchParams(window.location.search).has("cx-diagnostics");
+
     const publishDiagnostics = (
       gsapStats: { tweenCount: number; scrollTriggerCount: number } = {
         tweenCount: 0,
@@ -50,6 +56,7 @@ export function useCyryxScrollAnimations() {
       },
     ) => {
       diagnosticRaf = 0;
+      if (!diagnosticsEnabled) return;
       const hero = document.querySelector<HTMLElement>("[data-hero]");
       if (!hero) return;
 
@@ -123,6 +130,9 @@ export function useCyryxScrollAnimations() {
       if (cancelled) return;
 
       gsap.registerPlugin(ScrollTrigger);
+      // iOS Safari resizes the viewport whenever the address bar shows or
+      // hides. Refreshing on those resizes makes the pinned hero jump.
+      ScrollTrigger.config({ ignoreMobileResize: true });
       const preExistingTriggers = new Set(ScrollTrigger.getAll());
       const mm = gsap.matchMedia();
 
@@ -144,12 +154,15 @@ export function useCyryxScrollAnimations() {
           const heroSub = document.querySelector<HTMLElement>(".cx-hero-sub");
           const heroCtas = document.querySelector<HTMLElement>(".cx-hero-ctas");
 
-          if (heroLine && heroSub && heroCtas && !lowPerf && !mobile) {
+          if (heroLine && heroSub && heroCtas && !lowPerf) {
             const heroSequence = gsap.timeline({ defaults: { ease: "power3.out" } });
+            // Transform only: the server-rendered headline, sub and CTAs stay
+            // visible from first paint. Fading them in after hydration made
+            // them blink out and back on slower phones (Safari in particular).
             heroSequence
-              .from(heroLine, { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
-              .from(heroSub, { opacity: 0, y: 16, duration: 0.65 }, "-=0.45")
-              .from(heroCtas, { opacity: 0, y: 14, duration: 0.6 }, "-=0.4");
+              .from(heroLine, { y: mobile ? 14 : 22, duration: 0.85 })
+              .from(heroSub, { y: 12, duration: 0.65 }, "-=0.45")
+              .from(heroCtas, { y: 10, duration: 0.6 }, "-=0.4");
           } else if (heroLine && heroSub && heroCtas) {
             gsap.set([heroLine, heroSub, heroCtas], { opacity: 1, x: 0, y: 0 });
           }
@@ -205,20 +218,18 @@ export function useCyryxScrollAnimations() {
               )
               .to(heroGrade, { opacity: 0.88, ease: "none", duration: 1 }, 0);
 
-            if (!mobile) {
-              heroScrollTimeline.to(
-                heroContent,
-                {
-                  y: -32,
-                  autoAlpha: 0,
-                  ease: "power1.in",
-                  duration: 0.12,
-                },
-                0.08,
-              );
-            } else {
-              gsap.set(heroContent, { autoAlpha: 1, x: 0, y: 0 });
-            }
+            // Same hand-off on every breakpoint: the message opens the scene,
+            // then gives way to the film and the story statements.
+            heroScrollTimeline.to(
+              heroContent,
+              {
+                y: mobile ? -24 : -32,
+                autoAlpha: 0,
+                ease: "power1.in",
+                duration: 0.12,
+              },
+              0.08,
+            );
 
             const storyWindows = [
               { enter: 0.25, leave: 0.43, enterDuration: 0.07, leaveDuration: 0.07 },
@@ -361,7 +372,8 @@ export function useCyryxScrollAnimations() {
             });
           }
 
-          if ((desktop || tablet) && !lowPerf) {
+          // Same scroll choreography on phones, tablets and desktops.
+          if (!lowPerf) {
             const executionSystem = document.querySelector<HTMLElement>("[data-execution-system]");
             const executionRail =
               executionSystem?.querySelector<HTMLElement>("[data-execution-rail]");
@@ -518,15 +530,7 @@ export function useCyryxScrollAnimations() {
               ? gsap.utils.toArray<HTMLElement>("[data-governance-label]", capabilitySection)
               : [];
 
-            if (
-              desktop &&
-              capabilitySection &&
-              capabilityMonolith &&
-              capabilityCore &&
-              capabilityPulse &&
-              governanceCore &&
-              governancePulse
-            ) {
+            if (capabilitySection && capabilityMonolith && capabilityCore && capabilityPulse) {
               const capabilityCoreSequence = gsap.timeline({
                 scrollTrigger: {
                   trigger: capabilitySection,
@@ -538,45 +542,38 @@ export function useCyryxScrollAnimations() {
                 },
               });
 
-              capabilityCoreSequence
-                .fromTo(capabilityCore, { scaleY: 0 }, { scaleY: 1, duration: 1, ease: "none" }, 0)
-                .fromTo(governanceCore, { scaleY: 0 }, { scaleY: 1, duration: 1, ease: "none" }, 0)
-                .fromTo(
+              capabilityCoreSequence.fromTo(
+                capabilityCore,
+                { scaleY: 0 },
+                { scaleY: 1, duration: 1, ease: "none" },
+                0,
+              );
+              if (governanceGates.length) {
+                capabilityCoreSequence.fromTo(
                   governanceGates,
                   { scaleX: 0, autoAlpha: 0.3 },
-                  {
-                    scaleX: 1,
-                    autoAlpha: 1,
-                    duration: 0.12,
-                    stagger: 0.18,
-                    ease: "power2.out",
-                  },
+                  { scaleX: 1, autoAlpha: 1, duration: 0.12, stagger: 0.18, ease: "power2.out" },
                   0.12,
-                )
-                .fromTo(
+                );
+              }
+              if (governanceNodes.length) {
+                capabilityCoreSequence.fromTo(
                   governanceNodes,
                   { scale: 0.55, autoAlpha: 0.35 },
-                  {
-                    scale: 1,
-                    autoAlpha: 1,
-                    duration: 0.12,
-                    stagger: 0.18,
-                    ease: "power2.out",
-                  },
+                  { scale: 1, autoAlpha: 1, duration: 0.12, stagger: 0.18, ease: "power2.out" },
                   0.12,
-                )
-                .fromTo(
+                );
+              }
+              if (governanceLabels.length) {
+                capabilityCoreSequence.fromTo(
                   governanceLabels,
                   { autoAlpha: 0.4, y: 5 },
-                  {
-                    autoAlpha: 1,
-                    y: 0,
-                    duration: 0.16,
-                    stagger: 0.18,
-                    ease: "power2.out",
-                  },
+                  { autoAlpha: 1, y: 0, duration: 0.16, stagger: 0.18, ease: "power2.out" },
                   0.14,
-                )
+                );
+              }
+
+              capabilityCoreSequence
                 .fromTo(
                   capabilityPulse,
                   { autoAlpha: 0, y: 0 },
@@ -599,44 +596,38 @@ export function useCyryxScrollAnimations() {
                 )
                 .to(capabilityPulse, { autoAlpha: 0, duration: 0.08, ease: "none" }, 0.92);
 
-              capabilityCoreSequence
-                .fromTo(
-                  governancePulse,
-                  { autoAlpha: 0, y: 0 },
-                  { autoAlpha: 1, y: 0, duration: 0.08, ease: "none" },
+              if (governanceCore) {
+                capabilityCoreSequence.fromTo(
+                  governanceCore,
+                  { scaleY: 0 },
+                  { scaleY: 1, duration: 1, ease: "none" },
                   0,
-                )
-                .to(
-                  governancePulse,
-                  {
-                    y: () =>
-                      Math.max(
-                        0,
-                        (governancePulse.parentElement?.offsetHeight ?? 0) -
-                          governancePulse.offsetHeight,
-                      ),
-                    duration: 0.84,
-                    ease: "none",
-                  },
-                  0.08,
-                )
-                .to(governancePulse, { autoAlpha: 0, duration: 0.08, ease: "none" }, 0.92);
-            }
+                );
+              }
 
-            if (tablet) {
-              if (capabilityCore) gsap.set(capabilityCore, { scaleY: 1 });
-              if (capabilityPulse) gsap.set(capabilityPulse, { autoAlpha: 0 });
-              if (governanceCore) gsap.set(governanceCore, { scaleY: 1 });
-              if (governancePulse) gsap.set(governancePulse, { autoAlpha: 0 });
-              if (governanceGates.length) {
-                gsap.set(governanceGates, { scaleX: 1, autoAlpha: 1 });
-              }
-              if (governanceNodes.length) {
-                gsap.set(governanceNodes, { scale: 1, autoAlpha: 1 });
-              }
-              if (governanceLabels.length) {
-                gsap.set(governanceLabels, { y: 0, autoAlpha: 1 });
-              }
+              if (governancePulse)
+                capabilityCoreSequence
+                  .fromTo(
+                    governancePulse,
+                    { autoAlpha: 0, y: 0 },
+                    { autoAlpha: 1, y: 0, duration: 0.08, ease: "none" },
+                    0,
+                  )
+                  .to(
+                    governancePulse,
+                    {
+                      y: () =>
+                        Math.max(
+                          0,
+                          (governancePulse.parentElement?.offsetHeight ?? 0) -
+                            governancePulse.offsetHeight,
+                        ),
+                      duration: 0.84,
+                      ease: "none",
+                    },
+                    0.08,
+                  )
+                  .to(governancePulse, { autoAlpha: 0, duration: 0.08, ease: "none" }, 0.92);
             }
           }
 
@@ -665,25 +656,6 @@ export function useCyryxScrollAnimations() {
             if (governanceGates.length) gsap.set(governanceGates, { scaleX: 1, autoAlpha: 1 });
             if (governanceNodes.length) gsap.set(governanceNodes, { scale: 1, autoAlpha: 1 });
             if (governanceLabels.length) gsap.set(governanceLabels, { y: 0, autoAlpha: 1 });
-          }
-
-          const productVisual = document.querySelector<HTMLElement>("[data-maax-visual]");
-          if (productVisual && !lowPerf && !mobile) {
-            gsap.fromTo(
-              productVisual,
-              { yPercent: mobile ? 1 : 2, scale: mobile ? 0.996 : 0.992 },
-              {
-                yPercent: mobile ? -1 : -2,
-                scale: 1,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: productVisual,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: mobile ? 0.4 : 0.7,
-                },
-              },
-            );
           }
 
           return () => {

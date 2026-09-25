@@ -6,13 +6,14 @@ import { Hero } from "@/components/cyryx/Hero";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { StoryChapter, StoryProgress } from "@/components/cyryx/StoryChapter";
-import { MAAXStudioSpotlight } from "@/components/cyryx/MAAXStudioSpotlight";
 import { ExecutionGap } from "@/components/cyryx/v4/ExecutionGap";
 import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
 import { OperatingModel } from "@/components/cyryx/v4/OperatingModel";
 import { ControlledExecution } from "@/components/cyryx/v4/ControlledExecution";
 import { EvidenceBeforeClaims } from "@/components/cyryx/v4/EvidenceBeforeClaims";
 import { CompactStart } from "@/components/cyryx/v4/CompactStart";
+import { ProofStrip } from "@/components/cyryx/v4/ProofStrip";
+import { TeamBlock } from "@/components/cyryx/v4/TeamBlock";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import { absoluteSiteUrl, SITE_URL } from "@/lib/site-url";
 import {
@@ -22,9 +23,9 @@ import {
 } from "@/data/seo-entities";
 
 const HOME_URL = SITE_URL;
-const HOME_TITLE = "Cyryx Labs — AI Systems from Strategy to Operations";
+const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
 const HOME_DESCRIPTION =
-  "Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs.";
+  "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision.";
 const HOME_SOCIAL_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20260723-1");
 
 export const Route = createFileRoute("/")({
@@ -50,13 +51,19 @@ export const Route = createFileRoute("/")({
       { name: "theme-color", content: "#050607" },
     ],
     links: [
+      // One preload per frame set; the media queries match the poster <picture>.
       {
         rel: "preload",
         as: "image",
         href: "/media/hero-sequence/desktop/cyryx-hero-frame-001.webp",
-        imageSrcSet:
-          "/media/hero-sequence/mobile/cyryx-hero-frame-001.webp 960w, /media/hero-sequence/desktop/cyryx-hero-frame-001.webp 1920w",
-        imageSizes: "100vw",
+        media: "(min-width: 768px), (orientation: landscape)",
+        fetchPriority: "high",
+      },
+      {
+        rel: "preload",
+        as: "image",
+        href: "/media/hero-sequence/mobile/cyryx-hero-frame-001.webp",
+        media: "(max-width: 767px) and (orientation: portrait)",
         fetchPriority: "high",
       },
       { rel: "canonical", href: HOME_URL },
@@ -95,7 +102,7 @@ export const Route = createFileRoute("/")({
                 url: HOME_URL,
               },
               description:
-                "Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs.",
+                "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision.",
             },
           ],
         }),
@@ -153,23 +160,26 @@ function IndexPage() {
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
         <Hero />
+        <ProofStrip />
         <div className="cx-story relative" data-story-root>
           <StoryProgress />
-          <StoryChapter index="01" label="The execution gap">
+          <StoryChapter index="01" label="The problem">
             <ExecutionGap />
           </StoryChapter>
-          <StoryChapter index="02" label="Controlled execution">
-            <ControlledExecution />
-          </StoryChapter>
-          <StoryChapter index="03" label="Ways to engage">
+          <StoryChapter index="02" label="Ways to engage">
             <OperatingModel />
           </StoryChapter>
-          <StoryChapter index="04" label="Control and product">
-            <SecurityPosture />
-            <MAAXStudioSpotlight />
+          <StoryChapter index="03" label="How it runs">
+            <ControlledExecution />
           </StoryChapter>
-          <StoryChapter index="05" label="Evidence and decision">
+          <StoryChapter index="04" label="What you receive">
             <EvidenceBeforeClaims />
+          </StoryChapter>
+          <StoryChapter index="05" label="Governance">
+            <SecurityPosture />
+          </StoryChapter>
+          <StoryChapter index="06" label="Start">
+            <TeamBlock />
             <CompactStart />
           </StoryChapter>
         </div>

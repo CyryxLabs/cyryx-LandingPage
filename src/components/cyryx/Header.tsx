@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useState, useMemo, useRef } from "react";
 import { Menu } from "lucide-react";
 import { Link, useRouterState, useLocation } from "@tanstack/react-router";
 import { CyryxLockup } from "./primitives/CyryxMark";
@@ -30,6 +30,18 @@ export function Header() {
   const activeGroupId = useMemo(() => getActiveNavigationGroup(pathname), [pathname]);
   const prevPathname = useRef(pathname);
   const escapeDismissedNavigation = useRef(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  // The shared dropdown viewport opens under the trigger that owns it.
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    if (!nav || !openGroup) return;
+    const trigger = nav.querySelector<HTMLElement>(`[id$="-trigger-${openGroup}"]`);
+    const root = nav.querySelector<HTMLElement>("[data-orientation]") ?? nav;
+    if (!trigger) return;
+    const offset = trigger.getBoundingClientRect().left - root.getBoundingClientRect().left;
+    nav.style.setProperty("--cx-nav-offset", `${Math.max(0, Math.round(offset - 16))}px`);
+  }, [openGroup]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -53,7 +65,7 @@ export function Header() {
     <>
       <header
         className={cn(
-          "cx-liquid-glass fixed inset-x-0 top-0 z-50 rounded-none border-x-0 border-t-0 transition-all duration-300",
+          "cx-liquid-glass cx-site-header fixed inset-x-0 top-0 z-50 rounded-none border-x-0 border-t-0 transition-all duration-300",
           scrolled
             ? "shadow-[0_1px_0_0_color-mix(in_oklab,var(--accent-glow)_18%,transparent)]"
             : "shadow-none",
@@ -68,7 +80,7 @@ export function Header() {
             <CyryxLockup priority className="h-10 lg:h-14" />
           </Link>
 
-          <nav className="hidden lg:flex items-center" aria-label="Primary">
+          <nav ref={navRef} className="hidden lg:flex items-center" aria-label="Primary">
             <NavigationMenu
               value={openGroup}
               onValueChange={(nextGroup) => {
@@ -117,16 +129,13 @@ export function Header() {
               })
             }
             className={cn(
-              "cx-btn cx-liquid-glass hidden lg:inline-flex items-center gap-2 h-11 px-5 rounded-md hud-label text-[var(--silver)] transition-colors relative",
-              isPrimaryNavigationCTAActive(pathname)
-                ? "after:absolute after:left-2 after:right-2 after:-bottom-1 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]"
-                : "hover:text-white",
+              "cx-btn-primary cx-btn-sm hidden lg:inline-flex relative",
+              isPrimaryNavigationCTAActive(pathname) &&
+                "after:absolute after:left-2 after:right-2 after:-bottom-2 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]",
             )}
           >
             {PRIMARY_NAVIGATION_CTA.label}
-            <span aria-hidden className="text-[var(--accent-glow)]">
-              →
-            </span>
+            <span aria-hidden>→</span>
           </Link>
 
           <button

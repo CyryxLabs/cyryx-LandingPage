@@ -147,10 +147,8 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await page.keyboard.press("Enter");
   await expect(page.locator("#main-content")).toBeFocused();
 
-  const primaryLabel = "Start a fit review with Cyryx Labs";
-  const secondaryLabel = "Explore MAAX Studio — product in active development";
-  const primary = page.locator(`section[data-hero] a[aria-label="${primaryLabel}"]`);
-  const secondary = page.locator(`section[data-hero] a[aria-label="${secondaryLabel}"]`);
+  const primary = page.locator('section[data-hero] a[data-cta="primary"]');
+  const secondary = page.locator('section[data-hero] a[data-cta="secondary"]');
 
   await primary.focus();
   await expect(primary).toBeFocused();
@@ -158,10 +156,10 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   await expect(secondary).toBeFocused();
 
   const primaryHref = await primary.getAttribute("href");
-  expect(primaryHref).toBe("/start?source=home&intent=operating-capability");
+  expect(primaryHref).toBe("/start?source=home");
 
   const secondaryHref = await secondary.getAttribute("href");
-  expect(secondaryHref).toBe("#maax");
+  expect(secondaryHref).toBe("/engagement-model");
 });
 
 test("Hero headline typography stays unclipped from 360px to 1024px", async ({ page }) => {
@@ -245,18 +243,15 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
       );
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
       expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
-      if (metrics.viewportWidth < 768) {
-        expect(metrics.scene).not.toBeNull();
-        expect(line.top).toBeGreaterThanOrEqual((metrics.scene?.bottom ?? 0) - 1);
-      } else {
-        expect(line.top).toBeGreaterThanOrEqual(0);
-        expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
-      }
+      // Every breakpoint opens with the headline inside the first viewport.
+      expect(metrics.scene).not.toBeNull();
+      expect(line.top).toBeGreaterThanOrEqual(0);
+      expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
     }
   }
 });
 
-test("Mobile Hero places its content panel after the media scene", async ({ page }) => {
+test("Mobile Hero overlays its message on the film, like desktop", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, value: 8 });
     Object.defineProperty(navigator, "deviceMemory", { configurable: true, value: 8 });
@@ -265,42 +260,24 @@ test("Mobile Hero places its content panel after the media scene", async ({ page
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
 
+  const heading = page.locator("#hero-heading");
+  const primary = page.locator('section[data-hero] a[data-cta="primary"]');
+  await expect(heading).toBeInViewport();
+  await expect(primary).toBeInViewport();
+
   const layout = await page.evaluate(() => {
-    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-    const media = document.querySelector<HTMLElement>("[data-hero-media-frame]");
-    const content = document.querySelector<HTMLElement>("[data-hero-content-layer]");
-    const panel = document.querySelector<HTMLElement>(".cx-hero-panel");
-    const rect = (element: HTMLElement | null) => {
-      const bounds = element?.getBoundingClientRect();
-      return bounds
-        ? {
-            top: bounds.top + window.scrollY,
-            right: bounds.right,
-            bottom: bounds.bottom + window.scrollY,
-            left: bounds.left,
-          }
-        : null;
-    };
+    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]")!;
+    const panel = document.querySelector<HTMLElement>(".cx-hero-panel")!;
     return {
-      scene: rect(scene),
-      media: rect(media),
-      content: rect(content),
-      panel: rect(panel),
+      sceneTop: scene.getBoundingClientRect().top + window.scrollY,
+      sceneBottom: scene.getBoundingClientRect().bottom + window.scrollY,
+      panelTop: panel.getBoundingClientRect().top + window.scrollY,
       headingCount: document.querySelectorAll("#hero-heading").length,
-      primaryCtaCount: document.querySelectorAll(
-        'section[data-hero] a[aria-label="Start a fit review with Cyryx Labs"]',
-      ).length,
     };
   });
-
-  expect(layout.scene).not.toBeNull();
-  expect(layout.media).not.toBeNull();
-  expect(layout.content).not.toBeNull();
-  expect(layout.panel).not.toBeNull();
-  expect(layout.content!.top).toBeGreaterThanOrEqual(layout.scene!.bottom - 1);
-  expect(layout.panel!.top).toBeGreaterThanOrEqual(layout.media!.bottom - 1);
+  expect(layout.panelTop).toBeGreaterThanOrEqual(layout.sceneTop);
+  expect(layout.panelTop).toBeLessThan(layout.sceneBottom);
   expect(layout.headingCount).toBe(1);
-  expect(layout.primaryCtaCount).toBe(1);
 });
 
 test("Forced-colors keeps Hero text and focus indicators system-readable", async ({ page }) => {
@@ -336,6 +313,6 @@ test("Forced-colors keeps Hero text and focus indicators system-readable", async
     `Expected system-readable focus indicator on primary Hero CTA; received ${JSON.stringify(focusIndicator)}`,
   ).toBeTruthy();
 
-  const secondaryAnchor = page.locator('section[data-hero] a[href="#maax"]').first();
+  const secondaryAnchor = page.locator('section[data-hero] a[data-cta="secondary"]').first();
   await expect(secondaryAnchor).toBeVisible();
 });

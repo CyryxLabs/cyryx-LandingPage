@@ -131,11 +131,8 @@ export function AnswerPage(props: AnswerPageProps) {
             <Paragraphs body={props.cyryxPerspective} />
             <p className="mt-4 text-sm text-[var(--silver-dim)]">
               This is the lens Cyryx Labs applies across{" "}
-              <Link
-                to="/products/maax-studio"
-                className="text-[var(--accent-glow)] hover:underline"
-              >
-                MAAX Studio
+              <Link to="/products" className="text-[var(--accent-glow)] hover:underline">
+                Cyryx products
               </Link>
               ,{" "}
               <Link to="/solutions" className="text-[var(--accent-glow)] hover:underline">

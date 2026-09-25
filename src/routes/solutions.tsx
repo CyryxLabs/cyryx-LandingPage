@@ -12,10 +12,7 @@ const PATH = "/solutions";
 const TITLE = "AI Advisory, Digital Systems & Engineering — Cyryx Labs";
 const DESC =
   "Explore Cyryx Labs advisory, digital systems, automation, internal assistants, custom AI products, governance, and managed operations.";
-const SOLUTIONS_START_HREF = buildStartProjectHref({
-  source: "solutions",
-  intent: "operating-capability",
-});
+const SOLUTIONS_START_HREF = buildStartProjectHref({ source: "solutions" });
 
 const CAPABILITIES = [
   {
@@ -139,13 +136,13 @@ function SolutionsHub() {
           titleScale="compact"
           body="Cyryx combines advisory, digital and AI engineering, control design, and optional managed operations. The engagement begins with the business constraint—not a predetermined tool."
           primaryCta={{
-            label: "Start a fit review",
+            label: "Start a project",
             to: SOLUTIONS_START_HREF,
             onClick: () =>
               trackCta({ cta: "start_project", section: "solutions", href: SOLUTIONS_START_HREF }),
           }}
           secondaryCta={{ label: "How we work", to: "/engagement-model" }}
-          boundaryNote="Products and Applied Research inform the work; client scope remains independent. Ownership, licensing, support, and commercial terms are defined per engagement."
+          boundaryNote="Products and the Applied AI Lab inform the work; client scope remains independent. Ownership, licensing, support, and commercial terms are defined per engagement."
           lifecycleLabel="Operating capability lifecycle"
           lifecycle={[
             { number: "01", label: "Advise", active: true },
@@ -188,7 +185,7 @@ function SolutionsHub() {
                   <p className="font-display text-xl leading-snug tracking-[-0.02em] text-[var(--silver)]">
                     {trigger.need}
                   </p>
-                  <span className="mt-auto flex items-center justify-between gap-3 pt-8 font-mono text-[8px] uppercase leading-relaxed tracking-[0.16em] text-[var(--steel)] transition-colors group-hover:text-[var(--accent-glow)]">
+                  <span className="mt-auto flex items-center justify-between gap-3 pt-8 font-mono text-[12px] uppercase leading-relaxed tracking-[0.16em] text-[var(--steel)] transition-colors group-hover:text-[var(--accent-glow)]">
                     {trigger.label}
                     <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
                   </span>
@@ -218,11 +215,11 @@ function SolutionsHub() {
                     to={capability.href}
                     className="grid gap-5 sm:grid-cols-[3rem_1fr_auto] sm:gap-8"
                   >
-                    <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
+                    <span className="font-mono text-[12px] tracking-[0.22em] text-[var(--accent-glow)]">
                       {capability.n}
                     </span>
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--steel)]">
+                      <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
                         {capability.stage}
                       </p>
                       <h3 className="mt-3 font-display text-2xl font-medium tracking-[-0.025em] text-[var(--silver)] sm:text-3xl">

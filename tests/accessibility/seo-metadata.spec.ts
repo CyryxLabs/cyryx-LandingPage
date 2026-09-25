@@ -1,16 +1,17 @@
 import { expect, test } from "@playwright/test";
 
+const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
+const HOME_DESCRIPTION =
+  "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision.";
+
 const EXPECTED = {
-  title: /Cyryx Labs.*AI Systems from Strategy to Operations/i,
-  description:
-    /Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs\./i,
-  ogTitle: /Cyryx Labs/,
-  ogDescription:
-    /helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs\./i,
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
+  ogTitle: HOME_TITLE,
+  ogDescription: HOME_DESCRIPTION,
   ogUrl: /\/$/,
-  twitterTitle: /Cyryx Labs/,
-  twitterDescription:
-    /helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs\./i,
+  twitterTitle: HOME_TITLE,
+  twitterDescription: HOME_DESCRIPTION,
 };
 
 test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async ({ page }) => {
@@ -21,9 +22,9 @@ test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async 
   const meta = async (selector: string) => page.locator(selector).first().getAttribute("content");
   const link = async (selector: string) => page.locator(selector).first().getAttribute("href");
 
-  expect(await meta('meta[name="description"]')).toMatch(EXPECTED.description);
-  expect(await meta('meta[property="og:title"]')).toMatch(EXPECTED.ogTitle);
-  expect(await meta('meta[property="og:description"]')).toMatch(EXPECTED.ogDescription);
+  expect(await meta('meta[name="description"]')).toBe(EXPECTED.description);
+  expect(await meta('meta[property="og:title"]')).toBe(EXPECTED.ogTitle);
+  expect(await meta('meta[property="og:description"]')).toBe(EXPECTED.ogDescription);
   expect(await meta('meta[property="og:type"]')).toBe("website");
   expect(await meta('meta[property="og:url"]')).toMatch(EXPECTED.ogUrl);
   expect(await meta('meta[property="og:image"]')).toMatch(/\/cyryx-og\.png\?v=20260723-1$/);
@@ -31,8 +32,8 @@ test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async 
     /\/cyryx-og\.png\?v=20260723-1$/,
   );
   expect(await meta('meta[name="twitter:card"]')).toBe("summary_large_image");
-  expect(await meta('meta[name="twitter:title"]')).toMatch(EXPECTED.twitterTitle);
-  expect(await meta('meta[name="twitter:description"]')).toMatch(EXPECTED.twitterDescription);
+  expect(await meta('meta[name="twitter:title"]')).toBe(EXPECTED.twitterTitle);
+  expect(await meta('meta[name="twitter:description"]')).toBe(EXPECTED.twitterDescription);
   expect(await meta('meta[name="twitter:image"]')).toMatch(/\/cyryx-og\.png\?v=20260723-1$/);
   expect(await link('link[rel="icon"][sizes="any"]')).toBe("/favicon.ico?v=20260723-1");
   expect(await link('link[rel="icon"][sizes="32x32"]')).toBe("/favicon-32x32.png?v=20260723-1");

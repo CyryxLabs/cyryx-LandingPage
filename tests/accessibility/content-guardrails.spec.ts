@@ -27,12 +27,10 @@ test("Rendered landing page is free of forbidden terms", async ({ page }) => {
   expect(offenders, offenders.join(", ")).toEqual([]);
 });
 
-test("MAAX naming is consistent with the approved Studio identity", async ({ page }) => {
+test("Homepage never mentions the discontinued MAAX product", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
   const text = await page.evaluate(() => document.body.innerText);
-  expect(text).toMatch(/MAAX Studio/);
-  expect(text).not.toMatch(/MAAX Runtime/);
-  // MAAX Studio must never be described as a plugin/extension
-  expect(text).not.toMatch(/MAAX Studio[^.]{0,80}\bplug-?in\b/i);
-  expect(text).not.toMatch(/MAAX Studio[^.]{0,80}\bextension\b/i);
+  expect(text).not.toMatch(/MAAX/i);
+  const maaxLinks = await page.locator('a[href*="maax" i]').count();
+  expect(maaxLinks).toBe(0);
 });

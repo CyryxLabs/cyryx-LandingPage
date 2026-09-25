@@ -4,6 +4,7 @@ import appCss from "./styles.css?url";
 import { BUILD_VERSION } from "./lib/build-info";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { legacyRedirect } from "./lib/legacy-redirect";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -39,6 +40,16 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
+const PRIVATE_HTML_PREFIXES = ["/api/", "/_serverFn"];
+
+/** Public marketing HTML that is identical for every visitor. */
+function isPublicCacheableHtml(url: URL, response: Response): boolean {
+  if (response.status !== 200) return false;
+  if (response.headers.has("set-cookie")) return false;
+  if (url.search) return false;
+  return !PRIVATE_HTML_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
+}
+
 function withRuntimeHeaders(request: Request, response: Response): Response {
   const url = new URL(request.url);
   const headers = new Headers(response.headers);
@@ -48,6 +59,14 @@ function withRuntimeHeaders(request: Request, response: Response): Response {
   headers.set("referrer-policy", "strict-origin-when-cross-origin");
   headers.set("permissions-policy", "camera=(), microphone=(), geolocation=(), payment=()");
   headers.set("x-frame-options", "DENY");
+  // Baseline CSP that cannot break scripts, styles or media: no framing, no
+  // plugins, no <base> hijacking, forms post only to this origin.
+  if (!headers.has("content-security-policy")) {
+    headers.set(
+      "content-security-policy",
+      "frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+    );
+  }
   if (
     url.protocol === "https:" &&
     (url.hostname === "cyryxlabs.com" || url.hostname === "www.cyryxlabs.com")
@@ -74,6 +93,15 @@ function withRuntimeHeaders(request: Request, response: Response): Response {
       headers.set("pragma", "no-cache");
       headers.set("expires", "0");
       headers.set("x-cyryx-cache-policy", "missing-asset-no-store");
+    } else if (contentType.includes("text/html") && isPublicCacheableHtml(url, response)) {
+      // Browsers always revalidate; the Vercel edge keeps a short shared copy.
+      // Vercel purges the edge cache on every deployment, so a new build never
+      // serves HTML that points at assets from a previous build.
+      headers.set("cache-control", "public, max-age=0, must-revalidate");
+      headers.set("cdn-cache-control", "public, s-maxage=300, stale-while-revalidate=3600");
+      headers.delete("pragma");
+      headers.delete("expires");
+      headers.set("x-cyryx-cache-policy", "html-edge-short");
     } else if (contentType.includes("text/html")) {
       headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
       headers.set("pragma", "no-cache");
@@ -127,6 +155,8 @@ async function rescueStaleStylesheetRequest(
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const retired = legacyRedirect(request);
+      if (retired) return withRuntimeHeaders(request, retired);
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       const normalized = await normalizeCatastrophicSsrResponse(response);

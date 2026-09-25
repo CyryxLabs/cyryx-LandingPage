@@ -8,9 +8,9 @@ import { buildBreadcrumbJsonLd, buildHead, buildLegalPageJsonLd } from "@/compon
 const PATH = "/privacy";
 const TITLE = "Privacy Policy — Cyryx Labs";
 const DESC =
-  "Learn how Cyryx Labs collects, uses, protects, retains, and handles information across its website, fit reviews, product access, and client inquiries.";
-const LAST_UPDATED = "August 3, 2026";
-const DATE_MODIFIED_ISO = "2026-08-03";
+  "Learn how Cyryx Labs collects, uses, protects, retains, and handles information across its website, project briefs, the AI assistant, and client inquiries.";
+const LAST_UPDATED = "September 25, 2026";
+const DATE_MODIFIED_ISO = "2026-09-25";
 
 export const Route = createFileRoute("/privacy")({
   head: () =>
@@ -61,7 +61,7 @@ function PrivacyPage() {
                 Legal · Privacy
               </HudLabel>
               <span className="hud-label text-[var(--silver-dim)]">
-                v2026.08 · Last updated {LAST_UPDATED}
+                v2026.09 · Last updated {LAST_UPDATED}
               </span>
             </div>
             <h1 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
@@ -78,9 +78,9 @@ function PrivacyPage() {
                 cyryxlabs.com
               </a>
               , contact us, or engage us under a Master Service Agreement. It explains the website
-              data flows implemented for project fit reviews, MAAX Studio early-access requests,
-              newsletters, contact channels, operational telemetry, and the authenticated workspace.
-              Specific legal rights depend on where you live.
+              data flows implemented for project briefs, the website AI assistant, talent-network
+              introductions, contact channels, and operational telemetry. Specific legal rights
+              depend on where you live.
             </p>
           </div>
         </section>
@@ -152,22 +152,31 @@ function PrivacyPage() {
                 <p>The website collects information through the following implemented flows:</p>
                 <ul className="mt-3 list-disc space-y-2 pl-5 marker:text-[var(--accent-glow)]">
                   <li>
-                    <span className="text-[var(--silver)]">Project fit-review data:</span> name,
-                    work email, company, project type, problem, desired outcome, why-now context,
-                    consent record, and any optional role, company website, stage, investment range,
+                    <span className="text-[var(--silver)]">Project brief data:</span> name, work
+                    email, company, project type, the change you describe, consent record, and any
+                    optional outcome, why-now context, role, company website, stage, budget range,
                     timeline, systems, involvement, or notes you provide. Allowlisted source and
-                    intent values may accompany the submission.
+                    intent values, and first-touch campaign attribution (allowlisted UTM parameters,
+                    a referrer reduced to origin and path, the landing path and the page copy
+                    variant) may accompany the submission.
                   </li>
                   <li>
-                    <span className="text-[var(--silver)]">MAAX Studio early-access data:</span>{" "}
-                    name, work email, company, role, intended use case, operating constraint,
-                    country, consent record, and optional telephone. We also receive the landing
-                    path, a referrer reduced to origin and path, and allowlisted UTM campaign
-                    parameters.
+                    <span className="text-[var(--silver)]">AI assistant and instant replies:</span>{" "}
+                    messages you type into the website assistant and the page you are on are sent to
+                    Google's Gemini API to generate an answer. Conversations are not stored by Cyryx
+                    Labs unless you choose to send your details to the team, in which case a short
+                    transcript is stored with your request. When you send a project brief, its
+                    content is also sent to the Gemini API to draft the instant first reply shown to
+                    you and emailed to you; that reply is stored with your brief. Historical
+                    early-access records from a discontinued product program are kept only for
+                    retention and deletion requests.
                   </li>
                   <li>
-                    <span className="text-[var(--silver)]">Newsletter data:</span> email address and
-                    opt-in state, plus timestamped confirmation and unsubscribe records.
+                    <span className="text-[var(--silver)]">Talent-network introductions:</span>{" "}
+                    name, email, area of interest, an optional https profile link and short
+                    introduction, and the consent record. They are kept apart from sales records and
+                    are deleted on request. Historical newsletter records are kept only for
+                    retention and deletion requests; the website no longer offers a newsletter.
                   </li>
                   <li>
                     <span className="text-[var(--silver)]">Form-protection data:</span> shortened
@@ -175,10 +184,12 @@ function PrivacyPage() {
                     daily rotating salt so it is not designed as a persistent identifier.
                   </li>
                   <li>
-                    <span className="text-[var(--silver)]">Call-to-action telemetry:</span> the page
-                    path, clicked destination, copy variant, referrer reduced to origin and path,
-                    and user agent associated with a recorded click. Browser queries and fragments
-                    are removed before this operational event is sent.
+                    <span className="text-[var(--silver)]">Call-to-action telemetry:</span> the
+                    event name (for example a click on "Start a project" or a form step), the page
+                    path, the clicked destination, the copy variant, the referrer reduced to its
+                    host, and a coarse device class (mobile, tablet or desktop) derived from the
+                    user agent. Browser queries and fragments are removed, and the user agent and IP
+                    address are not stored with the event.
                   </li>
                   <li>
                     <span className="text-[var(--silver)]">Performance telemetry:</span> the browser
@@ -201,14 +212,16 @@ function PrivacyPage() {
               <Panel id="use" n="04" title="How we use information">
                 <ul className="list-disc space-y-2 pl-5 marker:text-[var(--accent-glow)]">
                   <li>
-                    Assess a commercial fit-review request and respond about a possible engagement.
+                    Assess a project brief and respond about a possible engagement, including an
+                    instant, automatically drafted first reply.
                   </li>
                   <li>
-                    Manage MAAX Studio early-access requests, assess fit for future access waves,
-                    and contact people who expressly joined that list.
+                    Answer questions through the website AI assistant and pass a conversation to the
+                    team when you ask us to follow up.
                   </li>
                   <li>
-                    Deliver newsletters and administrative communications you have opted into.
+                    Send administrative communications and, for talent-network introductions,
+                    contact you about possible future roles.
                   </li>
                   <li>
                     Understand navigation and campaign attribution, operate the website, and improve
@@ -230,7 +243,7 @@ function PrivacyPage() {
                 <ul className="list-disc space-y-2 pl-5 marker:text-[var(--accent-glow)]">
                   <li>
                     <span className="text-[var(--silver)]">Consent</span> (Art. 6(1)(a)) —
-                    newsletter, non-essential communications.
+                    talent-network introductions and non-essential communications.
                   </li>
                   <li>
                     <span className="text-[var(--silver)]">Contract</span> (Art. 6(1)(b)) —
@@ -259,6 +272,10 @@ function PrivacyPage() {
                   <li>Configured application hosting and delivery infrastructure.</li>
                   <li>Managed database and authentication services.</li>
                   <li>Transactional email delivery, when configured.</li>
+                  <li>
+                    Google (Gemini API), to generate website assistant answers and instant first
+                    replies, when those features are enabled.
+                  </li>
                 </ul>
                 <p className="mt-3">
                   A current subprocessor list is available on request via{" "}
@@ -345,19 +362,22 @@ function PrivacyPage() {
 
               <Panel id="cookies" n="13" title="Cookies & analytics">
                 <p>
-                  The public fit-review and MAAX forms do not require an analytics cookie. The
-                  authenticated workspace uses session data required for sign-in. The site records
-                  limited call-to-action events containing public path, query-free destination,
-                  origin-and-path referrer, copy variant, and user agent. The current Web Vitals
-                  endpoint consumes and discards performance payloads. We have not identified
-                  advertising cookies or third-party advertising trackers in the implemented website
-                  code.
+                  The public project brief form and the AI assistant do not require an analytics
+                  cookie. A first-touch attribution record (allowlisted campaign parameters,
+                  referrer origin and path, landing path) is kept in your browser's local storage
+                  for 30 days and sent only with a request you submit; the assistant keeps the
+                  current conversation in session storage until you close the tab. The site records
+                  limited call-to-action events containing the event name, public path, query-free
+                  destination, referrer host, copy variant, and a coarse device class. The current
+                  Web Vitals endpoint consumes and discards performance payloads. We have not
+                  identified advertising cookies or third-party advertising trackers in the
+                  implemented website code.
                 </p>
                 <p className="mt-3">
-                  Consent checkboxes for the fit-review, early-access, and newsletter flows are
-                  unchecked, required for submission where displayed, versioned, and stored with the
-                  applicable record. You can withdraw that consent independently by emailing{" "}
-                  <MailLink to="privacy@cyryxlabs.com" />.
+                  Consent checkboxes for the project brief, assistant follow-up, and talent-network
+                  flows are unchecked, required for submission where displayed, versioned, and
+                  stored with the applicable record. You can withdraw that consent independently by
+                  emailing <MailLink to="privacy@cyryxlabs.com" />.
                 </p>
               </Panel>
 

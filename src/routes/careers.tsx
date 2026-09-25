@@ -6,7 +6,7 @@ import { Footer } from "@/components/cyryx/Footer";
 import { InternalHero } from "@/components/cyryx/InternalHero";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
-import { submitContact } from "@/lib/contact.functions";
+import { TALENT_AREAS } from "@/lib/talent.schema";
 import { trackCta } from "@/lib/track-cta";
 
 const PATH = "/careers";
@@ -15,14 +15,7 @@ const DESC =
   "Cyryx Labs has no active openings. Join the talent network for possible future roles in applied research, product engineering, and client systems delivery.";
 const CAREERS_EMAIL = "careers@cyryxlabs.com";
 
-const AREAS = [
-  "Applied Research",
-  "Product Engineering",
-  "Solutions & Systems Delivery",
-  "Design & Product Experience",
-  "Operations",
-  "Other",
-] as const;
+const AREAS = TALENT_AREAS;
 
 const PRINCIPLES = [
   {
@@ -126,7 +119,7 @@ function CareersPage() {
                   key={principle.n}
                   className="border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-8 last:border-b-0 lg:border-b-0 lg:border-r lg:px-8 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
                 >
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] tracking-[0.2em] text-[var(--accent-glow)]">
                     {principle.n}
                   </span>
                   <h3 className="mt-5 font-display text-2xl tracking-[-0.03em] text-[var(--silver)]">
@@ -231,29 +224,26 @@ function TalentNetworkForm() {
 
     setStatus("submitting");
     try {
-      await submitContact({
-        data: {
-          name,
-          email,
-          company: "",
-          interest: "other",
-          consent: true,
-          website: "",
-          message: [
-            "Talent network introduction",
-            `Area: ${area}`,
-            `Profile: ${profile || "Not provided"}`,
-            "",
-            context || "No additional context provided.",
-          ].join("\n"),
-        },
+      const response = await fetch("/api/public/talent", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name, email, area, profile, context, consent: true, website: "" }),
       });
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(response.status === 422 && body?.error ? body.error : "submission_failed");
+      }
       trackCta({ cta: "talent_network_signup", section: "careers", href: PATH });
       form.reset();
       setStatus("success");
-    } catch {
+    } catch (submitError) {
       setStatus("error");
-      setError(`We could not record the introduction. Try again or email ${CAREERS_EMAIL}.`);
+      const message = submitError instanceof Error ? submitError.message : "";
+      setError(
+        message && message !== "submission_failed"
+          ? message
+          : `We could not record the introduction. Try again or email ${CAREERS_EMAIL}.`,
+      );
     }
   }
 

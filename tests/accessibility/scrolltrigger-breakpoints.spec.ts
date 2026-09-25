@@ -61,45 +61,31 @@ for (const vp of VIEWPORTS) {
     }
 
     if (vp.name !== "desktop") {
-      const governanceVisual = await page.evaluate(() => {
-        const core = document.querySelector<HTMLElement>("[data-governance-core]");
-        const gates = Array.from(document.querySelectorAll<HTMLElement>("[data-governance-gate]"));
-        const labels = Array.from(
-          document.querySelectorAll<HTMLElement>("[data-governance-label]"),
-        );
-
-        const scaleOf = (element: HTMLElement) => {
-          const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
-          return { x: Math.hypot(matrix.a, matrix.b), y: Math.hypot(matrix.c, matrix.d) };
-        };
-
-        return {
-          coreScaleY: core ? scaleOf(core).y : 0,
-          gateScales: gates.map((gate) => scaleOf(gate).x),
-          visibleLabels: labels.filter(
-            (label) => Number.parseFloat(getComputedStyle(label).opacity) > 0.8,
-          ).length,
-        };
-      });
-
-      expect(
-        governanceVisual.coreScaleY,
-        `${vp.name}: governance core must be visible`,
-      ).toBeGreaterThan(0.95);
-      expect(
-        governanceVisual.gateScales.every((scale) => scale > 0.95),
-        `${vp.name}: governance gates must be visible without desktop GSAP`,
-      ).toBe(true);
-      expect(governanceVisual.visibleLabels, `${vp.name}: governance labels must be visible`).toBe(
-        4,
-      );
+      // Governance keeps one visual (the monolith), shown from lg up; below
+      // that the four controls carry the section and must be readable.
+      const controls = page.locator("#security [data-governance-control]");
+      await expect(controls).toHaveCount(4);
+      await controls.last().scrollIntoViewIfNeeded();
+      await expect
+        .poll(
+          () =>
+            controls.evaluateAll((items) =>
+              items.every((item) => Number.parseFloat(getComputedStyle(item).opacity) > 0.8),
+            ),
+          { timeout: 5_000 },
+        )
+        .toBe(true);
     }
   });
 }
 
 test("desktop Hero uses native sticky positioning and scrubs the canvas sequence", async ({
   page,
-}) => {
+}, testInfo) => {
+  test.skip(
+    testInfo.project.use.forcedColors === "active",
+    "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
+  );
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
@@ -158,7 +144,11 @@ for (const viewport of [
 ]) {
   test(`${viewport.name} Hero follows the device performance policy without GSAP pinning`, async ({
     page,
-  }) => {
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.use.forcedColors === "active",
+      "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
+    );
     await useHighPerformanceProfile(page);
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -211,7 +201,13 @@ for (const viewport of [
   });
 }
 
-test("Hero reserves late sequence frames for an unobstructed brand reveal", async ({ page }) => {
+test("Hero reserves late sequence frames for an unobstructed brand reveal", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.use.forcedColors === "active",
+    "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
+  );
   await useHighPerformanceProfile(page);
 
   for (const viewport of [
@@ -362,5 +358,6 @@ test("desktop execution rail progresses through the governed operating sequence"
     .toBe(5);
 
   expect(railTransform).not.toBe("none");
-  await expect(system).toContainText("From intent to action. From action to evidence.");
+  // The closing line repeated the hero rail; it was removed so the section ends on the trace.
+  await expect(system).not.toContainText("From intent to action. From action to evidence.");
 });

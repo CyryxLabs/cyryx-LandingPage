@@ -6,7 +6,7 @@
     "legalName": "Cyryx Labs LLC",
     "alternateName": "Cyryx",
     "url": "https://www.cyryxlabs.com/",
-    "slogan": "From AI opportunity to operating capability.",
+    "slogan": "The execution layer for enterprise AI.",
     "email": "contact@cyryxlabs.com",
     "knowsAbout": [
       "AI strategy and advisory",
@@ -28,7 +28,7 @@
     "@type": "WebPage",
     "@id": "https://www.cyryxlabs.com/#webpage",
     "url": "https://www.cyryxlabs.com/",
-    "name": "Cyryx Labs — AI Systems from Strategy to Operations",
-    "description": "Cyryx Labs helps organizations Advise, Build, Control, and Operate AI-enabled systems through individual capabilities or connected, evidence-led programs."
+    "name": "Cyryx Labs — The Execution Layer for Enterprise AI",
+    "description": "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision."
   }
 }

@@ -1,15 +1,15 @@
 /**
- * Hidden copy-variant toggle. Default is "v3". A visitor can pin a different
- * variant for their browser by appending `?copy=v4` (or any other key listed
- * in the registry) — the choice is persisted in localStorage. Search engines
- * and first-load visitors always see v3.
+ * Hero copy-variant toggle. Default is option A (`v4a`). A visitor can pin a
+ * different variant for their browser with `?copy=v4b` (or `?copy=v4a` to go
+ * back); the choice is persisted in localStorage. Search engines and
+ * first-load visitors always see the default.
  */
 import { useSyncExternalStore } from "react";
-import { AVAILABLE_COPY_VARIANTS, type CopyVariant } from "@/copy";
+import { AVAILABLE_COPY_VARIANTS, DEFAULT_COPY_VARIANT, type CopyVariant } from "@/copy";
 
 const STORAGE_KEY = "cyryx_copy_variant";
 const URL_PARAM = "copy";
-const DEFAULT_VARIANT: CopyVariant = "v3";
+const DEFAULT_VARIANT: CopyVariant = DEFAULT_COPY_VARIANT;
 
 function isVariant(value: string | null | undefined): value is CopyVariant {
   if (!value) return false;
@@ -18,7 +18,7 @@ function isVariant(value: string | null | undefined): value is CopyVariant {
 
 /**
  * Synchronous getter — safe to call from client code or analytics helpers.
- * Always returns "v3" on the server.
+ * Always returns the default variant on the server.
  */
 export function getActiveCopyVariant(): CopyVariant {
   if (typeof window === "undefined") return DEFAULT_VARIANT;
@@ -48,7 +48,7 @@ function subscribe(callback: () => void) {
 
 /**
  * React hook — returns the active variant and re-renders on storage changes.
- * On the server it returns "v3" so SSR markup matches a fresh visitor.
+ * On the server it returns the default variant so SSR markup matches a fresh visitor.
  */
 export function useCopyVariant(): CopyVariant {
   return useSyncExternalStore(
@@ -66,6 +66,5 @@ export function syncCopyVariantToDocument(): void {
   if (typeof window === "undefined") return;
   const variant = getActiveCopyVariant();
   document.documentElement.dataset.copy = variant;
-  (window as unknown as { __cyryxCopyVariant?: CopyVariant }).__cyryxCopyVariant =
-    variant;
+  (window as unknown as { __cyryxCopyVariant?: CopyVariant }).__cyryxCopyVariant = variant;
 }

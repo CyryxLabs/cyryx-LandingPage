@@ -9,7 +9,7 @@ const PATH = "/terms";
 const TITLE = "Terms of Service — Cyryx Labs";
 const DESC =
   "Review the terms governing use of the Cyryx Labs website, pre-release products, acceptable use, intellectual property, and client engagement boundaries.";
-const DATE_MODIFIED_ISO = "2026-06-26";
+const DATE_MODIFIED_ISO = "2026-09-24";
 
 export const Route = createFileRoute("/terms")({
   head: () =>
@@ -32,7 +32,7 @@ const SECTIONS: Array<{ id: string; n: string; title: string }> = [
   { id: "acceptance", n: "01", title: "Acceptance of terms" },
   { id: "eligibility", n: "02", title: "Eligibility & accounts" },
   { id: "msa", n: "03", title: "Engagements & Master Service Agreement" },
-  { id: "prerelease", n: "04", title: "Pre-release products (MAAX Studio)" },
+  { id: "prerelease", n: "04", title: "Pre-release products" },
   { id: "ip", n: "05", title: "Intellectual property" },
   { id: "feedback", n: "06", title: "Feedback license" },
   { id: "acceptable", n: "07", title: "Acceptable use" },
@@ -52,7 +52,7 @@ const SECTIONS: Array<{ id: string; n: string; title: string }> = [
 ];
 
 function TermsPage() {
-  const effective = "January 1, 2026";
+  const effective = "September 24, 2026";
   return (
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
@@ -65,7 +65,7 @@ function TermsPage() {
                 Legal · Terms
               </HudLabel>
               <span className="hud-label text-[var(--silver-dim)]">
-                v2026.01 · Effective {effective}
+                v2026.09 · Effective {effective}
               </span>
             </div>
             <h1 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
@@ -139,9 +139,9 @@ function TermsPage() {
                 </p>
               </Panel>
 
-              <Panel id="prerelease" n="04" title="Pre-release products (MAAX Studio)">
+              <Panel id="prerelease" n="04" title="Pre-release products">
                 <p>
-                  MAAX Studio and other products marked as pre-release, alpha,
+                  Products or features marked as pre-release, alpha,
                   beta, preview, or early access are provided for evaluation
                   purposes only, without warranty, and may be modified,
                   suspended, or discontinued at any time. Availability of

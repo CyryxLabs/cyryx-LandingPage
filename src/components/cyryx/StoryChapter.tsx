@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
 
 const CHAPTERS = [
-  ["01", "The execution gap"],
-  ["02", "Controlled execution"],
-  ["03", "Ways to engage"],
-  ["04", "Control and product"],
-  ["05", "Evidence and decision"],
+  ["01", "The problem"],
+  ["02", "Ways to engage"],
+  ["03", "How it runs"],
+  ["04", "What you receive"],
+  ["05", "Governance"],
+  ["06", "Start"],
 ] as const;
 
 type StoryChapterProps = {
@@ -18,18 +19,18 @@ export function StoryChapter({ index, label, children }: StoryChapterProps) {
   return (
     <div className="cx-story-chapter relative" data-story-chapter={index}>
       <div
-        className="cx-story-chapter-marker relative z-20 mx-auto flex max-w-7xl items-center gap-4 px-5 py-4 sm:px-8 sm:py-7 lg:px-10"
+        className="cx-story-chapter-marker relative z-20 mx-auto flex max-w-7xl items-center gap-4 px-5 py-3 sm:px-8 sm:py-5 lg:px-10"
         aria-hidden="true"
       >
         <span
           data-chapter-text
-          className="font-mono text-[9px] tracking-[0.24em] text-[var(--accent-glow)]"
+          className="font-mono text-[12px] tracking-[0.2em] text-[var(--accent-glow)]"
         >
           {index}
         </span>
         <span
           data-chapter-text
-          className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--steel)]"
+          className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]"
         >
           {label}
         </span>
@@ -66,7 +67,7 @@ export function StoryProgress() {
             className="flex items-center gap-2 opacity-35 transition-opacity duration-300"
           >
             <span className="h-1 w-1 rounded-full bg-current" />
-            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[var(--silver)]">
+            <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--silver)]">
               {chapterLabel}
             </span>
           </li>

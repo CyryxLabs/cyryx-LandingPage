@@ -2,9 +2,18 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 
 const FRAME_COUNT = 40;
 const PRELOAD_BATCH_SIZE = 4;
+// Portrait pull-back: from this frame to the last, the film eases from a cover
+// fit to a fit that keeps the logo lockup visible. The lockup (mark + wordmark,
+// with margin) spans 42% of the 1920px master frame. It is expressed in source
+// pixels per 1080px of frame height so it holds for the cropped portrait frames.
+const PULLBACK_START_FRAME = 32;
+const LOCKUP_SOURCE_WIDTH = 0.42 * 1920;
+const SOURCE_FRAME_HEIGHT = 1080;
 const FRAME_BACKGROUND = "#020506";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
-const MOBILE_QUERY = "(max-width: 767px)";
+// Portrait phones load a 960x1080 centre crop of the master frames (about 45%
+// lighter). Everything a portrait cover fit can show lives inside that crop.
+const PORTRAIT_FRAMES_QUERY = "(max-width: 767px) and (orientation: portrait)";
 const HERO_PROGRESS_EVENT = "cyryx:hero-sequence-progress";
 
 type FrameVariant = "desktop" | "mobile";
@@ -78,7 +87,6 @@ export function CyryxHeroSequence() {
   const progressRef = useRef(0);
   const rafRef = useRef(0);
   const [variant, setVariant] = useState<FrameVariant | null>(null);
-  const [loadProgress, setLoadProgress] = useState(0);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   const [lowPerformance, setLowPerformance] = useState(false);
@@ -108,10 +116,25 @@ export function CyryxHeroSequence() {
         canvas.height = displayHeight;
       }
 
-      const contain = variant === "mobile";
-      const scale = contain
-        ? Math.min(displayWidth / image.naturalWidth, displayHeight / image.naturalHeight)
-        : Math.max(displayWidth / image.naturalWidth, displayHeight / image.naturalHeight);
+      // Full-bleed on every breakpoint, like desktop. On portrait screens the
+      // closing frames pull back so the whole logo lockup (mark + wordmark)
+      // stays inside the viewport instead of being cropped by the cover fit.
+      const coverScale = Math.max(
+        displayWidth / image.naturalWidth,
+        displayHeight / image.naturalHeight,
+      );
+      let scale = coverScale;
+      if (displayWidth < displayHeight) {
+        const lockupWidth = LOCKUP_SOURCE_WIDTH * (image.naturalHeight / SOURCE_FRAME_HEIGHT);
+        const lockupScale = Math.min(coverScale, displayWidth / lockupWidth);
+        const frameNumber = frameIndex + 1;
+        const t = Math.min(
+          1,
+          Math.max(0, (frameNumber - PULLBACK_START_FRAME) / (FRAME_COUNT - PULLBACK_START_FRAME)),
+        );
+        const eased = t * t * (3 - 2 * t);
+        scale = coverScale + (lockupScale - coverScale) * eased;
+      }
       const drawWidth = image.naturalWidth * scale;
       const drawHeight = image.naturalHeight * scale;
       const x = (displayWidth - drawWidth) / 2;
@@ -140,7 +163,7 @@ export function CyryxHeroSequence() {
   }, [drawFrame, ready]);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(MOBILE_QUERY);
+    const mediaQuery = window.matchMedia(PORTRAIT_FRAMES_QUERY);
     const syncVariant = () => setVariant(mediaQuery.matches ? "mobile" : "desktop");
     syncVariant();
     mediaQuery.addEventListener("change", syncVariant);
@@ -154,7 +177,6 @@ export function CyryxHeroSequence() {
   useEffect(() => {
     if (reducedMotion || lowPerformance || !variant) {
       framesRef.current = [];
-      setLoadProgress(reducedMotion || lowPerformance ? 100 : 0);
       setReady(false);
       setFailed(false);
       return;
@@ -164,7 +186,6 @@ export function CyryxHeroSequence() {
     let loadedCount = 0;
     setReady(false);
     setFailed(false);
-    setLoadProgress(0);
     framesRef.current = [];
 
     const loadSequence = async () => {
@@ -177,6 +198,8 @@ export function CyryxHeroSequence() {
             Array.from({ length: batchSize }, (_, batchIndex) => {
               const frameIndex = offset + batchIndex;
               return loadFrame(
+                // Same full-bleed film on every screen; portrait phones fetch
+                // the cropped frames, which hold everything they can display.
                 frameSource(variant, frameIndex + 1),
                 frameIndex === 0,
                 controller.signal,
@@ -187,7 +210,6 @@ export function CyryxHeroSequence() {
           if (controller.signal.aborted) return;
           loadedFrames.push(...batch);
           loadedCount += batch.length;
-          setLoadProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
 
           if (loadedCount < FRAME_COUNT) {
             await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
@@ -202,7 +224,6 @@ export function CyryxHeroSequence() {
       }
 
       framesRef.current = loadedFrames;
-      setLoadProgress(100);
       setReady(true);
       window.dispatchEvent(new CustomEvent("cyryx:hero-sequence-ready"));
     };
@@ -253,13 +274,12 @@ export function CyryxHeroSequence() {
       data-sequence-mode={mode}
       data-sequence-ready={ready ? "true" : "false"}
     >
+      {/* The opening frame is the poster in every mode. The final frame (logo
+          lockup) sat behind the headline in still mode and competed with it. */}
       <picture className="absolute inset-0">
-        <source
-          media="(max-width: 767px)"
-          srcSet={frameSource("mobile", stillMode ? FRAME_COUNT : 1)}
-        />
+        <source media={PORTRAIT_FRAMES_QUERY} srcSet={frameSource("mobile", 1)} />
         <img
-          src={frameSource("desktop", stillMode ? FRAME_COUNT : 1)}
+          src={frameSource("desktop", 1)}
           alt=""
           fetchPriority="high"
           loading="eager"
@@ -268,7 +288,7 @@ export function CyryxHeroSequence() {
           height={1080}
           data-no3d="1"
           data-hero-poster
-          className="cx-hero-sequence-poster absolute inset-0 h-full w-full object-contain sm:object-cover"
+          className="cx-hero-sequence-poster absolute inset-0 h-full w-full object-cover"
           draggable={false}
         />
       </picture>
@@ -281,20 +301,6 @@ export function CyryxHeroSequence() {
           data-hero-canvas
           className={`cx-hero-sequence-canvas absolute inset-0 h-full w-full transition-opacity duration-500 ${ready ? "opacity-100" : "opacity-0"}`}
         />
-      )}
-
-      {!stillMode && !ready && !failed && (
-        <div
-          role="status"
-          aria-live="polite"
-          data-hero-loader
-          className="cx-hero-sequence-loader absolute bottom-7 right-5 z-10 flex items-center gap-3 sm:bottom-10 sm:right-10"
-        >
-          <span className="cx-hero-sequence-spinner h-4 w-4 rounded-full border border-white/20 border-t-[var(--accent-glow)]" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-white/55">
-            Loading experience {loadProgress}%
-          </span>
-        </div>
       )}
 
       {failed && (

@@ -7,15 +7,17 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useMemo, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { BUILD_LABEL } from "../lib/build-info";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { initWebVitals } from "../lib/web-vitals";
 import { syncCopyVariantToDocument } from "../lib/copy-variant";
+import { captureFirstTouch } from "../lib/lead-attribution";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import { Toaster } from "@/components/ui/sonner";
+import { useSiteMotion } from "@/hooks/useSiteMotion";
+import { AssistantWidget } from "@/components/cyryx/AssistantWidget";
 
 function NotFoundComponent() {
   return (
@@ -39,12 +41,13 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error: rawError, reset }: { error: unknown; reset: () => void }) {
+  const error = useMemo(
+    () => (rawError instanceof Error ? rawError : new Error(String(rawError))),
+    [rawError],
+  );
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -82,8 +85,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { httpEquiv: "Cache-Control", content: "no-store, no-cache, must-revalidate" },
-      { httpEquiv: "Pragma", content: "no-cache" },
       { name: "author", content: "Cyryx Labs" },
       { name: "google-site-verification", content: "Bc35xHMHU3j3kg9Iuj2it5vGwLp4IIXwzz_m-VSIk8g" },
       { property: "og:site_name", content: "Cyryx Labs" },
@@ -155,12 +156,13 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         {/* Low-end device detection — sets html.cx-low-perf so CSS can
             drop backdrop-filter, heavy animations, and the hero aura
-            for users on slow networks / low-memory / low-core devices.
+            for users on slow networks or low-memory devices. Core count is not
+            used: iOS Safari always reports 4, which flagged every iPhone.
             Runs inline pre-hydration so the first paint already opts out. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var n=navigator,c=n.connection||n.mozConnection||n.webkitConnection,low=false;if(c){if(c.saveData)low=true;if(/^(slow-2g|2g|3g)$/.test(c.effectiveType||''))low=true;}if(typeof n.deviceMemory==='number'&&n.deviceMemory<4)low=true;if(typeof n.hardwareConcurrency==='number'&&n.hardwareConcurrency<=4&&matchMedia('(max-width:767px)').matches)low=true;if(low)document.documentElement.classList.add('cx-low-perf');}catch(e){}})();",
+              "(function(){try{var n=navigator,c=n.connection||n.mozConnection||n.webkitConnection,low=false;if(c){if(c.saveData)low=true;if(/^(slow-2g|2g|3g)$/.test(c.effectiveType||''))low=true;}if(typeof n.deviceMemory==='number'&&n.deviceMemory<4)low=true;if(low)document.documentElement.classList.add('cx-low-perf');}catch(e){}})();",
           }}
         />
         {/* Defensive: unregister any legacy Service Worker that could pin
@@ -180,19 +182,11 @@ function RootShell({ children }: { children: ReactNode }) {
           }}
         />
         {/* Keep reload behavior deterministic without breaking deep links such
-            as /#contact or /#maax. */}
+            as /#contact. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
               "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var r=document.documentElement,s=function(){r.dataset.cyryxBootScrollSettled='true';window.dispatchEvent(new Event('cyryx:boot-scroll-settled'));};r.style.scrollBehavior='auto';if(!window.location.hash){window.scrollTo(0,0);window.addEventListener('pageshow',s,{once:true});return;}var j=function(){try{var id=decodeURIComponent(window.location.hash.slice(1)),el=document.getElementById(id);if(!el)return;var h=matchMedia('(min-width:1024px)').matches?96:64;window.scrollTo(0,Math.max(0,el.getBoundingClientRect().top+window.scrollY-h-8));requestAnimationFrame(function(){requestAnimationFrame(function(){r.style.scrollBehavior='';});});}catch(e){}};document.addEventListener('DOMContentLoaded',j,{once:true});window.addEventListener('load',j,{once:true});window.addEventListener('pageshow',s,{once:true});}catch(e){}})();",
-          }}
-        />
-        {/* Subdomain routing: workspace.<domain> serves the internal console.
-            Redirect pre-hydration so the landing page never flashes. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "(function(){try{var h=window.location.hostname||'';if(/^workspace\\./i.test(h)){var p=window.location.pathname;if(p==='/'||p===''){window.location.replace('/workspace'+window.location.search+window.location.hash);}}}catch(e){}})();",
           }}
         />
       </head>
@@ -210,6 +204,7 @@ function RootComponent() {
   useEffect(() => {
     initWebVitals();
     syncCopyVariantToDocument();
+    captureFirstTouch();
     const root = document.documentElement;
     let firstFrame = 0;
     let secondFrame = 0;
@@ -246,6 +241,7 @@ function RootComponent() {
     };
   }, []);
   useSmoothScroll();
+  useSiteMotion();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -254,6 +250,7 @@ function RootComponent() {
       </a>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <AssistantWidget />
       <Toaster position="top-center" richColors closeButton />
     </QueryClientProvider>
   );

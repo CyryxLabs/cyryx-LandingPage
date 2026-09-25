@@ -34,7 +34,7 @@ const ANSWERS = [
     slug: "what-is-goal-grounded-generation",
     title: "What is goal-grounded generation?",
     blurb:
-      "Generation conditioned on an explicit mission, context graph, and acceptance criteria — not just a prompt.",
+      "Generation conditioned on an explicit goal, relevant context, and acceptance criteria — not just a prompt.",
   },
   {
     slug: "how-to-measure-ai-output-quality",
@@ -76,7 +76,7 @@ function AnswersHub() {
         </h1>
         <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
           Cyryx Labs publishes precise, source-grounded explainers for the concepts behind our
-          products, runtime, and research. Each page leads with a direct answer, distinguishes
+          solutions, AEXOS and our research. Each page leads with a direct answer, distinguishes
           evidence from the Cyryx perspective, and exposes its latest editorial review sources.
         </p>
 

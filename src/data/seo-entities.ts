@@ -16,9 +16,9 @@ export function buildCyryxOrganizationNode() {
     legalName: "Cyryx Labs LLC",
     alternateName: "Cyryx",
     url: SITE_URL,
-    slogan: "From AI opportunity to operating capability.",
+    slogan: "The execution layer for enterprise AI.",
     description:
-      "Cyryx Labs is an AI lab and systems company that advises, builds, controls, and operates AI-enabled products and systems.",
+      "Cyryx Labs is a technology company building AI products and execution systems. It advises, builds, controls and operates AI systems for clients, publishes AEXOS, and runs an Applied AI Lab.",
     email: "contact@cyryxlabs.com",
     sameAs: [...CYRYX_VERIFIED_PROFILES],
     knowsAbout: [

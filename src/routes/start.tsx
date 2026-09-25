@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
+import { MessageSquare } from "lucide-react";
 import { Header } from "@/components/cyryx/Header";
 import { Footer } from "@/components/cyryx/Footer";
 import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
@@ -8,6 +9,7 @@ import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { trackCta } from "@/lib/track-cta";
 import {
   FIT_REVIEW_PROJECT_TYPES,
+  FIT_REVIEW_STEP_ONE_FIELDS,
   FitReviewSchema,
   PROJECT_TYPE_BY_START_INTENT,
   type FitReviewInput,
@@ -17,11 +19,14 @@ import {
   START_CONTEXT_INTENT_LABELS,
   START_CONTEXT_SOURCE_LABELS,
 } from "@/lib/cta";
+import { getLeadAttribution } from "@/lib/lead-attribution";
+import { getActiveCopyVariant } from "@/lib/copy-variant";
+import { isAssistantEnabled, openAssistant } from "@/lib/assistant-client";
 
 const PATH = "/start";
-const TITLE = "Start a Fit Review — Cyryx Labs";
+const TITLE = "Start a Project — Cyryx Labs";
 const DESC =
-  "Describe the workflow, product, digital foundation, or operational problem. Cyryx Labs will identify the right engagement or recommend no build.";
+  "Tell us about the workflow, product or system you want to change. Two short steps; Cyryx Labs will tell you where to start, or recommend not to build.";
 
 const INVESTMENT_RANGES = [
   "Under $5,000",
@@ -48,23 +53,7 @@ const DECISION = [
   "Not yet defined",
 ] as const;
 
-const NEXT_STEPS = [
-  {
-    n: "01",
-    title: "Fit review",
-    body: "We review the business problem, available context, timing, and whether Cyryx is the right partner.",
-  },
-  {
-    n: "02",
-    title: "Initial response",
-    body: "We respond with fit, a focused question, or the clearest next step after reviewing the available context.",
-  },
-  {
-    n: "03",
-    title: "Discovery if warranted",
-    body: "When there is a fit, we define the discovery needed before proposing scope, architecture, commercial terms, or delivery.",
-  },
-] as const;
+type FieldErrors = Partial<Record<keyof FitReviewInput, string>>;
 
 export const Route = createFileRoute("/start")({
   validateSearch: (search) => parseStartProjectContext(search),
@@ -72,7 +61,7 @@ export const Route = createFileRoute("/start")({
     buildHead({ title: TITLE, description: DESC, path: PATH }, [
       buildBreadcrumbJsonLd([
         { name: "Home", path: "/" },
-        { name: "Start a Fit Review", path: PATH },
+        { name: "Start a Project", path: PATH },
       ]),
     ]),
   component: StartPage,
@@ -80,11 +69,20 @@ export const Route = createFileRoute("/start")({
 
 function StartPage() {
   const context = Route.useSearch();
+  const assistantEnabled = isAssistantEnabled();
+  const [step, setStep] = useState<1 | 2>(1);
+  const [reachedStepTwo, setReachedStepTwo] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "ok" | "err">("idle");
   const [error, setError] = useState<string | null>(null);
+  // When the brief cannot be saved, the visitor can still send it by email.
+  const [fallbackMailto, setFallbackMailto] = useState<string | null>(null);
   const [confirmationQueued, setConfirmationQueued] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FitReviewInput, string>>>({});
+  const [firstReply, setFirstReply] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const startedRef = useRef(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
   const successRef = useRef<HTMLDivElement | null>(null);
+  const stepTwoHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const defaultProjectType = context.intent
     ? PROJECT_TYPE_BY_START_INTENT[context.intent]
     : undefined;
@@ -99,56 +97,109 @@ function StartPage() {
     requestAnimationFrame(() => successRef.current?.focus());
   }, [status]);
 
+  useEffect(() => {
+    if (step === 2) requestAnimationFrame(() => stepTwoHeadingRef.current?.focus());
+  }, [step]);
+
+  function markStarted() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackCta({ cta: "form_start", section: "start", href: PATH });
+  }
+
+  function readCandidate(form: HTMLFormElement) {
+    const fd = new FormData(form);
+    const text = (name: string) => String(fd.get(name) ?? "");
+    return {
+      name: text("name"),
+      email: text("email"),
+      company: text("company"),
+      projectType: text("projectType"),
+      problem: text("problem"),
+      outcome: text("outcome"),
+      whyNow: text("whyNow"),
+      role: text("role"),
+      companyWebsite: text("companyWebsite"),
+      stage: text("stage"),
+      investment: text("investment"),
+      timeline: text("timeline"),
+      systems: text("systems"),
+      decision: text("decision"),
+      notes: text("notes"),
+      consent: fd.get("consent") === "on",
+      website: text("website"),
+      source: context.source,
+      intent: context.intent,
+      attribution: getLeadAttribution(getActiveCopyVariant()),
+    };
+  }
+
+  function showErrors(
+    form: HTMLFormElement,
+    issues: { path: (string | number)[]; message: string }[],
+  ) {
+    const nextErrors: FieldErrors = {};
+    for (const issue of issues) {
+      const field = issue.path[0] as keyof FitReviewInput;
+      if (!nextErrors[field]) nextErrors[field] = issue.message;
+    }
+    setFieldErrors(nextErrors);
+    setStatus("err");
+    setError("Check the highlighted fields and try again.");
+    const firstField = issues[0]?.path[0];
+    if (typeof firstField === "string") {
+      requestAnimationFrame(() => {
+        const control = form.elements.namedItem(firstField);
+        if (control instanceof HTMLElement) control.focus();
+      });
+    }
+  }
+
+  function continueToStepTwo() {
+    const form = formRef.current;
+    if (!form) return;
+    markStarted();
+    setError(null);
+    const parsed = FitReviewSchema.safeParse(readCandidate(form));
+    const stepOneIssues = parsed.success
+      ? []
+      : parsed.error.issues.filter((issue) =>
+          (FIT_REVIEW_STEP_ONE_FIELDS as readonly string[]).includes(String(issue.path[0])),
+        );
+    if (stepOneIssues.length) {
+      showErrors(form, stepOneIssues);
+      return;
+    }
+    setFieldErrors({});
+    setStatus("idle");
+    setStep(2);
+    setReachedStepTwo(true);
+    trackCta({ cta: "form_step_complete", section: "start", href: `${PATH}#step-1` });
+  }
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+    if (step === 1) {
+      continueToStepTwo();
+      return;
+    }
     setError(null);
     setConfirmationQueued(false);
     setFieldErrors({});
-    const fd = new FormData(form);
-    const candidate = {
-      name: String(fd.get("name") ?? ""),
-      email: String(fd.get("email") ?? ""),
-      company: String(fd.get("company") ?? ""),
-      projectType: String(fd.get("projectType") ?? ""),
-      problem: String(fd.get("problem") ?? ""),
-      outcome: String(fd.get("outcome") ?? ""),
-      whyNow: String(fd.get("whyNow") ?? ""),
-      role: String(fd.get("role") ?? ""),
-      companyWebsite: String(fd.get("companyWebsite") ?? ""),
-      stage: String(fd.get("stage") ?? ""),
-      investment: String(fd.get("investment") ?? ""),
-      timeline: String(fd.get("timeline") ?? ""),
-      systems: String(fd.get("systems") ?? ""),
-      decision: String(fd.get("decision") ?? ""),
-      notes: String(fd.get("notes") ?? ""),
-      consent: fd.get("consent") === "on",
-      website: String(fd.get("website") ?? ""),
-      source: context.source,
-      intent: context.intent,
-    };
 
-    const parsed = FitReviewSchema.safeParse(candidate);
+    const parsed = FitReviewSchema.safeParse(readCandidate(form));
     if (!parsed.success) {
-      const nextErrors: Partial<Record<keyof FitReviewInput, string>> = {};
-      for (const issue of parsed.error.issues) {
-        const field = issue.path[0] as keyof FitReviewInput;
-        if (!nextErrors[field]) nextErrors[field] = issue.message;
-      }
-      setFieldErrors(nextErrors);
-      setStatus("err");
-      setError("Check the highlighted fields and try again.");
-      const firstField = parsed.error.issues[0]?.path[0];
-      if (typeof firstField === "string") {
-        requestAnimationFrame(() => {
-          const control = form.elements.namedItem(firstField);
-          if (control instanceof HTMLElement) control.focus();
-        });
-      }
+      const stepOneFailed = parsed.error.issues.some((issue) =>
+        (FIT_REVIEW_STEP_ONE_FIELDS as readonly string[]).includes(String(issue.path[0])),
+      );
+      if (stepOneFailed) setStep(1);
+      showErrors(form, parsed.error.issues);
       return;
     }
 
     setStatus("submitting");
+    setFallbackMailto(null);
 
     try {
       const response = await fetch("/api/public/contact", {
@@ -160,21 +211,36 @@ function StartPage() {
         ok?: boolean;
         error?: string;
         confirmationQueued?: boolean;
+        firstReply?: string | null;
       };
       if (!response.ok || !result.ok) {
-        throw new Error(result.error || "We could not save your fit review. Please try again.");
+        throw new Error(result.error || "We could not send your brief. Please try again.");
       }
-      trackCta({
-        cta: "qualification_form_submitted",
-        section: "start",
-        href: PATH,
-      });
+      trackCta({ cta: "generate_lead", section: "start", href: PATH });
+      trackCta({ cta: "qualification_form_submitted", section: "start", href: PATH });
       setConfirmationQueued(result.confirmationQueued === true);
+      setFirstReply(
+        typeof result.firstReply === "string" && result.firstReply ? result.firstReply : null,
+      );
       setStatus("ok");
     } catch (err) {
       setStatus("err");
       setError(
-        err instanceof Error ? err.message : "We could not save your fit review. Please try again.",
+        err instanceof Error ? err.message : "We could not send your brief. Please try again.",
+      );
+      const brief = parsed.data;
+      const body = [
+        `Name: ${brief.name}`,
+        `Company: ${brief.company}`,
+        `Type of work: ${brief.projectType}`,
+        "",
+        "What we want to change:",
+        brief.problem,
+      ].join("\n");
+      setFallbackMailto(
+        `mailto:contact@cyryxlabs.com?subject=${encodeURIComponent(
+          `Project brief — ${brief.company}`,
+        )}&body=${encodeURIComponent(body.slice(0, 1500))}`,
       );
       trackCta({ cta: "qualification_form_error", section: "start", href: PATH });
     }
@@ -184,37 +250,64 @@ function StartPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" className="relative">
-        <section className="mx-auto max-w-4xl px-5 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-32 lg:px-12 lg:pt-44">
+        {/* On phones the form follows the lede directly (the visitor tapped
+            "Start a project"); the "what happens next" list and the full-brief
+            link move below it. From sm up the original order is kept. */}
+        <section className="mx-auto flex max-w-4xl flex-col px-5 pb-20 pt-24 sm:block sm:px-8 sm:pb-24 sm:pt-32 lg:px-12 lg:pt-40">
           <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
             <Link to="/" className="hover:text-[var(--accent-glow)]">
               Home
             </Link>
             <span className="mx-2 opacity-60">/</span>
-            <span className="text-[var(--silver)]">Start a Fit Review</span>
+            <span className="text-[var(--silver)]">Start a Project</span>
           </nav>
           <HudLabel withDot className="mt-6 text-[var(--accent-glow)]">
             Start with the problem
           </HudLabel>
-          <h1 className="mt-4 max-w-[14ch] font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-[-0.02em] text-silver-gradient">
-            Bring us the workflow, bottleneck, or system.
+          <h1 className="mt-4 max-w-[16ch] font-display text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-silver-gradient sm:text-5xl lg:text-6xl">
+            Tell us what you want AI to change.
           </h1>
-          <p className="mt-6 max-w-2xl text-base lg:text-lg leading-relaxed text-[var(--silver-dim)]">
-            Describe the business problem, current workflow, constraints, and desired outcome. We
-            will determine whether the right starting point is advisory, a digital system,
-            automation, governance, managed operations, or no build at all. MAAX Studio access has
-            its own early-access review on the product page.
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] lg:text-lg">
+            Two short steps. We'll tell you whether AI belongs there, where to start (Advise, Build,
+            Control or Operate) or whether not to build at all.
+          </p>
+
+          <ol
+            className="order-last mt-8 grid gap-px overflow-hidden rounded-md border border-white/10 bg-white/10 text-sm sm:grid-cols-3"
+            aria-label="What happens next"
+          >
+            <li className="bg-[var(--obsidian)] px-4 py-3">
+              <span className="font-mono text-[12px] text-[var(--accent-glow)]">01</span>{" "}
+              <span className="text-[var(--silver)]">You send a short brief.</span>
+            </li>
+            <li className="bg-[var(--obsidian)] px-4 py-3">
+              <span className="font-mono text-[12px] text-[var(--accent-glow)]">02</span>{" "}
+              <span className="text-[var(--silver)]">You get a first read right away.</span>
+            </li>
+            <li className="bg-[var(--obsidian)] px-4 py-3">
+              <span className="font-mono text-[12px] text-[var(--accent-glow)]">03</span>{" "}
+              <span className="text-[var(--silver)]">
+                A person replies with fit, a question or the next step.
+              </span>
+            </li>
+          </ol>
+
+          <p className="order-last mt-5 text-sm text-[var(--silver-dim)]">
+            Already have detailed requirements, wireframes or documents?{" "}
+            <Link to="/brief" className="text-[var(--accent-glow)] underline underline-offset-4">
+              Send a full project brief
+            </Link>
+            .
           </p>
 
           {context.source || context.intent ? (
-            <aside className="mt-7 rounded-md border border-white/10 bg-[var(--graphite)] p-4 text-sm text-[var(--silver-dim)]">
-              <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
-                Context carried into this review
-              </p>
-              <p className="mt-2">
-                {context.source ? START_CONTEXT_SOURCE_LABELS[context.source] : "Direct entry"}
-                {context.intent ? ` / ${START_CONTEXT_INTENT_LABELS[context.intent]}` : ""}
-              </p>
-            </aside>
+            <p className="mt-5 text-sm text-[var(--silver-dim)]">
+              Coming from{" "}
+              <span className="text-[var(--silver)]">
+                {context.source ? START_CONTEXT_SOURCE_LABELS[context.source] : "a direct link"}
+                {context.intent ? ` · ${START_CONTEXT_INTENT_LABELS[context.intent]}` : ""}
+              </span>
+            </p>
           ) : null}
 
           <div className="mt-10 flex flex-col lg:mt-12">
@@ -224,39 +317,56 @@ function StartPage() {
                 tabIndex={-1}
                 role="status"
                 aria-live="polite"
-                className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-6 outline-none backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+                className="rounded-md border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[color-mix(in_oklab,var(--graphite)_60%,transparent)] p-6 outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
               >
                 <HudLabel className="text-[var(--accent-glow)]">Received</HudLabel>
-                <p className="mt-3 text-[15px] leading-relaxed text-[var(--silver)]">
-                  Thank you. Your submission has been recorded. Our response may confirm fit, ask
-                  for context, recommend a different next step, or decline the opportunity.
-                </p>
+                {firstReply ? (
+                  <>
+                    <p className="mt-3 font-display text-xl font-semibold text-[var(--silver)]">
+                      Here is a first read of your request.
+                    </p>
+                    <p className="mt-4 whitespace-pre-wrap rounded-md border border-white/10 bg-[var(--onyx)] p-4 text-[15px] leading-relaxed text-[var(--silver)]">
+                      {firstReply}
+                    </p>
+                    <p className="mt-3 text-xs leading-relaxed text-[var(--steel)]">
+                      Drafted instantly by the Cyryx AI system from what you wrote. A person on our
+                      team reviews every brief before any proposal.
+                    </p>
+                  </>
+                ) : (
+                  <p className="mt-3 text-[15px] leading-relaxed text-[var(--silver)]">
+                    Thank you. Your brief has been recorded. Our reply may confirm fit, ask for
+                    context, recommend a different next step or decline the opportunity.
+                  </p>
+                )}
                 {confirmationQueued ? (
                   <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                    A confirmation email is being processed for the work email you provided.
+                    A copy is on its way to the work email you provided.
                   </p>
                 ) : null}
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    to="/engagement-model"
-                    className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-11 px-5 rounded-md text-[var(--silver)] hud-label"
-                  >
-                    Read our engagement model
-                    <span aria-hidden className="text-[var(--accent-glow)]">
-                      →
-                    </span>
+                  {assistantEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => openAssistant("start")}
+                      className="cx-btn-primary cx-btn-sm"
+                    >
+                      <MessageSquare className="h-4 w-4" aria-hidden /> Ask a follow-up now
+                    </button>
+                  )}
+                  <Link to="/brief" className="cx-btn-secondary cx-btn-sm">
+                    Add requirements and files
                   </Link>
-                  <Link
-                    to="/"
-                    className="inline-flex items-center h-11 px-3 hud-label text-[var(--silver-dim)] hover:text-[var(--accent-glow)]"
-                  >
-                    Back to home
+                  <Link to="/engagement-model" className="cx-btn-secondary cx-btn-sm">
+                    How engagements run
                   </Link>
                 </div>
               </div>
             ) : (
               <form
+                ref={formRef}
                 onSubmit={onSubmit}
+                onFocusCapture={markStarted}
                 noValidate
                 aria-busy={status === "submitting"}
                 className="space-y-6"
@@ -271,159 +381,167 @@ function StartPage() {
                   className="hidden"
                 />
 
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <Field
-                    label="Full name"
-                    name="name"
-                    required
-                    autoComplete="name"
-                    error={fieldErrors.name}
-                  />
-                  <Field
-                    label="Work email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    error={fieldErrors.email}
-                  />
-                  <Field
-                    label="Company"
-                    name="company"
-                    required
-                    autoComplete="organization"
-                    error={fieldErrors.company}
-                  />
-                  <Select
-                    label="Project type"
-                    name="projectType"
-                    options={FIT_REVIEW_PROJECT_TYPES}
-                    defaultValue={defaultProjectType}
-                    required
-                    error={fieldErrors.projectType}
-                  />
-                </div>
-
-                <TextArea
-                  label="Primary problem"
-                  name="problem"
-                  required
-                  rows={4}
-                  placeholder="What's broken, missing, or slowing you down?"
-                  error={fieldErrors.problem}
-                />
-                <TextArea
-                  label="Desired outcome"
-                  name="outcome"
-                  required
-                  rows={3}
-                  placeholder="What would be materially different if this work succeeds?"
-                  error={fieldErrors.outcome}
-                />
-                <TextArea
-                  label="Why now or timing context"
-                  name="whyNow"
-                  required
-                  rows={3}
-                  placeholder="What changed—or why is this worth evaluating now? ‘No fixed timing’ is a valid answer."
-                  error={fieldErrors.whyNow}
-                />
-
-                <details className="group rounded-md border border-white/10 bg-[color-mix(in_oklab,var(--graphite)_35%,transparent)]">
-                  <summary className="cursor-pointer list-none px-5 py-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--silver)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--accent-glow)]">
-                    Add planning context{" "}
-                    <span className="text-[var(--accent-glow)]">/ optional</span>
-                  </summary>
-                  <div className="grid gap-6 border-t border-white/10 p-5 sm:grid-cols-2">
-                    <Field
-                      label="Role"
-                      name="role"
-                      autoComplete="organization-title"
-                      error={fieldErrors.role}
-                    />
-                    <Field
-                      label="Company website"
-                      name="companyWebsite"
-                      type="url"
-                      placeholder="https://"
-                      error={fieldErrors.companyWebsite}
-                    />
-                    <Field
-                      label="Current stage"
-                      name="stage"
-                      placeholder="e.g. exploring or in production"
-                      error={fieldErrors.stage}
-                    />
-                    <Select
-                      label="Investment range"
-                      name="investment"
-                      options={INVESTMENT_RANGES}
-                      error={fieldErrors.investment}
-                    />
-                    <Select
-                      label="Desired timeline"
-                      name="timeline"
-                      options={TIMELINES}
-                      error={fieldErrors.timeline}
-                    />
-                    <Select
-                      label="Your involvement in this review"
-                      name="decision"
-                      options={DECISION}
-                      error={fieldErrors.decision}
-                    />
-                    <div className="sm:col-span-2">
-                      <TextArea
-                        label="Systems or data involved"
-                        name="systems"
-                        rows={2}
-                        placeholder="e.g. HubSpot CRM, Postgres warehouse, Google Workspace"
-                        error={fieldErrors.systems}
-                      />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <TextArea
-                        label="Additional context"
-                        name="notes"
-                        rows={3}
-                        error={fieldErrors.notes}
-                      />
-                    </div>
-                  </div>
-                </details>
-
-                <div
-                  role="note"
-                  className="rounded-md border border-amber-300/25 bg-amber-300/5 p-4 text-sm leading-relaxed text-amber-100"
+                <p
+                  className="font-mono text-xs uppercase tracking-[0.14em] text-[var(--steel)]"
+                  aria-live="polite"
                 >
-                  Do not submit passwords, API keys, credentials, regulated data, or other sensitive
-                  information. We can agree an appropriate channel if a later fit review requires
-                  protected details.
+                  Step {step} of 2 · {step === 1 ? "The essentials" : "Add context (optional)"}
+                </p>
+
+                {/* Step 1 stays mounted (hidden) so its values submit with step 2. */}
+                <div className={step === 1 ? "space-y-6" : "hidden"}>
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <Field
+                      label="Full name"
+                      name="name"
+                      required
+                      autoComplete="name"
+                      error={fieldErrors.name}
+                    />
+                    <Field
+                      label="Work email"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                      error={fieldErrors.email}
+                    />
+                    <Field
+                      label="Company"
+                      name="company"
+                      required
+                      autoComplete="organization"
+                      error={fieldErrors.company}
+                    />
+                    <Select
+                      label="What kind of work?"
+                      name="projectType"
+                      options={FIT_REVIEW_PROJECT_TYPES}
+                      defaultValue={defaultProjectType}
+                      required
+                      error={fieldErrors.projectType}
+                    />
+                  </div>
+
+                  <TextArea
+                    label="What do you want to change?"
+                    name="problem"
+                    required
+                    rows={4}
+                    placeholder="The workflow, bottleneck or product idea, in a few sentences."
+                    error={fieldErrors.problem}
+                  />
+
+                  <label className="flex items-start gap-3 text-sm text-[var(--silver-dim)]">
+                    <input
+                      type="checkbox"
+                      name="consent"
+                      required
+                      className="mt-1 h-4 w-4 accent-[var(--accent-glow)]"
+                      aria-invalid={Boolean(fieldErrors.consent)}
+                      aria-describedby={fieldErrors.consent ? "consent-error" : undefined}
+                    />
+                    <span>
+                      I consent to Cyryx Labs contacting me about this brief in accordance with the{" "}
+                      <Link to="/privacy" className="text-[var(--accent-glow)] hover:underline">
+                        Privacy Policy
+                      </Link>
+                      .
+                    </span>
+                  </label>
+                  {fieldErrors.consent ? (
+                    <p id="consent-error" className="text-sm text-red-300">
+                      {fieldErrors.consent}
+                    </p>
+                  ) : null}
                 </div>
 
-                <label className="flex items-start gap-3 text-sm text-[var(--silver-dim)]">
-                  <input
-                    type="checkbox"
-                    name="consent"
-                    required
-                    className="mt-1 h-4 w-4 accent-[var(--accent-glow)]"
-                    aria-invalid={Boolean(fieldErrors.consent)}
-                    aria-describedby={fieldErrors.consent ? "consent-error" : undefined}
-                  />
-                  <span>
-                    I consent to Cyryx Labs contacting me about this submission in accordance with
-                    the{" "}
-                    <Link to="/privacy" className="text-[var(--accent-glow)] hover:underline">
-                      Privacy Policy
-                    </Link>
-                    .
-                  </span>
-                </label>
-                {fieldErrors.consent ? (
-                  <p id="consent-error" className="text-sm text-red-300">
-                    {fieldErrors.consent}
-                  </p>
-                ) : null}
+                {/* Step 2 also stays mounted once reached, so "Back" keeps what was typed. */}
+                {(step === 2 || reachedStepTwo) && (
+                  <div className={step === 2 ? "space-y-6" : "hidden"}>
+                    <h2
+                      ref={stepTwoHeadingRef}
+                      tabIndex={-1}
+                      className="font-display text-2xl font-semibold tracking-[-0.02em] text-[var(--silver)] outline-none"
+                    >
+                      Anything else that helps us prepare?
+                    </h2>
+                    <p className="-mt-3 text-sm text-[var(--silver-dim)]">
+                      All optional. Skip it and send now if you prefer.
+                    </p>
+                    <TextArea
+                      label="Desired outcome"
+                      name="outcome"
+                      rows={3}
+                      placeholder="What would be different if this works?"
+                      error={fieldErrors.outcome}
+                    />
+                    <TextArea
+                      label="Why now"
+                      name="whyNow"
+                      rows={2}
+                      placeholder="What changed, or why this is worth looking at now."
+                      error={fieldErrors.whyNow}
+                    />
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <Select
+                        label="Budget range"
+                        name="investment"
+                        options={INVESTMENT_RANGES}
+                        error={fieldErrors.investment}
+                      />
+                      <Select
+                        label="Timeline"
+                        name="timeline"
+                        options={TIMELINES}
+                        error={fieldErrors.timeline}
+                      />
+                      <Select
+                        label="Your role in the decision"
+                        name="decision"
+                        options={DECISION}
+                        error={fieldErrors.decision}
+                      />
+                      <Field
+                        label="Role or title"
+                        name="role"
+                        autoComplete="organization-title"
+                        error={fieldErrors.role}
+                      />
+                      <Field
+                        label="Company website"
+                        name="companyWebsite"
+                        type="url"
+                        placeholder="https://"
+                        error={fieldErrors.companyWebsite}
+                      />
+                      <Field
+                        label="Current stage"
+                        name="stage"
+                        placeholder="e.g. exploring, pilot, in production"
+                        error={fieldErrors.stage}
+                      />
+                    </div>
+                    <TextArea
+                      label="Systems or data involved"
+                      name="systems"
+                      rows={2}
+                      placeholder="e.g. HubSpot, Postgres, Google Workspace"
+                      error={fieldErrors.systems}
+                    />
+                    <TextArea
+                      label="Anything else"
+                      name="notes"
+                      rows={2}
+                      error={fieldErrors.notes}
+                    />
+                  </div>
+                )}
+
+                <p className="text-xs leading-relaxed text-[var(--steel)]">
+                  Please don't include passwords, API keys or regulated personal data. We'll agree a
+                  secure channel if we need anything sensitive later.
+                </p>
 
                 {status === "err" && error && (
                   <p
@@ -431,46 +549,64 @@ function StartPage() {
                     className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200"
                   >
                     {error}
+                    {fallbackMailto ? (
+                      <>
+                        {" "}
+                        You can also{" "}
+                        <a
+                          href={fallbackMailto}
+                          className="font-medium text-white underline underline-offset-4"
+                        >
+                          send the brief by email
+                        </a>
+                        ; nothing you typed is lost.
+                      </>
+                    ) : null}
                   </p>
                 )}
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    type="submit"
-                    disabled={status === "submitting"}
-                    className="cx-btn cx-liquid-glass inline-flex items-center gap-2 h-12 px-6 rounded-md text-[var(--silver)] hud-label disabled:opacity-60"
-                  >
-                    {status === "submitting" ? "Sending…" : "Start a fit review"}
-                    <span aria-hidden className="text-[var(--accent-glow)]">
-                      →
-                    </span>
-                  </button>
-                  <p className="text-xs text-[var(--silver-dim)]">
-                    Acceptance, scope, timing, ownership, licensing, support, and commercial terms
-                    are defined separately for each engagement.
-                  </p>
+                  {step === 1 ? (
+                    <button type="submit" className="cx-btn-primary">
+                      Continue <span aria-hidden>→</span>
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        type="submit"
+                        disabled={status === "submitting"}
+                        className="cx-btn-primary disabled:opacity-60"
+                      >
+                        {status === "submitting" ? "Sending…" : "Send project brief"}{" "}
+                        <span aria-hidden>→</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setStep(1)}
+                        className="inline-flex min-h-11 items-center px-3 text-sm text-[var(--silver-dim)] hover:text-[var(--silver)]"
+                      >
+                        Back
+                      </button>
+                    </>
+                  )}
+                  {step === 1 && assistantEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => openAssistant("start")}
+                      className="inline-flex min-h-11 items-center gap-2 px-2 text-sm text-[var(--silver-dim)] hover:text-[var(--accent-glow)]"
+                    >
+                      <MessageSquare className="h-4 w-4 text-[var(--accent-glow)]" aria-hidden />
+                      Rather ask a question first?
+                    </button>
+                  )}
                 </div>
+                {step === 2 && status === "submitting" && (
+                  <p className="text-xs text-[var(--steel)]" aria-live="polite">
+                    Saving your brief and preparing a first read…
+                  </p>
+                )}
               </form>
             )}
-
-            <ol className="mt-14 grid border-y border-[color-mix(in_oklab,var(--silver)_14%,transparent)] lg:grid-cols-3">
-              {NEXT_STEPS.map((step) => (
-                <li
-                  key={step.n}
-                  className="border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-7 last:border-b-0 lg:border-b-0 lg:border-r lg:px-7 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
-                >
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
-                    {step.n}
-                  </span>
-                  <h2 className="mt-4 font-display text-xl tracking-[-0.02em] text-[var(--silver)]">
-                    {step.title}
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
-                    {step.body}
-                  </p>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
       </main>
@@ -501,7 +637,7 @@ function Field({
   const errorId = `${name}-error`;
   return (
     <label className={`block ${className ?? ""}`}>
-      <span className="hud-label text-[var(--silver)]">
+      <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--silver)]">
         {label}
         {required && (
           <span aria-hidden className="ml-1 text-[var(--accent-glow)]">
@@ -547,7 +683,7 @@ function TextArea({
   const errorId = `${name}-error`;
   return (
     <label className="block">
-      <span className="hud-label text-[var(--silver)]">
+      <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--silver)]">
         {label}
         {required && (
           <span aria-hidden className="ml-1 text-[var(--accent-glow)]">
@@ -593,7 +729,7 @@ function Select({
   const errorId = `${name}-error`;
   return (
     <label className="block">
-      <span className="hud-label text-[var(--silver)]">
+      <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--silver)]">
         {label}
         {required && (
           <span aria-hidden className="ml-1 text-[var(--accent-glow)]">

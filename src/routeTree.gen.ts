@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as StartRouteImport } from './routes/start'
 import { Route as SolutionsRouteImport } from './routes/solutions'
@@ -25,8 +24,7 @@ import { Route as EngagementModelRouteImport } from './routes/engagement-model'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as CareersRouteImport } from './routes/careers'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as BriefRouteImport } from './routes/brief'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
@@ -43,43 +41,22 @@ import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.
 import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
-import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as ProductsAexosRouteImport } from './routes/products.aexos'
 import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
 import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './routes/answers.what-is-goal-grounded-generation'
 import { Route as AnswersWhatIsAiGovernanceRouteImport } from './routes/answers.what-is-ai-governance'
 import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
 import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
 import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
-import { Route as AuthenticatedWorkspaceRouteImport } from './routes/_authenticated/workspace'
-import { Route as AuthenticatedWorkspaceIndexRouteImport } from './routes/_authenticated/workspace.index'
-import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
-import { Route as ApiPublicMaaxWaitlistRouteImport } from './routes/api/public/maax-waitlist'
+import { Route as ApiPublicTalentRouteImport } from './routes/api/public/talent'
 import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
-import { Route as AuthenticatedWorkspaceProductsRouteImport } from './routes/_authenticated/workspace.products'
-import { Route as AuthenticatedWorkspacePipelineRouteImport } from './routes/_authenticated/workspace.pipeline'
-import { Route as AuthenticatedWorkspaceMarketingRouteImport } from './routes/_authenticated/workspace.marketing'
-import { Route as AuthenticatedWorkspaceHrRouteImport } from './routes/_authenticated/workspace.hr'
-import { Route as AuthenticatedWorkspaceFinanceRouteImport } from './routes/_authenticated/workspace.finance'
-import { Route as AuthenticatedWorkspaceDevRouteImport } from './routes/_authenticated/workspace.dev'
-import { Route as AuthenticatedWorkspaceCareersRouteImport } from './routes/_authenticated/workspace.careers'
-import { Route as AuthenticatedWorkspaceAdminRouteImport } from './routes/_authenticated/workspace.admin'
-import { Route as AuthenticatedWorkspaceSplatRouteImport } from './routes/_authenticated/workspace.$'
-import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
-import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
-import { Route as ApiPublicNewsletterSubscribeRouteImport } from './routes/api/public/newsletter.subscribe'
-import { Route as ApiPublicNewsletterConfirmRouteImport } from './routes/api/public/newsletter.confirm'
-import { Route as ApiPublicAuthRecoverRouteImport } from './routes/api/public/auth.recover'
-import { Route as ApiPublicAuthDomainBlockRouteImport } from './routes/api/public/auth.domain-block'
+import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
+import { Route as ApiPublicBriefSubmitRouteImport } from './routes/api/public/brief/submit'
+import { Route as ApiPublicBriefInitRouteImport } from './routes/api/public/brief/init'
+import { Route as ApiPublicBriefAssistRouteImport } from './routes/api/public/brief/assist'
 
-const UnsubscribeRoute = UnsubscribeRouteImport.update({
-  id: '/unsubscribe',
-  path: '/unsubscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -155,13 +132,9 @@ const CareersRoute = CareersRouteImport.update({
   path: '/careers',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const BriefRoute = BriefRouteImport.update({
+  id: '/brief',
+  path: '/brief',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -254,15 +227,10 @@ const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
   path: '/maax-studio',
   getParentRoute: () => ProductsRoute,
 } as any)
-const NewsletterConfirmRoute = NewsletterConfirmRouteImport.update({
-  id: '/newsletter/confirm',
-  path: '/newsletter/confirm',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
-  getParentRoute: () => rootRouteImport,
+const ProductsAexosRoute = ProductsAexosRouteImport.update({
+  id: '/aexos',
+  path: '/aexos',
+  getParentRoute: () => ProductsRoute,
 } as any)
 const AnswersWhatIsGovernedAiExecutionRoute =
   AnswersWhatIsGovernedAiExecutionRouteImport.update({
@@ -300,30 +268,14 @@ const AnswersAiExecutionSystemVsAiAutomationRoute =
     path: '/answers/ai-execution-system-vs-ai-automation',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedWorkspaceRoute = AuthenticatedWorkspaceRouteImport.update({
-  id: '/workspace',
-  path: '/workspace',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedWorkspaceIndexRoute =
-  AuthenticatedWorkspaceIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
   id: '/api/public/web-vitals',
   path: '/api/public/web-vitals',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicMaaxWaitlistRoute = ApiPublicMaaxWaitlistRouteImport.update({
-  id: '/api/public/maax-waitlist',
-  path: '/api/public/maax-waitlist',
+const ApiPublicTalentRoute = ApiPublicTalentRouteImport.update({
+  id: '/api/public/talent',
+  path: '/api/public/talent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
@@ -336,105 +288,30 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   path: '/api/public/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedWorkspaceProductsRoute =
-  AuthenticatedWorkspaceProductsRouteImport.update({
-    id: '/products',
-    path: '/products',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspacePipelineRoute =
-  AuthenticatedWorkspacePipelineRouteImport.update({
-    id: '/pipeline',
-    path: '/pipeline',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceMarketingRoute =
-  AuthenticatedWorkspaceMarketingRouteImport.update({
-    id: '/marketing',
-    path: '/marketing',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceHrRoute =
-  AuthenticatedWorkspaceHrRouteImport.update({
-    id: '/hr',
-    path: '/hr',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceFinanceRoute =
-  AuthenticatedWorkspaceFinanceRouteImport.update({
-    id: '/finance',
-    path: '/finance',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceDevRoute =
-  AuthenticatedWorkspaceDevRouteImport.update({
-    id: '/dev',
-    path: '/dev',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceCareersRoute =
-  AuthenticatedWorkspaceCareersRouteImport.update({
-    id: '/careers',
-    path: '/careers',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceAdminRoute =
-  AuthenticatedWorkspaceAdminRouteImport.update({
-    id: '/admin',
-    path: '/admin',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceSplatRoute =
-  AuthenticatedWorkspaceSplatRouteImport.update({
-    id: '/$',
-    path: '/$',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const LovableEmailTransactionalSendRoute =
-  LovableEmailTransactionalSendRouteImport.update({
-    id: '/lovable/email/transactional/send',
-    path: '/lovable/email/transactional/send',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailTransactionalPreviewRoute =
-  LovableEmailTransactionalPreviewRouteImport.update({
-    id: '/lovable/email/transactional/preview',
-    path: '/lovable/email/transactional/preview',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicNewsletterSubscribeRoute =
-  ApiPublicNewsletterSubscribeRouteImport.update({
-    id: '/api/public/newsletter/subscribe',
-    path: '/api/public/newsletter/subscribe',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicNewsletterConfirmRoute =
-  ApiPublicNewsletterConfirmRouteImport.update({
-    id: '/api/public/newsletter/confirm',
-    path: '/api/public/newsletter/confirm',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicAuthRecoverRoute = ApiPublicAuthRecoverRouteImport.update({
-  id: '/api/public/auth/recover',
-  path: '/api/public/auth/recover',
+const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
+  id: '/api/public/assistant',
+  path: '/api/public/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicAuthDomainBlockRoute =
-  ApiPublicAuthDomainBlockRouteImport.update({
-    id: '/api/public/auth/domain-block',
-    path: '/api/public/auth/domain-block',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+const ApiPublicBriefSubmitRoute = ApiPublicBriefSubmitRouteImport.update({
+  id: '/api/public/brief/submit',
+  path: '/api/public/brief/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBriefInitRoute = ApiPublicBriefInitRouteImport.update({
+  id: '/api/public/brief/init',
+  path: '/api/public/brief/init',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBriefAssistRoute = ApiPublicBriefAssistRouteImport.update({
+  id: '/api/public/brief/assist',
+  path: '/api/public/brief/assist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/brief': typeof BriefRoute
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
@@ -450,16 +327,13 @@ export interface FileRoutesByFullPath {
   '/solutions': typeof SolutionsRouteWithChildren
   '/start': typeof StartRoute
   '/terms': typeof TermsRoute
-  '/unsubscribe': typeof UnsubscribeRoute
-  '/workspace': typeof AuthenticatedWorkspaceRouteWithChildren
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
   '/answers/what-is-ai-governance': typeof AnswersWhatIsAiGovernanceRoute
   '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/aexos': typeof ProductsAexosRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -475,32 +349,18 @@ export interface FileRoutesByFullPath {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
-  '/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
-  '/workspace/admin': typeof AuthenticatedWorkspaceAdminRoute
-  '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
-  '/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
-  '/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
-  '/workspace/hr': typeof AuthenticatedWorkspaceHrRoute
-  '/workspace/marketing': typeof AuthenticatedWorkspaceMarketingRoute
-  '/workspace/pipeline': typeof AuthenticatedWorkspacePipelineRoute
-  '/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
-  '/api/public/maax-waitlist': typeof ApiPublicMaaxWaitlistRoute
+  '/api/public/talent': typeof ApiPublicTalentRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/workspace/': typeof AuthenticatedWorkspaceIndexRoute
-  '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
-  '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
-  '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
-  '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
-  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/api/public/brief/assist': typeof ApiPublicBriefAssistRoute
+  '/api/public/brief/init': typeof ApiPublicBriefInitRoute
+  '/api/public/brief/submit': typeof ApiPublicBriefSubmitRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/brief': typeof BriefRoute
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
@@ -516,15 +376,13 @@ export interface FileRoutesByTo {
   '/solutions': typeof SolutionsRouteWithChildren
   '/start': typeof StartRoute
   '/terms': typeof TermsRoute
-  '/unsubscribe': typeof UnsubscribeRoute
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
   '/answers/what-is-ai-governance': typeof AnswersWhatIsAiGovernanceRoute
   '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/aexos': typeof ProductsAexosRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -540,34 +398,19 @@ export interface FileRoutesByTo {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers': typeof AnswersIndexRoute
   '/research': typeof ResearchIndexRoute
-  '/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
-  '/workspace/admin': typeof AuthenticatedWorkspaceAdminRoute
-  '/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
-  '/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
-  '/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
-  '/workspace/hr': typeof AuthenticatedWorkspaceHrRoute
-  '/workspace/marketing': typeof AuthenticatedWorkspaceMarketingRoute
-  '/workspace/pipeline': typeof AuthenticatedWorkspacePipelineRoute
-  '/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
-  '/api/public/maax-waitlist': typeof ApiPublicMaaxWaitlistRoute
+  '/api/public/talent': typeof ApiPublicTalentRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/workspace': typeof AuthenticatedWorkspaceIndexRoute
-  '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
-  '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
-  '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
-  '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
-  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/api/public/brief/assist': typeof ApiPublicBriefAssistRoute
+  '/api/public/brief/init': typeof ApiPublicBriefInitRoute
+  '/api/public/brief/submit': typeof ApiPublicBriefSubmitRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/auth': typeof AuthRoute
+  '/brief': typeof BriefRoute
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
@@ -583,16 +426,13 @@ export interface FileRoutesById {
   '/solutions': typeof SolutionsRouteWithChildren
   '/start': typeof StartRoute
   '/terms': typeof TermsRoute
-  '/unsubscribe': typeof UnsubscribeRoute
-  '/_authenticated/workspace': typeof AuthenticatedWorkspaceRouteWithChildren
   '/answers/ai-execution-system-vs-ai-automation': typeof AnswersAiExecutionSystemVsAiAutomationRoute
   '/answers/how-to-measure-ai-output-quality': typeof AnswersHowToMeasureAiOutputQualityRoute
   '/answers/what-are-command-gates-in-ai-systems': typeof AnswersWhatAreCommandGatesInAiSystemsRoute
   '/answers/what-is-ai-governance': typeof AnswersWhatIsAiGovernanceRoute
   '/answers/what-is-goal-grounded-generation': typeof AnswersWhatIsGoalGroundedGenerationRoute
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/newsletter/confirm': typeof NewsletterConfirmRoute
+  '/products/aexos': typeof ProductsAexosRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
@@ -608,34 +448,20 @@ export interface FileRoutesById {
   '/solutions/workflow-automation': typeof SolutionsWorkflowAutomationRoute
   '/answers/': typeof AnswersIndexRoute
   '/research/': typeof ResearchIndexRoute
-  '/_authenticated/workspace/$': typeof AuthenticatedWorkspaceSplatRoute
-  '/_authenticated/workspace/admin': typeof AuthenticatedWorkspaceAdminRoute
-  '/_authenticated/workspace/careers': typeof AuthenticatedWorkspaceCareersRoute
-  '/_authenticated/workspace/dev': typeof AuthenticatedWorkspaceDevRoute
-  '/_authenticated/workspace/finance': typeof AuthenticatedWorkspaceFinanceRoute
-  '/_authenticated/workspace/hr': typeof AuthenticatedWorkspaceHrRoute
-  '/_authenticated/workspace/marketing': typeof AuthenticatedWorkspaceMarketingRoute
-  '/_authenticated/workspace/pipeline': typeof AuthenticatedWorkspacePipelineRoute
-  '/_authenticated/workspace/products': typeof AuthenticatedWorkspaceProductsRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/cta-events': typeof ApiPublicCtaEventsRoute
-  '/api/public/maax-waitlist': typeof ApiPublicMaaxWaitlistRoute
+  '/api/public/talent': typeof ApiPublicTalentRoute
   '/api/public/web-vitals': typeof ApiPublicWebVitalsRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
-  '/_authenticated/workspace/': typeof AuthenticatedWorkspaceIndexRoute
-  '/api/public/auth/domain-block': typeof ApiPublicAuthDomainBlockRoute
-  '/api/public/auth/recover': typeof ApiPublicAuthRecoverRoute
-  '/api/public/newsletter/confirm': typeof ApiPublicNewsletterConfirmRoute
-  '/api/public/newsletter/subscribe': typeof ApiPublicNewsletterSubscribeRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
-  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/api/public/brief/assist': typeof ApiPublicBriefAssistRoute
+  '/api/public/brief/init': typeof ApiPublicBriefInitRoute
+  '/api/public/brief/submit': typeof ApiPublicBriefSubmitRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
+    | '/brief'
     | '/careers'
     | '/company'
     | '/contact'
@@ -651,16 +477,13 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/start'
     | '/terms'
-    | '/unsubscribe'
-    | '/workspace'
     | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/how-to-measure-ai-output-quality'
     | '/answers/what-are-command-gates-in-ai-systems'
     | '/answers/what-is-ai-governance'
     | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
-    | '/email/unsubscribe'
-    | '/newsletter/confirm'
+    | '/products/aexos'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -676,32 +499,18 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers/'
     | '/research/'
-    | '/workspace/$'
-    | '/workspace/admin'
-    | '/workspace/careers'
-    | '/workspace/dev'
-    | '/workspace/finance'
-    | '/workspace/hr'
-    | '/workspace/marketing'
-    | '/workspace/pipeline'
-    | '/workspace/products'
+    | '/api/public/assistant'
     | '/api/public/contact'
     | '/api/public/cta-events'
-    | '/api/public/maax-waitlist'
+    | '/api/public/talent'
     | '/api/public/web-vitals'
-    | '/lovable/email/suppression'
-    | '/workspace/'
-    | '/api/public/auth/domain-block'
-    | '/api/public/auth/recover'
-    | '/api/public/newsletter/confirm'
-    | '/api/public/newsletter/subscribe'
-    | '/lovable/email/queue/process'
-    | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
+    | '/api/public/brief/assist'
+    | '/api/public/brief/init'
+    | '/api/public/brief/submit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
+    | '/brief'
     | '/careers'
     | '/company'
     | '/contact'
@@ -717,15 +526,13 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/start'
     | '/terms'
-    | '/unsubscribe'
     | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/how-to-measure-ai-output-quality'
     | '/answers/what-are-command-gates-in-ai-systems'
     | '/answers/what-is-ai-governance'
     | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
-    | '/email/unsubscribe'
-    | '/newsletter/confirm'
+    | '/products/aexos'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -741,33 +548,18 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers'
     | '/research'
-    | '/workspace/$'
-    | '/workspace/admin'
-    | '/workspace/careers'
-    | '/workspace/dev'
-    | '/workspace/finance'
-    | '/workspace/hr'
-    | '/workspace/marketing'
-    | '/workspace/pipeline'
-    | '/workspace/products'
+    | '/api/public/assistant'
     | '/api/public/contact'
     | '/api/public/cta-events'
-    | '/api/public/maax-waitlist'
+    | '/api/public/talent'
     | '/api/public/web-vitals'
-    | '/lovable/email/suppression'
-    | '/workspace'
-    | '/api/public/auth/domain-block'
-    | '/api/public/auth/recover'
-    | '/api/public/newsletter/confirm'
-    | '/api/public/newsletter/subscribe'
-    | '/lovable/email/queue/process'
-    | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
+    | '/api/public/brief/assist'
+    | '/api/public/brief/init'
+    | '/api/public/brief/submit'
   id:
     | '__root__'
     | '/'
-    | '/_authenticated'
-    | '/auth'
+    | '/brief'
     | '/careers'
     | '/company'
     | '/contact'
@@ -783,16 +575,13 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/start'
     | '/terms'
-    | '/unsubscribe'
-    | '/_authenticated/workspace'
     | '/answers/ai-execution-system-vs-ai-automation'
     | '/answers/how-to-measure-ai-output-quality'
     | '/answers/what-are-command-gates-in-ai-systems'
     | '/answers/what-is-ai-governance'
     | '/answers/what-is-goal-grounded-generation'
     | '/answers/what-is-governed-ai-execution'
-    | '/email/unsubscribe'
-    | '/newsletter/confirm'
+    | '/products/aexos'
     | '/products/maax-studio'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
@@ -808,34 +597,19 @@ export interface FileRouteTypes {
     | '/solutions/workflow-automation'
     | '/answers/'
     | '/research/'
-    | '/_authenticated/workspace/$'
-    | '/_authenticated/workspace/admin'
-    | '/_authenticated/workspace/careers'
-    | '/_authenticated/workspace/dev'
-    | '/_authenticated/workspace/finance'
-    | '/_authenticated/workspace/hr'
-    | '/_authenticated/workspace/marketing'
-    | '/_authenticated/workspace/pipeline'
-    | '/_authenticated/workspace/products'
+    | '/api/public/assistant'
     | '/api/public/contact'
     | '/api/public/cta-events'
-    | '/api/public/maax-waitlist'
+    | '/api/public/talent'
     | '/api/public/web-vitals'
-    | '/lovable/email/suppression'
-    | '/_authenticated/workspace/'
-    | '/api/public/auth/domain-block'
-    | '/api/public/auth/recover'
-    | '/api/public/newsletter/confirm'
-    | '/api/public/newsletter/subscribe'
-    | '/lovable/email/queue/process'
-    | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
+    | '/api/public/brief/assist'
+    | '/api/public/brief/init'
+    | '/api/public/brief/submit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AuthRoute: typeof AuthRoute
+  BriefRoute: typeof BriefRoute
   CareersRoute: typeof CareersRoute
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
@@ -851,41 +625,27 @@ export interface RootRouteChildren {
   SolutionsRoute: typeof SolutionsRouteWithChildren
   StartRoute: typeof StartRoute
   TermsRoute: typeof TermsRoute
-  UnsubscribeRoute: typeof UnsubscribeRoute
   AnswersAiExecutionSystemVsAiAutomationRoute: typeof AnswersAiExecutionSystemVsAiAutomationRoute
   AnswersHowToMeasureAiOutputQualityRoute: typeof AnswersHowToMeasureAiOutputQualityRoute
   AnswersWhatAreCommandGatesInAiSystemsRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRoute
   AnswersWhatIsAiGovernanceRoute: typeof AnswersWhatIsAiGovernanceRoute
   AnswersWhatIsGoalGroundedGenerationRoute: typeof AnswersWhatIsGoalGroundedGenerationRoute
   AnswersWhatIsGovernedAiExecutionRoute: typeof AnswersWhatIsGovernedAiExecutionRoute
-  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
-  NewsletterConfirmRoute: typeof NewsletterConfirmRoute
   ResearchSlugRoute: typeof ResearchSlugRoute
   AnswersIndexRoute: typeof AnswersIndexRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
+  ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
   ApiPublicCtaEventsRoute: typeof ApiPublicCtaEventsRoute
-  ApiPublicMaaxWaitlistRoute: typeof ApiPublicMaaxWaitlistRoute
+  ApiPublicTalentRoute: typeof ApiPublicTalentRoute
   ApiPublicWebVitalsRoute: typeof ApiPublicWebVitalsRoute
-  LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
-  ApiPublicAuthDomainBlockRoute: typeof ApiPublicAuthDomainBlockRoute
-  ApiPublicAuthRecoverRoute: typeof ApiPublicAuthRecoverRoute
-  ApiPublicNewsletterConfirmRoute: typeof ApiPublicNewsletterConfirmRoute
-  ApiPublicNewsletterSubscribeRoute: typeof ApiPublicNewsletterSubscribeRoute
-  LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
-  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
-  LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
+  ApiPublicBriefAssistRoute: typeof ApiPublicBriefAssistRoute
+  ApiPublicBriefInitRoute: typeof ApiPublicBriefInitRoute
+  ApiPublicBriefSubmitRoute: typeof ApiPublicBriefSubmitRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/unsubscribe': {
-      id: '/unsubscribe'
-      path: '/unsubscribe'
-      fullPath: '/unsubscribe'
-      preLoaderRoute: typeof UnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -991,18 +751,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+    '/brief': {
+      id: '/brief'
+      path: '/brief'
+      fullPath: '/brief'
+      preLoaderRoute: typeof BriefRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -1117,19 +870,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsMaaxStudioRouteImport
       parentRoute: typeof ProductsRoute
     }
-    '/newsletter/confirm': {
-      id: '/newsletter/confirm'
-      path: '/newsletter/confirm'
-      fullPath: '/newsletter/confirm'
-      preLoaderRoute: typeof NewsletterConfirmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
+    '/products/aexos': {
+      id: '/products/aexos'
+      path: '/aexos'
+      fullPath: '/products/aexos'
+      preLoaderRoute: typeof ProductsAexosRouteImport
+      parentRoute: typeof ProductsRoute
     }
     '/answers/what-is-governed-ai-execution': {
       id: '/answers/what-is-governed-ai-execution'
@@ -1173,27 +919,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/workspace': {
-      id: '/_authenticated/workspace'
-      path: '/workspace'
-      fullPath: '/workspace'
-      preLoaderRoute: typeof AuthenticatedWorkspaceRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/workspace/': {
-      id: '/_authenticated/workspace/'
-      path: '/'
-      fullPath: '/workspace/'
-      preLoaderRoute: typeof AuthenticatedWorkspaceIndexRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/web-vitals': {
       id: '/api/public/web-vitals'
       path: '/api/public/web-vitals'
@@ -1201,11 +926,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebVitalsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/maax-waitlist': {
-      id: '/api/public/maax-waitlist'
-      path: '/api/public/maax-waitlist'
-      fullPath: '/api/public/maax-waitlist'
-      preLoaderRoute: typeof ApiPublicMaaxWaitlistRouteImport
+    '/api/public/talent': {
+      id: '/api/public/talent'
+      path: '/api/public/talent'
+      fullPath: '/api/public/talent'
+      preLoaderRoute: typeof ApiPublicTalentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/cta-events': {
@@ -1222,169 +947,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/workspace/products': {
-      id: '/_authenticated/workspace/products'
-      path: '/products'
-      fullPath: '/workspace/products'
-      preLoaderRoute: typeof AuthenticatedWorkspaceProductsRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/pipeline': {
-      id: '/_authenticated/workspace/pipeline'
-      path: '/pipeline'
-      fullPath: '/workspace/pipeline'
-      preLoaderRoute: typeof AuthenticatedWorkspacePipelineRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/marketing': {
-      id: '/_authenticated/workspace/marketing'
-      path: '/marketing'
-      fullPath: '/workspace/marketing'
-      preLoaderRoute: typeof AuthenticatedWorkspaceMarketingRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/hr': {
-      id: '/_authenticated/workspace/hr'
-      path: '/hr'
-      fullPath: '/workspace/hr'
-      preLoaderRoute: typeof AuthenticatedWorkspaceHrRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/finance': {
-      id: '/_authenticated/workspace/finance'
-      path: '/finance'
-      fullPath: '/workspace/finance'
-      preLoaderRoute: typeof AuthenticatedWorkspaceFinanceRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/dev': {
-      id: '/_authenticated/workspace/dev'
-      path: '/dev'
-      fullPath: '/workspace/dev'
-      preLoaderRoute: typeof AuthenticatedWorkspaceDevRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/careers': {
-      id: '/_authenticated/workspace/careers'
-      path: '/careers'
-      fullPath: '/workspace/careers'
-      preLoaderRoute: typeof AuthenticatedWorkspaceCareersRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/admin': {
-      id: '/_authenticated/workspace/admin'
-      path: '/admin'
-      fullPath: '/workspace/admin'
-      preLoaderRoute: typeof AuthenticatedWorkspaceAdminRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/$': {
-      id: '/_authenticated/workspace/$'
-      path: '/$'
-      fullPath: '/workspace/$'
-      preLoaderRoute: typeof AuthenticatedWorkspaceSplatRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/lovable/email/transactional/send': {
-      id: '/lovable/email/transactional/send'
-      path: '/lovable/email/transactional/send'
-      fullPath: '/lovable/email/transactional/send'
-      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+    '/api/public/assistant': {
+      id: '/api/public/assistant'
+      path: '/api/public/assistant'
+      fullPath: '/api/public/assistant'
+      preLoaderRoute: typeof ApiPublicAssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/transactional/preview': {
-      id: '/lovable/email/transactional/preview'
-      path: '/lovable/email/transactional/preview'
-      fullPath: '/lovable/email/transactional/preview'
-      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+    '/api/public/brief/submit': {
+      id: '/api/public/brief/submit'
+      path: '/api/public/brief/submit'
+      fullPath: '/api/public/brief/submit'
+      preLoaderRoute: typeof ApiPublicBriefSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+    '/api/public/brief/init': {
+      id: '/api/public/brief/init'
+      path: '/api/public/brief/init'
+      fullPath: '/api/public/brief/init'
+      preLoaderRoute: typeof ApiPublicBriefInitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/newsletter/subscribe': {
-      id: '/api/public/newsletter/subscribe'
-      path: '/api/public/newsletter/subscribe'
-      fullPath: '/api/public/newsletter/subscribe'
-      preLoaderRoute: typeof ApiPublicNewsletterSubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/newsletter/confirm': {
-      id: '/api/public/newsletter/confirm'
-      path: '/api/public/newsletter/confirm'
-      fullPath: '/api/public/newsletter/confirm'
-      preLoaderRoute: typeof ApiPublicNewsletterConfirmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/auth/recover': {
-      id: '/api/public/auth/recover'
-      path: '/api/public/auth/recover'
-      fullPath: '/api/public/auth/recover'
-      preLoaderRoute: typeof ApiPublicAuthRecoverRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/auth/domain-block': {
-      id: '/api/public/auth/domain-block'
-      path: '/api/public/auth/domain-block'
-      fullPath: '/api/public/auth/domain-block'
-      preLoaderRoute: typeof ApiPublicAuthDomainBlockRouteImport
+    '/api/public/brief/assist': {
+      id: '/api/public/brief/assist'
+      path: '/api/public/brief/assist'
+      fullPath: '/api/public/brief/assist'
+      preLoaderRoute: typeof ApiPublicBriefAssistRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface AuthenticatedWorkspaceRouteChildren {
-  AuthenticatedWorkspaceSplatRoute: typeof AuthenticatedWorkspaceSplatRoute
-  AuthenticatedWorkspaceAdminRoute: typeof AuthenticatedWorkspaceAdminRoute
-  AuthenticatedWorkspaceCareersRoute: typeof AuthenticatedWorkspaceCareersRoute
-  AuthenticatedWorkspaceDevRoute: typeof AuthenticatedWorkspaceDevRoute
-  AuthenticatedWorkspaceFinanceRoute: typeof AuthenticatedWorkspaceFinanceRoute
-  AuthenticatedWorkspaceHrRoute: typeof AuthenticatedWorkspaceHrRoute
-  AuthenticatedWorkspaceMarketingRoute: typeof AuthenticatedWorkspaceMarketingRoute
-  AuthenticatedWorkspacePipelineRoute: typeof AuthenticatedWorkspacePipelineRoute
-  AuthenticatedWorkspaceProductsRoute: typeof AuthenticatedWorkspaceProductsRoute
-  AuthenticatedWorkspaceIndexRoute: typeof AuthenticatedWorkspaceIndexRoute
-}
-
-const AuthenticatedWorkspaceRouteChildren: AuthenticatedWorkspaceRouteChildren =
-  {
-    AuthenticatedWorkspaceSplatRoute: AuthenticatedWorkspaceSplatRoute,
-    AuthenticatedWorkspaceAdminRoute: AuthenticatedWorkspaceAdminRoute,
-    AuthenticatedWorkspaceCareersRoute: AuthenticatedWorkspaceCareersRoute,
-    AuthenticatedWorkspaceDevRoute: AuthenticatedWorkspaceDevRoute,
-    AuthenticatedWorkspaceFinanceRoute: AuthenticatedWorkspaceFinanceRoute,
-    AuthenticatedWorkspaceHrRoute: AuthenticatedWorkspaceHrRoute,
-    AuthenticatedWorkspaceMarketingRoute: AuthenticatedWorkspaceMarketingRoute,
-    AuthenticatedWorkspacePipelineRoute: AuthenticatedWorkspacePipelineRoute,
-    AuthenticatedWorkspaceProductsRoute: AuthenticatedWorkspaceProductsRoute,
-    AuthenticatedWorkspaceIndexRoute: AuthenticatedWorkspaceIndexRoute,
-  }
-
-const AuthenticatedWorkspaceRouteWithChildren =
-  AuthenticatedWorkspaceRoute._addFileChildren(
-    AuthenticatedWorkspaceRouteChildren,
-  )
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedWorkspaceRoute: typeof AuthenticatedWorkspaceRouteWithChildren
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedWorkspaceRoute: AuthenticatedWorkspaceRouteWithChildren,
-}
-
-const AuthenticatedRouteRouteWithChildren =
-  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface ProductsRouteChildren {
+  ProductsAexosRoute: typeof ProductsAexosRoute
   ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
+  ProductsAexosRoute: ProductsAexosRoute,
   ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
 }
 
@@ -1427,8 +1027,7 @@ const SolutionsRouteWithChildren = SolutionsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AuthRoute: AuthRoute,
+  BriefRoute: BriefRoute,
   CareersRoute: CareersRoute,
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
@@ -1444,7 +1043,6 @@ const rootRouteChildren: RootRouteChildren = {
   SolutionsRoute: SolutionsRouteWithChildren,
   StartRoute: StartRoute,
   TermsRoute: TermsRoute,
-  UnsubscribeRoute: UnsubscribeRoute,
   AnswersAiExecutionSystemVsAiAutomationRoute:
     AnswersAiExecutionSystemVsAiAutomationRoute,
   AnswersHowToMeasureAiOutputQualityRoute:
@@ -1455,23 +1053,17 @@ const rootRouteChildren: RootRouteChildren = {
   AnswersWhatIsGoalGroundedGenerationRoute:
     AnswersWhatIsGoalGroundedGenerationRoute,
   AnswersWhatIsGovernedAiExecutionRoute: AnswersWhatIsGovernedAiExecutionRoute,
-  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
-  NewsletterConfirmRoute: NewsletterConfirmRoute,
   ResearchSlugRoute: ResearchSlugRoute,
   AnswersIndexRoute: AnswersIndexRoute,
   ResearchIndexRoute: ResearchIndexRoute,
+  ApiPublicAssistantRoute: ApiPublicAssistantRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
   ApiPublicCtaEventsRoute: ApiPublicCtaEventsRoute,
-  ApiPublicMaaxWaitlistRoute: ApiPublicMaaxWaitlistRoute,
+  ApiPublicTalentRoute: ApiPublicTalentRoute,
   ApiPublicWebVitalsRoute: ApiPublicWebVitalsRoute,
-  LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
-  ApiPublicAuthDomainBlockRoute: ApiPublicAuthDomainBlockRoute,
-  ApiPublicAuthRecoverRoute: ApiPublicAuthRecoverRoute,
-  ApiPublicNewsletterConfirmRoute: ApiPublicNewsletterConfirmRoute,
-  ApiPublicNewsletterSubscribeRoute: ApiPublicNewsletterSubscribeRoute,
-  LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
-  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
-  LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
+  ApiPublicBriefAssistRoute: ApiPublicBriefAssistRoute,
+  ApiPublicBriefInitRoute: ApiPublicBriefInitRoute,
+  ApiPublicBriefSubmitRoute: ApiPublicBriefSubmitRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -8,7 +8,8 @@ import { expect, test } from "@playwright/test";
 const PAGES: { path: string; required: string[] }[] = [
   { path: "/", required: ["Organization", "WebSite"] },
   { path: "/company", required: ["Organization", "WebPage"] },
-  { path: "/products/maax-studio", required: ["WebPage", "BreadcrumbList"] },
+  { path: "/products", required: ["BreadcrumbList"] },
+  { path: "/products/aexos", required: ["BreadcrumbList"] },
   { path: "/solutions", required: ["BreadcrumbList"] },
   { path: "/solutions/ai-strategy-advisory", required: ["Service", "BreadcrumbList"] },
   { path: "/solutions/digital-web-systems", required: ["Service", "BreadcrumbList"] },

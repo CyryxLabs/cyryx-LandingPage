@@ -102,9 +102,9 @@ export const Route = createFileRoute("/answers/how-to-measure-ai-output-quality"
           label: "What is goal-grounded generation?",
           href: "/answers/what-is-goal-grounded-generation",
         },
-        { label: "MAAX Studio (Cyryx Labs)", href: "/products/maax-studio" },
+        { label: "AEXOS (Cyryx Labs)", href: "/products/aexos" },
         { label: "Cyryx Solutions", href: "/solutions" },
-        { label: "Cyryx Applied Research", href: "/research" },
+        { label: "Cyryx Applied AI Lab", href: "/research" },
       ]}
     />
   ),

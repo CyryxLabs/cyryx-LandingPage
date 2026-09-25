@@ -102,10 +102,10 @@ function ResearchPublicationPage() {
           <div className="relative mx-auto max-w-7xl">
             <Link
               to="/research"
-              className="inline-flex min-h-11 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--silver-dim)] transition hover:text-[var(--accent-glow)]"
+              className="inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--silver-dim)] transition hover:text-[var(--accent-glow)]"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
-              Applied Research
+              Applied AI Lab
             </Link>
 
             <div className="mt-8 grid gap-12 lg:grid-cols-[1.16fr_0.84fr] lg:items-end lg:gap-20">
@@ -129,7 +129,7 @@ function ResearchPublicationPage() {
                   ["License", publication.license],
                 ].map(([label, value]) => (
                   <div key={label} className="bg-[var(--obsidian)] p-5">
-                    <dt className="font-mono text-[8px] uppercase tracking-[0.18em] text-[var(--steel)]">
+                    <dt className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
                       {label}
                     </dt>
                     <dd className="mt-2 text-sm text-[var(--silver)]">{value}</dd>
@@ -144,7 +144,7 @@ function ResearchPublicationPage() {
                   href={publication.doiUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[var(--onyx)] transition hover:bg-white"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-6 font-mono text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--onyx)] transition hover:bg-white"
                 >
                   Open DOI record <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </a>
@@ -152,7 +152,7 @@ function ResearchPublicationPage() {
               {publication.sourceUrl && recordVerified && (
                 <a
                   href={publication.sourceUrl}
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/15 px-6 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/15 px-6 font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
                 >
                   Download LaTeX source <Download className="h-4 w-4" aria-hidden />
                 </a>
@@ -176,7 +176,7 @@ function ResearchPublicationPage() {
             <div className="mt-8 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 md:grid-cols-2 xl:grid-cols-4">
               {Object.values(publication.evidence).map((item) => (
                 <article key={item.label} className="bg-[var(--graphite)] p-5 sm:p-6">
-                  <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
+                  <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
                     {item.state}
                   </p>
                   <h3 className="mt-4 font-display text-xl text-[var(--silver)]">{item.label}</h3>
@@ -184,7 +184,7 @@ function ResearchPublicationPage() {
                     {item.summary}
                   </p>
                   {item.checkedAt ? (
-                    <p className="mt-4 font-mono text-[8px] uppercase tracking-[0.14em] text-[var(--steel)]">
+                    <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
                       Reviewed {item.checkedAt}
                     </p>
                   ) : null}
@@ -198,7 +198,7 @@ function ResearchPublicationPage() {
           <div className="grid gap-12 lg:grid-cols-[0.34fr_0.66fr] lg:gap-24">
             <div>
               <HudLabel>Website summary of the publication</HudLabel>
-              <p className="mt-6 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--steel)]">
+              <p className="mt-6 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]">
                 {recordVerified && publication.doi
                   ? `DOI ${publication.doi}`
                   : "Record unavailable"}
@@ -212,7 +212,7 @@ function ResearchPublicationPage() {
                 {publication.keywords.map((keyword) => (
                   <span
                     key={keyword}
-                    className="rounded-full border border-white/10 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.14em] text-[var(--steel)]"
+                    className="rounded-full border border-white/10 px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]"
                   >
                     {keyword}
                   </span>
@@ -241,13 +241,13 @@ function ResearchPublicationPage() {
               <div className="mt-12 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
                 {publication.controlDomains.map((domain) => (
                   <article key={domain.id} className="min-h-48 bg-[var(--graphite)] p-6">
-                    <span className="font-mono text-[9px] text-[var(--accent-glow)]">
+                    <span className="font-mono text-[12px] text-[var(--accent-glow)]">
                       {domain.id}
                     </span>
                     <h3 className="mt-8 font-display text-xl tracking-[-0.025em] text-[var(--silver)]">
                       {domain.name}
                     </h3>
-                    <p className="mt-4 font-mono text-[8px] uppercase tracking-[0.15em] text-[var(--steel)]">
+                    <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.15em] text-[var(--steel)]">
                       {domain.controls} controls / {domain.mustControls} MUST
                     </p>
                   </article>
@@ -272,7 +272,7 @@ function ResearchPublicationPage() {
 
             <div className="mt-10 max-w-full overflow-x-auto rounded-lg border border-white/10">
               <table className="w-full border-collapse text-left" style={{ minWidth: 840 }}>
-                <thead className="bg-[var(--graphite)] font-mono text-[8px] uppercase tracking-[0.14em] text-[var(--steel)]">
+                <thead className="bg-[var(--graphite)] font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
                   <tr>
                     <th className="px-5 py-4">CGP domain</th>
                     <th className="px-5 py-4">EU AI Act</th>
@@ -302,7 +302,7 @@ function ResearchPublicationPage() {
               <div className="mt-10 grid gap-4 lg:grid-cols-3">
                 {publication.conformanceLevels.map((level) => (
                   <article key={level.level} className="rounded-lg border border-white/10 p-7">
-                    <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
+                    <span className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
                       {level.level} / {level.badge}
                     </span>
                     <h3 className="mt-8 font-display text-2xl text-[var(--silver)]">
@@ -348,7 +348,7 @@ function ResearchPublicationPage() {
               </dl>
             </div>
             <div className="min-w-0">
-              <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-[var(--steel)]">
+              <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
                 Suggested citation
               </p>
               <p className="mt-4 break-words rounded-lg border border-white/10 bg-[var(--onyx)] p-5 font-mono text-xs leading-relaxed text-[var(--silver-dim)]">
@@ -360,7 +360,7 @@ function ResearchPublicationPage() {
                 type="button"
                 onClick={copyCitation}
                 disabled={!recordVerified}
-                className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-md border border-white/15 px-5 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
+                className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-md border border-white/15 px-5 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
               >
                 {copied ? (
                   <Check className="h-4 w-4" aria-hidden />
@@ -394,7 +394,7 @@ function RecordRow({ label, value, href }: { label: string; value?: string; href
   if (!value) return null;
   return (
     <div className="grid min-w-0 grid-cols-1 gap-2 border-t border-white/10 pt-4 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-4">
-      <dt className="font-mono text-[8px] uppercase tracking-[0.16em] text-[var(--steel)]">
+      <dt className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]">
         {label}
       </dt>
       <dd className="min-w-0">

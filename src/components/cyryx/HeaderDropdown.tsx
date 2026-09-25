@@ -36,7 +36,7 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
           }
         }}
         className={cn(
-          "hud-label h-auto bg-transparent p-0 text-[0.7rem] tracking-[0.18em] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5 focus:bg-transparent hover:bg-transparent data-[state=open]:bg-transparent outline-none ring-offset-0 focus-visible:ring-0",
+          "hud-label h-auto bg-transparent p-0 text-[0.8rem] tracking-[0.14em] transition-colors relative py-2 whitespace-nowrap inline-flex items-center gap-1.5 focus:bg-transparent hover:bg-transparent data-[state=open]:bg-transparent outline-none ring-offset-0 focus-visible:ring-0",
           isActive
             ? "text-[var(--silver)] after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)] shadow-none"
             : "text-[var(--silver-dim)] hover:text-[var(--silver)]",
@@ -63,7 +63,7 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
                   to={item.href}
                   onClick={onClose}
                   className={cn(
-                    "flex min-h-[44px] items-center px-4 rounded-sm transition-colors hud-label text-[0.65rem] tracking-[0.15em] outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent-glow)]",
+                    "flex min-h-[44px] items-center px-4 rounded-sm transition-colors hud-label text-[0.75rem] tracking-[0.1em] outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent-glow)]",
                     isCurrent
                       ? "text-[var(--accent-glow)] bg-[var(--accent-glow)]/5"
                       : "text-[var(--silver-dim)] hover:text-[var(--silver)] hover:bg-[var(--silver)]/5",

@@ -2,37 +2,43 @@
  * Fire-and-forget CTA click tracker. Uses sendBeacon so the request survives
  * the same-tab navigation/hash change that follows the click.
  *
- * Endpoint: POST /api/public/cta-events (anon-insertable, admins-read-only).
+ * Endpoint: POST /api/public/cta-events (same-origin; forwarded to the CRM
+ * funnel ledger, no personal data).
  */
 import { getActiveCopyVariant } from "./copy-variant";
 import { publicDestination, publicPath, publicReferrer } from "./public-location";
 
 export type CtaName =
   | "start_project"
-  | "request_early_access"
-  | "request_maax_access"
-  | "explore_maax"
+  | "see_how_we_work"
   | "see_delivery"
+  | "view_product"
+  | "copy_command"
   | "careers_talent_network"
   | "careers_email"
   | "talent_network_signup"
-  | "explore_products"
   | "contact_email"
   | "view_research"
   | "read_cgp"
-  | "maax_waitlist_view"
-  | "maax_waitlist_started"
-  | "maax_waitlist_submitted"
-  | "maax_waitlist_error"
+  | "proof_link"
+  | "evidence_sample"
+  // Lead funnel
+  | "form_start"
+  | "form_step_complete"
+  | "generate_lead"
   | "qualification_form_submitted"
-  | "qualification_form_error";
+  | "qualification_form_error"
+  // Real-time assistant
+  | "assistant_open"
+  | "assistant_message"
+  | "assistant_lead"
+  | "assistant_error";
 
 export type CtaSection =
   | "hero"
   | "header"
   | "mobile_menu"
   | "sticky"
-  | "maax_spotlight"
   | "final_cta"
   | "paths"
   | "solutions"
@@ -40,8 +46,13 @@ export type CtaSection =
   | "contact"
   | "footer"
   | "research_band"
-  | "maax_product"
-  | "start";
+  | "proof_strip"
+  | "operating_model"
+  | "product"
+  | "evidence"
+  | "assistant"
+  | "start"
+  | "brief";
 
 export interface TrackCtaInput {
   cta: CtaName;

@@ -1,13 +1,15 @@
 import { describe, expect, test } from "bun:test";
-import { FitReviewSchema } from "../src/lib/contact.schema";
+import {
+  FIT_REVIEW_PROJECT_TYPES,
+  FIT_REVIEW_STEP_ONE_FIELDS,
+  FitReviewSchema,
+  PROJECT_TYPE_BY_START_INTENT,
+} from "../src/lib/contact.schema";
 import { buildStartProjectHref, parseStartProjectContext } from "../src/lib/cta";
 import { CGP_V1 } from "../src/data/publications";
-import { OPERATING_LIFECYCLE, TRANSVERSAL_CAPABILITIES } from "../src/data/site-taxonomy";
+import * as siteTaxonomy from "../src/data/site-taxonomy";
+import { AEXOS_PRODUCT, OPERATING_LIFECYCLE } from "../src/data/site-taxonomy";
 import { publicDestination, publicPath, publicReferrer } from "../src/lib/public-location";
-import {
-  buildFitReviewEmailJobs,
-  enqueueFitReviewEmails,
-} from "../src/lib/email/fit-review-notifications.server";
 
 const validFitReview = {
   name: "Ada Lovelace",
@@ -22,22 +24,26 @@ const validFitReview = {
 };
 
 describe("public taxonomy contract", () => {
-  test("keeps the canonical lifecycle and transversal capabilities separate", () => {
+  test("keeps the canonical four-stage lifecycle", () => {
     expect(OPERATING_LIFECYCLE.map((stage) => stage.name)).toEqual([
       "Advise",
       "Build",
       "Control",
       "Operate",
     ]);
-    expect(TRANSVERSAL_CAPABILITIES.map((capability) => capability.name)).toEqual([
-      "Products",
-      "Applied Research",
-    ]);
-    expect(
-      TRANSVERSAL_CAPABILITIES.every((capability) =>
-        capability.description.includes("separate from client delivery"),
-      ),
-    ).toBe(true);
+  });
+
+  test("presents AEXOS as the public product with its real maturity", () => {
+    expect(AEXOS_PRODUCT.name).toBe("AEXOS");
+    expect(AEXOS_PRODUCT.kind).toBe("Product");
+    expect(AEXOS_PRODUCT.maturity).toBe("Core available on npm · Pro by commercial license");
+    expect(AEXOS_PRODUCT.npmPackage).toBe("@aexos/core");
+    expect(AEXOS_PRODUCT.npmUrl).toBe("https://www.npmjs.com/package/@aexos/core");
+  });
+
+  test("no taxonomy export references the discontinued MAAX product", () => {
+    expect(JSON.stringify(siteTaxonomy)).not.toMatch(/MAAX/i);
+    expect(Object.keys(siteTaxonomy)).not.toContain("MAAX_STUDIO_PRODUCT");
   });
 });
 
@@ -58,61 +64,55 @@ describe("start context contract", () => {
     );
   });
 
-  test("builds a stable contextual fit-review URL", () => {
+  test("builds a stable contextual start-a-project URL", () => {
+    expect(buildStartProjectHref({ source: "home" })).toBe("/start?source=home");
     expect(buildStartProjectHref({ source: "home", intent: "operating-capability" })).toBe(
       "/start?source=home&intent=operating-capability",
     );
+    expect(buildStartProjectHref()).toBe("/start");
+  });
+
+  test("every intent that maps to a project type maps to an offered option", () => {
+    for (const projectType of Object.values(PROJECT_TYPE_BY_START_INTENT)) {
+      expect(FIT_REVIEW_PROJECT_TYPES).toContain(projectType);
+    }
+    expect(PROJECT_TYPE_BY_START_INTENT["workflow-automation"]).toBe("Workflow Automation");
   });
 });
 
 describe("fit-review qualification contract", () => {
-  test("requires project type, problem, outcome, and why-now context", () => {
+  test("step one requires identity, project type, problem, and consent", () => {
     expect(FitReviewSchema.safeParse(validFitReview).success).toBe(true);
-    for (const field of ["projectType", "problem", "outcome", "whyNow"] as const) {
+    for (const field of ["name", "email", "company", "projectType", "problem"] as const) {
       expect(FitReviewSchema.safeParse({ ...validFitReview, [field]: "" }).success).toBe(false);
     }
-  });
-});
-
-describe("fit-review email delivery contract", () => {
-  const input = {
-    submissionId: "00000000-0000-4000-8000-000000000001",
-    name: "Ada Lovelace",
-    email: "ada@example.com",
-    company: "Analytical Engines Ltd",
-    message: "Project type: Workflow Automation\n\nPrimary problem:\nManual handoffs.",
-    submittedAt: "2026-08-03T12:00:00.000Z",
-  };
-
-  test("builds a fixed internal notification and a sender confirmation without leaking context", () => {
-    const [notification, confirmation] = buildFitReviewEmailJobs(input);
-
-    expect(notification.templateName).toBe("fit-review-notification");
-    expect(notification.recipientEmail).toBeUndefined();
-    expect(notification.templateData).toMatchObject({
-      email: input.email,
-      message: input.message,
-      submissionId: input.submissionId,
-    });
-    expect(confirmation).toEqual({
-      templateName: "fit-review-confirmation",
-      recipientEmail: input.email,
-      templateData: { name: input.name },
-      idempotencyKey: `fit-review-confirmation-${input.submissionId}`,
-    });
+    expect(FitReviewSchema.safeParse({ ...validFitReview, consent: false }).success).toBe(false);
+    expect([...FIT_REVIEW_STEP_ONE_FIELDS]).toEqual(
+      expect.arrayContaining(["name", "email", "company", "projectType", "problem", "consent"]),
+    );
   });
 
-  test("attempts the two queues independently and reports partial delivery", async () => {
-    const calls: string[] = [];
-    const delivery = await enqueueFitReviewEmails(input, async (job) => {
-      calls.push(job.templateName);
-      return job.templateName === "fit-review-confirmation"
-        ? { ok: true, messageId: "confirmation-message" }
-        : { ok: false, reason: "enqueue_failed" };
-    });
+  test("outcome and why-now are optional step-two context", () => {
+    const { outcome: _outcome, whyNow: _whyNow, ...stepOneOnly } = validFitReview;
+    const parsed = FitReviewSchema.safeParse(stepOneOnly);
+    expect(parsed.success).toBe(true);
+    const blanks = FitReviewSchema.safeParse({ ...validFitReview, outcome: "", whyNow: "  " });
+    expect(blanks.success).toBe(true);
+    if (blanks.success) {
+      expect(blanks.data.outcome).toBeUndefined();
+      expect(blanks.data.whyNow).toBeUndefined();
+    }
+    for (const field of ["outcome", "whyNow"] as const) {
+      expect(FIT_REVIEW_STEP_ONE_FIELDS as readonly string[]).not.toContain(field);
+    }
+  });
 
-    expect(calls).toEqual(["fit-review-notification", "fit-review-confirmation"]);
-    expect(delivery).toEqual({ notification: "failed", confirmation: "queued" });
+  test("accepts optional attribution and assistant summary", () => {
+    const parsed = FitReviewSchema.safeParse({
+      ...validFitReview,
+      assistantSummary: "Visitor asked how engagements start; recommended Advise.",
+    });
+    expect(parsed.success).toBe(true);
   });
 });
 

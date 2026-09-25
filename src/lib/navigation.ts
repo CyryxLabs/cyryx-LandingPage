@@ -22,7 +22,7 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
     label: "Products",
     children: [
       { label: "Products Overview", href: "/products" },
-      { label: "MAAX Studio", href: "/products/maax-studio" },
+      { label: "AEXOS", href: "/products/aexos" },
     ] as const,
   },
   {
@@ -54,12 +54,13 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
       { label: "Company", href: "/company" },
       { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
+      { label: "Project Brief", href: "/brief" },
     ] as const,
   },
 ] as const;
 
 export const PRIMARY_NAVIGATION_CTA: NavigationCTA = {
-  label: "Start a fit review",
+  label: "Start a project",
   href: "/start",
 } as const;
 
@@ -112,12 +113,7 @@ export function isNavigationItemActive(pathname: string, href: string): boolean 
   const path = normalizePathname(pathname);
   const itemHref = normalizePathname(href);
 
-  // Rule from Section 11:
-  // "At /products: Products Overview = active, MAAX Studio = inactive"
-  // "At /products/maax-studio: MAAX Studio = active, Products Overview = inactive"
-  //
-  // This implies Products Overview (and likely other overview items)
-  // ONLY activate on exact match, to avoid sibling overlap.
+  // Overview items only activate on exact match, to avoid sibling overlap.
   const isOverview = ["/products", "/solutions", "/company"].includes(itemHref);
 
   if (isOverview) {

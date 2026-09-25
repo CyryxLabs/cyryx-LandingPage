@@ -68,7 +68,7 @@ export function SolutionPage(p: SolutionPageProps) {
           title={p.title}
           body={p.directAnswer}
           primaryCta={{
-            label: "Start a fit review",
+            label: "Start a project",
             to: startHref,
             onClick: () =>
               trackCta({ cta: "start_project", section: "solutions", href: startHref }),
@@ -120,7 +120,7 @@ export function SolutionPage(p: SolutionPageProps) {
               <ul className="mt-6 grid gap-5 sm:grid-cols-3">
                 {p.whoItIsFor.map((item, index) => (
                   <li key={item} className="text-sm leading-relaxed text-[var(--silver-dim)]">
-                    <span className="mb-3 block font-mono text-[8px] tracking-[0.2em] text-[var(--accent-glow)]">
+                    <span className="mb-3 block font-mono text-[12px] tracking-[0.2em] text-[var(--accent-glow)]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     {item}
@@ -212,7 +212,7 @@ export function SolutionPage(p: SolutionPageProps) {
                     key={step}
                     className="grid gap-4 border-b border-white/10 py-7 sm:grid-cols-[4rem_1fr] sm:items-start sm:py-8"
                   >
-                    <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
+                    <span className="font-mono text-[12px] tracking-[0.22em] text-[var(--accent-glow)]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <p className="font-display text-xl leading-snug tracking-[-0.02em] text-[var(--silver)] sm:text-2xl">
@@ -242,14 +242,14 @@ export function SolutionPage(p: SolutionPageProps) {
                   key={deliverable.phase}
                   className="grid gap-5 border-b border-white/10 py-7 sm:grid-cols-[4rem_0.72fr_1.28fr] sm:gap-8 sm:py-9"
                 >
-                  <span className="font-mono text-[9px] tracking-[0.22em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] tracking-[0.22em] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
                     <h3 className="font-display text-2xl font-medium tracking-[-0.025em] text-[var(--silver)]">
                       {deliverable.phase}
                     </h3>
-                    <p className="mt-2 font-mono text-[8px] uppercase tracking-[0.16em] text-[var(--steel)]">
+                    <p className="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]">
                       {deliverable.duration}
                     </p>
                   </div>
@@ -315,12 +315,9 @@ export function SolutionPage(p: SolutionPageProps) {
               </h2>
               <p className="mt-5 max-w-3xl text-sm leading-relaxed text-[var(--silver-dim)]">
                 Cyryx connects advisory, product thinking, engineering, and operations so the system
-                can be understood after the first release. Our product work in{" "}
-                <Link
-                  to="/products/maax-studio"
-                  className="text-[var(--accent-glow)] hover:underline"
-                >
-                  MAAX Studio
+                can be understood after the first release. Our product work on{" "}
+                <Link to="/products/aexos" className="text-[var(--accent-glow)] hover:underline">
+                  AEXOS
                 </Link>{" "}
                 informs that perspective without imposing a universal architecture on client work.
               </p>
@@ -367,7 +364,7 @@ export function SolutionPage(p: SolutionPageProps) {
                     open={index === 0}
                   >
                     <summary className="cursor-pointer list-none rounded-sm font-display text-xl text-[var(--silver)] hover:text-[var(--accent-glow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)] focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--onyx)]">
-                      <span className="mr-3 font-mono text-[8px] text-[var(--accent-glow)]">
+                      <span className="mr-3 font-mono text-[12px] text-[var(--accent-glow)]">
                         Q.
                       </span>
                       {item.q}
@@ -413,7 +410,7 @@ export function SolutionPage(p: SolutionPageProps) {
                     }
                     className="cx-btn cx-liquid-glass inline-flex h-11 items-center gap-2 rounded-md px-5 text-[var(--silver)] hud-label"
                   >
-                    Start a fit review
+                    Start a project
                     <span aria-hidden className="text-[var(--accent-glow)]">
                       →
                     </span>

@@ -6,28 +6,21 @@ import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
 import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { buildStartProjectHref, CONTACT_EMAIL } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
+import { cn } from "@/lib/utils";
 
 const PATH = "/contact";
 const TITLE = "Contact Cyryx Labs";
 const DESC =
-  "Contact Cyryx Labs about general, research, partnership, product, privacy, or careers matters. Project opportunities begin with a dedicated fit review.";
+  "Contact Cyryx Labs about projects, research, partnerships, privacy or careers. Project opportunities start with a short project brief.";
 
 const CONTACT_PATHS = [
   {
     label: "Project opportunities",
     title: "Bring us the business constraint.",
     body: "Use the project brief for advisory, digital systems, automation, internal assistants, custom AI products, governance, or managed operations.",
-    action: "Start a fit review",
+    action: "Start a project",
     cta: "start_project",
-    href: buildStartProjectHref({ source: "contact", intent: "operating-capability" }),
-  },
-  {
-    label: "Products",
-    title: "Discuss MAAX Studio.",
-    body: "Review the current product maturity and access model first, then contact us with the use case or research question you want to explore.",
-    action: "Explore products",
-    cta: "explore_products",
-    href: "/products",
+    href: buildStartProjectHref({ source: "contact" }),
   },
   {
     label: "Research and collaboration",
@@ -90,8 +83,8 @@ function ContactPage() {
               </h1>
             </div>
             <p className="max-w-xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-              Project qualification, product access, research, privacy, and careers follow different
-              paths. Choose the context below so your inquiry reaches the right workflow.
+              Projects, research, privacy and careers follow different paths. Choose the context
+              below so your inquiry reaches the right workflow.
             </p>
           </div>
 
@@ -103,7 +96,7 @@ function ContactPage() {
                   key={path.label}
                   className="grid gap-5 border-b border-[color-mix(in_oklab,var(--silver)_14%,transparent)] py-8 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)] lg:grid-cols-[5rem_minmax(16rem,0.65fr)_minmax(18rem,1fr)_auto] lg:items-center lg:gap-10 lg:py-10"
                 >
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] tracking-[0.2em] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
@@ -126,7 +119,13 @@ function ContactPage() {
                         href: path.href,
                       })
                     }
-                    className="sm:col-start-2 inline-flex min-h-11 items-center gap-2 justify-self-start hud-label text-[var(--silver)] transition-colors hover:text-[var(--accent-glow)] lg:col-start-auto lg:justify-self-end"
+                    className={cn(
+                      "sm:col-start-2 justify-self-start lg:col-start-auto lg:justify-self-end",
+                      // The project path is the primary action on this page.
+                      path.cta === "start_project"
+                        ? "cx-btn-primary"
+                        : "inline-flex min-h-11 items-center gap-2 hud-label text-[var(--silver)] transition-colors hover:text-[var(--accent-glow)]",
+                    )}
                   >
                     {path.action}
                     <ArrowRight className="h-4 w-4" aria-hidden />

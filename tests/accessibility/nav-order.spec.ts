@@ -2,8 +2,8 @@ import { test, expect } from "@playwright/test";
 
 test.describe.configure({ mode: "serial" });
 
-const EXPECTED_TOP_LEVEL = ["Products", "Solutions", "Research", "Company", "Start a fit review"];
-const ROUTES = ["/", "/products/maax-studio", "/solutions", "/research", "/company", "/contact"];
+const EXPECTED_TOP_LEVEL = ["Products", "Solutions", "Research", "Company", "Start a project"];
+const ROUTES = ["/", "/products/aexos", "/solutions", "/research", "/company", "/contact"];
 
 for (const route of ROUTES) {
   test(`desktop nav order + no Answers @ ${route}`, async ({ page }) => {
@@ -14,7 +14,7 @@ for (const route of ROUTES) {
     // HeaderDropdown triggers are buttons inside [role="menuitem"] if Radix default structure is followed,
     // or we check the specific navigation landmark.
     const topLevelElements = page.locator(
-      'header nav[aria-label="Primary"] button[data-radix-collection-item], header a[aria-label="Start a fit review"]',
+      'header nav[aria-label="Primary"] button[data-radix-collection-item], header a[aria-label="Start a project"]',
     );
 
     const labels = await topLevelElements.evaluateAll((els) =>
@@ -57,7 +57,7 @@ test("mobile nav order + no Answers", async ({ page }) => {
   const cta = dialog.locator('a[href="/start"]');
   await expect(cta).toBeVisible();
   const ctaText = (await cta.textContent())?.trim().replace(/\s*→\s*$/i, "") ?? "";
-  expect(ctaText).toBe("Start a fit review");
+  expect(ctaText).toBe("Start a project");
 
   // Verify Answers is not a group trigger
   expect(groupLabels.join("|")).not.toMatch(/Answers/i);

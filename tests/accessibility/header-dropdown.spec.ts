@@ -33,7 +33,7 @@ test.describe("Header Dropdown Accessibility", () => {
 
     const dropdownLink = page
       .locator("header nav")
-      .getByRole("link", { name: "MAAX Studio", exact: true });
+      .getByRole("link", { name: "AEXOS", exact: true });
     await expect(dropdownLink).toBeVisible();
 
     await trigger.click();
@@ -102,10 +102,10 @@ test.describe("Header Dropdown Accessibility", () => {
     const trigger = page.getByRole("button", { name: "Products", exact: true });
     await trigger.click();
 
-    const link = page.locator("header nav").getByRole("link", { name: "MAAX Studio", exact: true });
+    const link = page.locator("header nav").getByRole("link", { name: "AEXOS", exact: true });
     await link.click();
 
-    await expect(page).toHaveURL(/\/products\/maax-studio/);
+    await expect(page).toHaveURL(/\/products\/aexos$/);
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
@@ -122,7 +122,7 @@ test.describe("Header Dropdown Accessibility", () => {
 
   test("Active parent and aria-current are correct", async ({ page }) => {
     // Navigate to a subpage and wait for it to be stable
-    await openHydrated(page, "/products/maax-studio");
+    await openHydrated(page, "/products/aexos");
     const trigger = page.getByRole("button", { name: "Products", exact: true });
 
     // Check if the trigger is visible before asserting class
@@ -133,7 +133,7 @@ test.describe("Header Dropdown Accessibility", () => {
     expect(className).toContain("text-[var(--silver)]");
 
     await trigger.click();
-    const link = page.locator("header nav").getByRole("link", { name: "MAAX Studio", exact: true });
+    const link = page.locator("header nav").getByRole("link", { name: "AEXOS", exact: true });
     await expect(link).toHaveAttribute("aria-current", "page");
   });
 

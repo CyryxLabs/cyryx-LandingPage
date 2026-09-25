@@ -13,7 +13,7 @@ import { trackCta } from "@/lib/track-cta";
 export function StickyMobileCTA() {
   const [visible, setVisible] = useState(false);
   const headerCta = getCopy(useCopyVariant()).header.cta;
-  const startHref = buildStartProjectHref({ source: "home", intent: "operating-capability" });
+  const startHref = buildStartProjectHref({ source: "home" });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -35,7 +35,11 @@ export function StickyMobileCTA() {
 
     const update = () => {
       const past = window.scrollY > window.innerHeight * 0.6;
-      setVisible(past && !contactInView);
+      const show = past && !contactInView;
+      setVisible(show);
+      // Lets other fixed elements (the assistant launcher) sit above the bar.
+      if (show) document.body.dataset.stickyVisible = "true";
+      else delete document.body.dataset.stickyVisible;
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -46,6 +50,7 @@ export function StickyMobileCTA() {
       window.removeEventListener("resize", update);
       io?.disconnect();
       delete document.body.dataset.hasStickyCta;
+      delete document.body.dataset.stickyVisible;
     };
   }, []);
 
@@ -58,7 +63,7 @@ export function StickyMobileCTA() {
           href={startHref}
           aria-label={headerCta}
           onClick={() => trackCta({ cta: "start_project", section: "sticky", href: startHref })}
-          className="cx-liquid-glass inline-flex h-12 min-h-11 w-full items-center justify-center gap-2 rounded-md px-4 hud-label font-semibold text-[var(--accent-glow)] shadow-[var(--shadow-glow-teal)] active:brightness-95"
+          className="cx-btn-primary w-full"
         >
           {headerCta}
           <ArrowRight className="h-4 w-4" />
