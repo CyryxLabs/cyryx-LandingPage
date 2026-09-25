@@ -49,7 +49,16 @@ jobs:
       - name: Build production bundle (for bundle scan)
         env:
           LIGHTHOUSE_BUILD: "1"
+          # Same as production, so the assistant contracts run against the real bundle.
+          VITE_ASSISTANT_ENABLED: "true"
         run: bun run build
+      - name: Start local Gemini and CRM stand-ins
+        # tests/support/mock-gemini-server.mjs answers Gemini and the signed CRM
+        # intake routes (/crm/init, /submit, /event, /talent) and records calls.
+        run: |
+          nohup node tests/support/mock-gemini-server.mjs > mock-server.log 2>&1 &
+          for i in $(seq 1 20); do curl -sf http://127.0.0.1:4599/calls > /dev/null && exit 0; sleep 0.5; done
+          cat mock-server.log; exit 1
       - name: Run Playwright suite (a11y · content · SEO · bundle scan)
         env:
           CI: "1"
@@ -57,6 +66,10 @@ jobs:
           HOST: "127.0.0.1"
           PORT: "4175"
           PLAYWRIGHT_USE_PRODUCTION_SERVER: "1"
+          GEMINI_API_KEY: ci-mock-key
+          GEMINI_API_BASE: http://127.0.0.1:4599/models
+          CRM_INTAKE_URL: http://127.0.0.1:4599/crm
+          CRM_INTAKE_SECRET: test-crm-intake-secret-0123456789abcdef
         run: >-
           bunx playwright test
           --project=hero-a11y-chromium
