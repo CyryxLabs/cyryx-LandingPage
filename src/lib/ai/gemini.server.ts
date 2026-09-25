@@ -9,7 +9,10 @@
  *                   primary model is overloaded or unavailable (429/5xx/network)
  */
 export const DEFAULT_GEMINI_MODEL = "gemini-3.8-flash";
-export const DEFAULT_GEMINI_FALLBACK_MODELS = ["gemini-3.5-flash"] as const;
+// Measured on the production key (2026-09-24, 4 rounds): 3.5-flash-lite answered
+// every time in 0.6–0.9 s; flash-lite-latest every time in 1–2.5 s; 3.5-flash
+// failed or took 7–30 s under load. Fast, reliable models first.
+export const DEFAULT_GEMINI_FALLBACK_MODELS = ["gemini-3.5-flash-lite", "gemini-flash-lite-latest"] as const;
 
 /** Upstream statuses worth retrying on the next model in the chain. */
 export function isRetryableGeminiStatus(status: number): boolean {
