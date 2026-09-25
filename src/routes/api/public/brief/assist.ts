@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { BriefRequirementsSchema } from "@/lib/brief.schema";
+import { toBriefDraft } from "@/lib/brief-assist-draft";
 
 const PER_IP_LIMIT = 10;
 const WINDOW_MS = 60 * 60 * 1000;
@@ -16,7 +16,7 @@ Rules:
 - Features: short imperative titles, one-sentence descriptions, priority Must/Should/Could/Won't using MoSCoW (Must = the product is useless without it).
 - Success metrics must be measurable only if the description gives a basis; otherwise ask in openQuestions.
 - Write in clear, plain English.
-Return JSON with these optional keys: projectName, summary, problem, goals (string[]), successMetrics (string[]), users ([{name, description, needs}]), scenarios (string[]), features ([{title, description, priority}]), mvpDefinition, outOfScope, platforms (string[] from: Web app, iOS, Android, Desktop, API / backend only, Chat / assistant, Internal back-office), integrations ([{system, purpose, direction: read|write|both}]), openQuestions (single string, one question per line).`;
+Return JSON with these optional keys: projectName, summary, problem, goals (string[]), successMetrics (string[]), users ([{name, description, needs}] where each value is one string), scenarios (string[]), features ([{title, description, priority}]), mvpDefinition, outOfScope, platforms (string[] from: Web app, iOS, Android, Desktop, API / backend only, Chat / assistant, Internal back-office), integrations ([{system, purpose, direction: read|write|both}]), openQuestions (single string, one question per line).`;
 
 /** Drafts structured brief fields from a free-text description (the visitor reviews every field). */
 export const Route = createFileRoute("/api/public/brief/assist")({
@@ -65,17 +65,25 @@ export const Route = createFileRoute("/api/public/brief/assist")({
           totalTimeoutMs: 50_000,
           responseMimeType: "application/json",
         });
-        if (!text) return Response.json({ error: "assist_unavailable" }, { status: 503 });
+        if (!text) {
+          console.error("[brief-assist] no text from any model");
+          return Response.json({ error: "assist_unavailable" }, { status: 503 });
+        }
 
         let json: unknown;
         try {
           json = JSON.parse(text.replace(/^```(?:json)?\s*|\s*```$/g, ""));
         } catch {
+          console.error("[brief-assist] model returned invalid JSON", { length: text.length });
           return Response.json({ error: "assist_unavailable" }, { status: 503 });
         }
-        const draft = BriefRequirementsSchema.partial().safeParse(json);
-        if (!draft.success) return Response.json({ error: "assist_unavailable" }, { status: 503 });
-        return Response.json({ draft: draft.data });
+        const { draft, dropped } = toBriefDraft(json);
+        // Key names only; never the client's text.
+        if (dropped.length) console.error("[brief-assist] dropped invalid keys", dropped);
+        if (Object.keys(draft).length === 0) {
+          return Response.json({ error: "assist_unavailable" }, { status: 503 });
+        }
+        return Response.json({ draft });
       },
     },
   },
