@@ -11,7 +11,6 @@ import { useEffect, useMemo, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { BUILD_LABEL } from "../lib/build-info";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { initWebVitals } from "../lib/web-vitals";
 import { syncCopyVariantToDocument } from "../lib/copy-variant";
 import { captureFirstTouch } from "../lib/lead-attribution";
@@ -49,9 +48,6 @@ function ErrorComponent({ error: rawError, reset }: { error: unknown; reset: () 
   );
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -191,14 +187,6 @@ function RootShell({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{
             __html:
               "(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}var r=document.documentElement,s=function(){r.dataset.cyryxBootScrollSettled='true';window.dispatchEvent(new Event('cyryx:boot-scroll-settled'));};r.style.scrollBehavior='auto';if(!window.location.hash){window.scrollTo(0,0);window.addEventListener('pageshow',s,{once:true});return;}var j=function(){try{var id=decodeURIComponent(window.location.hash.slice(1)),el=document.getElementById(id);if(!el)return;var h=matchMedia('(min-width:1024px)').matches?96:64;window.scrollTo(0,Math.max(0,el.getBoundingClientRect().top+window.scrollY-h-8));requestAnimationFrame(function(){requestAnimationFrame(function(){r.style.scrollBehavior='';});});}catch(e){}};document.addEventListener('DOMContentLoaded',j,{once:true});window.addEventListener('load',j,{once:true});window.addEventListener('pageshow',s,{once:true});}catch(e){}})();",
-          }}
-        />
-        {/* Subdomain routing: workspace.<domain> serves the internal console.
-            Redirect pre-hydration so the landing page never flashes. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "(function(){try{var h=window.location.hostname||'';if(/^workspace\\./i.test(h)){var p=window.location.pathname;if(p==='/'||p===''){window.location.replace('/workspace'+window.location.search+window.location.hash);}}}catch(e){}})();",
           }}
         />
       </head>

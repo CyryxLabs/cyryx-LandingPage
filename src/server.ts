@@ -4,6 +4,7 @@ import appCss from "./styles.css?url";
 import { BUILD_VERSION } from "./lib/build-info";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { legacyRedirect } from "./lib/legacy-redirect";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -39,16 +40,7 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
-const PRIVATE_HTML_PREFIXES = [
-  "/workspace",
-  "/auth",
-  "/api/",
-  "/_serverFn",
-  "/newsletter",
-  "/unsubscribe",
-  "/email",
-  "/lovable",
-];
+const PRIVATE_HTML_PREFIXES = ["/api/", "/_serverFn"];
 
 /** Public marketing HTML that is identical for every visitor. */
 function isPublicCacheableHtml(url: URL, response: Response): boolean {
@@ -163,6 +155,8 @@ async function rescueStaleStylesheetRequest(
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const retired = legacyRedirect(request);
+      if (retired) return withRuntimeHeaders(request, retired);
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       const normalized = await normalizeCatastrophicSsrResponse(response);

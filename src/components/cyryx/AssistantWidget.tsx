@@ -15,7 +15,6 @@ import { trackCta } from "@/lib/track-cta";
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "cyryx_assistant_thread";
-const HIDDEN_PREFIXES = ["/workspace", "/auth", "/newsletter", "/unsubscribe"];
 
 const GREETING: ChatMessage = {
   role: "assistant",
@@ -137,7 +136,7 @@ export function AssistantWidget() {
     setOpen(false);
   }
 
-  if (!enabled || HIDDEN_PREFIXES.some((p) => pathname.startsWith(p))) return null;
+  if (!enabled) return null;
 
   async function send(text: string) {
     const content = text.trim().slice(0, ASSISTANT_MAX_MESSAGE_CHARS);

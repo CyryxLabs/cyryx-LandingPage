@@ -8,13 +8,15 @@
  *   GEMINI_FALLBACK_MODELS  optional, comma-separated; tried in order when the
  *                   primary model is overloaded or unavailable (429/5xx/network)
  */
-export const DEFAULT_GEMINI_MODEL = "gemini-3.8-flash";
-// Measured on the production key (2026-09-24, 4 rounds): 3.5-flash-lite answered
-// every time in 0.6–0.9 s; flash-lite-latest every time in 1–2.5 s; 3.5-flash
-// failed or took 7–30 s under load. Fast, reliable models first.
+// Measured on the production key (2026-09-25, 3 rounds): gemini-3.8-flash and
+// gemini-3.5-flash returned 503 (overloaded) every round, costing 2.5–25 s before
+// the fallback answered. 3.5-flash-lite answered every round; flash-lite-latest
+// and 3-flash-preview did too, slower. The reliable model is the default now;
+// set GEMINI_MODEL to try a larger one again.
+export const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite";
 export const DEFAULT_GEMINI_FALLBACK_MODELS = [
-  "gemini-3.5-flash-lite",
   "gemini-flash-lite-latest",
+  "gemini-3-flash-preview",
 ] as const;
 
 /** Upstream statuses worth retrying on the next model in the chain. */

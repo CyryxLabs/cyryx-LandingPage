@@ -20,8 +20,11 @@ test("active runtime boundary returns baseline security headers, short edge cach
   expect(pageHeaders["x-cyryx-cache-policy"]).toBe("html-edge-short");
   expect(pageHeaders["strict-transport-security"]).toBeUndefined();
 
-  const privatePage = await request.get("/auth");
-  expect(privatePage.headers()["cache-control"]).toContain("no-store");
+  // The old internal console moved to the CRM; its URLs redirect there.
+  const retired = await request.get("/auth", { maxRedirects: 0 });
+  expect(retired.status()).toBe(308);
+  expect(retired.headers()["location"]).toBe("https://crm.cyryxlabs.com/");
+  expect(retired.headers()["cache-control"]).toContain("no-store");
 
   const dynamicResponse = await request.get("/sitemap.xml");
   expect(dynamicResponse.status()).toBe(200);

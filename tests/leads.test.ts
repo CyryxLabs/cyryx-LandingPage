@@ -1,21 +1,5 @@
-import { describe, expect, test } from "bun:test";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { saveLead, sanitizeReply, type SaveLeadInput } from "../src/lib/leads.server";
-
-type RpcCall = { fn: string; args: Record<string, unknown> };
-type RpcResult = { data: unknown; error: { code?: string; message?: string } | null };
-
-/** Minimal stand-in for the Supabase client: only `rpc` is used by saveLead. */
-function fakeClient(responses: Record<string, RpcResult>) {
-  const calls: RpcCall[] = [];
-  const client = {
-    rpc: async (fn: string, args: Record<string, unknown>) => {
-      calls.push({ fn, args });
-      return responses[fn] ?? { data: null, error: { code: "UNEXPECTED", message: fn } };
-    },
-  };
-  return { client: client as unknown as SupabaseClient, calls };
-}
 
 const lead: SaveLeadInput = {
   name: "Ada Lovelace",
@@ -29,8 +13,6 @@ const lead: SaveLeadInput = {
   qualification: { project_type: "Workflow Automation" },
   attribution: { utm_source: "newsletter", landing_path: "/" },
 };
-
-const SUBMISSION_ID = "00000000-0000-4000-8000-000000000001";
 
 describe("sanitizeReply", () => {
   test("strips markdown emphasis, headings, code and quote markers", () => {
@@ -75,107 +57,81 @@ describe("sanitizeReply", () => {
   });
 });
 
-describe("saveLead", () => {
-  test("returns 503 when no backend client is configured", async () => {
-    expect(await saveLead(lead, null)).toEqual({
+describe("saveLead (CRM is the only system of record)", () => {
+  const originalFetch = globalThis.fetch;
+  const env = { url: process.env.CRM_INTAKE_URL, secret: process.env.CRM_INTAKE_SECRET };
+  let calls: Array<{ url: string; body: Record<string, unknown>; headers: Headers }> = [];
+
+  function mockCrm(status: number, body: unknown) {
+    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      calls.push({
+        url: String(input),
+        body: JSON.parse(String(init?.body ?? "{}")),
+        headers: new Headers(init?.headers),
+      });
+      return new Response(JSON.stringify(body), { status });
+    }) as typeof fetch;
+  }
+
+  beforeEach(() => {
+    calls = [];
+    process.env.CRM_INTAKE_URL = "https://crm.example.test/functions/v1/astra-public-intake";
+    process.env.CRM_INTAKE_SECRET = "test-crm-intake-secret-0123456789abcdef";
+  });
+  afterEach(() => {
+    globalThis.fetch = originalFetch;
+    process.env.CRM_INTAKE_URL = env.url;
+    process.env.CRM_INTAKE_SECRET = env.secret;
+    if (env.url === undefined) delete process.env.CRM_INTAKE_URL;
+    if (env.secret === undefined) delete process.env.CRM_INTAKE_SECRET;
+  });
+
+  test("returns 503 when the CRM intake is not configured", async () => {
+    delete process.env.CRM_INTAKE_URL;
+    expect(await saveLead(lead)).toEqual({
       ok: false,
       status: 503,
       error: "Backend unavailable",
     });
   });
 
-  test("stores structured qualification and attribution through v2", async () => {
-    const { client, calls } = fakeClient({
-      submit_contact_public_v2: { data: { ok: true, id: SUBMISSION_ID }, error: null },
+  test("submits a signed, structured intake and returns the requirements id", async () => {
+    mockCrm(200, {
+      intakeId: "int_abc12345",
+      leadId: "lead_1",
+      requirementsId: "req_1",
+      status: "received",
+      duplicate: false,
     });
-    const result = await saveLead(lead, client);
-    expect(result).toEqual({ ok: true, submissionId: SUBMISSION_ID, structured: true });
-    expect(calls.map((call) => call.fn)).toEqual(["submit_contact_public_v2"]);
-    expect(calls[0].args).toMatchObject({
-      p_name: lead.name,
-      p_email: lead.email,
-      p_interest: "assistant",
-      p_qualification: { project_type: "Workflow Automation" },
-      p_attribution: { utm_source: "newsletter", landing_path: "/" },
+    const result = await saveLead(lead);
+    expect(result).toEqual({ ok: true, submissionId: "req_1", structured: true });
+    expect(calls).toHaveLength(1);
+    expect(calls[0].url).toEndWith("/submit");
+    expect(calls[0].headers.get("x-cyryx-signature")).toMatch(/^v1=[0-9a-f]{64}$/);
+    expect(calls[0].headers.get("idempotency-key")).toBeTruthy();
+    expect(calls[0].body).toMatchObject({
+      schemaVersion: "1",
+      kind: "assistant",
+      contact: { name: lead.name, email: lead.email },
+      source: { utm: { utm_source: "newsletter" }, landingPath: "/" },
     });
   });
 
-  test("falls back to v1 when v2 is missing (PGRST202)", async () => {
-    const { client, calls } = fakeClient({
-      submit_contact_public_v2: {
-        data: null,
-        error: { code: "PGRST202", message: "Could not find the function" },
-      },
-      submit_contact_public: { data: { ok: true, id: SUBMISSION_ID }, error: null },
+  test("maps a CRM rate limit to 429", async () => {
+    mockCrm(429, { ok: false, error: "rate-limited" });
+    expect(await saveLead(lead)).toEqual({
+      ok: false,
+      status: 429,
+      error: "Too many submissions — please try again later.",
     });
-    const result = await saveLead(lead, client);
-    expect(result).toEqual({ ok: true, submissionId: SUBMISSION_ID, structured: false });
-    expect(calls.map((call) => call.fn)).toEqual([
-      "submit_contact_public_v2",
-      "submit_contact_public",
-    ]);
-    const v1 = calls[1].args;
-    // v1 has no structured columns: attribution is folded into the message and
-    // the "assistant" interest is mapped to a value the v1 enum accepts.
-    expect(v1).not.toHaveProperty("p_qualification");
-    expect(v1).not.toHaveProperty("p_attribution");
-    expect(v1.p_interest).toBe("other");
-    expect(String(v1.p_message)).toContain(lead.message);
-    expect(String(v1.p_message)).toContain('Attribution: {"utm_source":"newsletter"');
-    expect(String(v1.p_message).length).toBeLessThanOrEqual(2000);
   });
 
-  test("also falls back when Postgres reports the function does not exist", async () => {
-    const { client, calls } = fakeClient({
-      submit_contact_public_v2: {
-        data: null,
-        error: { code: "42883", message: "function does not exist" },
-      },
-      submit_contact_public: { data: { ok: true, id: SUBMISSION_ID }, error: null },
-    });
-    expect((await saveLead(lead, client)).ok).toBe(true);
-    expect(calls).toHaveLength(2);
-  });
-
-  test("does not fall back on other v2 errors", async () => {
-    const { client, calls } = fakeClient({
-      submit_contact_public_v2: {
-        data: null,
-        error: { code: "23514", message: "check violation" },
-      },
-    });
-    expect(await saveLead(lead, client)).toEqual({
+  test("maps other CRM failures to 500", async () => {
+    mockCrm(500, { ok: false, error: "service-unavailable" });
+    expect(await saveLead(lead)).toEqual({
       ok: false,
       status: 500,
       error: "We couldn't save your brief right now.",
     });
-    expect(calls).toHaveLength(1);
-  });
-
-  test("maps rate limiting to 429", async () => {
-    const { client } = fakeClient({
-      submit_contact_public_v2: { data: null, error: { code: "P0001", message: "rate_limited" } },
-    });
-    const result = await saveLead(lead, client);
-    expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.status).toBe(429);
-  });
-
-  test("reports a v1 failure after a fallback", async () => {
-    const { client } = fakeClient({
-      submit_contact_public_v2: { data: null, error: { code: "PGRST202" } },
-      submit_contact_public: { data: null, error: { code: "500", message: "boom" } },
-    });
-    const result = await saveLead(lead, client);
-    expect(result).toEqual({ ok: false, status: 500, error: "We couldn't save your brief right now." });
-  });
-
-  test("generates a submission id when the RPC returns none", async () => {
-    const { client } = fakeClient({
-      submit_contact_public_v2: { data: { ok: true }, error: null },
-    });
-    const result = await saveLead(lead, client);
-    expect(result.ok).toBe(true);
-    if (result.ok) expect(result.submissionId).toMatch(/^[0-9a-f-]{36}$/);
   });
 });

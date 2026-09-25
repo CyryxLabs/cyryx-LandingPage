@@ -79,6 +79,54 @@ test("a CTA click reaches the CRM as a signed funnel event without personal data
     });
 });
 
+test("the careers talent form reaches the CRM as a signed introduction, not a lead", async ({
+  page,
+  request,
+}) => {
+  await page.goto("/careers", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
+  await page.locator('input[name="name"]').fill("Grace Hopper");
+  await page.locator('input[name="email"]').fill("grace@example.com");
+  await page.locator('select[name="area"]').selectOption("Product Engineering");
+  await page.locator('input[name="profile"]').fill("https://github.com/grace");
+  await page.locator('textarea[name="context"]').fill("Compilers and teams.");
+  await page.locator('input[name="consent"]').check();
+  await page.getByRole("button", { name: "Join the talent network" }).click();
+  await expect(page.getByText("Introduction received.")).toBeVisible();
+
+  const calls = (await (await request.get(`${MOCK_ORIGIN}/calls`)).json()) as RecordedCall[];
+  const talent = calls.filter((call) => call.fn === "crm_talent").at(-1);
+  expect(talent).toMatchObject({
+    signatureValid: true,
+    body: {
+      schemaVersion: "1",
+      name: "Grace Hopper",
+      email: "grace@example.com",
+      area: "Product Engineering",
+      profileUrl: "https://github.com/grace",
+      introduction: "Compilers and teams.",
+    },
+  });
+  expect(
+    calls.some(
+      (call) =>
+        call.fn === "crm_submit" &&
+        (call.body?.contact as { email?: string } | undefined)?.email === "grace@example.com",
+    ),
+  ).toBe(false);
+});
+
+test("retired console and hosting URLs redirect instead of failing", async ({ baseURL, request }) => {
+  for (const path of ["/auth", "/workspace", "/workspace/pipeline"]) {
+    const response = await request.get(`${baseURL}${path}`, { maxRedirects: 0 });
+    expect(response.status()).toBe(308);
+    expect(response.headers().location).toBe("https://crm.cyryxlabs.com/");
+  }
+  const unsubscribe = await request.get(`${baseURL}/unsubscribe?token=x`, { maxRedirects: 0 });
+  expect(unsubscribe.status()).toBe(308);
+  expect((await request.get(`${baseURL}/lovable/email/queue/process`)).status()).toBe(410);
+});
+
 test("the funnel endpoint refuses cross-site beacons", async ({ baseURL, request }) => {
   const response = await request.post(`${baseURL}/api/public/cta-events`, {
     headers: { origin: "https://evil.example", "content-type": "application/json" },
@@ -238,9 +286,7 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
   await expect(panel.getByRole("button", { name: "Send to the team" })).toBeVisible();
 });
 
-test("assistant launcher waits until the visitor scrolls past the hero and is hidden on /auth", async ({
-  page,
-}) => {
+test("assistant launcher waits until the visitor scrolls past the hero", async ({ page }) => {
   await openHome(page);
   const launcher = page.getByRole("button", { name: "Ask Cyryx" });
   await expect(launcher).toHaveCount(0);
@@ -251,10 +297,6 @@ test("assistant launcher waits until the visitor scrolls past the hero and is hi
   await page.goto("/products", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
   await expect(page.getByRole("button", { name: "Ask Cyryx" })).toBeVisible();
-
-  await page.goto("/auth", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
-  await expect(page.getByRole("button", { name: "Ask Cyryx" })).toHaveCount(0);
 });
 
 test("closing the assistant with its close button returns focus to the launcher", async ({

@@ -35,7 +35,7 @@ describe("getGeminiConfig", () => {
     expect(getGeminiConfig({ GEMINI_API_KEY: " k " })).toEqual({
       apiKey: "k",
       model: DEFAULT_GEMINI_MODEL,
-      fallbackModels: ["gemini-3.5-flash-lite", "gemini-flash-lite-latest"],
+      fallbackModels: ["gemini-flash-lite-latest", "gemini-3-flash-preview"],
     });
     expect(getGeminiConfig({ GEMINI_API_KEY: "k", GEMINI_MODEL: "custom" })?.model).toBe("custom");
   });

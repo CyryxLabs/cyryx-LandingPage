@@ -30,7 +30,7 @@ export type CrmCallResult<T> =
 
 async function call<T>(
   config: CrmIntakeConfig,
-  route: "init" | "submit" | "event",
+  route: "init" | "submit" | "event" | "talent",
   body: unknown,
   idempotencyKey?: string,
   fetchImpl: typeof fetch = fetch,
@@ -120,6 +120,21 @@ export function crmSiteEvent(
   fetchImpl?: typeof fetch,
 ) {
   return call<{ ok: boolean }>(config, "event", event, undefined, fetchImpl, 4_000);
+}
+
+/** Sends a /careers talent-network introduction (route /talent). Not a lead. */
+export function crmTalentInquiry(
+  config: CrmIntakeConfig,
+  inquiry: Record<string, unknown>,
+  fetchImpl?: typeof fetch,
+) {
+  return call<{ ok: boolean; id: string }>(
+    config,
+    "talent",
+    { schemaVersion: "1", ...inquiry },
+    undefined,
+    fetchImpl,
+  );
 }
 
 /** Maps the CRM status code to a visitor-safe HTTP status. */

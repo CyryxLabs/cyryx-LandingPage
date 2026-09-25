@@ -38,7 +38,6 @@ export const Route = createFileRoute("/api/public/contact")({
           import("@/lib/leads.server"),
         ]);
         const normalizedEmail = data.email.toLowerCase();
-        const submittedAt = new Date().toISOString();
         const message = formatFitReviewMessage(data);
 
         const brief = [
@@ -49,10 +48,11 @@ export const Route = createFileRoute("/api/public/contact")({
         ]
           .filter(Boolean)
           .join("\n");
-        const viaCrm = await leads.crmIntakeEnabled();
-        // With the CRM as system of record, the first read is drafted before
-        // saving so it is stored with the lead; the CRM notifies the team.
-        const earlyReply = viaCrm ? await leads.draftFirstReply(brief) : null;
+        // The CRM is the system of record: the first read is drafted before
+        // saving so it is stored with the lead, and the CRM notifies the team.
+        const firstReply = (await leads.crmIntakeEnabled())
+          ? await leads.draftFirstReply(brief)
+          : null;
 
         const saved = await leads.saveLead({
           name: data.name,
@@ -79,43 +79,13 @@ export const Route = createFileRoute("/api/public/contact")({
             entrySource: data.source,
             entryIntent: data.intent,
           },
-          aiFirstReply: earlyReply,
+          aiFirstReply: firstReply,
         });
         if (!saved.ok) {
           return Response.json({ error: saved.error }, { status: saved.status });
         }
 
-        if (viaCrm) {
-          return Response.json({ ok: true, confirmationQueued: false, firstReply: earlyReply });
-        }
-
-        // Legacy website database: real-time first read of the brief, bounded
-        // by a short timeout and always optional (the lead is already saved).
-        const firstReply = await leads.draftFirstReply(brief);
-        if (firstReply) await leads.recordFirstReply(saved.submissionId, firstReply);
-
-        let confirmationQueued = false;
-        try {
-          const { enqueueFitReviewEmails } =
-            await import("@/lib/email/fit-review-notifications.server");
-          const delivery = await enqueueFitReviewEmails({
-            submissionId: saved.submissionId,
-            name: data.name,
-            email: normalizedEmail,
-            company: data.company,
-            message,
-            submittedAt,
-            aiReply: firstReply ?? undefined,
-          });
-          confirmationQueued = delivery.confirmation === "queued";
-          if (delivery.notification !== "queued" || delivery.confirmation !== "queued") {
-            console.warn("[contact] lead email delivery incomplete", delivery);
-          }
-        } catch (emailError) {
-          console.error("[contact] optional lead email queue failed", emailError);
-        }
-
-        return Response.json({ ok: true, confirmationQueued, firstReply });
+        return Response.json({ ok: true, confirmationQueued: false, firstReply });
       },
     },
   },

@@ -10,10 +10,6 @@ import { CGP_V1 } from "../src/data/publications";
 import * as siteTaxonomy from "../src/data/site-taxonomy";
 import { AEXOS_PRODUCT, OPERATING_LIFECYCLE } from "../src/data/site-taxonomy";
 import { publicDestination, publicPath, publicReferrer } from "../src/lib/public-location";
-import {
-  buildFitReviewEmailJobs,
-  enqueueFitReviewEmails,
-} from "../src/lib/email/fit-review-notifications.server";
 
 const validFitReview = {
   name: "Ada Lovelace",
@@ -117,57 +113,6 @@ describe("fit-review qualification contract", () => {
       assistantSummary: "Visitor asked how engagements start; recommended Advise.",
     });
     expect(parsed.success).toBe(true);
-  });
-});
-
-describe("fit-review email delivery contract", () => {
-  const input = {
-    submissionId: "00000000-0000-4000-8000-000000000001",
-    name: "Ada Lovelace",
-    email: "ada@example.com",
-    company: "Analytical Engines Ltd",
-    message: "Project type: Workflow Automation\n\nPrimary problem:\nManual handoffs.",
-    submittedAt: "2026-08-03T12:00:00.000Z",
-  };
-
-  test("builds a fixed internal notification and a sender confirmation without leaking context", () => {
-    const [notification, confirmation] = buildFitReviewEmailJobs(input);
-
-    expect(notification.templateName).toBe("fit-review-notification");
-    expect(notification.recipientEmail).toBeUndefined();
-    expect(notification.templateData).toMatchObject({
-      email: input.email,
-      message: input.message,
-      submissionId: input.submissionId,
-    });
-    // The sender only receives their name and (when present) the AI first read
-    // of their own brief: never the internal message, email or company.
-    expect(confirmation).toEqual({
-      templateName: "fit-review-confirmation",
-      recipientEmail: input.email,
-      templateData: { name: input.name, aiReply: "" },
-      idempotencyKey: `fit-review-confirmation-${input.submissionId}`,
-    });
-  });
-
-  test("carries the AI first read to both the team and the sender", () => {
-    const aiReply = "Build looks like the right starting point.";
-    const [notification, confirmation] = buildFitReviewEmailJobs({ ...input, aiReply });
-    expect(notification.templateData).toMatchObject({ aiReply });
-    expect(confirmation.templateData).toEqual({ name: input.name, aiReply });
-  });
-
-  test("attempts the two queues independently and reports partial delivery", async () => {
-    const calls: string[] = [];
-    const delivery = await enqueueFitReviewEmails(input, async (job) => {
-      calls.push(job.templateName);
-      return job.templateName === "fit-review-confirmation"
-        ? { ok: true, messageId: "confirmation-message" }
-        : { ok: false, reason: "enqueue_failed" };
-    });
-
-    expect(calls).toEqual(["fit-review-notification", "fit-review-confirmation"]);
-    expect(delivery).toEqual({ notification: "failed", confirmation: "queued" });
   });
 });
 
