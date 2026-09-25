@@ -8,7 +8,7 @@
 //      POST /rest/v1/rpc/record_contact_ai_reply   -> 204
 //      GET  /calls                                 -> recorded RPC calls (for assertions)
 //  - Cyryx CRM public intake via CRM_INTAKE_URL=http://127.0.0.1:4599/crm
-//      POST /crm/init, POST /crm/submit (HMAC-verified with MOCK_CRM_SECRET)
+//      POST /crm/init, /crm/submit, /crm/event (HMAC-verified with MOCK_CRM_SECRET)
 //      PUT  /upload/<path>                         -> signed-upload stand-in
 import { createServer } from "node:http";
 import { createHmac, timingSafeEqual } from "node:crypto";
@@ -66,6 +66,11 @@ createServer((req, res) => {
       if (!signatureValid) {
         res.writeHead(401, { "content-type": "application/json" });
         res.end(JSON.stringify({ error: "unauthorized" }));
+        return;
+      }
+      if (route === "event") {
+        res.writeHead(202, { "content-type": "application/json" });
+        res.end(JSON.stringify({ ok: true }));
         return;
       }
       res.writeHead(200, { "content-type": "application/json" });

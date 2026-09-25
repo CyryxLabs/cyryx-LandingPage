@@ -274,15 +274,15 @@ function StartPage() {
             aria-label="What happens next"
           >
             <li className="bg-[var(--obsidian)] px-4 py-3">
-              <span className="font-mono text-[11px] text-[var(--accent-glow)]">01</span>{" "}
+              <span className="font-mono text-[12px] text-[var(--accent-glow)]">01</span>{" "}
               <span className="text-[var(--silver)]">You send a short brief.</span>
             </li>
             <li className="bg-[var(--obsidian)] px-4 py-3">
-              <span className="font-mono text-[11px] text-[var(--accent-glow)]">02</span>{" "}
+              <span className="font-mono text-[12px] text-[var(--accent-glow)]">02</span>{" "}
               <span className="text-[var(--silver)]">You get a first read right away.</span>
             </li>
             <li className="bg-[var(--obsidian)] px-4 py-3">
-              <span className="font-mono text-[11px] text-[var(--accent-glow)]">03</span>{" "}
+              <span className="font-mono text-[12px] text-[var(--accent-glow)]">03</span>{" "}
               <span className="text-[var(--silver)]">
                 A person replies with fit, a question or the next step.
               </span>

@@ -136,7 +136,7 @@ export function TextArea({
         aria-describedby={error ? `${id}-error` : undefined}
         className={`${INPUT_CLASS} resize-y leading-relaxed`}
       />
-      <span className="mt-1 flex justify-end font-mono text-[11px] text-[var(--steel)]">
+      <span className="mt-1 flex justify-end font-mono text-[12px] text-[var(--steel)]">
         {value.length > maxLength * 0.8 ? `${value.length}/${maxLength}` : ""}
       </span>
       <ErrorText id={`${id}-error`} error={error} />
@@ -355,7 +355,7 @@ export function Repeater<T>({
             className="cx-spotlight rounded-lg border border-white/10 bg-[var(--onyx)] p-4 sm:p-5"
           >
             <div className="mb-3 flex items-center justify-between gap-3">
-              <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--accent-glow)]">
+              <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--accent-glow)]">
                 {itemLabel(item, index)}
               </span>
               <button

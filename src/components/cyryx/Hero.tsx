@@ -75,7 +75,7 @@ export function Hero() {
                         : "text-left"
                   }`}
                 >
-                  <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] uppercase tracking-[0.28em] text-[var(--accent-glow)]">
                     0{index + 1} / 0{copy.rail.length}
                   </span>
                   <p className="mt-4 [font-family:var(--font-editorial-hero)] text-[clamp(2.4rem,7vw,6.5rem)] leading-[0.94] tracking-[-0.045em] text-[#e4e0d8] [text-shadow:0_2px_32px_rgba(0,0,0,0.72)]">
@@ -104,7 +104,7 @@ export function Hero() {
             data-hero-scroll-cue
             className="cx-hero-scroll-cue pointer-events-none absolute bottom-6 right-5 flex items-center gap-3 sm:bottom-8 sm:right-8 sm:gap-4 xl:bottom-10 xl:right-12"
           >
-            <span className="hidden font-mono text-[11px] uppercase tracking-[0.28em] text-white/55 sm:inline">
+            <span className="hidden font-mono text-[12px] uppercase tracking-[0.28em] text-white/55 sm:inline">
               Scroll to execute
             </span>
             <span className="cx-hero-scroll-track relative block h-px w-16 overflow-hidden bg-white/15 sm:w-24">
@@ -129,7 +129,7 @@ export function Hero() {
         >
           <div className="pointer-events-auto w-full max-w-[68rem]">
             <div className="cx-hero-panel">
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)] sm:text-xs">
+              <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)] sm:text-xs">
                 {copy.eyebrow}
               </p>
               <h1

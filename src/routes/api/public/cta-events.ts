@@ -1,7 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createClient } from "@supabase/supabase-js";
+import { createHash } from "node:crypto";
 import { z } from "zod";
-import { publicDestination, publicPath, publicReferrer } from "@/lib/public-location";
+import { crmSiteEvent, getCrmIntakeConfig } from "@/lib/crm-intake.server";
+import { createVisitorLimiter, isSameOrigin, toCrmSiteEvent } from "@/lib/site-event.server";
+
+// Funnel beacons from this site (CTA clicks, form start/step/lead, assistant
+// usage). Same-origin only, limited per visitor, and forwarded server-to-server
+// to the CRM with the intake signature. Nothing is stored on the site.
 
 const Schema = z.object({
   cta: z.string().trim().min(1).max(64),
@@ -12,50 +17,62 @@ const Schema = z.object({
   referrer: z.string().trim().max(2048).optional().nullable(),
 });
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+const MAX_BODY_BYTES = 4_096;
+const allowVisitor = createVisitorLimiter(60, 60_000);
+
+const NO_STORE = { "Cache-Control": "private, no-store" };
+
+function visitorKey(request: Request): string {
+  const address =
+    request.headers.get("x-real-ip")?.trim() ||
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown";
+  return createHash("sha256").update(address).digest("hex").slice(0, 32);
+}
 
 export const Route = createFileRoute("/api/public/cta-events")({
   server: {
     handlers: {
-      OPTIONS: async () => new Response(null, { status: 204, headers: CORS }),
       POST: async ({ request }) => {
+        if (!isSameOrigin(request.headers.get("origin"), request.headers.get("host"))) {
+          return new Response(null, { status: 403, headers: NO_STORE });
+        }
+        const declared = Number(request.headers.get("content-length") ?? "0");
+        if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+          return new Response(null, { status: 413, headers: NO_STORE });
+        }
+        if (!allowVisitor(visitorKey(request))) {
+          return new Response(null, { status: 429, headers: { ...NO_STORE, "Retry-After": "60" } });
+        }
+
         let payload: unknown;
         try {
-          payload = await request.json();
+          const raw = await request.text();
+          if (raw.length > MAX_BODY_BYTES) {
+            return new Response(null, { status: 413, headers: NO_STORE });
+          }
+          payload = JSON.parse(raw);
         } catch {
-          return new Response("Invalid JSON", { status: 400, headers: CORS });
+          return new Response(null, { status: 400, headers: NO_STORE });
         }
         const parsed = Schema.safeParse(payload);
-        if (!parsed.success) {
-          return new Response("Invalid payload", { status: 400, headers: CORS });
+        if (!parsed.success) return new Response(null, { status: 400, headers: NO_STORE });
+
+        const event = toCrmSiteEvent(parsed.data, request.headers.get("user-agent"));
+        if (!event) return new Response(null, { status: 400, headers: NO_STORE });
+
+        const config = getCrmIntakeConfig();
+        if (!config) return new Response(null, { status: 503, headers: NO_STORE });
+
+        const result = await crmSiteEvent(config, event);
+        if (!result.ok) {
+          console.error("[cta-events] crm rejected", result.status);
+          return new Response(null, {
+            status: result.status === 422 ? 400 : 502,
+            headers: NO_STORE,
+          });
         }
-        const url = process.env.SUPABASE_URL;
-        const key = process.env.SUPABASE_PUBLISHABLE_KEY;
-        if (!url || !key) {
-          return new Response("Backend unavailable", { status: 503, headers: CORS });
-        }
-        const supabase = createClient(url, key, {
-          auth: { persistSession: false, autoRefreshToken: false },
-        });
-        const userAgent = request.headers.get("user-agent")?.slice(0, 1024) ?? null;
-        const { error } = await supabase.from("cta_events").insert({
-          cta: parsed.data.cta,
-          section: parsed.data.section,
-          path: publicPath(parsed.data.path),
-          href: publicDestination(parsed.data.href),
-          variant: parsed.data.variant ?? null,
-          referrer: publicReferrer(parsed.data.referrer ?? "") || null,
-          user_agent: userAgent,
-        });
-        if (error) {
-          console.error("[cta-events] insert failed", error.message);
-          return new Response("Insert failed", { status: 500, headers: CORS });
-        }
-        return new Response(null, { status: 204, headers: CORS });
+        return new Response(null, { status: 204, headers: NO_STORE });
       },
     },
   },

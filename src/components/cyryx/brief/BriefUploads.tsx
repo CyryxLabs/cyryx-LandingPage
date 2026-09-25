@@ -183,7 +183,7 @@ export function BriefUploads({
                       />
                     ) : null}
                     {item.file.name}
-                    <span className="ml-2 font-mono text-[11px] text-[var(--steel)]">
+                    <span className="ml-2 font-mono text-[12px] text-[var(--steel)]">
                       {formatBytes(item.file.size)}
                     </span>
                   </p>

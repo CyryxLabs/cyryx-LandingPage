@@ -28,7 +28,7 @@ export function CompactStart() {
           <HudLabel withDot>{copy.eyebrow}</HudLabel>
           <h2
             id="contact-heading"
-            className="mx-auto mt-6 max-w-[18ch] font-display text-4xl font-semibold leading-[1] tracking-[-0.045em] text-silver-gradient sm:mt-7 sm:text-5xl lg:text-6xl"
+            className="mx-auto mt-6 max-w-[18ch] font-display text-[1.75rem] sm:text-[2.125rem] lg:text-[2.75rem] xl:text-[3.5rem] font-semibold leading-[1] tracking-[-0.045em] text-silver-gradient sm:mt-7"
           >
             {copy.headline}
           </h2>

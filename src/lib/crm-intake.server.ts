@@ -25,14 +25,16 @@ export function signIntakeBody(secret: string, timestamp: string, rawBody: strin
 }
 
 export type CrmCallResult<T> =
-  { ok: true; status: number; data: T } | { ok: false; status: number; error: string };
+  | { ok: true; status: number; data: T }
+  | { ok: false; status: number; error: string };
 
 async function call<T>(
   config: CrmIntakeConfig,
-  route: "init" | "submit",
+  route: "init" | "submit" | "event",
   body: unknown,
   idempotencyKey?: string,
   fetchImpl: typeof fetch = fetch,
+  timeoutMs = 12_000,
 ): Promise<CrmCallResult<T>> {
   const rawBody = JSON.stringify(body);
   const timestamp = String(Math.floor(Date.now() / 1000));
@@ -48,7 +50,7 @@ async function call<T>(
       method: "POST",
       headers,
       body: rawBody,
-      signal: AbortSignal.timeout(12_000),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     const text = await response.text();
     let parsed: unknown = null;
@@ -109,6 +111,15 @@ export function crmIntakeSubmit(
     idempotencyKey,
     fetchImpl,
   );
+}
+
+/** Forwards one funnel event (route /event). Short timeout: it is telemetry. */
+export function crmSiteEvent(
+  config: CrmIntakeConfig,
+  event: Record<string, unknown>,
+  fetchImpl?: typeof fetch,
+) {
+  return call<{ ok: boolean }>(config, "event", event, undefined, fetchImpl, 4_000);
 }
 
 /** Maps the CRM status code to a visitor-safe HTTP status. */

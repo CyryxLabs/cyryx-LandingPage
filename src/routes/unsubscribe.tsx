@@ -61,8 +61,7 @@ function UnsubscribePage() {
                 : "Unsubscribe from updates"}
         </h1>
         <p className="mt-3 text-sm text-[var(--silver-dim)]">
-          {state.kind === "ready" &&
-            "Click confirm to stop receiving emails from Cyryx Labs."}
+          {state.kind === "ready" && "Click confirm to stop receiving emails from Cyryx Labs."}
           {state.kind === "done" &&
             "You will no longer receive emails from Cyryx Labs. You can subscribe again any time."}
           {state.kind === "already" &&
@@ -80,7 +79,7 @@ function UnsubscribePage() {
             {submitting ? "Processing…" : "Confirm unsubscribe"}
           </button>
         )}
-        <p className="mt-6 text-[11px] text-[var(--silver-dim)]">
+        <p className="mt-6 text-[12px] text-[var(--silver-dim)]">
           <a href="/" className="underline underline-offset-4 hover:text-[var(--accent-glow)]">
             Return to cyryxlabs.com
           </a>
@@ -92,10 +91,7 @@ function UnsubscribePage() {
 
 export const Route = createFileRoute("/unsubscribe")({
   head: () => ({
-    meta: [
-      { title: "Unsubscribe — Cyryx Labs" },
-      { name: "robots", content: "noindex,nofollow" },
-    ],
+    meta: [{ title: "Unsubscribe — Cyryx Labs" }, { name: "robots", content: "noindex,nofollow" }],
   }),
   component: UnsubscribePage,
 });

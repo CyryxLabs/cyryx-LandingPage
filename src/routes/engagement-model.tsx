@@ -100,7 +100,7 @@ function EngagementModelPage() {
                 key={n}
                 className="relative grid gap-6 pb-16 last:pb-0 sm:grid-cols-[4rem_0.75fr_1.25fr] sm:gap-10 sm:pb-20"
               >
-                <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--accent-glow)] bg-[var(--onyx)] font-mono text-[11px] text-[var(--accent-glow)] sm:h-16 sm:w-16">
+                <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--accent-glow)] bg-[var(--onyx)] font-mono text-[12px] text-[var(--accent-glow)] sm:h-16 sm:w-16">
                   {n}
                 </span>
                 <div>
@@ -112,7 +112,7 @@ function EngagementModelPage() {
                   </p>
                 </div>
                 <div className="border-t border-white/10 pt-5">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--steel)]">
+                  <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
                     Representative outputs
                   </p>
                   <ul className="mt-4 space-y-2 text-sm text-[var(--silver-dim)]">
@@ -154,16 +154,10 @@ function EngagementModelPage() {
             Bring the workflow, bottleneck, or system decision.
           </h2>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-            <a
-              href={startHref}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--silver)] px-7 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--onyx)] transition hover:bg-white"
-            >
+            <a href={startHref} className="cx-btn-primary">
               Start a project <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
-            <Link
-              to="/solutions"
-              className="inline-flex min-h-12 items-center justify-center rounded-md border border-white/15 px-7 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--silver)] transition hover:border-[var(--accent-glow)] hover:text-[var(--accent-glow)]"
-            >
+            <Link to="/solutions" className="cx-btn-secondary">
               Explore capabilities
             </Link>
           </div>

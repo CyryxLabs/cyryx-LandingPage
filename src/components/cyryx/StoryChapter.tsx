@@ -24,13 +24,13 @@ export function StoryChapter({ index, label, children }: StoryChapterProps) {
       >
         <span
           data-chapter-text
-          className="font-mono text-[11px] tracking-[0.2em] text-[var(--accent-glow)]"
+          className="font-mono text-[12px] tracking-[0.2em] text-[var(--accent-glow)]"
         >
           {index}
         </span>
         <span
           data-chapter-text
-          className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--steel)]"
+          className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]"
         >
           {label}
         </span>
@@ -67,7 +67,7 @@ export function StoryProgress() {
             className="flex items-center gap-2 opacity-35 transition-opacity duration-300"
           >
             <span className="h-1 w-1 rounded-full bg-current" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--silver)]">
+            <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--silver)]">
               {chapterLabel}
             </span>
           </li>

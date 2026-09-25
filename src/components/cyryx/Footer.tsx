@@ -60,8 +60,11 @@ const LEGAL: FooterItem[] = [
 export function Footer() {
   const year = new Date().getFullYear();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  // The homepage ends with its own start section, so the band would repeat it.
-  const showCtaBand = pathname !== "/";
+  // The homepage ends with its own start section, and /start and /brief are
+  // the destination of the band's button, so it would only point back at them.
+  const showCtaBand = !["/", "/start", "/brief"].some(
+    (path) => pathname === path || (path !== "/" && pathname.startsWith(`${path}/`)),
+  );
   const startHref = PRIMARY_NAVIGATION_CTA.href;
   const assistantEnabled = isAssistantEnabled();
 
@@ -80,7 +83,7 @@ export function Footer() {
         {showCtaBand ? (
           <div className="cx-spotlight cx-footer-cta grid gap-8 rounded-2xl border p-7 sm:p-10 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:p-12">
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
+              <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
                 Start here
               </p>
               <p className="mt-4 max-w-[22ch] font-display text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[var(--silver)] sm:text-4xl lg:text-5xl">
@@ -165,7 +168,7 @@ export function Footer() {
               </li>
             </ul>
             <div className="mt-10">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--steel)]">
+              <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
                 Contact
               </p>
               <ul className="mt-4 space-y-2.5">
@@ -181,7 +184,7 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-4">
             {PRIMARY_NAVIGATION.map((group) => (
               <nav key={group.id} aria-label={group.label}>
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--steel)]">
+                <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
                   {group.label}
                 </p>
                 <ul className="mt-5 space-y-3.5">
@@ -211,7 +214,7 @@ export function Footer() {
             <button
               type="button"
               onClick={scrollTop}
-              className="inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--silver-dim)] transition-colors hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+              className="inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--silver-dim)] transition-colors hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
             >
               Top of page <ArrowUp className="h-3.5 w-3.5" aria-hidden />
             </button>

@@ -442,7 +442,7 @@ export function BriefWizard({ assistAvailable }: { assistAvailable: boolean }) {
           role="status"
           className="cx-spotlight rounded-2xl border border-[color-mix(in_oklab,var(--accent-glow)_35%,transparent)] bg-[var(--obsidian)] p-7 sm:p-10"
         >
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
+          <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
             Brief received
           </p>
           <h3 className="mt-4 font-display text-3xl font-semibold tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
@@ -525,7 +525,7 @@ export function BriefWizard({ assistAvailable }: { assistAvailable: boolean }) {
             <div className="flex items-center gap-4">
               <QualityRing score={quality.score} />
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--steel)]">
+                <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]">
                   Brief quality
                 </p>
                 <p className="mt-1 text-sm text-[var(--silver)]">
@@ -551,7 +551,7 @@ export function BriefWizard({ assistAvailable }: { assistAvailable: boolean }) {
                     }`}
                   >
                     <span
-                      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border font-mono text-[11px] ${
+                      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border font-mono text-[12px] ${
                         visited.has(index) && index < step
                           ? "border-[var(--accent-glow)] bg-[var(--accent-glow)] text-[var(--onyx)]"
                           : index === step
@@ -572,7 +572,7 @@ export function BriefWizard({ assistAvailable }: { assistAvailable: boolean }) {
             </ol>
             {quality.missing.length ? (
               <div className="mt-5 hidden border-t border-white/10 pt-4 lg:block">
-                <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+                <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
                   Still missing
                 </p>
                 <ul className="mt-2 space-y-1 text-[13px] text-[var(--silver-dim)]">
@@ -593,7 +593,7 @@ export function BriefWizard({ assistAvailable }: { assistAvailable: boolean }) {
         <div className="min-w-0">
           {/* Mobile progress */}
           <div className="mb-6 lg:hidden">
-            <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+            <div className="flex items-center justify-between font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
               <span>
                 Step {step + 1} of {STEPS.length}
               </span>
@@ -608,7 +608,7 @@ export function BriefWizard({ assistAvailable }: { assistAvailable: boolean }) {
           </div>
 
           <div className="rounded-2xl border border-white/10 bg-[color-mix(in_oklab,var(--obsidian)_92%,transparent)] p-5 sm:p-8">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
+            <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
               {String(step + 1).padStart(2, "0")} · {current.title}
             </p>
             <h3 className="mt-3 font-display text-2xl font-semibold tracking-[-0.03em] text-[var(--silver)] sm:text-3xl">
@@ -1412,7 +1412,7 @@ function BriefReview({
   return (
     <div className="rounded-xl border border-white/10 bg-[var(--onyx)]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
-        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+        <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
           Your brief · quality {score}/100
         </p>
         <button type="button" onClick={onDownload} className="cx-btn-secondary cx-btn-sm">

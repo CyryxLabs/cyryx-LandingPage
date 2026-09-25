@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { HudLabel } from "../primitives/HudLabel";
 
 /**
  * The problem, shown instead of quoted: four breaks between a capable model and
@@ -92,15 +91,14 @@ export function ExecutionGap() {
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal grid gap-8 sm:gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-24">
           <div>
-            <HudLabel withDot>The problem</HudLabel>
-            <p className="mt-7 max-w-md text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
+            <p className="max-w-md text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
               Most AI projects don't fail on the model. They fail on the data, permissions, costs
               and ownership around it.
             </p>
           </div>
           <h2
             id="execution-gap-heading"
-            className="max-w-[16ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-7xl"
+            className="max-w-[16ch] font-display text-[1.75rem] sm:text-[2.125rem] lg:text-[2.75rem] xl:text-[3.5rem] font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient"
           >
             AI initiatives stall between the model and the business.
           </h2>
@@ -136,10 +134,10 @@ export function ExecutionGap() {
                   </span>
                   <div className="cx-gap-copy">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
+                      <span className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--accent-glow)]">
                         {String(index + 1).padStart(2, "0")} · {item.label}
                       </span>
-                      <span className="cx-gap-status font-mono text-[11px] uppercase tracking-[0.12em]">
+                      <span className="cx-gap-status font-mono text-[12px] uppercase tracking-[0.12em]">
                         {isClosed ? "Built in" : "Often missing"}
                       </span>
                     </div>
@@ -157,7 +155,7 @@ export function ExecutionGap() {
         </div>
 
         <div className="cx-reveal mt-10 grid gap-5 border-t border-[color-mix(in_oklab,var(--silver)_14%,transparent)] pt-7 sm:mt-16 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-10 sm:pt-9">
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
+          <span className="font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
             Cyryx thesis
           </span>
           <p className="max-w-4xl font-display text-2xl font-medium leading-snug tracking-[-0.025em] text-[var(--silver)] sm:text-3xl">

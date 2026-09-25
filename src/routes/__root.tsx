@@ -160,12 +160,13 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         {/* Low-end device detection — sets html.cx-low-perf so CSS can
             drop backdrop-filter, heavy animations, and the hero aura
-            for users on slow networks / low-memory / low-core devices.
+            for users on slow networks or low-memory devices. Core count is not
+            used: iOS Safari always reports 4, which flagged every iPhone.
             Runs inline pre-hydration so the first paint already opts out. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var n=navigator,c=n.connection||n.mozConnection||n.webkitConnection,low=false;if(c){if(c.saveData)low=true;if(/^(slow-2g|2g|3g)$/.test(c.effectiveType||''))low=true;}if(typeof n.deviceMemory==='number'&&n.deviceMemory<4)low=true;if(typeof n.hardwareConcurrency==='number'&&n.hardwareConcurrency<=4&&matchMedia('(max-width:767px)').matches)low=true;if(low)document.documentElement.classList.add('cx-low-perf');}catch(e){}})();",
+              "(function(){try{var n=navigator,c=n.connection||n.mozConnection||n.webkitConnection,low=false;if(c){if(c.saveData)low=true;if(/^(slow-2g|2g|3g)$/.test(c.effectiveType||''))low=true;}if(typeof n.deviceMemory==='number'&&n.deviceMemory<4)low=true;if(low)document.documentElement.classList.add('cx-low-perf');}catch(e){}})();",
           }}
         />
         {/* Defensive: unregister any legacy Service Worker that could pin

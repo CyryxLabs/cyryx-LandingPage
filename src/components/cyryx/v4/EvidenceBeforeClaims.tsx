@@ -1,7 +1,6 @@
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { HudLabel } from "../primitives/HudLabel";
 import { trackCta } from "@/lib/track-cta";
 
 type ArtifactKey = "brief" | "acceptance" | "record";
@@ -50,7 +49,7 @@ const RECORD_LINES: readonly [string, string, string][] = [
 
 function SampleBadge() {
   return (
-    <span className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--steel)]">
+    <span className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[12px] uppercase tracking-[0.12em] text-[var(--steel)]">
       Sample · illustrative data
     </span>
   );
@@ -65,7 +64,7 @@ function ArtifactPreview({ artifact }: { artifact: ArtifactKey }) {
             key={term}
             className="grid gap-1 bg-[var(--onyx)] px-4 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4"
           >
-            <dt className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--steel)]">
+            <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-[var(--steel)]">
               {term}
             </dt>
             <dd className="text-[var(--silver)]">{value}</dd>
@@ -78,7 +77,7 @@ function ArtifactPreview({ artifact }: { artifact: ArtifactKey }) {
     return (
       <div className="overflow-x-auto rounded-md border border-white/10">
         <table className="w-full min-w-[34rem] text-left text-sm">
-          <thead className="bg-[var(--graphite)] font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--steel)]">
+          <thead className="bg-[var(--graphite)] font-mono text-[12px] uppercase tracking-[0.12em] text-[var(--steel)]">
             <tr>
               <th scope="col" className="px-4 py-3 font-medium">
                 Criterion
@@ -157,10 +156,9 @@ export function EvidenceBeforeClaims() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-end lg:gap-20">
           <div>
-            <HudLabel withDot>What you receive</HudLabel>
             <h2
               id="evidence-heading"
-              className="mt-6 max-w-[15ch] font-display text-4xl font-semibold leading-[1] tracking-[-0.045em] text-silver-gradient sm:text-5xl lg:text-6xl"
+              className="max-w-[15ch] font-display text-[1.75rem] sm:text-[2.125rem] lg:text-[2.75rem] xl:text-[3.5rem] font-semibold leading-[1] tracking-[-0.045em] text-silver-gradient"
             >
               Every engagement leaves evidence you can review.
             </h2>
@@ -226,13 +224,13 @@ export function EvidenceBeforeClaims() {
           <Link
             to="/research/$slug"
             params={{ slug: "cgp-v1" }}
-            className="inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--accent-glow)]"
+            className="inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--accent-glow)]"
           >
             Read the Cyryx Governance Protocol <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
           <Link
             to="/answers"
-            className="inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--silver-dim)] transition-colors hover:text-[var(--silver)]"
+            className="inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--silver-dim)] transition-colors hover:text-[var(--silver)]"
           >
             Read Cyryx Answers <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>

@@ -56,7 +56,7 @@ export function ProofStrip() {
         {items.map((item) => {
           const content = (
             <>
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--accent-glow)]">
+              <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--accent-glow)]">
                 {item.label}
               </span>
               <span className="mt-2 flex items-start justify-between gap-3 text-sm leading-snug text-[var(--silver)]">

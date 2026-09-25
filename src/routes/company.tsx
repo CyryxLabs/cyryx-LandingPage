@@ -150,7 +150,9 @@ function CompanyPage() {
 
         <section className="border-y border-white/10 bg-[var(--obsidian)] px-5 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-7xl">
-            <HudLabel>Solutions (Advise · Build · Control · Operate) · Products · Applied AI Lab</HudLabel>
+            <HudLabel>
+              Solutions (Advise · Build · Control · Operate) · Products · Applied AI Lab
+            </HudLabel>
             <div className="cx-stagger mt-12 divide-y divide-white/10 border-y border-white/10">
               {UNITS.map(([title, body, href], index) => (
                 <Link
@@ -158,7 +160,7 @@ function CompanyPage() {
                   to={href}
                   className="cx-stagger-item group grid gap-4 py-7 sm:grid-cols-[4rem_0.65fr_1.35fr_auto] sm:items-center sm:gap-8 sm:py-9"
                 >
-                  <span className="font-mono text-[11px] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h2 className="font-display text-3xl tracking-[-0.035em] text-[var(--silver)]">
@@ -191,7 +193,7 @@ function CompanyPage() {
                   key={title}
                   className="grid gap-3 py-6 sm:grid-cols-[3rem_0.8fr_1.2fr] sm:gap-8"
                 >
-                  <span className="font-mono text-[11px] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] text-[var(--accent-glow)]">
                     0{index + 1}
                   </span>
                   <h3 className="text-sm font-medium text-[var(--silver)]">{title}</h3>
@@ -208,10 +210,7 @@ function CompanyPage() {
             <h2 className="mx-auto mt-7 max-w-[17ch] font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-6xl">
               Bring the opportunity, constraint, or workflow—not a predetermined answer.
             </h2>
-            <a
-              href={startHref}
-              className="mt-10 inline-flex min-h-12 items-center gap-2 rounded-md border border-[var(--accent-glow)] px-6 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)] transition hover:bg-[var(--accent-glow)] hover:text-[var(--onyx)]"
-            >
+            <a href={startHref} className="cx-btn-primary mt-10">
               Start a project <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
           </div>

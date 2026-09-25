@@ -54,14 +54,14 @@ export function AexosRoutingSimulation() {
       aria-label="Simulation: the orchestrator routes each request to the specialists that own it"
     >
       <div className="lg:pr-6">
-        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--steel)]">
+        <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]">
           You ask
         </p>
         <p className="mt-3 min-h-[4.5rem] rounded-lg border border-white/10 bg-[var(--onyx)] px-4 py-3 font-display text-lg leading-snug text-[var(--silver)]">
           “{typed}
           {!still && step === 0 ? <span aria-hidden className="cx-caret" /> : "”"}
         </p>
-        <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--steel)]">
+        <p className="mt-5 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]">
           Routed by
         </p>
         <p className="mt-2 inline-flex items-center gap-2 rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_55%,transparent)] px-3 py-1.5 font-mono text-sm text-[var(--accent-glow)]">
@@ -98,7 +98,7 @@ export function AexosRoutingSimulation() {
             <li key={specialist.handle} className="cx-route-node" data-on={on}>
               <span className="font-mono text-[13px]">{specialist.handle}</span>
               <span className="text-[13px] text-[var(--steel)]">{specialist.area}</span>
-              <span className="cx-route-order font-mono text-[11px]">
+              <span className="cx-route-order font-mono text-[12px]">
                 {on && order >= 0 ? String(order + 1).padStart(2, "0") : ""}
               </span>
             </li>

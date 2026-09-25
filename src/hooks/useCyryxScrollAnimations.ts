@@ -130,6 +130,9 @@ export function useCyryxScrollAnimations() {
       if (cancelled) return;
 
       gsap.registerPlugin(ScrollTrigger);
+      // iOS Safari resizes the viewport whenever the address bar shows or
+      // hides. Refreshing on those resizes makes the pinned hero jump.
+      ScrollTrigger.config({ ignoreMobileResize: true });
       const preExistingTriggers = new Set(ScrollTrigger.getAll());
       const mm = gsap.matchMedia();
 
@@ -153,10 +156,13 @@ export function useCyryxScrollAnimations() {
 
           if (heroLine && heroSub && heroCtas && !lowPerf) {
             const heroSequence = gsap.timeline({ defaults: { ease: "power3.out" } });
+            // Transform only: the server-rendered headline, sub and CTAs stay
+            // visible from first paint. Fading them in after hydration made
+            // them blink out and back on slower phones (Safari in particular).
             heroSequence
-              .from(heroLine, { opacity: 0, y: mobile ? 18 : 28, duration: 0.85 })
-              .from(heroSub, { opacity: 0, y: 16, duration: 0.65 }, "-=0.45")
-              .from(heroCtas, { opacity: 0, y: 14, duration: 0.6 }, "-=0.4");
+              .from(heroLine, { y: mobile ? 14 : 22, duration: 0.85 })
+              .from(heroSub, { y: 12, duration: 0.65 }, "-=0.45")
+              .from(heroCtas, { y: 10, duration: 0.6 }, "-=0.4");
           } else if (heroLine && heroSub && heroCtas) {
             gsap.set([heroLine, heroSub, heroCtas], { opacity: 1, x: 0, y: 0 });
           }

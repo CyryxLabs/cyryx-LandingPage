@@ -51,10 +51,19 @@ export const Route = createFileRoute("/")({
       { name: "theme-color", content: "#050607" },
     ],
     links: [
+      // One preload per frame set; the media queries match the poster <picture>.
       {
         rel: "preload",
         as: "image",
         href: "/media/hero-sequence/desktop/cyryx-hero-frame-001.webp",
+        media: "(min-width: 768px), (orientation: landscape)",
+        fetchPriority: "high",
+      },
+      {
+        rel: "preload",
+        as: "image",
+        href: "/media/hero-sequence/mobile/cyryx-hero-frame-001.webp",
+        media: "(max-width: 767px) and (orientation: portrait)",
         fetchPriority: "high",
       },
       { rel: "canonical", href: HOME_URL },

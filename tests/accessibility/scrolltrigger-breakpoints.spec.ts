@@ -358,5 +358,6 @@ test("desktop execution rail progresses through the governed operating sequence"
     .toBe(5);
 
   expect(railTransform).not.toBe("none");
-  await expect(system).toContainText("From intent to action. From action to evidence.");
+  // The closing line repeated the hero rail; it was removed so the section ends on the trace.
+  await expect(system).not.toContainText("From intent to action. From action to evidence.");
 });

@@ -191,7 +191,7 @@ function BriefPage() {
                         className="absolute left-[1.2rem] top-10 bottom-0 w-px bg-white/10"
                       />
                     ) : null}
-                    <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_60%,transparent)] bg-[var(--onyx)] font-mono text-[11px] text-[var(--accent-glow)]">
+                    <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_60%,transparent)] bg-[var(--onyx)] font-mono text-[12px] text-[var(--accent-glow)]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="pt-1.5">
@@ -207,7 +207,7 @@ function BriefPage() {
               </ol>
             </div>
             <div className="cx-spotlight self-start rounded-2xl border border-white/10 bg-[var(--onyx)] p-6 sm:p-8">
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--accent-glow)]">
+              <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--accent-glow)]">
                 Your requirements document
               </p>
               <p className="mt-3 text-sm leading-relaxed text-[var(--silver-dim)]">
@@ -219,7 +219,7 @@ function BriefPage() {
                     key={section}
                     className="flex items-center gap-3 border-b border-white/5 pb-2 text-sm text-[var(--silver)] last:border-b-0"
                   >
-                    <span className="font-mono text-[11px] text-[var(--steel)]">
+                    <span className="font-mono text-[12px] text-[var(--steel)]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     {section}

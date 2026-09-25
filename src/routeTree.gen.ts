@@ -9,164 +9,80 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as BriefRouteImport } from './routes/brief'
-import { Route as CareersRouteImport } from './routes/careers'
-import { Route as CompanyRouteImport } from './routes/company'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as EngagementModelRouteImport } from './routes/engagement-model'
-import { Route as ManagedOperationsRouteImport } from './routes/managed-operations'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ProductsRouteImport } from './routes/products'
-import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
-import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
-import { Route as SitemapProductsDotxmlRouteImport } from './routes/sitemap-products[.]xml'
-import { Route as SitemapSolutionsDotxmlRouteImport } from './routes/sitemap-solutions[.]xml'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SolutionsRouteImport } from './routes/solutions'
-import { Route as StartRouteImport } from './routes/start'
-import { Route as TermsRouteImport } from './routes/terms'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
-import { Route as AuthenticatedWorkspaceRouteImport } from './routes/_authenticated/workspace'
-import { Route as AnswersIndexRouteImport } from './routes/answers.index'
-import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
-import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
-import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
-import { Route as AnswersWhatIsAiGovernanceRouteImport } from './routes/answers.what-is-ai-governance'
-import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './routes/answers.what-is-goal-grounded-generation'
-import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
-import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
-import { Route as ProductsAexosRouteImport } from './routes/products.aexos'
-import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StartRouteImport } from './routes/start'
+import { Route as SolutionsRouteImport } from './routes/solutions'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SitemapSolutionsDotxmlRouteImport } from './routes/sitemap-solutions[.]xml'
+import { Route as SitemapProductsDotxmlRouteImport } from './routes/sitemap-products[.]xml'
+import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
+import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ManagedOperationsRouteImport } from './routes/managed-operations'
+import { Route as EngagementModelRouteImport } from './routes/engagement-model'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CompanyRouteImport } from './routes/company'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as BriefRouteImport } from './routes/brief'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
-import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
-import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
-import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
-import { Route as SolutionsAiProductEngineeringRouteImport } from './routes/solutions.ai-product-engineering'
-import { Route as SolutionsAiStrategyAdvisoryRouteImport } from './routes/solutions.ai-strategy-advisory'
-import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
-import { Route as SolutionsAppliedAiSystemsRouteImport } from './routes/solutions.applied-ai-systems'
-import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
-import { Route as SolutionsDigitalWebSystemsRouteImport } from './routes/solutions.digital-web-systems'
-import { Route as SolutionsGovernanceOptimizationRouteImport } from './routes/solutions.governance-optimization'
-import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
+import { Route as AnswersIndexRouteImport } from './routes/answers.index'
 import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
+import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
+import { Route as SolutionsGovernanceOptimizationRouteImport } from './routes/solutions.governance-optimization'
+import { Route as SolutionsDigitalWebSystemsRouteImport } from './routes/solutions.digital-web-systems'
+import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
+import { Route as SolutionsAppliedAiSystemsRouteImport } from './routes/solutions.applied-ai-systems'
+import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
+import { Route as SolutionsAiStrategyAdvisoryRouteImport } from './routes/solutions.ai-strategy-advisory'
+import { Route as SolutionsAiProductEngineeringRouteImport } from './routes/solutions.ai-product-engineering'
+import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
+import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
+import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
+import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as ProductsAexosRouteImport } from './routes/products.aexos'
+import { Route as NewsletterConfirmRouteImport } from './routes/newsletter.confirm'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
+import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './routes/answers.what-is-goal-grounded-generation'
+import { Route as AnswersWhatIsAiGovernanceRouteImport } from './routes/answers.what-is-ai-governance'
+import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
+import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
+import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
+import { Route as AuthenticatedWorkspaceRouteImport } from './routes/_authenticated/workspace'
 import { Route as AuthenticatedWorkspaceIndexRouteImport } from './routes/_authenticated/workspace.index'
-import { Route as AuthenticatedWorkspaceSplatRouteImport } from './routes/_authenticated/workspace.$'
-import { Route as AuthenticatedWorkspaceAdminRouteImport } from './routes/_authenticated/workspace.admin'
-import { Route as AuthenticatedWorkspaceCareersRouteImport } from './routes/_authenticated/workspace.careers'
-import { Route as AuthenticatedWorkspaceDevRouteImport } from './routes/_authenticated/workspace.dev'
-import { Route as AuthenticatedWorkspaceFinanceRouteImport } from './routes/_authenticated/workspace.finance'
-import { Route as AuthenticatedWorkspaceHrRouteImport } from './routes/_authenticated/workspace.hr'
-import { Route as AuthenticatedWorkspaceMarketingRouteImport } from './routes/_authenticated/workspace.marketing'
-import { Route as AuthenticatedWorkspacePipelineRouteImport } from './routes/_authenticated/workspace.pipeline'
-import { Route as AuthenticatedWorkspaceProductsRouteImport } from './routes/_authenticated/workspace.products'
-import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
-import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
-import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
-import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
-import { Route as ApiPublicAuthDomainBlockRouteImport } from './routes/api/public/auth.domain-block'
-import { Route as ApiPublicAuthRecoverRouteImport } from './routes/api/public/auth.recover'
-import { Route as ApiPublicBriefAssistRouteImport } from './routes/api/public/brief/assist'
-import { Route as ApiPublicBriefInitRouteImport } from './routes/api/public/brief/init'
-import { Route as ApiPublicBriefSubmitRouteImport } from './routes/api/public/brief/submit'
-import { Route as ApiPublicNewsletterConfirmRouteImport } from './routes/api/public/newsletter.confirm'
-import { Route as ApiPublicNewsletterSubscribeRouteImport } from './routes/api/public/newsletter.subscribe'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
-import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
+import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
+import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
+import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
+import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
+import { Route as AuthenticatedWorkspaceProductsRouteImport } from './routes/_authenticated/workspace.products'
+import { Route as AuthenticatedWorkspacePipelineRouteImport } from './routes/_authenticated/workspace.pipeline'
+import { Route as AuthenticatedWorkspaceMarketingRouteImport } from './routes/_authenticated/workspace.marketing'
+import { Route as AuthenticatedWorkspaceHrRouteImport } from './routes/_authenticated/workspace.hr'
+import { Route as AuthenticatedWorkspaceFinanceRouteImport } from './routes/_authenticated/workspace.finance'
+import { Route as AuthenticatedWorkspaceDevRouteImport } from './routes/_authenticated/workspace.dev'
+import { Route as AuthenticatedWorkspaceCareersRouteImport } from './routes/_authenticated/workspace.careers'
+import { Route as AuthenticatedWorkspaceAdminRouteImport } from './routes/_authenticated/workspace.admin'
+import { Route as AuthenticatedWorkspaceSplatRouteImport } from './routes/_authenticated/workspace.$'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
+import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as ApiPublicNewsletterSubscribeRouteImport } from './routes/api/public/newsletter.subscribe'
+import { Route as ApiPublicNewsletterConfirmRouteImport } from './routes/api/public/newsletter.confirm'
+import { Route as ApiPublicBriefSubmitRouteImport } from './routes/api/public/brief/submit'
+import { Route as ApiPublicBriefInitRouteImport } from './routes/api/public/brief/init'
+import { Route as ApiPublicBriefAssistRouteImport } from './routes/api/public/brief/assist'
+import { Route as ApiPublicAuthRecoverRouteImport } from './routes/api/public/auth.recover'
+import { Route as ApiPublicAuthDomainBlockRouteImport } from './routes/api/public/auth.domain-block'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BriefRoute = BriefRouteImport.update({
-  id: '/brief',
-  path: '/brief',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompanyRoute = CompanyRouteImport.update({
-  id: '/company',
-  path: '/company',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EngagementModelRoute = EngagementModelRouteImport.update({
-  id: '/engagement-model',
-  path: '/engagement-model',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ManagedOperationsRoute = ManagedOperationsRouteImport.update({
-  id: '/managed-operations',
-  path: '/managed-operations',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsRoute = ProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapCompanyDotxmlRoute = SitemapCompanyDotxmlRouteImport.update({
-  id: '/sitemap-company.xml',
-  path: '/sitemap-company.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
-  id: '/sitemap-index.xml',
-  path: '/sitemap-index.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapProductsDotxmlRoute = SitemapProductsDotxmlRouteImport.update({
-  id: '/sitemap-products.xml',
-  path: '/sitemap-products.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapSolutionsDotxmlRoute = SitemapSolutionsDotxmlRouteImport.update({
-  id: '/sitemap-solutions.xml',
-  path: '/sitemap-solutions.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SolutionsRoute = SolutionsRouteImport.update({
-  id: '/solutions',
-  path: '/solutions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StartRoute = StartRouteImport.update({
-  id: '/start',
-  path: '/start',
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -174,138 +90,109 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UnsubscribeRoute = UnsubscribeRouteImport.update({
-  id: '/unsubscribe',
-  path: '/unsubscribe',
+const StartRoute = StartRouteImport.update({
+  id: '/start',
+  path: '/start',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedWorkspaceRoute = AuthenticatedWorkspaceRouteImport.update({
-  id: '/workspace',
-  path: '/workspace',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AnswersIndexRoute = AnswersIndexRouteImport.update({
-  id: '/answers/',
-  path: '/answers/',
+const SolutionsRoute = SolutionsRouteImport.update({
+  id: '/solutions',
+  path: '/solutions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AnswersAiExecutionSystemVsAiAutomationRoute =
-  AnswersAiExecutionSystemVsAiAutomationRouteImport.update({
-    id: '/answers/ai-execution-system-vs-ai-automation',
-    path: '/answers/ai-execution-system-vs-ai-automation',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AnswersHowToMeasureAiOutputQualityRoute =
-  AnswersHowToMeasureAiOutputQualityRouteImport.update({
-    id: '/answers/how-to-measure-ai-output-quality',
-    path: '/answers/how-to-measure-ai-output-quality',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AnswersWhatAreCommandGatesInAiSystemsRoute =
-  AnswersWhatAreCommandGatesInAiSystemsRouteImport.update({
-    id: '/answers/what-are-command-gates-in-ai-systems',
-    path: '/answers/what-are-command-gates-in-ai-systems',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AnswersWhatIsAiGovernanceRoute =
-  AnswersWhatIsAiGovernanceRouteImport.update({
-    id: '/answers/what-is-ai-governance',
-    path: '/answers/what-is-ai-governance',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AnswersWhatIsGoalGroundedGenerationRoute =
-  AnswersWhatIsGoalGroundedGenerationRouteImport.update({
-    id: '/answers/what-is-goal-grounded-generation',
-    path: '/answers/what-is-goal-grounded-generation',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AnswersWhatIsGovernedAiExecutionRoute =
-  AnswersWhatIsGovernedAiExecutionRouteImport.update({
-    id: '/answers/what-is-governed-ai-execution',
-    path: '/answers/what-is-governed-ai-execution',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NewsletterConfirmRoute = NewsletterConfirmRouteImport.update({
-  id: '/newsletter/confirm',
-  path: '/newsletter/confirm',
+const SitemapSolutionsDotxmlRoute = SitemapSolutionsDotxmlRouteImport.update({
+  id: '/sitemap-solutions.xml',
+  path: '/sitemap-solutions.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsAexosRoute = ProductsAexosRouteImport.update({
-  id: '/aexos',
-  path: '/aexos',
-  getParentRoute: () => ProductsRoute,
+const SitemapProductsDotxmlRoute = SitemapProductsDotxmlRouteImport.update({
+  id: '/sitemap-products.xml',
+  path: '/sitemap-products.xml',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
-  id: '/maax-studio',
-  path: '/maax-studio',
-  getParentRoute: () => ProductsRoute,
+const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
+  id: '/sitemap-index.xml',
+  path: '/sitemap-index.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapCompanyDotxmlRoute = SitemapCompanyDotxmlRouteImport.update({
+  id: '/sitemap-company.xml',
+  path: '/sitemap-company.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManagedOperationsRoute = ManagedOperationsRouteImport.update({
+  id: '/managed-operations',
+  path: '/managed-operations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EngagementModelRoute = EngagementModelRouteImport.update({
+  id: '/engagement-model',
+  path: '/engagement-model',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompanyRoute = CompanyRouteImport.update({
+  id: '/company',
+  path: '/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BriefRoute = BriefRouteImport.update({
+  id: '/brief',
+  path: '/brief',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ResearchIndexRoute = ResearchIndexRouteImport.update({
   id: '/research/',
   path: '/research/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResearchSlugRoute = ResearchSlugRouteImport.update({
-  id: '/research/$slug',
-  path: '/research/$slug',
+const AnswersIndexRoute = AnswersIndexRouteImport.update({
+  id: '/answers/',
+  path: '/answers/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SolutionsAiGovernanceCostControlRoute =
-  SolutionsAiGovernanceCostControlRouteImport.update({
-    id: '/ai-governance-cost-control',
-    path: '/ai-governance-cost-control',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
-  id: '/ai-integrations',
-  path: '/ai-integrations',
-  getParentRoute: () => SolutionsRoute,
-} as any)
-const SolutionsAiProductEngineeringRoute =
-  SolutionsAiProductEngineeringRouteImport.update({
-    id: '/ai-product-engineering',
-    path: '/ai-product-engineering',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAiStrategyAdvisoryRoute =
-  SolutionsAiStrategyAdvisoryRouteImport.update({
-    id: '/ai-strategy-advisory',
-    path: '/ai-strategy-advisory',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAiWebsitesLeadSystemsRoute =
-  SolutionsAiWebsitesLeadSystemsRouteImport.update({
-    id: '/ai-websites-lead-systems',
-    path: '/ai-websites-lead-systems',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAppliedAiSystemsRoute =
-  SolutionsAppliedAiSystemsRouteImport.update({
-    id: '/applied-ai-systems',
-    path: '/applied-ai-systems',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsCustomAiProductDevelopmentRoute =
-  SolutionsCustomAiProductDevelopmentRouteImport.update({
-    id: '/custom-ai-product-development',
-    path: '/custom-ai-product-development',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsDigitalWebSystemsRoute =
-  SolutionsDigitalWebSystemsRouteImport.update({
-    id: '/digital-web-systems',
-    path: '/digital-web-systems',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsGovernanceOptimizationRoute =
-  SolutionsGovernanceOptimizationRouteImport.update({
-    id: '/governance-optimization',
-    path: '/governance-optimization',
+const SolutionsWorkflowAutomationRoute =
+  SolutionsWorkflowAutomationRouteImport.update({
+    id: '/workflow-automation',
+    path: '/workflow-automation',
     getParentRoute: () => SolutionsRoute,
   } as any)
 const SolutionsInternalAiAssistantsRoute =
@@ -314,58 +201,160 @@ const SolutionsInternalAiAssistantsRoute =
     path: '/internal-ai-assistants',
     getParentRoute: () => SolutionsRoute,
   } as any)
-const SolutionsWorkflowAutomationRoute =
-  SolutionsWorkflowAutomationRouteImport.update({
-    id: '/workflow-automation',
-    path: '/workflow-automation',
+const SolutionsGovernanceOptimizationRoute =
+  SolutionsGovernanceOptimizationRouteImport.update({
+    id: '/governance-optimization',
+    path: '/governance-optimization',
     getParentRoute: () => SolutionsRoute,
   } as any)
+const SolutionsDigitalWebSystemsRoute =
+  SolutionsDigitalWebSystemsRouteImport.update({
+    id: '/digital-web-systems',
+    path: '/digital-web-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsCustomAiProductDevelopmentRoute =
+  SolutionsCustomAiProductDevelopmentRouteImport.update({
+    id: '/custom-ai-product-development',
+    path: '/custom-ai-product-development',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAppliedAiSystemsRoute =
+  SolutionsAppliedAiSystemsRouteImport.update({
+    id: '/applied-ai-systems',
+    path: '/applied-ai-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiWebsitesLeadSystemsRoute =
+  SolutionsAiWebsitesLeadSystemsRouteImport.update({
+    id: '/ai-websites-lead-systems',
+    path: '/ai-websites-lead-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiStrategyAdvisoryRoute =
+  SolutionsAiStrategyAdvisoryRouteImport.update({
+    id: '/ai-strategy-advisory',
+    path: '/ai-strategy-advisory',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiProductEngineeringRoute =
+  SolutionsAiProductEngineeringRouteImport.update({
+    id: '/ai-product-engineering',
+    path: '/ai-product-engineering',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
+  id: '/ai-integrations',
+  path: '/ai-integrations',
+  getParentRoute: () => SolutionsRoute,
+} as any)
+const SolutionsAiGovernanceCostControlRoute =
+  SolutionsAiGovernanceCostControlRouteImport.update({
+    id: '/ai-governance-cost-control',
+    path: '/ai-governance-cost-control',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const ResearchSlugRoute = ResearchSlugRouteImport.update({
+  id: '/research/$slug',
+  path: '/research/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
+  id: '/maax-studio',
+  path: '/maax-studio',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const ProductsAexosRoute = ProductsAexosRouteImport.update({
+  id: '/aexos',
+  path: '/aexos',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const NewsletterConfirmRoute = NewsletterConfirmRouteImport.update({
+  id: '/newsletter/confirm',
+  path: '/newsletter/confirm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnswersWhatIsGovernedAiExecutionRoute =
+  AnswersWhatIsGovernedAiExecutionRouteImport.update({
+    id: '/answers/what-is-governed-ai-execution',
+    path: '/answers/what-is-governed-ai-execution',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersWhatIsGoalGroundedGenerationRoute =
+  AnswersWhatIsGoalGroundedGenerationRouteImport.update({
+    id: '/answers/what-is-goal-grounded-generation',
+    path: '/answers/what-is-goal-grounded-generation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersWhatIsAiGovernanceRoute =
+  AnswersWhatIsAiGovernanceRouteImport.update({
+    id: '/answers/what-is-ai-governance',
+    path: '/answers/what-is-ai-governance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersWhatAreCommandGatesInAiSystemsRoute =
+  AnswersWhatAreCommandGatesInAiSystemsRouteImport.update({
+    id: '/answers/what-are-command-gates-in-ai-systems',
+    path: '/answers/what-are-command-gates-in-ai-systems',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersHowToMeasureAiOutputQualityRoute =
+  AnswersHowToMeasureAiOutputQualityRouteImport.update({
+    id: '/answers/how-to-measure-ai-output-quality',
+    path: '/answers/how-to-measure-ai-output-quality',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersAiExecutionSystemVsAiAutomationRoute =
+  AnswersAiExecutionSystemVsAiAutomationRouteImport.update({
+    id: '/answers/ai-execution-system-vs-ai-automation',
+    path: '/answers/ai-execution-system-vs-ai-automation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedWorkspaceRoute = AuthenticatedWorkspaceRouteImport.update({
+  id: '/workspace',
+  path: '/workspace',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedWorkspaceIndexRoute =
   AuthenticatedWorkspaceIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
-const AuthenticatedWorkspaceSplatRoute =
-  AuthenticatedWorkspaceSplatRouteImport.update({
-    id: '/$',
-    path: '/$',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceAdminRoute =
-  AuthenticatedWorkspaceAdminRouteImport.update({
-    id: '/admin',
-    path: '/admin',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceCareersRoute =
-  AuthenticatedWorkspaceCareersRouteImport.update({
-    id: '/careers',
-    path: '/careers',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceDevRoute =
-  AuthenticatedWorkspaceDevRouteImport.update({
-    id: '/dev',
-    path: '/dev',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceFinanceRoute =
-  AuthenticatedWorkspaceFinanceRouteImport.update({
-    id: '/finance',
-    path: '/finance',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceHrRoute =
-  AuthenticatedWorkspaceHrRouteImport.update({
-    id: '/hr',
-    path: '/hr',
-    getParentRoute: () => AuthenticatedWorkspaceRoute,
-  } as any)
-const AuthenticatedWorkspaceMarketingRoute =
-  AuthenticatedWorkspaceMarketingRouteImport.update({
-    id: '/marketing',
-    path: '/marketing',
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
+  id: '/api/public/web-vitals',
+  path: '/api/public/web-vitals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
+  id: '/api/public/cta-events',
+  path: '/api/public/cta-events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
+  id: '/api/public/contact',
+  path: '/api/public/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
+  id: '/api/public/assistant',
+  path: '/api/public/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedWorkspaceProductsRoute =
+  AuthenticatedWorkspaceProductsRouteImport.update({
+    id: '/products',
+    path: '/products',
     getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
 const AuthenticatedWorkspacePipelineRoute =
@@ -374,79 +363,52 @@ const AuthenticatedWorkspacePipelineRoute =
     path: '/pipeline',
     getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
-const AuthenticatedWorkspaceProductsRoute =
-  AuthenticatedWorkspaceProductsRouteImport.update({
-    id: '/products',
-    path: '/products',
+const AuthenticatedWorkspaceMarketingRoute =
+  AuthenticatedWorkspaceMarketingRouteImport.update({
+    id: '/marketing',
+    path: '/marketing',
     getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
-const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
-  id: '/api/public/assistant',
-  path: '/api/public/assistant',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
-  id: '/api/public/contact',
-  path: '/api/public/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
-  id: '/api/public/cta-events',
-  path: '/api/public/cta-events',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
-  id: '/api/public/web-vitals',
-  path: '/api/public/web-vitals',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicAuthDomainBlockRoute =
-  ApiPublicAuthDomainBlockRouteImport.update({
-    id: '/api/public/auth/domain-block',
-    path: '/api/public/auth/domain-block',
-    getParentRoute: () => rootRouteImport,
+const AuthenticatedWorkspaceHrRoute =
+  AuthenticatedWorkspaceHrRouteImport.update({
+    id: '/hr',
+    path: '/hr',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
-const ApiPublicAuthRecoverRoute = ApiPublicAuthRecoverRouteImport.update({
-  id: '/api/public/auth/recover',
-  path: '/api/public/auth/recover',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicBriefAssistRoute = ApiPublicBriefAssistRouteImport.update({
-  id: '/api/public/brief/assist',
-  path: '/api/public/brief/assist',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicBriefInitRoute = ApiPublicBriefInitRouteImport.update({
-  id: '/api/public/brief/init',
-  path: '/api/public/brief/init',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicBriefSubmitRoute = ApiPublicBriefSubmitRouteImport.update({
-  id: '/api/public/brief/submit',
-  path: '/api/public/brief/submit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicNewsletterConfirmRoute =
-  ApiPublicNewsletterConfirmRouteImport.update({
-    id: '/api/public/newsletter/confirm',
-    path: '/api/public/newsletter/confirm',
-    getParentRoute: () => rootRouteImport,
+const AuthenticatedWorkspaceFinanceRoute =
+  AuthenticatedWorkspaceFinanceRouteImport.update({
+    id: '/finance',
+    path: '/finance',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
-const ApiPublicNewsletterSubscribeRoute =
-  ApiPublicNewsletterSubscribeRouteImport.update({
-    id: '/api/public/newsletter/subscribe',
-    path: '/api/public/newsletter/subscribe',
-    getParentRoute: () => rootRouteImport,
+const AuthenticatedWorkspaceDevRoute =
+  AuthenticatedWorkspaceDevRouteImport.update({
+    id: '/dev',
+    path: '/dev',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
   } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
+const AuthenticatedWorkspaceCareersRoute =
+  AuthenticatedWorkspaceCareersRouteImport.update({
+    id: '/careers',
+    path: '/careers',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
+  } as any)
+const AuthenticatedWorkspaceAdminRoute =
+  AuthenticatedWorkspaceAdminRouteImport.update({
+    id: '/admin',
+    path: '/admin',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
+  } as any)
+const AuthenticatedWorkspaceSplatRoute =
+  AuthenticatedWorkspaceSplatRouteImport.update({
+    id: '/$',
+    path: '/$',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
+  } as any)
+const LovableEmailTransactionalSendRoute =
+  LovableEmailTransactionalSendRouteImport.update({
+    id: '/lovable/email/transactional/send',
+    path: '/lovable/email/transactional/send',
     getParentRoute: () => rootRouteImport,
   } as any)
 const LovableEmailTransactionalPreviewRoute =
@@ -455,10 +417,48 @@ const LovableEmailTransactionalPreviewRoute =
     path: '/lovable/email/transactional/preview',
     getParentRoute: () => rootRouteImport,
   } as any)
-const LovableEmailTransactionalSendRoute =
-  LovableEmailTransactionalSendRouteImport.update({
-    id: '/lovable/email/transactional/send',
-    path: '/lovable/email/transactional/send',
+const LovableEmailQueueProcessRoute =
+  LovableEmailQueueProcessRouteImport.update({
+    id: '/lovable/email/queue/process',
+    path: '/lovable/email/queue/process',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicNewsletterSubscribeRoute =
+  ApiPublicNewsletterSubscribeRouteImport.update({
+    id: '/api/public/newsletter/subscribe',
+    path: '/api/public/newsletter/subscribe',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicNewsletterConfirmRoute =
+  ApiPublicNewsletterConfirmRouteImport.update({
+    id: '/api/public/newsletter/confirm',
+    path: '/api/public/newsletter/confirm',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicBriefSubmitRoute = ApiPublicBriefSubmitRouteImport.update({
+  id: '/api/public/brief/submit',
+  path: '/api/public/brief/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBriefInitRoute = ApiPublicBriefInitRouteImport.update({
+  id: '/api/public/brief/init',
+  path: '/api/public/brief/init',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBriefAssistRoute = ApiPublicBriefAssistRouteImport.update({
+  id: '/api/public/brief/assist',
+  path: '/api/public/brief/assist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAuthRecoverRoute = ApiPublicAuthRecoverRouteImport.update({
+  id: '/api/public/auth/recover',
+  path: '/api/public/auth/recover',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAuthDomainBlockRoute =
+  ApiPublicAuthDomainBlockRouteImport.update({
+    id: '/api/public/auth/domain-block',
+    path: '/api/public/auth/domain-block',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -943,130 +943,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/brief': {
-      id: '/brief'
-      path: '/brief'
-      fullPath: '/brief'
-      preLoaderRoute: typeof BriefRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/company': {
-      id: '/company'
-      path: '/company'
-      fullPath: '/company'
-      preLoaderRoute: typeof CompanyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/engagement-model': {
-      id: '/engagement-model'
-      path: '/engagement-model'
-      fullPath: '/engagement-model'
-      preLoaderRoute: typeof EngagementModelRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/managed-operations': {
-      id: '/managed-operations'
-      path: '/managed-operations'
-      fullPath: '/managed-operations'
-      preLoaderRoute: typeof ManagedOperationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-company.xml': {
-      id: '/sitemap-company.xml'
-      path: '/sitemap-company.xml'
-      fullPath: '/sitemap-company.xml'
-      preLoaderRoute: typeof SitemapCompanyDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-index.xml': {
-      id: '/sitemap-index.xml'
-      path: '/sitemap-index.xml'
-      fullPath: '/sitemap-index.xml'
-      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-products.xml': {
-      id: '/sitemap-products.xml'
-      path: '/sitemap-products.xml'
-      fullPath: '/sitemap-products.xml'
-      preLoaderRoute: typeof SitemapProductsDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-solutions.xml': {
-      id: '/sitemap-solutions.xml'
-      path: '/sitemap-solutions.xml'
-      fullPath: '/sitemap-solutions.xml'
-      preLoaderRoute: typeof SitemapSolutionsDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/solutions': {
-      id: '/solutions'
-      path: '/solutions'
-      fullPath: '/solutions'
-      preLoaderRoute: typeof SolutionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/start': {
-      id: '/start'
-      path: '/start'
-      fullPath: '/start'
-      preLoaderRoute: typeof StartRouteImport
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -1076,96 +957,131 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/unsubscribe': {
-      id: '/unsubscribe'
-      path: '/unsubscribe'
-      fullPath: '/unsubscribe'
-      preLoaderRoute: typeof UnsubscribeRouteImport
+    '/start': {
+      id: '/start'
+      path: '/start'
+      fullPath: '/start'
+      preLoaderRoute: typeof StartRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/workspace': {
-      id: '/_authenticated/workspace'
-      path: '/workspace'
-      fullPath: '/workspace'
-      preLoaderRoute: typeof AuthenticatedWorkspaceRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/answers/': {
-      id: '/answers/'
-      path: '/answers'
-      fullPath: '/answers/'
-      preLoaderRoute: typeof AnswersIndexRouteImport
+    '/solutions': {
+      id: '/solutions'
+      path: '/solutions'
+      fullPath: '/solutions'
+      preLoaderRoute: typeof SolutionsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/answers/ai-execution-system-vs-ai-automation': {
-      id: '/answers/ai-execution-system-vs-ai-automation'
-      path: '/answers/ai-execution-system-vs-ai-automation'
-      fullPath: '/answers/ai-execution-system-vs-ai-automation'
-      preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/answers/how-to-measure-ai-output-quality': {
-      id: '/answers/how-to-measure-ai-output-quality'
-      path: '/answers/how-to-measure-ai-output-quality'
-      fullPath: '/answers/how-to-measure-ai-output-quality'
-      preLoaderRoute: typeof AnswersHowToMeasureAiOutputQualityRouteImport
+    '/sitemap-solutions.xml': {
+      id: '/sitemap-solutions.xml'
+      path: '/sitemap-solutions.xml'
+      fullPath: '/sitemap-solutions.xml'
+      preLoaderRoute: typeof SitemapSolutionsDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/answers/what-are-command-gates-in-ai-systems': {
-      id: '/answers/what-are-command-gates-in-ai-systems'
-      path: '/answers/what-are-command-gates-in-ai-systems'
-      fullPath: '/answers/what-are-command-gates-in-ai-systems'
-      preLoaderRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRouteImport
+    '/sitemap-products.xml': {
+      id: '/sitemap-products.xml'
+      path: '/sitemap-products.xml'
+      fullPath: '/sitemap-products.xml'
+      preLoaderRoute: typeof SitemapProductsDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/answers/what-is-ai-governance': {
-      id: '/answers/what-is-ai-governance'
-      path: '/answers/what-is-ai-governance'
-      fullPath: '/answers/what-is-ai-governance'
-      preLoaderRoute: typeof AnswersWhatIsAiGovernanceRouteImport
+    '/sitemap-index.xml': {
+      id: '/sitemap-index.xml'
+      path: '/sitemap-index.xml'
+      fullPath: '/sitemap-index.xml'
+      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/answers/what-is-goal-grounded-generation': {
-      id: '/answers/what-is-goal-grounded-generation'
-      path: '/answers/what-is-goal-grounded-generation'
-      fullPath: '/answers/what-is-goal-grounded-generation'
-      preLoaderRoute: typeof AnswersWhatIsGoalGroundedGenerationRouteImport
+    '/sitemap-company.xml': {
+      id: '/sitemap-company.xml'
+      path: '/sitemap-company.xml'
+      fullPath: '/sitemap-company.xml'
+      preLoaderRoute: typeof SitemapCompanyDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/answers/what-is-governed-ai-execution': {
-      id: '/answers/what-is-governed-ai-execution'
-      path: '/answers/what-is-governed-ai-execution'
-      fullPath: '/answers/what-is-governed-ai-execution'
-      preLoaderRoute: typeof AnswersWhatIsGovernedAiExecutionRouteImport
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/newsletter/confirm': {
-      id: '/newsletter/confirm'
-      path: '/newsletter/confirm'
-      fullPath: '/newsletter/confirm'
-      preLoaderRoute: typeof NewsletterConfirmRouteImport
+    '/managed-operations': {
+      id: '/managed-operations'
+      path: '/managed-operations'
+      fullPath: '/managed-operations'
+      preLoaderRoute: typeof ManagedOperationsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/aexos': {
-      id: '/products/aexos'
-      path: '/aexos'
-      fullPath: '/products/aexos'
-      preLoaderRoute: typeof ProductsAexosRouteImport
-      parentRoute: typeof ProductsRoute
+    '/engagement-model': {
+      id: '/engagement-model'
+      path: '/engagement-model'
+      fullPath: '/engagement-model'
+      preLoaderRoute: typeof EngagementModelRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/products/maax-studio': {
-      id: '/products/maax-studio'
-      path: '/maax-studio'
-      fullPath: '/products/maax-studio'
-      preLoaderRoute: typeof ProductsMaaxStudioRouteImport
-      parentRoute: typeof ProductsRoute
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/company': {
+      id: '/company'
+      path: '/company'
+      fullPath: '/company'
+      preLoaderRoute: typeof CompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brief': {
+      id: '/brief'
+      path: '/brief'
+      fullPath: '/brief'
+      preLoaderRoute: typeof BriefRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/research/': {
       id: '/research/'
@@ -1174,74 +1090,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResearchIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/research/$slug': {
-      id: '/research/$slug'
-      path: '/research/$slug'
-      fullPath: '/research/$slug'
-      preLoaderRoute: typeof ResearchSlugRouteImport
+    '/answers/': {
+      id: '/answers/'
+      path: '/answers'
+      fullPath: '/answers/'
+      preLoaderRoute: typeof AnswersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/solutions/ai-governance-cost-control': {
-      id: '/solutions/ai-governance-cost-control'
-      path: '/ai-governance-cost-control'
-      fullPath: '/solutions/ai-governance-cost-control'
-      preLoaderRoute: typeof SolutionsAiGovernanceCostControlRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-integrations': {
-      id: '/solutions/ai-integrations'
-      path: '/ai-integrations'
-      fullPath: '/solutions/ai-integrations'
-      preLoaderRoute: typeof SolutionsAiIntegrationsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-product-engineering': {
-      id: '/solutions/ai-product-engineering'
-      path: '/ai-product-engineering'
-      fullPath: '/solutions/ai-product-engineering'
-      preLoaderRoute: typeof SolutionsAiProductEngineeringRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-strategy-advisory': {
-      id: '/solutions/ai-strategy-advisory'
-      path: '/ai-strategy-advisory'
-      fullPath: '/solutions/ai-strategy-advisory'
-      preLoaderRoute: typeof SolutionsAiStrategyAdvisoryRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-websites-lead-systems': {
-      id: '/solutions/ai-websites-lead-systems'
-      path: '/ai-websites-lead-systems'
-      fullPath: '/solutions/ai-websites-lead-systems'
-      preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/applied-ai-systems': {
-      id: '/solutions/applied-ai-systems'
-      path: '/applied-ai-systems'
-      fullPath: '/solutions/applied-ai-systems'
-      preLoaderRoute: typeof SolutionsAppliedAiSystemsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/custom-ai-product-development': {
-      id: '/solutions/custom-ai-product-development'
-      path: '/custom-ai-product-development'
-      fullPath: '/solutions/custom-ai-product-development'
-      preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/digital-web-systems': {
-      id: '/solutions/digital-web-systems'
-      path: '/digital-web-systems'
-      fullPath: '/solutions/digital-web-systems'
-      preLoaderRoute: typeof SolutionsDigitalWebSystemsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/governance-optimization': {
-      id: '/solutions/governance-optimization'
-      path: '/governance-optimization'
-      fullPath: '/solutions/governance-optimization'
-      preLoaderRoute: typeof SolutionsGovernanceOptimizationRouteImport
+    '/solutions/workflow-automation': {
+      id: '/solutions/workflow-automation'
+      path: '/workflow-automation'
+      fullPath: '/solutions/workflow-automation'
+      preLoaderRoute: typeof SolutionsWorkflowAutomationRouteImport
       parentRoute: typeof SolutionsRoute
     }
     '/solutions/internal-ai-assistants': {
@@ -1251,12 +1111,152 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsInternalAiAssistantsRouteImport
       parentRoute: typeof SolutionsRoute
     }
-    '/solutions/workflow-automation': {
-      id: '/solutions/workflow-automation'
-      path: '/workflow-automation'
-      fullPath: '/solutions/workflow-automation'
-      preLoaderRoute: typeof SolutionsWorkflowAutomationRouteImport
+    '/solutions/governance-optimization': {
+      id: '/solutions/governance-optimization'
+      path: '/governance-optimization'
+      fullPath: '/solutions/governance-optimization'
+      preLoaderRoute: typeof SolutionsGovernanceOptimizationRouteImport
       parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/digital-web-systems': {
+      id: '/solutions/digital-web-systems'
+      path: '/digital-web-systems'
+      fullPath: '/solutions/digital-web-systems'
+      preLoaderRoute: typeof SolutionsDigitalWebSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/custom-ai-product-development': {
+      id: '/solutions/custom-ai-product-development'
+      path: '/custom-ai-product-development'
+      fullPath: '/solutions/custom-ai-product-development'
+      preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/applied-ai-systems': {
+      id: '/solutions/applied-ai-systems'
+      path: '/applied-ai-systems'
+      fullPath: '/solutions/applied-ai-systems'
+      preLoaderRoute: typeof SolutionsAppliedAiSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-websites-lead-systems': {
+      id: '/solutions/ai-websites-lead-systems'
+      path: '/ai-websites-lead-systems'
+      fullPath: '/solutions/ai-websites-lead-systems'
+      preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-strategy-advisory': {
+      id: '/solutions/ai-strategy-advisory'
+      path: '/ai-strategy-advisory'
+      fullPath: '/solutions/ai-strategy-advisory'
+      preLoaderRoute: typeof SolutionsAiStrategyAdvisoryRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-product-engineering': {
+      id: '/solutions/ai-product-engineering'
+      path: '/ai-product-engineering'
+      fullPath: '/solutions/ai-product-engineering'
+      preLoaderRoute: typeof SolutionsAiProductEngineeringRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-integrations': {
+      id: '/solutions/ai-integrations'
+      path: '/ai-integrations'
+      fullPath: '/solutions/ai-integrations'
+      preLoaderRoute: typeof SolutionsAiIntegrationsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-governance-cost-control': {
+      id: '/solutions/ai-governance-cost-control'
+      path: '/ai-governance-cost-control'
+      fullPath: '/solutions/ai-governance-cost-control'
+      preLoaderRoute: typeof SolutionsAiGovernanceCostControlRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/research/$slug': {
+      id: '/research/$slug'
+      path: '/research/$slug'
+      fullPath: '/research/$slug'
+      preLoaderRoute: typeof ResearchSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/maax-studio': {
+      id: '/products/maax-studio'
+      path: '/maax-studio'
+      fullPath: '/products/maax-studio'
+      preLoaderRoute: typeof ProductsMaaxStudioRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/products/aexos': {
+      id: '/products/aexos'
+      path: '/aexos'
+      fullPath: '/products/aexos'
+      preLoaderRoute: typeof ProductsAexosRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/newsletter/confirm': {
+      id: '/newsletter/confirm'
+      path: '/newsletter/confirm'
+      fullPath: '/newsletter/confirm'
+      preLoaderRoute: typeof NewsletterConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/what-is-governed-ai-execution': {
+      id: '/answers/what-is-governed-ai-execution'
+      path: '/answers/what-is-governed-ai-execution'
+      fullPath: '/answers/what-is-governed-ai-execution'
+      preLoaderRoute: typeof AnswersWhatIsGovernedAiExecutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/what-is-goal-grounded-generation': {
+      id: '/answers/what-is-goal-grounded-generation'
+      path: '/answers/what-is-goal-grounded-generation'
+      fullPath: '/answers/what-is-goal-grounded-generation'
+      preLoaderRoute: typeof AnswersWhatIsGoalGroundedGenerationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/what-is-ai-governance': {
+      id: '/answers/what-is-ai-governance'
+      path: '/answers/what-is-ai-governance'
+      fullPath: '/answers/what-is-ai-governance'
+      preLoaderRoute: typeof AnswersWhatIsAiGovernanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/what-are-command-gates-in-ai-systems': {
+      id: '/answers/what-are-command-gates-in-ai-systems'
+      path: '/answers/what-are-command-gates-in-ai-systems'
+      fullPath: '/answers/what-are-command-gates-in-ai-systems'
+      preLoaderRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/how-to-measure-ai-output-quality': {
+      id: '/answers/how-to-measure-ai-output-quality'
+      path: '/answers/how-to-measure-ai-output-quality'
+      fullPath: '/answers/how-to-measure-ai-output-quality'
+      preLoaderRoute: typeof AnswersHowToMeasureAiOutputQualityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/answers/ai-execution-system-vs-ai-automation': {
+      id: '/answers/ai-execution-system-vs-ai-automation'
+      path: '/answers/ai-execution-system-vs-ai-automation'
+      fullPath: '/answers/ai-execution-system-vs-ai-automation'
+      preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/workspace': {
+      id: '/_authenticated/workspace'
+      path: '/workspace'
+      fullPath: '/workspace'
+      preLoaderRoute: typeof AuthenticatedWorkspaceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/workspace/': {
       id: '/_authenticated/workspace/'
@@ -1265,88 +1265,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWorkspaceIndexRouteImport
       parentRoute: typeof AuthenticatedWorkspaceRoute
     }
-    '/_authenticated/workspace/$': {
-      id: '/_authenticated/workspace/$'
-      path: '/$'
-      fullPath: '/workspace/$'
-      preLoaderRoute: typeof AuthenticatedWorkspaceSplatRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/admin': {
-      id: '/_authenticated/workspace/admin'
-      path: '/admin'
-      fullPath: '/workspace/admin'
-      preLoaderRoute: typeof AuthenticatedWorkspaceAdminRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/careers': {
-      id: '/_authenticated/workspace/careers'
-      path: '/careers'
-      fullPath: '/workspace/careers'
-      preLoaderRoute: typeof AuthenticatedWorkspaceCareersRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/dev': {
-      id: '/_authenticated/workspace/dev'
-      path: '/dev'
-      fullPath: '/workspace/dev'
-      preLoaderRoute: typeof AuthenticatedWorkspaceDevRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/finance': {
-      id: '/_authenticated/workspace/finance'
-      path: '/finance'
-      fullPath: '/workspace/finance'
-      preLoaderRoute: typeof AuthenticatedWorkspaceFinanceRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/hr': {
-      id: '/_authenticated/workspace/hr'
-      path: '/hr'
-      fullPath: '/workspace/hr'
-      preLoaderRoute: typeof AuthenticatedWorkspaceHrRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/marketing': {
-      id: '/_authenticated/workspace/marketing'
-      path: '/marketing'
-      fullPath: '/workspace/marketing'
-      preLoaderRoute: typeof AuthenticatedWorkspaceMarketingRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/pipeline': {
-      id: '/_authenticated/workspace/pipeline'
-      path: '/pipeline'
-      fullPath: '/workspace/pipeline'
-      preLoaderRoute: typeof AuthenticatedWorkspacePipelineRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/_authenticated/workspace/products': {
-      id: '/_authenticated/workspace/products'
-      path: '/products'
-      fullPath: '/workspace/products'
-      preLoaderRoute: typeof AuthenticatedWorkspaceProductsRouteImport
-      parentRoute: typeof AuthenticatedWorkspaceRoute
-    }
-    '/api/public/assistant': {
-      id: '/api/public/assistant'
-      path: '/api/public/assistant'
-      fullPath: '/api/public/assistant'
-      preLoaderRoute: typeof ApiPublicAssistantRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/contact': {
-      id: '/api/public/contact'
-      path: '/api/public/contact'
-      fullPath: '/api/public/contact'
-      preLoaderRoute: typeof ApiPublicContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/cta-events': {
-      id: '/api/public/cta-events'
-      path: '/api/public/cta-events'
-      fullPath: '/api/public/cta-events'
-      preLoaderRoute: typeof ApiPublicCtaEventsRouteImport
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/web-vitals': {
@@ -1356,67 +1279,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebVitalsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+    '/api/public/cta-events': {
+      id: '/api/public/cta-events'
+      path: '/api/public/cta-events'
+      fullPath: '/api/public/cta-events'
+      preLoaderRoute: typeof ApiPublicCtaEventsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/auth/domain-block': {
-      id: '/api/public/auth/domain-block'
-      path: '/api/public/auth/domain-block'
-      fullPath: '/api/public/auth/domain-block'
-      preLoaderRoute: typeof ApiPublicAuthDomainBlockRouteImport
+    '/api/public/contact': {
+      id: '/api/public/contact'
+      path: '/api/public/contact'
+      fullPath: '/api/public/contact'
+      preLoaderRoute: typeof ApiPublicContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/auth/recover': {
-      id: '/api/public/auth/recover'
-      path: '/api/public/auth/recover'
-      fullPath: '/api/public/auth/recover'
-      preLoaderRoute: typeof ApiPublicAuthRecoverRouteImport
+    '/api/public/assistant': {
+      id: '/api/public/assistant'
+      path: '/api/public/assistant'
+      fullPath: '/api/public/assistant'
+      preLoaderRoute: typeof ApiPublicAssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/brief/assist': {
-      id: '/api/public/brief/assist'
-      path: '/api/public/brief/assist'
-      fullPath: '/api/public/brief/assist'
-      preLoaderRoute: typeof ApiPublicBriefAssistRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/workspace/products': {
+      id: '/_authenticated/workspace/products'
+      path: '/products'
+      fullPath: '/workspace/products'
+      preLoaderRoute: typeof AuthenticatedWorkspaceProductsRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
-    '/api/public/brief/init': {
-      id: '/api/public/brief/init'
-      path: '/api/public/brief/init'
-      fullPath: '/api/public/brief/init'
-      preLoaderRoute: typeof ApiPublicBriefInitRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/workspace/pipeline': {
+      id: '/_authenticated/workspace/pipeline'
+      path: '/pipeline'
+      fullPath: '/workspace/pipeline'
+      preLoaderRoute: typeof AuthenticatedWorkspacePipelineRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
-    '/api/public/brief/submit': {
-      id: '/api/public/brief/submit'
-      path: '/api/public/brief/submit'
-      fullPath: '/api/public/brief/submit'
-      preLoaderRoute: typeof ApiPublicBriefSubmitRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/workspace/marketing': {
+      id: '/_authenticated/workspace/marketing'
+      path: '/marketing'
+      fullPath: '/workspace/marketing'
+      preLoaderRoute: typeof AuthenticatedWorkspaceMarketingRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
-    '/api/public/newsletter/confirm': {
-      id: '/api/public/newsletter/confirm'
-      path: '/api/public/newsletter/confirm'
-      fullPath: '/api/public/newsletter/confirm'
-      preLoaderRoute: typeof ApiPublicNewsletterConfirmRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/workspace/hr': {
+      id: '/_authenticated/workspace/hr'
+      path: '/hr'
+      fullPath: '/workspace/hr'
+      preLoaderRoute: typeof AuthenticatedWorkspaceHrRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
-    '/api/public/newsletter/subscribe': {
-      id: '/api/public/newsletter/subscribe'
-      path: '/api/public/newsletter/subscribe'
-      fullPath: '/api/public/newsletter/subscribe'
-      preLoaderRoute: typeof ApiPublicNewsletterSubscribeRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/workspace/finance': {
+      id: '/_authenticated/workspace/finance'
+      path: '/finance'
+      fullPath: '/workspace/finance'
+      preLoaderRoute: typeof AuthenticatedWorkspaceFinanceRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+    '/_authenticated/workspace/dev': {
+      id: '/_authenticated/workspace/dev'
+      path: '/dev'
+      fullPath: '/workspace/dev'
+      preLoaderRoute: typeof AuthenticatedWorkspaceDevRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
+    }
+    '/_authenticated/workspace/careers': {
+      id: '/_authenticated/workspace/careers'
+      path: '/careers'
+      fullPath: '/workspace/careers'
+      preLoaderRoute: typeof AuthenticatedWorkspaceCareersRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
+    }
+    '/_authenticated/workspace/admin': {
+      id: '/_authenticated/workspace/admin'
+      path: '/admin'
+      fullPath: '/workspace/admin'
+      preLoaderRoute: typeof AuthenticatedWorkspaceAdminRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
+    }
+    '/_authenticated/workspace/$': {
+      id: '/_authenticated/workspace/$'
+      path: '/$'
+      fullPath: '/workspace/$'
+      preLoaderRoute: typeof AuthenticatedWorkspaceSplatRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
+    }
+    '/lovable/email/transactional/send': {
+      id: '/lovable/email/transactional/send'
+      path: '/lovable/email/transactional/send'
+      fullPath: '/lovable/email/transactional/send'
+      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/transactional/preview': {
@@ -1426,11 +1377,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/transactional/send': {
-      id: '/lovable/email/transactional/send'
-      path: '/lovable/email/transactional/send'
-      fullPath: '/lovable/email/transactional/send'
-      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+    '/lovable/email/queue/process': {
+      id: '/lovable/email/queue/process'
+      path: '/lovable/email/queue/process'
+      fullPath: '/lovable/email/queue/process'
+      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/newsletter/subscribe': {
+      id: '/api/public/newsletter/subscribe'
+      path: '/api/public/newsletter/subscribe'
+      fullPath: '/api/public/newsletter/subscribe'
+      preLoaderRoute: typeof ApiPublicNewsletterSubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/newsletter/confirm': {
+      id: '/api/public/newsletter/confirm'
+      path: '/api/public/newsletter/confirm'
+      fullPath: '/api/public/newsletter/confirm'
+      preLoaderRoute: typeof ApiPublicNewsletterConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/brief/submit': {
+      id: '/api/public/brief/submit'
+      path: '/api/public/brief/submit'
+      fullPath: '/api/public/brief/submit'
+      preLoaderRoute: typeof ApiPublicBriefSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/brief/init': {
+      id: '/api/public/brief/init'
+      path: '/api/public/brief/init'
+      fullPath: '/api/public/brief/init'
+      preLoaderRoute: typeof ApiPublicBriefInitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/brief/assist': {
+      id: '/api/public/brief/assist'
+      path: '/api/public/brief/assist'
+      fullPath: '/api/public/brief/assist'
+      preLoaderRoute: typeof ApiPublicBriefAssistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/auth/recover': {
+      id: '/api/public/auth/recover'
+      path: '/api/public/auth/recover'
+      fullPath: '/api/public/auth/recover'
+      preLoaderRoute: typeof ApiPublicAuthRecoverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/auth/domain-block': {
+      id: '/api/public/auth/domain-block'
+      path: '/api/public/auth/domain-block'
+      fullPath: '/api/public/auth/domain-block'
+      preLoaderRoute: typeof ApiPublicAuthDomainBlockRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

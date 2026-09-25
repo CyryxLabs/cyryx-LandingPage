@@ -2,7 +2,8 @@
  * Fire-and-forget CTA click tracker. Uses sendBeacon so the request survives
  * the same-tab navigation/hash change that follows the click.
  *
- * Endpoint: POST /api/public/cta-events (anon-insertable, admins-read-only).
+ * Endpoint: POST /api/public/cta-events (same-origin; forwarded to the CRM
+ * funnel ledger, no personal data).
  */
 import { getActiveCopyVariant } from "./copy-variant";
 import { publicDestination, publicPath, publicReferrer } from "./public-location";

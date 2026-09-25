@@ -18,16 +18,61 @@ function isTransparentColor(value: string) {
   );
 }
 
+test("Safari on iPhone gets the full experience, not the low-performance fallback", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "safari-mobile", "This contract targets WebKit mobile.");
+  test.setTimeout(120_000);
+
+  // iOS Safari reports 4 cores on every iPhone and exposes no deviceMemory.
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 4 });
+  });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("html")).not.toHaveClass(/cx-low-perf/);
+
+  const hero = page.locator("section[data-hero]");
+  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
+    "data-sequence-ready",
+    "true",
+    {
+      timeout: 30_000,
+    },
+  );
+  await expect(hero.locator(".cx-hero-sub")).toBeVisible();
+  await expect(hero.locator(".cx-hero-ctas")).toBeVisible();
+
+  for (const id of HOME_SECTIONS) {
+    const section = page.locator(`#${id}`);
+    await section.evaluate((element) => {
+      const top = element.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.45;
+      window.scrollTo(0, Math.max(0, top));
+    });
+    await expect
+      .poll(
+        () =>
+          section.evaluate((element) =>
+            [...element.querySelectorAll<HTMLElement>(".cx-reveal, .cx-stagger-item")].every(
+              (item) => Number.parseFloat(getComputedStyle(item).opacity) >= 0.95,
+            ),
+          ),
+        { message: `${id} reveals should finish in WebKit`, timeout: 15_000 },
+      )
+      .toBe(true);
+  }
+});
+
 test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lower-end devices", async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "safari-mobile", "This contract targets WebKit mobile.");
   test.setTimeout(120_000);
 
+  // Low-performance path: Save-Data style connection hint.
   await page.addInitScript(() => {
-    Object.defineProperty(navigator, "hardwareConcurrency", {
+    Object.defineProperty(navigator, "connection", {
       configurable: true,
-      get: () => 2,
+      get: () => ({ saveData: true, effectiveType: "4g" }),
     });
   });
   await page.goto("/", { waitUntil: "networkidle" });

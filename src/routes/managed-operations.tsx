@@ -100,7 +100,7 @@ function ManagedOperationsPage() {
                 key={title}
                 className="cx-material-panel min-h-80 border border-transparent p-8 sm:p-10"
               >
-                <span className="font-mono text-[11px] text-[var(--accent-glow)]">
+                <span className="font-mono text-[12px] text-[var(--accent-glow)]">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <h2 className="mt-14 font-display text-3xl font-medium tracking-[-0.035em] text-[var(--silver)]">
@@ -126,7 +126,7 @@ function ManagedOperationsPage() {
                   key={title}
                   className="grid gap-5 border-b border-white/10 py-7 sm:grid-cols-[3rem_0.55fr_1.45fr] sm:py-9"
                 >
-                  <span className="font-mono text-[11px] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3 className="font-display text-xl font-medium text-[var(--silver)]">{title}</h3>
@@ -158,7 +158,7 @@ function ManagedOperationsPage() {
             </p>
             <Link
               to="/engagement-model"
-              className="mt-7 inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+              className="mt-7 inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
             >
               Review the engagement lifecycle <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </Link>

@@ -33,8 +33,10 @@ function ConfirmPage() {
     loading: "Hang tight — we're validating your confirmation link.",
     ok: "You're in. We'll send updates only when there's something signal-grade to share.",
     already: "This email is already subscribed — no further action needed.",
-    expired: "This link has expired. Re-subscribe from the footer of cyryxlabs.com to receive a new one.",
-    invalid: "This link is no longer valid. Re-subscribe from cyryxlabs.com if you'd like to receive updates.",
+    expired:
+      "This link has expired. Re-subscribe from the footer of cyryxlabs.com to receive a new one.",
+    invalid:
+      "This link is no longer valid. Re-subscribe from cyryxlabs.com if you'd like to receive updates.",
   }[state];
 
   return (
@@ -43,7 +45,7 @@ function ConfirmPage() {
         <p className="hud-label text-[var(--accent-glow)]">CYRYX LABS</p>
         <h1 className="mt-3 font-display text-2xl font-semibold uppercase">{title}</h1>
         <p className="mt-3 text-sm text-[var(--silver-dim)]">{body}</p>
-        <p className="mt-6 text-[11px] text-[var(--silver-dim)]">
+        <p className="mt-6 text-[12px] text-[var(--silver-dim)]">
           <a href="/" className="underline underline-offset-4 hover:text-[var(--accent-glow)]">
             Return to cyryxlabs.com
           </a>

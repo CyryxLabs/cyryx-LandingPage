@@ -87,7 +87,7 @@ export function InternalHero({
 
         <div className="grid w-full gap-12 lg:grid-cols-[minmax(0,42vw)_minmax(9rem,12vw)] lg:items-center lg:gap-[14vw] lg:pl-[19vw] lg:pr-[5vw]">
           <div className="min-w-0">
-            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--accent-glow)] sm:text-xs">
+            <p className="font-mono text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--accent-glow)] sm:text-xs">
               {eyebrow}
             </p>
             <h1
@@ -106,7 +106,7 @@ export function InternalHero({
 
             <ol
               aria-label={`${lifecycleLabel} sequence`}
-              className="mt-5 hidden flex-wrap items-center gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--silver)] sm:flex"
+              className="mt-5 hidden flex-wrap items-center gap-y-2 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--silver)] sm:flex"
             >
               {lifecycle.map((item, index) => (
                 <li key={`sequence-${item.number}-${item.label}`} className="flex items-center">
@@ -137,7 +137,7 @@ export function InternalHero({
           </div>
 
           <aside aria-label={lifecycleLabel} className="max-w-xs pt-1 lg:max-w-none lg:self-center">
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color-mix(in_oklab,var(--steel)_85%,transparent)]">
+            <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-[color-mix(in_oklab,var(--steel)_85%,transparent)]">
               {lifecycleLabel}
             </p>
             <ol className="relative mt-4 space-y-0 before:absolute before:bottom-4 before:left-[3px] before:top-4 before:w-px before:bg-white/20">
@@ -156,7 +156,7 @@ export function InternalHero({
                     }`}
                   />
                   <div className="flex items-baseline gap-2.5">
-                    <span className="font-mono text-[11px] tracking-[0.16em] text-[var(--accent-glow)]">
+                    <span className="font-mono text-[12px] tracking-[0.16em] text-[var(--accent-glow)]">
                       {item.number}
                     </span>
                     <span className="font-display text-[15px] font-medium tracking-[-0.02em] text-[var(--silver)]">
@@ -184,7 +184,7 @@ export function InternalHero({
       {nextChapter ? (
         <section aria-label={nextChapter.label ?? "Next chapter"} className="cx-internal-chapter">
           <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
-            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--accent-glow)]">
+            <p className="font-mono text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--accent-glow)]">
               {nextChapter.label ?? "Next chapter"}
             </p>
             <p className="mt-3 [font-family:var(--font-editorial-hero)] text-3xl leading-none tracking-[-0.025em] text-[#e4e0d8] sm:text-4xl">

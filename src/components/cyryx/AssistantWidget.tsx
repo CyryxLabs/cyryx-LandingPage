@@ -346,7 +346,7 @@ export function AssistantWidget() {
                   )}
                 </button>
               </div>
-              <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[var(--steel)]">
+              <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[12px] text-[var(--steel)]">
                 <span>
                   AI can be wrong. Don't share passwords or sensitive data.{" "}
                   <Link to="/privacy" className="underline hover:text-[var(--silver)]">

@@ -88,7 +88,7 @@ function Matrix({ nodes, caption }: { nodes: readonly SolutionDiagramNode[]; cap
         {nodes.map((node, index) => (
           <div key={node.name} className="border-b border-white/10 py-5">
             <dt className="font-display text-lg font-medium text-[var(--silver)]">
-              <span className="mr-3 font-mono text-[11px] tracking-[0.2em] text-[var(--accent-glow)]">
+              <span className="mr-3 font-mono text-[12px] tracking-[0.2em] text-[var(--accent-glow)]">
                 {String(index + 1).padStart(2, "0")}
               </span>
               {node.name}
@@ -104,13 +104,13 @@ function Matrix({ nodes, caption }: { nodes: readonly SolutionDiagramNode[]; cap
             <tr className="bg-[color-mix(in_oklab,var(--graphite)_82%,transparent)]">
               <th
                 scope="col"
-                className="w-[32%] border-b border-r border-white/10 px-5 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)]"
+                className="w-[32%] border-b border-r border-white/10 px-5 py-4 font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]"
               >
                 Decision dimension
               </th>
               <th
                 scope="col"
-                className="border-b border-white/10 px-5 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent-glow)]"
+                className="border-b border-white/10 px-5 py-4 font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]"
               >
                 What it resolves
               </th>
@@ -123,7 +123,7 @@ function Matrix({ nodes, caption }: { nodes: readonly SolutionDiagramNode[]; cap
                   scope="row"
                   className="border-r border-white/10 px-5 py-5 align-top font-display text-lg font-medium text-[var(--silver)]"
                 >
-                  <span className="mr-3 font-mono text-[11px] tracking-[0.2em] text-[var(--accent-glow)]">
+                  <span className="mr-3 font-mono text-[12px] tracking-[0.2em] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   {node.name}

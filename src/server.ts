@@ -67,6 +67,14 @@ function withRuntimeHeaders(request: Request, response: Response): Response {
   headers.set("referrer-policy", "strict-origin-when-cross-origin");
   headers.set("permissions-policy", "camera=(), microphone=(), geolocation=(), payment=()");
   headers.set("x-frame-options", "DENY");
+  // Baseline CSP that cannot break scripts, styles or media: no framing, no
+  // plugins, no <base> hijacking, forms post only to this origin.
+  if (!headers.has("content-security-policy")) {
+    headers.set(
+      "content-security-policy",
+      "frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+    );
+  }
   if (
     url.protocol === "https:" &&
     (url.hostname === "cyryxlabs.com" || url.hostname === "www.cyryxlabs.com")

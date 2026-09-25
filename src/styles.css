@@ -360,7 +360,7 @@ html.cx-low-perf .glass-panel {
 
 @utility hud-label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--silver) 70%, transparent);
@@ -440,7 +440,9 @@ html.cx-low-perf .glass-panel {
 }
 
 .cx-hero-title-line {
-  font-size: clamp(1.9rem, 4.6vw, 3.75rem);
+  /* The H1 stays the largest heading on the home at every width; section
+     H2s are capped just below it (see the v4 section headings). */
+  font-size: clamp(2.25rem, 4.6vw, 3.75rem);
   line-height: 1.1;
   letter-spacing: -0.035em;
   font-weight: 600;
@@ -474,11 +476,6 @@ html.cx-low-perf .glass-panel {
   transform: translateZ(0);
 }
 
-.cx-hero-sequence-spinner {
-  animation: cx-hero-sequence-spin 0.8s linear infinite;
-  box-shadow: 0 0 16px color-mix(in oklab, var(--accent-glow) 34%, transparent);
-}
-
 .cx-hero-story-panel {
   will-change: transform, opacity, filter;
 }
@@ -497,11 +494,6 @@ html.cx-low-perf .glass-panel {
   margin-inline: auto;
 }
 
-@keyframes cx-hero-sequence-spin {
-  to {
-    transform: rotate(1turn);
-  }
-}
 
 .cx-hero-media {
   filter: saturate(0.86) contrast(1.08) brightness(0.78);
@@ -785,7 +777,7 @@ html.cx-low-perf .glass-panel {
 .cx-solution-diagram-index {
   padding-top: 0.3rem;
   font-family: var(--font-mono);
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
   color: var(--accent-glow);
 }
@@ -892,11 +884,11 @@ html.cx-low-perf .glass-panel {
       0 0 0 1.25rem color-mix(in oklab, var(--accent-glow) 5%, transparent),
       0 0 0 2.5rem color-mix(in oklab, var(--silver) 3%, transparent);
     font-family: var(--font-mono);
-    font-size: 0.5rem;
+    font-size: 0.75rem;
     line-height: 1.5;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.1em;
     color: var(--silver);
     transform: translateX(-50%);
   }
@@ -953,7 +945,7 @@ html.cx-low-perf .glass-panel {
   }
 
   .cx-hero-title-line {
-    font-size: clamp(1.65rem, 7vw, 2.4rem);
+    font-size: clamp(1.75rem, 7.4vw, 2.5rem);
     line-height: 1.14;
     letter-spacing: -0.03em;
     padding-bottom: 0.08em;
@@ -1042,7 +1034,6 @@ html.cx-low-perf .glass-panel {
   .cx-hero-noise,
   .cx-hero-line-glow,
   .cx-hero-scroll-cue,
-  .cx-hero-sequence-loader,
   .cx-hero-story-panel {
     display: none !important;
   }
@@ -1266,7 +1257,6 @@ html.cx-low-perf .cx-liquid-glass {
   }
 
   [data-hero] canvas,
-  [data-hero] [data-hero-loader],
   [data-hero] [data-hero-story] {
     display: none !important;
   }
@@ -1853,7 +1843,7 @@ html.cx-low-perf .cx-sticky-cta {
   .cx-btn-sm {
     min-height: 44px;
     padding: 0.6rem 1.1rem;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   @media (max-width: 639px) {
@@ -1894,7 +1884,7 @@ html.cx-low-perf .cx-sticky-cta {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--steel);
@@ -1904,7 +1894,7 @@ html.cx-low-perf .cx-sticky-cta {
   border: 1px solid color-mix(in oklab, var(--silver) 18%, transparent);
   border-radius: 999px;
   padding: 0.2rem 0.55rem;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.1em;
 }
 
@@ -1984,7 +1974,7 @@ html.cx-low-perf .cx-sticky-cta {
 }
 
 .cx-trace-status {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--steel);
@@ -2364,7 +2354,7 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
   justify-content: space-between;
   gap: 1rem;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--silver);
@@ -2597,7 +2587,7 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
   border-radius: 999px;
   padding: 0.2rem 0.6rem;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--steel);
@@ -2807,4 +2797,10 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
       0 0;
     animation: cx-sheen-sweep 8s ease-in-out 1.4s infinite;
   }
+}
+
+/* Without blur (low-perf devices), a 90% header lets section headings
+   bleed through while scrolling. Keep it nearly opaque there. */
+html.cx-low-perf .cx-site-header {
+  background: color-mix(in oklab, var(--onyx) 97%, transparent) !important;
 }

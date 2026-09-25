@@ -98,7 +98,7 @@ function ProductsPage() {
           >
             <div className="flex flex-col">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--accent-glow)]">
+                <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--accent-glow)]">
                   {product.fullName}
                 </span>
               </div>
@@ -111,7 +111,7 @@ function ProductsPage() {
               <p className="mt-3 font-mono text-xs uppercase leading-relaxed tracking-[0.14em] text-[var(--steel)]">
                 {product.identity}
               </p>
-              <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)] px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--silver)]">
+              <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_45%,transparent)] px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.12em] text-[var(--silver)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-glow)] shadow-[0_0_8px_var(--accent-glow)]" />
                 {product.maturity}
               </span>
@@ -154,7 +154,7 @@ function ProductsPage() {
             </div>
             <div className="flex flex-col justify-center">
               <AexosInstallPreview />
-              <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+              <p className="mt-3 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
                 Preview · contents of the Core package
               </p>
             </div>
@@ -186,7 +186,7 @@ function ProductsPage() {
                   key={item.title}
                   className="cx-spotlight rounded-xl border border-white/10 bg-[var(--onyx)] p-6 sm:p-8"
                 >
-                  <span className="font-mono text-[11px] tracking-[0.16em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] tracking-[0.16em] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3 className="mt-5 font-display text-2xl font-semibold tracking-[-0.03em] text-[var(--silver)]">
@@ -200,7 +200,7 @@ function ProductsPage() {
             </div>
 
             <div className="mt-14">
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--steel)]">
+              <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]">
                 Where each product stands
               </p>
               <ol className="relative mt-6 grid grid-cols-3 gap-4">
@@ -246,13 +246,13 @@ function ProductsPage() {
               <div className="mt-7 flex flex-wrap gap-3">
                 <Link
                   to="/solutions"
-                  className="inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+                  className="inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
                 >
                   Explore solutions <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                 </Link>
                 <Link
                   to="/engagement-model"
-                  className="inline-flex min-h-11 items-center px-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)] transition hover:text-[var(--accent-glow)]"
+                  className="inline-flex min-h-11 items-center px-4 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)] transition hover:text-[var(--accent-glow)]"
                 >
                   How we work
                 </Link>

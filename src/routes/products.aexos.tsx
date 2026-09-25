@@ -95,7 +95,7 @@ function CommandLine({ label, command }: { label: string; command: string }) {
   };
   return (
     <div className="grid gap-2 sm:grid-cols-[11rem_1fr] sm:items-center sm:gap-6">
-      <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+      <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
         {label}
       </span>
       <div className="flex min-w-0 items-center justify-between gap-3 rounded-md border border-white/10 bg-[var(--onyx)] px-4 py-3">
@@ -279,7 +279,7 @@ function AexosPage() {
             />
             <div className="mt-12">
               <AexosCycleSimulation />
-              <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+              <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
                 Simulation · commands and verdicts as documented, example story
               </p>
             </div>
@@ -300,7 +300,7 @@ function AexosPage() {
             />
             <div className="mt-12">
               <AexosRoutingSimulation />
-              <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+              <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
                 Simulation · example requests
               </p>
             </div>
@@ -317,7 +317,7 @@ function AexosPage() {
               >
                 What ships in the package
               </h2>
-              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+              <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
                 Counted from @aexos/core {AEXOS_VERSION}
               </p>
             </div>
@@ -329,7 +329,7 @@ function AexosPage() {
             <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
               {AEXOS_NUMBERS.map((item) => (
                 <div key={item.label}>
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+                  <dt className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
                     {item.label}
                   </dt>
                   <dd className="mt-3">
@@ -367,7 +367,7 @@ function AexosPage() {
                   key={concept.name}
                   className="cx-spotlight rounded-lg border border-white/10 bg-[var(--onyx)] p-6 sm:p-7"
                 >
-                  <span className="font-mono text-[11px] tracking-[0.16em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] tracking-[0.16em] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3 className="mt-4 font-display text-2xl font-semibold tracking-[-0.03em] text-[var(--silver)]">
@@ -405,7 +405,7 @@ function AexosPage() {
                 ))}
               </ul>
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--steel)]">
+                <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--steel)]">
                   Squads in Core
                 </p>
                 <ul className="mt-5 flex flex-wrap gap-2">
@@ -442,7 +442,7 @@ function AexosPage() {
               />
               {AEXOS_GATES.map((gate, index) => (
                 <li key={gate.layer} className="relative">
-                  <span className="relative z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_60%,transparent)] bg-[var(--onyx)] font-mono text-[11px] text-[var(--accent-glow)]">
+                  <span className="relative z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--accent-glow)_60%,transparent)] bg-[var(--onyx)] font-mono text-[12px] text-[var(--accent-glow)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3 className="mt-5 font-display text-xl font-semibold text-[var(--silver)]">
@@ -537,7 +537,7 @@ function AexosPage() {
                     <h3 className="font-display text-3xl font-semibold tracking-[-0.03em] text-[var(--silver)]">
                       {edition.name}
                     </h3>
-                    <span className="rounded-sm border border-white/15 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--accent-glow)]">
+                    <span className="rounded-sm border border-white/15 px-2.5 py-1 font-mono text-[12px] uppercase tracking-[0.12em] text-[var(--accent-glow)]">
                       {edition.state}
                     </span>
                   </div>

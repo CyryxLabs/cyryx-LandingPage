@@ -75,7 +75,7 @@ export function AexosCycleSimulation() {
             <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
             <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
           </span>
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--steel)]">
+          <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--steel)]">
             story-4.2 · simulation
           </span>
         </div>
@@ -90,7 +90,7 @@ export function AexosCycleSimulation() {
             />
           ))}
         </ol>
-        <div className="border-t border-white/10 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--steel)]">
+        <div className="border-t border-white/10 px-5 py-3 font-mono text-[12px] uppercase tracking-[0.12em] text-[var(--steel)]">
           {finished ? (
             <span className="text-[var(--accent-glow)]">Story Done · evidence recorded</span>
           ) : (

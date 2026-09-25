@@ -49,6 +49,44 @@ test("homepage hero carries the registered headline and the project CTA", async 
   await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(1);
 });
 
+test("a CTA click reaches the CRM as a signed funnel event without personal data", async ({
+  page,
+  request,
+}) => {
+  await openHome(page);
+  await page.evaluate(() => {
+    // Stay on the page so the beacon is observable.
+    document
+      .querySelector('section[data-hero] a[data-cta="primary"]')
+      ?.addEventListener("click", (event) => event.preventDefault());
+  });
+  await page.locator('section[data-hero] a[data-cta="primary"]').click();
+
+  await expect
+    .poll(async () => {
+      const calls = (await (await request.get(`${MOCK_ORIGIN}/calls`)).json()) as RecordedCall[];
+      return calls.filter((call) => call.fn === "crm_event").at(-1) ?? null;
+    })
+    .toMatchObject({
+      signatureValid: true,
+      body: {
+        schemaVersion: "1",
+        event: "start_project",
+        section: "hero",
+        path: "/",
+        href: "/start",
+      },
+    });
+});
+
+test("the funnel endpoint refuses cross-site beacons", async ({ baseURL, request }) => {
+  const response = await request.post(`${baseURL}/api/public/cta-events`, {
+    headers: { origin: "https://evil.example", "content-type": "application/json" },
+    data: { cta: "start_project", section: "hero", path: "/" },
+  });
+  expect(response.status()).toBe(403);
+});
+
 test("desktop 1440x900 shows the H1 and primary CTA at load", async ({ page }, testInfo) => {
   test.skip(
     testInfo.project.name === "hero-a11y-mobile-360",

@@ -67,7 +67,7 @@ function usePrefersReducedMotion() {
 export function ExecutionTrace() {
   const rootRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
-  // Server render and reduced motion both show the completed trace.
+  // Server render (no JavaScript) and reduced motion show the completed trace.
   const [active, setActive] = useState(STEPS.length);
   const [visible, setVisible] = useState(false);
 
@@ -81,11 +81,23 @@ export function ExecutionTrace() {
     return () => observer.disconnect();
   }, []);
 
+  // When the trace will animate, start it at step 1 right after hydration,
+  // while it is still off-screen. Resetting it only once it scrolled into view
+  // made the completed trace visibly jump back to the first step.
   useEffect(() => {
-    if (reducedMotion || !visible) {
+    const still =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      document.documentElement.classList.contains("cx-low-perf");
+    if (!still) setActive(0);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) {
       setActive(STEPS.length);
       return;
     }
+    // Off-screen: hold the current step instead of snapping to "complete".
+    if (!visible) return;
     let step = 0;
     setActive(0);
     let timer = 0;

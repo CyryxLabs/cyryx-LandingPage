@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { HudLabel } from "../primitives/HudLabel";
 import { CapabilityMonolith } from "../primitives/CapabilityMonolith";
 
 const CONTROL_FLOW = [
@@ -22,10 +21,9 @@ export function SecurityPosture() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="relative z-10 cx-reveal grid gap-6 sm:gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-20">
           <div>
-            <HudLabel withDot>Governance</HudLabel>
             <h2
               id="security-heading"
-              className="mt-7 max-w-[14ch] font-display text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)] sm:text-5xl lg:text-7xl"
+              className="max-w-[14ch] font-display text-[1.75rem] sm:text-[2.125rem] lg:text-[2.75rem] xl:text-[3.5rem] font-semibold leading-[0.98] tracking-[-0.045em] text-[var(--silver)]"
             >
               Governance is architecture.
             </h2>
@@ -57,7 +55,7 @@ export function SecurityPosture() {
                   data-governance-control
                   className="cx-stagger-item grid grid-cols-[2.5rem_1fr] gap-5 border-b border-white/10 py-6 sm:py-7"
                 >
-                  <span className="font-mono text-[11px] tracking-[0.18em] text-[var(--accent-glow)]">
+                  <span className="font-mono text-[12px] tracking-[0.18em] text-[var(--accent-glow)]">
                     {n}
                   </span>
                   <div>
@@ -76,7 +74,7 @@ export function SecurityPosture() {
             </p>
             <Link
               to="/solutions/ai-governance-cost-control"
-              className="mt-7 inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
+              className="mt-7 inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--silver)] transition hover:text-[var(--accent-glow)]"
             >
               Explore governance architecture <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </Link>

@@ -12,6 +12,9 @@ test("active runtime boundary returns baseline security headers, short edge cach
     "camera=(), microphone=(), geolocation=(), payment=()",
   );
   expect(pageHeaders["x-frame-options"]).toBe("DENY");
+  expect(pageHeaders["content-security-policy"]).toBe(
+    "frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+  );
   expect(pageHeaders["cache-control"]).toBe("public, max-age=0, must-revalidate");
   expect(pageHeaders["cdn-cache-control"]).toContain("s-maxage=300");
   expect(pageHeaders["x-cyryx-cache-policy"]).toBe("html-edge-short");
