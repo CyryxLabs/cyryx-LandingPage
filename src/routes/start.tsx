@@ -250,7 +250,10 @@ function StartPage() {
     <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
       <Header />
       <main id="main-content" className="relative">
-        <section className="mx-auto max-w-4xl px-5 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-32 lg:px-12 lg:pt-40">
+        {/* On phones the form follows the lede directly (the visitor tapped
+            "Start a project"); the "what happens next" list and the full-brief
+            link move below it. From sm up the original order is kept. */}
+        <section className="mx-auto flex max-w-4xl flex-col px-5 pb-20 pt-24 sm:block sm:px-8 sm:pb-24 sm:pt-32 lg:px-12 lg:pt-40">
           <nav aria-label="Breadcrumb" className="text-xs text-[var(--silver-dim)]">
             <Link to="/" className="hover:text-[var(--accent-glow)]">
               Home
@@ -270,7 +273,7 @@ function StartPage() {
           </p>
 
           <ol
-            className="mt-8 grid gap-px overflow-hidden rounded-md border border-white/10 bg-white/10 text-sm sm:grid-cols-3"
+            className="order-last mt-8 grid gap-px overflow-hidden rounded-md border border-white/10 bg-white/10 text-sm sm:grid-cols-3"
             aria-label="What happens next"
           >
             <li className="bg-[var(--obsidian)] px-4 py-3">
@@ -289,7 +292,7 @@ function StartPage() {
             </li>
           </ol>
 
-          <p className="mt-5 text-sm text-[var(--silver-dim)]">
+          <p className="order-last mt-5 text-sm text-[var(--silver-dim)]">
             Already have detailed requirements, wireframes or documents?{" "}
             <Link to="/brief" className="text-[var(--accent-glow)] underline underline-offset-4">
               Send a full project brief
