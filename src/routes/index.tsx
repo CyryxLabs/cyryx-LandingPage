@@ -2,19 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 import { Header } from "@/components/cyryx/Header";
-import { Hero } from "@/components/cyryx/Hero";
+import { CinematicHome } from "@/components/cyryx/CinematicHome";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
-import { StoryChapter, StoryProgress } from "@/components/cyryx/StoryChapter";
-import { ExecutionGap } from "@/components/cyryx/v4/ExecutionGap";
-import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
-import { OperatingModel } from "@/components/cyryx/v4/OperatingModel";
-import { ControlledExecution } from "@/components/cyryx/v4/ControlledExecution";
-import { EvidenceBeforeClaims } from "@/components/cyryx/v4/EvidenceBeforeClaims";
-import { CompactStart } from "@/components/cyryx/v4/CompactStart";
-import { ProofStrip } from "@/components/cyryx/v4/ProofStrip";
-import { TeamBlock } from "@/components/cyryx/v4/TeamBlock";
-import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import { absoluteSiteUrl, SITE_URL } from "@/lib/site-url";
 import {
   buildCyryxOrganizationNode,
@@ -23,9 +13,9 @@ import {
 } from "@/data/seo-entities";
 
 const HOME_URL = SITE_URL;
-const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
+const HOME_TITLE = "Cyryx Labs — Applied AI & Custom Software";
 const HOME_DESCRIPTION =
-  "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision.";
+  "Cyryx Labs builds AI products and custom software for business workflows, with consulting, applied research and clear human control.";
 const HOME_SOCIAL_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20260723-1");
 
 export const Route = createFileRoute("/")({
@@ -102,7 +92,7 @@ export const Route = createFileRoute("/")({
                 url: HOME_URL,
               },
               description:
-                "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision.",
+                "Cyryx Labs builds AI products and custom software for business workflows, with consulting, applied research and clear human control.",
             },
           ],
         }),
@@ -113,8 +103,6 @@ export const Route = createFileRoute("/")({
 });
 
 function IndexPage() {
-  useCyryxScrollAnimations();
-
   useEffect(() => {
     let cancelled = false;
     let secondFrame = 0;
@@ -155,34 +143,11 @@ function IndexPage() {
   }, []);
 
   return (
-    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">
+    <div className="cinema-page dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">
       <StickyMobileCTA />
       <Header />
       <main id="main-content" tabIndex={-1} className="outline-none">
-        <Hero />
-        <ProofStrip />
-        <div className="cx-story relative" data-story-root>
-          <StoryProgress />
-          <StoryChapter index="01" label="The problem">
-            <ExecutionGap />
-          </StoryChapter>
-          <StoryChapter index="02" label="Ways to engage">
-            <OperatingModel />
-          </StoryChapter>
-          <StoryChapter index="03" label="How it runs">
-            <ControlledExecution />
-          </StoryChapter>
-          <StoryChapter index="04" label="What you receive">
-            <EvidenceBeforeClaims />
-          </StoryChapter>
-          <StoryChapter index="05" label="Governance">
-            <SecurityPosture />
-          </StoryChapter>
-          <StoryChapter index="06" label="Start">
-            <TeamBlock />
-            <CompactStart />
-          </StoryChapter>
-        </div>
+        <CinematicHome />
       </main>
       <Footer />
     </div>

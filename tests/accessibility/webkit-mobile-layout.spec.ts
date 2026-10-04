@@ -3,9 +3,8 @@ import { expect, test } from "@playwright/test";
 // Homepage chapter order: 01 problem, 02 ways to engage, 03 how it runs,
 // 04 what you receive, 05 governance, 06 start.
 const HOME_SECTIONS = [
-  "execution-gap",
-  "operating-model",
   "controlled-execution",
+  "operating-model",
   "evidence",
   "security",
   "contact",
@@ -32,13 +31,8 @@ test("Safari on iPhone gets the full experience, not the low-performance fallbac
   await expect(page.locator("html")).not.toHaveClass(/cx-low-perf/);
 
   const hero = page.locator("section[data-hero]");
-  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
-    "data-sequence-ready",
-    "true",
-    {
-      timeout: 30_000,
-    },
-  );
+  await expect(hero.locator("[data-hero-poster]")).toBeVisible();
+  await expect(hero.locator("h1")).toBeInViewport();
   await expect(hero.locator(".cx-hero-sub")).toBeVisible();
   await expect(hero.locator(".cx-hero-ctas")).toBeVisible();
 

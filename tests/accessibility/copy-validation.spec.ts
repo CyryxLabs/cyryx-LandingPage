@@ -129,47 +129,28 @@ test.describe("Hero — enterprise value proposition", () => {
     }
   });
 
-  test("hero renders approved headline, sub, and CTA labels with correct destinations", async ({
+  test("cinematic hero states the business and retains the CTA destinations", async ({ page }) => {
+    await page.goto("/");
+    const hero = page.locator("[data-hero]");
+    await expect(hero.locator("h1")).toHaveText("AI, built for the real world.");
+    await expect(hero).toContainText("We build AI products and custom software");
+    await expect(hero.locator('[data-cta="primary"]')).toHaveAttribute(
+      "href",
+      "/start?source=home",
+    );
+    await expect(hero.locator('[data-cta="secondary"]')).toHaveAttribute(
+      "href",
+      "/engagement-model",
+    );
+  });
+  test("the early workflow connects software to people and systems without client claims", async ({
     page,
   }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    const hero = page.locator("section[data-hero]");
-    await expect(hero).toBeVisible();
-    await expect(hero).toContainText(APPROVED.eyebrow);
-    await expect(page.locator("#hero-heading")).toHaveText(APPROVED.headline);
-    await expect(hero).toContainText(APPROVED.sub);
-    const primary = hero.getByRole("link", { name: APPROVED.ctaPrimary, exact: true });
-    await expect(primary).toHaveAttribute("href", "/start?source=home");
-    const secondary = hero.getByRole("link", { name: APPROVED.ctaSecondary, exact: true });
-    await expect(secondary).toHaveAttribute("href", "/engagement-model");
-    await expect(hero).not.toContainText("The execution layer for business AI.");
-    await expect(hero).not.toContainText(/MAAX/i);
-    await expect(hero.locator('a[href*="maax" i], a[href="#maax"]')).toHaveCount(0);
-  });
-
-  test("execution gap names the four breaks without third-party statistics", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    const section = page.locator("#execution-gap");
-    await expect(section).toBeVisible();
-    await expect(section).not.toContainText(/Gartner/);
-    const breaks = section.locator(".cx-gap-item");
-    await expect(breaks).toHaveCount(4);
-    for (const title of [
-      "Data the system can trust",
-      "Permissions someone decided",
-      "Cost someone watches",
-      "An owner for the outcome",
-    ]) {
-      await expect(section.getByRole("heading", { name: title })).toBeVisible();
-    }
-  });
-
-  test("homepage connects the execution gap directly to the Cyryx thesis", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    const section = page.locator("#execution-gap");
-
-    await expect(section).toContainText("A capable model is not yet a working system.");
-    await expect(section).toContainText("The missing layer is controlled execution");
+    await page.goto("/");
+    const section = page.locator("#controlled-execution");
+    await expect(section).toContainText("Illustrative workflow");
+    await expect(section).toContainText("Payments stay outside this workflow.");
+    await expect(section.locator("[data-execution-trace]")).toBeVisible();
   });
 
   test("homepage presents no discontinued MAAX product section", async ({ page }) => {
@@ -178,41 +159,31 @@ test.describe("Hero — enterprise value proposition", () => {
     await expect(page.locator("main")).not.toContainText(/MAAX/i);
   });
 
-  test("homepage explains the four ways to engage with focused entry points", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    const operatingModel = page.locator("#operating-model");
-
-    await expect(operatingModel.getByRole("heading", { level: 2 })).toHaveText(
-      "Four ways to start.",
-    );
-    await expect(operatingModel).toContainText(
-      "Start with the stage you need now: Advise, Build, Control or Operate.",
-    );
-    await expect(
-      operatingModel.getByRole("link", { name: /Not sure where to start\? Tell us the problem/ }),
-    ).toHaveAttribute("href", "/start?source=home");
-    await expect(
-      operatingModel.getByRole("link", { name: /See how engagements run/ }),
-    ).toHaveAttribute("href", "/engagement-model");
+  test("custom services and the published product are distinct", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator(".cinema-service")).toHaveCount(4);
+    await expect(page.locator(".cinema-services")).toContainText("built around your needs");
+    await expect(page.locator(".cinema-product")).toContainText("Core available on npm");
+    await expect(page.locator(".cinema-product a")).toHaveAttribute("href", "/products/aexos");
   });
-
-  test("homepage chapters render in the approved order", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
+  test("homepage story leads with the workflow and names the founder without team-size claims", async ({
+    page,
+  }) => {
+    await page.goto("/");
     const ids = await page
       .locator("main section[id]")
-      .evaluateAll((sections) => sections.map((section) => section.id));
-    const expected = [
+      .evaluateAll((nodes) => nodes.map((n) => n.id));
+    expect(ids).toEqual([
       "top",
-      "execution-gap",
-      "operating-model",
       "controlled-execution",
-      "evidence",
+      "operating-model",
       "security",
+      "evidence",
+      "research",
+      "team",
       "contact",
-    ];
-    expect(ids.filter((id) => expected.includes(id))).toEqual(expected);
-    // TeamBlock renders nothing while no founder profile is published.
-    await expect(page.locator("#team")).toHaveCount(0);
+    ]);
+    await expect(page.locator("#team")).toContainText("Work with Paulo.");
   });
 
   test("sample deliverables are labelled as illustrative", async ({ page }) => {

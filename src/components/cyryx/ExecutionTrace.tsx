@@ -23,7 +23,7 @@ const STEPS: readonly TraceStep[] = [
   {
     key: "authority",
     label: "Authority",
-    detail: "May read the ERP · may not approve payments above $5,000",
+    detail: "May read the ERP · may route exceptions · may not execute payments",
     done: "scoped",
   },
   {
@@ -48,7 +48,6 @@ const STEPS: readonly TraceStep[] = [
 ];
 
 const STEP_MS = 1500;
-const HOLD_MS = 3200;
 const COST_BY_STEP = [0.18, 0.42, 3.64, 3.88, 4.12];
 
 function usePrefersReducedMotion() {
@@ -70,6 +69,7 @@ export function ExecutionTrace() {
   // Server render (no JavaScript) and reduced motion show the completed trace.
   const [active, setActive] = useState(STEPS.length);
   const [visible, setVisible] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const node = rootRef.current;
@@ -96,30 +96,10 @@ export function ExecutionTrace() {
       setActive(STEPS.length);
       return;
     }
-    // Off-screen: hold the current step instead of snapping to "complete".
-    if (!visible) return;
-    let step = 0;
-    setActive(0);
-    let timer = 0;
-    const tick = () => {
-      step += 1;
-      setActive(step);
-      timer = window.setTimeout(
-        () => {
-          if (step >= STEPS.length) {
-            step = 0;
-            setActive(0);
-            timer = window.setTimeout(tick, STEP_MS);
-          } else {
-            tick();
-          }
-        },
-        step >= STEPS.length ? HOLD_MS : STEP_MS,
-      );
-    };
-    timer = window.setTimeout(tick, STEP_MS);
+    if (!visible || paused || active >= STEPS.length) return;
+    const timer = window.setTimeout(() => setActive((step) => step + 1), STEP_MS);
     return () => window.clearTimeout(timer);
-  }, [reducedMotion, visible]);
+  }, [reducedMotion, visible, paused, active]);
 
   const cost = COST_BY_STEP[Math.min(active, STEPS.length) - 1] ?? 0;
 
@@ -135,6 +115,20 @@ export function ExecutionTrace() {
         <span>Execution trace</span>
         <span className="cx-trace-tag">Illustrative example</span>
       </div>
+      {!reducedMotion && (
+        <button
+          type="button"
+          className="cx-trace-motion-control"
+          onClick={() => {
+            if (active >= STEPS.length) {
+              setActive(0);
+              setPaused(false);
+            } else setPaused((value) => !value);
+          }}
+        >
+          {active >= STEPS.length ? "Replay example" : paused ? "Resume example" : "Pause example"}
+        </button>
+      )}
       <ol className="cx-trace-steps">
         {STEPS.map((step, index) => {
           const state = index < active ? "done" : index === active ? "active" : "pending";

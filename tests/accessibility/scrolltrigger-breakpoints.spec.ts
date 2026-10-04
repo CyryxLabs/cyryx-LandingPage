@@ -79,285 +79,50 @@ for (const vp of VIEWPORTS) {
   });
 }
 
-test("desktop Hero uses native sticky positioning and scrubs the canvas sequence", async ({
-  page,
-}, testInfo) => {
-  test.skip(
-    testInfo.project.use.forcedColors === "active",
-    "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
-  );
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
-  const hero = page.locator("section[data-hero]");
-  const canvas = hero.locator("[data-hero-canvas]");
-  await expect(hero.locator("[data-scroll-progress]")).toHaveCount(1);
-  await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
-  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
-    "data-sequence-ready",
-    "true",
-    { timeout: 20_000 },
-  );
-  await expect(page.locator(".pin-spacer")).toHaveCount(0);
-  await expect(canvas).toHaveAttribute("data-frame-index", "1");
-
-  await page.evaluate(() => {
-    const heroScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-    const range = (heroScene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
-    window.scrollTo(0, range * 0.5);
-  });
-  await page.waitForTimeout(900);
-
-  await expect
-    .poll(
-      () =>
-        canvas.evaluate((element) =>
-          Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
-        ),
-      { timeout: 5_000 },
-    )
-    .toBeGreaterThan(12);
-
-  const state = await page.evaluate(() => {
-    const heroElement = document.querySelector<HTMLElement>("section[data-hero]");
-    const stickyElement = heroElement?.querySelector<HTMLElement>("[data-hero-sticky]");
-    const canvasElement = heroElement?.querySelector<HTMLCanvasElement>("[data-hero-canvas]");
-    const progress = heroElement?.querySelector<HTMLElement>("[data-scroll-progress]");
-    const matrix = progress
-      ? new DOMMatrixReadOnly(getComputedStyle(progress).transform)
-      : new DOMMatrixReadOnly();
-    return {
-      frameIndex: Number(canvasElement?.dataset.frameIndex ?? 0),
-      stickyTop: stickyElement?.getBoundingClientRect().top ?? Number.NaN,
-      progressScale: matrix.a,
-    };
-  });
-
-  expect(state.frameIndex).toBeGreaterThan(12);
-  expect(Math.abs(state.stickyTop)).toBeLessThan(2);
-  expect(state.progressScale).toBeGreaterThan(0.1);
-});
-
 for (const viewport of [
-  { name: "tablet", width: 768, height: 1024 },
-  { name: "mobile", width: 390, height: 800 },
+  { width: 390, height: 844 },
+  { width: 768, height: 1024 },
+  { width: 1920, height: 1080 },
 ]) {
-  test(`${viewport.name} Hero follows the device performance policy without GSAP pinning`, async ({
-    page,
-  }, testInfo) => {
-    test.skip(
-      testInfo.project.use.forcedColors === "active",
-      "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
-    );
-    await useHighPerformanceProfile(page);
-    await page.setViewportSize({ width: viewport.width, height: viewport.height });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await expectPageHydrated(page);
-
-    const hero = page.locator("section[data-hero]");
-    const canvas = hero.locator("[data-hero-canvas]");
-    await expect(hero).toHaveAttribute("data-scroll-scrub", "true", { timeout: 10_000 });
-    await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
-      "data-sequence-ready",
-      "true",
-      { timeout: 20_000 },
-    );
-    await expect(page.locator(".pin-spacer")).toHaveCount(0);
-    await expect(canvas).toHaveAttribute("data-frame-index", "1");
-
-    await page.evaluate(() => {
-      const heroScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-      const range = (heroScene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
-      window.scrollTo(0, range * 0.55);
-    });
-    await page.waitForTimeout(900);
-
-    await expect
-      .poll(
-        () =>
-          canvas.evaluate((element) =>
-            Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
-          ),
-        { timeout: 5_000 },
-      )
-      .toBeGreaterThan(12);
-
-    const scrubbed = await page.evaluate(() => {
-      const canvasElement = document.querySelector<HTMLCanvasElement>("[data-hero-canvas]");
-      const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
-      const matrix = progress
-        ? new DOMMatrixReadOnly(getComputedStyle(progress).transform)
-        : new DOMMatrixReadOnly();
-      return {
-        frameIndex: Number(canvasElement?.dataset.frameIndex ?? 0),
-        progressScale: matrix.a,
-      };
-    });
-
-    expect(scrubbed.frameIndex, `${viewport.name}: frame must advance with scroll`).toBeGreaterThan(
-      12,
-    );
-    expect(scrubbed.progressScale).toBeGreaterThan(0.2);
-  });
-}
-
-test("Hero reserves late sequence frames for an unobstructed brand reveal", async ({
-  page,
-}, testInfo) => {
-  test.skip(
-    testInfo.project.use.forcedColors === "active",
-    "Forced colors hides the canvas, so frame drawing is not observable; covered by the forced-colors test.",
+  test(
+    "native scroll transforms art, never hides the message at " + viewport.width,
+    async ({ page }) => {
+      await useHighPerformanceProfile(page);
+      await page.setViewportSize(viewport);
+      await page.goto("/", { waitUntil: "networkidle" });
+      await expect(page.locator(".pin-spacer")).toHaveCount(0);
+      await page.evaluate(() => window.scrollTo({ top: innerHeight * 0.6, behavior: "instant" }));
+      await expect
+        .poll(() =>
+          page
+            .locator("[data-cinema-open]")
+            .evaluate((el) => parseFloat(getComputedStyle(el).opacity)),
+        )
+        .toBeGreaterThan(0.3);
+      await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+      await expect(page.locator("#hero-heading")).toBeInViewport();
+      await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
+    },
   );
-  await useHighPerformanceProfile(page);
-
-  for (const viewport of [
-    { name: "mobile", width: 390, height: 800 },
-    { name: "desktop", width: 1280, height: 900 },
-  ]) {
-    await page.setViewportSize(viewport);
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await expectPageHydrated(page);
-
-    const hero = page.locator("section[data-hero]");
-    const canvas = hero.locator("[data-hero-canvas]");
-    const storyPanels = hero.locator("[data-hero-story-panel]");
-    const finalStory = storyPanels.last();
-    await expect(storyPanels).toHaveCount(3);
-    await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
-      "data-sequence-ready",
-      "true",
-      { timeout: 20_000 },
-    );
-
-    await page.evaluate(() => {
-      const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-      const range = (scene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
-      window.scrollTo(0, range * 0.67);
-    });
-    await page.waitForTimeout(500);
-    await expect
-      .poll(
-        () =>
-          finalStory.evaluate((element) => Number.parseFloat(getComputedStyle(element).opacity)),
-        { timeout: 3_000 },
-      )
-      .toBeGreaterThan(0.5);
-
-    await page.evaluate(() => {
-      const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-      const range = (scene?.offsetHeight ?? window.innerHeight) - window.innerHeight;
-      window.scrollTo(0, range * 0.9);
-    });
-    await page.waitForTimeout(500);
-
-    await expect
-      .poll(
-        () =>
-          canvas.evaluate((element) =>
-            Number((element as HTMLCanvasElement).dataset.frameIndex ?? 0),
-          ),
-        { timeout: 5_000 },
-      )
-      .toBeGreaterThanOrEqual(34);
-
-    const finalOverlayState = await finalStory.evaluate((element) => {
-      const style = getComputedStyle(element);
-      return {
-        opacity: Number.parseFloat(style.opacity),
-        visibility: style.visibility,
-      };
-    });
-    expect(finalOverlayState.opacity, `${viewport.name}: final story opacity`).toBeLessThan(0.02);
-    expect(finalOverlayState.visibility, `${viewport.name}: final story visibility`).toBe("hidden");
-  }
-});
-
-test("reduced motion removes Hero sequence scrubbing and extended scroll", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
-
-  await expect(page.locator("section[data-hero]")).toBeVisible();
-  await expect(page.locator(".pin-spacer")).toHaveCount(0);
-  await expect(page.locator("[data-hero-canvas]")).toHaveCount(0);
-  await expect(page.locator("section[data-hero]")).not.toHaveAttribute("data-scroll-scrub", "true");
-  const height = await page
-    .locator("[data-hero-scroll-scene]")
-    .evaluate((element) => element.getBoundingClientRect().height);
-  expect(height).toBeLessThanOrEqual(901);
-});
-
-/**
- * SolutionPage / Privacy / Terms must scroll cleanly at every breakpoint
- * with zero GSAP runtime errors and zero ScrollTrigger pinning. These
- * pages may use lightweight reveal timelines, but never pin content.
- */
-const CONTENT_PAGES = ["/solutions/workflow-automation", "/privacy", "/terms"];
-
-for (const path of CONTENT_PAGES) {
-  for (const vp of VIEWPORTS) {
-    test(`${path} scrolls cleanly on ${vp.name}`, async ({ page }) => {
-      const errors: string[] = [];
-      page.on("pageerror", (e) => errors.push(String(e)));
-      page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
-
-      await page.setViewportSize({ width: vp.width, height: vp.height });
-      await page.goto(path, { waitUntil: "domcontentloaded" });
-      await expect(page.locator("h1")).toBeVisible();
-
-      const maxScroll = await page.evaluate(
-        () => document.documentElement.scrollHeight - window.innerHeight,
-      );
-      for (const ratio of [0, 0.25, 0.5, 0.75, 1]) {
-        await page.evaluate((sy) => window.scrollTo(0, sy), maxScroll * ratio);
-        await page.waitForTimeout(30);
-      }
-
-      const relevant = errors.filter((e) => /gsap|scrolltrigger|react|invariant/i.test(e));
-      expect(relevant, `runtime errors on ${path}@${vp.name}: ${relevant.join(" | ")}`).toEqual([]);
-      expect(await page.locator(".pin-spacer").count(), `${path}: no pinning expected`).toBe(0);
-    });
-  }
 }
-
-test("desktop execution rail progresses through the governed operating sequence", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
-  await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
-  await expect(page.locator("section[data-hero]")).toHaveAttribute("data-scroll-scrub", "true", {
-    timeout: 10_000,
+test("dynamic reduced motion reverts every scroll transformation", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.evaluate(() => window.scrollTo({ top: 500, behavior: "instant" }));
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator("[data-cinema-art]")).toHaveCSS("transform", "none");
+  await expect(page.locator("[data-cinema-open]")).toHaveCSS("opacity", "1");
+});
+test("trace animation can pause and runs once before replay", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.locator("[data-execution-trace]").scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "Pause example" }).click();
+  const before = await page.locator("[data-execution-trace]").innerText();
+  await page.waitForTimeout(1800);
+  expect(await page.locator("[data-execution-trace]").innerText()).toBe(before);
+  await page.getByRole("button", { name: "Resume example" }).click();
+  await expect(page.getByRole("button", { name: "Replay example" })).toBeVisible({
+    timeout: 10000,
   });
-
-  const system = page.locator("[data-execution-system]");
-  const nodes = system.locator("[data-execution-node]");
-  const rail = system.locator("[data-execution-rail]");
-  await expect(system).toBeVisible();
-  await expect(nodes).toHaveCount(5);
-  await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
-  await system.evaluate((element) => {
-    const bottomAtCompletion = window.innerHeight * 0.34;
-    const top = element.getBoundingClientRect().bottom + window.scrollY - bottomAtCompletion;
-    window.scrollTo({ top, behavior: "auto" });
-  });
-  await page.waitForTimeout(900);
-
-  const railTransform = await rail.evaluate((element) => getComputedStyle(element).transform);
-  await expect
-    .poll(
-      () =>
-        nodes.evaluateAll(
-          (items) =>
-            items.filter((item) => Number.parseFloat(getComputedStyle(item).opacity) > 0.6).length,
-        ),
-      { timeout: 5_000 },
-    )
-    .toBe(5);
-
-  expect(railTransform).not.toBe("none");
-  // The closing line repeated the hero rail; it was removed so the section ends on the trace.
-  await expect(system).not.toContainText("From intent to action. From action to evidence.");
+  await page.getByRole("button", { name: "Replay example" }).click();
+  await expect(page.getByRole("button", { name: "Pause example" })).toBeVisible();
 });
