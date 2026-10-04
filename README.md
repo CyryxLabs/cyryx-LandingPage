@@ -12,6 +12,13 @@ The `Quality` GitHub Actions workflow runs on every PR and produces:
 - **Playwright HTML report** (`playwright-report/`) — traces and per-test results.
 - **PR comment** — `scripts/summarize-quality.mjs` posts a sticky comment with LCP / CLS / TBT for both form factors and axe violations grouped by selector.
 
+The Playwright diagnostic artifacts (`playwright-report`,
+`safari-mobile-playwright-report`, and `visual-regression-report`) are retained
+for **14 days**, including reports and failure traces. This provides two weekly
+triage cycles without keeping large per-run browser diagnostics for the default
+90 days. Download any evidence needed for a longer investigation before it
+expires. Other quality artifacts continue to use the repository retention policy.
+
 ### Tuning budgets per branch
 
 All thresholds are env-var driven — set them as **repository or branch variables** in GitHub Settings → Variables → Actions. Defaults shown.
