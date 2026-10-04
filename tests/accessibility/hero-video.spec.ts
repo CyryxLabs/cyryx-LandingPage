@@ -37,11 +37,13 @@ test("Save-Data keeps the useful static opening", async ({ page }) => {
   await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
   await expect(page.locator("[data-cinema-open]")).toHaveCSS("opacity", "0");
 });
-test("reduced motion shows a complete static scene and the completed example", async ({ page }) => {
+test("reduced motion shows a complete static scene and the review-ready example", async ({
+  page,
+}) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(page.locator("[data-cinema-open]")).toHaveCSS("opacity", "1");
-  await expect(page.locator("[data-execution-trace]")).toContainText("recorded");
+  await expect(page.locator(".cinema-draft-status")).toHaveText("Ready for review");
   expect(
     await page.evaluate(
       () => document.getAnimations().filter((a) => a.playState === "running").length,
@@ -54,8 +56,8 @@ test("no JavaScript still renders the business, CTA and operational evidence", a
   const ctx = await browser.newContext({ javaScriptEnabled: false });
   const page = await ctx.newPage();
   await page.goto("http://127.0.0.1:4175/");
-  await expect(page.locator("h1")).toContainText("real");
+  await expect(page.locator("h1")).toContainText("your business works");
   await expect(page.locator('[data-cta="primary"]')).toHaveAttribute("href", "/start?source=home");
-  await expect(page.locator("[data-execution-trace]")).toContainText("recorded");
+  await expect(page.locator(".cinema-draft-status")).toHaveText("Ready for review");
   await ctx.close();
 });

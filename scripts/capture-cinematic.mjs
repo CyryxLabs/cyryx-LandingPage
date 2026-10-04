@@ -1,18 +1,28 @@
-import { chromium, webkit } from "@playwright/test";
+import { chromium, webkit, firefox } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
-const output = new URL("../../review-artifacts/", import.meta.url).pathname.replace(
-  /^\/(\w:)/,
-  "$1",
-);
+import { existsSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { resolve } from "node:path";
+
+const output = resolve(process.env.REVIEW_OUTPUT_DIR || "/tmp/cyryx-review-final");
 await mkdir(output, { recursive: true });
 const base = process.env.REVIEW_BASE_URL || "http://127.0.0.1:4175";
-const results = [];
-for (const [name, browserType, viewport] of [
+const installedChromium =
+  process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
+  (existsSync("/usr/bin/chromium") ? "/usr/bin/chromium" : undefined);
+const requested = (process.env.REVIEW_BROWSERS || "desktop,mobile,safari-mobile").split(",");
+const profiles = [
   ["desktop", chromium, { width: 1920, height: 1080 }],
   ["mobile", chromium, { width: 390, height: 844 }],
   ["safari-mobile", webkit, { width: 390, height: 844 }],
-]) {
-  const browser = await browserType.launch();
+  ["firefox-desktop", firefox, { width: 1920, height: 1080 }],
+];
+const results = [];
+const sourceRevision = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+for (const [name, browserType, viewport] of profiles.filter(([name]) => requested.includes(name))) {
+  const browser = await browserType.launch(
+    browserType === chromium && installedChromium ? { executablePath: installedChromium } : {},
+  );
   const context = await browser.newContext({ viewport });
   const page = await context.newPage();
   const errors = [];
@@ -23,6 +33,8 @@ for (const [name, browserType, viewport] of [
   });
   await page.goto(base, { waitUntil: "networkidle" });
   await page.waitForFunction(() => document.documentElement.dataset.cyryxHydrated === "true");
+  await page.waitForFunction(() => document.documentElement.dataset.cyryxScrollReady === "true");
+  await page.waitForTimeout(1200);
   await page.screenshot({ path: `${output}/${name}-hero.png` });
   const heroHeight = await page
     .locator("[data-hero]")
@@ -31,32 +43,43 @@ for (const [name, browserType, viewport] of [
     const r = el.getBoundingClientRect();
     return r.top > 60 && r.bottom <= innerHeight;
   });
-  for (const id of [
-    "controlled-execution",
-    "operating-model",
-    "security",
-    "evidence",
-    "research",
-    "contact",
-  ]) {
-    await page.locator(`#${id}`).evaluate((el) =>
+  const capture = async (id, target = `#${id}`) => {
+    await page.locator(target).evaluate((el) =>
       window.scrollTo({
-        top: el.getBoundingClientRect().top + scrollY - 110,
+        top: el.getBoundingClientRect().top + scrollY - (innerWidth < 768 ? 80 : 110),
         behavior: "instant",
       }),
     );
-    await page.waitForTimeout(id === "controlled-execution" ? 8000 : 400);
+    await page.waitForTimeout(1400);
     await page.screenshot({ path: `${output}/${name}-${id}.png` });
-    if (id === "controlled-execution" && viewport.width < 768) {
-      await page.locator(".cinema-invoice").evaluate((el) =>
-        window.scrollTo({
-          top: el.getBoundingClientRect().top + scrollY - 120,
-          behavior: "instant",
-        }),
-      );
-      await page.screenshot({ path: `${output}/${name}-invoice.png` });
-    }
+  };
+  for (const id of [
+    "operating-model",
+    "controlled-execution",
+    "security",
+    "evidence",
+    "our-products",
+    "research",
+    "team",
+    "contact",
+  ])
+    await capture(id);
+  await capture("service-stage", "#service-visual");
+  for (const [index, view] of [
+    [1, "workflow"],
+    [2, "prototype"],
+  ]) {
+    // The button is deliberately outside the current viewport on phones;
+    // programmatic click models selection without an unsolicited scroll.
+    await page
+      .locator(".cinema-service button")
+      .nth(index)
+      .evaluate((el) => el.click());
+    await page.waitForTimeout(450);
+    await page.screenshot({ path: `${output}/${name}-service-${view}.png` });
   }
+  await capture("invoice", ".cinema-invoice");
+  await capture("draft", ".cinema-draft");
   const dimensions = await page.evaluate(() => ({
     width: innerWidth,
     scrollWidth: document.documentElement.scrollWidth,
@@ -64,6 +87,7 @@ for (const [name, browserType, viewport] of [
   }));
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
   await page.reload({ waitUntil: "networkidle" });
+  await page.waitForFunction(() => document.documentElement.dataset.cyryxScrollReady === "true");
   const refreshedY = await page.evaluate(() => scrollY);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload({ waitUntil: "networkidle" });
@@ -84,6 +108,7 @@ for (const [name, browserType, viewport] of [
     );
   results.push({
     name,
+    sourceRevision,
     heroHeight,
     ctaVisible,
     refreshedY,

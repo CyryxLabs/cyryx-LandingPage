@@ -132,8 +132,12 @@ test.describe("Hero — enterprise value proposition", () => {
   test("cinematic hero states the business and retains the CTA destinations", async ({ page }) => {
     await page.goto("/");
     const hero = page.locator("[data-hero]");
-    await expect(hero.locator("h1")).toHaveText("AI, built for the real world.");
-    await expect(hero).toContainText("We build AI products and custom software");
+    await expect(hero.locator("h1")).toHaveText(
+      "Custom software and AI for the way your business works.",
+    );
+    await expect(hero).toContainText(
+      "We build applications, connect systems and automate workflows",
+    );
     await expect(hero.locator('[data-cta="primary"]')).toHaveAttribute(
       "href",
       "/start?source=home",
@@ -143,14 +147,14 @@ test.describe("Hero — enterprise value proposition", () => {
       "/engagement-model",
     );
   });
-  test("the early workflow connects software to people and systems without client claims", async ({
+  test("the illustrative workflow connects software to people and systems without client claims", async ({
     page,
   }) => {
     await page.goto("/");
     const section = page.locator("#controlled-execution");
     await expect(section).toContainText("Illustrative workflow");
     await expect(section).toContainText("Payments stay outside this workflow.");
-    await expect(section.locator("[data-execution-trace]")).toBeVisible();
+    await expect(section.locator(".cinema-draft-status")).toHaveText("Ready for review");
   });
 
   test("homepage presents no discontinued MAAX product section", async ({ page }) => {
@@ -161,12 +165,12 @@ test.describe("Hero — enterprise value proposition", () => {
 
   test("custom services and the published product are distinct", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator(".cinema-service")).toHaveCount(4);
-    await expect(page.locator(".cinema-services")).toContainText("built around your needs");
+    await expect(page.locator(".cinema-service")).toHaveCount(3);
+    await expect(page.locator(".cinema-services")).toContainText("around your needs");
     await expect(page.locator(".cinema-product")).toContainText("Core available on npm");
     await expect(page.locator(".cinema-product a")).toHaveAttribute("href", "/products/aexos");
   });
-  test("homepage story leads with the workflow and names the founder without team-size claims", async ({
+  test("homepage story leads with the offer and names the founder without team-size claims", async ({
     page,
   }) => {
     await page.goto("/");
@@ -175,10 +179,11 @@ test.describe("Hero — enterprise value proposition", () => {
       .evaluateAll((nodes) => nodes.map((n) => n.id));
     expect(ids).toEqual([
       "top",
-      "controlled-execution",
       "operating-model",
+      "controlled-execution",
       "security",
       "evidence",
+      "our-products",
       "research",
       "team",
       "contact",

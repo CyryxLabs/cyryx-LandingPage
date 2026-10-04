@@ -34,3 +34,28 @@ test("evidence tabs support keyboard selection and preserve illustrative labels"
   await page.keyboard.press("ArrowRight");
   await expect(first).toBeFocused();
 });
+
+for (const reducedMotion of ["no-preference", "reduce"] as const) {
+  test(`service selection works with keyboard and touch while copy stays visible (${reducedMotion})`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion });
+    await page.goto("/", { waitUntil: "networkidle" });
+    await expectPageHydrated(page);
+    const stage = page.locator("#service-visual .cinema-composition");
+    const choices = page.locator(".cinema-service button");
+    const copy = await page.locator(".cinema-services").innerText();
+    await choices.nth(1).focus();
+    await page.keyboard.press("Enter");
+    await expect(choices.nth(1)).toHaveAttribute("aria-pressed", "true");
+    await expect(stage).toHaveAttribute("data-view", "workflow");
+    await expect(stage).toContainText("Connected work.");
+    await choices.nth(2).click();
+    await expect(stage).toHaveAttribute("data-view", "prototype");
+    await expect(stage).toContainText("An idea, tested.");
+    expect(await page.locator(".cinema-services").innerText()).toBe(copy);
+    await expect(page.locator(".cinema-service-link")).toHaveCount(3);
+    if (reducedMotion === "reduce")
+      await expect(stage.locator(".cinema-plane-interface")).toHaveCSS("transition-duration", "0s");
+  });
+}

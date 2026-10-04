@@ -77,7 +77,7 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   const primaryCta = page.locator('section[data-hero] a[data-cta="primary"]');
   await expect(primaryCta).toHaveAttribute("href", "/start?source=home");
   const secondaryCtaLabel = page.locator('section[data-hero] a[data-cta="secondary"] > span');
-  await expect(secondaryCtaLabel).toHaveText("See how we work");
+  await expect(secondaryCtaLabel).toHaveText("Explore our services");
   const secondaryCtaColors = await secondaryCtaLabel.evaluate((element) => {
     const style = getComputedStyle(element);
     return {

@@ -90,6 +90,9 @@ for (const viewport of [
       await useHighPerformanceProfile(page);
       await page.setViewportSize(viewport);
       await page.goto("/", { waitUntil: "networkidle" });
+      await expectPageHydrated(page);
+      // Wait for the existing two-frame bootstrap reset before user scrolling.
+      await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
       await expect(page.locator(".pin-spacer")).toHaveCount(0);
       await page.evaluate(() => window.scrollTo({ top: innerHeight * 0.6, behavior: "instant" }));
       await expect
@@ -112,17 +115,22 @@ test("dynamic reduced motion reverts every scroll transformation", async ({ page
   await expect(page.locator("[data-cinema-art]")).toHaveCSS("transform", "none");
   await expect(page.locator("[data-cinema-open]")).toHaveCSS("opacity", "1");
 });
-test("trace animation can pause and runs once before replay", async ({ page }) => {
+test("invoice trace completes once and returns to its static state with reduced motion", async ({
+  page,
+}) => {
+  await useHighPerformanceProfile(page);
   await page.goto("/", { waitUntil: "networkidle" });
-  await page.locator("[data-execution-trace]").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Pause example" }).click();
-  const before = await page.locator("[data-execution-trace]").innerText();
-  await page.waitForTimeout(1800);
-  expect(await page.locator("[data-execution-trace]").innerText()).toBe(before);
-  await page.getByRole("button", { name: "Resume example" }).click();
-  await expect(page.getByRole("button", { name: "Replay example" })).toBeVisible({
-    timeout: 10000,
-  });
-  await page.getByRole("button", { name: "Replay example" }).click();
-  await expect(page.getByRole("button", { name: "Pause example" })).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
+  await page.locator("[data-invoice-example]").scrollIntoViewIfNeeded();
+  await expect
+    .poll(() =>
+      page
+        .locator("[data-cinema-invoice-line]")
+        .first()
+        .evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).a),
+    )
+    .toBeGreaterThan(0.99);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator("[data-cinema-invoice-line]").first()).toHaveCSS("transform", "none");
+  await expect(page.locator(".cinema-draft-status")).toHaveText("Ready for review");
 });

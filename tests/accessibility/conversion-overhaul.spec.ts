@@ -42,8 +42,8 @@ test("homepage hero carries the registered headline and the project CTA", async 
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(heading).toHaveText("AI, built for the real world.");
-  await expect(primary).toHaveText(/Start a project/);
+  await expect(heading).toHaveText("Custom software and AI for the way your business works.");
+  await expect(primary).toHaveText(/Tell us about your project/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
   // The opening must expose a useful message immediately.
   await expect(primary).toBeInViewport();
@@ -54,7 +54,20 @@ test("a CTA click reaches the CRM as a signed funnel event without personal data
   page,
   request,
 }) => {
+  // A synthetic referrer correlates this browser's beacon across a shared mock.
+  // It names no real user/site and never causes a request to that host.
+  const referrerHost = `cta-${crypto.randomUUID()}.example.com`;
+  await page.addInitScript((host) => {
+    Object.defineProperty(document, "referrer", {
+      configurable: true,
+      get: () => `https://${host}/`,
+    });
+  }, referrerHost);
   await openHome(page);
+  const previousCalls = (await (
+    await request.get(`${MOCK_ORIGIN}/calls`)
+  ).json()) as RecordedCall[];
+  const baselineCount = previousCalls.length;
   await page.evaluate(() => {
     // Stay on the page so the beacon is observable.
     document
@@ -66,7 +79,22 @@ test("a CTA click reaches the CRM as a signed funnel event without personal data
   await expect
     .poll(async () => {
       const calls = (await (await request.get(`${MOCK_ORIGIN}/calls`)).json()) as RecordedCall[];
-      return calls.filter((call) => call.fn === "crm_event").at(-1) ?? null;
+      // The stand-in is shared by concurrent /brief and /start workers.
+      // Match this CTA's full event identity after the pre-click boundary;
+      // an unrelated form event must neither mask nor satisfy this assertion.
+      return (
+        calls
+          .slice(baselineCount)
+          .find(
+            (call) =>
+              call.fn === "crm_event" &&
+              call.body?.event === "start_project" &&
+              call.body?.section === "hero" &&
+              call.body?.path === "/" &&
+              call.body?.href === "/start" &&
+              call.body?.referrerHost === referrerHost,
+          ) ?? null
+      );
     })
     .toMatchObject({
       signatureValid: true,
@@ -76,6 +104,7 @@ test("a CTA click reaches the CRM as a signed funnel event without personal data
         section: "hero",
         path: "/",
         href: "/start",
+        referrerHost,
       },
     });
 });
@@ -350,7 +379,9 @@ test("legacy copy URLs retain attribution while presenting the cinematic narrati
 }) => {
   for (const path of ["/?copy=v4b", "/", "/?copy=v4a"]) {
     await openHome(page, path);
-    await expect(page.locator("#hero-heading")).toHaveText("AI, built for the real world.");
+    await expect(page.locator("#hero-heading")).toHaveText(
+      "Custom software and AI for the way your business works.",
+    );
     await expect(page.locator('[data-cta="primary"]')).toHaveAttribute(
       "href",
       "/start?source=home",

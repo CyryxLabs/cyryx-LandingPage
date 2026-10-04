@@ -15,7 +15,7 @@ import {
 const HOME_URL = SITE_URL;
 const HOME_TITLE = "Cyryx Labs — Applied AI & Custom Software";
 const HOME_DESCRIPTION =
-  "Cyryx Labs builds AI products and custom software for business workflows, with consulting, applied research and clear human control.";
+  "Cyryx Labs builds custom software and AI: applications, integrations and workflow automation, with consulting and applied research to find a practical path.";
 const HOME_SOCIAL_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20260723-1");
 
 export const Route = createFileRoute("/")({
@@ -92,7 +92,7 @@ export const Route = createFileRoute("/")({
                 url: HOME_URL,
               },
               description:
-                "Cyryx Labs builds AI products and custom software for business workflows, with consulting, applied research and clear human control.",
+                "Cyryx Labs builds custom software and AI: applications, integrations and workflow automation, with consulting and applied research to find a practical path.",
             },
           ],
         }),
