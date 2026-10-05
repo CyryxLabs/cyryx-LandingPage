@@ -1,97 +1,88 @@
-# Cyryx homepage — commercial story revision
+# Cyryx homepage — cinematic company narrative
 
-The later, scoped [logo-delivery performance follow-up](performance-follow-up.md) includes a repeated before/after comparison, final static captures and the distinction between the CI job labelled mobile and a real mobile Lighthouse simulation. The commercial-story copy and motion documented below are unchanged.
+Review branch: `design/cinematic-cyryx-review`, [draft PR 17](https://github.com/CyryxLabs/cyryx-LandingPage/pull/17). The source described here is the runtime in the commit containing this document, including viewport-based preparation of later GSAP scenes. Previous candidate: [`0bf1a1c94d8c3e11cff03ac6c153b6c45a8cb99c`](https://github.com/CyryxLabs/cyryx-LandingPage/commit/0bf1a1c94d8c3e11cff03ac6c153b6c45a8cb99c). Exact head and terminal CI evidence are maintained in the PR description. Historical screenshots and performance-follow-up.md describe previous revisions and must not be used as evidence of this candidate.
 
-Review branch: `design/cinematic-cyryx-review`, [draft PR 17](https://github.com/CyryxLabs/cyryx-LandingPage/pull/17). Verified runtime source: [`d7deb3c9919337b1d26772183c2f031180b38aad`](https://github.com/CyryxLabs/cyryx-LandingPage/commit/d7deb3c9919337b1d26772183c2f031180b38aad). Previous draft: `e54666049ca2c057fc644cc64d1d0b8db39c60fa`. The following review-assets commit changes only documentation and captures; the final PR head is reported with its exact CI results. This revision continues that branch; it does not merge PR 16 or promote a production deployment.
+## Offer and first-screen copy
 
-## Copy and narrative
+Eyebrow: **Cyryx / AI & software company**.
 
-Hero: **“Custom software and AI for the way your business works.”**
+Headline: **From idea to software. From AI to action.**
 
-Subhead: “We build applications, connect systems and automate workflows. We help you decide what’s worth building—and turn it into working software.”
+Subhead: “We develop our own AI products, build custom software for clients, and help teams decide what to build next.”
 
-The primary CTA is **“Tell us about your project”** and still goes to `/start?source=home` with `start_project` / `hero`. The secondary label is **“Explore our services”** and retains `/engagement-model` and `see_how_we_work` / `hero`. The first step is explicitly a short project brief and fit assessment; no free consultation or reply deadline is promised.
+Primary CTA: **Tell us about your project**, `/start?source=home`, preserving `start_project` / `hero`. Secondary: **Explore Cyryx**, `#cyryx-offer`, preserving `see_how_we_work` / `hero`. The destination deliberately opens the company offer in this page; the existing engagement-model route remains linked from the build method. The first step remains a short project brief and fit assessment, with no free consultation or turnaround guarantee.
 
-The story is readable without scrolling through an introduction or waiting for JavaScript:
+Three numbered editorial paths immediately separate **Our products**, **Custom development** and **Consulting**. The founder-led company section names Paulo without implying a large team.
 
-1. A direct promise and founder-led software/AI identity, with the useful copy and CTA in the first viewport.
-2. Three generous service rows: **Custom software & AI development** (applications, internal tools, AI features); **Integrations & workflow automation** (APIs, data connections, workflows); **Consulting & applied research** (discovery, prototypes, feasibility testing). Each has its own existing service destination and concrete deliverables.
-3. Project-fit questions about a missing tool, work stuck between systems, or an AI idea that needs feasibility testing.
-4. One explicitly illustrative invoice → structured data → accounting draft. It ends **“Ready for review”**, with no simulated approval, payment or claimed client result.
-5. Understand / Build / Connect, with concise permissions, human review, testing and cost practices. Sample scope/test/workflow documents remain keyboard accessible and are labelled as examples; test thresholds are pending tests, not achieved performance claims.
-6. A separate **Our products** chapter. AEXOS is a CLI-first framework for AI-assisted development, with core available on npm and the existing install command/product/license links.
-7. Public research and code as inspectable resources, explicitly distinguished from client case studies; a founder-led close with Paulo and the project brief.
+## Continuous visual story
 
-## Motion and static reading
+An original SVG connects a real brief to Cyryx logic and a usable workspace. Its label explicitly says the build is illustrative, not a client application. The initial copy and CTA do not wait for scrolling, JavaScript or a pinned sequence. Mobile uses a compact version of the same composition beside immediately readable copy.
 
-The opening assembles Interface, Logic and Connections planes into an original application composition in about 1.1 seconds. Only the artwork moves; the headline and contact action stay usable throughout. The same composition transforms between application, workflow and prototype views when a service is selected by keyboard or touch, using 350ms transitions. Every service description and link remains visible.
+Custom development gives concrete outputs through three generous service rows:
 
-The invoice trace completes once in 1.2 seconds. It is horizontal on desktop and vertical on mobile. It indicates the relationship between document, data and draft; it never claims a payment or approval occurred. Static reading zones separate these moments. There is no scroll hijack, pinning, repeated auto-approval animation or forced sequence before contact.
+- **Applications & websites:** web applications, websites and internal tools.
+- **Connected systems & automation:** API integrations, data connections and workflow automation, with human review where appropriate.
+- **AI agents & applied AI:** assistants, agents and AI features around a defined task, permitted tools and testing.
 
-Reduced motion disables the assembly, service transitions and scroll motion, leaving the complete composition and review-ready example. No JavaScript still renders the offer, links and example. Save-Data retains the existing static fallback. GSAP uses scoped React contexts and matchMedia cleanup.
+Keyboard/touch service selection transforms the illustration between application, workflow and agent views. All descriptions and destinations remain visible.
 
-## Form and integration boundaries
+Only after explaining the offer, an expressly illustrative invoice becomes structured fields and an accounting draft. Its final state is **Ready for review**. It does not simulate payment or approval and does not claim a client result.
 
-No form component, backend endpoint, CRM signing/upload contract, consent, validation, attribution, honeypot, rate limit, legal page or recovery behavior was changed. `/start`, `/brief`, careers and the assistant retain the existing fields and destinations. Synthetic submissions use only browser route mocks or the repository’s local CRM/Gemini stand-ins. No leads or email messages were sent to live systems.
+A bright silver **AI software. By Cyryx.** chapter presents AEXOS separately from client services: CLI-first framework/core available on npm, with real install/product/license destinations and no fabricated output or maturity claims. **Find the right thing to build** then explains consulting through discovery and requirements, prototypes and feasibility testing, and practical build plans and technical direction.
 
-MAAX’s existing 308 redirect and discontinued lifecycle are unchanged. Research/product resources are not presented as client deployments. No customer logos, certifications, user counts, commercial results or team size were invented.
+**How we build** condenses permissions, human review, testing and cost practices. Existing keyboard-accessible sample documents are illustrations; public research and code are inspectable resources, not client case studies. Founder identity and the project brief close the narrative.
 
-The signed-event test previously selected the last event in a mock shared by concurrent workers. It now searches the post-click records for the full `start_project` / `hero` / `/` / `/start` identity and still requires a valid signature. A unique synthetic referrer correlates the signed record to this browser’s beacon, so another concurrent hero click cannot satisfy the check. Scroll interaction tests wait for the existing `data-cyryx-scroll-ready` bootstrap signal before simulating a user scroll, preserving all visibility assertions.
+## Motion, accessibility and delivery
 
-## Review assets
+The optional motion module uses GSAP 3.15, ScrollTrigger and scoped React useGSAP contexts. Finite opening assembly and signal drawing lead into native-scroll service convergence, a once-only invoice trace, product commands and consulting rules. No pinning, scroll hijacking, endless ambient movement or forced delay precedes contact. Static SVG/HTML states remain complete when JavaScript, optional imports or motion are unavailable. Reduced motion and Save-Data retain full reading; media listeners and GSAP contexts clean up on change/unmount.
 
-Actual browser captures at **1920×1080** and **390×844**:
+Typography preserves the existing Space Grotesk, Inter, IBM Plex Mono and Cormorant Garamond families using local Latin WOFF2 files from Fontsource 5.3.0, with bundled OFL licences/provenance. Only the display face is preloaded. [Fontsource family information](https://fontsource.org/fonts/space-grotesk) describes the source. No external font request is needed for the reviewed Latin copy. Existing logo pixels/geometry are preserved in smaller WebP delivery; the favicon retains the existing 16/32px PNG frames inside its ICO container.
 
-- Previous draft: [desktop](review/before-desktop-hero.png), [mobile](review/before-mobile-hero.png).
-- Revised opening: [desktop](review/desktop-hero.png), [mobile](review/mobile-hero.png).
-- Services: [desktop offer](review/desktop-operating-model.png), [mobile composition](review/mobile-service-stage.png).
-- Example: [desktop workflow](review/desktop-controlled-execution.png), [mobile invoice](review/mobile-invoice.png), [mobile draft](review/mobile-draft.png).
-- [Our products](review/desktop-our-products.png), [mobile process](review/mobile-security.png), [mobile contact](review/mobile-contact.png).
-- [Actual vertical browser motion recording](review/mobile-motion.mp4), 390×844, approximately 26 seconds.
+Both Node and Vercel builds retain negotiated static gzip/Brotli. Public successful GET HTML additionally negotiates streaming gzip while preserving response/security/cache headers. The helper excludes APIs, POST/HEAD, server functions, errors, ranges, cookies, no-transform and pre-encoded responses. Four unit tests cover response bytes, negotiation, header preservation and excluded contracts. No signed JSON contract is recompressed by the helper.
 
-The screenshots and sampled recording frames were visually inspected. These captures use the cloud browser’s available font fallback: the unchanged Google Fonts request is blocked by the cloud network (`ERR_TUNNEL_CONNECTION_FAILED`). The same environment and fallback were used for the before/after captures. Local page/runtime errors were absent on the revised homepage; the external font failures are recorded separately.
+## Functional boundaries
 
-Library upload was attempted through the current official prepared-upload helper. It failed before any preparation/write with `hosted apps tools/list request failed: network`; no Library IDs were created. Sanitized images and video are therefore committed as the authorized fallback.
+No form component, endpoint, CRM/attachment signing contract, consent, validation, attribution, honeypot, rate limit, legal page or recovery behavior changed. `/start`, `/brief`, careers and the assistant retain their existing fields and destinations. Success/error/interruption/retry/draft recovery was exercised only with browser mocks or local CRM/Gemini stand-ins. No live lead or email submission occurred.
 
-No existing public automatic branch preview has been confirmed. The built page is available locally on port 4175 with the CRM/Gemini stand-ins, and `scripts/capture-cinematic.mjs` accepts an existing preview URL. No hosting project, deployment, access grant or infrastructure was created.
+MAAX remains discontinued with its existing 308 redirect. No customer logos, certifications, commercial outcomes, deployments or user counts were invented. PR16 is separate and unmerged.
 
-## Verification and baseline limitations
+The signed CTA isolation check correlates the full `start_project` / `hero` / `/` / `/start` identity and valid signature with a unique synthetic referrer. Concurrent unrelated mock events cannot satisfy the check. The five viewport geometry assertions now run as independently parameterized tests, preventing five reloads from sharing one 30-second timeout; assertions and timeout policy are unchanged.
 
-The runtime source commit above was verified before pushing. The prior draft’s test results are not used as a production-readiness claim for this revision.
+## Previous candidate CI and verified follow-up
 
-| Check                                                               | Current cloud result                                                                                                        |
-| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Production build / typecheck                                        | Passed                                                                                                                      |
-| Unit tests                                                          | 49 passed / 150 assertions                                                                                                  |
-| Changed-file ESLint / diff check                                    | Passed, no errors or warnings                                                                                               |
-| Full Chromium / 360 mobile / forced-colors matrix, retries disabled | 630 passed, 38 existing conditional skips, 1 careers rate-limit failure after repeating the matrix on the same local server |
-| Full conversion suite after restarting the local server             | 38 passed, 1 desktop-only skip, no failures; the careers failure above resolved with the original strict assertion          |
-| Signed CTA isolation stress check                                   | 15 passed across the three projects, no retries; unique synthetic referrer proves the record belongs to that browser        |
-| Chromium desktop / Android route and navigation suite               | 8 passed, 1 desktop-only menu skip, 1 existing AEXOS hydration failure                                                      |
-| SEO crawl                                                           | One unchanged engagement-model description-length failure                                                                   |
-| Forbidden terms / admin-link audit                                  | Passed                                                                                                                      |
+[Run 37364004394](https://github.com/CyryxLabs/cyryx-LandingPage/actions/runs/37364004394), source `0bf1a1c94d8c3e11cff03ac6c153b6c45a8cb99c`:
 
-All 631 unique matrix checks have passed across the complete matrix and fresh-server conversion rerun. This is explicitly not a claim that the last complete local matrix had zero failures. The final PR CI runs in a fresh server process and is monitored at the review head. No success assertion, limit or skipped-test condition was weakened.
+| Check                                 | Result                                                          |
+| ------------------------------------- | --------------------------------------------------------------- |
+| A11y/content/SEO, typecheck and build | Success: 642 passed, 38 conditional skips, 1 flaky-on-retry     |
+| Safari mobile                         | Success: 3 passed                                               |
+| Windows approved visual baselines     | Success: 3 passed                                               |
+| Desktop Lighthouse                    | Success                                                         |
+| Mobile Lighthouse                     | Failure: max-potential-fid 256ms against unchanged 200ms budget |
+| Summary                               | Pending at this document update                                 |
 
-Already verified in this cloud environment: production build; typecheck; 49 unit tests / 150 assertions; changed-file ESLint; forbidden-terms bundle scan; admin-link audit; narrative/document WCAG scans; first-viewport desktop/mobile CTA; scroll down/up and refresh; keyboard service selection; reduced motion; no-JavaScript fallback; service and product links.
+The flaky check is mobile-profile `header-dropdown.spec.ts:70`, which explicitly uses a desktop viewport: the initial click failed to open Products; the retry passed. The outside-click and expanded-state assertions remain strict. This differs from the previously fixed signed-CRM event isolation failure.
 
-Full repository lint has **128 errors and 10 warnings**. A clean checkout of main at `a1230f65fbb323aa342ad7dc1cab336812a57aa8`, using the same dependencies, has **130 errors and 10 warnings**. No lint rules were suppressed. The deterministic local SEO crawl has one unchanged baseline failure: `/engagement-model` description is 162 characters against its 159-character limit; the revised homepage metadata, social tags and JSON-LD are synchronized.
+Mobile Lighthouse 12.1.0, three genuine mobile simulations:
 
-The Chromium public-route matrix exposed an existing `/products/aexos` text hydration mismatch (React #418). Repeated fresh mobile loads reproduced it on clean main (7/8 loads) and this revision (8/8). The AEXOS route and its components are unchanged in this revision; the assertion remains strict and the failure is reported. Other route/navigation checks passed. This is a remaining baseline issue, not a passing cross-browser result.
+| Run | Performance |    LCP |   TBT | Max potential FID |
+| --- | ----------: | -----: | ----: | ----------------: |
+| 1   |          72 | 4036ms | 379ms |             330ms |
+| 2   |          88 | 3048ms | 122ms |             256ms |
+| 3   |          87 | 3062ms | 165ms |             259ms |
 
-Additional local WebKit and Firefox browser downloads are blocked by the cloud network (HTTP 403 from the Playwright CDNs). Their absence is an environment blocker, not a skipped passing test. Existing Safari CI will be monitored at the new head; full Firefox/WebKit route coverage remains unverified here.
+Accessibility, SEO and best practices were 100 in all three. LHCI's selected aggregation passed LCP/TBT/CLS and failed max-potential-fid. A passing median does not imply each individual run met every budget. The report attributes the longest remaining post-hydration task to the main JavaScript bundle. A local follow-up now prepares later scenes with IntersectionObserver as they approach the viewport, recording their GSAP work inside the same matchMedia context and disconnecting observers on cleanup. It preserves all scenes and reduced-motion behavior. The follow-up in this commit was verified locally: three mobile runs measured max-potential-fid 178/167/162ms (all below200), LCP3304/3310/3303ms, TBT95/62.5/65ms, CLS0, performance86/87/86 and accessibility/SEO/best-practices100. No threshold changed. The matching production-browser verification passed 63 checks in58.8s with retries disabled, covering actual motion, dynamic reduced motion, keyboard/touch service selection, WCAG narrative/documents, first-screen geometry and overflow at360/390/768/1280/1920px. Node/Vercel builds, typecheck and scoped ESLint passed. The new exact-head CI is required before an all-green claim; its terminal result will be recorded in the PR description.
 
-## Current local Lighthouse comparison
+## Local verification and limitations
 
-Single Lighthouse 12.8.2 samples with the same installed Chromium and node production server settings, captured on this cloud host. Some independent QA overlapped and Google Fonts is blocked here; these samples are not production telemetry or the pipeline’s three-run median.
+Node/Vercel production builds, typecheck and scoped lint passed for this follow-up. The unchanged unit contracts passed 53 tests / 182 assertions on the preceding candidate. The complete local Chromium / 360 mobile / forced-colors matrix, retries disabled, recorded 630 passes, 38 conditional skips and one combined five-viewport timeout. The unchanged combined test passed in isolation. Its parameterized replacement passed all 15 checks across three profiles. Exact-head CI results above supersede any assumption that the local full run was entirely green.
 
-| Result               | Main desktop | Revision desktop | Main mobile | Revision mobile |
-| -------------------- | -----------: | ---------------: | ----------: | --------------: |
-| Performance          |           90 |               88 |          59 |              59 |
-| Accessibility        |           97 |              100 |          97 |             100 |
-| SEO / best practices |     100 / 96 |         100 / 96 |    100 / 96 |        100 / 96 |
-| LCP                  |       1770ms |           1941ms |      9811ms |         10061ms |
-| TBT                  |          0ms |              0ms |       100ms |            23ms |
-| CLS                  |            0 |                0 |           0 |               0 |
+Actual desktop 1920×1080 and mobile 390×844 navigation included first-screen CTA, scroll down/up, refresh, service selection, keyboard/menu, reduced motion, overflow, contrast and console checks. Previous captures remain internal QA/history; they are not presented as current candidate screenshots. The user requested the navigable experience. No new image/video delivery is being substituted for a preview.
 
-Desktop LCP is inside the existing 2500ms budget in both samples. The 3500ms mobile LCP budget fails in both, and mobile performance is still below the 85 warning threshold. This revision does not solve that baseline performance issue. The shared best-practices penalty reflects the blocked font request reported above. No production promotion is authorized by these results.
+Three isolated local Lighthouse runs per mode on the preceding candidate, with Lighthouse 12.1.0 and Chromium 151: mobile performance 88/88/88, median LCP 3056ms, TBT 119ms, CLS 0; desktop performance 100/100/100, median LCP 700ms, TBT 5.5ms. Accessibility/SEO/best practices 100. However mobile max-potential-fid was 230/238/256ms: the earlier LCP/TBT budget success was not a complete all-budget pass. That candidate’s CI confirmed the issue subsequently addressed above. These absolute measurements are not a paired causal comparison or production telemetry.
+
+Full repository lint retains **128 errors / 10 warnings** in baseline files, without suppressions. Deterministic local SEO retains the baseline `/engagement-model` description length (162 vs limit159). Legacy compliance checks retain the removed newsletter endpoint's 404 (5/6 checks pass). An AEXOS hydration mismatch was previously reproduced on clean main and the revision; that untouched route remains a baseline issue. Local WebKit/Firefox downloads failed with CDN403; Safari CI above is actual verification, not an inferred local pass.
+
+## Navigable review preview
+
+One public preview on the existing Vercel project is explicitly authorized and being prepared independently for the exact reviewed branch head including this follow-up. No verified current URL is available at this update. Existing older previews and the official production domain are not candidate evidence. No production promotion, infrastructure/access change or live form submission is authorized.
