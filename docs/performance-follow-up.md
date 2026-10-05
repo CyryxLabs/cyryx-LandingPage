@@ -1,5 +1,7 @@
 # Homepage performance follow-up
 
+The subsequent [mobile measurement correction](lighthouse-mobile-profile.md) fixes the CI profile and adds effective-report verification without changing runtime code. The logo-delivery measurements below retain their original settings and scope.
+
 This follows the commercial-story revision on draft [PR17](https://github.com/CyryxLabs/cyryx-LandingPage/pull/17), starting from `dfc0e1b6a441cb6528b00becfa69381746dbd0a2`. The remote head was checked before editing. The final reviewed SHA and CI outcome are recorded in the PR. Only the shared logo image delivery changes at runtime; homepage copy, motion, forms, endpoints, SEO, routes and the MAAX lifecycle remain unchanged.
 
 ## Concrete change
