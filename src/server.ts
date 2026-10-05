@@ -4,6 +4,7 @@ import appCss from "./styles.css?url";
 import { BUILD_VERSION } from "./lib/build-info";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { compressPublicHtml } from "./lib/html-compression";
 import { legacyRedirect } from "./lib/legacy-redirect";
 
 type ServerEntry = {
@@ -113,11 +114,14 @@ function withRuntimeHeaders(request: Request, response: Response): Response {
     }
   }
 
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers,
-  });
+  return compressPublicHtml(
+    request,
+    new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    }),
+  );
 }
 
 async function rescueStaleStylesheetRequest(

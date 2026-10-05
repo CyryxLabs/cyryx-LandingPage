@@ -42,7 +42,7 @@ test("homepage hero carries the registered headline and the project CTA", async 
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(heading).toHaveText("Custom software and AI for the way your business works.");
+  await expect(heading).toHaveText("From idea to software. From AI to action.");
   await expect(primary).toHaveText(/Tell us about your project/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
   // The opening must expose a useful message immediately.
@@ -380,7 +380,7 @@ test("legacy copy URLs retain attribution while presenting the cinematic narrati
   for (const path of ["/?copy=v4b", "/", "/?copy=v4a"]) {
     await openHome(page, path);
     await expect(page.locator("#hero-heading")).toHaveText(
-      "Custom software and AI for the way your business works.",
+      "From idea to software. From AI to action.",
     );
     await expect(page.locator('[data-cta="primary"]')).toHaveAttribute(
       "href",

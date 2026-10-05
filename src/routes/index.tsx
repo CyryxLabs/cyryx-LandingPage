@@ -13,9 +13,9 @@ import {
 } from "@/data/seo-entities";
 
 const HOME_URL = SITE_URL;
-const HOME_TITLE = "Cyryx Labs — Applied AI & Custom Software";
+const HOME_TITLE = "Cyryx Labs — AI Products, Custom Software & Consulting";
 const HOME_DESCRIPTION =
-  "Cyryx Labs builds custom software and AI: applications, integrations and workflow automation, with consulting and applied research to find a practical path.";
+  "Cyryx Labs develops AI products, builds custom software for clients, and offers consulting to turn business problems into practical working systems.";
 const HOME_SOCIAL_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20260723-1");
 
 export const Route = createFileRoute("/")({
@@ -40,24 +40,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:image:alt", content: "Cyryx Labs" },
       { name: "theme-color", content: "#050607" },
     ],
-    links: [
-      // One preload per frame set; the media queries match the poster <picture>.
-      {
-        rel: "preload",
-        as: "image",
-        href: "/media/hero-sequence/desktop/cyryx-hero-frame-001.webp",
-        media: "(min-width: 768px), (orientation: landscape)",
-        fetchPriority: "high",
-      },
-      {
-        rel: "preload",
-        as: "image",
-        href: "/media/hero-sequence/mobile/cyryx-hero-frame-001.webp",
-        media: "(max-width: 767px) and (orientation: portrait)",
-        fetchPriority: "high",
-      },
-      { rel: "canonical", href: HOME_URL },
-    ],
+    links: [{ rel: "canonical", href: HOME_URL }],
     scripts: [
       {
         type: "application/ld+json",
@@ -92,7 +75,7 @@ export const Route = createFileRoute("/")({
                 url: HOME_URL,
               },
               description:
-                "Cyryx Labs builds custom software and AI: applications, integrations and workflow automation, with consulting and applied research to find a practical path.",
+                "Cyryx Labs develops AI products, builds custom software for clients, and offers consulting to turn business problems into practical working systems.",
             },
           ],
         }),

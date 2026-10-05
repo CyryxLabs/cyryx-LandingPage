@@ -6,6 +6,8 @@ const chromiumExecutablePath =
   process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ??
   (existsSync(sandboxChromium) ? sandboxChromium : undefined);
 const webkitMobileLayoutSpec = /webkit-mobile-layout\.spec\.ts/;
+const previewPort = process.env.PLAYWRIGHT_PORT ?? "4175";
+const previewUrl = `http://127.0.0.1:${previewPort}`;
 const useProductionServer = process.env.PLAYWRIGHT_USE_PRODUCTION_SERVER === "1";
 
 export default defineConfig({
@@ -23,15 +25,15 @@ export default defineConfig({
     ? [["list"], ["html", { outputFolder: "playwright-report/a11y", open: "never" }]]
     : "list",
   use: {
-    baseURL: "http://127.0.0.1:4175",
+    baseURL: previewUrl,
     launchOptions: chromiumExecutablePath ? { executablePath: chromiumExecutablePath } : undefined,
     trace: "retain-on-failure",
   },
   webServer: {
     command: useProductionServer
       ? "node .output/server/index.mjs"
-      : "bun run dev --host 127.0.0.1 --port 4175",
-    url: "http://127.0.0.1:4175",
+      : `bun run dev --host 127.0.0.1 --port ${previewPort}`,
+    url: previewUrl,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

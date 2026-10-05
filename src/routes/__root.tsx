@@ -117,30 +117,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         sizes: "180x180",
         href: "/apple-touch-icon.png?v=20260723-1",
       },
-      {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
-      },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      },
-      // Preload BEFORE the stylesheet link so the font CSS request starts early.
-      // Trimmed weights to only what the hero/body actually render above the fold.
+      // Keep the existing font families, delivered locally with visible fallback text.
       {
         rel: "preload",
-        as: "style",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/space-grotesk-latin-wght-normal-5.3.0.woff2",
         crossOrigin: "anonymous",
       },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
-        crossOrigin: "anonymous",
-      },
-      // Font files are discovered from the Google Fonts stylesheet. Avoid a
-      // version-specific direct preload URL, which can become stale upstream.
     ],
   }),
   shellComponent: RootShell,

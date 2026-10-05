@@ -21,6 +21,9 @@ const nitroOptions = {
   // Hero film frames are static and versioned by filename; let browsers and
   // the edge keep them instead of revalidating on every visit.
   routeRules: {
+    "/fonts/**": {
+      headers: { "cache-control": "public, max-age=31536000, immutable" },
+    },
     "/media/**": {
       headers: { "cache-control": "public, max-age=604800, stale-while-revalidate=86400" },
     },

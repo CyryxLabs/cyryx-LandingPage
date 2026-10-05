@@ -67,7 +67,7 @@ for (const [name, browserType, viewport] of profiles.filter(([name]) => requeste
   await capture("service-stage", "#service-visual");
   for (const [index, view] of [
     [1, "workflow"],
-    [2, "prototype"],
+    [2, "agent"],
   ]) {
     // The button is deliberately outside the current viewport on phones;
     // programmatic click models selection without an unsolicited scroll.

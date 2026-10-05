@@ -10,8 +10,7 @@ async function useHighPerformanceProfile(page: Page) {
 
 /**
  * Smoke-tests that home-route GSAP ScrollTrigger timelines render across
- * mobile/tablet/desktop breakpoints without runtime errors. The hero uses
- * native CSS sticky positioning, so GSAP pin spacers are never expected.
+ * mobile/tablet/desktop breakpoints without runtime errors or pinned scenes.
  */
 const VIEWPORTS = [
   { name: "mobile", width: 390, height: 800 },
@@ -45,7 +44,7 @@ for (const vp of VIEWPORTS) {
     const relevant = errors.filter((e) => /gsap|scrolltrigger|react|invariant/i.test(e));
     expect(relevant, `runtime errors on ${vp.name}: ${relevant.join(" | ")}`).toEqual([]);
 
-    // Native sticky scrollytelling must not create GSAP pin spacers.
+    // Native scrolling must not create GSAP pin spacers.
     const pinSpacers = await page.locator(".pin-spacer").count();
     expect(pinSpacers, `${vp.name} must not use ScrollTrigger pinning`).toBe(0);
     if (vp.name === "mobile") {
@@ -61,8 +60,7 @@ for (const vp of VIEWPORTS) {
     }
 
     if (vp.name !== "desktop") {
-      // Governance keeps one visual (the monolith), shown from lg up; below
-      // that the four controls carry the section and must be readable.
+      // The four actual build practices remain readable on smaller screens.
       const controls = page.locator("#security [data-governance-control]");
       await expect(controls).toHaveCount(4);
       await controls.last().scrollIntoViewIfNeeded();
@@ -94,14 +92,27 @@ for (const viewport of [
       // Wait for the existing two-frame bootstrap reset before user scrolling.
       await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
       await expect(page.locator(".pin-spacer")).toHaveCount(0);
-      await page.evaluate(() => window.scrollTo({ top: innerHeight * 0.6, behavior: "instant" }));
+      const stage = page.locator("#service-visual");
+      const geometry = await stage.evaluate((el) => ({
+        top: el.getBoundingClientRect().top + scrollY,
+        height: el.getBoundingClientRect().height,
+      }));
+      await page.evaluate(
+        (y) => window.scrollTo({ top: y - innerHeight * 0.9, behavior: "instant" }),
+        geometry.top,
+      );
+      const signal = stage.locator("[data-signal]").first();
       await expect
-        .poll(() =>
-          page
-            .locator("[data-cinema-open]")
-            .evaluate((el) => parseFloat(getComputedStyle(el).opacity)),
-        )
-        .toBeGreaterThan(0.3);
+        .poll(() => signal.evaluate((el) => parseFloat(getComputedStyle(el).strokeDashoffset)))
+        .toBeGreaterThan(0.9);
+      await page.evaluate(
+        (y) => window.scrollTo({ top: y - innerHeight * 0.5, behavior: "instant" }),
+        geometry.top + geometry.height,
+      );
+      await expect
+        .poll(() => signal.evaluate((el) => parseFloat(getComputedStyle(el).strokeDashoffset)))
+        .toBeLessThan(0.1);
+      await expect(page.locator(".cinema-services")).toContainText("Applications & websites");
       await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
       await expect(page.locator("#hero-heading")).toBeInViewport();
       await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
@@ -112,8 +123,23 @@ test("dynamic reduced motion reverts every scroll transformation", async ({ page
   await page.goto("/", { waitUntil: "networkidle" });
   await page.evaluate(() => window.scrollTo({ top: 500, behavior: "instant" }));
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(page.locator("[data-cinema-art]")).toHaveCSS("transform", "none");
-  await expect(page.locator("[data-cinema-open]")).toHaveCSS("opacity", "1");
+  await expect
+    .poll(() =>
+      page.locator("#service-visual .studio-screen").evaluate((el) => {
+        const matrix = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+        return matrix.isIdentity;
+      }),
+    )
+    .toBe(true);
+  await expect
+    .poll(() =>
+      page
+        .locator("#service-visual [data-signal]")
+        .first()
+        .evaluate((el) => parseFloat(getComputedStyle(el).strokeDashoffset)),
+    )
+    .toBe(0);
+  await expect(page.locator("[data-opening] .studio-screen").first()).toHaveCSS("opacity", "1");
 });
 test("invoice trace completes once and returns to its static state with reduced motion", async ({
   page,

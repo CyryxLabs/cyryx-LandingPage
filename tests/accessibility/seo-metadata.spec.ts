@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-const HOME_TITLE = "Cyryx Labs \u2014 Applied AI & Custom Software";
+const HOME_TITLE = "Cyryx Labs \u2014 AI Products, Custom Software & Consulting";
 const HOME_DESCRIPTION =
-  "Cyryx Labs builds custom software and AI: applications, integrations and workflow automation, with consulting and applied research to find a practical path.";
+  "Cyryx Labs develops AI products, builds custom software for clients, and offers consulting to turn business problems into practical working systems.";
 
 const EXPECTED = {
   title: HOME_TITLE,

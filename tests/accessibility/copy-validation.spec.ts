@@ -132,20 +132,15 @@ test.describe("Hero — enterprise value proposition", () => {
   test("cinematic hero states the business and retains the CTA destinations", async ({ page }) => {
     await page.goto("/");
     const hero = page.locator("[data-hero]");
-    await expect(hero.locator("h1")).toHaveText(
-      "Custom software and AI for the way your business works.",
-    );
+    await expect(hero.locator("h1")).toHaveText("From idea to software. From AI to action.");
     await expect(hero).toContainText(
-      "We build applications, connect systems and automate workflows",
+      "We develop our own AI products, build custom software for clients, and help teams decide what to build next.",
     );
     await expect(hero.locator('[data-cta="primary"]')).toHaveAttribute(
       "href",
       "/start?source=home",
     );
-    await expect(hero.locator('[data-cta="secondary"]')).toHaveAttribute(
-      "href",
-      "/engagement-model",
-    );
+    await expect(hero.locator('[data-cta="secondary"]')).toHaveAttribute("href", "#cyryx-offer");
   });
   test("the illustrative workflow connects software to people and systems without client claims", async ({
     page,
@@ -153,7 +148,7 @@ test.describe("Hero — enterprise value proposition", () => {
     await page.goto("/");
     const section = page.locator("#controlled-execution");
     await expect(section).toContainText("Illustrative workflow");
-    await expect(section).toContainText("Payments stay outside this workflow.");
+    await expect(section).toContainText("No payment or approval has taken place.");
     await expect(section.locator(".cinema-draft-status")).toHaveText("Ready for review");
   });
 
@@ -166,7 +161,10 @@ test.describe("Hero — enterprise value proposition", () => {
   test("custom services and the published product are distinct", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator(".cinema-service")).toHaveCount(3);
-    await expect(page.locator(".cinema-services")).toContainText("around your needs");
+    await expect(page.locator(".cinema-services")).toContainText("Applications & websites");
+    await expect(page.locator(".cinema-services")).toContainText("Connected systems & automation");
+    await expect(page.locator(".cinema-services")).toContainText("AI agents & applied AI");
+    await expect(page.locator("#cyryx-offer")).toContainText("Consulting");
     await expect(page.locator(".cinema-product")).toContainText("Core available on npm");
     await expect(page.locator(".cinema-product a")).toHaveAttribute("href", "/products/aexos");
   });
@@ -181,14 +179,15 @@ test.describe("Hero — enterprise value proposition", () => {
       "top",
       "operating-model",
       "controlled-execution",
+      "our-products",
+      "consulting",
       "security",
       "evidence",
-      "our-products",
       "research",
       "team",
       "contact",
     ]);
-    await expect(page.locator("#team")).toContainText("Work with Paulo.");
+    await expect(page.locator("#team")).toContainText("Work directly with Paulo.");
   });
 
   test("sample deliverables are labelled as illustrative", async ({ page }) => {

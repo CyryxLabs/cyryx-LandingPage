@@ -7,8 +7,8 @@ test("internal routes never download homepage imagery", async ({ page }) => {
   await page.goto("/contact", { waitUntil: "networkidle" });
   expect(images).toEqual([]);
 });
-test("blocked hero assets leave text and navigation usable", async ({ page }) => {
-  await page.route(/hero-sequence|hero-poster/, (route) => route.abort());
+test("blocked fonts leave text and navigation usable", async ({ page }) => {
+  await page.route(/\/fonts\/.*\.woff2/, (route) => route.abort());
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(page.locator("#hero-heading")).toBeVisible();
   await expect(page.locator('[data-cta="primary"]')).toBeVisible();

@@ -1,12 +1,13 @@
 import { expect, test } from "@playwright/test";
 
-// Homepage chapter order: 01 problem, 02 ways to engage, 03 how it runs,
-// 04 what you receive, 05 governance, 06 start.
+// Check the full business narrative and usable static state on iPhone.
 const HOME_SECTIONS = [
-  "controlled-execution",
   "operating-model",
-  "evidence",
+  "controlled-execution",
+  "our-products",
+  "consulting",
   "security",
+  "evidence",
   "contact",
 ] as const;
 
@@ -31,7 +32,7 @@ test("Safari on iPhone gets the full experience, not the low-performance fallbac
   await expect(page.locator("html")).not.toHaveClass(/cx-low-perf/);
 
   const hero = page.locator("section[data-hero]");
-  await expect(hero.locator("[data-hero-poster]")).toBeVisible();
+  await expect(hero.locator(".cinema-mobile-build")).toBeVisible();
   await expect(hero.locator("h1")).toBeInViewport();
   await expect(hero.locator(".cx-hero-sub")).toBeVisible();
   await expect(hero.locator(".cx-hero-ctas")).toBeVisible();
@@ -76,8 +77,8 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   await expect(page.locator("main")).not.toContainText(/MAAX/i);
   const primaryCta = page.locator('section[data-hero] a[data-cta="primary"]');
   await expect(primaryCta).toHaveAttribute("href", "/start?source=home");
-  const secondaryCtaLabel = page.locator('section[data-hero] a[data-cta="secondary"] > span');
-  await expect(secondaryCtaLabel).toHaveText("Explore our services");
+  const secondaryCtaLabel = page.locator('section[data-hero] a[data-cta="secondary"]');
+  await expect(secondaryCtaLabel).toHaveText("Explore Cyryx");
   const secondaryCtaColors = await secondaryCtaLabel.evaluate((element) => {
     const style = getComputedStyle(element);
     return {

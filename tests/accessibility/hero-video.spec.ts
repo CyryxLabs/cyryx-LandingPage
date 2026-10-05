@@ -4,7 +4,7 @@ for (const [label, width, height] of [
   ["phone", 390, 844],
 ] as const) {
   test(
-    label + " receives a complete responsive poster, with no canvas or film preload",
+    label + " receives a complete responsive vector illustration, with no canvas or film preload",
     async ({ page }) => {
       const frames = new Set<string>();
       page.on("request", (r) => {
@@ -13,14 +13,17 @@ for (const [label, width, height] of [
       await page.setViewportSize({ width, height });
       await page.goto("/", { waitUntil: "networkidle" });
       await expect(page.locator("[data-hero] canvas")).toHaveCount(0);
-      expect(frames.size).toBe(1);
-      const poster = page.locator("[data-hero-poster]");
-      expect(
-        await poster.evaluate((img) => (img as HTMLImageElement).naturalWidth),
-      ).toBeGreaterThan(0);
-      expect(await poster.evaluate((img) => (img as HTMLImageElement).currentSrc)).toContain(
-        width < 768 ? "/mobile/" : "/desktop/",
+      expect(frames.size).toBe(0);
+      const scene = page.locator(
+        width < 768
+          ? "[data-hero] .cinema-mobile-build"
+          : "[data-hero] .cinema-hero-software .cinema-composition",
       );
+      await expect(scene).toBeVisible();
+      await expect(scene).toContainText("THE BRIEF");
+      await expect(scene).toContainText("CYRYX");
+      await expect(scene).toContainText("Your work. In software.");
+      await expect(page.locator('[data-hero] link[as="image"]')).toHaveCount(0);
     },
   );
 }
@@ -35,14 +38,21 @@ test("Save-Data keeps the useful static opening", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveClass(/cx-low-perf/);
   await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
-  await expect(page.locator("[data-cinema-open]")).toHaveCSS("opacity", "0");
+  await expect(page.locator("[data-hero] .cinema-mobile-build")).toBeVisible();
+  await expect(page.locator("[data-hero] .cinema-mobile-build .studio-screen")).toHaveCSS(
+    "opacity",
+    "1",
+  );
 });
 test("reduced motion shows a complete static scene and the review-ready example", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/", { waitUntil: "networkidle" });
-  await expect(page.locator("[data-cinema-open]")).toHaveCSS("opacity", "1");
+  await expect(page.locator("[data-hero] .cinema-hero-software .studio-screen")).toHaveCSS(
+    "opacity",
+    "1",
+  );
   await expect(page.locator(".cinema-draft-status")).toHaveText("Ready for review");
   expect(
     await page.evaluate(
@@ -52,11 +62,11 @@ test("reduced motion shows a complete static scene and the review-ready example"
 });
 test("no JavaScript still renders the business, CTA and operational evidence", async ({
   browser,
-}) => {
+}, testInfo) => {
   const ctx = await browser.newContext({ javaScriptEnabled: false });
   const page = await ctx.newPage();
-  await page.goto("http://127.0.0.1:4175/");
-  await expect(page.locator("h1")).toContainText("your business works");
+  await page.goto(String(testInfo.project.use.baseURL));
+  await expect(page.locator("h1")).toContainText("to software.");
   await expect(page.locator('[data-cta="primary"]')).toHaveAttribute("href", "/start?source=home");
   await expect(page.locator(".cinema-draft-status")).toHaveText("Ready for review");
   await ctx.close();

@@ -51,8 +51,8 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await expect(stage).toHaveAttribute("data-view", "workflow");
     await expect(stage).toContainText("Connected work.");
     await choices.nth(2).click();
-    await expect(stage).toHaveAttribute("data-view", "prototype");
-    await expect(stage).toContainText("An idea, tested.");
+    await expect(stage).toHaveAttribute("data-view", "agent");
+    await expect(stage).toContainText("A task, with boundaries.");
     expect(await page.locator(".cinema-services").innerText()).toBe(copy);
     await expect(page.locator(".cinema-service-link")).toHaveCount(3);
     if (reducedMotion === "reduce")

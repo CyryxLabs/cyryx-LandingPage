@@ -159,17 +159,20 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   expect(primaryHref).toBe("/start?source=home");
 
   const secondaryHref = await secondary.getAttribute("href");
-  expect(secondaryHref).toBe("/engagement-model");
+  expect(secondaryHref).toBe("#cyryx-offer");
 });
 
-test("Hero headline and CTA stay unclipped across mobile, tablet and desktop", async ({ page }) => {
-  for (const viewport of [
-    { width: 360, height: 800 },
-    { width: 390, height: 844 },
-    { width: 768, height: 1024 },
-    { width: 1024, height: 768 },
-    { width: 1920, height: 1080 },
-  ]) {
+for (const viewport of [
+  { width: 360, height: 800 },
+  { width: 390, height: 844 },
+  { width: 768, height: 1024 },
+  { width: 1024, height: 768 },
+  { width: 1920, height: 1080 },
+]) {
+  // Each viewport keeps the complete geometry contract within its own navigation budget.
+  test(`Hero headline and CTA stay unclipped at ${viewport.width}x${viewport.height}`, async ({
+    page,
+  }) => {
     await page.setViewportSize(viewport);
     await page.goto("/", { waitUntil: "networkidle" });
     await expect(page.locator("#hero-heading")).toBeInViewport();
@@ -190,8 +193,8 @@ test("Hero headline and CTA stay unclipped across mobile, tablet and desktop", a
     expect(metrics.width).toBeLessThanOrEqual(metrics.viewport);
     expect(metrics.top).toBeGreaterThanOrEqual(64);
     expect(metrics.bottom).toBeLessThanOrEqual(metrics.height);
-  }
-});
+  });
+}
 
 test("Mobile opening has one headline, useful copy and CTA in a single screen", async ({
   page,
