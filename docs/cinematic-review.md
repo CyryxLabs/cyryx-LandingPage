@@ -1,5 +1,7 @@
 # Cyryx homepage — commercial story revision
 
+The later, scoped [logo-delivery performance follow-up](performance-follow-up.md) includes a repeated before/after comparison, final static captures and the distinction between the CI job labelled mobile and a real mobile Lighthouse simulation. The commercial-story copy and motion documented below are unchanged.
+
 Review branch: `design/cinematic-cyryx-review`, [draft PR 17](https://github.com/CyryxLabs/cyryx-LandingPage/pull/17). Verified runtime source: [`d7deb3c9919337b1d26772183c2f031180b38aad`](https://github.com/CyryxLabs/cyryx-LandingPage/commit/d7deb3c9919337b1d26772183c2f031180b38aad). Previous draft: `e54666049ca2c057fc644cc64d1d0b8db39c60fa`. The following review-assets commit changes only documentation and captures; the final PR head is reported with its exact CI results. This revision continues that branch; it does not merge PR 16 or promote a production deployment.
 
 ## Copy and narrative
