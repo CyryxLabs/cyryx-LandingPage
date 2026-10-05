@@ -52,7 +52,6 @@ export const OPERATING_LIFECYCLE = [
   cta: string;
 }[];
 
-
 export const PUBLIC_CONTENT_DEFINITIONS: readonly PublicContentDefinition[] = [
   {
     kind: "Product",
@@ -76,7 +75,6 @@ export const PUBLIC_CONTENT_DEFINITIONS: readonly PublicContentDefinition[] = [
       "Keep publication, implementation, conformance, certification, and client outcomes separate.",
   },
 ];
-
 
 /**
  * AEXOS — the Cyryx product shown on the public site.

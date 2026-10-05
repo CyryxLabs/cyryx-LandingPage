@@ -26,6 +26,7 @@ import {
 } from "@/data/aexos";
 import { buildStartProjectHref } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
+import { usePageMotion } from "@/hooks/useSiteMotion";
 
 const PATH = "/products/aexos";
 const TITLE = "AEXOS — Agentic Execution & Orchestration System · Cyryx Labs";
@@ -140,6 +141,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 function AexosPage() {
+  usePageMotion();
   const product = AEXOS_PRODUCT;
   const talkHref = buildStartProjectHref({ source: "products", intent: "aexos" });
   const trackInstall = () =>

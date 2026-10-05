@@ -7,7 +7,13 @@
  */
 export const ASSISTANT_OPEN_EVENT = "cyryx:assistant-open";
 
-export type AssistantOpenSource = "hero" | "final_cta" | "launcher" | "start" | "contact" | "footer";
+export type AssistantOpenSource =
+  | "hero"
+  | "final_cta"
+  | "launcher"
+  | "start"
+  | "contact"
+  | "footer";
 
 export function isAssistantEnabled(): boolean {
   return import.meta.env?.VITE_ASSISTANT_ENABLED === "true";

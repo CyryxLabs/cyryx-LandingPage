@@ -151,3 +151,31 @@ test("mobile navigation starts fresh routes at the top and preserves Back restor
   await expectPageTop(page);
   await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
 });
+
+for (const reducedMotion of ["no-preference", "reduce"] as const) {
+  test(`AEXOS keeps server-rendered facts through hydration and reload (${reducedMotion})`, async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => {
+      if (message.type() === "error" && /hydrat/i.test(message.text())) errors.push(message.text());
+    });
+    await page.emulateMedia({ reducedMotion });
+    await page.goto("/products/aexos", { waitUntil: "networkidle" });
+    const roles = page.locator('[data-count="64"]');
+    await expect(roles).toHaveText("64");
+    await roles.scrollIntoViewIfNeeded();
+    await expect(roles).toHaveText("64", { timeout: 5_000 });
+    await page.reload({ waitUntil: "networkidle" });
+    await expect(roles).toHaveText("64");
+    // Client navigation must not leave a deferred animation running on the old page.
+    await page.locator('header a[href="/"]').first().click();
+    await expect(page).toHaveURL(/\/$/);
+    await page.goBack({ waitUntil: "networkidle" });
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await roles.scrollIntoViewIfNeeded();
+    await expect(roles).toHaveText("64", { timeout: 5_000 });
+    expect(errors, `hydration/runtime errors: ${errors.join(" | ")}`).toEqual([]);
+  });
+}

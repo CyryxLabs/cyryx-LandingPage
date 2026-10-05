@@ -12,7 +12,9 @@ import { resolve } from "node:path";
 
 const args = process.argv.slice(2);
 if (args.length === 0) {
-  console.error("Usage: fetch-quality-artifacts.mjs <run-url-or-id> [--repo owner/name] [--out dir]");
+  console.error(
+    "Usage: fetch-quality-artifacts.mjs <run-url-or-id> [--repo owner/name] [--out dir]",
+  );
   process.exit(1);
 }
 
@@ -77,7 +79,9 @@ for (const name of artifacts) {
     missing.push(name);
     const err = (r.stderr || "").trim();
     if (/HTTP 403/i.test(err) || /permission/i.test(err)) {
-      console.error(`  ✖ permission denied for "${name}" — token lacks "actions:read" or repo access.`);
+      console.error(
+        `  ✖ permission denied for "${name}" — token lacks "actions:read" or repo access.`,
+      );
     } else if (/HTTP 404/i.test(err) || /not found/i.test(err)) {
       console.warn(`  (not present on run ${runId})`);
     } else {
@@ -100,9 +104,13 @@ if (existsSync(sarif)) {
   console.log(`  • Pretty-print:               jq . "${sarif}" | less`);
 }
 if (existsSync(rawJsonDir)) {
-  console.log(`  • Raw axe JSON:               ls "${rawJsonDir}" && jq . "${rawJsonDir}"/*.json | less`);
+  console.log(
+    `  • Raw axe JSON:               ls "${rawJsonDir}" && jq . "${rawJsonDir}"/*.json | less`,
+  );
 }
 const snap = resolve(out, "jsonld-snapshot-updated/jsonld.snapshot.json");
 if (existsSync(snap)) {
-  console.log(`  • JSON-LD snapshot diff:      diff tests/accessibility/__snapshots__/jsonld.snapshot.json "${snap}"`);
+  console.log(
+    `  • JSON-LD snapshot diff:      diff tests/accessibility/__snapshots__/jsonld.snapshot.json "${snap}"`,
+  );
 }

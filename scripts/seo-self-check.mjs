@@ -53,11 +53,25 @@ async function get(url, localize = true) {
   };
 }
 
+// Read the rendered attribute value, not the longer HTML-escaped source.
+// React escapes ampersands, quotes and angle brackets in SSR attributes.
+function decodeAttribute(value) {
+  const entities = { amp: "&", quot: '"', apos: "'", lt: "<", gt: ">" };
+  return value.replace(/&(amp|quot|apos|lt|gt|#(?:x[0-9a-f]+|[0-9]+));/gi, (match, entity) => {
+    if (!entity.startsWith("#")) return entities[entity.toLowerCase()] ?? match;
+    const code =
+      entity[1].toLowerCase() === "x"
+        ? Number.parseInt(entity.slice(2), 16)
+        : Number.parseInt(entity.slice(1), 10);
+    return code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : match;
+  });
+}
+
 function attributes(tag) {
   return Object.fromEntries(
     [...tag.matchAll(/([:\w-]+)\s*=\s*["']([^"']*)["']/g)].map((match) => [
       match[1].toLowerCase(),
-      match[2],
+      decodeAttribute(match[2]),
     ]),
   );
 }
