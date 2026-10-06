@@ -132,9 +132,9 @@ test.describe("Hero — enterprise value proposition", () => {
   test("cinematic hero states the business and retains the CTA destinations", async ({ page }) => {
     await page.goto("/");
     const hero = page.locator("[data-hero]");
-    await expect(hero.locator("h1")).toHaveText("From idea to software. From AI to action.");
+    await expect(hero.locator("h1")).toHaveText("AI products. Software, made real.");
     await expect(hero).toContainText(
-      "We develop our own AI products, build custom software for clients, and help teams decide what to build next.",
+      "Our own AI products. Custom software for clients. Practical advice on what to build next.",
     );
     await expect(hero.locator('[data-cta="primary"]')).toHaveAttribute(
       "href",

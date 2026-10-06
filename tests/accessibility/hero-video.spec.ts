@@ -4,7 +4,7 @@ for (const [label, width, height] of [
   ["phone", 390, 844],
 ] as const) {
   test(
-    label + " receives a complete readable HTML demonstration, with no canvas or film preload",
+    label + " receives a complete scene and sample application, with two bounded still assets",
     async ({ page }) => {
       const frames = new Set<string>();
       page.on("request", (r) => {
@@ -13,18 +13,16 @@ for (const [label, width, height] of [
       await page.setViewportSize({ width, height });
       await page.goto("/", { waitUntil: "networkidle" });
       await expect(page.locator("[data-hero] canvas")).toHaveCount(0);
-      expect(frames.size).toBe(0);
-      const scene = page.locator(
-        width < 768
-          ? ".cinema-mobile-build"
-          : "[data-hero] .cinema-hero-software .cinema-composition",
-      );
+      expect(frames.size).toBeLessThanOrEqual(2);
+      expect([...frames].every((url) => /frame-(001|020|028)\.webp$/.test(url))).toBe(true);
+      await expect(page.locator("[data-hero] video")).toHaveCount(0);
+      const scene = page.locator("[data-request-demo]");
       await expect(scene).toBeVisible();
-      await expect(scene).toContainText("THE BRIEF");
-      await expect(scene).toContainText("Documents");
-      await expect(scene).toContainText("Systems");
-      await expect(scene).toContainText("People");
-      await expect(scene).toContainText("Your work. In software.");
+      await expect(scene).toContainText("THE ORIGINAL REQUEST");
+      await expect(scene).toContainText("equipment inspection");
+      await expect(scene).toContainText("Building B");
+      await expect(scene).toContainText("New service request");
+      await expect(scene).toContainText("sample data");
       await expect(page.locator('[data-hero] link[as="image"]')).toHaveCount(0);
     },
   );
@@ -41,17 +39,16 @@ test("Save-Data keeps the useful static opening", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/cx-low-perf/);
   await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
   await expect(page.locator(".cinema-mobile-build")).toBeVisible();
-  await expect(page.locator(".cinema-mobile-build .studio-screen")).toHaveCSS("opacity", "1");
+  await expect(page.locator(".cinema-request-app")).toHaveCSS("opacity", "1");
+  await expect(page.locator(".cinema-aperture-door").first()).toHaveCSS("display", "none");
 });
 test("reduced motion shows a complete static scene and the review-ready example", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/", { waitUntil: "networkidle" });
-  await expect(page.locator("[data-hero] .cinema-hero-software .studio-screen")).toHaveCSS(
-    "opacity",
-    "1",
-  );
+  await expect(page.locator(".cinema-request-app")).toHaveCSS("opacity", "1");
+  await expect(page.locator(".cinema-aperture-door").first()).toHaveCSS("display", "none");
   await expect(page.locator(".cinema-draft-status")).toHaveText("Ready for review");
   expect(
     await page.evaluate(
@@ -65,7 +62,8 @@ test("no JavaScript still renders the business, CTA and operational evidence", a
   const ctx = await browser.newContext({ javaScriptEnabled: false });
   const page = await ctx.newPage();
   await page.goto(String(testInfo.project.use.baseURL));
-  await expect(page.locator("h1")).toContainText("to software.");
+  await expect(page.locator("h1")).toHaveText("AI products. Software, made real.");
+  await expect(page.locator("[data-request-demo]")).toContainText("Equipment inspection");
   await expect(page.locator('[data-cta="primary"]')).toHaveAttribute("href", "/start?source=home");
   await expect(page.locator(".cinema-draft-status")).toHaveText("Ready for review");
   await ctx.close();

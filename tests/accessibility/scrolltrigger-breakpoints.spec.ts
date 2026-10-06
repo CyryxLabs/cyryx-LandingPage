@@ -125,13 +125,13 @@ test("dynamic reduced motion reverts every scroll and selection transformation",
 }) => {
   await useHighPerformanceProfile(page);
   await page.goto("/", { waitUntil: "networkidle" });
-  await page.locator(".cinema-build-opening:visible").scrollIntoViewIfNeeded();
+  await page.locator("[data-request-demo]").scrollIntoViewIfNeeded();
   await page.locator(".cinema-service button").nth(1).click();
   await expect(page.locator("#service-result")).toContainText("Queued for review");
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const selector of [
-    ".cinema-build-opening:visible .studio-screen",
-    ".cinema-build-opening:visible [data-signal]",
+    "[data-request-demo] .cinema-request-app",
+    "[data-request-demo] [data-request-line]",
     "#service-result .cinema-demo-result",
   ]) {
     await expect
@@ -142,10 +142,7 @@ test("dynamic reduced motion reverts every scroll and selection transformation",
       )
       .toBe(true);
   }
-  await expect(page.locator(".cinema-build-opening:visible .studio-screen")).toHaveCSS(
-    "opacity",
-    "1",
-  );
+  await expect(page.locator("[data-request-demo] .cinema-request-app")).toHaveCSS("opacity", "1");
   expect(
     await page.evaluate(
       () => document.getAnimations().filter((a) => a.playState === "running").length,

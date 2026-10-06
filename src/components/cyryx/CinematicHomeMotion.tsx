@@ -19,6 +19,29 @@ export function CinematicHomeMotion({ root }: { root: RefObject<HTMLDivElement |
           )
             return;
           const desktop = context.conditions.desktop;
+          // A single entrance opens the branded architectural scene. Copy and
+          // contact remain still and fully visible throughout the movement.
+          const entrance = gsap.timeline({ defaults: { ease: "power3.inOut" } });
+          entrance
+            .fromTo(
+              ".cinema-aperture-world",
+              { scale: desktop ? 1.16 : 1.12 },
+              { scale: 1, duration: 2.2 },
+              0,
+            )
+            .fromTo(
+              ".cinema-aperture-door-left",
+              { xPercent: 0, opacity: 1 },
+              { xPercent: -100, opacity: 0, duration: 1.9 },
+              0,
+            )
+            .fromTo(
+              ".cinema-aperture-door-right",
+              { xPercent: 0, opacity: 1 },
+              { xPercent: 100, opacity: 0, duration: 1.9 },
+              0,
+            )
+            .fromTo(".cinema-aperture-light", { scaleY: 0.2 }, { scaleY: 1, duration: 1.7 }, 0.3);
           gsap.fromTo(
             "[data-hero-rule]",
             { scaleX: 0.3 },
@@ -41,22 +64,50 @@ export function CinematicHomeMotion({ root }: { root: RefObject<HTMLDivElement |
             observers.push(observer);
             observer.observe(target);
           };
-          const openingScene = desktop
-            ? ".cinema-hero-software .cinema-build-opening"
-            : ".cinema-mobile-build .cinema-build-opening";
+          const openingScene = "[data-request-demo]";
           nearViewport(openingScene, () => {
+            const demo = root.current?.querySelector<HTMLElement>(openingScene);
+            const source = demo?.querySelector<HTMLElement>("[data-demo-source]");
+            const target = demo?.querySelector<HTMLElement>("[data-demo-target] dd");
+            const transfer = demo?.querySelector<HTMLElement>("[data-demo-transfer]");
+            if (!demo || !source || !target || !transfer) return;
+            const bounds = demo.getBoundingClientRect();
+            const origin = source.getBoundingClientRect();
+            const destination = target.getBoundingClientRect();
+            gsap.set(transfer, { left: origin.left - bounds.left, top: origin.top - bounds.top });
             const opening = gsap.timeline({
-              scrollTrigger: { trigger: openingScene, start: "top 85%", once: true },
+              scrollTrigger: {
+                trigger: openingScene,
+                start: desktop ? "top 65%" : "top 45%",
+                once: true,
+              },
               defaults: { duration: 0.8, ease: "power3.out" },
             });
             opening
-              .fromTo(`${openingScene} .studio-input`, { x: -12 }, { x: 0 }, 0)
-              .fromTo(`${openingScene} .studio-screen`, { y: 18 }, { y: 0 }, 0.2)
               .fromTo(
-                `${openingScene} [data-signal]`,
-                { scaleY: 0.25 },
-                { scaleY: 1, duration: 1.1 },
+                "[data-request-line]",
+                { scaleX: desktop ? 0 : 1, scaleY: desktop ? 1 : 0 },
+                { scaleX: 1, scaleY: 1, duration: 0.8 },
+                0,
+              )
+              .fromTo(
+                transfer,
+                { x: 0, y: 0, opacity: 0 },
+                {
+                  x: destination.left - origin.left,
+                  y: destination.top - origin.top,
+                  opacity: 1,
+                  duration: 1.2,
+                  ease: "power2.inOut",
+                },
                 0.2,
+              )
+              .to(transfer, { opacity: 0, duration: 0.25 }, 1.4)
+              .fromTo(
+                "[data-demo-target]",
+                { backgroundColor: "#b4ded2" },
+                { backgroundColor: "transparent", duration: 1 },
+                1.25,
               );
           });
           nearViewport("[data-invoice-example]", () => {

@@ -60,6 +60,48 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
   });
 }
 
+for (const width of [390, 1920]) {
+  test(`sample application at ${width}: request, action and retained evidence`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: width < 768 ? 844 : 1080 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    await expectPageHydrated(page);
+    const sample = page.locator("[data-request-demo]");
+    await sample.evaluate((el) =>
+      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 80, behavior: "instant" }),
+    );
+    const posts: string[] = [];
+    page.on("request", (request) => {
+      if (
+        request.method() === "POST" &&
+        new URL(request.url()).pathname !== "/api/public/web-vitals"
+      )
+        posts.push(request.url());
+    });
+    const prepare = sample.getByRole("button", { name: "Prepare visit", exact: true });
+    await prepare.focus();
+    await page.keyboard.press("Enter");
+    await expect(sample.getByRole("status")).toContainText("Visit draft prepared.");
+    await expect(sample.getByRole("status")).toContainText(
+      "Equipment inspection · Building B · Ready for review",
+    );
+    await expect(sample).toContainText("Source linked");
+    await expect(sample).toContainText("Fields checked");
+    await expect(sample.getByRole("button", { name: "Reset example" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(posts, "The illustrative action must not submit to a server").toEqual([]);
+    await sample.getByRole("button", { name: "Reset example" }).click();
+    await expect(sample.getByRole("button", { name: "Prepare visit" })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+    await expect(sample).toContainText("Visit not prepared");
+  });
+}
+
 for (const width of [360, 390]) {
   test(`phone ${width}: readable opening, early product and visible touch feedback`, async ({
     browser,
@@ -74,7 +116,7 @@ for (const width of [360, 390]) {
     await expectPageHydrated(page);
     await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
     const opening = await page
-      .locator(".cinema-build-opening:visible")
+      .locator("[data-request-demo]")
       .evaluate((element) =>
         [...element.querySelectorAll<HTMLElement>("*")]
           .filter((node) =>

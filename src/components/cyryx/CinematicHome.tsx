@@ -16,7 +16,9 @@ import { trackCta } from "@/lib/track-cta";
 import { isAssistantEnabled, openAssistant } from "@/lib/assistant-client";
 import { AEXOS_PRODUCT } from "@/data/site-taxonomy";
 import { BuildDemonstration } from "./BuildDemonstration";
+import { RequestDemonstration } from "./RequestDemonstration";
 import "./cinematic.css";
+import "./aperture.css";
 
 const SERVICES = [
   {
@@ -75,22 +77,35 @@ export function CinematicHome() {
     <div ref={root} className="cinema-home">
       {Motion && <Motion root={root} />}
       <section id="top" data-hero aria-labelledby="hero-heading" className="cinema-hero">
+        <div className="cinema-aperture" aria-hidden="true">
+          <picture className="cinema-aperture-world">
+            <source
+              media="(max-width: 767px)"
+              srcSet="/media/hero-sequence/desktop/cyryx-hero-frame-028.webp"
+            />
+            <img
+              src="/media/hero-sequence/desktop/cyryx-hero-frame-020.webp"
+              width="1920"
+              height="1080"
+              alt=""
+              fetchPriority="high"
+            />
+          </picture>
+          <div className="cinema-aperture-door cinema-aperture-door-left" />
+          <div className="cinema-aperture-door cinema-aperture-door-right" />
+          <div className="cinema-aperture-light" />
+        </div>
         <div className="cinema-hero-inner cinema-width">
           <div className="cinema-hero-copy">
             <p className="cinema-kicker">Cyryx / AI & software company</p>
             <h1 id="hero-heading">
-              <span className="cinema-heading-line">
-                <span className="cinema-heading-from">From idea</span>{" "}
-                <span className="cinema-heading-to">to software.</span>
-              </span>{" "}
-              <span className="cinema-heading-line">
-                <span className="cinema-heading-from">From AI</span>{" "}
-                <span className="cinema-heading-to cinema-heading-accent">to action.</span>
-              </span>
+              <span className="cinema-heading-line">AI products.</span>{" "}
+              <span className="cinema-heading-line">Software,</span>{" "}
+              <span className="cinema-heading-line cinema-heading-accent">made real.</span>
             </h1>
             <p className="cx-hero-sub">
-              We develop our own AI products, build custom software for clients, and help teams
-              decide what to build next.
+              Our own AI products. Custom software for clients. Practical advice on what to build
+              next.
             </p>
             <div className="cx-hero-ctas cinema-actions">
               <a
@@ -155,8 +170,12 @@ export function CinematicHome() {
               <ArrowUpRight size={22} aria-hidden />
             </Link>
           </nav>
-          <div className="cinema-hero-software">
-            <BuildDemonstration opening />
+          <div className="cinema-hero-product-note">
+            <span>From our lab</span>
+            <Link to="/products/aexos">
+              AEXOS <ArrowUpRight size={20} aria-hidden />
+            </Link>
+            <p>CLI-first AI development framework</p>
           </div>
         </div>
         <div className="cinema-width cinema-hero-footer">
@@ -169,7 +188,16 @@ export function CinematicHome() {
       </section>
       <div className="cinema-opening-chapter">
         <div className="cinema-width cinema-mobile-build">
-          <BuildDemonstration opening />
+          <div className="cinema-build-intro">
+            <p className="cinema-kicker">From a real task to a useful tool.</p>
+            <h2>
+              A request becomes
+              <br />
+              <span>a working tool.</span>
+            </h2>
+            <p>A sample service desk. From request to visit draft.</p>
+          </div>
+          <RequestDemonstration />
         </div>
       </div>
       <section
