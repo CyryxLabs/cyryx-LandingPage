@@ -12,6 +12,11 @@ on:
         type: boolean
         default: false
 
+# Supersede only older runs of the same PR. Keep every main/manual run distinct.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 # Tune thresholds per branch by overriding these in repo/branch variables.
 env:
   LH_PERF_MIN: ${{ vars.LH_PERF_MIN || '0.85' }}
@@ -28,7 +33,24 @@ env:
   UPDATE_JSONLD_SNAPSHOT: ${{ (github.event_name == 'workflow_dispatch' && inputs.update_jsonld_snapshot) && '1' || (vars.UPDATE_JSONLD_SNAPSHOT || '') }}
 
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: TypeScript typecheck
+        run: bun run typecheck
+      - name: Validate forbidden-terms config + list active rules
+        run: node scripts/validate-forbidden-terms.mjs
+      - name: Audit /admin link references (must be 0)
+        run: node scripts/audit-admin-links.mjs
+      - name: Run unit contracts
+        run: bun run test:unit
+
   a11y-content-seo:
+    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 25
     permissions:
@@ -39,13 +61,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - name: TypeScript typecheck
-        run: bun run typecheck
       - run: bunx playwright install --with-deps chromium
-      - name: Validate forbidden-terms config + list active rules
-        run: node scripts/validate-forbidden-terms.mjs
-      - name: Audit /admin link references (must be 0)
-        run: node scripts/audit-admin-links.mjs
       - name: Build production bundle (for bundle scan)
         env:
           LIGHTHOUSE_BUILD: "1"
@@ -110,7 +126,11 @@ jobs:
         if: always()
         continue-on-error: true
         uses: actions/upload-artifact@v4
-        with: { name: playwright-report, path: playwright-report }
+        with:
+          name: playwright-report
+          path: playwright-report
+          # Keep reports and failure traces for two weekly triage cycles.
+          retention-days: 14
       - name: Upload regenerated JSON-LD snapshot (workflow_dispatch only)
         if: always() && env.UPDATE_JSONLD_SNAPSHOT == '1'
         continue-on-error: true
@@ -152,6 +172,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   safari-mobile:
+    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -174,8 +195,10 @@ jobs:
           name: safari-mobile-playwright-report
           path: playwright-report/a11y
           if-no-files-found: warn
+          retention-days: 14
 
   lighthouse:
+    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 25
     strategy:
@@ -199,6 +222,7 @@ jobs:
           path: lighthouse-report/${{ matrix.form_factor }}
 
   visual-regression:
+    needs: preflight
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
@@ -218,33 +242,63 @@ jobs:
           name: visual-regression-report
           path: playwright-report/a11y
           if-no-files-found: warn
+          retention-days: 14
 
   summarize:
-    needs: [a11y-content-seo, safari-mobile, lighthouse, visual-regression]
+    needs: [preflight, a11y-content-seo, safari-mobile, lighthouse, visual-regression]
     if: always() && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       actions: read
       contents: read
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        if: ${{ !cancelled() }}
       - uses: actions/download-artifact@v4
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         with: { name: a11y-report, path: a11y-report }
         continue-on-error: true
       - uses: actions/download-artifact@v4
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         with: { name: lighthouse-report-mobile, path: lighthouse-report/mobile }
         continue-on-error: true
       - uses: actions/download-artifact@v4
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         with: { name: lighthouse-report-desktop, path: lighthouse-report/desktop }
         continue-on-error: true
       - uses: actions/download-artifact@v4
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         with: { name: jsonld-snapshot-diff, path: jsonld-diff }
         continue-on-error: true
       - name: Build summary
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         run: node scripts/summarize-quality.mjs
+      - name: Include preflight result
+        if: ${{ !cancelled() }}
+        env:
+          PREFLIGHT_RESULT: ${{ needs.preflight.result }}
+          A11Y_RESULT: ${{ needs.a11y-content-seo.result }}
+          SAFARI_RESULT: ${{ needs.safari-mobile.result }}
+          LIGHTHOUSE_RESULT: ${{ needs.lighthouse.result }}
+          VISUAL_RESULT: ${{ needs.visual-regression.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf '## CI preflight: %s\n\n' "$PREFLIGHT_RESULT" > preflight-summary.md
+          printf '| Mandatory job | Result |\n| --- | --- |\n' >> preflight-summary.md
+          printf '| preflight | %s |\n| a11y-content-seo | %s |\n| safari-mobile | %s |\n| lighthouse | %s |\n| visual-regression | %s |\n\n' \
+            "$PREFLIGHT_RESULT" "$A11Y_RESULT" "$SAFARI_RESULT" "$LIGHTHOUSE_RESULT" "$VISUAL_RESULT" >> preflight-summary.md
+          if [[ "$PREFLIGHT_RESULT" == "success" ]]; then
+            cat quality-summary.md >> preflight-summary.md
+          else
+            printf 'Browser and Lighthouse checks did not run because preflight did not pass. Their results are unavailable.\n\n' >> preflight-summary.md
+          fi
+          printf '\n[Inspect this CI run](%s)\n' "$RUN_URL" >> preflight-summary.md
+          mv preflight-summary.md quality-summary.md
+          cat quality-summary.md >> "$GITHUB_STEP_SUMMARY"
       - name: Upload combined HTML quality report
-        if: always()
+        if: always() && !cancelled() && needs.preflight.result == 'success'
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
@@ -252,7 +306,27 @@ jobs:
           path: quality-report.html
           if-no-files-found: warn
       - name: Post PR comment
+        if: ${{ success() && !cancelled() }}
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: quality-summary
           path: quality-summary.md
+      - name: Require mandatory quality jobs
+        if: ${{ always() }}
+        env:
+          PREFLIGHT_RESULT: ${{ needs.preflight.result }}
+          A11Y_RESULT: ${{ needs.a11y-content-seo.result }}
+          SAFARI_RESULT: ${{ needs.safari-mobile.result }}
+          LIGHTHOUSE_RESULT: ${{ needs.lighthouse.result }}
+          VISUAL_RESULT: ${{ needs.visual-regression.result }}
+        run: |
+          required_jobs=(preflight a11y-content-seo safari-mobile lighthouse visual-regression)
+          required_results=("$PREFLIGHT_RESULT" "$A11Y_RESULT" "$SAFARI_RESULT" "$LIGHTHOUSE_RESULT" "$VISUAL_RESULT")
+          failed=0
+          for index in "${!required_jobs[@]}"; do
+            if [[ "${required_results[$index]}" != "success" ]]; then
+              printf '::error::Mandatory quality job %s concluded %s; expected success.\n' "${required_jobs[$index]}" "${required_results[$index]}"
+              failed=1
+            fi
+          done
+          exit "$failed"

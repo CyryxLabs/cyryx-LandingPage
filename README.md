@@ -4,13 +4,35 @@ TanStack Start app for the Cyryx Labs landing page.
 
 ## Quality gates (CI)
 
-The `Quality` GitHub Actions workflow runs on every PR and produces:
+The `Quality` GitHub Actions workflow runs on every PR and on pushes to `main`.
+It first checks TypeScript, forbidden-term configuration, admin links, and unit
+contracts in a Linux preflight with a five-minute limit. Browser and Lighthouse
+jobs start only after preflight passes; their existing test coverage is preserved.
+If preflight fails, the PR summary reports the failure and marks browser results
+as unavailable. The summary job also has a five-minute limit. Its final gate
+requires successful preflight, accessibility/content/SEO, Safari, Lighthouse,
+and visual regression jobs. A failure, cancellation, or skipped mandatory job
+cannot produce a successful `summarize` check. Individual intentionally skipped
+test cases remain valid within successful jobs. The summary is intentionally
+skipped for pushes and manual runs; those events retain their own job results.
+
+A new commit cancels older runs of the same PR. Other PRs, pushes to `main`, and
+manual snapshot runs remain independent. A superseded run may have incomplete
+diagnostics; inspect the newest commit's checks. Canceled runs do not post a PR
+summary. The workflow produces:
 
 - **Accessibility report** (`a11y-report/`) — axe-core JSON + HTML per project, plus a SARIF file uploaded to GitHub code scanning so violations appear inline in the PR diff under the *Security* tab.
 - **Raw axe-core JSON** (`axe-raw-json/`) — uploaded as a separate artifact so you can inspect full violation payloads (every node, every failure summary) without unpacking the combined a11y report.
 - **Lighthouse reports** (`lighthouse-report-mobile/`, `lighthouse-report-desktop/`) — full LHR JSON + HTML.
 - **Playwright HTML report** (`playwright-report/`) — traces and per-test results.
 - **PR comment** — `scripts/summarize-quality.mjs` posts a sticky comment with LCP / CLS / TBT for both form factors and axe violations grouped by selector.
+
+The Playwright diagnostic artifacts (`playwright-report`,
+`safari-mobile-playwright-report`, and `visual-regression-report`) are retained
+for **14 days**, including reports and failure traces. This provides two weekly
+triage cycles without keeping large per-run browser diagnostics for the default
+90 days. Download any evidence needed for a longer investigation before it
+expires. Other quality artifacts continue to use the repository retention policy.
 
 ### Tuning budgets per branch
 
