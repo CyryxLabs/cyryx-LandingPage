@@ -4,7 +4,7 @@ for (const [label, width, height] of [
   ["phone", 390, 844],
 ] as const) {
   test(
-    label + " receives a complete responsive vector illustration, with no canvas or film preload",
+    label + " receives a complete readable HTML demonstration, with no canvas or film preload",
     async ({ page }) => {
       const frames = new Set<string>();
       page.on("request", (r) => {
@@ -16,12 +16,14 @@ for (const [label, width, height] of [
       expect(frames.size).toBe(0);
       const scene = page.locator(
         width < 768
-          ? "[data-hero] .cinema-mobile-build"
+          ? ".cinema-mobile-build"
           : "[data-hero] .cinema-hero-software .cinema-composition",
       );
       await expect(scene).toBeVisible();
       await expect(scene).toContainText("THE BRIEF");
-      await expect(scene).toContainText("CYRYX");
+      await expect(scene).toContainText("Documents");
+      await expect(scene).toContainText("Systems");
+      await expect(scene).toContainText("People");
       await expect(scene).toContainText("Your work. In software.");
       await expect(page.locator('[data-hero] link[as="image"]')).toHaveCount(0);
     },
@@ -38,11 +40,8 @@ test("Save-Data keeps the useful static opening", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveClass(/cx-low-perf/);
   await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
-  await expect(page.locator("[data-hero] .cinema-mobile-build")).toBeVisible();
-  await expect(page.locator("[data-hero] .cinema-mobile-build .studio-screen")).toHaveCSS(
-    "opacity",
-    "1",
-  );
+  await expect(page.locator(".cinema-mobile-build")).toBeVisible();
+  await expect(page.locator(".cinema-mobile-build .studio-screen")).toHaveCSS("opacity", "1");
 });
 test("reduced motion shows a complete static scene and the review-ready example", async ({
   page,

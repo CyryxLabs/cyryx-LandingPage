@@ -32,7 +32,7 @@ test("Safari on iPhone gets the full experience, not the low-performance fallbac
   await expect(page.locator("html")).not.toHaveClass(/cx-low-perf/);
 
   const hero = page.locator("section[data-hero]");
-  await expect(hero.locator(".cinema-mobile-build")).toBeVisible();
+  await expect(page.locator(".cinema-mobile-build")).toBeVisible();
   await expect(hero.locator("h1")).toBeInViewport();
   await expect(hero.locator(".cx-hero-sub")).toBeVisible();
   await expect(hero.locator(".cx-hero-ctas")).toBeVisible();

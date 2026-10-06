@@ -92,7 +92,7 @@ for (const viewport of [
       // Wait for the existing two-frame bootstrap reset before user scrolling.
       await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
       await expect(page.locator(".pin-spacer")).toHaveCount(0);
-      const stage = page.locator("#service-visual");
+      const stage = page.locator("[data-invoice-example]");
       const geometry = await stage.evaluate((el) => ({
         top: el.getBoundingClientRect().top + scrollY,
         height: el.getBoundingClientRect().height,
@@ -101,17 +101,18 @@ for (const viewport of [
         (y) => window.scrollTo({ top: y - innerHeight * 0.9, behavior: "instant" }),
         geometry.top,
       );
-      const signal = stage.locator("[data-signal]").first();
-      await expect
-        .poll(() => signal.evaluate((el) => parseFloat(getComputedStyle(el).strokeDashoffset)))
-        .toBeGreaterThan(0.9);
+      const signal = stage.locator("[data-cinema-invoice-line]").first();
+      const scale = () =>
+        signal.evaluate((el, desktop) => {
+          const matrix = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+          return desktop ? matrix.a : matrix.d;
+        }, viewport.width >= 768);
+      await expect.poll(scale).toBeLessThan(0.1);
       await page.evaluate(
         (y) => window.scrollTo({ top: y - innerHeight * 0.5, behavior: "instant" }),
         geometry.top + geometry.height,
       );
-      await expect
-        .poll(() => signal.evaluate((el) => parseFloat(getComputedStyle(el).strokeDashoffset)))
-        .toBeLessThan(0.1);
+      await expect.poll(scale).toBeGreaterThan(0.9);
       await expect(page.locator(".cinema-services")).toContainText("Applications & websites");
       await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
       await expect(page.locator("#hero-heading")).toBeInViewport();
@@ -119,27 +120,37 @@ for (const viewport of [
     },
   );
 }
-test("dynamic reduced motion reverts every scroll transformation", async ({ page }) => {
+test("dynamic reduced motion reverts every scroll and selection transformation", async ({
+  page,
+}) => {
+  await useHighPerformanceProfile(page);
   await page.goto("/", { waitUntil: "networkidle" });
-  await page.evaluate(() => window.scrollTo({ top: 500, behavior: "instant" }));
+  await page.locator(".cinema-build-opening:visible").scrollIntoViewIfNeeded();
+  await page.locator(".cinema-service button").nth(1).click();
+  await expect(page.locator("#service-result")).toContainText("Queued for review");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect
-    .poll(() =>
-      page.locator("#service-visual .studio-screen").evaluate((el) => {
-        const matrix = new DOMMatrixReadOnly(getComputedStyle(el).transform);
-        return matrix.isIdentity;
-      }),
-    )
-    .toBe(true);
-  await expect
-    .poll(() =>
-      page
-        .locator("#service-visual [data-signal]")
-        .first()
-        .evaluate((el) => parseFloat(getComputedStyle(el).strokeDashoffset)),
-    )
-    .toBe(0);
-  await expect(page.locator("[data-opening] .studio-screen").first()).toHaveCSS("opacity", "1");
+  for (const selector of [
+    ".cinema-build-opening:visible .studio-screen",
+    ".cinema-build-opening:visible [data-signal]",
+    "#service-result .cinema-demo-result",
+  ]) {
+    await expect
+      .poll(() =>
+        page
+          .locator(selector)
+          .evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).isIdentity),
+      )
+      .toBe(true);
+  }
+  await expect(page.locator(".cinema-build-opening:visible .studio-screen")).toHaveCSS(
+    "opacity",
+    "1",
+  );
+  expect(
+    await page.evaluate(
+      () => document.getAnimations().filter((a) => a.playState === "running").length,
+    ),
+  ).toBe(0);
 });
 test("invoice trace completes once and returns to its static state with reduced motion", async ({
   page,

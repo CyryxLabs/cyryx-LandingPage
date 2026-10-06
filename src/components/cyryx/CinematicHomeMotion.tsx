@@ -19,22 +19,6 @@ export function CinematicHomeMotion({ root }: { root: RefObject<HTMLDivElement |
           )
             return;
           const desktop = context.conditions.desktop;
-          const opening = gsap.timeline({ defaults: { duration: 0.8, ease: "power3.out" } });
-          opening
-            .fromTo("[data-opening] .studio-input", { x: -12 }, { x: 0 }, 0)
-            .fromTo(
-              "[data-opening] .studio-processor",
-              { y: 18, opacity: 0.6 },
-              { y: 0, opacity: 1 },
-              0.1,
-            )
-            .fromTo("[data-opening] .studio-screen", { x: 16 }, { x: 0 }, 0.2)
-            .fromTo(
-              "[data-opening] [data-signal]",
-              { strokeDashoffset: 1 },
-              { strokeDashoffset: 0, duration: 1.1 },
-              0.2,
-            );
           gsap.fromTo(
             "[data-hero-rule]",
             { scaleX: 0.3 },
@@ -57,24 +41,22 @@ export function CinematicHomeMotion({ root }: { root: RefObject<HTMLDivElement |
             observers.push(observer);
             observer.observe(target);
           };
-          nearViewport("#service-visual", () => {
-            gsap
-              .timeline({
-                scrollTrigger: {
-                  trigger: "#service-visual",
-                  start: "top 82%",
-                  end: "bottom 55%",
-                  scrub: 0.35,
-                },
-                defaults: { ease: "none" },
-              })
-              .fromTo("#service-visual .studio-input", { x: -18 }, { x: 0 }, 0)
-              .fromTo("#service-visual .studio-screen", { x: 20 }, { x: 0 }, 0)
+          const openingScene = desktop
+            ? ".cinema-hero-software .cinema-build-opening"
+            : ".cinema-mobile-build .cinema-build-opening";
+          nearViewport(openingScene, () => {
+            const opening = gsap.timeline({
+              scrollTrigger: { trigger: openingScene, start: "top 85%", once: true },
+              defaults: { duration: 0.8, ease: "power3.out" },
+            });
+            opening
+              .fromTo(`${openingScene} .studio-input`, { x: -12 }, { x: 0 }, 0)
+              .fromTo(`${openingScene} .studio-screen`, { y: 18 }, { y: 0 }, 0.2)
               .fromTo(
-                "#service-visual [data-signal]",
-                { strokeDashoffset: 1 },
-                { strokeDashoffset: 0 },
-                0.15,
+                `${openingScene} [data-signal]`,
+                { scaleY: 0.25 },
+                { scaleY: 1, duration: 1.1 },
+                0.2,
               );
           });
           nearViewport("[data-invoice-example]", () => {

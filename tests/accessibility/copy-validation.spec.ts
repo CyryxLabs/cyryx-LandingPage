@@ -177,10 +177,10 @@ test.describe("Hero — enterprise value proposition", () => {
       .evaluateAll((nodes) => nodes.map((n) => n.id));
     expect(ids).toEqual([
       "top",
-      "operating-model",
-      "controlled-execution",
       "our-products",
+      "operating-model",
       "consulting",
+      "controlled-execution",
       "security",
       "evidence",
       "research",
