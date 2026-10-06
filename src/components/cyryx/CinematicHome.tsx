@@ -81,7 +81,7 @@ export function CinematicHome() {
           <picture className="cinema-aperture-world">
             <source
               media="(max-width: 767px)"
-              srcSet="/media/hero-sequence/desktop/cyryx-hero-frame-028.webp"
+              srcSet="/media/hero-sequence/mobile/cyryx-hero-frame-028.webp"
             />
             <img
               src="/media/hero-sequence/desktop/cyryx-hero-frame-020.webp"

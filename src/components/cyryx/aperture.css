@@ -324,14 +324,16 @@
     height: 215px;
   }
   .cinema-aperture-world img {
-    object-position: center 48%;
-    transform: scale(1.32);
+    width: 90%;
+    margin-inline: auto;
+    object-position: center 50%;
   }
   .cinema-aperture::after {
     background: linear-gradient(0deg, #020607 0%, transparent 22%);
   }
   .cinema-aperture-door {
-    background-image: url("/media/hero-sequence/mobile/cyryx-hero-frame-001.webp");
+    display: none;
+    background-image: none;
   }
   .cinema-aperture-light {
     left: 50%;
