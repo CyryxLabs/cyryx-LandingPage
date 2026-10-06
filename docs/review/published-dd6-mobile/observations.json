@@ -1,0 +1,174 @@
+{
+  "provenance": "LOCAL reproduction of published dd6dd838 source; live HTTPS capture blocked",
+  "observations": [
+    {
+      "width": 360,
+      "headingSize": "38.88px",
+      "heroHeight": 697.578125,
+      "diagram": {
+        "x": 20,
+        "y": 389.578125,
+        "width": 320,
+        "height": 100,
+        "top": 389.578125,
+        "right": 340,
+        "bottom": 489.578125,
+        "left": 20
+      },
+      "sections": [
+        {
+          "id": "top",
+          "top": 0,
+          "height": 697.578125
+        },
+        {
+          "id": "operating-model",
+          "top": 970.578125,
+          "height": 1688.78125
+        },
+        {
+          "id": "controlled-execution",
+          "top": 2659.359375,
+          "height": 1620.703125
+        },
+        {
+          "id": "our-products",
+          "top": 4280.0625,
+          "height": 1077.046875
+        },
+        {
+          "id": "consulting",
+          "top": 5357.109375,
+          "height": 1141.453125
+        },
+        {
+          "id": "security",
+          "top": 6498.5625,
+          "height": 755.40625
+        },
+        {
+          "id": "evidence",
+          "top": 7253.96875,
+          "height": 1456.625
+        },
+        {
+          "id": "research",
+          "top": 8710.59375,
+          "height": 596.34375
+        },
+        {
+          "id": "team",
+          "top": 9306.9375,
+          "height": 345.84375
+        },
+        {
+          "id": "contact",
+          "top": 9652.78125,
+          "height": 560.9375
+        }
+      ],
+      "services": [
+        {
+          "text": "Applications & websites",
+          "top": 1368.421875
+        },
+        {
+          "text": "Connected systems & automation",
+          "top": 1608.671875
+        },
+        {
+          "text": "AI agents & applied AI",
+          "top": 1877.109375
+        }
+      ],
+      "diagramTop": 2123.359375
+    },
+    {
+      "width": 390,
+      "headingSize": "42.12px",
+      "heroHeight": 713.328125,
+      "diagram": {
+        "x": 20,
+        "y": 395.953125,
+        "width": 350,
+        "height": 109.375,
+        "top": 395.953125,
+        "right": 370,
+        "bottom": 505.328125,
+        "left": 20
+      },
+      "sections": [
+        {
+          "id": "top",
+          "top": 0,
+          "height": 713.328125
+        },
+        {
+          "id": "operating-model",
+          "top": 986.328125,
+          "height": 1715.03125
+        },
+        {
+          "id": "controlled-execution",
+          "top": 2701.359375,
+          "height": 1547.5625
+        },
+        {
+          "id": "our-products",
+          "top": 4248.921875,
+          "height": 1023.75
+        },
+        {
+          "id": "consulting",
+          "top": 5272.671875,
+          "height": 1141.453125
+        },
+        {
+          "id": "security",
+          "top": 6414.125,
+          "height": 708.625
+        },
+        {
+          "id": "evidence",
+          "top": 7122.75,
+          "height": 1410.625
+        },
+        {
+          "id": "research",
+          "top": 8533.375,
+          "height": 596.34375
+        },
+        {
+          "id": "team",
+          "top": 9129.71875,
+          "height": 320.65625
+        },
+        {
+          "id": "contact",
+          "top": 9450.375,
+          "height": 560.9375
+        }
+      ],
+      "services": [
+        {
+          "text": "Applications & websites",
+          "top": 1384.171875
+        },
+        {
+          "text": "Connected systems & automation",
+          "top": 1624.421875
+        },
+        {
+          "text": "AI agents & applied AI",
+          "top": 1892.859375
+        }
+      ],
+      "diagramTop": 2139.109375,
+      "afterServiceClick": {
+        "scrollY": 1493,
+        "diagramTop": 646.109375,
+        "diagramVisible": true
+      }
+    }
+  ]
+}

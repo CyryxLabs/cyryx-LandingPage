@@ -1,0 +1,62 @@
+[
+  {
+    "width": 360,
+    "errors": [],
+    "heroHeight": 792.578125,
+    "cta": 441.578125,
+    "areas": 555.578125,
+    "products": 1273.046875,
+    "overflow": 0,
+    "minDemoFont": 12,
+    "workflow": {
+      "top": 198.40625,
+      "bottom": 569.90625
+    },
+    "agent": {
+      "top": 198.40625,
+      "bottom": 529.40625
+    },
+    "refreshedY": 0,
+    "firstFocus": "SKIP TO CONTENT"
+  },
+  {
+    "width": 390,
+    "errors": [],
+    "heroHeight": 798.953125,
+    "cta": 447.953125,
+    "areas": 561.953125,
+    "products": 1279.421875,
+    "overflow": 0,
+    "minDemoFont": 12,
+    "workflow": {
+      "top": 198.09375,
+      "bottom": 551.59375
+    },
+    "agent": {
+      "top": 198.09375,
+      "bottom": 529.09375
+    },
+    "refreshedY": 0,
+    "firstFocus": "SKIP TO CONTENT"
+  },
+  {
+    "width": 1920,
+    "errors": [],
+    "heroHeight": 1071.90625,
+    "cta": 706.234375,
+    "areas": 844.90625,
+    "products": 1071.90625,
+    "overflow": 0,
+    "minDemoFont": 12,
+    "workflow": {
+      "top": 146.796875,
+      "bottom": 562.296875
+    },
+    "agent": {
+      "top": 146.796875,
+      "bottom": 580.796875
+    },
+    "refreshedY": 0,
+    "firstFocus": "SKIP TO CONTENT"
+  }
+]
