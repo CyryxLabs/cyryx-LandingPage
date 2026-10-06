@@ -9,7 +9,12 @@ It first checks TypeScript, forbidden-term configuration, admin links, and unit
 contracts in a Linux preflight with a five-minute limit. Browser and Lighthouse
 jobs start only after preflight passes; their existing test coverage is preserved.
 If preflight fails, the PR summary reports the failure and marks browser results
-as unavailable. The summary job also has a five-minute limit.
+as unavailable. The summary job also has a five-minute limit. Its final gate
+requires successful preflight, accessibility/content/SEO, Safari, Lighthouse,
+and visual regression jobs. A failure, cancellation, or skipped mandatory job
+cannot produce a successful `summarize` check. Individual intentionally skipped
+test cases remain valid within successful jobs. The summary is intentionally
+skipped for pushes and manual runs; those events retain their own job results.
 
 A new commit cancels older runs of the same PR. Other PRs, pushes to `main`, and
 manual snapshot runs remain independent. A superseded run may have incomplete

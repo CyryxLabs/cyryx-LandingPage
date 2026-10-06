@@ -246,7 +246,7 @@ jobs:
 
   summarize:
     needs: [preflight, a11y-content-seo, safari-mobile, lighthouse, visual-regression]
-    if: always() && !cancelled() && github.event_name == 'pull_request'
+    if: always() && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -255,31 +255,40 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        if: ${{ !cancelled() }}
       - uses: actions/download-artifact@v4
-        if: needs.preflight.result == 'success'
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         with: { name: a11y-report, path: a11y-report }
         continue-on-error: true
       - uses: actions/download-artifact@v4
-        if: needs.preflight.result == 'success'
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         with: { name: lighthouse-report-mobile, path: lighthouse-report/mobile }
         continue-on-error: true
       - uses: actions/download-artifact@v4
-        if: needs.preflight.result == 'success'
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         with: { name: lighthouse-report-desktop, path: lighthouse-report/desktop }
         continue-on-error: true
       - uses: actions/download-artifact@v4
-        if: needs.preflight.result == 'success'
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         with: { name: jsonld-snapshot-diff, path: jsonld-diff }
         continue-on-error: true
       - name: Build summary
-        if: needs.preflight.result == 'success'
+        if: ${{ !cancelled() && needs.preflight.result == 'success' }}
         run: node scripts/summarize-quality.mjs
       - name: Include preflight result
+        if: ${{ !cancelled() }}
         env:
           PREFLIGHT_RESULT: ${{ needs.preflight.result }}
+          A11Y_RESULT: ${{ needs.a11y-content-seo.result }}
+          SAFARI_RESULT: ${{ needs.safari-mobile.result }}
+          LIGHTHOUSE_RESULT: ${{ needs.lighthouse.result }}
+          VISUAL_RESULT: ${{ needs.visual-regression.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           printf '## CI preflight: %s\n\n' "$PREFLIGHT_RESULT" > preflight-summary.md
+          printf '| Mandatory job | Result |\n| --- | --- |\n' >> preflight-summary.md
+          printf '| preflight | %s |\n| a11y-content-seo | %s |\n| safari-mobile | %s |\n| lighthouse | %s |\n| visual-regression | %s |\n\n' \
+            "$PREFLIGHT_RESULT" "$A11Y_RESULT" "$SAFARI_RESULT" "$LIGHTHOUSE_RESULT" "$VISUAL_RESULT" >> preflight-summary.md
           if [[ "$PREFLIGHT_RESULT" == "success" ]]; then
             cat quality-summary.md >> preflight-summary.md
           else
@@ -289,7 +298,7 @@ jobs:
           mv preflight-summary.md quality-summary.md
           cat quality-summary.md >> "$GITHUB_STEP_SUMMARY"
       - name: Upload combined HTML quality report
-        if: always() && needs.preflight.result == 'success'
+        if: always() && !cancelled() && needs.preflight.result == 'success'
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
@@ -302,3 +311,22 @@ jobs:
         with:
           header: quality-summary
           path: quality-summary.md
+      - name: Require mandatory quality jobs
+        if: ${{ always() }}
+        env:
+          PREFLIGHT_RESULT: ${{ needs.preflight.result }}
+          A11Y_RESULT: ${{ needs.a11y-content-seo.result }}
+          SAFARI_RESULT: ${{ needs.safari-mobile.result }}
+          LIGHTHOUSE_RESULT: ${{ needs.lighthouse.result }}
+          VISUAL_RESULT: ${{ needs.visual-regression.result }}
+        run: |
+          required_jobs=(preflight a11y-content-seo safari-mobile lighthouse visual-regression)
+          required_results=("$PREFLIGHT_RESULT" "$A11Y_RESULT" "$SAFARI_RESULT" "$LIGHTHOUSE_RESULT" "$VISUAL_RESULT")
+          failed=0
+          for index in "${!required_jobs[@]}"; do
+            if [[ "${required_results[$index]}" != "success" ]]; then
+              printf '::error::Mandatory quality job %s concluded %s; expected success.\n' "${required_jobs[$index]}" "${required_results[$index]}"
+              failed=1
+            fi
+          done
+          exit "$failed"
