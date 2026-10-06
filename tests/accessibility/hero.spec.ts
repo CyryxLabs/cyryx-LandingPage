@@ -159,136 +159,67 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   expect(primaryHref).toBe("/start?source=home");
 
   const secondaryHref = await secondary.getAttribute("href");
-  expect(secondaryHref).toBe("/engagement-model");
+  expect(secondaryHref).toBe("#cyryx-offer");
 });
 
-test("Hero headline typography stays unclipped from 360px to 1024px", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-
-  for (const viewport of [
-    { width: 360, height: 800 },
-    { width: 390, height: 844 },
-    { width: 768, height: 1024 },
-    { width: 1024, height: 768 },
-  ]) {
+for (const viewport of [
+  { width: 360, height: 800 },
+  { width: 390, height: 844 },
+  { width: 768, height: 1024 },
+  { width: 1024, height: 768 },
+  { width: 1920, height: 1080 },
+]) {
+  // Each viewport keeps the complete geometry contract within its own navigation budget.
+  test(`Hero headline and CTA stay unclipped at ${viewport.width}x${viewport.height}`, async ({
+    page,
+  }) => {
     await page.setViewportSize(viewport);
     await page.goto("/", { waitUntil: "networkidle" });
-    await expect(page.locator("#hero-heading")).toBeVisible();
-
+    await expect(page.locator("#hero-heading")).toBeInViewport();
+    await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
     const metrics = await page.locator("#hero-heading").evaluate((heading) => {
-      const headingRect = heading.getBoundingClientRect();
-      const scrollScene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]");
-      const sceneRect = scrollScene?.getBoundingClientRect();
-      const lineRects = Array.from(heading.querySelectorAll(".cx-hero-title-line")).map((line) => {
-        const rect = line.getBoundingClientRect();
-        const style = getComputedStyle(line);
-        return {
-          top: rect.top,
-          right: rect.right,
-          bottom: rect.bottom,
-          left: rect.left,
-          fontSize: parseFloat(style.fontSize),
-          lineHeight: parseFloat(style.lineHeight),
-          letterSpacing: style.letterSpacing,
-          overflow: style.overflow,
-          paddingBottom: parseFloat(style.paddingBottom),
-        };
-      });
+      const range = document.createRange();
+      range.selectNodeContents(heading);
       return {
-        heading: {
-          top: headingRect.top,
-          right: headingRect.right,
-          bottom: headingRect.bottom,
-          left: headingRect.left,
-          overflow: getComputedStyle(heading).overflow,
-        },
-        scene: sceneRect
-          ? {
-              top: sceneRect.top,
-              right: sceneRect.right,
-              bottom: sceneRect.bottom,
-              left: sceneRect.left,
-            }
-          : null,
-        lineRects,
-        documentWidth: document.documentElement.scrollWidth,
-        viewportWidth: window.innerWidth,
-        viewportHeight: window.innerHeight,
+        right: range.getBoundingClientRect().right,
+        top: range.getBoundingClientRect().top,
+        bottom: range.getBoundingClientRect().bottom,
+        width: document.documentElement.scrollWidth,
+        viewport: innerWidth,
+        height: innerHeight,
       };
     });
-
-    expect(metrics.heading.overflow).toBe("visible");
-    expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
-    for (const line of metrics.lineRects) {
-      expect(line.overflow).toBe("visible");
-      // Exact authored CSS ratios: compact negative tracking, line-height 1.08-1.14.
-      const computedLetterSpacing =
-        line.letterSpacing === "normal" ? 0 : parseFloat(line.letterSpacing);
-      const letterSpacingRatio = metrics.viewportWidth < 768 ? -0.03 : -0.035;
-      const expectedLetterSpacing = line.fontSize * letterSpacingRatio;
-      expect(Number.isFinite(computedLetterSpacing)).toBeTruthy();
-      expect(Math.abs(computedLetterSpacing - expectedLetterSpacing)).toBeLessThanOrEqual(
-        Math.max(0.1, line.fontSize * 0.005), // relaxed slightly for browser rounding
-      );
-
-      const lineHeightRatio = metrics.viewportWidth < 768 ? 1.14 : 1.08; // 1.08 for lg match
-      const expectedLineHeight = line.fontSize * lineHeightRatio;
-      expect(Math.abs(line.lineHeight - expectedLineHeight)).toBeLessThanOrEqual(
-        Math.max(0.1, line.fontSize * 0.005),
-      );
-
-      const expectedPaddingBottom = line.fontSize * 0.08;
-      expect(Math.abs(line.paddingBottom - expectedPaddingBottom)).toBeLessThanOrEqual(
-        Math.max(0.05, line.fontSize * 0.003),
-      );
-      expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
-      expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
-      // Every breakpoint opens with the headline inside the first viewport.
-      expect(metrics.scene).not.toBeNull();
-      expect(line.top).toBeGreaterThanOrEqual(0);
-      expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
-    }
-  }
-});
-
-test("Mobile Hero overlays its message on the film, like desktop", async ({ page }) => {
-  await page.addInitScript(() => {
-    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, value: 8 });
-    Object.defineProperty(navigator, "deviceMemory", { configurable: true, value: 8 });
+    expect(metrics.right).toBeLessThanOrEqual(metrics.viewport);
+    expect(metrics.width).toBeLessThanOrEqual(metrics.viewport);
+    expect(metrics.top).toBeGreaterThanOrEqual(64);
+    expect(metrics.bottom).toBeLessThanOrEqual(metrics.height);
   });
+}
+
+test("Mobile opening has one headline, useful copy and CTA in a single screen", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await page.goto("/", { waitUntil: "networkidle" });
   await expectPageHydrated(page);
-
-  const heading = page.locator("#hero-heading");
-  const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(heading).toBeInViewport();
-  await expect(primary).toBeInViewport();
-
-  const layout = await page.evaluate(() => {
-    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]")!;
-    const panel = document.querySelector<HTMLElement>(".cx-hero-panel")!;
-    return {
-      sceneTop: scene.getBoundingClientRect().top + window.scrollY,
-      sceneBottom: scene.getBoundingClientRect().bottom + window.scrollY,
-      panelTop: panel.getBoundingClientRect().top + window.scrollY,
-      headingCount: document.querySelectorAll("#hero-heading").length,
-    };
-  });
-  expect(layout.panelTop).toBeGreaterThanOrEqual(layout.sceneTop);
-  expect(layout.panelTop).toBeLessThan(layout.sceneBottom);
-  expect(layout.headingCount).toBe(1);
+  await expect(page.locator("#hero-heading")).toHaveCount(1);
+  await expect(page.locator(".cx-hero-sub")).toBeInViewport();
+  await expect(page.locator('[data-cta="primary"]')).toBeInViewport();
+  const height = await page
+    .locator("[data-hero]")
+    .evaluate((el) => el.getBoundingClientRect().height);
+  expect(height).toBeLessThanOrEqual(844);
 });
 
 test("Forced-colors keeps Hero text and focus indicators system-readable", async ({ page }) => {
   await page.emulateMedia({ forcedColors: "active" });
   await page.reload({ waitUntil: "networkidle" });
   const headlineColor = await page
-    .locator(".cx-hero-title-line")
+    .locator("#hero-heading")
     .first()
     .evaluate((el) => getComputedStyle(el).color);
   const textFill = await page
-    .locator(".cx-hero-title-line")
+    .locator("#hero-heading")
     .first()
     .evaluate((el) => getComputedStyle(el).webkitTextFillColor);
   expect(headlineColor).not.toBe("rgba(0, 0, 0, 0)");

@@ -28,12 +28,16 @@ export function getActiveCopyVariant(): CopyVariant {
     if (isVariant(fromUrl)) {
       try {
         window.localStorage.setItem(STORAGE_KEY, fromUrl);
-      } catch {}
+      } catch {
+        // Storage can be unavailable; the URL choice still applies to this page.
+      }
       return fromUrl;
     }
     const fromStorage = window.localStorage.getItem(STORAGE_KEY);
     if (isVariant(fromStorage)) return fromStorage;
-  } catch {}
+  } catch {
+    // Fall back to the public default when browser storage cannot be read.
+  }
   return DEFAULT_VARIANT;
 }
 

@@ -4,6 +4,10 @@ import { expectPageHydrated } from "../support/page-ready";
 async function openHydrated(page: Page, path = "/") {
   await page.goto(path, { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
+  // Pointer coordinates depend on the self-hosted fonts and the existing
+  // bootstrap scroll reset. Hydration alone does not settle either layout.
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
 }
 
 test.describe("Header Dropdown Accessibility", () => {

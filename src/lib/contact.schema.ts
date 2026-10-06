@@ -39,10 +39,7 @@ const BaseSubmissionSchema = z.object({
 
 export const ContactSchema = BaseSubmissionSchema.extend({
   message: z.string().trim().min(10, "Tell us a bit more").max(2000),
-  interest: z
-    .enum(["project", "research", "other"])
-    .optional()
-    .default("project"),
+  interest: z.enum(["project", "research", "other"]).optional().default("project"),
 });
 
 export const FIT_REVIEW_PROJECT_TYPES = [
@@ -149,7 +146,9 @@ export function formatFitReviewMessage(data: FitReviewInput): string {
     "",
     "Additional context:",
     data.notes ?? "—",
-    ...(data.assistantSummary ? ["", "AI assistant conversation summary:", data.assistantSummary] : []),
+    ...(data.assistantSummary
+      ? ["", "AI assistant conversation summary:", data.assistantSummary]
+      : []),
   ].join("\n");
 }
 

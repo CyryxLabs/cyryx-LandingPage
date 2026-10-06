@@ -1,0 +1,13 @@
+{
+  "runtime_source": "6242daa90bc43b3eaee9f6834238bf360fa8fe8e",
+  "parent_head": "718240e8eb2c19321f7c82d81a79e6506b708ee1",
+  "capture_kind": "actual local production Chromium screenshots, native JPEG quality 88",
+  "url": "http://127.0.0.1:4324/",
+  "public_preview_includes_source": false,
+  "viewports": [
+    [1920, 1080],
+    [390, 844],
+    [360, 844]
+  ],
+  "safe_mock_only": true
+}

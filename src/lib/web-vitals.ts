@@ -19,7 +19,6 @@ function report(metric: Metric) {
   };
 
   if (import.meta.env.DEV) {
-    // eslint-disable-next-line no-console
     console.info("[web-vitals]", payload);
     return;
   }
@@ -29,7 +28,12 @@ function report(metric: Metric) {
     if (navigator.sendBeacon) {
       navigator.sendBeacon(ENDPOINT, new Blob([body], { type: "application/json" }));
     } else {
-      void fetch(ENDPOINT, { method: "POST", body, keepalive: true, headers: { "content-type": "application/json" } });
+      void fetch(ENDPOINT, {
+        method: "POST",
+        body,
+        keepalive: true,
+        headers: { "content-type": "application/json" },
+      });
     }
   } catch {
     /* swallow — never let analytics break the page */

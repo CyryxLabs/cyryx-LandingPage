@@ -1,0 +1,483 @@
+{
+  "beforeSha": "dfc0e1b6a441cb6528b00becfa69381746dbd0a2",
+  "candidate": "Logo-delivery change included with this report; exact final head and CI are recorded in draft PR17.",
+  "lighthouse": "12.8.2",
+  "chromium": "151.0.7922.173",
+  "method": "Three fresh-cache samples per version and mode; alternating version order; no concurrent build or functional QA; fonts blocked in both versions.",
+  "assets": {
+    "cyryx-brand-mark.png": {
+      "bytes": 261595,
+      "sha256": "f384fdbc7ecdcac2b8e7a3a78406d5c660f51a39a82c5c977deabb2d21adefcf"
+    },
+    "cyryx-brand-wordmark.png": {
+      "bytes": 247541,
+      "sha256": "e05d9970e55f15e2ed3d41983135cfbc534ead62e9eacf788f41b7104511961d"
+    },
+    "cyryx-brand-mark-display.webp": {
+      "bytes": 20622,
+      "sha256": "38168b3fc5b3eca6f6328cb386aa6241bb193a15ff67f53066c73265bef859c5"
+    },
+    "cyryx-brand-wordmark-display.webp": {
+      "bytes": 37446,
+      "sha256": "86fe053a976a7be967d59e9ce2bd29ee0657b1c996e6b878f7371c22e017afd4"
+    }
+  },
+  "settings": {
+    "desktop": {
+      "output": ["json"],
+      "maxWaitForFcp": 30000,
+      "maxWaitForLoad": 45000,
+      "pauseAfterFcpMs": 1000,
+      "pauseAfterLoadMs": 1000,
+      "networkQuietThresholdMs": 1000,
+      "cpuQuietThresholdMs": 1000,
+      "formFactor": "desktop",
+      "throttling": {
+        "rttMs": 40,
+        "throughputKbps": 10240,
+        "requestLatencyMs": 0,
+        "downloadThroughputKbps": 0,
+        "uploadThroughputKbps": 0,
+        "cpuSlowdownMultiplier": 1
+      },
+      "throttlingMethod": "simulate",
+      "screenEmulation": {
+        "mobile": false,
+        "width": 1350,
+        "height": 940,
+        "deviceScaleFactor": 1,
+        "disabled": false
+      },
+      "emulatedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+      "auditMode": false,
+      "gatherMode": false,
+      "clearStorageTypes": ["file_systems", "shader_cache", "service_workers", "cache_storage"],
+      "disableStorageReset": false,
+      "debugNavigation": false,
+      "channel": "cli",
+      "usePassiveGathering": false,
+      "disableFullPageScreenshot": false,
+      "skipAboutBlank": false,
+      "blankPage": "about:blank",
+      "ignoreStatusCode": false,
+      "locale": "en-US",
+      "blockedUrlPatterns": null,
+      "additionalTraceCategories": null,
+      "extraHeaders": null,
+      "precomputedLanternData": null,
+      "onlyAudits": null,
+      "onlyCategories": ["performance", "accessibility", "seo", "best-practices"],
+      "skipAudits": null
+    },
+    "mobile": {
+      "output": ["json"],
+      "maxWaitForFcp": 30000,
+      "maxWaitForLoad": 45000,
+      "pauseAfterFcpMs": 1000,
+      "pauseAfterLoadMs": 1000,
+      "networkQuietThresholdMs": 1000,
+      "cpuQuietThresholdMs": 1000,
+      "formFactor": "mobile",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "throttlingMethod": "simulate",
+      "screenEmulation": {
+        "mobile": true,
+        "width": 412,
+        "height": 823,
+        "deviceScaleFactor": 1.75,
+        "disabled": false
+      },
+      "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+      "auditMode": false,
+      "gatherMode": false,
+      "clearStorageTypes": ["file_systems", "shader_cache", "service_workers", "cache_storage"],
+      "disableStorageReset": false,
+      "debugNavigation": false,
+      "channel": "cli",
+      "usePassiveGathering": false,
+      "disableFullPageScreenshot": false,
+      "skipAboutBlank": false,
+      "blankPage": "about:blank",
+      "ignoreStatusCode": false,
+      "locale": "en-US",
+      "blockedUrlPatterns": null,
+      "additionalTraceCategories": null,
+      "extraHeaders": null,
+      "precomputedLanternData": null,
+      "onlyAudits": null,
+      "onlyCategories": ["performance", "accessibility", "seo", "best-practices"],
+      "skipAudits": null
+    }
+  },
+  "summary": {
+    "desktop": {
+      "before": {
+        "performance": {
+          "median": 88,
+          "min": 88,
+          "max": 89
+        },
+        "lcp": {
+          "median": 1931.5915,
+          "min": 1854.92005,
+          "max": 1934.1368500000003
+        },
+        "fcp": {
+          "median": 1224.9467,
+          "min": 1218.7579,
+          "max": 1248.5915
+        },
+        "tbt": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "cls": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "bytes": {
+          "median": 1758269,
+          "min": 1758269,
+          "max": 1758269
+        },
+        "a11y": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "seo": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "bestPractices": {
+          "median": 96.0,
+          "min": 96.0,
+          "max": 96.0
+        }
+      },
+      "after": {
+        "performance": {
+          "median": 92,
+          "min": 91,
+          "max": 92
+        },
+        "lcp": {
+          "median": 1495.2211000000002,
+          "min": 1457.6964,
+          "max": 1534.6095
+        },
+        "fcp": {
+          "median": 1252.1095,
+          "min": 1218.1474,
+          "max": 1262.7975999999999
+        },
+        "tbt": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "cls": {
+          "median": 0,
+          "min": 0,
+          "max": 0.0001320943250771582
+        },
+        "bytes": {
+          "median": 1308114,
+          "min": 1308114,
+          "max": 1308114
+        },
+        "a11y": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "seo": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "bestPractices": {
+          "median": 96.0,
+          "min": 96.0,
+          "max": 96.0
+        }
+      }
+    },
+    "mobile": {
+      "before": {
+        "performance": {
+          "median": 59,
+          "min": 59,
+          "max": 59
+        },
+        "lcp": {
+          "median": 10523.87355,
+          "min": 10068.888149999999,
+          "max": 10667.9149
+        },
+        "fcp": {
+          "median": 6684.5921,
+          "min": 6654.9157,
+          "max": 6757.9149
+        },
+        "tbt": {
+          "median": 20.5,
+          "min": 16.5,
+          "max": 84
+        },
+        "cls": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "bytes": {
+          "median": 1674542,
+          "min": 1674542,
+          "max": 1674542
+        },
+        "a11y": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "seo": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "bestPractices": {
+          "median": 96.0,
+          "min": 96.0,
+          "max": 96.0
+        }
+      },
+      "after": {
+        "performance": {
+          "median": 60,
+          "min": 60,
+          "max": 60
+        },
+        "lcp": {
+          "median": 7511.1588,
+          "min": 7375.163049999999,
+          "max": 7511.634400000001
+        },
+        "fcp": {
+          "median": 6761.1588,
+          "min": 6654.1087,
+          "max": 6761.6344
+        },
+        "tbt": {
+          "median": 19.5,
+          "min": 19,
+          "max": 44
+        },
+        "cls": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "bytes": {
+          "median": 1224387,
+          "min": 1224387,
+          "max": 1224387
+        },
+        "a11y": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "seo": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "bestPractices": {
+          "median": 96.0,
+          "min": 96.0,
+          "max": 96.0
+        }
+      }
+    }
+  },
+  "samples": [
+    {
+      "version": "before",
+      "mode": "desktop",
+      "run": 1,
+      "performance": 88,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 1934.1368500000003,
+      "fcp": 1218.7579,
+      "tbt": 0,
+      "cls": 0,
+      "bytes": 1758269,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "after",
+      "mode": "desktop",
+      "run": 1,
+      "performance": 92,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 1457.6964,
+      "fcp": 1262.7975999999999,
+      "tbt": 0,
+      "cls": 0,
+      "bytes": 1308114,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "after",
+      "mode": "desktop",
+      "run": 2,
+      "performance": 91,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 1534.6095,
+      "fcp": 1252.1095,
+      "tbt": 0,
+      "cls": 0,
+      "bytes": 1308114,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "before",
+      "mode": "desktop",
+      "run": 2,
+      "performance": 88,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 1931.5915,
+      "fcp": 1248.5915,
+      "tbt": 0,
+      "cls": 0,
+      "bytes": 1758269,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "before",
+      "mode": "desktop",
+      "run": 3,
+      "performance": 89,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 1854.92005,
+      "fcp": 1224.9467,
+      "tbt": 0,
+      "cls": 0,
+      "bytes": 1758269,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "after",
+      "mode": "desktop",
+      "run": 3,
+      "performance": 92,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 1495.2211000000002,
+      "fcp": 1218.1474,
+      "tbt": 0,
+      "cls": 0.0001320943250771582,
+      "bytes": 1308114,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "before",
+      "mode": "mobile",
+      "run": 1,
+      "performance": 59,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 10523.87355,
+      "fcp": 6654.9157,
+      "tbt": 16.5,
+      "cls": 0,
+      "bytes": 1674542,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "after",
+      "mode": "mobile",
+      "run": 1,
+      "performance": 60,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 7511.1588,
+      "fcp": 6761.1588,
+      "tbt": 44,
+      "cls": 0,
+      "bytes": 1224387,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "after",
+      "mode": "mobile",
+      "run": 2,
+      "performance": 60,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 7511.634400000001,
+      "fcp": 6761.6344,
+      "tbt": 19.5,
+      "cls": 0,
+      "bytes": 1224387,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "before",
+      "mode": "mobile",
+      "run": 2,
+      "performance": 59,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 10068.888149999999,
+      "fcp": 6684.5921,
+      "tbt": 84,
+      "cls": 0,
+      "bytes": 1674542,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "before",
+      "mode": "mobile",
+      "run": 3,
+      "performance": 59,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 10667.9149,
+      "fcp": 6757.9149,
+      "tbt": 20.5,
+      "cls": 0,
+      "bytes": 1674542,
+      "bestPractices": 96.0
+    },
+    {
+      "version": "after",
+      "mode": "mobile",
+      "run": 3,
+      "performance": 60,
+      "a11y": 100,
+      "seo": 100,
+      "lcp": 7375.163049999999,
+      "fcp": 6654.1087,
+      "tbt": 19,
+      "cls": 0,
+      "bytes": 1224387,
+      "bestPractices": 96.0
+    }
+  ]
+}

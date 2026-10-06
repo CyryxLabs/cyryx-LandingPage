@@ -213,6 +213,9 @@ jobs:
         run: node scripts/render-lhci-config.mjs lighthouserc.${{ matrix.form_factor }}.json lhci.runtime.json
       - name: Run Lighthouse CI (${{ matrix.form_factor }})
         run: bunx @lhci/cli@0.14.x autorun --config=./lhci.runtime.json
+      - name: Verify effective Lighthouse profile (${{ matrix.form_factor }})
+        if: always()
+        run: node scripts/verify-lighthouse-profile.mjs ${{ matrix.form_factor }} lighthouse-report/${{ matrix.form_factor }}
       - name: Upload Lighthouse report
         if: always()
         continue-on-error: true

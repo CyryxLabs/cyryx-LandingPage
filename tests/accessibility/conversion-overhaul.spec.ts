@@ -2,9 +2,9 @@ import { expect, test, type Page } from "@playwright/test";
 import { expectPageHydrated } from "../support/page-ready";
 
 /**
- * Contracts introduced by the conversion overhaul (Sep 2026): MAAX retirement,
- * a first-viewport hero on every device, the two-step /start brief with an
- * instant first read, the Cyryx assistant, and the hero copy option B.
+ * Existing conversion contracts: MAAX retirement, a first-viewport hero,
+ * the two-step /start brief, signed CRM intake and the Cyryx assistant.
+ * Legacy copy URLs now present the cinematic homepage with attribution intact.
  *
  * The production test server talks to tests/support/mock-gemini-server.mjs for
  * both Supabase RPCs and Gemini (SUPABASE_URL / GEMINI_API_BASE).
@@ -42,18 +42,32 @@ test("homepage hero carries the registered headline and the project CTA", async 
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(heading).toHaveText("The execution layer for enterprise AI.");
-  await expect(primary).toHaveText(/Start a project/);
+  await expect(heading).toHaveText("AI products. Software, made real.");
+  await expect(primary).toHaveText(/Tell us about your project/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
-  // The approved scroll scene is kept: phones read the copy after the film.
-  await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(1);
+  // The opening must expose a useful message immediately.
+  await expect(primary).toBeInViewport();
+  await expect(heading).toBeInViewport();
 });
 
 test("a CTA click reaches the CRM as a signed funnel event without personal data", async ({
   page,
   request,
 }) => {
+  // A synthetic referrer correlates this browser's beacon across a shared mock.
+  // It names no real user/site and never causes a request to that host.
+  const referrerHost = `cta-${crypto.randomUUID()}.example.com`;
+  await page.addInitScript((host) => {
+    Object.defineProperty(document, "referrer", {
+      configurable: true,
+      get: () => `https://${host}/`,
+    });
+  }, referrerHost);
   await openHome(page);
+  const previousCalls = (await (
+    await request.get(`${MOCK_ORIGIN}/calls`)
+  ).json()) as RecordedCall[];
+  const baselineCount = previousCalls.length;
   await page.evaluate(() => {
     // Stay on the page so the beacon is observable.
     document
@@ -65,7 +79,22 @@ test("a CTA click reaches the CRM as a signed funnel event without personal data
   await expect
     .poll(async () => {
       const calls = (await (await request.get(`${MOCK_ORIGIN}/calls`)).json()) as RecordedCall[];
-      return calls.filter((call) => call.fn === "crm_event").at(-1) ?? null;
+      // The stand-in is shared by concurrent /brief and /start workers.
+      // Match this CTA's full event identity after the pre-click boundary;
+      // an unrelated form event must neither mask nor satisfy this assertion.
+      return (
+        calls
+          .slice(baselineCount)
+          .find(
+            (call) =>
+              call.fn === "crm_event" &&
+              call.body?.event === "start_project" &&
+              call.body?.section === "hero" &&
+              call.body?.path === "/" &&
+              call.body?.href === "/start" &&
+              call.body?.referrerHost === referrerHost,
+          ) ?? null
+      );
     })
     .toMatchObject({
       signatureValid: true,
@@ -75,6 +104,7 @@ test("a CTA click reaches the CRM as a signed funnel event without personal data
         section: "hero",
         path: "/",
         href: "/start",
+        referrerHost,
       },
     });
 });
@@ -116,7 +146,10 @@ test("the careers talent form reaches the CRM as a signed introduction, not a le
   ).toBe(false);
 });
 
-test("retired console and hosting URLs redirect instead of failing", async ({ baseURL, request }) => {
+test("retired console and hosting URLs redirect instead of failing", async ({
+  baseURL,
+  request,
+}) => {
   for (const path of ["/auth", "/workspace", "/workspace/pipeline"]) {
     const response = await request.get(`${baseURL}${path}`, { maxRedirects: 0 });
     expect(response.status()).toBe(308);
@@ -217,7 +250,14 @@ test("/start two-step brief ends with the instant first read and a structured v2
   if (crmSubmission) {
     expect(crmSubmission.signatureValid).toBe(true);
     expect(crmSubmission.idempotencyKey).toMatch(/^web_project_/);
-    const body = crmSubmission.body as Record<string, any>;
+    const body = crmSubmission.body as {
+      kind: string;
+      requirements: { projectType: string; technical: { existingSystems: string } };
+      engagement: { timeline: string };
+      source: Record<string, unknown>;
+      aiFirstReply: string;
+      consent: { privacyNoticeVersion: string };
+    };
     expect(body.kind).toBe("project");
     expect(body.requirements.projectType).toBe("Workflow Automation");
     expect(body.requirements.technical.existingSystems).toBe("NetSuite, Slack");
@@ -251,7 +291,7 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
   const hero = page.locator("section[data-hero]");
 
   const entry = hero.getByRole("button", {
-    name: "Have a question first? Ask the Cyryx assistant. It answers in seconds.",
+    name: "Have a question? Ask the Cyryx assistant.",
   });
   await expect(entry).toBeVisible();
   await entry.click();
@@ -288,11 +328,17 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
 
 test("assistant launcher waits until the visitor scrolls past the hero", async ({ page }) => {
   await openHome(page);
+  // The existing bootstrap publishes hydration before its two-frame scroll reset.
+  // Begin the user scroll only after that documented initialization is complete.
+  await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
   const launcher = page.getByRole("button", { name: "Ask Cyryx" });
   await expect(launcher).toHaveCount(0);
 
   await page.evaluate(() => window.scrollTo({ top: window.innerHeight, behavior: "instant" }));
   await expect(launcher).toBeVisible();
+
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect(launcher).toHaveCount(0);
 
   await page.goto("/products", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
@@ -312,9 +358,7 @@ test("closing the assistant with its close button returns focus to the launcher"
   await expect(page.getByRole("button", { name: "Ask Cyryx" })).toBeFocused();
 });
 
-// Currently fails: the Escape handler focuses the launcher synchronously while
-// it is still unmounted (AssistantWidget renders it only when the panel is
-// closed), so focus falls back to <body>. Kept as a real accessibility defect.
+// Focus must return after the launcher remounts when the dialog closes.
 test("closing the assistant with Escape returns focus to the control that opened it", async ({
   page,
 }) => {
@@ -330,25 +374,15 @@ test("closing the assistant with Escape returns focus to the control that opened
   await expect(page.getByRole("button", { name: "Ask Cyryx" })).toBeFocused();
 });
 
-test("?copy=v4b renders hero option B and ?copy=v4a restores the default", async ({ page }) => {
-  await openHome(page, "/?copy=v4b");
-  await expect(page.locator("#hero-heading")).toHaveText(
-    "Put AI to work in your operations, without losing control of it.",
-  );
-  await expect(page.locator("section[data-hero]")).toContainText(
-    "Cyryx Labs builds agents, automations and internal assistants",
-  );
-  await expect(page.locator('section[data-hero] a[data-cta="primary"]')).toHaveText(
-    /Start a project/,
-  );
-
-  // The choice is pinned in this browser...
-  await openHome(page, "/");
-  await expect(page.locator("#hero-heading")).toHaveText(
-    "Put AI to work in your operations, without losing control of it.",
-  );
-
-  // ...until the visitor opts back into the default.
-  await openHome(page, "/?copy=v4a");
-  await expect(page.locator("#hero-heading")).toHaveText("The execution layer for enterprise AI.");
+test("legacy copy URLs retain attribution while presenting the cinematic narrative", async ({
+  page,
+}) => {
+  for (const path of ["/?copy=v4b", "/", "/?copy=v4a"]) {
+    await openHome(page, path);
+    await expect(page.locator("#hero-heading")).toHaveText("AI products. Software, made real.");
+    await expect(page.locator('[data-cta="primary"]')).toHaveAttribute(
+      "href",
+      "/start?source=home",
+    );
+  }
 });

@@ -18,6 +18,8 @@ import { useRouterState } from "@tanstack/react-router";
  */
 export function useSiteMotion() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  // AEXOS is lazy hydrated: its page owns motion after its DOM has committed.
+  usePageMotion(pathname !== "/products/aexos");
 
   // Pointer spotlight: one delegated listener, CSS does the drawing.
   useEffect(() => {
@@ -44,8 +46,14 @@ export function useSiteMotion() {
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
+}
+
+/** Start from the owning page when it is lazy hydrated, never from its parent. */
+export function usePageMotion(enabled = true) {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   useEffect(() => {
+    if (!enabled) return;
     if (pathname === "/" || pathname.startsWith("/workspace")) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (document.documentElement.classList.contains("cx-low-perf")) return;
@@ -159,7 +167,6 @@ export function useSiteMotion() {
             if (!Number.isFinite(target)) return;
             const format = new Intl.NumberFormat("en-US");
             const counter = { value: 0 };
-            el.textContent = "0";
             gsap.to(counter, {
               value: target,
               duration: 1.6,
@@ -182,5 +189,5 @@ export function useSiteMotion() {
       window.cancelAnimationFrame(frame);
       revert?.();
     };
-  }, [pathname]);
+  }, [enabled, pathname]);
 }

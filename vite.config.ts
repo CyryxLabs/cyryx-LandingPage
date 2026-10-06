@@ -13,12 +13,17 @@ const buildVersion =
 const isLighthouseBuild = process.env.LIGHTHOUSE_BUILD === "1";
 
 // Passed through to nitro as-is. Declared as a variable because the wrapper's
-// type only lists preset/output/cloudflare, while nitro accepts routeRules too.
+// type only lists preset/output/cloudflare, while nitro accepts these options too.
 const nitroOptions = {
   preset: isLighthouseBuild ? "node" : "vercel",
+  // Generate static variants for negotiated delivery in either build preset.
+  compressPublicAssets: { gzip: true, brotli: true },
   // Hero film frames are static and versioned by filename; let browsers and
   // the edge keep them instead of revalidating on every visit.
   routeRules: {
+    "/fonts/**": {
+      headers: { "cache-control": "public, max-age=31536000, immutable" },
+    },
     "/media/**": {
       headers: { "cache-control": "public, max-age=604800, stale-while-revalidate=86400" },
     },

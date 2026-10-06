@@ -1,0 +1,2432 @@
+{
+  "baselineSourceSHA": "52be44e2a506491ba4fe958100e3739939f0d545",
+  "candidateChange": "common Nitro compressPublicAssets gzip+brotli; no frontend source changes",
+  "fixedBuildTag": "52be44e2a506",
+  "originalAssetCount": 77,
+  "originalAssetsByteIdentical": true,
+  "configSHA256": "0963f06a495ea7bec10143cb02d9f7d74d9a86d85b3d91f0dc6cd9faf2a19368",
+  "methodology": "Lighthouse12.1.0; 3 fresh mobile runs per version, alternating order; same Chromium and frozen Node bundles; no concurrent build or QA; Google Fonts blocked in both; no performance-profile/budget changes",
+  "discardedAttempt": "Stale local process after a rebuild; not included in final samples",
+  "budgets": {
+    "categories:performance": [
+      "warn",
+      {
+        "minScore": 0.85
+      }
+    ],
+    "categories:accessibility": [
+      "error",
+      {
+        "minScore": 0.95
+      }
+    ],
+    "categories:seo": [
+      "error",
+      {
+        "minScore": 0.95
+      }
+    ],
+    "largest-contentful-paint": [
+      "error",
+      {
+        "maxNumericValue": 3500
+      }
+    ],
+    "cumulative-layout-shift": [
+      "error",
+      {
+        "maxNumericValue": 0.1
+      }
+    ],
+    "total-blocking-time": [
+      "error",
+      {
+        "maxNumericValue": 300
+      }
+    ],
+    "max-potential-fid": [
+      "error",
+      {
+        "maxNumericValue": 200
+      }
+    ]
+  },
+  "assertionExitCode": 1,
+  "profileVerificationExitCode": 0,
+  "aggregate": {
+    "before": {
+      "performance": {
+        "median": 59,
+        "min": 59,
+        "max": 60
+      },
+      "lcp": {
+        "median": 7372.7007,
+        "min": 7361.896049999999,
+        "max": 7512.538999999998
+      },
+      "fcp": {
+        "median": 6690.1338,
+        "min": 6651.930700000001,
+        "max": 6762.538999999999
+      },
+      "tbt": {
+        "median": 94.5,
+        "min": 66.5,
+        "max": 104.5
+      },
+      "cls": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "maxPotentialFID": {
+        "median": 174,
+        "min": 173,
+        "max": 205
+      },
+      "bytes": {
+        "median": 1223670,
+        "min": 1223670,
+        "max": 1223670
+      },
+      "accessibility": {
+        "median": 100,
+        "min": 100,
+        "max": 100
+      },
+      "seo": {
+        "median": 100,
+        "min": 100,
+        "max": 100
+      },
+      "bestPractices": {
+        "median": 96,
+        "min": 96,
+        "max": 96
+      }
+    },
+    "after": {
+      "performance": {
+        "median": 85,
+        "min": 85,
+        "max": 85
+      },
+      "lcp": {
+        "median": 3617.9161499999996,
+        "min": 3612.5631,
+        "max": 3619.6236
+      },
+      "fcp": {
+        "median": 2765.9441,
+        "min": 2754.0824000000002,
+        "max": 2774.3754
+      },
+      "tbt": {
+        "median": 75.99999999999977,
+        "min": 65.5,
+        "max": 76
+      },
+      "cls": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "maxPotentialFID": {
+        "median": 164,
+        "min": 155.99999999999955,
+        "max": 178
+      },
+      "bytes": {
+        "median": 493663,
+        "min": 493663,
+        "max": 493663
+      },
+      "accessibility": {
+        "median": 100,
+        "min": 100,
+        "max": 100
+      },
+      "seo": {
+        "median": 100,
+        "min": 100,
+        "max": 100
+      },
+      "bestPractices": {
+        "median": 96,
+        "min": 96,
+        "max": 96
+      }
+    }
+  },
+  "samples": [
+    {
+      "version": "before",
+      "run": 1,
+      "lighthouseVersion": "12.1.0",
+      "settings": {
+        "output": ["json"],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": ["file_systems", "shader_cache", "service_workers", "cache_storage"],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "cli",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": ["performance", "accessibility", "seo", "best-practices"],
+        "skipAudits": null
+      },
+      "performance": 59,
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "lcp": 7372.7007,
+      "fcp": 6690.1338,
+      "tbt": 94.5,
+      "maxPotentialFID": 174,
+      "cls": 0,
+      "bytes": 1223670,
+      "stylesheet": {
+        "url": "http://127.0.0.1:4196/assets/styles-BGYCXDcn.css?v=52be44e2a506",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 33.01700000092387,
+        "networkRequestTime": 35.659000001847744,
+        "networkEndTime": 53.76199999824166,
+        "finished": true,
+        "transferSize": 201100,
+        "resourceSize": 200770,
+        "statusCode": 200,
+        "mimeType": "text/css",
+        "resourceType": "Stylesheet",
+        "priority": "VeryHigh",
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      },
+      "indexScript": {
+        "url": "http://127.0.0.1:4196/assets/index-BlBWUfT2.js",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 34.76700000092387,
+        "networkRequestTime": 45.37000000104308,
+        "networkEndTime": 66.52800000086427,
+        "finished": true,
+        "transferSize": 412803,
+        "resourceSize": 412466,
+        "statusCode": 200,
+        "mimeType": "text/javascript",
+        "resourceType": "Script",
+        "priority": "High",
+        "isLinkPreload": true,
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      }
+    },
+    {
+      "version": "after",
+      "run": 1,
+      "lighthouseVersion": "12.1.0",
+      "settings": {
+        "output": ["json"],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": ["file_systems", "shader_cache", "service_workers", "cache_storage"],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "cli",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": ["performance", "accessibility", "seo", "best-practices"],
+        "skipAudits": null
+      },
+      "performance": 85,
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "lcp": 3612.5631,
+      "fcp": 2774.3754,
+      "tbt": 75.99999999999977,
+      "maxPotentialFID": 155.99999999999955,
+      "cls": 0,
+      "bytes": 493663,
+      "stylesheet": {
+        "url": "http://127.0.0.1:4197/assets/styles-BGYCXDcn.css?v=52be44e2a506",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 27.260999999940395,
+        "networkRequestTime": 28.893999997526407,
+        "networkEndTime": 41.32499999925494,
+        "finished": true,
+        "transferSize": 25510,
+        "resourceSize": 200770,
+        "statusCode": 200,
+        "mimeType": "text/css",
+        "resourceType": "Stylesheet",
+        "priority": "VeryHigh",
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      },
+      "indexScript": {
+        "url": "http://127.0.0.1:4197/assets/index-BlBWUfT2.js",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 27.991999998688698,
+        "networkRequestTime": 33.458000000566244,
+        "networkEndTime": 60.4809999987483,
+        "finished": true,
+        "transferSize": 108483,
+        "resourceSize": 412466,
+        "statusCode": 200,
+        "mimeType": "text/javascript",
+        "resourceType": "Script",
+        "priority": "High",
+        "isLinkPreload": true,
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      }
+    },
+    {
+      "version": "after",
+      "run": 2,
+      "lighthouseVersion": "12.1.0",
+      "settings": {
+        "output": ["json"],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": ["file_systems", "shader_cache", "service_workers", "cache_storage"],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "cli",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": ["performance", "accessibility", "seo", "best-practices"],
+        "skipAudits": null
+      },
+      "performance": 85,
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "lcp": 3619.6236,
+      "fcp": 2754.0824000000002,
+      "tbt": 76,
+      "maxPotentialFID": 178,
+      "cls": 0,
+      "bytes": 493663,
+      "stylesheet": {
+        "url": "http://127.0.0.1:4197/assets/styles-BGYCXDcn.css?v=52be44e2a506",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 25.162999998778105,
+        "networkRequestTime": 26.234999999403954,
+        "networkEndTime": 39.07599999755621,
+        "finished": true,
+        "transferSize": 25510,
+        "resourceSize": 200770,
+        "statusCode": 200,
+        "mimeType": "text/css",
+        "resourceType": "Stylesheet",
+        "priority": "VeryHigh",
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      },
+      "indexScript": {
+        "url": "http://127.0.0.1:4197/assets/index-BlBWUfT2.js",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 25.730999998748302,
+        "networkRequestTime": 32.222999997437,
+        "networkEndTime": 56.358999997377396,
+        "finished": true,
+        "transferSize": 108483,
+        "resourceSize": 412466,
+        "statusCode": 200,
+        "mimeType": "text/javascript",
+        "resourceType": "Script",
+        "priority": "High",
+        "isLinkPreload": true,
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      }
+    },
+    {
+      "version": "before",
+      "run": 2,
+      "lighthouseVersion": "12.1.0",
+      "settings": {
+        "output": ["json"],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": ["file_systems", "shader_cache", "service_workers", "cache_storage"],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "cli",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": ["performance", "accessibility", "seo", "best-practices"],
+        "skipAudits": null
+      },
+      "performance": 59,
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "lcp": 7512.538999999998,
+      "fcp": 6762.538999999999,
+      "tbt": 104.5,
+      "maxPotentialFID": 205,
+      "cls": 0,
+      "bytes": 1223670,
+      "stylesheet": {
+        "url": "http://127.0.0.1:4196/assets/styles-BGYCXDcn.css?v=52be44e2a506",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 23.53599999845028,
+        "networkRequestTime": 24.195000000298023,
+        "networkEndTime": 47.302000001072884,
+        "finished": true,
+        "transferSize": 201100,
+        "resourceSize": 200770,
+        "statusCode": 200,
+        "mimeType": "text/css",
+        "resourceType": "Stylesheet",
+        "priority": "VeryHigh",
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      },
+      "indexScript": {
+        "url": "http://127.0.0.1:4196/assets/index-BlBWUfT2.js",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 23.930000003427267,
+        "networkRequestTime": 28.85800000280142,
+        "networkEndTime": 65.44700000062585,
+        "finished": true,
+        "transferSize": 412803,
+        "resourceSize": 412466,
+        "statusCode": 200,
+        "mimeType": "text/javascript",
+        "resourceType": "Script",
+        "priority": "High",
+        "isLinkPreload": true,
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      }
+    },
+    {
+      "version": "before",
+      "run": 3,
+      "lighthouseVersion": "12.1.0",
+      "settings": {
+        "output": ["json"],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": ["file_systems", "shader_cache", "service_workers", "cache_storage"],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "cli",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": ["performance", "accessibility", "seo", "best-practices"],
+        "skipAudits": null
+      },
+      "performance": 60,
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "lcp": 7361.896049999999,
+      "fcp": 6651.930700000001,
+      "tbt": 66.5,
+      "maxPotentialFID": 173,
+      "cls": 0,
+      "bytes": 1223670,
+      "stylesheet": {
+        "url": "http://127.0.0.1:4196/assets/styles-BGYCXDcn.css?v=52be44e2a506",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 23.46499999985099,
+        "networkRequestTime": 24.467000000178814,
+        "networkEndTime": 42.36500000208616,
+        "finished": true,
+        "transferSize": 201100,
+        "resourceSize": 200770,
+        "statusCode": 200,
+        "mimeType": "text/css",
+        "resourceType": "Stylesheet",
+        "priority": "VeryHigh",
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      },
+      "indexScript": {
+        "url": "http://127.0.0.1:4196/assets/index-BlBWUfT2.js",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 23.895000003278255,
+        "networkRequestTime": 33.58399999886751,
+        "networkEndTime": 60.17999999970198,
+        "finished": true,
+        "transferSize": 412803,
+        "resourceSize": 412466,
+        "statusCode": 200,
+        "mimeType": "text/javascript",
+        "resourceType": "Script",
+        "priority": "High",
+        "isLinkPreload": true,
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      }
+    },
+    {
+      "version": "after",
+      "run": 3,
+      "lighthouseVersion": "12.1.0",
+      "settings": {
+        "output": ["json"],
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": ["file_systems", "shader_cache", "service_workers", "cache_storage"],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "cli",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": ["performance", "accessibility", "seo", "best-practices"],
+        "skipAudits": null
+      },
+      "performance": 85,
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "lcp": 3617.9161499999996,
+      "fcp": 2765.9441,
+      "tbt": 65.5,
+      "maxPotentialFID": 164,
+      "cls": 0,
+      "bytes": 493663,
+      "stylesheet": {
+        "url": "http://127.0.0.1:4197/assets/styles-BGYCXDcn.css?v=52be44e2a506",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 26.105999995023012,
+        "networkRequestTime": 27.148999996483326,
+        "networkEndTime": 43.05000000074506,
+        "finished": true,
+        "transferSize": 25510,
+        "resourceSize": 200770,
+        "statusCode": 200,
+        "mimeType": "text/css",
+        "resourceType": "Stylesheet",
+        "priority": "VeryHigh",
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      },
+      "indexScript": {
+        "url": "http://127.0.0.1:4197/assets/index-BlBWUfT2.js",
+        "sessionTargetType": "page",
+        "protocol": "http/1.1",
+        "rendererStartTime": 26.743999999016523,
+        "networkRequestTime": 36.22800000011921,
+        "networkEndTime": 60.747999999672174,
+        "finished": true,
+        "transferSize": 108483,
+        "resourceSize": 412466,
+        "statusCode": 200,
+        "mimeType": "text/javascript",
+        "resourceType": "Script",
+        "priority": "High",
+        "isLinkPreload": true,
+        "experimentalFromMainFrame": true,
+        "entity": "127.0.0.1"
+      }
+    }
+  ],
+  "delivery": {
+    "originalHead": "52be44e2a506491ba4fe958100e3739939f0d545",
+    "nitroVersion": "3.0.260603-beta",
+    "proposedConfig": {
+      "compressPublicAssets": {
+        "gzip": true,
+        "brotli": true
+      }
+    },
+    "nodeVariants": [
+      {
+        "path": "assets/AnswerPage-C2Wrs6fH.js.br",
+        "codec": "br",
+        "originalBytes": 6570,
+        "encodedBytes": 1731,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/AnswerPage-C2Wrs6fH.js.gz",
+        "codec": "gzip",
+        "originalBytes": 6570,
+        "encodedBytes": 1992,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/Footer-B2KCWrbT.js.br",
+        "codec": "br",
+        "originalBytes": 82009,
+        "encodedBytes": 21993,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/Footer-B2KCWrbT.js.gz",
+        "codec": "gzip",
+        "originalBytes": 82009,
+        "encodedBytes": 24937,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/InternalHero-DXe7wgXW.js.br",
+        "codec": "br",
+        "originalBytes": 5470,
+        "encodedBytes": 1721,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/InternalHero-DXe7wgXW.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5470,
+        "encodedBytes": 1930,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/ScrollTrigger-BXwbYJk2.js.br",
+        "codec": "br",
+        "originalBytes": 42844,
+        "encodedBytes": 15835,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/ScrollTrigger-BXwbYJk2.js.gz",
+        "codec": "gzip",
+        "originalBytes": 42844,
+        "encodedBytes": 17467,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/SolutionPage-Bmiu1yjn.js.br",
+        "codec": "br",
+        "originalBytes": 16810,
+        "encodedBytes": 3424,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/SolutionPage-Bmiu1yjn.js.gz",
+        "codec": "gzip",
+        "originalBytes": 16810,
+        "encodedBytes": 3989,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.ai-execution-system-vs-ai-automation-DvLmywXo.js.br",
+        "codec": "br",
+        "originalBytes": 3504,
+        "encodedBytes": 1303,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.ai-execution-system-vs-ai-automation-DvLmywXo.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3504,
+        "encodedBytes": 1676,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.how-to-measure-ai-output-quality-ccbuDd_c.js.br",
+        "codec": "br",
+        "originalBytes": 3602,
+        "encodedBytes": 1269,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.how-to-measure-ai-output-quality-ccbuDd_c.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3602,
+        "encodedBytes": 1687,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.index-DD60gY4p.js.br",
+        "codec": "br",
+        "originalBytes": 3242,
+        "encodedBytes": 1156,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.index-DD60gY4p.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3242,
+        "encodedBytes": 1443,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-are-command-gates-in-ai-systems-tbCKcq06.js.br",
+        "codec": "br",
+        "originalBytes": 3473,
+        "encodedBytes": 1317,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-are-command-gates-in-ai-systems-tbCKcq06.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3473,
+        "encodedBytes": 1736,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-ai-governance-DxPGHlfR.js.br",
+        "codec": "br",
+        "originalBytes": 5465,
+        "encodedBytes": 1845,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-ai-governance-DxPGHlfR.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5465,
+        "encodedBytes": 2458,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-goal-grounded-generation-C69fWjhT.js.br",
+        "codec": "br",
+        "originalBytes": 3447,
+        "encodedBytes": 1172,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-goal-grounded-generation-C69fWjhT.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3447,
+        "encodedBytes": 1547,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-governed-ai-execution-DV5IkOPj.js.br",
+        "codec": "br",
+        "originalBytes": 3851,
+        "encodedBytes": 1418,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-governed-ai-execution-DV5IkOPj.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3851,
+        "encodedBytes": 1881,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/brief-6Pdbx3Vx.js.br",
+        "codec": "br",
+        "originalBytes": 62971,
+        "encodedBytes": 16057,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/brief-6Pdbx3Vx.js.gz",
+        "codec": "gzip",
+        "originalBytes": 62971,
+        "encodedBytes": 18483,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/careers-BFVqtjYQ.js.br",
+        "codec": "br",
+        "originalBytes": 11797,
+        "encodedBytes": 3510,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/careers-BFVqtjYQ.js.gz",
+        "codec": "gzip",
+        "originalBytes": 11797,
+        "encodedBytes": 4194,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/company-C5zbh8Xg.js.br",
+        "codec": "br",
+        "originalBytes": 6851,
+        "encodedBytes": 2103,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/company-C5zbh8Xg.js.gz",
+        "codec": "gzip",
+        "originalBytes": 6851,
+        "encodedBytes": 2601,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/contact-BaONlG0_.js.br",
+        "codec": "br",
+        "originalBytes": 5706,
+        "encodedBytes": 1784,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/contact-BaONlG0_.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5706,
+        "encodedBytes": 2129,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/engagement-model-PqNHkdHs.js.br",
+        "codec": "br",
+        "originalBytes": 5555,
+        "encodedBytes": 1830,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/engagement-model-PqNHkdHs.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5555,
+        "encodedBytes": 2287,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/gsap-BWQTSTbF.js.br",
+        "codec": "br",
+        "originalBytes": 70042,
+        "encodedBytes": 24704,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/gsap-BWQTSTbF.js.gz",
+        "codec": "gzip",
+        "originalBytes": 70042,
+        "encodedBytes": 27252,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/index-BlBWUfT2.js.br",
+        "codec": "br",
+        "originalBytes": 412466,
+        "encodedBytes": 108124,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/index-BlBWUfT2.js.gz",
+        "codec": "gzip",
+        "originalBytes": 412466,
+        "encodedBytes": 125555,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/managed-operations-CSOIYHPd.js.br",
+        "codec": "br",
+        "originalBytes": 5638,
+        "encodedBytes": 1734,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/managed-operations-CSOIYHPd.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5638,
+        "encodedBytes": 2149,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/privacy-CoHl6fPl.js.br",
+        "codec": "br",
+        "originalBytes": 20627,
+        "encodedBytes": 4952,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/privacy-CoHl6fPl.js.gz",
+        "codec": "gzip",
+        "originalBytes": 20627,
+        "encodedBytes": 6154,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/products-C4awt3cg.js.br",
+        "codec": "br",
+        "originalBytes": 10546,
+        "encodedBytes": 2922,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/products-C4awt3cg.js.gz",
+        "codec": "gzip",
+        "originalBytes": 10546,
+        "encodedBytes": 3417,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/products.aexos-B7hMVmc-.js.br",
+        "codec": "br",
+        "originalBytes": 24338,
+        "encodedBytes": 5422,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/products.aexos-B7hMVmc-.js.gz",
+        "codec": "gzip",
+        "originalBytes": 24338,
+        "encodedBytes": 6276,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/publications-D8H739-u.js.br",
+        "codec": "br",
+        "originalBytes": 105377,
+        "encodedBytes": 26823,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/publications-D8H739-u.js.gz",
+        "codec": "gzip",
+        "originalBytes": 105377,
+        "encodedBytes": 30578,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/research._slug-D3Hqw627.js.br",
+        "codec": "br",
+        "originalBytes": 12432,
+        "encodedBytes": 2845,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/research._slug-D3Hqw627.js.gz",
+        "codec": "gzip",
+        "originalBytes": 12432,
+        "encodedBytes": 3374,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/research.index-DkkTO_J_.js.br",
+        "codec": "br",
+        "originalBytes": 9507,
+        "encodedBytes": 2407,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/research.index-DkkTO_J_.js.gz",
+        "codec": "gzip",
+        "originalBytes": 9507,
+        "encodedBytes": 2999,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/routes-CF7-h5ZM.js.br",
+        "codec": "br",
+        "originalBytes": 30657,
+        "encodedBytes": 7460,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/routes-CF7-h5ZM.js.gz",
+        "codec": "gzip",
+        "originalBytes": 30657,
+        "encodedBytes": 8731,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/routes-CXotlbIQ.css.br",
+        "codec": "br",
+        "originalBytes": 20262,
+        "encodedBytes": 4153,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/routes-CXotlbIQ.css.gz",
+        "codec": "gzip",
+        "originalBytes": 20262,
+        "encodedBytes": 4833,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions-pdzrbY3t.js.br",
+        "codec": "br",
+        "originalBytes": 8633,
+        "encodedBytes": 2512,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions-pdzrbY3t.js.gz",
+        "codec": "gzip",
+        "originalBytes": 8633,
+        "encodedBytes": 3120,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.ai-governance-cost-control-Dvk4Xump.js.br",
+        "codec": "br",
+        "originalBytes": 5587,
+        "encodedBytes": 1736,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.ai-governance-cost-control-Dvk4Xump.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5587,
+        "encodedBytes": 2241,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.ai-strategy-advisory-j7N3XL45.js.br",
+        "codec": "br",
+        "originalBytes": 5494,
+        "encodedBytes": 1581,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.ai-strategy-advisory-j7N3XL45.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5494,
+        "encodedBytes": 2032,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.custom-ai-product-development-Bn9QXmBT.js.br",
+        "codec": "br",
+        "originalBytes": 5646,
+        "encodedBytes": 1791,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.custom-ai-product-development-Bn9QXmBT.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5646,
+        "encodedBytes": 2310,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.digital-web-systems-zrKLU601.js.br",
+        "codec": "br",
+        "originalBytes": 5661,
+        "encodedBytes": 1750,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.digital-web-systems-zrKLU601.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5661,
+        "encodedBytes": 2265,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.internal-ai-assistants-D78keyA1.js.br",
+        "codec": "br",
+        "originalBytes": 5445,
+        "encodedBytes": 1789,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.internal-ai-assistants-D78keyA1.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5445,
+        "encodedBytes": 2306,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.workflow-automation-CumMvSK1.js.br",
+        "codec": "br",
+        "originalBytes": 5549,
+        "encodedBytes": 1782,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.workflow-automation-CumMvSK1.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5549,
+        "encodedBytes": 2363,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/start-DkrWWQkQ.js.br",
+        "codec": "br",
+        "originalBytes": 16038,
+        "encodedBytes": 4279,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/start-DkrWWQkQ.js.gz",
+        "codec": "gzip",
+        "originalBytes": 16038,
+        "encodedBytes": 5023,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/styles-BGYCXDcn.css.br",
+        "codec": "br",
+        "originalBytes": 200770,
+        "encodedBytes": 25160,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/styles-BGYCXDcn.css.gz",
+        "codec": "gzip",
+        "originalBytes": 200770,
+        "encodedBytes": 31194,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/terms-Ra_5mzs2.js.br",
+        "codec": "br",
+        "originalBytes": 16043,
+        "encodedBytes": 3993,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/terms-Ra_5mzs2.js.gz",
+        "codec": "gzip",
+        "originalBytes": 16043,
+        "encodedBytes": 5005,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/useCyryxScrollAnimations-D_1QW3ee.js.br",
+        "codec": "br",
+        "originalBytes": 10685,
+        "encodedBytes": 3004,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/useCyryxScrollAnimations-D_1QW3ee.js.gz",
+        "codec": "gzip",
+        "originalBytes": 10685,
+        "encodedBytes": 3382,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/useSimulationClock-CTRAwM57.js.br",
+        "codec": "br",
+        "originalBytes": 6775,
+        "encodedBytes": 2373,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/useSimulationClock-CTRAwM57.js.gz",
+        "codec": "gzip",
+        "originalBytes": 6775,
+        "encodedBytes": 2971,
+        "matchesOriginal": true
+      },
+      {
+        "path": "llms.txt.br",
+        "codec": "br",
+        "originalBytes": 4735,
+        "encodedBytes": 1495,
+        "matchesOriginal": true
+      },
+      {
+        "path": "llms.txt.gz",
+        "codec": "gzip",
+        "originalBytes": 4735,
+        "encodedBytes": 2017,
+        "matchesOriginal": true
+      },
+      {
+        "path": "robots.txt.br",
+        "codec": "br",
+        "originalBytes": 2037,
+        "encodedBytes": 281,
+        "matchesOriginal": true
+      },
+      {
+        "path": "robots.txt.gz",
+        "codec": "gzip",
+        "originalBytes": 2037,
+        "encodedBytes": 348,
+        "matchesOriginal": true
+      }
+    ],
+    "vercelVariants": [
+      {
+        "path": "assets/AnswerPage-C2Wrs6fH.js.br",
+        "codec": "br",
+        "originalBytes": 6570,
+        "encodedBytes": 1731,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/AnswerPage-C2Wrs6fH.js.gz",
+        "codec": "gzip",
+        "originalBytes": 6570,
+        "encodedBytes": 1992,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/Footer-B2KCWrbT.js.br",
+        "codec": "br",
+        "originalBytes": 82009,
+        "encodedBytes": 21993,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/Footer-B2KCWrbT.js.gz",
+        "codec": "gzip",
+        "originalBytes": 82009,
+        "encodedBytes": 24937,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/InternalHero-DXe7wgXW.js.br",
+        "codec": "br",
+        "originalBytes": 5470,
+        "encodedBytes": 1721,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/InternalHero-DXe7wgXW.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5470,
+        "encodedBytes": 1930,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/ScrollTrigger-BXwbYJk2.js.br",
+        "codec": "br",
+        "originalBytes": 42844,
+        "encodedBytes": 15835,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/ScrollTrigger-BXwbYJk2.js.gz",
+        "codec": "gzip",
+        "originalBytes": 42844,
+        "encodedBytes": 17467,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/SolutionPage-o_eWSwkr.js.br",
+        "codec": "br",
+        "originalBytes": 16810,
+        "encodedBytes": 3418,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/SolutionPage-o_eWSwkr.js.gz",
+        "codec": "gzip",
+        "originalBytes": 16810,
+        "encodedBytes": 3987,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.ai-execution-system-vs-ai-automation-CAX7uzlh.js.br",
+        "codec": "br",
+        "originalBytes": 3504,
+        "encodedBytes": 1305,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.ai-execution-system-vs-ai-automation-CAX7uzlh.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3504,
+        "encodedBytes": 1676,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.how-to-measure-ai-output-quality-gBfuH62w.js.br",
+        "codec": "br",
+        "originalBytes": 3602,
+        "encodedBytes": 1269,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.how-to-measure-ai-output-quality-gBfuH62w.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3602,
+        "encodedBytes": 1687,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.index-DD60gY4p.js.br",
+        "codec": "br",
+        "originalBytes": 3242,
+        "encodedBytes": 1156,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.index-DD60gY4p.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3242,
+        "encodedBytes": 1443,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-are-command-gates-in-ai-systems-B26Nal3N.js.br",
+        "codec": "br",
+        "originalBytes": 3473,
+        "encodedBytes": 1320,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-are-command-gates-in-ai-systems-B26Nal3N.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3473,
+        "encodedBytes": 1736,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-ai-governance-JjeqReuJ.js.br",
+        "codec": "br",
+        "originalBytes": 5465,
+        "encodedBytes": 1850,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-ai-governance-JjeqReuJ.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5465,
+        "encodedBytes": 2457,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-goal-grounded-generation-BxplI788.js.br",
+        "codec": "br",
+        "originalBytes": 3447,
+        "encodedBytes": 1188,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-goal-grounded-generation-BxplI788.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3447,
+        "encodedBytes": 1548,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-governed-ai-execution-Bw6ID0Lo.js.br",
+        "codec": "br",
+        "originalBytes": 3851,
+        "encodedBytes": 1421,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/answers.what-is-governed-ai-execution-Bw6ID0Lo.js.gz",
+        "codec": "gzip",
+        "originalBytes": 3851,
+        "encodedBytes": 1881,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/brief-C3ZCP9LC.js.br",
+        "codec": "br",
+        "originalBytes": 62971,
+        "encodedBytes": 16060,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/brief-C3ZCP9LC.js.gz",
+        "codec": "gzip",
+        "originalBytes": 62971,
+        "encodedBytes": 18483,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/careers-15xflbbr.js.br",
+        "codec": "br",
+        "originalBytes": 11797,
+        "encodedBytes": 3515,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/careers-15xflbbr.js.gz",
+        "codec": "gzip",
+        "originalBytes": 11797,
+        "encodedBytes": 4193,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/company-3DRot6V3.js.br",
+        "codec": "br",
+        "originalBytes": 6851,
+        "encodedBytes": 2107,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/company-3DRot6V3.js.gz",
+        "codec": "gzip",
+        "originalBytes": 6851,
+        "encodedBytes": 2601,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/contact-DrBzjxWK.js.br",
+        "codec": "br",
+        "originalBytes": 5706,
+        "encodedBytes": 1786,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/contact-DrBzjxWK.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5706,
+        "encodedBytes": 2129,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/engagement-model-ef6LEwU5.js.br",
+        "codec": "br",
+        "originalBytes": 5555,
+        "encodedBytes": 1828,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/engagement-model-ef6LEwU5.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5555,
+        "encodedBytes": 2287,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/gsap-BWQTSTbF.js.br",
+        "codec": "br",
+        "originalBytes": 70042,
+        "encodedBytes": 24704,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/gsap-BWQTSTbF.js.gz",
+        "codec": "gzip",
+        "originalBytes": 70042,
+        "encodedBytes": 27252,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/index-CckJbYHh.js.br",
+        "codec": "br",
+        "originalBytes": 412478,
+        "encodedBytes": 108222,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/index-CckJbYHh.js.gz",
+        "codec": "gzip",
+        "originalBytes": 412478,
+        "encodedBytes": 125568,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/managed-operations-Canuu8Si.js.br",
+        "codec": "br",
+        "originalBytes": 5638,
+        "encodedBytes": 1737,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/managed-operations-Canuu8Si.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5638,
+        "encodedBytes": 2149,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/privacy-CoHl6fPl.js.br",
+        "codec": "br",
+        "originalBytes": 20627,
+        "encodedBytes": 4952,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/privacy-CoHl6fPl.js.gz",
+        "codec": "gzip",
+        "originalBytes": 20627,
+        "encodedBytes": 6154,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/products-TwumhL2i.js.br",
+        "codec": "br",
+        "originalBytes": 10546,
+        "encodedBytes": 2930,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/products-TwumhL2i.js.gz",
+        "codec": "gzip",
+        "originalBytes": 10546,
+        "encodedBytes": 3417,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/products.aexos-6VjBWjcZ.js.br",
+        "codec": "br",
+        "originalBytes": 24338,
+        "encodedBytes": 5424,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/products.aexos-6VjBWjcZ.js.gz",
+        "codec": "gzip",
+        "originalBytes": 24338,
+        "encodedBytes": 6277,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/publications-D8H739-u.js.br",
+        "codec": "br",
+        "originalBytes": 105377,
+        "encodedBytes": 26823,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/publications-D8H739-u.js.gz",
+        "codec": "gzip",
+        "originalBytes": 105377,
+        "encodedBytes": 30578,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/research._slug-DZYa1smW.js.br",
+        "codec": "br",
+        "originalBytes": 12432,
+        "encodedBytes": 2848,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/research._slug-DZYa1smW.js.gz",
+        "codec": "gzip",
+        "originalBytes": 12432,
+        "encodedBytes": 3375,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/research.index-DkkTO_J_.js.br",
+        "codec": "br",
+        "originalBytes": 9507,
+        "encodedBytes": 2407,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/research.index-DkkTO_J_.js.gz",
+        "codec": "gzip",
+        "originalBytes": 9507,
+        "encodedBytes": 2999,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/routes-CXotlbIQ.css.br",
+        "codec": "br",
+        "originalBytes": 20262,
+        "encodedBytes": 4153,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/routes-CXotlbIQ.css.gz",
+        "codec": "gzip",
+        "originalBytes": 20262,
+        "encodedBytes": 4833,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/routes-NVxHxtDU.js.br",
+        "codec": "br",
+        "originalBytes": 30657,
+        "encodedBytes": 7453,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/routes-NVxHxtDU.js.gz",
+        "codec": "gzip",
+        "originalBytes": 30657,
+        "encodedBytes": 8732,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions-B9UT7smA.js.br",
+        "codec": "br",
+        "originalBytes": 8633,
+        "encodedBytes": 2511,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions-B9UT7smA.js.gz",
+        "codec": "gzip",
+        "originalBytes": 8633,
+        "encodedBytes": 3120,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.ai-governance-cost-control-BEuh1UV0.js.br",
+        "codec": "br",
+        "originalBytes": 5587,
+        "encodedBytes": 1735,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.ai-governance-cost-control-BEuh1UV0.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5587,
+        "encodedBytes": 2242,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.ai-strategy-advisory-CN_KggSj.js.br",
+        "codec": "br",
+        "originalBytes": 5494,
+        "encodedBytes": 1579,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.ai-strategy-advisory-CN_KggSj.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5494,
+        "encodedBytes": 2032,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.custom-ai-product-development-SryLhizs.js.br",
+        "codec": "br",
+        "originalBytes": 5646,
+        "encodedBytes": 1787,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.custom-ai-product-development-SryLhizs.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5646,
+        "encodedBytes": 2310,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.digital-web-systems-D7QvGCyN.js.br",
+        "codec": "br",
+        "originalBytes": 5661,
+        "encodedBytes": 1755,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.digital-web-systems-D7QvGCyN.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5661,
+        "encodedBytes": 2265,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.internal-ai-assistants-B2gy5v84.js.br",
+        "codec": "br",
+        "originalBytes": 5445,
+        "encodedBytes": 1787,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.internal-ai-assistants-B2gy5v84.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5445,
+        "encodedBytes": 2306,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.workflow-automation-DnU4Su7d.js.br",
+        "codec": "br",
+        "originalBytes": 5549,
+        "encodedBytes": 1774,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/solutions.workflow-automation-DnU4Su7d.js.gz",
+        "codec": "gzip",
+        "originalBytes": 5549,
+        "encodedBytes": 2363,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/start-Dvji4cvz.js.br",
+        "codec": "br",
+        "originalBytes": 16038,
+        "encodedBytes": 4276,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/start-Dvji4cvz.js.gz",
+        "codec": "gzip",
+        "originalBytes": 16038,
+        "encodedBytes": 5023,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/styles-BGYCXDcn.css.br",
+        "codec": "br",
+        "originalBytes": 200770,
+        "encodedBytes": 25160,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/styles-BGYCXDcn.css.gz",
+        "codec": "gzip",
+        "originalBytes": 200770,
+        "encodedBytes": 31194,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/terms-Ra_5mzs2.js.br",
+        "codec": "br",
+        "originalBytes": 16043,
+        "encodedBytes": 3993,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/terms-Ra_5mzs2.js.gz",
+        "codec": "gzip",
+        "originalBytes": 16043,
+        "encodedBytes": 5005,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/useCyryxScrollAnimations-D_1QW3ee.js.br",
+        "codec": "br",
+        "originalBytes": 10685,
+        "encodedBytes": 3004,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/useCyryxScrollAnimations-D_1QW3ee.js.gz",
+        "codec": "gzip",
+        "originalBytes": 10685,
+        "encodedBytes": 3382,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/useSimulationClock-CTRAwM57.js.br",
+        "codec": "br",
+        "originalBytes": 6775,
+        "encodedBytes": 2373,
+        "matchesOriginal": true
+      },
+      {
+        "path": "assets/useSimulationClock-CTRAwM57.js.gz",
+        "codec": "gzip",
+        "originalBytes": 6775,
+        "encodedBytes": 2971,
+        "matchesOriginal": true
+      },
+      {
+        "path": "llms.txt.br",
+        "codec": "br",
+        "originalBytes": 4735,
+        "encodedBytes": 1495,
+        "matchesOriginal": true
+      },
+      {
+        "path": "llms.txt.gz",
+        "codec": "gzip",
+        "originalBytes": 4735,
+        "encodedBytes": 2017,
+        "matchesOriginal": true
+      },
+      {
+        "path": "robots.txt.br",
+        "codec": "br",
+        "originalBytes": 2037,
+        "encodedBytes": 281,
+        "matchesOriginal": true
+      },
+      {
+        "path": "robots.txt.gz",
+        "codec": "gzip",
+        "originalBytes": 2037,
+        "encodedBytes": 348,
+        "matchesOriginal": true
+      }
+    ],
+    "vercelOutputConfig": {
+      "version": 3,
+      "framework": {
+        "name": "nitro",
+        "version": "3.0.260603-beta"
+      },
+      "overrides": {},
+      "routes": [
+        {
+          "headers": {
+            "cache-control": "public, max-age=604800, stale-while-revalidate=86400"
+          },
+          "src": "/media/(.*)"
+        },
+        {
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable"
+          },
+          "src": "/assets/(.*)"
+        },
+        {
+          "handle": "filesystem"
+        },
+        {
+          "src": "/(.*)",
+          "dest": "/__server"
+        }
+      ]
+    },
+    "requests": [
+      {
+        "path": "/assets/styles-BGYCXDcn.css",
+        "requestedEncoding": null,
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "200770",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 200770,
+        "decodedBytes": 200770,
+        "decodedSHA256": "bc2d7d399522c8aaf549acbad79e7eada063875e02ba780c3b5d942fda6868c1",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/styles-BGYCXDcn.css",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "200770",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 200770,
+        "decodedBytes": 200770,
+        "decodedSHA256": "bc2d7d399522c8aaf549acbad79e7eada063875e02ba780c3b5d942fda6868c1",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/styles-BGYCXDcn.css",
+        "requestedEncoding": "gzip",
+        "status": 200,
+        "contentEncoding": "gzip",
+        "contentLength": "31194",
+        "vary": "Accept-Encoding",
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 31194,
+        "decodedBytes": 200770,
+        "decodedSHA256": "bc2d7d399522c8aaf549acbad79e7eada063875e02ba780c3b5d942fda6868c1",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/styles-BGYCXDcn.css",
+        "requestedEncoding": "br",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "25160",
+        "vary": "Accept-Encoding",
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 25160,
+        "decodedBytes": 200770,
+        "decodedSHA256": "bc2d7d399522c8aaf549acbad79e7eada063875e02ba780c3b5d942fda6868c1",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/styles-BGYCXDcn.css",
+        "requestedEncoding": "gzip, br",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "25160",
+        "vary": "Accept-Encoding",
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 25160,
+        "decodedBytes": 200770,
+        "decodedSHA256": "bc2d7d399522c8aaf549acbad79e7eada063875e02ba780c3b5d942fda6868c1",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/styles-BGYCXDcn.css",
+        "requestedEncoding": "unsupported",
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "200770",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 200770,
+        "decodedBytes": 200770,
+        "decodedSHA256": "bc2d7d399522c8aaf549acbad79e7eada063875e02ba780c3b5d942fda6868c1",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/styles-BGYCXDcn.css.br",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "25160",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 25160,
+        "decodedBytes": 200770,
+        "decodedSHA256": "bc2d7d399522c8aaf549acbad79e7eada063875e02ba780c3b5d942fda6868c1",
+        "matchesOriginal": true,
+        "directVariantDiagnostic": true
+      },
+      {
+        "path": "/assets/styles-BGYCXDcn.css.gz",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": "gzip",
+        "contentLength": "31194",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 31194,
+        "decodedBytes": 200770,
+        "decodedSHA256": "bc2d7d399522c8aaf549acbad79e7eada063875e02ba780c3b5d942fda6868c1",
+        "matchesOriginal": true,
+        "directVariantDiagnostic": true
+      },
+      {
+        "path": "/assets/index-BlBWUfT2.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "412466",
+        "vary": null,
+        "contentType": "text/javascript; charset=utf-8",
+        "wireBodyBytes": 412466,
+        "decodedBytes": 412466,
+        "decodedSHA256": "afb5f74c1d555f51fadee09ca712aabd7b92e8b45c61835918394b38e519859e",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/index-BlBWUfT2.js",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "412466",
+        "vary": null,
+        "contentType": "text/javascript; charset=utf-8",
+        "wireBodyBytes": 412466,
+        "decodedBytes": 412466,
+        "decodedSHA256": "afb5f74c1d555f51fadee09ca712aabd7b92e8b45c61835918394b38e519859e",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/index-BlBWUfT2.js",
+        "requestedEncoding": "gzip",
+        "status": 200,
+        "contentEncoding": "gzip",
+        "contentLength": "125555",
+        "vary": "Accept-Encoding",
+        "contentType": "text/javascript; charset=utf-8",
+        "wireBodyBytes": 125555,
+        "decodedBytes": 412466,
+        "decodedSHA256": "afb5f74c1d555f51fadee09ca712aabd7b92e8b45c61835918394b38e519859e",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/index-BlBWUfT2.js",
+        "requestedEncoding": "br",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "108124",
+        "vary": "Accept-Encoding",
+        "contentType": "text/javascript; charset=utf-8",
+        "wireBodyBytes": 108124,
+        "decodedBytes": 412466,
+        "decodedSHA256": "afb5f74c1d555f51fadee09ca712aabd7b92e8b45c61835918394b38e519859e",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/index-BlBWUfT2.js",
+        "requestedEncoding": "gzip, br",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "108124",
+        "vary": "Accept-Encoding",
+        "contentType": "text/javascript; charset=utf-8",
+        "wireBodyBytes": 108124,
+        "decodedBytes": 412466,
+        "decodedSHA256": "afb5f74c1d555f51fadee09ca712aabd7b92e8b45c61835918394b38e519859e",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/index-BlBWUfT2.js",
+        "requestedEncoding": "unsupported",
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "412466",
+        "vary": null,
+        "contentType": "text/javascript; charset=utf-8",
+        "wireBodyBytes": 412466,
+        "decodedBytes": 412466,
+        "decodedSHA256": "afb5f74c1d555f51fadee09ca712aabd7b92e8b45c61835918394b38e519859e",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/index-BlBWUfT2.js.br",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "108124",
+        "vary": null,
+        "contentType": "text/javascript; charset=utf-8",
+        "wireBodyBytes": 108124,
+        "decodedBytes": 412466,
+        "decodedSHA256": "afb5f74c1d555f51fadee09ca712aabd7b92e8b45c61835918394b38e519859e",
+        "matchesOriginal": true,
+        "directVariantDiagnostic": true
+      },
+      {
+        "path": "/assets/index-BlBWUfT2.js.gz",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": "gzip",
+        "contentLength": "125555",
+        "vary": null,
+        "contentType": "text/javascript; charset=utf-8",
+        "wireBodyBytes": 125555,
+        "decodedBytes": 412466,
+        "decodedSHA256": "afb5f74c1d555f51fadee09ca712aabd7b92e8b45c61835918394b38e519859e",
+        "matchesOriginal": true,
+        "directVariantDiagnostic": true
+      },
+      {
+        "path": "/assets/routes-CXotlbIQ.css",
+        "requestedEncoding": null,
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "20262",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 20262,
+        "decodedBytes": 20262,
+        "decodedSHA256": "a83a5e7af79687c30acf1e1d912affffd58e6a02dea1a42283a815deb94a96cd",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/routes-CXotlbIQ.css",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "20262",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 20262,
+        "decodedBytes": 20262,
+        "decodedSHA256": "a83a5e7af79687c30acf1e1d912affffd58e6a02dea1a42283a815deb94a96cd",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/routes-CXotlbIQ.css",
+        "requestedEncoding": "gzip",
+        "status": 200,
+        "contentEncoding": "gzip",
+        "contentLength": "4833",
+        "vary": "Accept-Encoding",
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 4833,
+        "decodedBytes": 20262,
+        "decodedSHA256": "a83a5e7af79687c30acf1e1d912affffd58e6a02dea1a42283a815deb94a96cd",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/routes-CXotlbIQ.css",
+        "requestedEncoding": "br",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "4153",
+        "vary": "Accept-Encoding",
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 4153,
+        "decodedBytes": 20262,
+        "decodedSHA256": "a83a5e7af79687c30acf1e1d912affffd58e6a02dea1a42283a815deb94a96cd",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/routes-CXotlbIQ.css",
+        "requestedEncoding": "gzip, br",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "4153",
+        "vary": "Accept-Encoding",
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 4153,
+        "decodedBytes": 20262,
+        "decodedSHA256": "a83a5e7af79687c30acf1e1d912affffd58e6a02dea1a42283a815deb94a96cd",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/routes-CXotlbIQ.css",
+        "requestedEncoding": "unsupported",
+        "status": 200,
+        "contentEncoding": null,
+        "contentLength": "20262",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 20262,
+        "decodedBytes": 20262,
+        "decodedSHA256": "a83a5e7af79687c30acf1e1d912affffd58e6a02dea1a42283a815deb94a96cd",
+        "matchesOriginal": true
+      },
+      {
+        "path": "/assets/routes-CXotlbIQ.css.br",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": "br",
+        "contentLength": "4153",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 4153,
+        "decodedBytes": 20262,
+        "decodedSHA256": "a83a5e7af79687c30acf1e1d912affffd58e6a02dea1a42283a815deb94a96cd",
+        "matchesOriginal": true,
+        "directVariantDiagnostic": true
+      },
+      {
+        "path": "/assets/routes-CXotlbIQ.css.gz",
+        "requestedEncoding": "identity",
+        "status": 200,
+        "contentEncoding": "gzip",
+        "contentLength": "4833",
+        "vary": null,
+        "contentType": "text/css; charset=utf-8",
+        "wireBodyBytes": 4833,
+        "decodedBytes": 20262,
+        "decodedSHA256": "a83a5e7af79687c30acf1e1d912affffd58e6a02dea1a42283a815deb94a96cd",
+        "matchesOriginal": true,
+        "directVariantDiagnostic": true
+      }
+    ]
+  },
+  "captures": [
+    {
+      "profile": "desktop",
+      "pixelFilesExactlyEqual": true,
+      "rows": [
+        {
+          "version": "before",
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "initial": {
+            "h1": "Custom software and AI for the way your business works.",
+            "cta": {
+              "top": 789.671875,
+              "bottom": 843.671875,
+              "left": 220,
+              "right": 523.53125
+            },
+            "overflow": false
+          },
+          "refreshed": {
+            "overflow": false,
+            "h1": "Custom software and AI for the way your business works."
+          },
+          "pageErrors": [],
+          "failedLocalResponses": [],
+          "screenshot": "before-desktop.png",
+          "sha256": "83dd77d15aabc93064342040a06f217f104b1620febd32c0d9d87851c5410441"
+        },
+        {
+          "version": "after",
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "initial": {
+            "h1": "Custom software and AI for the way your business works.",
+            "cta": {
+              "top": 789.671875,
+              "bottom": 843.671875,
+              "left": 220,
+              "right": 523.53125
+            },
+            "overflow": false
+          },
+          "refreshed": {
+            "overflow": false,
+            "h1": "Custom software and AI for the way your business works."
+          },
+          "pageErrors": [],
+          "failedLocalResponses": [],
+          "screenshot": "after-desktop.png",
+          "sha256": "83dd77d15aabc93064342040a06f217f104b1620febd32c0d9d87851c5410441"
+        }
+      ]
+    },
+    {
+      "profile": "mobile",
+      "pixelFilesExactlyEqual": true,
+      "rows": [
+        {
+          "version": "before",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "initial": {
+            "h1": "Custom software and AI for the way your business works.",
+            "cta": {
+              "top": 519.5625,
+              "bottom": 573.5625,
+              "left": 20,
+              "right": 370
+            },
+            "overflow": false
+          },
+          "refreshed": {
+            "overflow": false,
+            "h1": "Custom software and AI for the way your business works."
+          },
+          "pageErrors": [],
+          "failedLocalResponses": [],
+          "screenshot": "before-mobile.png",
+          "sha256": "6d0f47b3c8fec5cf2cadb60e8963246be75e09b8bd632832670febbd33d752f4"
+        },
+        {
+          "version": "after",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "initial": {
+            "h1": "Custom software and AI for the way your business works.",
+            "cta": {
+              "top": 519.5625,
+              "bottom": 573.5625,
+              "left": 20,
+              "right": 370
+            },
+            "overflow": false
+          },
+          "refreshed": {
+            "overflow": false,
+            "h1": "Custom software and AI for the way your business works."
+          },
+          "pageErrors": [],
+          "failedLocalResponses": [],
+          "screenshot": "after-mobile.png",
+          "sha256": "6d0f47b3c8fec5cf2cadb60e8963246be75e09b8bd632832670febbd33d752f4"
+        }
+      ]
+    }
+  ],
+  "functionalQA": {
+    "assistantEnabled": true,
+    "localStandIns": true,
+    "stats": {
+      "startTime": "2026-10-05T03:06:51.326Z",
+      "duration": 201409.83599999998,
+      "expected": 182,
+      "skipped": 1,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "unitTests": 49,
+    "unitAssertions": 150,
+    "initialWrongHarness": {
+      "assistantEnabled": false,
+      "assistantFailures": 6,
+      "menuSelectionTimeouts": 1,
+      "expected": 175,
+      "skipped": 1,
+      "unexpected": 7,
+      "flaky": 0
+    }
+  },
+  "checks": {
+    "normalVercelBuild": "pass",
+    "standaloneNodeBuild": "pass",
+    "typecheck": "pass",
+    "changedConfigLint": "pass",
+    "globalLint": "128 errors / 10 warnings in unchanged files",
+    "formatAndDiff": "pass"
+  },
+  "scope": {
+    "liveSubmissions": false,
+    "merge": false,
+    "deployment": false,
+    "infraChange": false,
+    "thresholdChange": false,
+    "visualChange": false
+  }
+}

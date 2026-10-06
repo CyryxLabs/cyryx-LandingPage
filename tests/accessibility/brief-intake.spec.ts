@@ -3,9 +3,21 @@ import { expectPageHydrated } from "../support/page-ready";
 
 const MOCK_ORIGIN = "http://127.0.0.1:4599";
 
+type RecordedBody = {
+  email?: string;
+  files?: Array<{ name: string; mime: string }>;
+  path?: string;
+  contact?: { email: string };
+  kind?: string;
+  requirements?: { projectName: string };
+  attachments?: Array<{ name: string; mime: string; sha256: string }>;
+  quality?: { score: number };
+  consent?: { privacyNoticeVersion: string };
+};
+
 type RecordedCall = {
   fn: string;
-  body: Record<string, any> | null;
+  body: RecordedBody | null;
   signatureValid?: boolean;
   idempotencyKey?: string | null;
 };

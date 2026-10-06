@@ -13,10 +13,17 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync } from "node:fs";
 
 const budgetKeys = [
-  "LH_PERF_MIN", "LH_A11Y_MIN", "LH_SEO_MIN",
-  "LH_LCP_MAX_MOBILE", "LH_LCP_MAX_DESKTOP",
-  "LH_TBT_MAX_MOBILE", "LH_TBT_MAX_DESKTOP", "LH_CLS_MAX",
-  "AXE_FAIL_ON", "FORBIDDEN_TERMS_FILE", "POST_JSONLD_DIFF",
+  "LH_PERF_MIN",
+  "LH_A11Y_MIN",
+  "LH_SEO_MIN",
+  "LH_LCP_MAX_MOBILE",
+  "LH_LCP_MAX_DESKTOP",
+  "LH_TBT_MAX_MOBILE",
+  "LH_TBT_MAX_DESKTOP",
+  "LH_CLS_MAX",
+  "AXE_FAIL_ON",
+  "FORBIDDEN_TERMS_FILE",
+  "POST_JSONLD_DIFF",
 ];
 console.log("Active quality budgets:");
 for (const k of budgetKeys) {
@@ -35,17 +42,27 @@ const steps = [
   ["Build combined HTML report", "node", ["scripts/summarize-quality.mjs"]],
 ];
 
-for (const dir of ["a11y-report", "lighthouse-report/mobile", "lighthouse-report/desktop", "playwright-report"]) {
+for (const dir of [
+  "a11y-report",
+  "lighthouse-report/mobile",
+  "lighthouse-report/desktop",
+  "playwright-report",
+]) {
   mkdirSync(dir, { recursive: true });
 }
 
 let failed = false;
 for (const [label, cmd, args] of steps) {
   console.log(`\n▶ ${label}`);
-  const r = spawnSync(cmd, args, { stdio: "inherit", env: { ...process.env, CI: process.env.CI ?? "1", A11Y_REPORT_DIR: "a11y-report" } });
+  const r = spawnSync(cmd, args, {
+    stdio: "inherit",
+    env: { ...process.env, CI: process.env.CI ?? "1", A11Y_REPORT_DIR: "a11y-report" },
+  });
   if (r.status !== 0) {
     failed = true;
-    console.error(`✖ ${label} failed (exit ${r.status}). Continuing so all artifacts are produced.`);
+    console.error(
+      `✖ ${label} failed (exit ${r.status}). Continuing so all artifacts are produced.`,
+    );
   }
 }
 

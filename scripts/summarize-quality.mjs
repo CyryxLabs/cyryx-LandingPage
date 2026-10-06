@@ -70,7 +70,9 @@ if (violations.length) {
   lines.push("✅ No axe-core violations.");
 }
 lines.push("");
-lines.push("Artifacts: `lighthouse-report`, `a11y-report`, `playwright-report` (see workflow run).");
+lines.push(
+  "Artifacts: `lighthouse-report`, `a11y-report`, `playwright-report` (see workflow run).",
+);
 
 // Optional: surface the JSON-LD snapshot diff inline when UPDATE_JSONLD_SNAPSHOT ran.
 // Gate via POST_JSONLD_DIFF (defaults to "1"; set to "0" to disable in PR comment).
@@ -94,11 +96,15 @@ writeFileSync("quality-summary.md", md);
 
 // --- Single HTML quality report ---------------------------------------------
 function esc(s) {
-  return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  return String(s ?? "").replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+  );
 }
-const runUrl = process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
-  ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
-  : null;
+const runUrl =
+  process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
+    ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+    : null;
 const sarifLink = runUrl ? `${runUrl}#artifacts` : "a11y-report/axe.sarif";
 function lhCard(label, r, dir) {
   if (!r) return `<section><h3>${label}</h3><p>n/a</p></section>`;
@@ -116,7 +122,10 @@ function lhCard(label, r, dir) {
 }
 const violationsHtml = violations.length
   ? `<table><thead><tr><th>Project</th><th>Rule</th><th>Impact</th><th>Selector</th></tr></thead><tbody>${violations
-      .map((v) => `<tr><td>${esc(v.project)}</td><td><code>${esc(v.id)}</code></td><td>${esc(v.impact ?? "-")}</td><td><code>${esc(v.targets[0] ?? "-")}</code></td></tr>`)
+      .map(
+        (v) =>
+          `<tr><td>${esc(v.project)}</td><td><code>${esc(v.id)}</code></td><td>${esc(v.impact ?? "-")}</td><td><code>${esc(v.targets[0] ?? "-")}</code></td></tr>`,
+      )
       .join("")}</tbody></table>`
   : `<p>✅ No axe-core violations.</p>`;
 const html = `<!doctype html>

@@ -6,8 +6,7 @@
       "startServerReadyPattern": "Local:",
       "numberOfRuns": 3,
       "settings": {
-        "preset": "desktop",
-        "emulatedFormFactor": "mobile",
+        "formFactor": "mobile",
         "throttlingMethod": "simulate",
         "onlyCategories": ["performance", "accessibility", "seo", "best-practices"]
       }

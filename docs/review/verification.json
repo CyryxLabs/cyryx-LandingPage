@@ -1,0 +1,91 @@
+{
+  "runtimeSourceCommit": "d7deb3c9919337b1d26772183c2f031180b38aad",
+  "previousDraft": "e54666049ca2c057fc644cc64d1d0b8db39c60fa",
+  "browsers": [
+    {
+      "name": "desktop",
+      "sourceRevision": "d7deb3c9919337b1d26772183c2f031180b38aad",
+      "heroHeight": 1080,
+      "ctaVisible": true,
+      "refreshedY": 0,
+      "dimensions": {
+        "width": 1920,
+        "scrollWidth": 1920,
+        "height": 7328
+      },
+      "activeAnimations": 0,
+      "imageFailures": [],
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "name": "mobile",
+      "sourceRevision": "d7deb3c9919337b1d26772183c2f031180b38aad",
+      "heroHeight": 844,
+      "ctaVisible": true,
+      "refreshedY": 0,
+      "dimensions": {
+        "width": 390,
+        "scrollWidth": 390,
+        "height": 10663
+      },
+      "activeAnimations": 0,
+      "imageFailures": [],
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    }
+  ],
+  "assets": {
+    "before-desktop-hero.png": "dac9a9bc0a968873ce25564b619ca6fa77ba6894319539e9e1f94205046125bf",
+    "before-mobile-hero.png": "2be8634f273e1454db396ba909e9f88af7bf2050c5362e0caee84138d03599b4",
+    "desktop-controlled-execution.png": "6f63554a339cd7ee92dc6a1a8fc3fc4e09e6852d7444407f105f01d078a45d94",
+    "desktop-hero.png": "8ce6eda2de49454b599547531e7de21037b957b2820a7e571058b31cbacf2dc1",
+    "desktop-operating-model.png": "5773dc1009f843713211fbc8cbb4a9d31c3a1174c4b09b8da5401e860883c97d",
+    "desktop-our-products.png": "0bcc5d0769085f179dc3df0d360f339f8ae8bbcebb2a8d0311f2d5308421b365",
+    "mobile-contact.png": "acc57c1a0abc69da5f7a9cb90280435f47ff44a7c1d1e0b116b3700087c080a8",
+    "mobile-draft.png": "f7b08f892e4615ee54dd35573bbbad39d5001ad0a6865f03063c2ac12fdb185b",
+    "mobile-hero.png": "b7ac0dca5e3f303b7f76b513f68aaf22a63e6a14baf19a2e52331bf9a4020b41",
+    "mobile-invoice.png": "c38ba758474521fe53c52929e3012b1108c0333e4bb752fc0719826a37ed1cf9",
+    "mobile-motion.mp4": "a2611b2b68ecf6c658975d0d462d096603df32bb5317d1ab95ac1cf9b475c6c4",
+    "mobile-security.png": "04b7097d3f33c91b9e6db266da9577518d81ef81b6e9c7ab826362b35460a044",
+    "mobile-service-stage.png": "85466521312d6edfc0715cfb275f8c16091ab0ad62e2b547e9494dd2317d0c90"
+  },
+  "recording": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "durationSeconds": 26.4,
+    "kind": "actual browser screen recording"
+  },
+  "tests": {
+    "unitPassed": 49,
+    "assertions": 150,
+    "matrixPassed": 630,
+    "matrixSkipped": 38,
+    "matrixFailed": 1,
+    "matrixFailure": "Repeated local server reached the existing careers visitor limit",
+    "freshServerConversionPassed": 38,
+    "freshServerConversionSkipped": 1,
+    "freshServerConversionFailed": 0,
+    "ctaIsolationRepeatPassed": 15,
+    "chromiumRoutePassed": 8,
+    "chromiumRouteSkipped": 1,
+    "chromiumRouteFailed": 1,
+    "routeFailure": "Unchanged /products/aexos React #418 text hydration; reproduced on clean main"
+  },
+  "environmentLimitations": [
+    "Library helper tools/list network failure before upload",
+    "WebKit and Firefox CDN downloads denied",
+    "Unchanged Google Fonts request denied in cloud; matching fallback used for before/after"
+  ]
+}

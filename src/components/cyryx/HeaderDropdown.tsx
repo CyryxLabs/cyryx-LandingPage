@@ -10,10 +10,7 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import {
-  NavigationGroup,
-  isNavigationItemActive,
-} from "@/lib/navigation";
+import { NavigationGroup, isNavigationItemActive } from "@/lib/navigation";
 import { hasNewPublication } from "@/data/publications";
 
 interface HeaderDropdownProps {
@@ -40,21 +37,23 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
           isActive
             ? "text-[var(--silver)] after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)] shadow-none"
             : "text-[var(--silver-dim)] hover:text-[var(--silver)]",
-          "motion-reduce:transition-none"
+          "motion-reduce:transition-none",
         )}
       >
         {group.label}
-        <ChevronDown 
-          className="ml-0.5 h-3 w-3 text-[var(--silver-dim)] transition-transform duration-150 group-data-[state=open]:rotate-180 motion-reduce:transition-none motion-reduce:transform-none" 
-          aria-hidden="true" 
+        <ChevronDown
+          className="ml-0.5 h-3 w-3 text-[var(--silver-dim)] transition-transform duration-150 group-data-[state=open]:rotate-180 motion-reduce:transition-none motion-reduce:transform-none"
+          aria-hidden="true"
         />
       </NavigationMenuTrigger>
-      
+
       <NavigationMenuContent className="motion-reduce:animate-none">
-        <div className={cn(
-          "grid gap-1 p-4 md:w-[240px]",
-          group.id === "solutions" && "md:w-[480px] md:grid-cols-2"
-        )}>
+        <div
+          className={cn(
+            "grid gap-1 p-4 md:w-[240px]",
+            group.id === "solutions" && "md:w-[480px] md:grid-cols-2",
+          )}
+        >
           {group.children.map((item) => {
             const isCurrent = isNavigationItemActive(pathname, item.href);
             return (
@@ -67,7 +66,7 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
                     isCurrent
                       ? "text-[var(--accent-glow)] bg-[var(--accent-glow)]/5"
                       : "text-[var(--silver-dim)] hover:text-[var(--silver)] hover:bg-[var(--silver)]/5",
-                    "motion-reduce:transition-none"
+                    "motion-reduce:transition-none",
                   )}
                   aria-current={isCurrent ? "page" : undefined}
                 >

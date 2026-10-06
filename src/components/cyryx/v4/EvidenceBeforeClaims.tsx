@@ -19,32 +19,32 @@ const ARTIFACTS: readonly { key: ArtifactKey; title: string; body: string }[] = 
   {
     key: "record",
     title: "Operating record",
-    body: "What happened, who approved it, and what it cost.",
+    body: "The source, the prepared draft and its review status.",
   },
 ];
 
 const BRIEF_ROWS: readonly [string, string][] = [
-  ["Objective", "Route supplier-invoice exceptions to the right approver the same day."],
-  ["In scope", "Invoice intake, classification, exception routing"],
+  ["Objective", "Prepare supplier-invoice drafts for a person to review."],
+  ["In scope", "Invoice intake, field extraction, accounting drafts"],
   ["Out of scope", "Payment execution, vendor onboarding"],
   ["Systems", "ERP (read) · shared inbox (read) · ticketing (write)"],
-  ["Authority limits", "No approvals above $5,000 · no changes to vendor master data"],
+  ["Authority limits", "No payment or approval execution · no changes to vendor master data"],
   ["Open risks", "Duplicate invoices across two legal entities"],
 ];
 
 const ACCEPTANCE_ROWS: readonly [string, string, string, string][] = [
-  ["Classification accuracy on 500 held-out invoices", "≥ 97%", "Evaluation report", "Met"],
-  ["Exceptions reaching a person within the agreed window", "100%", "Queue log", "Met"],
-  ["Model cost per processed invoice", "≤ $0.05", "Cost ledger", "Met"],
-  ["Actions outside granted authority", "0", "Policy gate log", "Met"],
+  ["Extracted fields match source invoices", "Agreed sample set", "Test report", "To test"],
+  ["Missing information reaches a person", "All test exceptions", "Review queue", "To test"],
+  ["Model cost per processed invoice", "Agreed budget", "Cost record", "To measure"],
+  ["Actions outside granted authority", "0", "Permission tests", "To test"],
 ];
 
 const RECORD_LINES: readonly [string, string, string][] = [
-  ["09:14:02", "agent · classifier", "Classified INV-2291 as price variance · $0.004"],
-  ["09:14:05", "policy gate", "Blocked auto-approval: $7,420 exceeds the $5,000 limit"],
-  ["09:14:05", "router", "Assigned to finance lead"],
-  ["10:02:40", "finance lead", "Approved with note: contract rate updated"],
-  ["10:02:41", "ledger", "Decision stored with inputs, approver and cost"],
+  ["09:14:02", "agent · classifier", "Extracted reference INV-2291 and total $7,420.00"],
+  ["09:14:05", "policy gate", "Checked required fields; retained source document"],
+  ["09:14:05", "router", "Created an accounting draft for review"],
+  ["10:02:40", "finance lead", "Pending human review; no approval recorded"],
+  ["10:02:41", "ledger", "Draft and source linked; no payment executed"],
 ];
 
 function SampleBadge() {
@@ -160,12 +160,12 @@ export function EvidenceBeforeClaims() {
               id="evidence-heading"
               className="max-w-[15ch] font-display text-[1.75rem] sm:text-[2.125rem] lg:text-[2.75rem] xl:text-[3.5rem] font-semibold leading-[1] tracking-[-0.045em] text-silver-gradient"
             >
-              Every engagement leaves evidence you can review.
+              A build you can understand.
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-            Before a system gets more trust, three documents make its design, its limits and its
-            behavior explicit. Here is what each one looks like.
+            A practical scope, test criteria and a record of the workflow help make a build
+            reviewable. These sample documents illustrate the invoice example—not client results.
           </p>
         </div>
 
