@@ -1,0 +1,122 @@
+[
+  {
+    "width": 390,
+    "height": 844,
+    "errors": [],
+    "hero": 812.515625,
+    "cta": 550.328125,
+    "areas": 683.515625,
+    "products": 1603.703125,
+    "overflow": 0,
+    "architecture": {
+      "x": 0,
+      "y": 66,
+      "width": 390,
+      "height": 215,
+      "top": 66,
+      "right": 390,
+      "bottom": 281,
+      "left": 0
+    },
+    "result": {
+      "x": 37,
+      "y": 554.203125,
+      "width": 316,
+      "height": 45.5,
+      "top": 554.203125,
+      "right": 353,
+      "bottom": 599.703125,
+      "left": 37
+    },
+    "postsAfterSample": [
+      "http://127.0.0.1:4324/api/public/web-vitals",
+      "http://127.0.0.1:4324/api/public/web-vitals",
+      "http://127.0.0.1:4324/api/public/web-vitals"
+    ],
+    "reduced": {
+      "doors": "none",
+      "world": "none",
+      "animations": 0
+    }
+  },
+  {
+    "width": 360,
+    "height": 844,
+    "errors": [],
+    "hero": 806.296875,
+    "cta": 544.109375,
+    "areas": 677.296875,
+    "products": 1665.984375,
+    "overflow": 0,
+    "architecture": {
+      "x": 0,
+      "y": 66,
+      "width": 360,
+      "height": 215,
+      "top": 66,
+      "right": 360,
+      "bottom": 281,
+      "left": 0
+    },
+    "result": {
+      "x": 37,
+      "y": 572.484375,
+      "width": 286,
+      "height": 63.5,
+      "top": 572.484375,
+      "right": 323,
+      "bottom": 635.984375,
+      "left": 37
+    },
+    "postsAfterSample": [
+      "http://127.0.0.1:4324/api/public/web-vitals",
+      "http://127.0.0.1:4324/api/public/web-vitals",
+      "http://127.0.0.1:4324/api/public/web-vitals"
+    ],
+    "reduced": {
+      "doors": "none",
+      "world": "none",
+      "animations": 0
+    }
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "errors": [],
+    "hero": 1021.515625,
+    "cta": 719.015625,
+    "areas": 842.515625,
+    "products": 1970.890625,
+    "overflow": 0,
+    "architecture": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1021.515625,
+      "top": 0,
+      "right": 1920,
+      "bottom": 1021.515625,
+      "left": 0
+    },
+    "result": {
+      "x": 842.453125,
+      "y": 452.890625,
+      "width": 830.546875,
+      "height": 50,
+      "top": 452.890625,
+      "right": 1673,
+      "bottom": 502.890625,
+      "left": 842.453125
+    },
+    "postsAfterSample": [
+      "http://127.0.0.1:4324/api/public/web-vitals",
+      "http://127.0.0.1:4324/api/public/web-vitals",
+      "http://127.0.0.1:4324/api/public/web-vitals"
+    ],
+    "reduced": {
+      "doors": "none",
+      "world": "none",
+      "animations": 0
+    }
+  }
+]

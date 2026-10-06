@@ -1,68 +1,71 @@
-# Cyryx homepage — mobile company narrative
+# Cyryx homepage — architecture, offer and working software
 
-Branch: `design/cinematic-cyryx-review`, [draft PR17](https://github.com/CyryxLabs/cyryx-LandingPage/pull/17). Exact runtime/test source: **e62a0579de38c4c3ade3122f60f87651f9e0f609**. The following evidence commit adds documentation and sanitized captures without changing that source. Final branch head and exact-head CI are recorded in the PR description.
+Branch: `design/cinematic-cyryx-review`, [draft PR17](https://github.com/CyryxLabs/cyryx-LandingPage/pull/17). Exact runtime/test source: **6242daa90bc43b3eaee9f6834238bf360fa8fe8e**. Its following evidence commit adds only review documents and sanitized captures. Final branch head and exact-head CI are recorded in the PR description.
 
-## Story and offer
+## The commercial story
 
-**Cyryx / AI & software company**. Headline: **From idea to software. From AI to action.** Subhead: “We develop our own AI products, build custom software for clients, and help teams decide what to build next.”
+**Cyryx / AI & software company**. Headline: **AI products. Software, made real.** Subhead: “Our own AI products. Custom software for clients. Practical advice on what to build next.” The three first-screen paths are **Our products**, **Custom development** and **Consulting**. **Tell us about your project**, **Explore Cyryx**, the short project brief / fit explanation and assistant remain immediately usable. Existing `/start?source=home`, `start_project` / `hero` and `see_how_we_work` / `hero` destinations and analytics identities remain intact.
 
-The first screen separates **Our products**, **Custom development** and **Consulting**, with **Tell us about your project**, **Explore Cyryx** and the assistant opener. The first step remains a short project brief and fit assessment. `/start?source=home`, `start_project` / `hero` and `see_how_we_work` / `hero` analytics identities remain intact. The founder section names Paulo without implying a large team.
+The supplied silver/teal Cyryx architecture is a large stage on desktop. Mobile has a separate215px focal composition above concise copy, rather than placing all the text over a dim image. Desktop keeps the finite opening architecture. Phone uses its existing smaller portrait still and a finite camera movement, avoiding the extra entrance image download.
 
-An original, explicitly illustrative HTML composition takes Documents / Systems / People through a brief into a usable workspace. Demo labels are at least12 CSS pixels on phones. Desktop shows it beside the hero; mobile shows the readable composition immediately after the compact first screen. Exactly one responsive version is visible. Content and contact remain available before JavaScript or scrolling.
+Immediately afterward, an original **Illustrative client application / sample data** turns “Please arrange an equipment inspection at Building B” into a specific service-desk interface. Work and Place retain the source. **Prepare visit** changes this local sample to **Visit draft prepared.** / “Equipment inspection · Building B · Ready for review”, retaining Source linked / Fields checked / Review next. **Reset example** reverses it. This sample does not make a network request, book a visit or submit an intake. Keyboard activation and live feedback are covered; normal web-vitals telemetry continues.
 
-The bright **Our own software** chapter follows the opening. AEXOS remains a **CLI-first framework**, with **core available on npm**, real install commands and existing product/license destinations. Own products remain separate from client services.
+The bright **Our own software** chapter follows. AEXOS remains a **CLI-first framework**, with **core available on npm**, inspectable install commands and the existing product/license destinations. Products remain distinct from client work. Services show applications, websites and internal tools; integrations, data connections and repetitive workflow automation; AI assistants, agents and features around a defined task. Their existing touch/keyboard controls replace the adjacent illustrative interface with concrete deliverables.
 
-Custom development provides concrete outputs: applications, websites and internal tools; API integrations, data connections and workflow automation; AI assistants, agents and features around a defined task. Three touch/keyboard controls visibly replace the nearby demonstration with a task workspace, connected request workflow or bounded document-search assistant. Sample labels make their illustrative status explicit. All descriptions and service destinations remain readable below the stage.
+Consulting explains discovery notes and requirements, prototypes and feasibility tests, and a practical build plan. Only afterward does the illustrative invoice demonstrate document → structured fields → accounting draft, ending **Ready for review**. **How we build** preserves permissions, human review, testing and cost practices. Founder-led identity names Paulo without team-size claims. Public code and research remain inspectable resources rather than customer case studies. MAAX's existing308 lifecycle and separate PR16 remain untouched. No customers, results, certifications, deployments or user counts were invented.
 
-Consulting explains discovery notes and requirements, prototypes and feasibility tests, and practical build plans. Large numbered steps provide a quieter composition. Only afterward does the illustrative invoice demonstrate document → structured fields → accounting draft, ending **Ready for review**. It never depicts payment approval or a client result.
+## Three finite scenes and complete static content
 
-**How we build** retains permissions, human review, testing and cost practices. Public code and research are inspectable resources, not client case studies. MAAX remains discontinued with its308 redirect; PR16 remains separate. No invented customers, outcomes, certifications, deployments or user counts appear.
+The architecture opens once on desktop; mobile uses the smaller focal still and a short camera movement. Building B travels from its original request to the Place field; the sample button produces a visible draft with retained evidence. The later invoice transforms a document into a structured record and reviewable draft. Product commands and consulting lines enter quietly near the viewport. No scene pins native scrolling, loops constantly or gates contact.
 
-## Motion and access
+All copy, fields and illustrations are complete in SSR. At most two selected hero stills load on desktop and one on phones; there is no canvas, video or full sequence preload. Scoped useGSAP/matchMedia and near-viewport observers clean up on unmount/media changes. Reduced motion and Save-Data retain intentional static states; dynamic reduced motion restores actors and stops animations. Existing forms, consent, validation, honeypots, attribution, signing, endpoints and retry/draft recovery contracts are unchanged.
 
-Finite GSAP scenes assemble brief/connector/workspace, draw invoice connections, and introduce product commands and consulting rules near the viewport. Service selection uses a short arrival transition between different HTML interfaces. Native scrolling remains unpinned, with no ambient loop or forced introduction. Scoped useGSAP/matchMedia contexts and IntersectionObserver cleanup handle unmount/media changes. Reduced motion and Save-Data retain complete static content; dynamic reduced motion restores real actors to identity transforms and stops running animations. Keyboard, focus, accessible live selection feedback and no-JavaScript content remain covered.
+## Actual captures and measured access
 
-## Actual before/after evidence
+[Before: published-source reproduction](review/published-dd6-mobile/README.md). [Previous mobile source718](https://github.com/CyryxLabs/cyryx-LandingPage/blob/718240e8eb2c19321f7c82d81a79e6506b708ee1/docs/review/mobile-focused/README.md). [Current actual screenshots, recordings and measurements](review/aperture-working/README.md).
 
-[Before: published-source reproduction](review/published-dd6-mobile/README.md). [After: screenshots and recording](review/mobile-focused/README.md). These actual Chromium captures are **local production reproductions, not live deployment verification**. Public preview access fails here with Envoy CONNECT403 / ERR_TUNNEL_CONNECTION_FAILED. No form was submitted during recording.
+These are local production Chromium captures at1920×1080,390×844 and360×844, not live deployment verification. Direct screenshots and actual browser recordings were visually inspected. Recordings include opening, the sample action/reset, products, scroll up, refresh and keyboard focus. Refresh returnsY0; first focus is Skip to content. No overflow or page/console errors were observed. Demo labels remain at least12px; reduced-motion captures have no running animations. No live lead/email was submitted.
 
-| Measurement                            | 360×844 | 390×844 | 1920×1080 |
-| -------------------------------------- | ------: | ------: | --------: |
-| Hero height                            |   793px |   799px |    1072px |
-| Primary CTA bottom                     |   442px |   448px |     706px |
-| Three business areas begin             |   556px |   562px |     845px |
-| Product chapter begins                 |  1273px |  1279px |    1072px |
-| Workflow result bottom after selection |   570px |   552px |     562px |
-| Agent result bottom after selection    |   529px |   529px |     581px |
-| Horizontal overflow                    |       0 |       0 |         0 |
+| Measurement                                      | 360×844 | 390×844 | 1920×1080 |
+| ------------------------------------------------ | ------: | ------: | --------: |
+| Hero height                                      |   806px |   813px |    1022px |
+| Primary CTA bottom                               |   544px |   550px |     719px |
+| Three company areas begin                        |   677px |   684px |     843px |
+| Product chapter begins                           |  1666px |  1604px |    1971px |
+| Prepared sample result bottom in its review view |   636px |   600px |     503px |
+| Horizontal overflow                              |       0 |       0 |         0 |
 
-Earlier phone SVG labels rendered at approximately4–7.7px; new demo labels are12px or larger. The product chapter previously began at4280/4249px. The current service result clears the sticky contact CTA after a real tap, without scrolling to reveal the response. Scroll down/up, refresh, keyboard focus, reduced motion and console were checked: refreshY0, first focus Skip to content, empty page errors. The14.24-second recording covers opening → AEXOS → touch workflow/agent → top → refresh.
+## Verification and retained failures
 
-## QA: retain the failure and skips
+Node and Vercel builds, typecheck,53unit tests/182assertions, deterministic1333SEO integrity checks and full lint passed. Lint retains0errors/9existing warnings. Chromium desktop/Android public navigation passed13checks with1desktop-only menu skip, without retries. Local WebKit/Firefox executables remain unavailable; exact-head CI supplies Safari/Windows verification. Skips and environment limitations are not passes.
 
-Final local production Chromium matrix, retries disabled: **648passed /38conditional skips /1failed** in6.6minutes. The failure was the unchanged careers form's5-second `Introduction received.` assertion in forced colors. Its complete unchanged test then passed in all three profiles in isolation (3passed,5.1seconds), including signed CRM introduction and absence of lead-submission assertions. The cause remains unproven; the full run is not entirely green. All form traffic used browser mocks or synthetic local CRM/Gemini stand-ins; no real lead/email was submitted.
+The full local three-profile production matrix, retries disabled, finished **654passed /38conditional skips /1failed** in8.0minutes. Every new-scene/form/SEO/accessibility assertion passed. The unchanged desktop **Child selection closes the menu** header test failed waiting to click AEXOS. Its retained trace shows the Products trigger closed immediately after its opening click, with the closing viewport detaching before AEXOS could be clicked. Hover/click timing is a plausible inference from the existing Radix trigger handlers, not a proven cause. The entire unchanged header suite then passed30checks across all three profiles in isolation, without retries. No header runtime, assertion, force-click, sleep or timeout was altered. The full local run is not entirely green.
 
-The preceding candidate full run had647passes/38skips and two header link-stability failures. Header runtime was unchanged. A delayed-font diagnostic showed identical navigation movement in published dd6 and this source (trigger x402.125→402.734px). Hydration alone does not settle pointer geometry; this supports the readiness guard but does not prove the whole failure mechanism. The fixture now awaits `document.fonts.ready` and the existing `data-cyryx-scroll-ready=true`. No forced click, sleep, increased timeout or weakened assertion was added. All30header checks passed in isolation and in the final matrix.
+The initial candidate run had649passes/38skips/6failures: the unchanged1688px product-position bound failed at360px in three profiles, and three paragraph assertions still expected the previous copy. Smaller mobile spacing fixed the geometry to1666px without changing that bound; assertions now require the exact complete new three-area copy. All six assertions passed in the full run. After the bounded phone asset/crop adjustment, all63affected cinematic/static/motion checks passed across all three profiles without retries.
 
-Obsolete SVG selectors now check the actual HTML demonstration and invoice actors, retaining native-scroll, no pinning, viewport, readable content, touch, keyboard and reduced-motion contracts. New360/390 tests require readable labels, early products and actual visible selection feedback.
+All form success/error/interruption/retry/recovery checks used browser mocks or synthetic local CRM/Gemini stand-ins only. Fresh production server state avoided the previously diagnosed five-per-hour synthetic talent quota exhaustion. The existing signed CRM event expectations were not weakened.
 
-Production Chromium desktop/Android navigation: **13passed /1desktop-only menu skip**, no retries, with strict AEXOS hydration/reload/navigation checks. Typecheck, Node build,53unit tests/182assertions and1333SEO integrity checks passed. Full lint:0errors/9existing warnings. Vercel build and exact-head CI results are maintained in the PR. Local WebKit/Firefox executables remain unavailable; new exact-head CI is required for Safari/Windows. Skips and environment limitations are not passes.
+## Performance: complete samples, unchanged budgets
 
-## Performance: all six samples
+Lighthouse12.1.0 uses fresh Chromium processes with genuine default mobile simulation and the desktop profile. No browser matrix, build or video encoder ran concurrently with these measurements. All six samples, profiles, warnings, audit errors and CPU benchmarks are retained in [performance.json](review/aperture-working/performance.json).
 
-Lighthouse12.1.0, six fresh Chromium processes, genuine mobile/default simulation and desktop profile, without competing browser tests. Every run scored100 for accessibility/SEO/best practices, had no warnings or failed requests, and met the unchanged local budgets. [All samples, profiles and host benchmarks](review/mobile-focused/performance.json).
+All six local numeric samples meet the unchanged budgets. Mobile LCP has only about42–44ms of margin; these are bounded measurements, not production telemetry or a causal comparison. Accessibility/SEO/best-practices scored100, with no report-level warnings or failed requests. Several diagnostic insight audits failed with a trace-engine frame_sequence dependency error; the same errors exist in the earlier local source reports. Those diagnostic audits are unavailable, not passed. All errors and CPU benchmarks are retained; exact-head CI remains separate evidence.
 
-| Profile/run | Performance |    LCP | TBT | Max potential FID | CLS |
-| ----------- | ----------: | -----: | --: | ----------------: | --: |
-| Mobile1     |          87 | 3305ms | 0ms |              43ms |   0 |
-| Mobile2     |          89 | 3053ms | 0ms |              46ms |   0 |
-| Mobile3     |          87 | 3305ms | 0ms |              47ms |   0 |
-| Desktop1    |         100 |  661ms | 0ms |              16ms |   0 |
-| Desktop2    |         100 |  726ms | 0ms |              16ms |   0 |
-| Desktop3    |         100 |  701ms | 0ms |              16ms |   0 |
+| Profile/run | Performance |    LCP |   TBT | Max potential FID |      CLS |
+| ----------- | ----------: | -----: | ----: | ----------------: | -------: |
+| Mobile1     |          86 | 3456ms |   0ms |              47ms | 0.000000 |
+| Mobile2     |          86 | 3458ms | 1.5ms |              53ms | 0.000000 |
+| Mobile3     |          86 | 3458ms |   8ms |              58ms | 0.000000 |
+| Desktop1    |          99 |  770ms |   0ms |              16ms | 0.000000 |
+| Desktop2    |          99 |  771ms |   0ms |              16ms | 0.000000 |
+| Desktop3    |          99 |  770ms |   0ms |              17ms | 0.000001 |
 
-Mobile CPU benchmark indices:2805.5/2726.5/2548; desktop2734.5/2711.5/2538.5. These bounded local measurements are not production telemetry or a paired causal comparison. Baseline319's [terminal-success CI37374217674](https://github.com/CyryxLabs/cyryx-LandingPage/actions/runs/37374217674) retained a mobile1827ms max-potential-FID run with CPU benchmark44.5/slow-host warning, then150/160ms on benchmarks2495/2495.5. Existing LHCI optimistic aggregation means job success does not prove every sample met every budget. Profiles, thresholds, sample counts and aggregation are unchanged.
+The preceding unoptimized architectural candidate measured mobile84/84/84, LCP3685/3690/3681ms, above the unchanged3500ms limit; TBT0/3.5/0.5ms, maxFID48/57/51ms, CLS0. Desktop99/99/99, LCP747/769/746ms. This justified replacing the phone's desktop40KB still with its existing22KB portrait still and removing the extra34KB entrance download on phones, while preserving the two-frame desktop scene. These changes do not relax profiles, thresholds or assertions.
 
-## Preview remains unchanged
+Source718's exact-head CI37393701622 previously passed all six jobs, main649/38 without flaky retries and Safari/Windows3each. Its first mobile sample nevertheless scored69 withTBT1136/maxFID947ms; later samples87/88 passed those limits. Existing LHCI optimistic aggregation means a job pass does not imply every sample met every budget. This historical baseline is not current-source proof, and its outlier is not attributed solely to host variance.
 
-[Existing public preview](https://cyryx-landing-page-es4r02dk7-contact-70575058s-projects.vercel.app/) remains `dpl_HBzE5h8p62HQ899ZjTUEvkofpdna`, source **dd6dd838c70cdbb69ab975797984b198521430d3**. It does not show this candidate. The owner coordinates any next preview deployment. This revision performs no deployment, production promotion, new infrastructure/access or paid service.
+## Preview and remaining review
+
+[Existing public preview](https://cyryx-landing-page-es4r02dk7-contact-70575058s-projects.vercel.app/) remains source **dd6dd838c70cdbb69ab975797984b198521430d3**, deployment `dpl_HBzE5h8p62HQ899ZjTUEvkofpdna`. It does not show this candidate. The external browser connection here returns ERR_TUNNEL_CONNECTION_FAILED. The owner coordinates a separate interactive preview after QA/CI; no deployment, production promotion, merge, paid service, infrastructure/access change or PR16 merge occurred.
+
+Saving the new captures to Library failed because its authenticated connection was unavailable. No new Library file was confirmed. Sanitized committed review assets are the fallback. Creative acceptance and live preview review remain pending; this is not a production-readiness claim.

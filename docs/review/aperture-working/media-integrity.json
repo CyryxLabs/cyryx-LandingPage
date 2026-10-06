@@ -1,0 +1,70 @@
+{
+  "runtime_source": "6242daa90bc43b3eaee9f6834238bf360fa8fe8e",
+  "captures": [
+    {
+      "path": "docs/review/aperture-working/LOCAL-1920-hero.jpg",
+      "bytes": 171352,
+      "sha": "3cd8c58f808593b96aacc874f460cbd78e6caf74"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-1920-visit-prepared.jpg",
+      "bytes": 121926,
+      "sha": "4722cab47684f304d2943836c88f85e7103b1e0a"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-360-hero.jpg",
+      "bytes": 50413,
+      "sha": "c9389fa758d3e88ff351fecc087d44090e2020b5"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-390-hero.jpg",
+      "bytes": 50281,
+      "sha": "0df5ebf16b70fb88c421a00a999f3b3ff021bf23"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-390-reduced.jpg",
+      "bytes": 50274,
+      "sha": "0d5b62673c0c1179b9b2dc25997336202cf9f904"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-390-request.jpg",
+      "bytes": 50726,
+      "sha": "9c0cb6ad9d3178ef6e9a3d39dd9f3bf6ebbcee70"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-390-visit-prepared.jpg",
+      "bytes": 50144,
+      "sha": "e6b3407d039b4d80f53f316e6f316a9f81246336"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-desktop-motion.webm",
+      "bytes": 1083634,
+      "sha": "0881c6024fed823ce8ecb0b460410082dbe27ab9"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-mobile-motion.webm",
+      "bytes": 355340,
+      "sha": "c4402918fbde542d35dc8afd917441b7564b4385"
+    }
+  ],
+  "videos": [
+    {
+      "path": "docs/review/aperture-working/LOCAL-mobile-motion.webm",
+      "duration_seconds": 11.16,
+      "viewport": [
+        390,
+        844
+      ],
+      "codec": "VP9"
+    },
+    {
+      "path": "docs/review/aperture-working/LOCAL-desktop-motion.webm",
+      "duration_seconds": 12.88,
+      "viewport": [
+        1920,
+        1080
+      ],
+      "codec": "VP9"
+    }
+  ]
+}
