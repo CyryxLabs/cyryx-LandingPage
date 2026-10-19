@@ -1,13 +1,15 @@
 import { expect, test } from "@playwright/test";
 
-// Homepage chapter order: 01 problem, 02 ways to engage, 03 how it runs,
-// 04 what you receive, 05 governance, 06 start.
+// Homepage chapter order: 01 problem, 02 what we do, 03 products, 04 who we serve,
+// 05 how it works, 06 AI you can trust, 07 questions, 08 start.
 const HOME_SECTIONS = [
-  "execution-gap",
-  "operating-model",
+  "problem",
+  "services",
+  "products",
+  "who-we-serve",
+  "how-it-works",
   "controlled-execution",
-  "evidence",
-  "security",
+  "faq",
   "contact",
 ] as const;
 
@@ -83,7 +85,7 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   const primaryCta = page.locator('section[data-hero] a[data-cta="primary"]');
   await expect(primaryCta).toHaveAttribute("href", "/start?source=home");
   const secondaryCtaLabel = page.locator('section[data-hero] a[data-cta="secondary"] > span');
-  await expect(secondaryCtaLabel).toHaveText("See how we work");
+  await expect(secondaryCtaLabel).toHaveText("See what we build");
   const secondaryCtaColors = await secondaryCtaLabel.evaluate((element) => {
     const style = getComputedStyle(element);
     return {
@@ -128,8 +130,10 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   expect(layout.scrollWidth, "Safari mobile must not overflow horizontally").toBeLessThanOrEqual(
     layout.clientWidth + 1,
   );
+  // Raised from 12,500 on 2026-10-19: the home now also carries products, who we
+  // serve, the three-step plan and the FAQ (positioning plan). Keep it bounded.
   expect(layout.scrollHeight, "Homepage mobile storytelling should remain compact").toBeLessThan(
-    12_500,
+    14_000,
   );
 });
 

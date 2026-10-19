@@ -12,14 +12,16 @@ import {
 test.describe("Navigation Model", () => {
   test("A. Top-level order", () => {
     const labels = PRIMARY_NAVIGATION.map((g) => g.label);
-    expect(labels).toEqual(["Products", "Solutions", "Research", "Company"]);
+    expect(labels).toEqual(["Products", "Services", "Research", "Company"]);
   });
 
-  test("A2. Products group lists the overview and AEXOS only", () => {
+  test("A2. Products group lists every product with its real home", () => {
     const products = PRIMARY_NAVIGATION.find((g) => g.id === "products");
     expect(products?.children).toEqual([
-      { label: "Products Overview", href: "/products" },
+      { label: "All products", href: "/products" },
       { label: "AEXOS", href: "/products/aexos" },
+      { label: "Onyx", href: "/products", hash: "onyx" },
+      { label: "ASTRA CRM", href: "/products", hash: "astra" },
     ]);
     const allLabels = PRIMARY_NAVIGATION.flatMap((g) => g.children.map((c) => c.label));
     const allHrefs = PRIMARY_NAVIGATION.flatMap((g) => g.children.map((c) => c.href));
@@ -28,15 +30,17 @@ test.describe("Navigation Model", () => {
   });
 
   test("B. CTA", () => {
-    expect(PRIMARY_NAVIGATION_CTA).toEqual({ label: "Start a project", href: "/start" });
+    expect(PRIMARY_NAVIGATION_CTA).toEqual({ label: "Get a free fit check", href: "/start" });
   });
 
   test("D. Uniqueness", () => {
     const ids = PRIMARY_NAVIGATION.map((g) => g.id);
     expect(new Set(ids).size).toBe(ids.length);
 
-    const allHrefs = PRIMARY_NAVIGATION.flatMap((g) => g.children.map((c) => c.href));
-    expect(new Set(allHrefs).size).toBe(allHrefs.length);
+    const allTargets = PRIMARY_NAVIGATION.flatMap((g) =>
+      g.children.map((c) => `${c.href}#${"hash" in c ? (c.hash ?? "") : ""}`),
+    );
+    expect(new Set(allTargets).size).toBe(allTargets.length);
 
     PRIMARY_NAVIGATION.forEach((group) => {
       const labels = group.children.map((c) => c.label);

@@ -16,11 +16,12 @@ const nonEmpty = (label: string, max = 600) =>
 export const CopyDocumentSchema = z.object({
   hero: z.object({
     eyebrow: nonEmpty("hero.eyebrow", 80),
-    headline: nonEmpty("hero.headline", 90),
+    headline: nonEmpty("hero.headline", 100),
     sub: nonEmpty("hero.sub", 260),
     rail: z.array(nonEmpty("hero.rail[]", 60)).max(3),
     ctaPrimary: nonEmpty("hero.ctaPrimary", 32),
     ctaSecondary: nonEmpty("hero.ctaSecondary", 32),
+    trust: nonEmpty("hero.trust", 90),
     assistantNote: nonEmpty("hero.assistantNote", 90),
   }),
   header: z.object({

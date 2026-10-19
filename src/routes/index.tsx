@@ -6,14 +6,17 @@ import { Hero } from "@/components/cyryx/Hero";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
 import { StoryChapter, StoryProgress } from "@/components/cyryx/StoryChapter";
-import { ExecutionGap } from "@/components/cyryx/v4/ExecutionGap";
-import { SecurityPosture } from "@/components/cyryx/v4/SecurityPosture";
-import { OperatingModel } from "@/components/cyryx/v4/OperatingModel";
 import { ControlledExecution } from "@/components/cyryx/v4/ControlledExecution";
-import { EvidenceBeforeClaims } from "@/components/cyryx/v4/EvidenceBeforeClaims";
 import { CompactStart } from "@/components/cyryx/v4/CompactStart";
 import { ProofStrip } from "@/components/cyryx/v4/ProofStrip";
 import { TeamBlock } from "@/components/cyryx/v4/TeamBlock";
+import { Problem } from "@/components/cyryx/v5/Problem";
+import { Services } from "@/components/cyryx/v5/Services";
+import { Products } from "@/components/cyryx/v5/Products";
+import { Audiences } from "@/components/cyryx/v5/Audiences";
+import { Plan } from "@/components/cyryx/v5/Plan";
+import { Faq } from "@/components/cyryx/v5/Faq";
+import { buildFaqJsonLd } from "@/data/offer";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import { absoluteSiteUrl, SITE_URL } from "@/lib/site-url";
 import {
@@ -23,9 +26,9 @@ import {
 } from "@/data/seo-entities";
 
 const HOME_URL = SITE_URL;
-const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
+const HOME_TITLE = "Cyryx Labs — Websites, Software & AI | US & Latin America";
 const HOME_DESCRIPTION =
-  "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision.";
+  "Websites, automations, custom software and AI for companies of every size. One accountable team, fixed timelines, and a human in control of every AI decision.";
 const HOME_SOCIAL_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20260723-1");
 
 export const Route = createFileRoute("/")({
@@ -101,9 +104,9 @@ export const Route = createFileRoute("/")({
                 name: "Cyryx Labs",
                 url: HOME_URL,
               },
-              description:
-                "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision.",
+              description: HOME_DESCRIPTION,
             },
+            buildFaqJsonLd(HOME_URL),
           ],
         }),
       },
@@ -164,21 +167,27 @@ function IndexPage() {
         <div className="cx-story relative" data-story-root>
           <StoryProgress />
           <StoryChapter index="01" label="The problem">
-            <ExecutionGap />
+            <Problem />
           </StoryChapter>
-          <StoryChapter index="02" label="Ways to engage">
-            <OperatingModel />
+          <StoryChapter index="02" label="What we do">
+            <Services />
           </StoryChapter>
-          <StoryChapter index="03" label="How it runs">
+          <StoryChapter index="03" label="Products">
+            <Products />
+          </StoryChapter>
+          <StoryChapter index="04" label="Who we serve">
+            <Audiences />
+          </StoryChapter>
+          <StoryChapter index="05" label="How it works">
+            <Plan />
+          </StoryChapter>
+          <StoryChapter index="06" label="AI you can trust">
             <ControlledExecution />
           </StoryChapter>
-          <StoryChapter index="04" label="What you receive">
-            <EvidenceBeforeClaims />
+          <StoryChapter index="07" label="Questions">
+            <Faq />
           </StoryChapter>
-          <StoryChapter index="05" label="Governance">
-            <SecurityPosture />
-          </StoryChapter>
-          <StoryChapter index="06" label="Start">
+          <StoryChapter index="08" label="Start">
             <TeamBlock />
             <CompactStart />
           </StoryChapter>

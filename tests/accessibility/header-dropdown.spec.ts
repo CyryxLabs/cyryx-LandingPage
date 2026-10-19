@@ -13,7 +13,7 @@ test.describe("Header Dropdown Accessibility", () => {
 
   test("Four top-level group triggers render", async ({ page }) => {
     await openHydrated(page);
-    const triggers = ["Products", "Solutions", "Research", "Company"];
+    const triggers = ["Products", "Services", "Research", "Company"];
     for (const name of triggers) {
       await expect(page.getByRole("button", { name, exact: true })).toBeVisible();
     }
@@ -41,10 +41,10 @@ test.describe("Header Dropdown Accessibility", () => {
     await expect(dropdownLink).not.toBeVisible();
   });
 
-  test("Opening Solutions closes Products", async ({ page }) => {
+  test("Opening Services closes Products", async ({ page }) => {
     await openHydrated(page);
     const pTrigger = page.getByRole("button", { name: "Products", exact: true });
-    const sTrigger = page.getByRole("button", { name: "Solutions", exact: true });
+    const sTrigger = page.getByRole("button", { name: "Services", exact: true });
 
     // Pointer behavior is covered above. Use keyboard activation here so this
     // state-coordination assertion is not coupled to layout shifts under load.

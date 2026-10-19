@@ -159,7 +159,7 @@ test("Skip link lands on main content and keyboard focus continues through Hero"
   expect(primaryHref).toBe("/start?source=home");
 
   const secondaryHref = await secondary.getAttribute("href");
-  expect(secondaryHref).toBe("/engagement-model");
+  expect(secondaryHref).toBe("#services");
 });
 
 test("Hero headline typography stays unclipped from 360px to 1024px", async ({ page }) => {

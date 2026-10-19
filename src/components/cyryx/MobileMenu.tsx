@@ -203,12 +203,13 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                   </AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-0.5 pb-2">
                     {group.children.map((item) => {
-                      const isItemActive = isNavigationItemActive(pathname, item.href);
+                      const isItemActive = isNavigationItemActive(pathname, item.href, item.hash);
                       return (
                         <Link
-                          key={item.href}
+                          key={`${item.href}#${item.hash ?? ""}`}
                           to={item.href}
-                          resetScroll
+                          hash={item.hash}
+                          resetScroll={!item.hash}
                           onClick={closeMenu}
                           className={cn(
                             "flex items-center min-h-[44px] px-4 py-3 rounded-md transition-colors",

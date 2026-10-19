@@ -43,14 +43,14 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     const productsTrigger = nav.getByRole("button", { name: /^Products$/ });
-    const solutionsTrigger = nav.getByRole("button", { name: /^Solutions$/ });
+    const solutionsTrigger = nav.getByRole("button", { name: /^Services$/ });
 
     // 9. Products opens
     await productsTrigger.click();
     await expect(productsTrigger).toHaveAttribute("aria-expanded", "true");
 
     // 12. Exact Products labels and hrefs
-    await expect(nav.getByRole("link", { name: "Products Overview" })).toHaveAttribute(
+    await expect(nav.getByRole("link", { name: "All products" })).toHaveAttribute(
       "href",
       "/products",
     );
@@ -71,7 +71,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     // 13. Exact Solutions labels and hrefs
-    const solutionsTrigger = nav.getByRole("button", { name: /^Solutions$/ });
+    const solutionsTrigger = nav.getByRole("button", { name: /^Services$/ });
     await solutionsTrigger.click();
     const solutions = [
       ["Digital & Web Systems", "/solutions/digital-web-systems"],
@@ -150,7 +150,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     // 20. CTA label and href
-    const cta = nav.getByRole("link", { name: "Start a project" });
+    const cta = nav.getByRole("link", { name: "Get a free fit check" });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "/start");
 
@@ -186,7 +186,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     for (let i = 0; i < 5; i++) {
       await page.keyboard.press("Tab");
     }
-    const cta = nav.getByRole("link", { name: "Start a project" });
+    const cta = nav.getByRole("link", { name: "Get a free fit check" });
     await expect(cta).toBeFocused();
 
     await page.keyboard.press("Tab");
@@ -210,7 +210,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     for (let i = 0; i < 10; i++) {
       await page.keyboard.press("Tab");
       const active = await page.evaluate(() => document.activeElement?.textContent);
-      if (active?.includes("AEXOS") || active?.includes("Products Overview")) {
+      if (active?.includes("AEXOS") || active?.includes("All products")) {
         foundHiddenLink = true;
       }
     }

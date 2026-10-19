@@ -29,7 +29,12 @@ function FooterLink({ item, className }: { item: FooterItem; className?: string 
   }
 
   return (
-    <Link to={item.href} className={cn(LINK_CLASS, className)} activeOptions={{ exact: true }}>
+    <Link
+      to={item.href}
+      hash={item.hash}
+      className={cn(LINK_CLASS, className)}
+      activeOptions={{ exact: true, includeHash: Boolean(item.hash) }}
+    >
       {item.label}
     </Link>
   );
@@ -87,7 +92,7 @@ export function Footer() {
                 Start here
               </p>
               <p className="mt-4 max-w-[22ch] font-display text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[var(--silver)] sm:text-4xl lg:text-5xl">
-                Have a workflow AI should run under control?
+                Have a website, system or AI project in mind?
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
@@ -128,8 +133,8 @@ export function Footer() {
           <div className="flex flex-col items-start">
             <CyryxLockup className="h-14" />
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-[var(--silver-dim)]">
-              We design, build and run AI systems that act inside your workflows, with clear
-              permissions, human approval and a record of every decision.
+              Websites, automations, custom software and AI — designed, built and run by one
+              accountable team. Port St. Lucie, Florida · serving the US and Latin America.
             </p>
             {showCtaBand ? null : (
               <a
@@ -189,7 +194,7 @@ export function Footer() {
                 </p>
                 <ul className="mt-5 space-y-3.5">
                   {group.children.map((item) => (
-                    <li key={item.label}>
+                    <li key={`${item.label}-${item.hash ?? ""}`}>
                       <FooterLink item={item} />
                     </li>
                   ))}

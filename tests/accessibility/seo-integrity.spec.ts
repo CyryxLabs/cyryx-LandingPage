@@ -112,7 +112,9 @@ test("public SEO graph is canonical, accessible, unique, and directly linked", a
       if (!anchor.href || anchor.href.startsWith("#") || /^(mailto|tel):/i.test(anchor.href))
         continue;
       const target = new URL(anchor.href, expectedUrl);
-      if (!target.hostname.endsWith("cyryxlabs.com")) continue;
+      // Product subdomains (aexos., onyx., crm.) are separate sites; only the main
+      // site must be linked through its canonical host.
+      if (!["cyryxlabs.com", "www.cyryxlabs.com"].includes(target.hostname)) continue;
       expect(target.origin, `${pathname}: internal link uses redirecting host ${anchor.href}`).toBe(
         PRIMARY_ORIGIN,
       );

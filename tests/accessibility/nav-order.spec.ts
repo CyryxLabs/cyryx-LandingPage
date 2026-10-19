@@ -2,7 +2,13 @@ import { test, expect } from "@playwright/test";
 
 test.describe.configure({ mode: "serial" });
 
-const EXPECTED_TOP_LEVEL = ["Products", "Solutions", "Research", "Company", "Start a project"];
+const EXPECTED_TOP_LEVEL = [
+  "Products",
+  "Services",
+  "Research",
+  "Company",
+  "Get a free fit check",
+];
 const ROUTES = ["/", "/products/aexos", "/solutions", "/research", "/company", "/contact"];
 
 for (const route of ROUTES) {
@@ -14,7 +20,7 @@ for (const route of ROUTES) {
     // HeaderDropdown triggers are buttons inside [role="menuitem"] if Radix default structure is followed,
     // or we check the specific navigation landmark.
     const topLevelElements = page.locator(
-      'header nav[aria-label="Primary"] button[data-radix-collection-item], header a[aria-label="Start a project"]',
+      'header nav[aria-label="Primary"] button[data-radix-collection-item], header a[aria-label="Get a free fit check"]',
     );
 
     const labels = await topLevelElements.evaluateAll((els) =>
@@ -50,14 +56,14 @@ test("mobile nav order + no Answers", async ({ page }) => {
     els.map((e) => e.textContent?.trim().replace(/\s+/g, " ") ?? ""),
   );
 
-  const EXPECTED_GROUPS = ["Products", "Solutions", "Research", "Company"];
+  const EXPECTED_GROUPS = ["Products", "Services", "Research", "Company"];
   expect(groupLabels).toEqual(EXPECTED_GROUPS);
 
   // CTA
   const cta = dialog.locator('a[href="/start"]');
   await expect(cta).toBeVisible();
   const ctaText = (await cta.textContent())?.trim().replace(/\s*→\s*$/i, "") ?? "";
-  expect(ctaText).toBe("Start a project");
+  expect(ctaText).toBe("Get a free fit check");
 
   // Verify Answers is not a group trigger
   expect(groupLabels.join("|")).not.toMatch(/Answers/i);

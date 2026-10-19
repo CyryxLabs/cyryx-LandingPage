@@ -6,9 +6,16 @@
     "legalName": "Cyryx Labs LLC",
     "alternateName": "Cyryx",
     "url": "https://www.cyryxlabs.com/",
-    "slogan": "The execution layer for enterprise AI.",
+    "slogan": "Websites, software and AI that grow your business.",
+    "areaServed": [
+      "United States",
+      "Latin America"
+    ],
     "email": "contact@cyryxlabs.com",
     "knowsAbout": [
+      "Website design and development",
+      "Workflow automation",
+      "Custom software and MVP development",
       "AI strategy and advisory",
       "AI product engineering",
       "Agentic workflow systems",
@@ -28,7 +35,7 @@
     "@type": "WebPage",
     "@id": "https://www.cyryxlabs.com/#webpage",
     "url": "https://www.cyryxlabs.com/",
-    "name": "Cyryx Labs — The Execution Layer for Enterprise AI",
-    "description": "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision."
+    "name": "Cyryx Labs — Websites, Software & AI | US & Latin America",
+    "description": "Websites, automations, custom software and AI for companies of every size. One accountable team, fixed timelines, and a human in control of every AI decision."
   }
 }

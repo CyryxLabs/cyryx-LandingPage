@@ -2,11 +2,13 @@ import type { ReactNode } from "react";
 
 const CHAPTERS = [
   ["01", "The problem"],
-  ["02", "Ways to engage"],
-  ["03", "How it runs"],
-  ["04", "What you receive"],
-  ["05", "Governance"],
-  ["06", "Start"],
+  ["02", "What we do"],
+  ["03", "Products"],
+  ["04", "Who we serve"],
+  ["05", "How it works"],
+  ["06", "AI you can trust"],
+  ["07", "Questions"],
+  ["08", "Start"],
 ] as const;
 
 type StoryChapterProps = {

@@ -36,14 +36,14 @@ test("discontinued /products/maax-studio permanently redirects to /products", as
   expect(await destination.text()).not.toMatch(/MAAX/);
 });
 
-test("homepage hero carries the registered headline and the project CTA", async ({ page }) => {
+test("homepage hero carries the approved headline and the fit-check CTA", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await openHome(page);
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(heading).toHaveText("The execution layer for enterprise AI.");
-  await expect(primary).toHaveText(/Start a project/);
+  await expect(heading).toHaveText("Websites, software and AI that grow your business — built and run by one accountable team.");
+  await expect(primary).toHaveText(/Get a free fit check/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
   // The approved scroll scene is kept: phones read the copy after the film.
   await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(1);
@@ -158,7 +158,7 @@ test("/start two-step brief ends with the instant first read and a structured v2
   await expectPageHydrated(page);
 
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Tell us what you want AI to change.",
+    "Tell us what you want to build or fix.",
   );
   await expect(page).toHaveTitle("Start a Project — Cyryx Labs");
   await expect(page.getByLabel("What kind of work?")).toHaveValue("Workflow Automation");
@@ -333,22 +333,24 @@ test("closing the assistant with Escape returns focus to the control that opened
 test("?copy=v4b renders hero option B and ?copy=v4a restores the default", async ({ page }) => {
   await openHome(page, "/?copy=v4b");
   await expect(page.locator("#hero-heading")).toHaveText(
-    "Put AI to work in your operations, without losing control of it.",
+    "From idea to running system: websites, MVPs and AI, with you in control.",
   );
   await expect(page.locator("section[data-hero]")).toContainText(
-    "Cyryx Labs builds agents, automations and internal assistants",
+    "Cyryx Labs designs and builds websites, automations, custom software and AI",
   );
   await expect(page.locator('section[data-hero] a[data-cta="primary"]')).toHaveText(
-    /Start a project/,
+    /Get a free fit check/,
   );
 
   // The choice is pinned in this browser...
   await openHome(page, "/");
   await expect(page.locator("#hero-heading")).toHaveText(
-    "Put AI to work in your operations, without losing control of it.",
+    "From idea to running system: websites, MVPs and AI, with you in control.",
   );
 
   // ...until the visitor opts back into the default.
   await openHome(page, "/?copy=v4a");
-  await expect(page.locator("#hero-heading")).toHaveText("The execution layer for enterprise AI.");
+  await expect(page.locator("#hero-heading")).toHaveText(
+    "Websites, software and AI that grow your business — built and run by one accountable team.",
+  );
 });

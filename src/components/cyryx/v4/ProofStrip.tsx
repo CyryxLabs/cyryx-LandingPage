@@ -16,19 +16,19 @@ type ProofItem = {
  */
 const ITEMS: readonly ProofItem[] = [
   {
+    label: "Based in Florida",
+    value: "Port St. Lucie, FL · serving the US & Latin America",
+    href: "/company",
+  },
+  {
+    label: "Our product",
+    value: "AEXOS · Core edition free on npm",
+    href: "/products/aexos",
+  },
+  {
     label: "Published research",
     value: "Cyryx Governance Protocol v1 · DOI 10.5281/zenodo.21045760",
     href: "/research/cgp-v1",
-  },
-  {
-    label: "Method, in the open",
-    value: "How an engagement runs, step by step",
-    href: "/engagement-model",
-  },
-  {
-    label: "Technical answers",
-    value: "Explainers on governed AI execution",
-    href: "/answers",
   },
   {
     label: "Code",

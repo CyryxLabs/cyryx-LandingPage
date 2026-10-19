@@ -265,11 +265,12 @@ function StartPage() {
             Start with the problem
           </HudLabel>
           <h1 className="mt-4 max-w-[16ch] font-display text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-silver-gradient sm:text-5xl lg:text-6xl">
-            Tell us what you want AI to change.
+            Tell us what you want to build or fix.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] lg:text-lg">
-            Two short steps. We'll tell you whether AI belongs there, where to start (Advise, Build,
-            Control or Operate) or whether not to build at all.
+            A website, an automation, custom software or AI — two short steps. We'll tell you
+            whether it makes sense, where to start, or whether not to build at all — and, if it
+            fits, set up a free 20-minute call.
           </p>
 
           <ol

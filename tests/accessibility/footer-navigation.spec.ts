@@ -23,8 +23,10 @@ test.describe("footer navigation model", () => {
     await expect(productsGroup).toBeVisible();
 
     const expectedProducts = [
-      { label: "Products Overview", href: "/products" },
+      { label: "All products", href: "/products" },
       { label: "AEXOS", href: "/products/aexos" },
+      { label: "Onyx", href: "/products#onyx" },
+      { label: "ASTRA CRM", href: "/products#astra" },
     ];
 
     for (const item of expectedProducts) {
@@ -38,7 +40,7 @@ test.describe("footer navigation model", () => {
   });
 
   test("solutions group content", async ({ page }) => {
-    const solutionsGroup = page.locator('footer nav[aria-label="Solutions"]');
+    const solutionsGroup = page.locator('footer nav[aria-label="Services"]');
     await expect(solutionsGroup).toBeVisible();
 
     const expectedSolutions = [

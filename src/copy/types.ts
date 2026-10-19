@@ -7,6 +7,8 @@ export interface CopyDocument {
     rail: string[];
     ctaPrimary: string;
     ctaSecondary: string;
+    /** One quiet line of reassurance under the CTAs. */
+    trust: string;
     /** Short line under the CTAs. Shown only when the AI assistant is enabled. */
     assistantNote: string;
   };

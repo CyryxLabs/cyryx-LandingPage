@@ -8,6 +8,8 @@ import { buildBreadcrumbJsonLd, buildHead } from "@/components/cyryx/seo/seo";
 import { AEXOS_PRODUCT } from "@/data/site-taxonomy";
 import { trackCta } from "@/lib/track-cta";
 import { AexosInstallPreview } from "@/components/cyryx/aexos/AexosInstallPreview";
+import { ProductCard } from "@/components/cyryx/v5/Products";
+import { CYRYX_PRODUCTS } from "@/data/offer";
 
 const PRINCIPLES = [
   {
@@ -26,14 +28,14 @@ const PRINCIPLES = [
 
 const STAGES = [
   { label: "Research", body: "Explored in the Applied AI Lab.", current: false },
-  { label: "Beta", body: "Used with selected teams under agreement.", current: false },
+  { label: "Waitlist", body: "Built and being prepared for launch. Onyx is here.", current: true },
   { label: "Available", body: "Published and supported. AEXOS Core is here.", current: true },
 ] as const;
 
 const PATH = "/products";
 const TITLE = "Products — Cyryx Labs";
 const DESC =
-  "Cyryx Labs builds AEXOS, a CLI-first framework that puts AI agents to work under procedures and quality gates. The Core edition is on npm.";
+  "Products by Cyryx Labs: AEXOS for AI coding agents (Core free on npm), Onyx, a personal AI assistant (waitlist), and ASTRA, the AI CRM that runs Cyryx.";
 
 export const Route = createFileRoute("/products")({
   head: ({ matches }) => {
@@ -62,7 +64,7 @@ function ProductsPage() {
         <InternalHero
           eyebrow="Cyryx Labs / Products"
           title="Software we build and publish ourselves."
-          body="Our products come from the same work we do for clients: putting AI agents to work under clear rules, with evidence of what they did. Each product states its real stage and its license."
+          body="AEXOS puts AI coding agents to work under rules. Onyx is a personal AI assistant. ASTRA is the AI-powered CRM we run Cyryx on. Each one states its real stage."
           primaryCta={{
             label: "Explore AEXOS",
             to: "/products/aexos",
@@ -78,12 +80,12 @@ function ProductsPage() {
           lifecycleLabel="Product stages"
           lifecycle={[
             { number: "01", label: "Research" },
-            { number: "02", label: "Beta" },
+            { number: "02", label: "Waitlist" },
             { number: "03", label: "Available", active: true },
           ]}
           nextChapter={{
-            title: "One product available today.",
-            body: "AEXOS Core is published on npm and free to use under the AEXOS license.",
+            title: "Three products, three stages.",
+            body: "AEXOS Core is published on npm. Onyx has a waitlist. ASTRA runs Cyryx Labs every day.",
           }}
         />
 
@@ -159,6 +161,17 @@ function ProductsPage() {
               </p>
             </div>
           </article>
+        </section>
+
+        <section
+          aria-label="Onyx and ASTRA"
+          className="relative px-5 pb-16 sm:px-8 sm:pb-24 lg:px-10"
+        >
+          <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-2">
+            {CYRYX_PRODUCTS.filter((p) => p.id !== "aexos").map((p) => (
+              <ProductCard key={p.id} product={p} headingLevel={2} />
+            ))}
+          </div>
         </section>
 
         <section

@@ -1,11 +1,11 @@
 import { ExecutionTrace } from "../ExecutionTrace";
 
 const STAGES = [
-  ["01", "Intent", "Define the business outcome."],
-  ["02", "Authority", "Set who and what may act."],
-  ["03", "Execution", "Connect models, software, data, and tools."],
-  ["04", "Evidence", "Record consequential decisions and actions."],
-  ["05", "Improvement", "Measure quality, cost, and exceptions."],
+  ["01", "Goal", "Agree on the business result it must deliver."],
+  ["02", "Limits", "Write down what it may read, change and spend."],
+  ["03", "Work", "Connect it to your software, data and tools."],
+  ["04", "Human check", "A person approves anything that matters."],
+  ["05", "Record", "Keep a log of what it did, why, and what it cost."],
 ] as const;
 
 export function ControlledExecution() {
@@ -27,11 +27,11 @@ export function ControlledExecution() {
             id="controlled-execution-heading"
             className="font-display text-[1.75rem] sm:text-[2.125rem] lg:text-[2.75rem] xl:text-[3.5rem] font-semibold leading-[0.98] tracking-[-0.045em] text-silver-gradient"
           >
-            Value begins when intent becomes controlled action.
+            AI you can trust with clients and money.
           </h2>
           <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-            Cyryx designs the execution layer between AI models and the workflows, systems, data,
-            and people they are expected to affect.
+            Every AI system we build has limits, asks before anything that matters, and shows its
+            work. Here is what that looks like.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export function ControlledExecution() {
         <div className="cx-reveal mt-14 grid gap-8 sm:mt-24 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
           <div>
             <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
-              One run, end to end
+              Example: supplier invoices
             </p>
             <h3 className="mt-4 font-display text-3xl font-semibold leading-[1.05] tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
               Every step is scoped, reviewed where it matters, and recorded.

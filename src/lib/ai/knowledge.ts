@@ -1,4 +1,5 @@
 import { AEXOS_PRODUCT, OPERATING_LIFECYCLE } from "@/data/site-taxonomy";
+import { AUDIENCES, CYRYX_PRODUCTS, SERVICE_STAGES } from "@/data/offer";
 
 /**
  * The only facts the website AI is allowed to use. Everything here is already
@@ -7,10 +8,23 @@ import { AEXOS_PRODUCT, OPERATING_LIFECYCLE } from "@/data/site-taxonomy";
 export const CYRYX_KNOWLEDGE = `
 # Cyryx Labs — public facts
 
-Cyryx Labs is a technology company building AI products and execution systems. It designs, builds and runs AI systems that act inside
-a client's workflows, with clear permissions, human approval where it matters and a record of every
-decision. Positioning: "The execution layer for enterprise AI." It is not a generic agency or a
-chatbot factory.
+Cyryx Labs (Cyryx Labs LLC, Port St. Lucie, Florida) designs, builds and runs websites, automations,
+custom software and AI for small businesses, growing companies and enterprises across the United
+States and Latin America, in English and Spanish. One accountable team takes a project from the first
+conversation to launch and support. Every AI system it builds has written limits, asks a person
+before anything that matters, and keeps a record of what it did. Positioning: "Websites, software
+and AI that grow your business — built and run by one accountable team." It is not a generic agency
+or a chatbot factory, and sometimes it recommends not building at all.
+
+## What we do (four ways to work with us)
+${SERVICE_STAGES.map((s) => `- ${s.name}: ${s.outcome} Services: ${s.services.join("; ")}. Page: ${s.href}`).join("\n")}
+
+## Who we serve
+${AUDIENCES.map((a) => `- ${a.name} (${a.size}): ${a.needs} Usually starts with: ${a.start}. Typical timeline: ${a.timeline}.`).join("\n")}
+
+## How to start
+A short form at /start, then a free 20-minute fit check. Every project gets a fixed written quote,
+timeline and acceptance checklist before work starts. The client owns the code, content and data.
 
 ## Ways to engage (each can be engaged alone or combined into one program)
 ${OPERATING_LIFECYCLE.map((s) => `- ${s.name}: ${s.promise} You receive: ${s.receives.join(", ")}. Page: ${s.href}`).join("\n")}
@@ -35,7 +49,10 @@ Intent (define the business outcome) → Authority (who and what may act) → Ex
 software, data and tools) → Evidence (record consequential decisions) → Improvement (measure quality,
 cost and exceptions).
 
-## Product
+## Products
+${CYRYX_PRODUCTS.map((p) => `- ${p.name} — ${p.category}. Stage: ${p.stage} (${p.stageNote}). ${p.summary}`).join("\n")}
+
+### AEXOS details
 - ${AEXOS_PRODUCT.name} (${AEXOS_PRODUCT.fullName}), page /products/aexos: ${AEXOS_PRODUCT.description}
   Stage: ${AEXOS_PRODUCT.maturity}. Core edition is free under the AEXOS license and installs with
   "${AEXOS_PRODUCT.installCommand}" (${AEXOS_PRODUCT.runtime}). Pro is available under a paid commercial license; pricing is not published. AEXOS is proprietary; Core is free to use, including for commercial work.
@@ -48,7 +65,8 @@ cost and exceptions).
 - Technical explainers at /answers.
 
 ## Contact
-- Start a project: /start (short project brief). General email: contact@cyryxlabs.com.
+- Free fit check: /start (short form, then a 20-minute call if it fits). General email: contact@cyryxlabs.com.
+- Onyx waitlist: https://onyx.cyryxlabs.com/
 - Privacy: privacy@cyryxlabs.com. Careers: careers@cyryxlabs.com.
 `.trim();
 

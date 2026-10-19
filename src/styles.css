@@ -2804,3 +2804,12 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
 html.cx-low-perf .cx-site-header {
   background: color-mix(in oklab, var(--onyx) 97%, transparent) !important;
 }
+
+/* Hero promise — proof split: the clause after the dash reads one step quieter. */
+.cx-hero-title-tail {
+  margin-top: 0.35em;
+  font-size: 0.56em;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}

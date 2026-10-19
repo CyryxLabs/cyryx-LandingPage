@@ -1,5 +1,4 @@
-import { ArrowUpRight, MessageSquare } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { ArrowDown, ArrowUpRight, MessageSquare } from "lucide-react";
 import { CyryxHeroSequence } from "@/components/cyryx/CyryxHeroSequence";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
@@ -19,6 +18,13 @@ export function Hero() {
   const copy = getCopy(useCopyVariant()).hero;
   const startHref = buildStartProjectHref({ source: "home" });
   const assistantEnabled = isAssistantEnabled();
+  // "Promise — proof" headlines render the clause after the dash one step quieter.
+  const [headlineMain, headlineTail] = (() => {
+    const at = copy.headline.indexOf(" — ");
+    return at === -1
+      ? [copy.headline, ""]
+      : [copy.headline.slice(0, at), `— ${copy.headline.slice(at + 3)}`];
+  })();
 
   return (
     <section id="top" data-hero aria-labelledby="hero-heading" className="relative bg-black">
@@ -105,7 +111,7 @@ export function Hero() {
             className="cx-hero-scroll-cue pointer-events-none absolute bottom-6 right-5 flex items-center gap-3 sm:bottom-8 sm:right-8 sm:gap-4 xl:bottom-10 xl:right-12"
           >
             <span className="hidden font-mono text-[12px] uppercase tracking-[0.28em] text-white/55 sm:inline">
-              Scroll to execute
+              Scroll to explore
             </span>
             <span className="cx-hero-scroll-track relative block h-px w-16 overflow-hidden bg-white/15 sm:w-24">
               <span
@@ -140,7 +146,13 @@ export function Hero() {
                   data-hero-line
                   className="cx-line cx-hero-title-line block text-chrome-gradient"
                 >
-                  {copy.headline}
+                  {headlineMain}
+                  {headlineTail && " "}
+                  {headlineTail && (
+                    <span className="cx-hero-title-tail block text-[var(--silver-dim)] [-webkit-text-fill-color:currentColor]">
+                      {headlineTail}
+                    </span>
+                  )}
                 </span>
               </h1>
 
@@ -160,18 +172,22 @@ export function Hero() {
                   <span>{copy.ctaPrimary}</span>
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </a>
-                <Link
-                  to="/engagement-model"
+                <a
+                  href="#services"
                   data-cta="secondary"
                   className="cx-btn-secondary"
                   onClick={() =>
-                    trackCta({ cta: "see_how_we_work", section: "hero", href: "/engagement-model" })
+                    trackCta({ cta: "see_delivery", section: "hero", href: "#services" })
                   }
                 >
                   <span>{copy.ctaSecondary}</span>
-                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
+                  <ArrowDown className="h-4 w-4" aria-hidden="true" />
+                </a>
               </div>
+
+              <p className="cx-hero-trust mt-4 font-mono text-[12px] uppercase tracking-[0.14em] text-[var(--silver-dim)] [text-shadow:0_1px_12px_rgba(0,0,0,0.9)]">
+                {copy.trust}
+              </p>
 
               {assistantEnabled && (
                 <button

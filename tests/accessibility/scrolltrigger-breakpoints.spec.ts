@@ -61,9 +61,9 @@ for (const vp of VIEWPORTS) {
     }
 
     if (vp.name !== "desktop") {
-      // Governance keeps one visual (the monolith), shown from lg up; below
-      // that the four controls carry the section and must be readable.
-      const controls = page.locator("#security [data-governance-control]");
+      // The four service cards reveal on scroll and must end fully readable
+      // on phones and tablets.
+      const controls = page.locator('#services li[id^="service-"]');
       await expect(controls).toHaveCount(4);
       await controls.last().scrollIntoViewIfNeeded();
       await expect

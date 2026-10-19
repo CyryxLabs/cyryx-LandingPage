@@ -3,6 +3,8 @@ export type NavigationGroupId = "products" | "solutions" | "research" | "company
 export type NavigationItem = {
   readonly label: string;
   readonly href: string;
+  /** Optional in-page anchor on `href` (e.g. a product section on /products). */
+  readonly hash?: string;
 };
 
 export type NavigationGroup = {
@@ -21,13 +23,15 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
     id: "products",
     label: "Products",
     children: [
-      { label: "Products Overview", href: "/products" },
+      { label: "All products", href: "/products" },
       { label: "AEXOS", href: "/products/aexos" },
+      { label: "Onyx", href: "/products", hash: "onyx" },
+      { label: "ASTRA CRM", href: "/products", hash: "astra" },
     ] as const,
   },
   {
     id: "solutions",
-    label: "Solutions",
+    label: "Services",
     children: [
       { label: "AI Strategy & Advisory", href: "/solutions/ai-strategy-advisory" },
       { label: "Digital & Web Systems", href: "/solutions/digital-web-systems" },
@@ -60,7 +64,7 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
 ] as const;
 
 export const PRIMARY_NAVIGATION_CTA: NavigationCTA = {
-  label: "Start a project",
+  label: "Get a free fit check",
   href: "/start",
 } as const;
 
@@ -109,7 +113,9 @@ export function isPrimaryNavigationCTAActive(pathname: string): boolean {
   return matchesPathBoundary(normalizePathname(pathname), "/start");
 }
 
-export function isNavigationItemActive(pathname: string, href: string): boolean {
+export function isNavigationItemActive(pathname: string, href: string, hash?: string): boolean {
+  // Anchors inside a page never mark themselves as the current page.
+  if (hash) return false;
   const path = normalizePathname(pathname);
   const itemHref = normalizePathname(href);
 

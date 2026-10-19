@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-const HOME_TITLE = "Cyryx Labs — The Execution Layer for Enterprise AI";
+const HOME_TITLE = "Cyryx Labs — Websites, Software & AI | US & Latin America";
 const HOME_DESCRIPTION =
-  "Cyryx Labs designs, builds and runs AI systems that act inside your workflows, with clear permissions, human approval and a record of every decision.";
+  "Websites, automations, custom software and AI for companies of every size. One accountable team, fixed timelines, and a human in control of every AI decision.";
 
 const EXPECTED = {
   title: HOME_TITLE,
