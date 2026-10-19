@@ -9,127 +9,57 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as StartRouteImport } from './routes/start'
-import { Route as SolutionsRouteImport } from './routes/solutions'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SitemapSolutionsDotxmlRouteImport } from './routes/sitemap-solutions[.]xml'
-import { Route as SitemapProductsDotxmlRouteImport } from './routes/sitemap-products[.]xml'
-import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
-import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
-import { Route as ProductsRouteImport } from './routes/products'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ManagedOperationsRouteImport } from './routes/managed-operations'
-import { Route as EngagementModelRouteImport } from './routes/engagement-model'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CompanyRouteImport } from './routes/company'
-import { Route as CareersRouteImport } from './routes/careers'
-import { Route as BriefRouteImport } from './routes/brief'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as BriefRouteImport } from './routes/brief'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as CompanyRouteImport } from './routes/company'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as EngagementModelRouteImport } from './routes/engagement-model'
+import { Route as ManagedOperationsRouteImport } from './routes/managed-operations'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as SitemapCompanyDotxmlRouteImport } from './routes/sitemap-company[.]xml'
+import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
+import { Route as SitemapProductsDotxmlRouteImport } from './routes/sitemap-products[.]xml'
+import { Route as SitemapSolutionsDotxmlRouteImport } from './routes/sitemap-solutions[.]xml'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SolutionsRouteImport } from './routes/solutions'
+import { Route as StartRouteImport } from './routes/start'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AnswersIndexRouteImport } from './routes/answers.index'
-import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
-import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
-import { Route as SolutionsGovernanceOptimizationRouteImport } from './routes/solutions.governance-optimization'
-import { Route as SolutionsDigitalWebSystemsRouteImport } from './routes/solutions.digital-web-systems'
-import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
-import { Route as SolutionsAppliedAiSystemsRouteImport } from './routes/solutions.applied-ai-systems'
-import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
-import { Route as SolutionsAiStrategyAdvisoryRouteImport } from './routes/solutions.ai-strategy-advisory'
-import { Route as SolutionsAiProductEngineeringRouteImport } from './routes/solutions.ai-product-engineering'
-import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
-import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
-import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
-import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
-import { Route as ProductsAexosRouteImport } from './routes/products.aexos'
-import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
-import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './routes/answers.what-is-goal-grounded-generation'
-import { Route as AnswersWhatIsAiGovernanceRouteImport } from './routes/answers.what-is-ai-governance'
-import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
-import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
 import { Route as AnswersAiExecutionSystemVsAiAutomationRouteImport } from './routes/answers.ai-execution-system-vs-ai-automation'
-import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
-import { Route as ApiPublicTalentRouteImport } from './routes/api/public/talent'
-import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
-import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
+import { Route as AnswersHowToMeasureAiOutputQualityRouteImport } from './routes/answers.how-to-measure-ai-output-quality'
+import { Route as AnswersWhatAreCommandGatesInAiSystemsRouteImport } from './routes/answers.what-are-command-gates-in-ai-systems'
+import { Route as AnswersWhatIsAiGovernanceRouteImport } from './routes/answers.what-is-ai-governance'
+import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './routes/answers.what-is-goal-grounded-generation'
+import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
+import { Route as ProductsAexosRouteImport } from './routes/products.aexos'
+import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
+import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
+import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
+import { Route as SolutionsAiProductEngineeringRouteImport } from './routes/solutions.ai-product-engineering'
+import { Route as SolutionsAiStrategyAdvisoryRouteImport } from './routes/solutions.ai-strategy-advisory'
+import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
+import { Route as SolutionsAppliedAiSystemsRouteImport } from './routes/solutions.applied-ai-systems'
+import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
+import { Route as SolutionsDigitalWebSystemsRouteImport } from './routes/solutions.digital-web-systems'
+import { Route as SolutionsGovernanceOptimizationRouteImport } from './routes/solutions.governance-optimization'
+import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
+import { Route as SolutionsWorkflowAutomationRouteImport } from './routes/solutions.workflow-automation'
 import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
-import { Route as ApiPublicBriefSubmitRouteImport } from './routes/api/public/brief/submit'
-import { Route as ApiPublicBriefInitRouteImport } from './routes/api/public/brief/init'
+import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
+import { Route as ApiPublicCtaEventsRouteImport } from './routes/api/public/cta-events'
+import { Route as ApiPublicTalentRouteImport } from './routes/api/public/talent'
+import { Route as ApiPublicWebVitalsRouteImport } from './routes/api/public/web-vitals'
 import { Route as ApiPublicBriefAssistRouteImport } from './routes/api/public/brief/assist'
+import { Route as ApiPublicBriefInitRouteImport } from './routes/api/public/brief/init'
+import { Route as ApiPublicBriefSubmitRouteImport } from './routes/api/public/brief/submit'
 
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StartRoute = StartRouteImport.update({
-  id: '/start',
-  path: '/start',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SolutionsRoute = SolutionsRouteImport.update({
-  id: '/solutions',
-  path: '/solutions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapSolutionsDotxmlRoute = SitemapSolutionsDotxmlRouteImport.update({
-  id: '/sitemap-solutions.xml',
-  path: '/sitemap-solutions.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapProductsDotxmlRoute = SitemapProductsDotxmlRouteImport.update({
-  id: '/sitemap-products.xml',
-  path: '/sitemap-products.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
-  id: '/sitemap-index.xml',
-  path: '/sitemap-index.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapCompanyDotxmlRoute = SitemapCompanyDotxmlRouteImport.update({
-  id: '/sitemap-company.xml',
-  path: '/sitemap-company.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsRoute = ProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ManagedOperationsRoute = ManagedOperationsRouteImport.update({
-  id: '/managed-operations',
-  path: '/managed-operations',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EngagementModelRoute = EngagementModelRouteImport.update({
-  id: '/engagement-model',
-  path: '/engagement-model',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompanyRoute = CompanyRouteImport.update({
-  id: '/company',
-  path: '/company',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BriefRoute = BriefRouteImport.update({
@@ -137,14 +67,79 @@ const BriefRoute = BriefRouteImport.update({
   path: '/brief',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResearchIndexRoute = ResearchIndexRouteImport.update({
-  id: '/research/',
-  path: '/research/',
+const CompanyRoute = CompanyRouteImport.update({
+  id: '/company',
+  path: '/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EngagementModelRoute = EngagementModelRouteImport.update({
+  id: '/engagement-model',
+  path: '/engagement-model',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManagedOperationsRoute = ManagedOperationsRouteImport.update({
+  id: '/managed-operations',
+  path: '/managed-operations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapCompanyDotxmlRoute = SitemapCompanyDotxmlRouteImport.update({
+  id: '/sitemap-company.xml',
+  path: '/sitemap-company.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
+  id: '/sitemap-index.xml',
+  path: '/sitemap-index.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapProductsDotxmlRoute = SitemapProductsDotxmlRouteImport.update({
+  id: '/sitemap-products.xml',
+  path: '/sitemap-products.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapSolutionsDotxmlRoute = SitemapSolutionsDotxmlRouteImport.update({
+  id: '/sitemap-solutions.xml',
+  path: '/sitemap-solutions.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolutionsRoute = SolutionsRouteImport.update({
+  id: '/solutions',
+  path: '/solutions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartRoute = StartRouteImport.update({
+  id: '/start',
+  path: '/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnswersIndexRoute = AnswersIndexRouteImport.update({
@@ -152,108 +147,10 @@ const AnswersIndexRoute = AnswersIndexRouteImport.update({
   path: '/answers/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SolutionsWorkflowAutomationRoute =
-  SolutionsWorkflowAutomationRouteImport.update({
-    id: '/workflow-automation',
-    path: '/workflow-automation',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsInternalAiAssistantsRoute =
-  SolutionsInternalAiAssistantsRouteImport.update({
-    id: '/internal-ai-assistants',
-    path: '/internal-ai-assistants',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsGovernanceOptimizationRoute =
-  SolutionsGovernanceOptimizationRouteImport.update({
-    id: '/governance-optimization',
-    path: '/governance-optimization',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsDigitalWebSystemsRoute =
-  SolutionsDigitalWebSystemsRouteImport.update({
-    id: '/digital-web-systems',
-    path: '/digital-web-systems',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsCustomAiProductDevelopmentRoute =
-  SolutionsCustomAiProductDevelopmentRouteImport.update({
-    id: '/custom-ai-product-development',
-    path: '/custom-ai-product-development',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAppliedAiSystemsRoute =
-  SolutionsAppliedAiSystemsRouteImport.update({
-    id: '/applied-ai-systems',
-    path: '/applied-ai-systems',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAiWebsitesLeadSystemsRoute =
-  SolutionsAiWebsitesLeadSystemsRouteImport.update({
-    id: '/ai-websites-lead-systems',
-    path: '/ai-websites-lead-systems',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAiStrategyAdvisoryRoute =
-  SolutionsAiStrategyAdvisoryRouteImport.update({
-    id: '/ai-strategy-advisory',
-    path: '/ai-strategy-advisory',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAiProductEngineeringRoute =
-  SolutionsAiProductEngineeringRouteImport.update({
-    id: '/ai-product-engineering',
-    path: '/ai-product-engineering',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
-  id: '/ai-integrations',
-  path: '/ai-integrations',
-  getParentRoute: () => SolutionsRoute,
-} as any)
-const SolutionsAiGovernanceCostControlRoute =
-  SolutionsAiGovernanceCostControlRouteImport.update({
-    id: '/ai-governance-cost-control',
-    path: '/ai-governance-cost-control',
-    getParentRoute: () => SolutionsRoute,
-  } as any)
-const ResearchSlugRoute = ResearchSlugRouteImport.update({
-  id: '/research/$slug',
-  path: '/research/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
-  id: '/maax-studio',
-  path: '/maax-studio',
-  getParentRoute: () => ProductsRoute,
-} as any)
-const ProductsAexosRoute = ProductsAexosRouteImport.update({
-  id: '/aexos',
-  path: '/aexos',
-  getParentRoute: () => ProductsRoute,
-} as any)
-const AnswersWhatIsGovernedAiExecutionRoute =
-  AnswersWhatIsGovernedAiExecutionRouteImport.update({
-    id: '/answers/what-is-governed-ai-execution',
-    path: '/answers/what-is-governed-ai-execution',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AnswersWhatIsGoalGroundedGenerationRoute =
-  AnswersWhatIsGoalGroundedGenerationRouteImport.update({
-    id: '/answers/what-is-goal-grounded-generation',
-    path: '/answers/what-is-goal-grounded-generation',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AnswersWhatIsAiGovernanceRoute =
-  AnswersWhatIsAiGovernanceRouteImport.update({
-    id: '/answers/what-is-ai-governance',
-    path: '/answers/what-is-ai-governance',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AnswersWhatAreCommandGatesInAiSystemsRoute =
-  AnswersWhatAreCommandGatesInAiSystemsRouteImport.update({
-    id: '/answers/what-are-command-gates-in-ai-systems',
-    path: '/answers/what-are-command-gates-in-ai-systems',
+const AnswersAiExecutionSystemVsAiAutomationRoute =
+  AnswersAiExecutionSystemVsAiAutomationRouteImport.update({
+    id: '/answers/ai-execution-system-vs-ai-automation',
+    path: '/answers/ai-execution-system-vs-ai-automation',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AnswersHowToMeasureAiOutputQualityRoute =
@@ -262,25 +159,118 @@ const AnswersHowToMeasureAiOutputQualityRoute =
     path: '/answers/how-to-measure-ai-output-quality',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AnswersAiExecutionSystemVsAiAutomationRoute =
-  AnswersAiExecutionSystemVsAiAutomationRouteImport.update({
-    id: '/answers/ai-execution-system-vs-ai-automation',
-    path: '/answers/ai-execution-system-vs-ai-automation',
+const AnswersWhatAreCommandGatesInAiSystemsRoute =
+  AnswersWhatAreCommandGatesInAiSystemsRouteImport.update({
+    id: '/answers/what-are-command-gates-in-ai-systems',
+    path: '/answers/what-are-command-gates-in-ai-systems',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
-  id: '/api/public/web-vitals',
-  path: '/api/public/web-vitals',
+const AnswersWhatIsAiGovernanceRoute =
+  AnswersWhatIsAiGovernanceRouteImport.update({
+    id: '/answers/what-is-ai-governance',
+    path: '/answers/what-is-ai-governance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersWhatIsGoalGroundedGenerationRoute =
+  AnswersWhatIsGoalGroundedGenerationRouteImport.update({
+    id: '/answers/what-is-goal-grounded-generation',
+    path: '/answers/what-is-goal-grounded-generation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnswersWhatIsGovernedAiExecutionRoute =
+  AnswersWhatIsGovernedAiExecutionRouteImport.update({
+    id: '/answers/what-is-governed-ai-execution',
+    path: '/answers/what-is-governed-ai-execution',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProductsAexosRoute = ProductsAexosRouteImport.update({
+  id: '/aexos',
+  path: '/aexos',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
+  id: '/maax-studio',
+  path: '/maax-studio',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const ResearchIndexRoute = ResearchIndexRouteImport.update({
+  id: '/research/',
+  path: '/research/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicTalentRoute = ApiPublicTalentRouteImport.update({
-  id: '/api/public/talent',
-  path: '/api/public/talent',
+const ResearchSlugRoute = ResearchSlugRouteImport.update({
+  id: '/research/$slug',
+  path: '/research/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
-  id: '/api/public/cta-events',
-  path: '/api/public/cta-events',
+const SolutionsAiGovernanceCostControlRoute =
+  SolutionsAiGovernanceCostControlRouteImport.update({
+    id: '/ai-governance-cost-control',
+    path: '/ai-governance-cost-control',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiIntegrationsRoute = SolutionsAiIntegrationsRouteImport.update({
+  id: '/ai-integrations',
+  path: '/ai-integrations',
+  getParentRoute: () => SolutionsRoute,
+} as any)
+const SolutionsAiProductEngineeringRoute =
+  SolutionsAiProductEngineeringRouteImport.update({
+    id: '/ai-product-engineering',
+    path: '/ai-product-engineering',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiStrategyAdvisoryRoute =
+  SolutionsAiStrategyAdvisoryRouteImport.update({
+    id: '/ai-strategy-advisory',
+    path: '/ai-strategy-advisory',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAiWebsitesLeadSystemsRoute =
+  SolutionsAiWebsitesLeadSystemsRouteImport.update({
+    id: '/ai-websites-lead-systems',
+    path: '/ai-websites-lead-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsAppliedAiSystemsRoute =
+  SolutionsAppliedAiSystemsRouteImport.update({
+    id: '/applied-ai-systems',
+    path: '/applied-ai-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsCustomAiProductDevelopmentRoute =
+  SolutionsCustomAiProductDevelopmentRouteImport.update({
+    id: '/custom-ai-product-development',
+    path: '/custom-ai-product-development',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsDigitalWebSystemsRoute =
+  SolutionsDigitalWebSystemsRouteImport.update({
+    id: '/digital-web-systems',
+    path: '/digital-web-systems',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsGovernanceOptimizationRoute =
+  SolutionsGovernanceOptimizationRouteImport.update({
+    id: '/governance-optimization',
+    path: '/governance-optimization',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsInternalAiAssistantsRoute =
+  SolutionsInternalAiAssistantsRouteImport.update({
+    id: '/internal-ai-assistants',
+    path: '/internal-ai-assistants',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsWorkflowAutomationRoute =
+  SolutionsWorkflowAutomationRouteImport.update({
+    id: '/workflow-automation',
+    path: '/workflow-automation',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
+  id: '/api/public/assistant',
+  path: '/api/public/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
@@ -288,14 +278,24 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   path: '/api/public/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
-  id: '/api/public/assistant',
-  path: '/api/public/assistant',
+const ApiPublicCtaEventsRoute = ApiPublicCtaEventsRouteImport.update({
+  id: '/api/public/cta-events',
+  path: '/api/public/cta-events',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicBriefSubmitRoute = ApiPublicBriefSubmitRouteImport.update({
-  id: '/api/public/brief/submit',
-  path: '/api/public/brief/submit',
+const ApiPublicTalentRoute = ApiPublicTalentRouteImport.update({
+  id: '/api/public/talent',
+  path: '/api/public/talent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicWebVitalsRoute = ApiPublicWebVitalsRouteImport.update({
+  id: '/api/public/web-vitals',
+  path: '/api/public/web-vitals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBriefAssistRoute = ApiPublicBriefAssistRouteImport.update({
+  id: '/api/public/brief/assist',
+  path: '/api/public/brief/assist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicBriefInitRoute = ApiPublicBriefInitRouteImport.update({
@@ -303,9 +303,9 @@ const ApiPublicBriefInitRoute = ApiPublicBriefInitRouteImport.update({
   path: '/api/public/brief/init',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicBriefAssistRoute = ApiPublicBriefAssistRouteImport.update({
-  id: '/api/public/brief/assist',
-  path: '/api/public/brief/assist',
+const ApiPublicBriefSubmitRoute = ApiPublicBriefSubmitRouteImport.update({
+  id: '/api/public/brief/submit',
+  path: '/api/public/brief/submit',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -646,109 +646,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/start': {
-      id: '/start'
-      path: '/start'
-      fullPath: '/start'
-      preLoaderRoute: typeof StartRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/solutions': {
-      id: '/solutions'
-      path: '/solutions'
-      fullPath: '/solutions'
-      preLoaderRoute: typeof SolutionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-solutions.xml': {
-      id: '/sitemap-solutions.xml'
-      path: '/sitemap-solutions.xml'
-      fullPath: '/sitemap-solutions.xml'
-      preLoaderRoute: typeof SitemapSolutionsDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-products.xml': {
-      id: '/sitemap-products.xml'
-      path: '/sitemap-products.xml'
-      fullPath: '/sitemap-products.xml'
-      preLoaderRoute: typeof SitemapProductsDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-index.xml': {
-      id: '/sitemap-index.xml'
-      path: '/sitemap-index.xml'
-      fullPath: '/sitemap-index.xml'
-      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap-company.xml': {
-      id: '/sitemap-company.xml'
-      path: '/sitemap-company.xml'
-      fullPath: '/sitemap-company.xml'
-      preLoaderRoute: typeof SitemapCompanyDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/managed-operations': {
-      id: '/managed-operations'
-      path: '/managed-operations'
-      fullPath: '/managed-operations'
-      preLoaderRoute: typeof ManagedOperationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/engagement-model': {
-      id: '/engagement-model'
-      path: '/engagement-model'
-      fullPath: '/engagement-model'
-      preLoaderRoute: typeof EngagementModelRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/company': {
-      id: '/company'
-      path: '/company'
-      fullPath: '/company'
-      preLoaderRoute: typeof CompanyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/brief': {
@@ -758,18 +660,109 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BriefRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/research/': {
-      id: '/research/'
-      path: '/research'
-      fullPath: '/research/'
-      preLoaderRoute: typeof ResearchIndexRouteImport
+    '/company': {
+      id: '/company'
+      path: '/company'
+      fullPath: '/company'
+      preLoaderRoute: typeof CompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/engagement-model': {
+      id: '/engagement-model'
+      path: '/engagement-model'
+      fullPath: '/engagement-model'
+      preLoaderRoute: typeof EngagementModelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/managed-operations': {
+      id: '/managed-operations'
+      path: '/managed-operations'
+      fullPath: '/managed-operations'
+      preLoaderRoute: typeof ManagedOperationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-company.xml': {
+      id: '/sitemap-company.xml'
+      path: '/sitemap-company.xml'
+      fullPath: '/sitemap-company.xml'
+      preLoaderRoute: typeof SitemapCompanyDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-index.xml': {
+      id: '/sitemap-index.xml'
+      path: '/sitemap-index.xml'
+      fullPath: '/sitemap-index.xml'
+      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-products.xml': {
+      id: '/sitemap-products.xml'
+      path: '/sitemap-products.xml'
+      fullPath: '/sitemap-products.xml'
+      preLoaderRoute: typeof SitemapProductsDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-solutions.xml': {
+      id: '/sitemap-solutions.xml'
+      path: '/sitemap-solutions.xml'
+      fullPath: '/sitemap-solutions.xml'
+      preLoaderRoute: typeof SitemapSolutionsDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solutions': {
+      id: '/solutions'
+      path: '/solutions'
+      fullPath: '/solutions'
+      preLoaderRoute: typeof SolutionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/start': {
+      id: '/start'
+      path: '/start'
+      fullPath: '/start'
+      preLoaderRoute: typeof StartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/answers/': {
@@ -779,130 +772,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/solutions/workflow-automation': {
-      id: '/solutions/workflow-automation'
-      path: '/workflow-automation'
-      fullPath: '/solutions/workflow-automation'
-      preLoaderRoute: typeof SolutionsWorkflowAutomationRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/internal-ai-assistants': {
-      id: '/solutions/internal-ai-assistants'
-      path: '/internal-ai-assistants'
-      fullPath: '/solutions/internal-ai-assistants'
-      preLoaderRoute: typeof SolutionsInternalAiAssistantsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/governance-optimization': {
-      id: '/solutions/governance-optimization'
-      path: '/governance-optimization'
-      fullPath: '/solutions/governance-optimization'
-      preLoaderRoute: typeof SolutionsGovernanceOptimizationRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/digital-web-systems': {
-      id: '/solutions/digital-web-systems'
-      path: '/digital-web-systems'
-      fullPath: '/solutions/digital-web-systems'
-      preLoaderRoute: typeof SolutionsDigitalWebSystemsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/custom-ai-product-development': {
-      id: '/solutions/custom-ai-product-development'
-      path: '/custom-ai-product-development'
-      fullPath: '/solutions/custom-ai-product-development'
-      preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/applied-ai-systems': {
-      id: '/solutions/applied-ai-systems'
-      path: '/applied-ai-systems'
-      fullPath: '/solutions/applied-ai-systems'
-      preLoaderRoute: typeof SolutionsAppliedAiSystemsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-websites-lead-systems': {
-      id: '/solutions/ai-websites-lead-systems'
-      path: '/ai-websites-lead-systems'
-      fullPath: '/solutions/ai-websites-lead-systems'
-      preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-strategy-advisory': {
-      id: '/solutions/ai-strategy-advisory'
-      path: '/ai-strategy-advisory'
-      fullPath: '/solutions/ai-strategy-advisory'
-      preLoaderRoute: typeof SolutionsAiStrategyAdvisoryRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-product-engineering': {
-      id: '/solutions/ai-product-engineering'
-      path: '/ai-product-engineering'
-      fullPath: '/solutions/ai-product-engineering'
-      preLoaderRoute: typeof SolutionsAiProductEngineeringRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-integrations': {
-      id: '/solutions/ai-integrations'
-      path: '/ai-integrations'
-      fullPath: '/solutions/ai-integrations'
-      preLoaderRoute: typeof SolutionsAiIntegrationsRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/solutions/ai-governance-cost-control': {
-      id: '/solutions/ai-governance-cost-control'
-      path: '/ai-governance-cost-control'
-      fullPath: '/solutions/ai-governance-cost-control'
-      preLoaderRoute: typeof SolutionsAiGovernanceCostControlRouteImport
-      parentRoute: typeof SolutionsRoute
-    }
-    '/research/$slug': {
-      id: '/research/$slug'
-      path: '/research/$slug'
-      fullPath: '/research/$slug'
-      preLoaderRoute: typeof ResearchSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products/maax-studio': {
-      id: '/products/maax-studio'
-      path: '/maax-studio'
-      fullPath: '/products/maax-studio'
-      preLoaderRoute: typeof ProductsMaaxStudioRouteImport
-      parentRoute: typeof ProductsRoute
-    }
-    '/products/aexos': {
-      id: '/products/aexos'
-      path: '/aexos'
-      fullPath: '/products/aexos'
-      preLoaderRoute: typeof ProductsAexosRouteImport
-      parentRoute: typeof ProductsRoute
-    }
-    '/answers/what-is-governed-ai-execution': {
-      id: '/answers/what-is-governed-ai-execution'
-      path: '/answers/what-is-governed-ai-execution'
-      fullPath: '/answers/what-is-governed-ai-execution'
-      preLoaderRoute: typeof AnswersWhatIsGovernedAiExecutionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/answers/what-is-goal-grounded-generation': {
-      id: '/answers/what-is-goal-grounded-generation'
-      path: '/answers/what-is-goal-grounded-generation'
-      fullPath: '/answers/what-is-goal-grounded-generation'
-      preLoaderRoute: typeof AnswersWhatIsGoalGroundedGenerationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/answers/what-is-ai-governance': {
-      id: '/answers/what-is-ai-governance'
-      path: '/answers/what-is-ai-governance'
-      fullPath: '/answers/what-is-ai-governance'
-      preLoaderRoute: typeof AnswersWhatIsAiGovernanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/answers/what-are-command-gates-in-ai-systems': {
-      id: '/answers/what-are-command-gates-in-ai-systems'
-      path: '/answers/what-are-command-gates-in-ai-systems'
-      fullPath: '/answers/what-are-command-gates-in-ai-systems'
-      preLoaderRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRouteImport
+    '/answers/ai-execution-system-vs-ai-automation': {
+      id: '/answers/ai-execution-system-vs-ai-automation'
+      path: '/answers/ai-execution-system-vs-ai-automation'
+      fullPath: '/answers/ai-execution-system-vs-ai-automation'
+      preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/answers/how-to-measure-ai-output-quality': {
@@ -912,32 +786,144 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswersHowToMeasureAiOutputQualityRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/answers/ai-execution-system-vs-ai-automation': {
-      id: '/answers/ai-execution-system-vs-ai-automation'
-      path: '/answers/ai-execution-system-vs-ai-automation'
-      fullPath: '/answers/ai-execution-system-vs-ai-automation'
-      preLoaderRoute: typeof AnswersAiExecutionSystemVsAiAutomationRouteImport
+    '/answers/what-are-command-gates-in-ai-systems': {
+      id: '/answers/what-are-command-gates-in-ai-systems'
+      path: '/answers/what-are-command-gates-in-ai-systems'
+      fullPath: '/answers/what-are-command-gates-in-ai-systems'
+      preLoaderRoute: typeof AnswersWhatAreCommandGatesInAiSystemsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/web-vitals': {
-      id: '/api/public/web-vitals'
-      path: '/api/public/web-vitals'
-      fullPath: '/api/public/web-vitals'
-      preLoaderRoute: typeof ApiPublicWebVitalsRouteImport
+    '/answers/what-is-ai-governance': {
+      id: '/answers/what-is-ai-governance'
+      path: '/answers/what-is-ai-governance'
+      fullPath: '/answers/what-is-ai-governance'
+      preLoaderRoute: typeof AnswersWhatIsAiGovernanceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/talent': {
-      id: '/api/public/talent'
-      path: '/api/public/talent'
-      fullPath: '/api/public/talent'
-      preLoaderRoute: typeof ApiPublicTalentRouteImport
+    '/answers/what-is-goal-grounded-generation': {
+      id: '/answers/what-is-goal-grounded-generation'
+      path: '/answers/what-is-goal-grounded-generation'
+      fullPath: '/answers/what-is-goal-grounded-generation'
+      preLoaderRoute: typeof AnswersWhatIsGoalGroundedGenerationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/cta-events': {
-      id: '/api/public/cta-events'
-      path: '/api/public/cta-events'
-      fullPath: '/api/public/cta-events'
-      preLoaderRoute: typeof ApiPublicCtaEventsRouteImport
+    '/answers/what-is-governed-ai-execution': {
+      id: '/answers/what-is-governed-ai-execution'
+      path: '/answers/what-is-governed-ai-execution'
+      fullPath: '/answers/what-is-governed-ai-execution'
+      preLoaderRoute: typeof AnswersWhatIsGovernedAiExecutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/aexos': {
+      id: '/products/aexos'
+      path: '/aexos'
+      fullPath: '/products/aexos'
+      preLoaderRoute: typeof ProductsAexosRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/products/maax-studio': {
+      id: '/products/maax-studio'
+      path: '/maax-studio'
+      fullPath: '/products/maax-studio'
+      preLoaderRoute: typeof ProductsMaaxStudioRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/research/': {
+      id: '/research/'
+      path: '/research'
+      fullPath: '/research/'
+      preLoaderRoute: typeof ResearchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research/$slug': {
+      id: '/research/$slug'
+      path: '/research/$slug'
+      fullPath: '/research/$slug'
+      preLoaderRoute: typeof ResearchSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solutions/ai-governance-cost-control': {
+      id: '/solutions/ai-governance-cost-control'
+      path: '/ai-governance-cost-control'
+      fullPath: '/solutions/ai-governance-cost-control'
+      preLoaderRoute: typeof SolutionsAiGovernanceCostControlRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-integrations': {
+      id: '/solutions/ai-integrations'
+      path: '/ai-integrations'
+      fullPath: '/solutions/ai-integrations'
+      preLoaderRoute: typeof SolutionsAiIntegrationsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-product-engineering': {
+      id: '/solutions/ai-product-engineering'
+      path: '/ai-product-engineering'
+      fullPath: '/solutions/ai-product-engineering'
+      preLoaderRoute: typeof SolutionsAiProductEngineeringRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-strategy-advisory': {
+      id: '/solutions/ai-strategy-advisory'
+      path: '/ai-strategy-advisory'
+      fullPath: '/solutions/ai-strategy-advisory'
+      preLoaderRoute: typeof SolutionsAiStrategyAdvisoryRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/ai-websites-lead-systems': {
+      id: '/solutions/ai-websites-lead-systems'
+      path: '/ai-websites-lead-systems'
+      fullPath: '/solutions/ai-websites-lead-systems'
+      preLoaderRoute: typeof SolutionsAiWebsitesLeadSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/applied-ai-systems': {
+      id: '/solutions/applied-ai-systems'
+      path: '/applied-ai-systems'
+      fullPath: '/solutions/applied-ai-systems'
+      preLoaderRoute: typeof SolutionsAppliedAiSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/custom-ai-product-development': {
+      id: '/solutions/custom-ai-product-development'
+      path: '/custom-ai-product-development'
+      fullPath: '/solutions/custom-ai-product-development'
+      preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/digital-web-systems': {
+      id: '/solutions/digital-web-systems'
+      path: '/digital-web-systems'
+      fullPath: '/solutions/digital-web-systems'
+      preLoaderRoute: typeof SolutionsDigitalWebSystemsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/governance-optimization': {
+      id: '/solutions/governance-optimization'
+      path: '/governance-optimization'
+      fullPath: '/solutions/governance-optimization'
+      preLoaderRoute: typeof SolutionsGovernanceOptimizationRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/internal-ai-assistants': {
+      id: '/solutions/internal-ai-assistants'
+      path: '/internal-ai-assistants'
+      fullPath: '/solutions/internal-ai-assistants'
+      preLoaderRoute: typeof SolutionsInternalAiAssistantsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/workflow-automation': {
+      id: '/solutions/workflow-automation'
+      path: '/workflow-automation'
+      fullPath: '/solutions/workflow-automation'
+      preLoaderRoute: typeof SolutionsWorkflowAutomationRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/api/public/assistant': {
+      id: '/api/public/assistant'
+      path: '/api/public/assistant'
+      fullPath: '/api/public/assistant'
+      preLoaderRoute: typeof ApiPublicAssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/contact': {
@@ -947,18 +933,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/assistant': {
-      id: '/api/public/assistant'
-      path: '/api/public/assistant'
-      fullPath: '/api/public/assistant'
-      preLoaderRoute: typeof ApiPublicAssistantRouteImport
+    '/api/public/cta-events': {
+      id: '/api/public/cta-events'
+      path: '/api/public/cta-events'
+      fullPath: '/api/public/cta-events'
+      preLoaderRoute: typeof ApiPublicCtaEventsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/brief/submit': {
-      id: '/api/public/brief/submit'
-      path: '/api/public/brief/submit'
-      fullPath: '/api/public/brief/submit'
-      preLoaderRoute: typeof ApiPublicBriefSubmitRouteImport
+    '/api/public/talent': {
+      id: '/api/public/talent'
+      path: '/api/public/talent'
+      fullPath: '/api/public/talent'
+      preLoaderRoute: typeof ApiPublicTalentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/web-vitals': {
+      id: '/api/public/web-vitals'
+      path: '/api/public/web-vitals'
+      fullPath: '/api/public/web-vitals'
+      preLoaderRoute: typeof ApiPublicWebVitalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/brief/assist': {
+      id: '/api/public/brief/assist'
+      path: '/api/public/brief/assist'
+      fullPath: '/api/public/brief/assist'
+      preLoaderRoute: typeof ApiPublicBriefAssistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/brief/init': {
@@ -968,11 +968,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicBriefInitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/brief/assist': {
-      id: '/api/public/brief/assist'
-      path: '/api/public/brief/assist'
-      fullPath: '/api/public/brief/assist'
-      preLoaderRoute: typeof ApiPublicBriefAssistRouteImport
+    '/api/public/brief/submit': {
+      id: '/api/public/brief/submit'
+      path: '/api/public/brief/submit'
+      fullPath: '/api/public/brief/submit'
+      preLoaderRoute: typeof ApiPublicBriefSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
