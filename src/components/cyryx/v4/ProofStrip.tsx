@@ -30,12 +30,6 @@ const ITEMS: readonly ProofItem[] = [
     value: "Cyryx Governance Protocol v1 · DOI 10.5281/zenodo.21045760",
     href: "/research/cgp-v1",
   },
-  {
-    label: "Code",
-    value: "github.com/CyryxLabs",
-    href: "https://github.com/CyryxLabs",
-    external: true,
-  },
 ];
 
 export function ProofStrip() {
@@ -50,7 +44,7 @@ export function ProofStrip() {
     >
       <ul
         className={`mx-auto grid max-w-7xl gap-px bg-[color-mix(in_oklab,var(--silver)_10%,transparent)] sm:grid-cols-2 ${
-          items.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"
+          items.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"
         }`}
       >
         {items.map((item) => {

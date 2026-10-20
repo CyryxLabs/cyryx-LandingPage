@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ArrowUp, ArrowUpRight, Github, MessageSquare } from "lucide-react";
+import { ArrowUp, ArrowUpRight, MessageSquare } from "lucide-react";
 import { CyryxLockup } from "./primitives/CyryxMark";
 import { PRIMARY_NAVIGATION, PRIMARY_NAVIGATION_CTA, type NavigationItem } from "@/lib/navigation";
 import { trackCta } from "@/lib/track-cta";
@@ -160,17 +160,7 @@ export function Footer() {
                   <XMark className="h-4 w-4" />
                 </a>
               </li>
-              <li>
-                <a
-                  href="https://github.com/CyryxLabs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cx-footer-social"
-                  aria-label="Cyryx Labs on GitHub (opens in a new tab)"
-                >
-                  <Github className="h-4 w-4" aria-hidden />
-                </a>
-              </li>
+              
             </ul>
             <div className="mt-10">
               <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
