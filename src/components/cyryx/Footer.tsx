@@ -160,7 +160,6 @@ export function Footer() {
                   <XMark className="h-4 w-4" />
                 </a>
               </li>
-              
             </ul>
             <div className="mt-10">
               <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
