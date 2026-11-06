@@ -244,40 +244,23 @@ test("Hero headline typography stays unclipped from 360px to 1024px", async ({ p
       expect(line.left).toBeGreaterThanOrEqual(metrics.heading.left - 1);
       expect(line.right).toBeLessThanOrEqual(metrics.viewportWidth + 1);
       // Every breakpoint opens with the headline inside the first viewport.
-      expect(metrics.scene).not.toBeNull();
       expect(line.top).toBeGreaterThanOrEqual(0);
       expect(line.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
     }
   }
 });
 
-test("Mobile Hero overlays its message on the film, like desktop", async ({ page }) => {
-  await page.addInitScript(() => {
-    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, value: 8 });
-    Object.defineProperty(navigator, "deviceMemory", { configurable: true, value: 8 });
-  });
+test("Mobile Hero opens with the headline and the fit-check action", async ({ page }) => {
+  // The monolith film was retired on 2026-11-06; phones read the promise first,
+  // then the example plan.
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
 
-  const heading = page.locator("#hero-heading");
-  const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(heading).toBeInViewport();
-  await expect(primary).toBeInViewport();
-
-  const layout = await page.evaluate(() => {
-    const scene = document.querySelector<HTMLElement>("[data-hero-scroll-scene]")!;
-    const panel = document.querySelector<HTMLElement>(".cx-hero-panel")!;
-    return {
-      sceneTop: scene.getBoundingClientRect().top + window.scrollY,
-      sceneBottom: scene.getBoundingClientRect().bottom + window.scrollY,
-      panelTop: panel.getBoundingClientRect().top + window.scrollY,
-      headingCount: document.querySelectorAll("#hero-heading").length,
-    };
-  });
-  expect(layout.panelTop).toBeGreaterThanOrEqual(layout.sceneTop);
-  expect(layout.panelTop).toBeLessThan(layout.sceneBottom);
-  expect(layout.headingCount).toBe(1);
+  await expect(page.locator("#hero-heading")).toBeInViewport();
+  await expect(page.locator('section[data-hero] a[data-cta="primary"]')).toBeInViewport();
+  await expect(page.locator("#hero-heading")).toHaveCount(1);
+  await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(0);
 });
 
 test("Forced-colors keeps Hero text and focus indicators system-readable", async ({ page }) => {

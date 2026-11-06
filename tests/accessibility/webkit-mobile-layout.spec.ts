@@ -1,14 +1,12 @@
 import { expect, test } from "@playwright/test";
 
-// Homepage chapter order: 01 problem, 02 what we do, 03 products, 04 who we serve,
-// 05 how it works, 06 AI you can trust, 07 questions, 08 start.
+// Homepage section order since the 2026-11-06 redesign: offers, the written
+// terms, products, AI controls, questions, start.
 const HOME_SECTIONS = [
-  "problem",
   "services",
-  "products",
-  "who-we-serve",
   "how-it-works",
-  "controlled-execution",
+  "products",
+  "control",
   "faq",
   "contact",
 ] as const;
@@ -34,13 +32,6 @@ test("Safari on iPhone gets the full experience, not the low-performance fallbac
   await expect(page.locator("html")).not.toHaveClass(/cx-low-perf/);
 
   const hero = page.locator("section[data-hero]");
-  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
-    "data-sequence-ready",
-    "true",
-    {
-      timeout: 30_000,
-    },
-  );
   await expect(hero.locator(".cx-hero-sub")).toBeVisible();
   await expect(hero.locator(".cx-hero-ctas")).toBeVisible();
 

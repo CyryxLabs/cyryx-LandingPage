@@ -6,6 +6,37 @@
   "shape": "narrative-workflow",
   "theme": "brand",
   "axes": "dark/grotesk-sans/chromatic-teal",
+  "hero": "Stage: promise beside a labelled example project plan",
+  "nav": "kept three-part bar",
+  "footer": "kept index columns",
+  "imagery": "none; the product built (the written plan)",
+  "photos": [],
+  "entry": "plan",
+  "fingerprint": "dark/grotesk/teal/stage/index/rows",
+  "sections": [
+   "hero-plan",
+   "index-offers",
+   "split-terms",
+   "grid-products",
+   "band-rules",
+   "rows-faq",
+   "steps-close"
+  ],
+  "signature": "the written project plan with its acceptance checklist",
+  "waived": [
+   "8",
+   "49b"
+  ],
+  "prompt": "Cyryx Labs home, institutional: hire a team for websites, software, automation and AI agents at a fixed written price",
+  "date": "2026-11-06"
+ },
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "shape": "narrative-workflow",
+  "theme": "brand",
+  "axes": "dark/grotesk-sans/chromatic-teal",
   "hero": "Poster over scroll-scrubbed film",
   "nav": "kept three-part bar, labels restyled",
   "footer": "kept index columns",

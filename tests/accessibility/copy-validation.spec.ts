@@ -139,7 +139,7 @@ test.describe("Hero — plain-English value proposition", () => {
     const v5 = getCopy("v5").hero;
     await expect(hero).toBeVisible();
     await expect(page.locator("#hero-heading")).toHaveText(
-      "AI that works. People who answer for it.",
+      "We build the systems your business runs on.",
     );
     await expect(hero).toContainText(v5.sub);
     const primary = hero.getByRole("link", { name: APPROVED.ctaPrimary, exact: true });
@@ -166,10 +166,14 @@ test.describe("Hero — plain-English value proposition", () => {
     await expect(page.locator("main")).not.toContainText(/MAAX/i);
   });
 
-  test("the six ways to start each name a timeline and their own way in", async ({ page }) => {
+  test("the six starting engagements each name a timeline and their own way in", async ({
+    page,
+  }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const services = page.locator("#services");
-    await expect(services.getByRole("heading", { level: 2 })).toHaveText("Six ways to start.");
+    await expect(services.getByRole("heading", { level: 2 })).toHaveText(
+      "Where clients usually start.",
+    );
     const rows = services.locator('li[id^="service-"]');
     await expect(rows).toHaveCount(6);
     for (const intent of [

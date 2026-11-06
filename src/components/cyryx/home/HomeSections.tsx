@@ -1,9 +1,5 @@
 import { Link } from "@tanstack/react-router";
 
-import lobby800 from "@/assets/home/cyryx-lobby-800.webp";
-import lobby1600 from "@/assets/home/cyryx-lobby-1600.webp";
-import controlRoom720 from "@/assets/home/cyryx-control-room-720.webp";
-import controlRoom1280 from "@/assets/home/cyryx-control-room-1280.webp";
 import { getCopy } from "@/copy";
 import { CYRYX_PRODUCTS, FAQ_ITEMS, START_OFFERS } from "@/data/offer";
 import { isAssistantEnabled, openAssistant } from "@/lib/assistant-client";
@@ -20,9 +16,9 @@ export function OfferIndex() {
     <section id="services" aria-labelledby="services-heading" className="hm-section hm-offers">
       <div className="container">
         <div className="hm-head hm-head--split">
-          <h2 id="services-heading">Six ways to start.</h2>
+          <h2 id="services-heading">Where clients usually start.</h2>
           <p className="lead">
-            Pick the one closest to your goal. Each begins with a free 20-minute fit check.
+            Six engagements with a defined scope. Each begins with a free 20-minute fit check.
           </p>
         </div>
         <ol className="hm-offer-list">
@@ -75,20 +71,11 @@ export function TheDeal() {
   return (
     <section id="how-it-works" aria-labelledby="deal-heading" className="hm-section hm-deal">
       <div className="container hm-split">
-        <figure className="hm-split__picture">
-          <img
-            src={lobby1600}
-            srcSet={`${lobby800} 800w, ${lobby1600} 1600w`}
-            sizes="(max-width: 60rem) 100vw, 50vw"
-            width={1600}
-            height={900}
-            loading="lazy"
-            decoding="async"
-            alt="The Cyryx Labs monolith in a dark hall, lit by a teal ring."
-          />
-        </figure>
+        <div className="hm-split__head">
+          <h2 id="deal-heading">Scope, price and checklist, in writing.</h2>
+          <p className="lead">What you have in hand before any work begins.</p>
+        </div>
         <div className="hm-split__text">
-          <h2 id="deal-heading">Everything in writing before we start.</h2>
           <dl className="hm-terms">
             <div>
               <dt>A fixed price</dt>
@@ -122,8 +109,8 @@ export function HomeProducts() {
     <section id="products" aria-labelledby="products-heading" className="hm-section hm-products">
       <div className="container">
         <div className="hm-head">
-          <h2 id="products-heading">Software we run ourselves.</h2>
-          <p className="lead">The same methods we sell, at work in our own products.</p>
+          <h2 id="products-heading">Products we build and operate.</h2>
+          <p className="lead">Our own software, each shown at its real stage.</p>
         </div>
         <ul className="hm-product-grid">
           {CYRYX_PRODUCTS.map((product) => {
@@ -209,21 +196,9 @@ export function HomeControl() {
     >
       <div className="container">
         <div className="hm-head hm-head--split">
-          <h2 id="control-heading">AI that asks before it acts.</h2>
-          <p className="lead">Built into every system we deliver, not sold as an extra.</p>
+          <h2 id="control-heading">AI within limits you set.</h2>
+          <p className="lead">Every AI system we deliver ships with these three controls.</p>
         </div>
-        <figure className="hm-control__picture">
-          <img
-            src={controlRoom1280}
-            srcSet={`${controlRoom720} 720w, ${controlRoom1280} 1280w`}
-            sizes="(max-width: 60rem) 100vw, 1312px"
-            width={1280}
-            height={960}
-            loading="lazy"
-            decoding="async"
-            alt="A person standing before a wall of screens in a dark operations room."
-          />
-        </figure>
         <ol className="hm-rules">
           <li>
             <h3>Written limits</h3>
@@ -257,7 +232,7 @@ export function HomeQuestions() {
   return (
     <section id="faq" aria-labelledby="faq-heading" className="hm-section hm-faq">
       <div className="container hm-faq__grid">
-        <h2 id="faq-heading">Questions before you call.</h2>
+        <h2 id="faq-heading">Questions clients ask first.</h2>
         <div className="hm-faq__list">
           {FAQ_ITEMS.map((item) => (
             <details key={item.q} className="hm-faq__item">

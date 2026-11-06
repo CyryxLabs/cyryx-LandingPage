@@ -42,12 +42,12 @@ test("homepage hero carries the approved headline and the fit-check CTA", async 
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  // Founder-chosen title (Oct 2026), shipped with the Hallmark redesign of the home page.
-  await expect(heading).toHaveText("AI that works. People who answer for it.");
+  // Institutional title chosen with the 2026-11-06 hero revision.
+  await expect(heading).toHaveText("We build the systems your business runs on.");
   await expect(primary).toHaveText(/Get a free fit check/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
-  // The approved scroll scene is kept: phones read the copy after the film.
-  await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(1);
+  // The monolith film was retired on 2026-11-06: no scroll scene on the home.
+  await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(0);
 });
 
 test("a CTA click reaches the CRM as a signed funnel event without personal data", async ({
