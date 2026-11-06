@@ -1,0 +1,838 @@
+/* Hallmark · shape: narrative workflow · genre: atmospheric · theme: brand (Cyryx Brand System v1.0, src/styles.css) · redesign: full · job: hire
+ * paper: oklch(12.1% 0.004 245) · accent: oklch(75% 0.126 190) · display: Space Grotesk · body: Inter · outlier: Cormorant Garamond (the film statements only) · hero: Poster, over the approved scroll-scrubbed monolith film · nav: kept (shared three-part bar, four real destinations, labels restyled) · footer: kept (index columns, a hub with a real sitemap) · signature: the monolith film opening to the Cyryx mark while the three terms of the offer surface over it
+ * axes: dark/grotesk-sans/chromatic-teal · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: S, the offer list could sit on any studio's page; every row now carries the owner's own timeline and its own way in, and the guarantee is the owner's FAQ wording */
+/* Hallmark · dropped #problem, #who-we-serve, #controlled-execution, the proof strip, the story progress rail · the founder asked for a recreated landing page; the audiences moved into the offer rows, the proof into the products section */
+/* Hallmark · dropped "Free 20-minute call · Fixed-price quotes · English & Español" · 63 and 67 name the mono caps strip; each fact now sits in the deal section */
+/* Hallmark · dropped the old section heads (problem, four ways, who we serve, AI you can trust) and the sample invoice figures ($5,000, $4.12, $20.00), the 500+ and the 3 months and 12 weeks audience timelines · the founder asked for a recreated page built on the offer; kept 38/38 links and 9/9 handlers */
+/* Hallmark · waive 49b · the shared footer's service names at 320px, two lines at most · footer chrome kept across every route; "Custom AI Product Development" is the page's real name */
+/* Hallmark · dismissed 28a · the lobby photograph sits below a 340svh film scene, never the LCP; the film's first frame is preloaded in the route head */
+/* Hallmark · answered F16 · the root scrollbar belongs to the shared site shell, outside the home page's token scope */
+/* Hallmark · waive 8 · hero, offers, deal, products, control, questions, start · seven sections in the order a buyer of a fixed-price build asks them */
+
+@import "./hallmark-home/tokens.css";
+
+.hm {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.55;
+  min-height: 100dvh;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Base, scoped to the home page. */
+.hm ::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.hm :focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.hm-main h1,
+.hm-main h2,
+.hm-main h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-synthesis: none;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.05;
+  color: var(--color-ink-2);
+  overflow-wrap: break-word;
+  min-width: 0;
+  text-wrap: balance;
+}
+
+.hm-main h2 {
+  max-width: 22ch;
+  font-size: var(--text-section);
+}
+
+.hm-main h3 {
+  max-width: 40ch;
+  font-size: var(--text-title);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.hm-main p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.hm-main .lead {
+  font-size: var(--text-lead);
+  line-height: 1.45;
+  max-width: 44ch;
+  color: var(--color-ink);
+}
+
+.hm-main img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.hm-main .container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.hm-main .num {
+  font-variant-numeric: tabular-nums;
+}
+
+.hm-main .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Controls: one filled primary style, one quiet outline, one text link. */
+.hm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.hm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding-inline: var(--space-lg);
+  border: var(--rule-hair) solid transparent;
+  border-radius: var(--radius-control);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
+}
+
+.hm-btn--primary {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.hm-btn--primary:hover {
+  background: var(--color-accent-hover);
+}
+
+.hm-btn--quiet {
+  border-color: var(--color-muted);
+  background: transparent;
+  color: var(--color-ink-2);
+}
+
+.hm-btn--quiet:hover {
+  border-color: var(--color-ink-2);
+}
+
+.hm-btn:active {
+  transform: translateY(1px);
+}
+
+.hm-btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  transition: none;
+}
+
+.hm-btn:disabled,
+.hm-btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.hm-textlink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--color-muted);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  cursor: pointer;
+  transition:
+    color var(--dur-short) var(--ease-out),
+    text-decoration-color var(--dur-short) var(--ease-out);
+}
+
+.hm-textlink:hover {
+  color: var(--color-ink-2);
+  text-decoration-color: var(--color-accent);
+}
+
+.hm-textlink:active {
+  color: var(--color-accent);
+}
+
+.hm-textlink:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Hero: Poster over the scroll-scrubbed film. */
+.hm-hero {
+  position: relative;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.hm-hero__scene {
+  position: relative;
+  height: 340svh;
+}
+
+.hm-hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.hm-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.hm-main .hm-hero__grade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--color-scrim) 0%, var(--color-scrim-soft) 38%, transparent 68%),
+    linear-gradient(0deg, var(--color-scrim) 0%, transparent 46%);
+}
+
+.hm-hero__story {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* The statements belong to the scrub; without it they stay out of the way. */
+.hm-hero:not([data-scroll-scrub]) .hm-hero__story {
+  display: none;
+}
+
+/* GSAP owns the panels' transforms; they are placed without one. */
+.hm-hero__statement {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  max-width: 14ch;
+  font-family: var(--font-outlier);
+  font-size: var(--text-film);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--color-ink-2);
+}
+
+.hm-hero__statement--1 {
+  left: max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter)));
+}
+
+.hm-hero__statement--2 {
+  right: max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter)));
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.hm-hero__statement--3 {
+  top: auto;
+  bottom: var(--space-2xl);
+  left: 0;
+  right: 0;
+  justify-content: center;
+  max-width: 22ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.hm-hero__content {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  padding-top: var(--nav-height);
+  padding-bottom: var(--space-3xl);
+  pointer-events: none;
+}
+
+.hm-hero__copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-lg);
+  max-width: 62rem;
+  pointer-events: auto;
+}
+
+.hm-main .hm-hero__title {
+  max-width: none;
+  font-size: var(--text-display);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.hm-hero__title span {
+  display: block;
+}
+
+/* A soft dark shadow keeps the title legible over the brightest frames.
+   The legacy hero classes stay as test hooks; their sizes are neutralised. */
+.hm-main .hm-hero__title .cx-hero-title-line {
+  padding-bottom: 0.08em;
+  font-size: inherit;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-shadow: 0 2px 24px var(--color-scrim);
+}
+
+@media (max-width: 767px) {
+  .hm-main .hm-hero__title .cx-hero-title-line {
+    line-height: 1.14;
+    letter-spacing: -0.03em;
+  }
+}
+
+.hm-main .cx-hero-panel.hm-hero__copy {
+  max-width: 62rem;
+  background: none;
+  backdrop-filter: none;
+}
+
+.hm-hero__progress {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 6;
+  height: 2px;
+  background: var(--color-rule);
+}
+
+.hm-hero__progress span {
+  display: block;
+  height: 100%;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.hm-hero:not([data-scroll-scrub]) .hm-hero__progress {
+  display: none;
+}
+
+.hm-hero__sub {
+  max-width: 34ch;
+  color: var(--color-ink);
+}
+
+.hm-hero__copy .hm-actions {
+  margin-top: var(--space-xs);
+}
+
+.hm-hero__ask {
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+/* Sections. */
+.hm-section {
+  padding-block: var(--section-gap) 0;
+}
+
+.hm-head {
+  display: grid;
+  gap: var(--space-md);
+  margin-bottom: var(--space-2xl);
+}
+
+.hm-head--split {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: end;
+  gap: var(--gap-columns);
+}
+
+/* Offers: an index, one row per first purchase. */
+.hm-offers {
+  padding-top: var(--section-gap-l);
+}
+
+.hm-offer-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+.hm-offer {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 2fr) auto;
+  align-items: center;
+  gap: var(--gap-columns);
+  min-height: 96px;
+  padding-block: var(--space-md);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+
+.hm-main .hm-offer__name {
+  font-size: var(--text-title);
+}
+
+.hm-offer__name a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur-short) var(--ease-out);
+}
+
+.hm-offer__name a:hover {
+  color: var(--color-accent);
+}
+
+.hm-offer__name a:active {
+  color: var(--color-accent-hover);
+}
+
+.hm-offer__line {
+  color: var(--color-ink);
+}
+
+.hm-offer__time {
+  color: var(--color-ink-2);
+  font-weight: 600;
+}
+
+.hm-offer__start {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.hm-offers__more {
+  margin-top: var(--space-lg);
+}
+
+/* The deal: a split with the hall photograph. */
+.hm-deal {
+  padding-top: var(--section-gap);
+}
+
+.hm-split {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  align-items: center;
+  gap: var(--space-3xl);
+}
+
+.hm-split__picture {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-image);
+}
+
+.hm-split__picture img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+
+.hm-split__text {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.hm-terms {
+  display: grid;
+  margin: 0;
+}
+
+.hm-terms > div {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-block: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+.hm-terms dt {
+  color: var(--color-ink-2);
+  font-weight: 600;
+}
+
+.hm-terms dd {
+  margin: 0;
+  color: var(--color-ink);
+}
+
+.hm-fineprint {
+  max-width: 48ch;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+/* Products: three across, their real stage under the name. */
+.hm-products {
+  padding-top: var(--section-gap-l);
+}
+
+.hm-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap-columns);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hm-product {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: var(--space-xs);
+  min-height: 320px;
+  padding: var(--space-xl);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-2);
+}
+
+.hm-main .hm-product__name {
+  font-size: var(--text-display-s);
+  letter-spacing: -0.03em;
+}
+
+.hm-product__category {
+  color: var(--color-ink);
+}
+
+.hm-product__stage {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.hm-product__summary {
+  margin-top: var(--space-md);
+  color: var(--color-muted);
+}
+
+.hm-product__link {
+  margin-top: var(--space-md);
+}
+
+.hm-products__foot {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-xl);
+  margin-top: var(--space-lg);
+}
+
+/* Control: a band, a wide photograph, three numbered rules. */
+.hm-band {
+  margin-top: var(--section-gap);
+  padding-block: var(--section-gap-s);
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+
+.hm-control__picture {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-image);
+}
+
+.hm-control__picture img {
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  object-fit: cover;
+  object-position: 50% 60%;
+}
+
+.hm-rules {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap-columns);
+  margin: var(--space-2xl) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: rule;
+}
+
+.hm-rules li {
+  display: grid;
+  align-content: start;
+  gap: var(--space-xs);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-rule);
+  counter-increment: rule;
+}
+
+.hm-rules li::before {
+  content: counter(rule);
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hm-rules p,
+.hm-steps p {
+  color: var(--color-muted);
+}
+
+.hm-control__more {
+  margin-top: var(--space-xl);
+}
+
+/* Questions: a head beside rows. */
+.hm-faq__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: var(--gap-columns);
+  align-items: start;
+}
+
+.hm-faq__grid h2 {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-lg));
+}
+
+.hm-faq__list {
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+.hm-faq__item {
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+
+.hm-faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  min-height: 72px;
+  padding-block: var(--space-md);
+  color: var(--color-ink-2);
+  font-size: var(--text-lead);
+  font-weight: 400;
+  list-style: none;
+  cursor: pointer;
+  transition: color var(--dur-short) var(--ease-out);
+}
+
+.hm-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.hm-faq__item summary::after {
+  content: "+";
+  flex-shrink: 0;
+  color: var(--color-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  line-height: 1;
+}
+
+.hm-faq__item[open] summary::after {
+  content: "\2212";
+}
+
+.hm-faq__item summary:hover {
+  color: var(--color-accent);
+}
+
+.hm-faq__item summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.hm-faq__item p {
+  max-width: 62ch;
+  padding-bottom: var(--space-lg);
+  color: var(--color-ink);
+}
+
+/* Start: the close, the action beside the three real steps. */
+.hm-start {
+  padding-block: var(--section-gap-l) var(--section-gap);
+}
+
+.hm-start__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+.hm-start__text {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-lg);
+}
+
+.hm-main .hm-start__text h2 {
+  max-width: 16ch;
+  font-size: var(--text-display-s);
+}
+
+.hm-steps {
+  display: grid;
+  gap: var(--space-xl);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.hm-steps li {
+  display: grid;
+  grid-template-columns: var(--space-xl) minmax(0, 1fr);
+  column-gap: var(--space-md);
+  row-gap: var(--space-2xs);
+  counter-increment: step;
+}
+
+.hm-steps li::before {
+  content: counter(step);
+  grid-row: span 2;
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Under 60rem every composition stacks in reading order. */
+@media (max-width: 60rem) {
+  .hm-head--split,
+  .hm-split,
+  .hm-faq__grid,
+  .hm-start__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hm-split {
+    gap: var(--space-xl);
+  }
+
+  .hm-split__picture {
+    order: 2;
+  }
+
+  .hm-split__picture img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .hm-offer {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-2xs) var(--space-lg);
+    padding-block: var(--space-lg);
+  }
+
+  .hm-offer__name,
+  .hm-offer__line {
+    grid-column: 1 / -1;
+  }
+
+  .hm-offer__start {
+    justify-self: end;
+  }
+
+  .hm-product-grid,
+  .hm-rules {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hm-product {
+    min-height: 0;
+    padding: var(--space-lg);
+  }
+
+  .hm-control__picture img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .hm-faq__grid h2 {
+    position: static;
+  }
+
+  .hm-hero__content {
+    padding-bottom: var(--space-2xl);
+  }
+
+  .hm-hero__statement,
+  .hm-hero__statement--2 {
+    left: var(--gutter);
+    right: var(--gutter);
+    max-width: none;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .hm-hero__statement--3 {
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: var(--space-4xl);
+    max-width: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .hm-hero__copy .hm-actions .hm-btn {
+    flex: 1 1 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-btn,
+  .hm-textlink,
+  .hm-offer__name a,
+  .hm-faq__item summary {
+    transition: none;
+  }
+
+  .hm-btn:active {
+    transform: none;
+  }
+
+  .hm-hero__scene {
+    height: 100svh;
+  }
+}

@@ -42,7 +42,8 @@ test("homepage hero carries the approved headline and the fit-check CTA", async 
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(heading).toHaveText("Websites, software and AI that grow your business — built and run by one accountable team.");
+  // Founder-chosen title (Oct 2026), shipped with the Hallmark redesign of the home page.
+  await expect(heading).toHaveText("AI that works. People who answer for it.");
   await expect(primary).toHaveText(/Get a free fit check/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
   // The approved scroll scene is kept: phones read the copy after the film.
@@ -116,7 +117,10 @@ test("the careers talent form reaches the CRM as a signed introduction, not a le
   ).toBe(false);
 });
 
-test("retired console and hosting URLs redirect instead of failing", async ({ baseURL, request }) => {
+test("retired console and hosting URLs redirect instead of failing", async ({
+  baseURL,
+  request,
+}) => {
   for (const path of ["/auth", "/workspace", "/workspace/pipeline"]) {
     const response = await request.get(`${baseURL}${path}`, { maxRedirects: 0 });
     expect(response.status()).toBe(308);

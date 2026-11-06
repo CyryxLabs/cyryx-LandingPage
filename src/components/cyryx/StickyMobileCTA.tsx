@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
 import { useCopyVariant } from "@/lib/copy-variant";
 import { getCopy } from "@/copy";
 import { buildStartProjectHref } from "@/lib/cta";
@@ -66,7 +65,6 @@ export function StickyMobileCTA() {
           className="cx-btn-primary w-full"
         >
           {headerCta}
-          <ArrowRight className="h-4 w-4" />
         </a>
       </div>
     </div>

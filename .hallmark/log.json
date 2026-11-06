@@ -1,0 +1,36 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "shape": "narrative-workflow",
+  "theme": "brand",
+  "axes": "dark/grotesk-sans/chromatic-teal",
+  "hero": "Poster over scroll-scrubbed film",
+  "nav": "kept three-part bar, labels restyled",
+  "footer": "kept index columns",
+  "imagery": "user brand renders (lobby, control room) + approved monolith film",
+  "photos": [
+   "cyryx-cta-lobby",
+   "cyryx-resilience"
+  ],
+  "entry": "film",
+  "fingerprint": "dark/grotesk/teal/poster/index/split",
+  "sections": [
+   "hero-film",
+   "index-offers",
+   "split-deal",
+   "grid-products",
+   "band-showcase-rules",
+   "rows-faq",
+   "steps-close"
+  ],
+  "signature": "monolith film opens to the Cyryx mark while the three terms of the offer surface",
+  "waived": [
+   "8",
+   "49b"
+  ],
+  "prompt": "Cyryx Labs home: hire a team for websites, automation, software and AI agents at a fixed price",
+  "date": "2026-11-06"
+ }
+]

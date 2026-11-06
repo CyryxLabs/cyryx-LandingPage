@@ -14,13 +14,13 @@ test.describe("Copy variants — shape validation", () => {
     });
   }
 
-  test("registry exposes exactly v4a (default) and v4b", () => {
-    expect([...AVAILABLE_COPY_VARIANTS].sort()).toEqual(["v4a", "v4b"]);
-    expect(DEFAULT_COPY_VARIANT).toBe("v4a");
+  test("registry exposes v5 (default since the 2026-11-06 redesign), v4a and v4b", () => {
+    expect([...AVAILABLE_COPY_VARIANTS].sort()).toEqual(["v4a", "v4b", "v5"]);
+    expect(DEFAULT_COPY_VARIANT).toBe("v5");
   });
 
-  test("getCopy falls back to the default v4a for unknown or retired variants", () => {
-    const fallback = getCopy("v4a").hero.headline;
+  test("getCopy falls back to the default v5 for unknown or retired variants", () => {
+    const fallback = getCopy("v5").hero.headline;
     expect(getCopy("does-not-exist").hero.headline).toBe(fallback);
     expect(getCopy("v3").hero.headline).toBe(fallback);
     expect(getCopy(null).hero.headline).toBe(fallback);
@@ -130,15 +130,18 @@ test.describe("Hero — plain-English value proposition", () => {
     }
   });
 
-  test("hero renders approved headline, sub, and CTA labels with correct destinations", async ({
+  test("hero renders the v5 headline, sub, and CTA labels with correct destinations", async ({
     page,
   }) => {
+    // v5 (Hallmark redesign, 2026-11-06) is the default; v4a stays reachable with ?copy=v4a.
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const hero = page.locator("section[data-hero]");
+    const v5 = getCopy("v5").hero;
     await expect(hero).toBeVisible();
-    await expect(hero).toContainText(APPROVED.eyebrow);
-    await expect(page.locator("#hero-heading")).toHaveText(APPROVED.headline);
-    await expect(hero).toContainText(APPROVED.sub);
+    await expect(page.locator("#hero-heading")).toHaveText(
+      "AI that works. People who answer for it.",
+    );
+    await expect(hero).toContainText(v5.sub);
     const primary = hero.getByRole("link", { name: APPROVED.ctaPrimary, exact: true });
     await expect(primary).toHaveAttribute("href", "/start?source=home");
     const secondary = hero.getByRole("link", { name: APPROVED.ctaSecondary, exact: true });
@@ -163,18 +166,27 @@ test.describe("Hero — plain-English value proposition", () => {
     await expect(page.locator("main")).not.toContainText(/MAAX/i);
   });
 
-  test("the four ways to work list concrete services and an entry point", async ({ page }) => {
+  test("the six ways to start each name a timeline and their own way in", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const services = page.locator("#services");
-    await expect(services.getByRole("heading", { level: 2 })).toHaveText(
-      "Four ways to work with us.",
-    );
-    for (const stage of ["Advise", "Build", "Control", "Operate"]) {
-      await expect(services.locator(`#service-${stage.toLowerCase()} li`)).toHaveCount(4);
+    await expect(services.getByRole("heading", { level: 2 })).toHaveText("Six ways to start.");
+    const rows = services.locator('li[id^="service-"]');
+    await expect(rows).toHaveCount(6);
+    for (const intent of [
+      "digital-system",
+      "workflow-automation",
+      "internal-assistant",
+      "custom-ai-product",
+      "strategy-advisory",
+      "managed-operations",
+    ]) {
+      await expect(services.locator(`a[href="/start?source=home&intent=${intent}"]`)).toHaveCount(
+        1,
+      );
     }
     await expect(
-      services.getByRole("link", { name: /Not sure where to start\? Tell us the problem/ }),
-    ).toHaveAttribute("href", "/start?source=home");
+      services.getByRole("link", { name: "See every service we offer" }),
+    ).toHaveAttribute("href", "/solutions");
     // Prices stay off the site until the founder publishes them.
     await expect(services).not.toContainText(/\$\d/);
   });
@@ -196,17 +208,7 @@ test.describe("Hero — plain-English value proposition", () => {
     const ids = await page
       .locator("main section[id]")
       .evaluateAll((sections) => sections.map((section) => section.id));
-    const expected = [
-      "top",
-      "problem",
-      "services",
-      "products",
-      "who-we-serve",
-      "how-it-works",
-      "controlled-execution",
-      "faq",
-      "contact",
-    ];
+    const expected = ["top", "services", "how-it-works", "products", "control", "faq", "contact"];
     expect(ids.filter((id) => expected.includes(id))).toEqual(expected);
     // TeamBlock renders nothing while no founder profile is published.
     await expect(page.locator("#team")).toHaveCount(0);
@@ -217,7 +219,9 @@ test.describe("Hero — plain-English value proposition", () => {
     const questions = await page.locator("#faq summary").allInnerTexts();
     const graph = await page
       .locator('script[type="application/ld+json"]')
-      .evaluateAll((nodes) => nodes.flatMap((n) => JSON.parse(n.textContent || "{}")["@graph"] ?? []));
+      .evaluateAll((nodes) =>
+        nodes.flatMap((n) => JSON.parse(n.textContent || "{}")["@graph"] ?? []),
+      );
     const faq = graph.find((node: { "@type"?: string }) => node["@type"] === "FAQPage");
     expect(faq).toBeTruthy();
     expect(faq.mainEntity.map((q: { name: string }) => q.name)).toEqual(

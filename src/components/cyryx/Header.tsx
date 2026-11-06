@@ -67,7 +67,7 @@ export function Header() {
         className={cn(
           "cx-liquid-glass cx-site-header fixed inset-x-0 top-0 z-50 rounded-none border-x-0 border-t-0 transition-all duration-300",
           scrolled
-            ? "shadow-[0_1px_0_0_color-mix(in_oklab,var(--accent-glow)_18%,transparent)]"
+            ? "shadow-[0_1px_0_0_color-mix(in_oklab,var(--silver)_12%,transparent)]"
             : "shadow-none",
         )}
       >
@@ -131,11 +131,10 @@ export function Header() {
             className={cn(
               "cx-btn-primary cx-btn-sm hidden lg:inline-flex relative",
               isPrimaryNavigationCTAActive(pathname) &&
-                "after:absolute after:left-2 after:right-2 after:-bottom-2 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]",
+                "after:absolute after:left-2 after:right-2 after:-bottom-2 after:h-px after:bg-[var(--accent-glow)]",
             )}
           >
             {PRIMARY_NAVIGATION_CTA.label}
-            <span aria-hidden>→</span>
           </Link>
 
           <button

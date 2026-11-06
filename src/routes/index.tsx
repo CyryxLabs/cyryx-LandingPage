@@ -2,20 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 import { Header } from "@/components/cyryx/Header";
-import { Hero } from "@/components/cyryx/Hero";
 import { Footer } from "@/components/cyryx/Footer";
 import { StickyMobileCTA } from "@/components/cyryx/StickyMobileCTA";
-import { StoryChapter, StoryProgress } from "@/components/cyryx/StoryChapter";
-import { ControlledExecution } from "@/components/cyryx/v4/ControlledExecution";
-import { CompactStart } from "@/components/cyryx/v4/CompactStart";
-import { ProofStrip } from "@/components/cyryx/v4/ProofStrip";
-import { TeamBlock } from "@/components/cyryx/v4/TeamBlock";
-import { Problem } from "@/components/cyryx/v5/Problem";
-import { Services } from "@/components/cyryx/v5/Services";
-import { Products } from "@/components/cyryx/v5/Products";
-import { Audiences } from "@/components/cyryx/v5/Audiences";
-import { Plan } from "@/components/cyryx/v5/Plan";
-import { Faq } from "@/components/cyryx/v5/Faq";
+import { HomeHero } from "@/components/cyryx/home/HomeHero";
+import {
+  HomeControl,
+  HomeProducts,
+  HomeQuestions,
+  HomeStart,
+  OfferIndex,
+  TheDeal,
+} from "@/components/cyryx/home/HomeSections";
 import { buildFaqJsonLd } from "@/data/offer";
 import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
 import { absoluteSiteUrl, SITE_URL } from "@/lib/site-url";
@@ -158,40 +155,17 @@ function IndexPage() {
   }, []);
 
   return (
-    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)] selection:bg-[var(--accent-glow)] selection:text-[var(--onyx)]">
+    <div className="dark hm">
       <StickyMobileCTA />
       <Header />
-      <main id="main-content" tabIndex={-1} className="outline-none">
-        <Hero />
-        <ProofStrip />
-        <div className="cx-story relative" data-story-root>
-          <StoryProgress />
-          <StoryChapter index="01" label="The problem">
-            <Problem />
-          </StoryChapter>
-          <StoryChapter index="02" label="What we do">
-            <Services />
-          </StoryChapter>
-          <StoryChapter index="03" label="Products">
-            <Products />
-          </StoryChapter>
-          <StoryChapter index="04" label="Who we serve">
-            <Audiences />
-          </StoryChapter>
-          <StoryChapter index="05" label="How it works">
-            <Plan />
-          </StoryChapter>
-          <StoryChapter index="06" label="AI you can trust">
-            <ControlledExecution />
-          </StoryChapter>
-          <StoryChapter index="07" label="Questions">
-            <Faq />
-          </StoryChapter>
-          <StoryChapter index="08" label="Start">
-            <TeamBlock />
-            <CompactStart />
-          </StoryChapter>
-        </div>
+      <main id="main-content" tabIndex={-1} className="hm-main">
+        <HomeHero />
+        <OfferIndex />
+        <TheDeal />
+        <HomeProducts />
+        <HomeControl />
+        <HomeQuestions />
+        <HomeStart />
       </main>
       <Footer />
     </div>

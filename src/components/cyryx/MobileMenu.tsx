@@ -194,7 +194,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                 <AccordionItem key={group.id} value={group.id} className="border-none">
                   <AccordionTrigger
                     className={cn(
-                      "hud-label text-[var(--silver)] hover:text-white py-5 min-h-[44px]",
+                      "font-sans text-base font-normal normal-case tracking-normal text-[var(--silver)] hover:text-white py-5 min-h-[44px]",
                       isActive && "text-[var(--accent-glow)]",
                       expandedGroup === group.id && "text-white",
                     )}
@@ -218,7 +218,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                           )}
                           aria-current={isItemActive ? "page" : undefined}
                         >
-                          <span className="hud-label text-sm uppercase tracking-wider">
+                          <span className="font-sans text-sm font-normal text-[var(--silver)]">
                             {item.label}
                           </span>
                         </Link>
@@ -244,7 +244,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
               }}
               aria-current={isPrimaryNavigationCTAActive(pathname) ? "page" : undefined}
               className={cn(
-                "cx-btn cx-liquid-glass flex min-h-[44px] w-full items-center justify-center rounded-md hud-label text-[var(--silver)] transition-all",
+                "cx-btn cx-liquid-glass flex min-h-[44px] w-full items-center justify-center rounded-md font-sans text-base font-normal text-[var(--silver)] transition-all",
                 isPrimaryNavigationCTAActive(pathname)
                   ? "border-[var(--accent-glow)] text-white shadow-[0_0_12px_var(--accent-glow)]"
                   : "hover:text-white",

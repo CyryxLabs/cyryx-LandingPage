@@ -267,3 +267,79 @@ export function buildFaqJsonLd(pageUrl: string) {
     })),
   };
 }
+
+/**
+ * The home page's offer index (Offer Master pass, 2026-11-06). Each row is a
+ * concrete first thing to buy, named and timed only with facts already stated
+ * in this file (FAQ timelines, audiences, services). No prices: every row ends
+ * in the same free fit check and a fixed written quote.
+ */
+export type StartOffer = {
+  readonly id: string;
+  readonly name: string;
+  readonly line: string;
+  readonly time: string;
+  readonly intent: StartContextIntentId;
+  /** The service page that explains it in full. */
+  readonly href: string;
+};
+
+/** Mirrors START_CONTEXT_INTENTS in lib/cta.ts, kept local to avoid a cycle. */
+type StartContextIntentId =
+  | "strategy-advisory"
+  | "digital-system"
+  | "workflow-automation"
+  | "internal-assistant"
+  | "custom-ai-product"
+  | "managed-operations";
+
+export const START_OFFERS: readonly StartOffer[] = [
+  {
+    id: "website",
+    name: "Launch website",
+    line: "A website that brings in calls and bookings.",
+    time: "3 to 4 weeks",
+    intent: "digital-system",
+    href: "/solutions/digital-web-systems",
+  },
+  {
+    id: "automation",
+    name: "One automation",
+    line: "End one copy-and-paste job for good.",
+    time: "About 2 weeks",
+    intent: "workflow-automation",
+    href: "/solutions/workflow-automation",
+  },
+  {
+    id: "agent-pilot",
+    name: "AI agent pilot",
+    line: "An AI agent on one process your team runs every day.",
+    time: "30 days",
+    intent: "internal-assistant",
+    href: "/solutions/internal-ai-assistants",
+  },
+  {
+    id: "mvp",
+    name: "Discovery sprint and MVP",
+    line: "Your product scoped in two weeks, then built.",
+    time: "2 weeks, then 8 to 12",
+    intent: "custom-ai-product",
+    href: "/solutions/custom-ai-product-development",
+  },
+  {
+    id: "assessment",
+    name: "AI opportunity assessment",
+    line: "Where AI will pay off for you, and where it won’t.",
+    time: "Credited toward a build",
+    intent: "strategy-advisory",
+    href: "/solutions/ai-strategy-advisory",
+  },
+  {
+    id: "care",
+    name: "Website and AI care",
+    line: "Hosting, monitoring, fixes and a short monthly report.",
+    time: "Monthly",
+    intent: "managed-operations",
+    href: "/managed-operations",
+  },
+];

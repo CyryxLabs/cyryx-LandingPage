@@ -82,16 +82,12 @@ export function Footer() {
   return (
     <footer role="contentinfo" className="cx-footer relative overflow-hidden">
       <span aria-hidden className="cx-sweep-line absolute inset-x-0 top-0 block h-px" />
-      <div aria-hidden className="cx-footer-glow" />
 
       <div className="relative mx-auto max-w-7xl px-5 pb-[max(env(safe-area-inset-bottom),6rem)] pt-16 sm:px-8 lg:px-10 lg:pb-10 lg:pt-24">
         {showCtaBand ? (
           <div className="cx-spotlight cx-footer-cta grid gap-8 rounded-2xl border p-7 sm:p-10 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:p-12">
             <div>
-              <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
-                Start here
-              </p>
-              <p className="mt-4 max-w-[22ch] font-display text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[var(--silver)] sm:text-4xl lg:text-5xl">
+              <p className="max-w-[22ch] font-display text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[var(--silver)] sm:text-4xl lg:text-5xl">
                 Have a website, system or AI project in mind?
               </p>
             </div>
@@ -133,7 +129,7 @@ export function Footer() {
           <div className="flex flex-col items-start">
             <CyryxLockup className="h-14" />
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-[var(--silver-dim)]">
-              Websites, automations, custom software and AI — designed, built and run by one
+              Websites, automations, custom software and AI, designed, built and run by one
               accountable team. Port St. Lucie, Florida · serving the US and Latin America.
             </p>
             {showCtaBand ? null : (
@@ -162,9 +158,7 @@ export function Footer() {
               </li>
             </ul>
             <div className="mt-10">
-              <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
-                Contact
-              </p>
+              <p className="text-sm font-semibold text-[var(--steel)]">Contact</p>
               <ul className="mt-4 space-y-2.5">
                 {CONTACT.map((item) => (
                   <li key={item.label}>
@@ -178,9 +172,7 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-4">
             {PRIMARY_NAVIGATION.map((group) => (
               <nav key={group.id} aria-label={group.label}>
-                <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
-                  {group.label}
-                </p>
+                <p className="text-sm font-semibold text-[var(--steel)]">{group.label}</p>
                 <ul className="mt-5 space-y-3.5">
                   {group.children.map((item) => (
                     <li key={`${item.label}-${item.hash ?? ""}`}>
@@ -208,7 +200,7 @@ export function Footer() {
             <button
               type="button"
               onClick={scrollTop}
-              className="inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--silver-dim)] transition-colors hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
+              className="inline-flex min-h-11 items-center gap-2 text-sm text-[var(--silver-dim)] transition-colors hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
             >
               Top of page <ArrowUp className="h-3.5 w-3.5" aria-hidden />
             </button>

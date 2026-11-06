@@ -61,10 +61,9 @@ for (const vp of VIEWPORTS) {
     }
 
     if (vp.name !== "desktop") {
-      // The four service cards reveal on scroll and must end fully readable
-      // on phones and tablets.
+      // The six offer rows must end fully readable on phones and tablets.
       const controls = page.locator('#services li[id^="service-"]');
-      await expect(controls).toHaveCount(4);
+      await expect(controls).toHaveCount(6);
       await controls.last().scrollIntoViewIfNeeded();
       await expect
         .poll(
@@ -321,43 +320,21 @@ for (const path of CONTENT_PAGES) {
   }
 }
 
-test("desktop execution rail progresses through the governed operating sequence", async ({
+test("home control section lists its three rules after the 2026-11-06 redesign", async ({
   page,
 }) => {
+  // The animated execution rail was retired with the Hallmark redesign; the
+  // same three commitments now read as a numbered list beside a photograph.
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
-  await expect(page.locator("html")).toHaveAttribute("data-cyryx-scroll-ready", "true");
-  await expect(page.locator("section[data-hero]")).toHaveAttribute("data-scroll-scrub", "true", {
-    timeout: 10_000,
-  });
-
-  const system = page.locator("[data-execution-system]");
-  const nodes = system.locator("[data-execution-node]");
-  const rail = system.locator("[data-execution-rail]");
-  await expect(system).toBeVisible();
-  await expect(nodes).toHaveCount(5);
-  await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
-  await system.evaluate((element) => {
-    const bottomAtCompletion = window.innerHeight * 0.34;
-    const top = element.getBoundingClientRect().bottom + window.scrollY - bottomAtCompletion;
-    window.scrollTo({ top, behavior: "auto" });
-  });
-  await page.waitForTimeout(900);
-
-  const railTransform = await rail.evaluate((element) => getComputedStyle(element).transform);
-  await expect
-    .poll(
-      () =>
-        nodes.evaluateAll(
-          (items) =>
-            items.filter((item) => Number.parseFloat(getComputedStyle(item).opacity) > 0.6).length,
-        ),
-      { timeout: 5_000 },
-    )
-    .toBe(5);
-
-  expect(railTransform).not.toBe("none");
-  // The closing line repeated the hero rail; it was removed so the section ends on the trace.
-  await expect(system).not.toContainText("From intent to action. From action to evidence.");
+  const control = page.locator("#control");
+  await expect(control.getByRole("heading", { level: 2 })).toHaveText(
+    "AI that asks before it acts.",
+  );
+  await expect(control.locator("ol > li")).toHaveCount(3);
+  await expect(control.getByRole("link", { name: "How we set AI limits" })).toHaveAttribute(
+    "href",
+    "/solutions/ai-governance-cost-control",
+  );
 });
