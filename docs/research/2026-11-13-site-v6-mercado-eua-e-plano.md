@@ -1,6 +1,6 @@
 # Site Cyryx Labs v6 — mercado dos EUA, serviços, funil e SEO/GEO (2026-11-13)
 
-**Status:** implementado no working tree de `production-mobile-fix`, branch `feat/site-2026-11` (criada a partir de `feat/hallmark-home`). **Sem commit, sem push, sem produção.**
+**Status:** publicado em produção em 2026-11-14 (www.cyryxlabs.com), a partir do commit `656c4ce` na branch `feat/site-2026-11`. A branch **não foi enviada ao GitHub**. Detalhes na seção 8.
 
 ## 1. Decisões do fundador nesta sessão
 
@@ -175,3 +175,21 @@ Testado: typecheck e build ok; Playwright Chromium desktop 224 de 224 (5 pulados
 9. A mídia do Onyx é cópia local. Quando a página do produto mudar, `public/media/onyx/` e `data/onyx.ts` precisam ser atualizados juntos.
 10. O filme do hero é motion design sobre material real. Se o fundador quiser planos gerados no Higgsfield (ambiente, pessoas), eles entram como cenas novas em `docs/design/hero-film/film.html`; falta o login na conta.
 11. LCP mobile da home em 3,8 s no Lighthouse simulado (era a mesma ordem de grandeza na passada anterior). O próximo ganho é podar o CSS legado.
+
+## 8. Publicação (2026-11-14)
+
+- **Pedido do fundador:** "publicar".
+- **Commit local:** `656c4ce` em `feat/site-2026-11` (155 arquivos). Ficaram fora do commit, por não serem deste trabalho: `.quality/` e `docs/proposals/`.
+- **Caminho:** o mesmo da produção anterior, Vercel CLI a partir da pasta do projeto (a produção não é ligada ao git). Primeiro um preview (`cyryx-landing-page-4r59e35jq`), conferido; depois `vercel deploy --prod`.
+- **Deployment de produção:** `cyryx-landing-page-8hsze38eb` (inspect `8n5487q2mKYneVdD3faQqpCKBdjM`), com alias em www.cyryxlabs.com, cyryxlabs.com e aexos.cyryxlabs.com.
+- **Para voltar atrás:** o deployment anterior é `cyryx-landing-page-nu8ncvq8g` (`dpl_A1E5qpuDb1zMMHNS33zouoZ6wYfH`, de 2026-09-25). `vercel rollback` ou `vercel promote` desse endereço restaura o site antigo.
+
+Conferido no ar: 24 rotas respondendo 200 (home, serviços, produtos, pesquisa, empresa, contato, /start, /brief, /careers, /privacy, /terms, sitemap, robots, llms.txt, mídia); redirects 308 de cyryxlabs.com, aexos.cyryxlabs.com e das URLs antigas; 404 correto; canonical e ausência de noindex na home; vídeo servido com requisições parciais; o assistente respondeu em produção, com o Gemini real, à pergunta sobre Onyx e AEXOS com o conteúdo novo.
+
+Não conferido no ar: envio real do formulário de contato, do /start e do readiness check (criariam leads no CRM); Safari e celulares reais; Lighthouse na Vercel.
+
+Pendências da publicação:
+
+1. Push da branch e PR para `main`. Pelas regras do repositório isso é do @devops e pede o quality gate; hoje `npm run lint` falha com 116 erros em arquivos que este trabalho não tocou (quase todos de formatação: `terms.tsx`, `accordion.tsx`, scripts). Typecheck, build, 49 testes unitários e 224 testes Playwright passam.
+2. `.env` está versionado no repositório. Vale conferir se há algo sensível nele antes de qualquer push.
+3. Testar um envio real de formulário e conferir a chegada no CRM.
