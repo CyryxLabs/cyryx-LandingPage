@@ -42,8 +42,8 @@ test("homepage hero carries the approved headline and the fit-check CTA", async 
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  // Institutional title chosen with the 2026-11-06 hero revision.
-  await expect(heading).toHaveText("We build the systems your business runs on.");
+  // Title of the 2026-11-13 site: AI systems, automation and integration.
+  await expect(heading).toHaveText("We build AI systems that do real work.");
   await expect(primary).toHaveText(/Get a free fit check/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
   // The monolith film was retired on 2026-11-06: no scroll scene on the home.
@@ -164,7 +164,7 @@ test("/start two-step brief ends with the instant first read and a structured v2
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Tell us what you want to build or fix.",
   );
-  await expect(page).toHaveTitle("Start a Project — Cyryx Labs");
+  await expect(page).toHaveTitle("Get a Free AI Fit Check | Cyryx Labs");
   await expect(page.getByLabel("What kind of work?")).toHaveValue("Workflow Automation");
 
   await page.getByLabel("Full name").fill("Ada Lovelace");
@@ -255,7 +255,7 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
   const hero = page.locator("section[data-hero]");
 
   const entry = hero.getByRole("button", {
-    name: "Have a question first? Ask the Cyryx assistant. It answers in seconds.",
+    name: "Ask the Cyryx assistant",
   });
   await expect(entry).toBeVisible();
   await entry.click();
@@ -265,10 +265,12 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
   await expect(panel.getByLabel("Your question")).toBeFocused();
 
   const assistantResponse = page.waitForResponse("**/api/public/assistant");
-  await panel.getByRole("button", { name: "Where should we start?" }).click();
+  await panel.getByRole("button", { name: "Which service fits my problem?" }).click();
   expect((await assistantResponse).status()).toBe(200);
 
-  await expect(panel.locator(".cx-assistant-msg--user")).toHaveText("Where should we start?");
+  await expect(panel.locator(".cx-assistant-msg--user")).toHaveText(
+    "Which service fits my problem?",
+  );
   await expect(panel.locator(".cx-assistant-msg").last()).toContainText("Advise", {
     timeout: 15_000,
   });
@@ -276,7 +278,9 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
     "Want to tell me about yours?",
   );
   // Suggestions are only offered on an empty thread.
-  await expect(panel.getByRole("button", { name: "Where should we start?" })).toHaveCount(0);
+  await expect(panel.getByRole("button", { name: "Which service fits my problem?" })).toHaveCount(
+    0,
+  );
 
   await panel.getByRole("button", { name: "Talk to the team" }).click();
   await expect(
@@ -285,7 +289,7 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
   await expect(panel.getByLabel("Name", { exact: true })).toBeVisible();
   await expect(panel.getByLabel("Work email")).toBeVisible();
   await expect(panel.getByLabel("What do you want to change?")).toHaveValue(
-    "Where should we start?",
+    "Which service fits my problem?",
   );
   await expect(panel.getByRole("button", { name: "Send to the team" })).toBeVisible();
 });
@@ -334,27 +338,46 @@ test("closing the assistant with Escape returns focus to the control that opened
   await expect(page.getByRole("button", { name: "Ask Cyryx" })).toBeFocused();
 });
 
-test("?copy=v4b renders hero option B and ?copy=v4a restores the default", async ({ page }) => {
+// The ?copy= hero variants (v4a, v4b, v5) were retired with the 2026-11-13
+// site: the home hero has one approved headline. The parameter is still read
+// for lead attribution only, so it must never change what the page says.
+test("?copy= no longer changes the home hero", async ({ page }) => {
   await openHome(page, "/?copy=v4b");
-  await expect(page.locator("#hero-heading")).toHaveText(
-    "From idea to running system: websites, MVPs and AI, with you in control.",
-  );
-  await expect(page.locator("section[data-hero]")).toContainText(
-    "Cyryx Labs designs and builds websites, automations, custom software and AI",
-  );
-  await expect(page.locator('section[data-hero] a[data-cta="primary"]')).toHaveText(
-    /Get a free fit check/,
-  );
+  await expect(page.locator("#hero-heading")).toHaveText("We build AI systems that do real work.");
+});
 
-  // The choice is pinned in this browser...
-  await openHome(page, "/");
-  await expect(page.locator("#hero-heading")).toHaveText(
-    "From idea to running system: websites, MVPs and AI, with you in control.",
-  );
+test("the contact form reaches the CRM and confirms on the page", async ({ page }) => {
+  await page.goto("/contact", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
+  const form = page.getByRole("form", { name: "Contact form" });
+  await form.getByLabel("Name").fill("Jordan Rivera");
+  await form.getByLabel("Work email").fill("jordan@example.com");
+  await form.getByLabel("Company").fill("Example Logistics");
+  await form.getByLabel("How can we help?").fill("We want to automate invoice intake.");
+  await form.getByRole("checkbox").check();
+  const response = page.waitForResponse("**/api/public/contact");
+  await form.getByRole("button", { name: "Send message" }).click();
+  expect((await response).status()).toBe(200);
+  await expect(page.getByText("Message received.")).toBeVisible();
+});
 
-  // ...until the visitor opts back into the default.
-  await openHome(page, "/?copy=v4a");
-  await expect(page.locator("#hero-heading")).toHaveText(
-    "Websites, software and AI that grow your business — built and run by one accountable team.",
-  );
+test("the readiness check sends a plan request to the CRM only after consent", async ({ page }) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
+  const section = page.locator("#readiness");
+  await section.scrollIntoViewIfNeeded();
+  for (let question = 0; question < 5; question += 1) {
+    await section.locator("button.cy-opt").nth(1).click();
+  }
+  await expect(section.locator(".cy-score__num")).toContainText("5");
+  await section.getByLabel("Name").fill("Jordan Rivera");
+  await section.getByLabel("Work email").fill("jordan@example.com");
+  await section.getByLabel("Company").fill("Example Logistics");
+  await section.getByRole("checkbox").check();
+  const response = page.waitForResponse("**/api/public/contact");
+  await section.getByRole("button", { name: "Send me the plan" }).click();
+  const result = await response;
+  expect(result.status()).toBe(200);
+  expect(result.request().postDataJSON().problem).toContain("AI readiness check: 5/10");
+  await expect(section.getByRole("status")).toContainText("Received.");
 });

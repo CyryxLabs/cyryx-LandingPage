@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { X } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { CyryxMark, CyryxWordmark } from "./primitives/CyryxMark";
+import { CyryxWordmark } from "./primitives/CyryxMark";
 import { trackCta } from "@/lib/track-cta";
 import { cn } from "@/lib/utils";
 import {
@@ -166,7 +166,6 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
       <div className="relative flex min-h-full flex-col px-6 pt-[max(env(safe-area-inset-top),1.25rem)] pb-[max(env(safe-area-inset-bottom),2.5rem)]">
         <div className="flex items-center justify-between h-12 shrink-0">
           <div className="flex items-center gap-2.5">
-            <CyryxMark size={30} />
             <CyryxWordmark />
           </div>
           <button

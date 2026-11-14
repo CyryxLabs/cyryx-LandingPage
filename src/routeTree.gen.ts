@@ -35,15 +35,18 @@ import { Route as AnswersWhatIsGoalGroundedGenerationRouteImport } from './route
 import { Route as AnswersWhatIsGovernedAiExecutionRouteImport } from './routes/answers.what-is-governed-ai-execution'
 import { Route as ProductsAexosRouteImport } from './routes/products.aexos'
 import { Route as ProductsMaaxStudioRouteImport } from './routes/products.maax-studio'
+import { Route as ProductsOnyxRouteImport } from './routes/products.onyx'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as SolutionsAiGovernanceCostControlRouteImport } from './routes/solutions.ai-governance-cost-control'
 import { Route as SolutionsAiIntegrationsRouteImport } from './routes/solutions.ai-integrations'
 import { Route as SolutionsAiProductEngineeringRouteImport } from './routes/solutions.ai-product-engineering'
 import { Route as SolutionsAiStrategyAdvisoryRouteImport } from './routes/solutions.ai-strategy-advisory'
+import { Route as SolutionsAiTrainingEnablementRouteImport } from './routes/solutions.ai-training-enablement'
 import { Route as SolutionsAiWebsitesLeadSystemsRouteImport } from './routes/solutions.ai-websites-lead-systems'
 import { Route as SolutionsAppliedAiSystemsRouteImport } from './routes/solutions.applied-ai-systems'
 import { Route as SolutionsCustomAiProductDevelopmentRouteImport } from './routes/solutions.custom-ai-product-development'
+import { Route as SolutionsDataKnowledgeSystemsRouteImport } from './routes/solutions.data-knowledge-systems'
 import { Route as SolutionsDigitalWebSystemsRouteImport } from './routes/solutions.digital-web-systems'
 import { Route as SolutionsGovernanceOptimizationRouteImport } from './routes/solutions.governance-optimization'
 import { Route as SolutionsInternalAiAssistantsRouteImport } from './routes/solutions.internal-ai-assistants'
@@ -193,6 +196,11 @@ const ProductsMaaxStudioRoute = ProductsMaaxStudioRouteImport.update({
   path: '/maax-studio',
   getParentRoute: () => ProductsRoute,
 } as any)
+const ProductsOnyxRoute = ProductsOnyxRouteImport.update({
+  id: '/onyx',
+  path: '/onyx',
+  getParentRoute: () => ProductsRoute,
+} as any)
 const ResearchIndexRoute = ResearchIndexRouteImport.update({
   id: '/research/',
   path: '/research/',
@@ -226,6 +234,12 @@ const SolutionsAiStrategyAdvisoryRoute =
     path: '/ai-strategy-advisory',
     getParentRoute: () => SolutionsRoute,
   } as any)
+const SolutionsAiTrainingEnablementRoute =
+  SolutionsAiTrainingEnablementRouteImport.update({
+    id: '/ai-training-enablement',
+    path: '/ai-training-enablement',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const SolutionsAiWebsitesLeadSystemsRoute =
   SolutionsAiWebsitesLeadSystemsRouteImport.update({
     id: '/ai-websites-lead-systems',
@@ -242,6 +256,12 @@ const SolutionsCustomAiProductDevelopmentRoute =
   SolutionsCustomAiProductDevelopmentRouteImport.update({
     id: '/custom-ai-product-development',
     path: '/custom-ai-product-development',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
+const SolutionsDataKnowledgeSystemsRoute =
+  SolutionsDataKnowledgeSystemsRouteImport.update({
+    id: '/data-knowledge-systems',
+    path: '/data-knowledge-systems',
     getParentRoute: () => SolutionsRoute,
   } as any)
 const SolutionsDigitalWebSystemsRoute =
@@ -335,14 +355,17 @@ export interface FileRoutesByFullPath {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/products/aexos': typeof ProductsAexosRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/products/onyx': typeof ProductsOnyxRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-strategy-advisory': typeof SolutionsAiStrategyAdvisoryRoute
+  '/solutions/ai-training-enablement': typeof SolutionsAiTrainingEnablementRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/data-knowledge-systems': typeof SolutionsDataKnowledgeSystemsRoute
   '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
   '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
@@ -384,14 +407,17 @@ export interface FileRoutesByTo {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/products/aexos': typeof ProductsAexosRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/products/onyx': typeof ProductsOnyxRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-strategy-advisory': typeof SolutionsAiStrategyAdvisoryRoute
+  '/solutions/ai-training-enablement': typeof SolutionsAiTrainingEnablementRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/data-knowledge-systems': typeof SolutionsDataKnowledgeSystemsRoute
   '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
   '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
@@ -434,14 +460,17 @@ export interface FileRoutesById {
   '/answers/what-is-governed-ai-execution': typeof AnswersWhatIsGovernedAiExecutionRoute
   '/products/aexos': typeof ProductsAexosRoute
   '/products/maax-studio': typeof ProductsMaaxStudioRoute
+  '/products/onyx': typeof ProductsOnyxRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/solutions/ai-governance-cost-control': typeof SolutionsAiGovernanceCostControlRoute
   '/solutions/ai-integrations': typeof SolutionsAiIntegrationsRoute
   '/solutions/ai-product-engineering': typeof SolutionsAiProductEngineeringRoute
   '/solutions/ai-strategy-advisory': typeof SolutionsAiStrategyAdvisoryRoute
+  '/solutions/ai-training-enablement': typeof SolutionsAiTrainingEnablementRoute
   '/solutions/ai-websites-lead-systems': typeof SolutionsAiWebsitesLeadSystemsRoute
   '/solutions/applied-ai-systems': typeof SolutionsAppliedAiSystemsRoute
   '/solutions/custom-ai-product-development': typeof SolutionsCustomAiProductDevelopmentRoute
+  '/solutions/data-knowledge-systems': typeof SolutionsDataKnowledgeSystemsRoute
   '/solutions/digital-web-systems': typeof SolutionsDigitalWebSystemsRoute
   '/solutions/governance-optimization': typeof SolutionsGovernanceOptimizationRoute
   '/solutions/internal-ai-assistants': typeof SolutionsInternalAiAssistantsRoute
@@ -485,14 +514,17 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/products/aexos'
     | '/products/maax-studio'
+    | '/products/onyx'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
     | '/solutions/ai-product-engineering'
     | '/solutions/ai-strategy-advisory'
+    | '/solutions/ai-training-enablement'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/data-knowledge-systems'
     | '/solutions/digital-web-systems'
     | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
@@ -534,14 +566,17 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/products/aexos'
     | '/products/maax-studio'
+    | '/products/onyx'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
     | '/solutions/ai-product-engineering'
     | '/solutions/ai-strategy-advisory'
+    | '/solutions/ai-training-enablement'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/data-knowledge-systems'
     | '/solutions/digital-web-systems'
     | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
@@ -583,14 +618,17 @@ export interface FileRouteTypes {
     | '/answers/what-is-governed-ai-execution'
     | '/products/aexos'
     | '/products/maax-studio'
+    | '/products/onyx'
     | '/research/$slug'
     | '/solutions/ai-governance-cost-control'
     | '/solutions/ai-integrations'
     | '/solutions/ai-product-engineering'
     | '/solutions/ai-strategy-advisory'
+    | '/solutions/ai-training-enablement'
     | '/solutions/ai-websites-lead-systems'
     | '/solutions/applied-ai-systems'
     | '/solutions/custom-ai-product-development'
+    | '/solutions/data-knowledge-systems'
     | '/solutions/digital-web-systems'
     | '/solutions/governance-optimization'
     | '/solutions/internal-ai-assistants'
@@ -828,6 +866,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsMaaxStudioRouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/products/onyx': {
+      id: '/products/onyx'
+      path: '/onyx'
+      fullPath: '/products/onyx'
+      preLoaderRoute: typeof ProductsOnyxRouteImport
+      parentRoute: typeof ProductsRoute
+    }
     '/research/': {
       id: '/research/'
       path: '/research'
@@ -870,6 +915,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsAiStrategyAdvisoryRouteImport
       parentRoute: typeof SolutionsRoute
     }
+    '/solutions/ai-training-enablement': {
+      id: '/solutions/ai-training-enablement'
+      path: '/ai-training-enablement'
+      fullPath: '/solutions/ai-training-enablement'
+      preLoaderRoute: typeof SolutionsAiTrainingEnablementRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/solutions/ai-websites-lead-systems': {
       id: '/solutions/ai-websites-lead-systems'
       path: '/ai-websites-lead-systems'
@@ -889,6 +941,13 @@ declare module '@tanstack/react-router' {
       path: '/custom-ai-product-development'
       fullPath: '/solutions/custom-ai-product-development'
       preLoaderRoute: typeof SolutionsCustomAiProductDevelopmentRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
+    '/solutions/data-knowledge-systems': {
+      id: '/solutions/data-knowledge-systems'
+      path: '/data-knowledge-systems'
+      fullPath: '/solutions/data-knowledge-systems'
+      preLoaderRoute: typeof SolutionsDataKnowledgeSystemsRouteImport
       parentRoute: typeof SolutionsRoute
     }
     '/solutions/digital-web-systems': {
@@ -981,11 +1040,13 @@ declare module '@tanstack/react-router' {
 interface ProductsRouteChildren {
   ProductsAexosRoute: typeof ProductsAexosRoute
   ProductsMaaxStudioRoute: typeof ProductsMaaxStudioRoute
+  ProductsOnyxRoute: typeof ProductsOnyxRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
   ProductsAexosRoute: ProductsAexosRoute,
   ProductsMaaxStudioRoute: ProductsMaaxStudioRoute,
+  ProductsOnyxRoute: ProductsOnyxRoute,
 }
 
 const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
@@ -997,9 +1058,11 @@ interface SolutionsRouteChildren {
   SolutionsAiIntegrationsRoute: typeof SolutionsAiIntegrationsRoute
   SolutionsAiProductEngineeringRoute: typeof SolutionsAiProductEngineeringRoute
   SolutionsAiStrategyAdvisoryRoute: typeof SolutionsAiStrategyAdvisoryRoute
+  SolutionsAiTrainingEnablementRoute: typeof SolutionsAiTrainingEnablementRoute
   SolutionsAiWebsitesLeadSystemsRoute: typeof SolutionsAiWebsitesLeadSystemsRoute
   SolutionsAppliedAiSystemsRoute: typeof SolutionsAppliedAiSystemsRoute
   SolutionsCustomAiProductDevelopmentRoute: typeof SolutionsCustomAiProductDevelopmentRoute
+  SolutionsDataKnowledgeSystemsRoute: typeof SolutionsDataKnowledgeSystemsRoute
   SolutionsDigitalWebSystemsRoute: typeof SolutionsDigitalWebSystemsRoute
   SolutionsGovernanceOptimizationRoute: typeof SolutionsGovernanceOptimizationRoute
   SolutionsInternalAiAssistantsRoute: typeof SolutionsInternalAiAssistantsRoute
@@ -1011,10 +1074,12 @@ const SolutionsRouteChildren: SolutionsRouteChildren = {
   SolutionsAiIntegrationsRoute: SolutionsAiIntegrationsRoute,
   SolutionsAiProductEngineeringRoute: SolutionsAiProductEngineeringRoute,
   SolutionsAiStrategyAdvisoryRoute: SolutionsAiStrategyAdvisoryRoute,
+  SolutionsAiTrainingEnablementRoute: SolutionsAiTrainingEnablementRoute,
   SolutionsAiWebsitesLeadSystemsRoute: SolutionsAiWebsitesLeadSystemsRoute,
   SolutionsAppliedAiSystemsRoute: SolutionsAppliedAiSystemsRoute,
   SolutionsCustomAiProductDevelopmentRoute:
     SolutionsCustomAiProductDevelopmentRoute,
+  SolutionsDataKnowledgeSystemsRoute: SolutionsDataKnowledgeSystemsRoute,
   SolutionsDigitalWebSystemsRoute: SolutionsDigitalWebSystemsRoute,
   SolutionsGovernanceOptimizationRoute: SolutionsGovernanceOptimizationRoute,
   SolutionsInternalAiAssistantsRoute: SolutionsInternalAiAssistantsRoute,

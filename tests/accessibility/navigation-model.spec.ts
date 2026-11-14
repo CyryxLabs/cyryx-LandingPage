@@ -19,9 +19,8 @@ test.describe("Navigation Model", () => {
     const products = PRIMARY_NAVIGATION.find((g) => g.id === "products");
     expect(products?.children).toEqual([
       { label: "All products", href: "/products" },
+      { label: "Onyx", href: "/products/onyx" },
       { label: "AEXOS", href: "/products/aexos" },
-      { label: "Onyx", href: "/products", hash: "onyx" },
-      { label: "ASTRA CRM", href: "/products", hash: "astra" },
     ]);
     const allLabels = PRIMARY_NAVIGATION.flatMap((g) => g.children.map((c) => c.label));
     const allHrefs = PRIMARY_NAVIGATION.flatMap((g) => g.children.map((c) => c.href));
@@ -54,7 +53,6 @@ test.describe("Navigation Model", () => {
       "/solutions/applied-ai-systems",
       "/solutions/governance-optimization",
       "/solutions/ai-websites-lead-systems",
-      "/solutions/ai-integrations",
       "/auth",
       "/workspace",
       "/products/maax-studio",

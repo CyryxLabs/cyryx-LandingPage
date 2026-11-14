@@ -4,7 +4,6 @@ export const PRIMARY_ORIGIN = "https://www.cyryxlabs.com";
 export const PRIMARY_SITEMAP = `${PRIMARY_ORIGIN}/sitemap.xml`;
 
 export const LEGACY_ALIASES = [
-  ["/solutions/ai-integrations", "/solutions/workflow-automation"],
   ["/solutions/ai-product-engineering", "/solutions/custom-ai-product-development"],
   ["/solutions/ai-websites-lead-systems", "/solutions/digital-web-systems"],
   ["/solutions/applied-ai-systems", "/solutions/internal-ai-assistants"],

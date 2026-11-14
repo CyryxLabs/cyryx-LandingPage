@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ArrowUp, Loader2, MessageSquare, X } from "lucide-react";
+import { ArrowUp, Loader2, X } from "lucide-react";
 import {
   ASSISTANT_OPEN_EVENT,
   isAssistantEnabled,
@@ -19,14 +19,14 @@ const STORAGE_KEY = "cyryx_assistant_thread";
 const GREETING: ChatMessage = {
   role: "assistant",
   content:
-    "Hi, I'm the Cyryx assistant. Ask me what we build, how an engagement runs or where to start. I answer from our public site, and I can pass your details to the team when you're ready.",
+    "Hi, I'm the Cyryx assistant. Tell me what is slowing your business down, or ask about our AI services, products, timelines or how a project runs. I answer from our public site, and I can pass your details to the team when you're ready.",
 };
 
 const SUGGESTIONS = [
-  "Where should we start?",
-  "How does an engagement run?",
-  "What is AEXOS?",
-  "Can you automate a workflow for us?",
+  "Which service fits my problem?",
+  "How long does an automation take?",
+  "Is our data safe with AI?",
+  "What are Onyx and AEXOS?",
 ];
 
 function loadThread(): ChatMessage[] {
@@ -205,7 +205,7 @@ export function AssistantWidget() {
           aria-expanded={false}
           className="cx-assistant-launcher"
         >
-          <MessageSquare className="h-4 w-4" aria-hidden />
+          <i className="cy-assistant-dot" aria-hidden />
           <span>Ask Cyryx</span>
         </button>
       )}
@@ -223,7 +223,9 @@ export function AssistantWidget() {
               <p className="font-display text-base font-semibold text-[var(--silver)]">
                 Cyryx assistant
               </p>
-              <p className="text-xs text-[var(--steel)]">AI answers from our public site</p>
+              <p className="text-xs text-[var(--steel)]">
+                AI answers from our public site · a person follows up on request
+              </p>
             </div>
             <button
               type="button"
@@ -329,7 +331,7 @@ export function AssistantWidget() {
                   }}
                   rows={1}
                   maxLength={ASSISTANT_MAX_MESSAGE_CHARS}
-                  placeholder="Ask about our work…"
+                  placeholder="Ask anything about Cyryx Labs…"
                   className="max-h-32 min-h-11 flex-1 resize-none rounded-md border border-white/15 bg-[var(--onyx)] px-3 py-2.5 text-sm text-[var(--silver)] placeholder:text-[var(--steel)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-glow)]"
                 />
                 <button

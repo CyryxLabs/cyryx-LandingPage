@@ -77,12 +77,14 @@ test.describe("Consent + legal anchors render", () => {
   });
 });
 
-test("primary navigation uses the official mark and wordmark lockup", async ({ page }) => {
+test("primary navigation uses the official wordmark alone, with no crest", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
   const home = page.getByRole("link", { name: "Cyryx Labs — home" });
   const lockup = home.locator("[data-cyryx-lockup]");
   await expect(lockup).toBeVisible();
-  await expect(lockup.locator("img")).toHaveCount(2);
+  // Founder decision 2026-11-13: wordmark only, the crest mark is retired.
+  await expect(lockup.locator("img")).toHaveCount(1);
+  await expect(page.locator('img[src*="brand-mark"]')).toHaveCount(0);
   await expect(lockup.locator('img[alt="Cyryx Labs"]')).toHaveCount(1);
 });
 
@@ -130,32 +132,44 @@ test.describe("Hero — plain-English value proposition", () => {
     }
   });
 
-  test("hero renders the v5 headline, sub, and CTA labels with correct destinations", async ({
+  test("hero renders the approved headline, sub, and CTA labels with correct destinations", async ({
     page,
   }) => {
-    // v5 (Hallmark redesign, 2026-11-06) is the default; v4a stays reachable with ?copy=v4a.
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const hero = page.locator("section[data-hero]");
-    const v5 = getCopy("v5").hero;
     await expect(hero).toBeVisible();
     await expect(page.locator("#hero-heading")).toHaveText(
-      "We build the systems your business runs on.",
+      "We build AI systems that do real work.",
     );
-    await expect(hero).toContainText(v5.sub);
+    await expect(hero).toContainText(
+      "We design, build and operate AI systems, workflow automation and system integration for companies across the United States, with human approval, audit logs and cost limits built in.",
+    );
     const primary = hero.getByRole("link", { name: APPROVED.ctaPrimary, exact: true });
     await expect(primary).toHaveAttribute("href", "/start?source=home");
-    const secondary = hero.getByRole("link", { name: APPROVED.ctaSecondary, exact: true });
+    const secondary = hero.getByRole("link", { name: "See what we build", exact: true });
     await expect(secondary).toHaveAttribute("href", "#services");
+    // Products stay out of the hero (founder decision, 2026-11-13).
+    await expect(hero).not.toContainText(/Onyx|AEXOS/);
+    // The four things we build are named in the hero, each with its own link.
+    const forms = hero.getByRole("navigation", { name: "What we build" });
+    for (const [name, href] of [
+      ["AI systems", "/solutions/custom-ai-product-development"],
+      ["Workflow automation", "/solutions/workflow-automation"],
+      ["System integration", "/solutions/ai-integrations"],
+      ["Governance and control", "/solutions/ai-governance-cost-control"],
+    ] as const) {
+      await expect(forms.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
+    }
     await expect(hero).not.toContainText(/MAAX/i);
     await expect(hero.locator('a[href*="maax" i], a[href="#maax"]')).toHaveCount(0);
   });
 
-  test("homepage names websites, MVPs, custom software, automation and AI in visible copy", async ({
+  test("homepage names AI systems, automation, integration, agents and products in visible copy", async ({
     page,
   }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const main = page.locator("main");
-    for (const term of [/website/i, /MVP/, /custom software/i, /automation/i, /\bAI\b/]) {
+    for (const term of [/AI systems/i, /automation/i, /integration/i, /AI agents/i, /website/i]) {
       await expect(main).toContainText(term);
     }
   });
@@ -166,45 +180,59 @@ test.describe("Hero — plain-English value proposition", () => {
     await expect(page.locator("main")).not.toContainText(/MAAX/i);
   });
 
-  test("the six starting engagements each name a timeline and their own way in", async ({
-    page,
-  }) => {
+  test("the ten services each link to their own page and state no price", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const services = page.locator("#services");
     await expect(services.getByRole("heading", { level: 2 })).toHaveText(
-      "Where clients usually start.",
+      "Ten services. One for each thing in the way.",
     );
-    const rows = services.locator('li[id^="service-"]');
-    await expect(rows).toHaveCount(6);
-    for (const intent of [
-      "digital-system",
-      "workflow-automation",
-      "internal-assistant",
-      "custom-ai-product",
-      "strategy-advisory",
-      "managed-operations",
+    await expect(services.locator("a.cy-card")).toHaveCount(10);
+    for (const href of [
+      "/solutions/ai-strategy-advisory",
+      "/solutions/workflow-automation",
+      "/solutions/internal-ai-assistants",
+      "/solutions/ai-integrations",
+      "/solutions/custom-ai-product-development",
+      "/solutions/data-knowledge-systems",
+      "/solutions/ai-governance-cost-control",
+      "/solutions/digital-web-systems",
+      "/solutions/ai-training-enablement",
+      "/managed-operations",
     ]) {
-      await expect(services.locator(`a[href="/start?source=home&intent=${intent}"]`)).toHaveCount(
-        1,
-      );
+      await expect(services.locator(`a.cy-card[href="${href}"]`)).toHaveCount(1);
     }
-    await expect(
-      services.getByRole("link", { name: "See every service we offer" }),
-    ).toHaveAttribute("href", "/solutions");
     // Prices stay off the site until the founder publishes them.
-    await expect(services).not.toContainText(/\$\d/);
+    await expect(page.locator("main")).not.toContainText(/\$\d/);
   });
 
-  test("products show AEXOS, Onyx and ASTRA with their real stages", async ({ page }) => {
+  test("products show Onyx and AEXOS with their real stages", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const products = page.locator("#products");
-    await expect(products.locator("#aexos")).toContainText("Available");
-    await expect(products.locator("#onyx")).toContainText("Waitlist");
-    await expect(products.locator("#astra")).toContainText("In daily use");
-    await expect(products.getByRole("link", { name: /Join the Onyx waitlist/ })).toHaveAttribute(
+    await expect(products).toContainText("AI coworker for Windows · Free beta");
+    await expect(products).toContainText("Core free on npm");
+    // Each product opens its own page: the Onyx site in a new tab, AEXOS on this site.
+    const onyxSite = products.getByRole("link", { name: /Open the Onyx site/ });
+    await expect(onyxSite).toHaveAttribute("href", "https://onyx.cyryxlabs.com/");
+    await expect(onyxSite).toHaveAttribute("target", "_blank");
+    await expect(products.locator('img[src^="/media/onyx/"]').first()).toBeAttached();
+    await expect(products.getByRole("link", { name: "Explore Onyx" })).toHaveAttribute(
       "href",
-      "https://onyx.cyryxlabs.com/",
+      "/products/onyx",
     );
+    await expect(products.getByRole("link", { name: "Explore AEXOS" })).toHaveAttribute(
+      "href",
+      "/products/aexos",
+    );
+    await expect(products).not.toContainText(/ASTRA|MAAX/);
+  });
+
+  test("every market figure names its publisher", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const stats = page.locator("#market .cy-stat");
+    await expect(stats).toHaveCount(3);
+    for (const publisher of ["Goldman Sachs", "RSM US", "Deloitte"]) {
+      await expect(page.locator("#market")).toContainText(publisher);
+    }
   });
 
   test("homepage chapters render in the approved order", async ({ page }) => {
@@ -212,9 +240,22 @@ test.describe("Hero — plain-English value proposition", () => {
     const ids = await page
       .locator("main section[id]")
       .evaluateAll((sections) => sections.map((section) => section.id));
-    const expected = ["top", "services", "how-it-works", "products", "control", "faq", "contact"];
+    const expected = [
+      "top",
+      "market",
+      "demo",
+      "who",
+      "services",
+      "how-it-works",
+      "control",
+      "products",
+      "research",
+      "readiness",
+      "faq",
+      "contact",
+    ];
     expect(ids.filter((id) => expected.includes(id))).toEqual(expected);
-    // TeamBlock renders nothing while no founder profile is published.
+    // No founder profile is published.
     await expect(page.locator("#team")).toHaveCount(0);
   });
 

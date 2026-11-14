@@ -55,8 +55,8 @@ for (const vp of VIEWPORTS) {
 
     if (vp.name !== "desktop") {
       // The six offer rows must end fully readable on phones and tablets.
-      const controls = page.locator('#services li[id^="service-"]');
-      await expect(controls).toHaveCount(6);
+      const controls = page.locator("#services a.cy-card");
+      await expect(controls).toHaveCount(10);
       await controls.last().scrollIntoViewIfNeeded();
       await expect
         .poll(
@@ -113,10 +113,11 @@ test("home control section lists its three rules after the 2026-11-06 redesign",
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
   const control = page.locator("#control");
-  await expect(control.getByRole("heading", { level: 2 })).toHaveText("AI within limits you set.");
-  await expect(control.locator("ol > li")).toHaveCount(3);
-  await expect(control.getByRole("link", { name: "How we set AI limits" })).toHaveAttribute(
-    "href",
-    "/solutions/ai-governance-cost-control",
+  await expect(control.getByRole("heading", { level: 2 })).toHaveText(
+    "Powerful enough to do the work. Controlled enough to trust.",
   );
+  await expect(control.locator("ul.cy-guard > li")).toHaveCount(3);
+  await expect(
+    control.getByRole("link", { name: /How we handle AI governance and cost control/ }),
+  ).toHaveAttribute("href", "/solutions/ai-governance-cost-control");
 });

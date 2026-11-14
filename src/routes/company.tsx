@@ -1,78 +1,65 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import { Header } from "@/components/cyryx/Header";
-import { Footer } from "@/components/cyryx/Footer";
-import { InternalHero } from "@/components/cyryx/InternalHero";
-import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
+import { SiteShell } from "@/components/site/SiteShell";
+import { FinalCta, PageHero, SectionHead, StartButton } from "@/components/site/ui";
 import {
   buildBreadcrumbJsonLd,
   buildHead,
   buildOrganizationJsonLd,
   buildWebPageJsonLd,
 } from "@/components/cyryx/seo/seo";
-import { buildStartProjectHref } from "@/lib/cta";
-import { trackCta } from "@/lib/track-cta";
-import { useCyryxScrollAnimations } from "@/hooks/useCyryxScrollAnimations";
+import { GUARDRAILS } from "@/data/home";
 
 const PATH = "/company";
-const TITLE = "AI Systems & Governance Company — Cyryx Labs";
+const TITLE = "About Cyryx Labs — US AI Systems Company";
 const DESC =
-  "Cyryx Labs advises, builds, controls, and operates AI-enabled products and systems, informed by products and applied research.";
+  "Cyryx Labs LLC is a US technology company in Port St. Lucie, Florida. It builds AI systems, its own AI products, and runs an applied research lab.";
 
-const UNITS = [
-  [
-    "Advise",
-    "AI strategy, opportunity framing, architecture direction, governance, and operating-model design.",
-    "/solutions/ai-strategy-advisory",
-  ],
-  [
-    "Build",
-    "Digital systems, workflows, internal assistants, and custom AI products designed around the business outcome.",
-    "/solutions",
-  ],
-  [
-    "Control",
-    "Authority, evaluation, evidence, cost boundaries, review, escalation, and change control.",
-    "/solutions/ai-governance-cost-control",
-  ],
-  [
-    "Operate",
-    "Defined monitoring, maintenance, optimization, escalation, and transition for selected launched systems.",
-    "/managed-operations",
-  ],
-  [
-    "Products",
-    "AEXOS: a CLI-first framework that puts specialised AI agents to work under procedures and quality gates. Core edition available on npm.",
-    "/products",
-  ],
-  [
-    "Applied AI Lab",
-    "Applied investigation into execution, context, evaluation, cost, control, and human authority.",
-    "/research",
-  ],
+const PILLARS = [
+  {
+    name: "Solutions",
+    body: "AI systems, workflow automation and integrations built for client companies, from strategy to managed operations.",
+    href: "/solutions",
+    cta: "See the services",
+  },
+  {
+    name: "Products",
+    body: "AI products we design and run ourselves: Onyx, an AI coworker that lives on your Windows PC, and AEXOS, an agentic orchestration framework.",
+    href: "/products",
+    cta: "See the products",
+  },
+  {
+    name: "Applied AI Lab",
+    body: "Research on how AI systems are controlled, measured and trusted, published as open, citable work.",
+    href: "/research",
+    cta: "Visit the lab",
+  },
 ] as const;
 
 const PRINCIPLES = [
-  [
-    "Business problem before model",
-    "We begin with the decision, workflow, customer, and operating constraint—not a predetermined AI feature.",
-  ],
-  [
-    "AI and software as one system",
-    "Probabilistic intelligence, deterministic logic, data, integrations, interfaces, and people are designed together.",
-  ],
-  [
-    "Authority must be explicit",
-    "The system, the operator, and the owner each need a clear boundary for action, review, escalation, and change.",
-  ],
-  [
-    "Evidence before expansion",
-    "A compelling demonstration is a starting point. Expansion should follow representative validation and documented limitations.",
-  ],
-  [
-    "Ownership survives launch",
-    "The work is not complete until the system has an operating owner, change path, and support model appropriate to its impact.",
-  ],
+  {
+    title: "Start from the business problem",
+    body: "We begin with the decision, the workflow and the constraint, not with a technology we want to use.",
+  },
+  {
+    title: "Say it in writing",
+    body: "Scope, timeline, price and acceptance checklist are agreed on paper before any work starts.",
+  },
+  {
+    title: "Sometimes the answer is no",
+    body: "If AI is the wrong tool, or the project is not worth building, we say so at the fit check.",
+  },
+  {
+    title: "A demo is not a product",
+    body: "Systems are tested on real cases, with their limits written down, before anyone depends on them.",
+  },
+  {
+    title: "You own it",
+    body: "At final payment you own the code, content and data we create for you. No lock-in.",
+  },
+  {
+    title: "Someone answers for it",
+    body: "Every system has a named owner, a way to change it and support that fits how much depends on it.",
+  },
 ] as const;
 
 export const Route = createFileRoute("/company")({
@@ -89,134 +76,111 @@ export const Route = createFileRoute("/company")({
 });
 
 function CompanyPage() {
-  useCyryxScrollAnimations();
-  const startHref = buildStartProjectHref({ source: "company" });
-
   return (
-    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
-      <Header />
-      <main id="main-content" tabIndex={-1} className="outline-none">
-        <InternalHero
-          eyebrow="AI systems · Product engineering · Governed operations"
-          title="AI value is created by the system around the model."
-          body="Cyryx Labs advises, builds, controls, and operates AI-enabled products and systems—from strategy and workflow design through launch and managed operations."
-          primaryCta={{
-            label: "Start a project",
-            to: startHref,
-            onClick: () => trackCta({ cta: "start_project", section: "hero", href: startHref }),
-          }}
-          secondaryCta={{
-            label: "Explore capabilities",
-            to: "/solutions",
-            onClick: () => trackCta({ cta: "see_delivery", section: "hero", href: "/solutions" }),
-          }}
-          boundaryNote="Products and the Applied AI Lab inform the work; client scope remains independent."
-          lifecycleLabel="Operating model"
-          lifecycle={[
-            { number: "01", label: "Advise" },
-            { number: "02", label: "Build" },
-            { number: "03", label: "Control" },
-            { number: "04", label: "Operate" },
-          ]}
-          nextChapter={{
-            title: "The execution gap.",
-            body: "Access to a capable model is the easy part. The work is the system around it.",
-          }}
-        />
+    <SiteShell source="company">
+      <PageHero
+        crumbs={[{ name: "Home", path: "/" }, { name: "Company" }]}
+        eyebrow="Company"
+        title="AI is easy to buy. Making it work is the job."
+        lead="Cyryx Labs LLC is a US technology company based in Port St. Lucie, Florida. We build AI systems for businesses, build AI products of our own, and publish applied research."
+        aside={
+          <dl style={{ display: "grid", gap: 12, margin: 0 }}>
+            <div className="cy-kv">
+              <dt>Legal entity</dt>
+              <dd>Cyryx Labs LLC · United States</dd>
+            </div>
+            <div className="cy-kv">
+              <dt>Based in</dt>
+              <dd>Port St. Lucie, Florida</dd>
+            </div>
+            <div className="cy-kv">
+              <dt>Serving</dt>
+              <dd>United States and Latin America · English and Spanish</dd>
+            </div>
+          </dl>
+        }
+      >
+        <StartButton section="hero" source="company" />
+      </PageHero>
 
-        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
-          <div className="cx-reveal grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
-            <div>
-              <HudLabel>The execution gap</HudLabel>
-              <h2 className="mt-6 max-w-[12ch] font-display text-4xl font-medium tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
-                The model is rarely the whole problem.
-              </h2>
-            </div>
-            <div className="space-y-6 text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
-              <p>
-                Organizations can access capable models. The harder work is turning that capability
-                into a dependable product, workflow, or operating decision: the right context,
-                deterministic software, interfaces, integrations, evaluation, human authority, and
-                post-launch ownership.
-              </p>
-              <p>
-                Cyryx exists for that gap. We connect executive intent to system design and system
-                design to the operating day, without pretending that every problem needs AI or that
-                every prototype deserves to scale.
-              </p>
-            </div>
+      <section className="cy-section" aria-labelledby="pillars-heading">
+        <div className="cy-container">
+          <SectionHead
+            id="pillars-heading"
+            eyebrow="What we do"
+            title="Three lines of work that feed each other."
+            lead="What we learn building for clients shapes our products. What the lab finds shapes both."
+            split
+          />
+          <div className="cy-grid cy-grid--3">
+            {PILLARS.map((pillar, index) => (
+              <Link
+                key={pillar.name}
+                to={pillar.href}
+                className="cy-card cy-spot"
+                data-cy-reveal
+                style={{ "--cy-i": index } as React.CSSProperties}
+              >
+                <span className="cy-card__n">{String(index + 1).padStart(2, "0")}</span>
+                <h3 className="cy-h3">{pillar.name}</h3>
+                <p>{pillar.body}</p>
+                <span className="cy-card__go">
+                  {pillar.cta} <span aria-hidden="true">→</span>
+                </span>
+              </Link>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="border-y border-white/10 bg-[var(--obsidian)] px-5 py-24 sm:px-8 sm:py-32">
-          <div className="mx-auto max-w-7xl">
-            <HudLabel>
-              Solutions (Advise · Build · Control · Operate) · Products · Applied AI Lab
-            </HudLabel>
-            <div className="cx-stagger mt-12 divide-y divide-white/10 border-y border-white/10">
-              {UNITS.map(([title, body, href], index) => (
-                <Link
-                  key={title}
-                  to={href}
-                  className="cx-stagger-item group grid gap-4 py-7 sm:grid-cols-[4rem_0.65fr_1.35fr_auto] sm:items-center sm:gap-8 sm:py-9"
-                >
-                  <span className="font-mono text-[12px] text-[var(--accent-glow)]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h2 className="font-display text-3xl tracking-[-0.035em] text-[var(--silver)]">
-                    {title}
-                  </h2>
-                  <p className="max-w-2xl text-sm leading-relaxed text-[var(--silver-dim)]">
-                    {body}
-                  </p>
-                  <ArrowRight
-                    className="hidden h-5 w-5 text-[var(--steel)] transition group-hover:translate-x-1 group-hover:text-[var(--accent-glow)] sm:block"
-                    aria-hidden
-                  />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
-          <div className="cx-reveal grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
-            <div>
-              <HudLabel>How we think</HudLabel>
-              <h2 className="mt-6 font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-5xl">
-                Principles before promises.
-              </h2>
-            </div>
-            <ol className="divide-y divide-white/10 border-y border-white/10">
-              {PRINCIPLES.map(([title, body], index) => (
-                <li
-                  key={title}
-                  className="grid gap-3 py-6 sm:grid-cols-[3rem_0.8fr_1.2fr] sm:gap-8"
-                >
-                  <span className="font-mono text-[12px] text-[var(--accent-glow)]">
-                    0{index + 1}
-                  </span>
-                  <h3 className="text-sm font-medium text-[var(--silver)]">{title}</h3>
-                  <p className="text-sm leading-relaxed text-[var(--silver-dim)]">{body}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        <section className="bg-[var(--graphite)] px-5 py-24 sm:px-8 sm:py-32">
-          <div className="cx-reveal mx-auto max-w-5xl text-center">
-            <HudLabel withDot>Start with the decision</HudLabel>
-            <h2 className="mx-auto mt-7 max-w-[17ch] font-display text-4xl tracking-[-0.045em] text-[var(--silver)] sm:text-6xl">
-              Bring the opportunity, constraint, or workflow—not a predetermined answer.
+      <section className="cy-section cy-section--alt" aria-labelledby="principles-heading">
+        <div className="cy-container cy-split">
+          <div className="cy-split__aside">
+            <p className="cy-eyebrow" data-cy-reveal>
+              How we work
+            </p>
+            <h2 id="principles-heading" className="cy-h2" data-cy-reveal>
+              Six rules we do not bend.
             </h2>
-            <a href={startHref} className="cx-btn-primary mt-10">
-              Start a project <ArrowRight className="h-4 w-4" aria-hidden />
-            </a>
+            <p data-cy-reveal>
+              <Link to="/engagement-model" className="cy-link">
+                Read how an engagement runs <span aria-hidden="true">→</span>
+              </Link>
+            </p>
           </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+          <ol className="cy-rows">
+            {PRINCIPLES.map((principle, index) => (
+              <li key={principle.title} data-cy-reveal>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 className="cy-h3">{principle.title}</h3>
+                  <p>{principle.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="cy-section" aria-labelledby="trust-heading">
+        <div className="cy-container">
+          <SectionHead
+            id="trust-heading"
+            eyebrow="Responsible AI"
+            title="Every AI system we build stays inside limits you set."
+          />
+          <ul className="cy-guard">
+            {GUARDRAILS.map((item) => (
+              <li key={item.title} data-cy-reveal>
+                <h3 className="cy-h3">{item.title}</h3>
+                <p className="cy-muted">{item.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <FinalCta source="company" />
+    </SiteShell>
   );
 }

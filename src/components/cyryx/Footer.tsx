@@ -88,7 +88,7 @@ export function Footer() {
           <div className="cx-spotlight cx-footer-cta grid gap-8 rounded-2xl border p-7 sm:p-10 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:p-12">
             <div>
               <p className="max-w-[22ch] font-display text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[var(--silver)] sm:text-4xl lg:text-5xl">
-                Have a website, system or AI project in mind?
+                Ready to put AI to work in your business?
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
@@ -127,10 +127,10 @@ export function Footer() {
           )}
         >
           <div className="flex flex-col items-start">
-            <CyryxLockup className="h-14" />
+            <CyryxLockup className="h-9" />
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-[var(--silver-dim)]">
-              Websites, automations, custom software and AI, designed, built and run by one
-              accountable team. Port St. Lucie, Florida · serving the US and Latin America.
+              AI systems, workflow automation and integrations for US companies, plus our own AI
+              products and applied research. Cyryx Labs LLC · Port St. Lucie, Florida.
             </p>
             {showCtaBand ? null : (
               <a

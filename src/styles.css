@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "./styles/hallmark-home.css";
+@import "./styles/cy.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -116,8 +116,7 @@
 
   /* Governed typography exception: InternalHero H1 only. Body, UI, and all
    * other display surfaces remain on the locked Space Grotesk / Inter stack. */
-  --font-editorial-hero:
-    "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-editorial-hero: "Space Grotesk", "Inter", system-ui, sans-serif;
 
   /* Semantic tokens (dark only) */
   --background: var(--onyx);
@@ -494,7 +493,6 @@ html.cx-low-perf .glass-panel {
   max-width: 15ch;
   margin-inline: auto;
 }
-
 
 .cx-hero-media {
   filter: saturate(0.86) contrast(1.08) brightness(0.78);

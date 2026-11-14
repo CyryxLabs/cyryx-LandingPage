@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { useId, type MouseEventHandler } from "react";
-import structuralAperture from "@/assets/cyryx-structural-aperture-1920.webp";
 
 interface InternalHeroCtaBase {
   label: string;
@@ -47,10 +46,37 @@ export interface InternalHeroProps {
   nextChapter?: InternalHeroChapter;
 }
 
+function HeroCta({ cta, variant }: { cta: InternalHeroCta; variant: "primary" | "ghost" }) {
+  const className = `cy-btn cy-btn--${variant}`;
+  const content = (
+    <>
+      {cta.label}
+      <ArrowRight aria-hidden="true" />
+    </>
+  );
+  if (cta.to !== undefined) {
+    return (
+      <Link to={cta.to} aria-label={cta.ariaLabel} onClick={cta.onClick} className={className}>
+        {content}
+      </Link>
+    );
+  }
+  return (
+    <a href={cta.href} aria-label={cta.ariaLabel} onClick={cta.onClick} className={className}>
+      {content}
+    </a>
+  );
+}
+
+/**
+ * Hero for the content pages that predate the 2026-11 site system (brief,
+ * careers, engagement model, AEXOS). Same props as before; the rendered
+ * surface is the shared institutional page hero, with no crest or monolith
+ * imagery.
+ */
 export function InternalHero({
   eyebrow,
   title,
-  titleScale = "default",
   body,
   primaryCta,
   secondaryCta,
@@ -66,181 +92,86 @@ export function InternalHero({
       <section
         aria-labelledby={headingId}
         data-internal-hero
-        className={`cx-internal-hero relative isolate min-h-[83svh] overflow-hidden border-b border-white/10 bg-[var(--onyx)] px-5 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-0 lg:pb-0 ${
-          titleScale === "compact" ? "lg:pt-32" : "lg:pt-48"
-        }`}
+        data-hero
+        className="cy-scope cy-phero"
       >
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-20">
-          <img
-            src={structuralAperture}
-            alt=""
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
-            className="cx-internal-hero-media h-full w-full object-cover"
-          />
-        </div>
-        <div
-          aria-hidden="true"
-          className="cx-internal-hero-grade pointer-events-none absolute inset-0 -z-10"
-        />
-
-        <div className="grid w-full gap-12 lg:grid-cols-[minmax(0,42vw)_minmax(9rem,12vw)] lg:items-center lg:gap-[14vw] lg:pl-[19vw] lg:pr-[5vw]">
-          <div className="min-w-0">
-            <p className="font-mono text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--accent-glow)] sm:text-xs">
-              {eyebrow}
-            </p>
+        <div className="cy-container cy-phero__grid">
+          <div className="cy-phero__inner">
+            <p className="cy-eyebrow cy-in">{eyebrow}</p>
             <h1
               id={headingId}
-              className={`mt-6 max-w-[12.5ch] [font-family:var(--font-editorial-hero)] text-[clamp(3rem,13.5vw,4.5rem)] font-normal leading-[0.96] tracking-[-0.035em] text-[#e4e0d8] sm:max-w-[11.5ch] sm:text-[clamp(4.25rem,9vw,5.75rem)] ${
-                titleScale === "compact"
-                  ? "lg:max-w-[23.75rem] lg:text-[clamp(4rem,5vw,5.25rem)] lg:tracking-[-0.05em]"
-                  : "lg:max-w-[42vw] lg:text-[clamp(4.5rem,7vw,6.75rem)]"
-              }`}
+              className="cy-h1 cy-h1--page cy-in"
+              style={{ "--cy-i": 1 } as React.CSSProperties}
             >
               {title}
             </h1>
-            <p className="mt-6 max-w-[33.75rem] text-[15px] leading-[1.55] text-[color-mix(in_oklab,var(--silver)_78%,transparent)] sm:mt-7 sm:text-base sm:leading-[1.6]">
+            <p className="cy-lead cy-in" style={{ "--cy-i": 2 } as React.CSSProperties}>
               {body}
             </p>
-
-            <ol
-              aria-label={`${lifecycleLabel} sequence`}
-              className="mt-5 hidden flex-wrap items-center gap-y-2 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--silver)] sm:flex"
-            >
-              {lifecycle.map((item, index) => (
-                <li key={`sequence-${item.number}-${item.label}`} className="flex items-center">
-                  {index > 0 ? (
-                    <span aria-hidden="true" className="mx-3 text-[var(--accent-glow)]">
-                      /
-                    </span>
-                  ) : null}
-                  {item.label}
-                </li>
-              ))}
-            </ol>
-
-            <div className="mt-7 flex flex-wrap items-center gap-3 sm:mt-8">
-              <HeroLink action={primaryCta} variant="primary" />
-              {secondaryCta ? <HeroLink action={secondaryCta} variant="secondary" /> : null}
+            <div className="cy-actions cy-in" style={{ "--cy-i": 3 } as React.CSSProperties}>
+              <HeroCta cta={primaryCta} variant="primary" />
+              {secondaryCta ? <HeroCta cta={secondaryCta} variant="ghost" /> : null}
             </div>
-
             {boundaryNote ? (
               <p
-                role="note"
-                aria-label="Scope boundary"
-                className="mt-6 max-w-[33.75rem] border-l border-[var(--teal)] pl-4 text-xs leading-relaxed text-[color-mix(in_oklab,var(--steel)_82%,transparent)] sm:text-[13px]"
+                className="cy-source cy-in"
+                style={{ "--cy-i": 4, maxWidth: "60ch" } as React.CSSProperties}
               >
                 {boundaryNote}
               </p>
             ) : null}
           </div>
-
-          <aside aria-label={lifecycleLabel} className="max-w-xs pt-1 lg:max-w-none lg:self-center">
-            <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-[color-mix(in_oklab,var(--steel)_85%,transparent)]">
-              {lifecycleLabel}
-            </p>
-            <ol className="relative mt-4 space-y-0 before:absolute before:bottom-4 before:left-[3px] before:top-4 before:w-px before:bg-white/20">
-              {lifecycle.map((item) => (
-                <li
-                  key={`${item.number}-${item.label}`}
-                  aria-current={item.active ? "step" : undefined}
-                  className="relative min-w-0 py-3.5 pl-8 lg:py-4"
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`absolute left-0 top-[1.25rem] z-10 h-[7px] w-[7px] rounded-full border ${
-                      item.active
-                        ? "border-[var(--accent-glow)] bg-[var(--accent-glow)]"
-                        : "border-white/35 bg-[var(--onyx)]"
-                    }`}
-                  />
-                  <div className="flex items-baseline gap-2.5">
-                    <span className="font-mono text-[12px] tracking-[0.16em] text-[var(--accent-glow)]">
+          {lifecycle.length > 0 ? (
+            <div className="cy-in" style={{ "--cy-i": 3 } as React.CSSProperties}>
+              <p className="cy-eyebrow" style={{ marginBottom: 14 }}>
+                {lifecycleLabel}
+              </p>
+              <ol style={{ display: "grid", gap: 10, margin: 0, padding: 0, listStyle: "none" }}>
+                {lifecycle.map((item) => (
+                  <li
+                    key={`${item.number}-${item.label}`}
+                    className="cy-kv"
+                    aria-current={item.active ? "step" : undefined}
+                    style={item.active ? { borderColor: "rgba(25, 199, 192, 0.45)" } : undefined}
+                  >
+                    <span
+                      style={{
+                        font: "500 0.6875rem/1.2 var(--cy-mono)",
+                        letterSpacing: "0.1em",
+                        color: item.active ? "var(--cy-teal)" : "var(--cy-mute)",
+                      }}
+                    >
                       {item.number}
                     </span>
-                    <span className="font-display text-[15px] font-medium tracking-[-0.02em] text-[var(--silver)]">
-                      {item.active ? <span className="sr-only">Current focus: </span> : null}
-                      {item.label}
-                    </span>
-                  </div>
-                  {item.detail ? (
-                    <p className="mt-2 text-xs leading-relaxed text-[var(--steel)]">
-                      {item.detail}
-                    </p>
-                  ) : null}
-                </li>
-              ))}
-            </ol>
-          </aside>
+                    <span style={{ color: "var(--cy-ink)", fontWeight: 500 }}>{item.label}</span>
+                    {item.detail ? (
+                      <span style={{ fontSize: "0.875rem", color: "var(--cy-mute)" }}>
+                        {item.detail}
+                      </span>
+                    ) : null}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ) : null}
         </div>
-
-        <div
-          aria-hidden="true"
-          className="cx-internal-hero-datum pointer-events-none absolute inset-x-0 bottom-0 h-px"
-        />
       </section>
-
       {nextChapter ? (
-        <section aria-label={nextChapter.label ?? "Next chapter"} className="cx-internal-chapter">
-          <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
-            <p className="font-mono text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--accent-glow)]">
-              {nextChapter.label ?? "Next chapter"}
-            </p>
-            <p className="mt-3 [font-family:var(--font-editorial-hero)] text-3xl leading-none tracking-[-0.025em] text-[#e4e0d8] sm:text-4xl">
+        <section
+          className="cy-scope cx-internal-chapter"
+          style={{ padding: "clamp(48px, 6vw, 88px) 0" }}
+        >
+          <div className="cy-container">
+            {nextChapter.label ? <p className="cy-eyebrow">{nextChapter.label}</p> : null}
+            <h2 className="cy-h2" style={{ marginTop: 16 }}>
               {nextChapter.title}
-            </p>
-            <p className="mt-2 max-w-2xl text-xs leading-relaxed text-[var(--silver-dim)] sm:text-sm">
+            </h2>
+            <p className="cy-lead" style={{ marginTop: 16 }}>
               {nextChapter.body}
             </p>
           </div>
         </section>
       ) : null}
     </>
-  );
-}
-
-function HeroLink({
-  action,
-  variant,
-}: {
-  action: InternalHeroCta;
-  variant: "primary" | "secondary";
-}) {
-  // Shared CTA system (styles.css): filled primary, outlined secondary.
-  const className = `group ${variant === "primary" ? "cx-btn-primary" : "cx-btn-secondary"}`;
-  const content = (
-    <>
-      <span>{action.label}</span>
-      <ArrowRight
-        aria-hidden="true"
-        className="ml-2 h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-0.5"
-      />
-    </>
-  );
-
-  if (action.href) {
-    return (
-      <a
-        href={action.href}
-        aria-label={action.ariaLabel ?? action.label}
-        onClick={action.onClick}
-        className={className}
-      >
-        {content}
-      </a>
-    );
-  }
-
-  return (
-    <Link
-      to={action.to}
-      aria-label={action.ariaLabel ?? action.label}
-      onClick={action.onClick}
-      preload="intent"
-      className={className}
-    >
-      {content}
-    </Link>
   );
 }

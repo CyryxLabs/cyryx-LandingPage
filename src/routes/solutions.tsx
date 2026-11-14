@@ -1,106 +1,33 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import { Header } from "@/components/cyryx/Header";
-import { Footer } from "@/components/cyryx/Footer";
-import { InternalHero } from "@/components/cyryx/InternalHero";
-import { HudLabel } from "@/components/cyryx/primitives/HudLabel";
-import { buildBreadcrumbJsonLd, buildHead, buildServiceJsonLd } from "@/components/cyryx/seo/seo";
-import { buildStartProjectHref } from "@/lib/cta";
-import { trackCta } from "@/lib/track-cta";
+import { SiteShell } from "@/components/site/SiteShell";
+import {
+  FinalCta,
+  PageHero,
+  SectionHead,
+  ServiceIcon,
+  SourceNote,
+  StartButton,
+} from "@/components/site/ui";
+import { buildBreadcrumbJsonLd, buildHead, buildWebPageJsonLd } from "@/components/cyryx/seo/seo";
+import { ADOPTION_GAP, MARKET_REVIEWED } from "@/data/market";
+import { SERVICES, type ServiceStage } from "@/data/services";
+import { absoluteSiteUrl } from "@/lib/site-url";
 
 const PATH = "/solutions";
-const TITLE = "AI Advisory, Digital Systems & Engineering — Cyryx Labs";
+const TITLE = "AI Solutions for US Businesses | Cyryx Labs";
 const DESC =
-  "Explore Cyryx Labs advisory, digital systems, automation, internal assistants, custom AI products, governance, and managed operations.";
-const SOLUTIONS_START_HREF = buildStartProjectHref({ source: "solutions" });
+  "Ten AI services for US companies: strategy, workflow automation, AI agents, systems integration, data readiness, governance, training and operations.";
 
-const CAPABILITIES = [
+const STAGES: readonly { stage: ServiceStage; title: string; line: string }[] = [
   {
-    n: "01",
     stage: "Advise",
-    name: "AI Strategy & Advisory",
-    proposition:
-      "Determine what is worth building and what the operating system around it requires.",
-    deliverables: ["Opportunity assessment", "Architecture direction", "Implementation roadmap"],
-    href: "/solutions/ai-strategy-advisory",
+    title: "Advise",
+    line: "Decide what is worth building, and prepare your people for it.",
   },
-  {
-    n: "02",
-    stage: "Build",
-    name: "Digital & Web Systems",
-    proposition:
-      "Create a credible, measurable digital foundation connected to the operation behind it.",
-    deliverables: ["Corporate websites", "Web applications", "Lead and intake systems"],
-    href: "/solutions/digital-web-systems",
-  },
-  {
-    n: "03",
-    stage: "Build",
-    name: "Workflow Automation",
-    proposition:
-      "Redesign recurring work across systems, decisions, exceptions, and human approvals.",
-    deliverables: ["Workflow design", "System integrations", "Exception and approval paths"],
-    href: "/solutions/workflow-automation",
-  },
-  {
-    n: "04",
-    stage: "Build",
-    name: "Internal AI Assistants",
-    proposition:
-      "Support employees with bounded access to the knowledge and actions their roles require.",
-    deliverables: ["Knowledge access", "Role boundaries", "Evaluation and escalation"],
-    href: "/solutions/internal-ai-assistants",
-  },
-  {
-    n: "05",
-    stage: "Build",
-    name: "Custom AI Product Development",
-    proposition: "Move from product opportunity to a testable, integrated AI-enabled capability.",
-    deliverables: ["Product discovery", "Experience and system design", "Build and validation"],
-    href: "/solutions/custom-ai-product-development",
-  },
-  {
-    n: "06",
-    stage: "Control",
-    name: "AI Governance & Cost Control",
-    proposition:
-      "Define authority, evidence, evaluation, and resource controls around consequential execution.",
-    deliverables: ["Control requirements", "Usage visibility", "Review and approval design"],
-    href: "/solutions/ai-governance-cost-control",
-  },
-  {
-    n: "07",
-    stage: "Operate",
-    name: "Managed Operations",
-    proposition:
-      "Maintain and evolve defined systems under written responsibilities and service expectations.",
-    deliverables: ["Monitoring and maintenance", "Optimization cadence", "Transition or handover"],
-    href: "/managed-operations",
-  },
-] as const;
-
-const BUYER_TRIGGERS = [
-  {
-    need: "A promising pilot must become an operable product.",
-    label: "Build / Custom AI Product Development",
-    href: "/solutions/custom-ai-product-development",
-  },
-  {
-    need: "A cross-system workflow is slow, fragmented, or exception-heavy.",
-    label: "Build / Workflow Automation",
-    href: "/solutions/workflow-automation",
-  },
-  {
-    need: "Authority, evidence, evaluation, or cost boundaries are unclear.",
-    label: "Control / AI Governance & Cost Control",
-    href: "/solutions/ai-governance-cost-control",
-  },
-  {
-    need: "A launched system lacks a named owner, review cadence, or transition path.",
-    label: "Operate / Managed Operations",
-    href: "/managed-operations",
-  },
-] as const;
+  { stage: "Build", title: "Build", line: "Ship the automation, agent, integration or product." },
+  { stage: "Control", title: "Control", line: "Keep AI inside rules, permissions and a budget." },
+  { stage: "Operate", title: "Operate", line: "Keep it running and improving after launch." },
+];
 
 export const Route = createFileRoute("/solutions")({
   head: ({ matches }) => {
@@ -111,12 +38,23 @@ export const Route = createFileRoute("/solutions")({
         { name: "Home", path: "/" },
         { name: "Solutions", path: PATH },
       ]),
-      buildServiceJsonLd({
-        name: "Cyryx Labs Advisory and Systems Engineering",
-        serviceType: "AI advisory and systems engineering",
+      buildWebPageJsonLd({
+        name: TITLE,
         description: DESC,
         path: PATH,
+        dateModified: MARKET_REVIEWED,
       }),
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Cyryx Labs AI services",
+        itemListElement: SERVICES.map((service, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: service.name,
+          url: absoluteSiteUrl(service.path),
+        })),
+      },
     ]);
   },
   component: SolutionsHub,
@@ -127,146 +65,96 @@ function SolutionsHub() {
   if (pathname !== "/solutions" && pathname !== "/solutions/") return <Outlet />;
 
   return (
-    <div className="dark min-h-dvh bg-[var(--onyx)] text-[var(--silver)]">
-      <Header />
-      <main id="main-content">
-        <InternalHero
-          eyebrow="AI systems · Advisory · Engineering · Operations"
-          title="From unresolved AI opportunity to an owned operating capability."
-          titleScale="compact"
-          body="Cyryx combines advisory, digital and AI engineering, control design, and optional managed operations. The engagement begins with the business constraint—not a predetermined tool."
-          primaryCta={{
-            label: "Start a project",
-            to: SOLUTIONS_START_HREF,
-            onClick: () =>
-              trackCta({ cta: "start_project", section: "solutions", href: SOLUTIONS_START_HREF }),
-          }}
-          secondaryCta={{ label: "How we work", to: "/engagement-model" }}
-          boundaryNote="Products and the Applied AI Lab inform the work; client scope remains independent. Ownership, licensing, support, and commercial terms are defined per engagement."
-          lifecycleLabel="Operating capability lifecycle"
-          lifecycle={[
-            { number: "01", label: "Advise", active: true },
-            { number: "02", label: "Build" },
-            { number: "03", label: "Control" },
-            { number: "04", label: "Operate" },
-          ]}
-          nextChapter={{
-            title: "Start with the operating need.",
-            body: "The right capability follows the constraint, the decision context, and the operating life of the system.",
-          }}
-        />
+    <SiteShell source="solutions">
+      <PageHero
+        crumbs={[{ name: "Home", path: "/" }, { name: "Solutions" }]}
+        eyebrow="Solutions"
+        title="Every obstacle between you and working AI has a service."
+        lead="Cyryx Labs offers ten AI services for US companies, grouped into four stages: Advise, Build, Control and Operate. Take one on its own or connect several into a program."
+      >
+        <StartButton section="hero" source="solutions" />
+        <a href="#services" className="cy-btn cy-btn--ghost">
+          Browse all ten
+        </a>
+      </PageHero>
 
-        <section
-          aria-labelledby="solutions-trigger-heading"
-          className="border-b border-white/10 bg-[var(--obsidian)] px-5 py-10 sm:px-8 sm:py-12"
-        >
-          <div className="mx-auto max-w-7xl">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <HudLabel>Start with the operating need</HudLabel>
-                <h2
-                  id="solutions-trigger-heading"
-                  className="mt-4 font-display text-2xl tracking-[-0.03em] text-[var(--silver)] sm:text-3xl"
-                >
-                  Which situation is closest to yours?
-                </h2>
+      <section id="services" className="cy-section" aria-label="Services by stage">
+        <div className="cy-container" style={{ display: "grid", gap: "clamp(56px, 7vw, 104px)" }}>
+          {STAGES.map((group) => {
+            const services = SERVICES.filter((service) => service.stage === group.stage);
+            return (
+              <div key={group.stage}>
+                <SectionHead
+                  id={`stage-${group.stage.toLowerCase()}`}
+                  eyebrow={`Stage · ${group.title}`}
+                  title={group.line}
+                />
+                <div className="cy-grid cy-grid--3">
+                  {services.map((service, index) => (
+                    <Link
+                      key={service.slug}
+                      to={service.path}
+                      className="cy-card cy-spot"
+                      data-cy-reveal
+                      style={{ "--cy-i": index } as React.CSSProperties}
+                    >
+                      <ServiceIcon name={service.icon} />
+                      <h3 className="cy-h3">{service.name}</h3>
+                      <p>{service.cardLine}</p>
+                      <p className="cy-card__pain">{service.cardPain}</p>
+                      <dl style={{ margin: 0 }}>
+                        <div className="cy-kv">
+                          <dt>Timeline</dt>
+                          <dd>{service.timeline}</dd>
+                        </div>
+                      </dl>
+                      <span className="cy-card__go">
+                        Learn more <span aria-hidden="true">→</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <p className="max-w-lg text-sm leading-relaxed text-[var(--silver-dim)]">
-                These are navigation cues, not promises about scope or outcome.
-              </p>
-            </div>
-            <div className="mt-7 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 md:grid-cols-2 xl:grid-cols-4">
-              {BUYER_TRIGGERS.map((trigger) => (
-                <Link
-                  key={trigger.need}
-                  to={trigger.href}
-                  className="cx-material-panel cx-material-panel-interactive group flex min-h-48 flex-col border border-transparent p-5 sm:p-6"
-                >
-                  <p className="font-display text-xl leading-snug tracking-[-0.02em] text-[var(--silver)]">
-                    {trigger.need}
-                  </p>
-                  <span className="mt-auto flex items-center justify-between gap-3 pt-8 font-mono text-[12px] uppercase leading-relaxed tracking-[0.16em] text-[var(--steel)] transition-colors group-hover:text-[var(--accent-glow)]">
-                    {trigger.label}
-                    <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="cy-section cy-section--alt" aria-labelledby="why-heading">
+        <div className="cy-container">
+          <SectionHead
+            id="why-heading"
+            eyebrow="Why these ten"
+            title="Built from what companies say is in the way."
+            lead="We mapped the service list to the obstacles US businesses report in 2026 surveys, by company size."
+            split
+          />
+          <div className="cy-stats">
+            {ADOPTION_GAP.map((item, index) => (
+              <article
+                key={item.id}
+                className="cy-stat"
+                data-cy-reveal
+                style={{ "--cy-i": index } as React.CSSProperties}
+              >
+                <p className="cy-product__cat">{item.segment}</p>
+                <div className="cy-stat__pair">
+                  <span className="cy-stat__big">{item.uses}%</span>
+                  <span className="cy-stat__vs">
+                    {item.works}%<small>working</small>
                   </span>
-                </Link>
-              ))}
-            </div>
+                </div>
+                <p>
+                  {item.uses}% {item.usesLabel}. Only {item.works}% {item.worksLabel}.
+                </p>
+                <SourceNote id={item.source} />
+              </article>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
-          <div className="grid gap-12 lg:grid-cols-[0.62fr_1.38fr] lg:gap-24">
-            <div className="lg:sticky lg:top-32 lg:self-start">
-              <HudLabel>Capability map</HudLabel>
-              <h2 className="mt-6 font-display text-4xl font-medium leading-[1.02] tracking-[-0.04em] text-[var(--silver)] sm:text-5xl">
-                Choose the operating need, then shape the engagement.
-              </h2>
-              <p className="mt-6 text-base leading-relaxed text-[var(--silver-dim)]">
-                Capabilities can stand alone or connect across a larger program. Integrations,
-                ownership, licensing, support, and operational responsibilities depend on the
-                selected systems and written scope.
-              </p>
-            </div>
-            <ol className="border-t border-white/10">
-              {CAPABILITIES.map((capability) => (
-                <li key={capability.n} className="group border-b border-white/10 py-8 sm:py-10">
-                  <Link
-                    to={capability.href}
-                    className="grid gap-5 sm:grid-cols-[3rem_1fr_auto] sm:gap-8"
-                  >
-                    <span className="font-mono text-[12px] tracking-[0.22em] text-[var(--accent-glow)]">
-                      {capability.n}
-                    </span>
-                    <div>
-                      <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
-                        {capability.stage}
-                      </p>
-                      <h3 className="mt-3 font-display text-2xl font-medium tracking-[-0.025em] text-[var(--silver)] sm:text-3xl">
-                        {capability.name}
-                      </h3>
-                      <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[var(--silver-dim)]">
-                        {capability.proposition}
-                      </p>
-                      <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs text-[var(--steel)]">
-                        {capability.deliverables.map((item) => (
-                          <li
-                            key={item}
-                            className="before:mr-2 before:text-[var(--accent-glow)] before:content-['/']"
-                          >
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <ArrowRight
-                      className="hidden h-5 w-5 text-[var(--steel)] transition group-hover:translate-x-1 group-hover:text-[var(--accent-glow)] sm:block"
-                      aria-hidden
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        <section className="border-y border-white/10 bg-[var(--graphite)] px-5 py-20 sm:px-8 sm:py-24">
-          <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
-            <HudLabel>Decision rule</HudLabel>
-            <div>
-              <h2 className="font-display text-3xl font-medium tracking-[-0.035em] text-[var(--silver)] sm:text-4xl">
-                AI where it is useful. Deterministic software where it is better.
-              </h2>
-              <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-[var(--silver-dim)]">
-                A credible system may combine conventional software, automation, human decision, and
-                multiple AI providers. Cyryx selects the mechanism according to predictability,
-                authority, data, cost, and the operating outcome — not novelty.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+      <FinalCta source="solutions" />
+    </SiteShell>
   );
 }

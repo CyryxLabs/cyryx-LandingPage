@@ -64,6 +64,7 @@ export function Header() {
   return (
     <>
       <header
+        data-scrolled={scrolled ? "true" : "false"}
         className={cn(
           "cx-liquid-glass cx-site-header fixed inset-x-0 top-0 z-50 rounded-none border-x-0 border-t-0 transition-all duration-300",
           scrolled
@@ -77,7 +78,7 @@ export function Header() {
             className="-mx-1 inline-flex h-12 min-w-0 shrink-0 items-center px-1 lg:h-16"
             aria-label="Cyryx Labs — home"
           >
-            <CyryxLockup priority className="h-10 lg:h-14" />
+            <CyryxLockup priority className="h-7 lg:h-9" />
           </Link>
 
           <nav ref={navRef} className="hidden lg:flex items-center" aria-label="Primary">

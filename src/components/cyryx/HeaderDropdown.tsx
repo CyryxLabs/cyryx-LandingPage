@@ -51,7 +51,7 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
         <div
           className={cn(
             "grid gap-1 p-4 md:w-[240px]",
-            group.id === "solutions" && "md:w-[480px] md:grid-cols-2",
+            group.id === "solutions" && "md:w-[600px] md:grid-cols-2",
           )}
         >
           {group.children.map((item) => {

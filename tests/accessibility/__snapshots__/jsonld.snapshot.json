@@ -6,21 +6,23 @@
     "legalName": "Cyryx Labs LLC",
     "alternateName": "Cyryx",
     "url": "https://www.cyryxlabs.com/",
-    "slogan": "Websites, software and AI that grow your business.",
+    "slogan": "We build AI systems that do real work.",
     "areaServed": [
       "United States",
       "Latin America"
     ],
     "email": "contact@cyryxlabs.com",
     "knowsAbout": [
-      "Website design and development",
+      "AI strategy and roadmaps",
       "Workflow automation",
-      "Custom software and MVP development",
-      "AI strategy and advisory",
-      "AI product engineering",
-      "Agentic workflow systems",
+      "AI agents and internal assistants",
+      "AI systems integration",
+      "Custom AI product development",
+      "AI data readiness and knowledge systems",
       "AI governance and cost control",
-      "AI execution systems",
+      "Generative engine optimization",
+      "AI training and enablement",
+      "Managed AI operations",
       "Applied AI research"
     ],
     "sameAsCount": 2
@@ -35,7 +37,7 @@
     "@type": "WebPage",
     "@id": "https://www.cyryxlabs.com/#webpage",
     "url": "https://www.cyryxlabs.com/",
-    "name": "Cyryx Labs — Websites, Software & AI | US & Latin America",
-    "description": "Websites, automations, custom software and AI for companies of every size. One accountable team, fixed timelines, and a human in control of every AI decision."
+    "name": "Cyryx Labs — AI Systems, Automation & Integration",
+    "description": "Cyryx Labs builds AI systems, workflow automations and integrations for US companies, and makes its own AI products, Onyx and AEXOS. A human stays in control."
   }
 }

@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:"Space Grotesk";src:url(assets/space-grotesk-latin-wght-normal.woff2) format("woff2");font-weight:300 700}
+@font-face{font-family:"Inter";src:url(assets/inter-latin-wght-normal.woff2) format("woff2");font-weight:100 900}
+@font-face{font-family:"IBM Plex Mono";src:url(assets/ibm-plex-mono-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"IBM Plex Mono";src:url(assets/ibm-plex-mono-latin-500-normal.woff2) format("woff2");font-weight:500}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1600px;height:900px;overflow:hidden;background:#050607;color:#eceeef;font-family:Inter,sans-serif}
+#stage{position:relative;width:1600px;height:900px;overflow:hidden;background:#050607}
+.abs{position:absolute}
+/* atmosphere */
+#haze{inset:0;background:
+  radial-gradient(820px 600px at 75% 54%,rgba(25,199,192,.11),rgba(15,107,104,.06) 45%,transparent 72%),
+  radial-gradient(1200px 460px at 55% 120%,rgba(15,107,104,.26),transparent 62%)}
+#grid{inset:0;background:
+  linear-gradient(rgba(199,201,204,.035) 1px,transparent 1px) 0 0/100% 60px,
+  linear-gradient(90deg,rgba(199,201,204,.035) 1px,transparent 1px) 0 0/60px 100%;
+  -webkit-mask-image:radial-gradient(70% 80% at 74% 52%,#000 30%,transparent 78%)}
+#beam{left:-200px;top:-300px;width:520px;height:1700px;background:linear-gradient(90deg,transparent,rgba(185,243,239,.07) 45%,rgba(25,199,192,.10) 50%,rgba(185,243,239,.07) 55%,transparent);filter:blur(22px);transform-origin:50% 50%}
+#floor{left:0;right:0;bottom:0;height:330px;background:
+  linear-gradient(rgba(199,201,204,.09) 1px,transparent 1px) 0 0/100% 46px,
+  linear-gradient(90deg,rgba(199,201,204,.09) 1px,transparent 1px) 0 0/92px 100%;
+  transform:perspective(700px) rotateX(64deg);transform-origin:50% 100%;
+  -webkit-mask-image:linear-gradient(transparent,#000 55%);opacity:.55}
+.dot{border-radius:50%;background:radial-gradient(closest-side,rgba(185,243,239,.9),rgba(25,199,192,.25) 55%,transparent)}
+#vig{inset:0;background:radial-gradient(120% 95% at 60% 50%,transparent 55%,rgba(0,0,0,.6) 100%),linear-gradient(90deg,rgba(5,6,7,.55),transparent 46%)}
+/* chapter tag */
+.tag{left:872px;top:84px;display:flex;flex-direction:column;gap:14px}
+.tag .k{font:500 15px/1 "IBM Plex Mono",monospace;letter-spacing:.22em;text-transform:uppercase;color:#5fe0da;display:flex;align-items:center;gap:14px}
+.tag .k::before{content:"";width:34px;height:1px;background:#19c7c0}
+.tag .p{font:500 44px/1.06 "Space Grotesk",sans-serif;letter-spacing:-.035em;color:#f2f4f5;max-width:660px}
+.note{font:400 12px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(199,201,204,.62)}
+.scene{inset:0;opacity:0}
+/* glass */
+.glass{border:1px solid rgba(185,243,239,.26);background:rgba(13,18,20,.78);border-radius:16px;box-shadow:0 40px 110px rgba(0,0,0,.6),0 0 70px rgba(25,199,192,.12)}
+/* S1 stack */
+.sl{left:1352px;width:236px;display:grid;gap:5px}
+.sl .n{font:500 12px/1 "IBM Plex Mono";letter-spacing:.16em;color:#5fe0da}
+.sl .t{font:600 23px/1.1 "Space Grotesk";letter-spacing:-.01em}
+.sl .d{font:400 13px/1.3 "IBM Plex Mono";letter-spacing:.06em;color:#969ea8}
+/* S1 window (unused) */
+#win{left:872px;top:246px;width:900px;transform-origin:0 50%}
+#win .bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid rgba(199,201,204,.12);font:500 12px/1 "IBM Plex Mono";letter-spacing:.14em;text-transform:uppercase;color:#c7c9cc}
+#win .bar i{width:9px;height:9px;border-radius:50%;background:rgba(199,201,204,.25)}
+#win .bar span{margin-left:8px}
+#win .bar b{margin-left:auto;font-weight:500;color:#5fe0da}
+#win img{display:block;width:100%;height:auto;border-radius:0 0 15px 15px}
+#win{overflow:hidden}
+#sweep{top:0;bottom:0;left:0;width:260px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.10) 50%,transparent);mix-blend-mode:screen}
+#flash{inset:0;background:radial-gradient(900px 600px at 76% 50%,rgba(185,243,239,.5),transparent 70%);opacity:0}
+#winglow{left:900px;top:760px;width:900px;height:120px;background:radial-gradient(closest-side,rgba(25,199,192,.35),transparent);filter:blur(30px)}
+/* S2 flow */
+.step{left:872px;width:384px;height:84px;display:flex;align-items:center;gap:16px;padding:0 20px;border:1px solid rgba(199,201,204,.16);border-radius:14px;background:rgba(10,13,15,.82)}
+.step .n{font:500 12px "IBM Plex Mono";letter-spacing:.12em;color:#5fe0da}
+.step .t{font:600 22px "Space Grotesk";letter-spacing:-.01em}
+.step .d{margin-left:auto;font:400 12px "IBM Plex Mono";letter-spacing:.06em;color:#969ea8}
+.step .ok{margin-left:auto;width:22px;height:22px;border-radius:50%;border:1.5px solid #19c7c0;display:grid;place-items:center;color:#19c7c0;font:600 12px Inter}
+#rail{left:856px;top:262px;width:2px;height:468px;background:rgba(199,201,204,.14)}
+#railfill{left:856px;top:262px;width:2px;height:468px;background:#19c7c0;box-shadow:0 0 14px #19c7c0;transform-origin:50% 0}
+#token{left:848px;width:18px;height:18px;border-radius:50%;background:#b9f3ef;box-shadow:0 0 22px 6px rgba(25,199,192,.8)}
+#appr{left:1284px;top:470px;width:296px;padding:20px;display:grid;gap:12px}
+#appr .h{font:500 12px "IBM Plex Mono";letter-spacing:.14em;text-transform:uppercase;color:#e8b663;display:flex;gap:8px;align-items:center}
+#appr .h::before{content:"";width:8px;height:8px;border-radius:50%;background:#e8b663;box-shadow:0 0 12px #e8b663}
+#appr .t{font:600 20px/1.2 "Space Grotesk"}
+#appr .s{font:400 14px/1.45 Inter;color:#c7c9cc}
+#appr .btns{display:flex;gap:10px;margin-top:4px}
+#appr .btn{flex:1;height:42px;border-radius:10px;display:grid;place-items:center;font:600 14px Inter}
+#appr .yes{background:#19c7c0;color:#04201f}
+#appr .no{border:1px solid rgba(199,201,204,.25);color:#c7c9cc}
+#appr .done{font:500 13px "IBM Plex Mono";letter-spacing:.04em;color:#5fe0da;display:flex;gap:8px;align-items:center}
+#cursor{width:22px;height:22px}
+#count{left:1284px;top:262px;width:296px;padding:20px}
+#count .v{font:600 76px/1 "Space Grotesk";letter-spacing:-.04em}
+#count .l{margin-top:8px;font:400 14px Inter;color:#c7c9cc}
+/* S3 hub */
+#hub{left:1116px;top:406px;width:160px;height:160px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(185,243,239,.5);background:radial-gradient(closest-side,rgba(25,199,192,.4),rgba(10,13,15,.9));box-shadow:0 0 0 22px rgba(25,199,192,.06),0 0 0 54px rgba(25,199,192,.035),0 0 110px rgba(25,199,192,.55);font:600 28px "Space Grotesk";letter-spacing:.08em}
+.tile{height:70px;white-space:nowrap;transform:translate(-50%,-50%);display:flex;align-items:center;gap:12px;padding:0 16px;border:1px solid rgba(199,201,204,.2);border-radius:14px;background:rgba(10,13,15,.9);box-shadow:0 18px 50px rgba(0,0,0,.5);font:600 20px "Space Grotesk"}
+.tile i{width:10px;height:10px;border-radius:3px;background:#5fe0da;box-shadow:0 0 10px rgba(25,199,192,.8)}
+svg{overflow:visible}
+/* S4 governance */
+#log{left:872px;top:262px;width:416px;padding:18px 20px;font:400 13px/1 "IBM Plex Mono";color:#c7c9cc}
+#log .lh{display:flex;justify-content:space-between;padding-bottom:13px;margin-bottom:6px;border-bottom:1px solid rgba(199,201,204,.14);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#969ea8}
+#log .lh span:first-child{color:#f2f4f5}
+#log .lr{display:grid;grid-template-columns:52px 118px 1fr;gap:8px;align-items:center;height:58px;border-bottom:1px solid rgba(199,201,204,.08)}
+#log .lr span:first-child{color:#969ea8}
+#log .lr b{font-weight:500;color:#5fe0da;text-align:right}
+#log .lr.hold b{color:#e8b663}
+.gc{left:1308px;width:272px;padding:18px 20px;display:grid;gap:10px}
+.gk{font:500 11px/1 "IBM Plex Mono";letter-spacing:.14em;text-transform:uppercase;color:#969ea8}
+.gv{font:600 19px/1.2 "Space Grotesk"}
+.gc .bar{position:relative;height:8px;border-radius:4px;background:rgba(199,201,204,.14)}
+.gc .bar i{position:absolute;inset:0 auto 0 0;border-radius:4px;background:#19c7c0;box-shadow:0 0 12px rgba(25,199,192,.6)}
+.gc .bar em{position:absolute;right:0;top:-6px;bottom:-6px;width:2px;background:#e8b663}
+.gd{display:flex;justify-content:space-between;font:400 11px/1 "IBM Plex Mono";letter-spacing:.06em;color:#969ea8}
+/* S4 products (unused) */
+#onyxface{left:836px;top:226px;width:430px}
+#onyxhalo{left:860px;top:250px;width:380px;height:380px;border-radius:50%;background:radial-gradient(closest-side,rgba(25,199,192,.4),transparent 72%);filter:blur(16px)}
+#onyxtag{left:872px;top:716px;display:grid;gap:8px}
+.pname{font:600 30px/1 "Space Grotesk";letter-spacing:.3em}
+.pcat{font:500 12px/1 "IBM Plex Mono";letter-spacing:.14em;text-transform:uppercase;color:#c7c9cc}
+#bubble{left:872px;top:604px;width:330px;padding:14px 16px;font:400 15px/1.4 Inter}
+#bubble b{display:block;font:500 11px "IBM Plex Mono";letter-spacing:.08em;color:#5fe0da;margin-bottom:4px}
+#term{left:1262px;top:246px;width:318px;height:420px;padding:16px;font:400 13px/1.5 "IBM Plex Mono";color:#c7c9cc;overflow:hidden}
+#term .hd{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#969ea8;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(199,201,204,.12)}
+#term p{margin-bottom:9px}
+#term p b{color:#19c7c0;font-weight:500}
+#term p span{display:block;padding-left:15px;color:#969ea8}
+#aexostag{left:1262px;top:716px;display:grid;gap:8px}
+/* S5 closing */
+#mark{left:890px;top:300px;width:620px}
+#markline{left:890px;top:476px;width:620px;height:1px;background:linear-gradient(90deg,transparent,#19c7c0,transparent);transform-origin:50% 50%}
+#what{left:890px;top:506px;width:620px;text-align:center;font:500 17px/1 "IBM Plex Mono";letter-spacing:.34em;text-transform:uppercase;color:#f2f4f5}
+#words{left:890px;top:566px;width:620px;display:flex;justify-content:center;gap:26px;font:500 14px/1 "IBM Plex Mono";letter-spacing:.14em;text-transform:uppercase;color:#c7c9cc}
+#words span i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#19c7c0;margin-right:10px;vertical-align:1px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="haze" class="abs"></div>
+  <div id="grid" class="abs"></div>
+
+  <!-- S1 -->
+  <div class="scene abs" id="s1">
+    <div class="tag abs"><div class="k">01 · AI systems</div><div class="p">AI built into how your company runs.</div></div>
+    <svg class="abs" id="stack" style="left:0;top:0" width="1600" height="900"></svg>
+    <div id="slabels"></div>
+  </div>
+
+  <!-- S2 -->
+  <div class="scene abs" id="s2">
+    <div class="tag abs"><div class="k">02 · Workflow automation</div><div class="p">Routine work runs itself. People decide what matters.</div></div>
+    <div id="rail" class="abs"></div><div id="railfill" class="abs"></div>
+    <div class="step abs" style="top:262px"><span class="n">01</span><span class="t">Invoice arrives</span><span class="d">inbox</span></div>
+    <div class="step abs" style="top:360px"><span class="n">02</span><span class="t">AI reads it</span><span class="d">vendor · total · PO</span></div>
+    <div class="step abs" style="top:458px"><span class="n">03</span><span class="t">Checks your rules</span><span class="d">limits</span></div>
+    <div class="step abs" style="top:556px"><span class="n">04</span><span class="t">A person approves</span><span class="d">you decide</span></div>
+    <div class="step abs" style="top:654px"><span class="n">05</span><span class="t">Posted and logged</span><span class="d">ERP</span></div>
+    <div id="token" class="abs"></div>
+    <div id="count" class="abs glass"><div class="v"><span id="cnt">0</span></div><div class="l">invoices handled within your rules</div></div>
+    <div id="appr" class="abs glass">
+      <div class="h">Needs a person</div>
+      <div class="t">Invoice INV-2291</div>
+      <div class="s" id="apprs">Above the auto-approve limit you set.</div>
+      <div class="btns" id="btns"><div class="btn yes" id="yes">Approve</div><div class="btn no">Hold</div></div>
+      <div class="done" id="done">✓ Approved by finance · logged 10:02</div>
+    </div>
+    <svg id="cursor" class="abs" viewBox="0 0 22 22"><path d="M3 2l15 8-6.5 1.8L9 18z" fill="#f2f4f5" stroke="#050607" stroke-width="1.2"/></svg>
+    <div class="note abs" style="left:872px;top:756px">Illustrative example</div>
+  </div>
+
+  <!-- S3 -->
+  <div class="scene abs" id="s3">
+    <div class="tag abs"><div class="k">03 · System integration</div><div class="p">Connected to the systems you already run.</div></div>
+    <svg class="abs" id="links" style="left:0;top:0" width="1600" height="900"></svg>
+    <div id="hub" class="abs">AI</div>
+    <div id="tiles"></div>
+  </div>
+
+  <!-- S4 -->
+  <div class="scene abs" id="s4">
+    <div class="tag abs"><div class="k">04 · Governance and control</div><div class="p">Approved, logged and within the limits you set.</div></div>
+    <div id="log" class="abs glass">
+      <div class="lh"><span>Audit log</span><span>every action on record</span></div>
+      <div class="lr"><span>10:02</span><span>invoice.post</span><b>approved · finance lead</b></div>
+      <div class="lr"><span>10:02</span><span>crm.update</span><b>auto · within limit</b></div>
+      <div class="lr hold"><span>10:03</span><span>email.send</span><b>held for a person</b></div>
+      <div class="lr"><span>10:04</span><span>erp.write</span><b>approved · controller</b></div>
+      <div class="lr"><span>10:05</span><span>report.build</span><b>auto · within limit</b></div>
+      <div class="lr"><span>10:06</span><span>vendor.pay</span><b>approved · finance lead</b></div>
+    </div>
+    <div class="gc abs glass" id="g1" style="top:262px"><div class="gk">Human approval</div><div class="gv">Required above your limits</div></div>
+    <div class="gc abs glass" id="g2" style="top:398px"><div class="gk">Spend today</div><div class="bar"><i id="spend"></i><em></em></div><div class="gd"><span>used</span><span>limit you set</span></div></div>
+    <div class="gc abs glass" id="g3" style="top:556px"><div class="gk">Access</div><div class="gv">Reads 4 systems · writes to 2</div></div>
+    <div class="note abs" style="left:872px;top:756px">Illustrative example</div>
+  </div>
+
+  <!-- S5 -->
+  <div class="scene abs" id="s5">
+    <img id="mark" class="abs" src="assets/cyryx-brand-wordmark.png">
+    <div id="markline" class="abs"></div>
+    <div id="what" class="abs">AI technology company</div>
+    <div id="words" class="abs"><span><i></i>Systems</span><span><i></i>Automation</span><span><i></i>Integration</span><span><i></i>Governance</span></div>
+  </div>
+
+  <div id="flash" class="abs"></div>
+  <div id="vig" class="abs"></div>
+</div>
+<script>
+const D=24, CUTS=[0,5,10.5,15,20,24];
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const eo=t=>1-Math.pow(1-cl(t),3);
+const eio=t=>{t=cl(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+const seg=(t,a,b)=>cl((t-a)/(b-a));
+const lerp=(a,b,k)=>a+(b-a)*k;
+// architecture stack
+const LAYERS=[['01','Your systems','ERP · CRM · data'],['02','Integration','APIs · events · files'],['03','AI agents','do the repeatable work'],['04','Governance','approvals · logs · limits']];
+const planes=[],pulses=[],risers=[];
+(function(){const svg=$('stack');const NS='http://www.w3.org/2000/svg';const cx=1076,W=468,H=158;const cyOf=i=>690-i*122;
+  const mk=(n,at)=>{const e=document.createElementNS(NS,n);for(const k in at)e.setAttribute(k,at[k]);return e;};
+  const pt=(cy,u,v)=>[cx+(u-v)*W/4,cy+(u+v)*H/4];
+  const defs=mk('defs',{});defs.innerHTML='<linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(199,201,204,.10)"/><stop offset="1" stop-color="rgba(199,201,204,.02)"/></linearGradient><linearGradient id="pt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(25,199,192,.22)"/><stop offset="1" stop-color="rgba(25,199,192,.04)"/></linearGradient>';svg.appendChild(defs);
+  const anchors=[[-.55,-.2],[.1,.45],[.5,-.5]];
+  // risers and pulses first (behind upper planes is fine)
+  for(let i=0;i<3;i++)anchors.forEach((a,j)=>{const p0=pt(cyOf(i),a[0],a[1]),p1=pt(cyOf(i+1),a[0],a[1]);
+    const l=mk('line',{x1:p0[0],y1:p0[1],x2:p1[0],y2:p1[1],stroke:'rgba(95,224,218,.5)','stroke-width':1,'stroke-dasharray':'2 5',opacity:0});svg.appendChild(l);risers.push(l);
+    const c=mk('circle',{r:4.5,fill:'#b9f3ef',opacity:0});c.style.filter='drop-shadow(0 0 6px rgba(25,199,192,.9))';pulses.push({c,x:p0[0],y0:p0[1],y1:p1[1],ph:(i*.31+j*.17)%1});});
+  LAYERS.forEach((L,i)=>{const cy=cyOf(i);const g=mk('g',{opacity:0});
+    const poly=mk('polygon',{points:[pt(cy,-1,-1),pt(cy,1,-1),pt(cy,1,1),pt(cy,-1,1)].map(p=>p.join(',')).join(' '),fill:i===3?'url(#pt)':'url(#pg)',stroke:'rgba(199,201,204,.36)','stroke-width':1.2});g.appendChild(poly);
+    [-.34,.34].forEach(k=>{const a1=pt(cy,k,-1),a2=pt(cy,k,1),b1=pt(cy,-1,k),b2=pt(cy,1,k);
+      g.appendChild(mk('line',{x1:a1[0],y1:a1[1],x2:a2[0],y2:a2[1],stroke:'rgba(199,201,204,.10)','stroke-width':1}));
+      g.appendChild(mk('line',{x1:b1[0],y1:b1[1],x2:b2[0],y2:b2[1],stroke:'rgba(199,201,204,.10)','stroke-width':1}));});
+    anchors.concat(i%2?[[-.2,.6],[.65,.2]]:[[.0,-.65],[-.7,.55]]).forEach((a,j)=>{const p=pt(cy,a[0],a[1]);
+      g.appendChild(mk('ellipse',{cx:p[0],cy:p[1],rx:j<3?9:6,ry:j<3?4.5:3,fill:j<3?(i===3?'#5fe0da':'rgba(236,238,239,.85)'):'rgba(199,201,204,.35)'}));});
+    const e=pt(cy,1,-1);g.appendChild(mk('line',{x1:e[0]+8,y1:e[1],x2:1338,y2:e[1],stroke:'rgba(199,201,204,.28)','stroke-width':1}));
+    svg.appendChild(g);
+    const lab=document.createElement('div');lab.className='sl abs';lab.style.top=(cy-26)+'px';lab.innerHTML=`<span class="n">${L[0]}</span><span class="t">${L[1]}</span><span class="d">${L[2]}</span>`;$('slabels').appendChild(lab);
+    planes.push({g,poly,lab,i});});
+  pulses.forEach(o=>svg.appendChild(o.c));})();
+// tiles
+const TILES=['CRM','ERP','Email','Identity','Documents','Data warehouse'];const tiles=[];
+(function(){const svg=$('links');TILES.forEach((name,i)=>{const el=document.createElement('div');el.className='tile abs';el.innerHTML='<i></i>'+name;$('tiles').appendChild(el);
+  const ln=document.createElementNS('http://www.w3.org/2000/svg','line');ln.setAttribute('stroke','rgba(95,224,218,.34)');ln.setAttribute('stroke-width','1.4');svg.appendChild(ln);
+  const p1=document.createElementNS('http://www.w3.org/2000/svg','circle');p1.setAttribute('r','6');p1.setAttribute('fill','#b9f3ef');svg.appendChild(p1);
+  const p2=document.createElementNS('http://www.w3.org/2000/svg','circle');p2.setAttribute('r','3.5');p2.setAttribute('fill','#19c7c0');svg.appendChild(p2);
+  tiles.push({el,ln,p1,p2,i});});})();
+const logRows=[...document.querySelectorAll('#log .lr')];
+const steps=[...document.querySelectorAll('.step')];
+const words=[...document.querySelectorAll('#words span')];
+function sceneAlpha(t,a,b,fin=.55,fout=.45){return Math.min(seg(t,a,a+fin),1-seg(t,b-fout,b));}
+let pendingImg=null;
+function render(t){
+  t=((t%D)+D)%D;
+  const w=2*Math.PI*t/D;
+  // atmosphere
+  $('haze').style.opacity=(.85+.15*Math.sin(w*3)).toFixed(3);
+  {let f=0;for(const c of CUTS){let d=Math.min(Math.abs(t-c),Math.abs(t-c-D),Math.abs(t-c+D));f=Math.max(f,1-cl(d/.45));}$('flash').style.opacity=(f*f*.10).toFixed(3);}
+  // tags rise
+  const tagIn=(sc,a)=>{const k=eo(seg(t,a+.15,a+.9));const tg=sc.querySelector('.tag');if(tg){tg.style.transform=`translateY(${(1-k)*26}px)`;tg.style.opacity=k;}};
+  // S1
+  {const a=0,b=5,al=sceneAlpha(t,a,b,.7);const s=$('s1');s.style.opacity=al;
+    if(al>0){tagIn(s,a);const u=t-a;
+      planes.forEach(o=>{const k=eo(seg(u,.25+o.i*.42,1.05+o.i*.42));const dy=(1-k)*-46;
+        o.g.setAttribute('transform',`translate(0,${dy.toFixed(1)})`);o.g.setAttribute('opacity',k);
+        o.lab.style.opacity=eo(seg(u,.6+o.i*.42,1.3+o.i*.42));o.lab.style.transform=`translateX(${(1-eo(seg(u,.6+o.i*.42,1.3+o.i*.42)))*22}px)`;
+        const hot=o.i===3?seg(u,2.4,3.2):0;o.poly.setAttribute('stroke',o.i===3?`rgba(95,224,218,${.5+.5*hot})`:'rgba(199,201,204,.36)');});
+      pulses.forEach(o=>{const f=((u*.42+o.ph)%1);const on=seg(u,2.0,2.6);
+        o.c.setAttribute('cx',o.x);o.c.setAttribute('cy',lerp(o.y0,o.y1,eio(f)));o.c.setAttribute('opacity',on*Math.sin(f*Math.PI));});
+      risers.forEach(l=>l.setAttribute('opacity',seg(u,1.7,2.4)*.55));
+    }}
+  // S2
+  {const a=5,b=10.5,al=sceneAlpha(t,a,b);const s=$('s2');s.style.opacity=al;
+    if(al>0){tagIn(s,a);const u=t-a;
+      steps.forEach((el,i)=>{const k=eo(seg(u,.3+i*.12,.9+i*.12));el.style.opacity=k;el.style.transform=`translateX(${(1-k)*40}px)`;});
+      // token travel: reach step i at times
+      const T=[.9,1.5,2.1,2.7,4.5]; const Y=[292,390,488,586,684];
+      let y=Y[0],prog=0;
+      if(u<T[0]){y=Y[0];prog=0}else if(u>=T[4]){y=Y[4];prog=1}else{for(let i=0;i<4;i++){if(u>=T[i]&&u<T[i+1]){let k=seg(u,T[i],T[i+1]);if(i===3){k=seg(u,4.0,4.5)}y=lerp(Y[i],Y[i+1],eio(k));prog=(y-Y[0])/(Y[4]-Y[0]);}}}
+      $('token').style.top=(y-9)+'px';$('token').style.opacity=seg(u,.7,.95);
+      $('railfill').style.transform=`scaleY(${prog})`;
+      steps.forEach((el,i)=>{const on=u>=T[i]-.05;el.style.borderColor=on?'rgba(25,199,192,.6)':'rgba(199,201,204,.16)';el.style.background=on?'rgba(13,34,34,.9)':'rgba(10,13,15,.82)';});
+      $('cnt').textContent=Math.round(lerp(96,141,eo(seg(u,.6,2.6))))+(u>4.5?1:0);
+      const ck=eo(seg(u,.5,1.1));$('count').style.opacity=ck;$('count').style.transform=`translateY(${(1-ck)*24}px)`;
+      const ak=eo(seg(u,2.75,3.25));$('appr').style.opacity=ak;$('appr').style.transform=`translateY(${(1-ak)*26}px) scale(${lerp(.96,1,ak)})`;
+      const clicked=u>=3.95;$('btns').style.display=clicked?'none':'flex';$('done').style.display=clicked?'flex':'none';
+      $('apprs').textContent=clicked?'Decision recorded with who, when and why.':'Above the auto-approve limit you set.';
+      $('yes').style.transform=(u>3.82&&u<3.95)?'scale(.95)':'none';
+      const cu=eio(seg(u,3.15,3.8));$('cursor').style.left=lerp(1570,1350,cu)+'px';$('cursor').style.top=lerp(790,638,cu)+'px';$('cursor').style.opacity=Math.min(seg(u,3.05,3.25),1-seg(u,4.2,4.5));
+    }}
+  // S3
+  {const a=10.5,b=15,al=sceneAlpha(t,a,b);const s=$('s3');s.style.opacity=al;
+    if(al>0){tagIn(s,a);const u=t-a;const cx=1196,cy=486;const rot=u*.1-.2;
+      const hk=eo(seg(u,.2,.9));$('hub').style.transform=`scale(${lerp(.6,1,hk)*(1+.035*Math.sin(u*4))})`;$('hub').style.opacity=hk;
+      tiles.forEach(o=>{const ang=rot+o.i*Math.PI/3;const k=eo(seg(u,.45+o.i*.1,1.15+o.i*.1));const R=lerp(130,292,k);
+        const x=cx+Math.cos(ang)*R*.86,y=cy+Math.sin(ang)*R*.84;
+        o.el.style.left=x+'px';o.el.style.top=y+'px';o.el.style.opacity=k;
+        o.ln.setAttribute('x1',cx);o.ln.setAttribute('y1',cy);o.ln.setAttribute('x2',x);o.ln.setAttribute('y2',y);o.ln.setAttribute('opacity',k);
+        const f=((u*.55+o.i*.37)%1);const g=((u*.55+o.i*.37+.5)%1);
+        o.p1.setAttribute('cx',lerp(x,cx,f));o.p1.setAttribute('cy',lerp(y,cy,f));o.p1.setAttribute('opacity',k*Math.sin(f*Math.PI));
+        o.p2.setAttribute('cx',lerp(cx,x,g));o.p2.setAttribute('cy',lerp(cy,y,g));o.p2.setAttribute('opacity',k*Math.sin(g*Math.PI)*.9);});
+    }}
+  // S4
+  {const a=15,b=20,al=sceneAlpha(t,a,b);const s=$('s4');s.style.opacity=al;
+    if(al>0){tagIn(s,a);const u=t-a;
+      const lk=eo(seg(u,.25,1.0));$('log').style.opacity=lk;$('log').style.transform=`translateY(${(1-lk)*26}px)`;
+      logRows.forEach((r,i)=>{const k=eo(seg(u,.9+i*.45,1.25+i*.45));r.style.opacity=k;r.style.transform=`translateX(${(1-k)*-14}px)`;});
+      ['g1','g2','g3'].forEach((id,i)=>{const k=eo(seg(u,.5+i*.22,1.2+i*.22));$(id).style.opacity=k;$(id).style.transform=`translateX(${(1-k)*34}px)`;});
+      $('spend').style.width=(lerp(8,58,eio(seg(u,1.0,4.2)))).toFixed(1)+'%';
+    }}
+  // S5
+  {const a=20,b=24,al=sceneAlpha(t,a,b,.6,.6);const s=$('s5');s.style.opacity=al;
+    if(al>0){const u=t-a;const mk=eo(seg(u,.2,1.3));$('mark').style.opacity=mk;$('mark').style.transform=`scale(${lerp(.94,1.02,seg(u,0,4))})`;$('mark').style.filter=`blur(${(1-mk)*14}px)`;
+      $('markline').style.transform=`scaleX(${eo(seg(u,.7,1.7))})`;
+      const wk=eo(seg(u,1.0,1.7));$('what').style.opacity=wk;$('what').style.letterSpacing=lerp(.6,.34,wk)+'em';
+      words.forEach((el,i)=>{const k=eo(seg(u,1.5+i*.18,2.0+i*.18));el.style.opacity=k;el.style.transform=`translateY(${(1-k)*10}px)`;});
+    }}
+}
+window.setT=async t=>{pendingImg=null;render(t);if(pendingImg)await pendingImg;await new Promise(r=>requestAnimationFrame(()=>r()));return true;};
+document.fonts.ready.then(()=>{render(0);window.__ready=true;});
+</script>
+</body>
+</html>

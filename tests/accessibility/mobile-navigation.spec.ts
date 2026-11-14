@@ -74,12 +74,16 @@ test.describe("Mobile Navigation Accessibility", () => {
     const solutionsTrigger = nav.getByRole("button", { name: /^Services$/ });
     await solutionsTrigger.click();
     const solutions = [
-      ["Digital & Web Systems", "/solutions/digital-web-systems"],
+      ["AI Strategy & Roadmap", "/solutions/ai-strategy-advisory"],
       ["Workflow Automation", "/solutions/workflow-automation"],
-      ["Internal AI Assistants", "/solutions/internal-ai-assistants"],
-      ["Custom AI Product Development", "/solutions/custom-ai-product-development"],
+      ["AI Agents & Assistants", "/solutions/internal-ai-assistants"],
+      ["AI Systems Integration", "/solutions/ai-integrations"],
+      ["AI Products & Custom Software", "/solutions/custom-ai-product-development"],
+      ["Data & Knowledge Systems", "/solutions/data-knowledge-systems"],
       ["AI Governance & Cost Control", "/solutions/ai-governance-cost-control"],
-      ["Managed Operations", "/managed-operations"],
+      ["Websites & AI Search Visibility", "/solutions/digital-web-systems"],
+      ["AI Training & Enablement", "/solutions/ai-training-enablement"],
+      ["Managed AI Operations", "/managed-operations"],
       ["How We Work", "/engagement-model"],
     ];
     for (const [label, href] of solutions) {

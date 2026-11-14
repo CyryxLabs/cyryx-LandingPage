@@ -25,8 +25,7 @@ test.describe("footer navigation model", () => {
     const expectedProducts = [
       { label: "All products", href: "/products" },
       { label: "AEXOS", href: "/products/aexos" },
-      { label: "Onyx", href: "/products#onyx" },
-      { label: "ASTRA CRM", href: "/products#astra" },
+      { label: "Onyx", href: "/products/onyx" },
     ];
 
     for (const item of expectedProducts) {
@@ -44,12 +43,16 @@ test.describe("footer navigation model", () => {
     await expect(solutionsGroup).toBeVisible();
 
     const expectedSolutions = [
-      { label: "Digital & Web Systems", href: "/solutions/digital-web-systems" },
+      { label: "AI Strategy & Roadmap", href: "/solutions/ai-strategy-advisory" },
       { label: "Workflow Automation", href: "/solutions/workflow-automation" },
-      { label: "Internal AI Assistants", href: "/solutions/internal-ai-assistants" },
-      { label: "Custom AI Product Development", href: "/solutions/custom-ai-product-development" },
+      { label: "AI Agents & Assistants", href: "/solutions/internal-ai-assistants" },
+      { label: "AI Systems Integration", href: "/solutions/ai-integrations" },
+      { label: "AI Products & Custom Software", href: "/solutions/custom-ai-product-development" },
+      { label: "Data & Knowledge Systems", href: "/solutions/data-knowledge-systems" },
       { label: "AI Governance & Cost Control", href: "/solutions/ai-governance-cost-control" },
-      { label: "Managed Operations", href: "/managed-operations" },
+      { label: "Websites & AI Search Visibility", href: "/solutions/digital-web-systems" },
+      { label: "AI Training & Enablement", href: "/solutions/ai-training-enablement" },
+      { label: "Managed AI Operations", href: "/managed-operations" },
       { label: "How We Work", href: "/engagement-model" },
     ];
 

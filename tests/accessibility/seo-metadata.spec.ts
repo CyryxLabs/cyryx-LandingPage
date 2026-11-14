@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-const HOME_TITLE = "Cyryx Labs — Websites, Software & AI | US & Latin America";
+const HOME_TITLE = "Cyryx Labs — AI Systems, Automation & Integration";
 const HOME_DESCRIPTION =
-  "Websites, automations, custom software and AI for companies of every size. One accountable team, fixed timelines, and a human in control of every AI decision.";
+  "Cyryx Labs builds AI systems, workflow automations and integrations for US companies, and makes its own AI products, Onyx and AEXOS. A human stays in control.";
 
 const EXPECTED = {
   title: HOME_TITLE,
@@ -27,14 +27,14 @@ test("Landing page SEO metadata stays synchronized with Cyryx Labs copy", async 
   expect(await meta('meta[property="og:description"]')).toBe(EXPECTED.ogDescription);
   expect(await meta('meta[property="og:type"]')).toBe("website");
   expect(await meta('meta[property="og:url"]')).toMatch(EXPECTED.ogUrl);
-  expect(await meta('meta[property="og:image"]')).toMatch(/\/cyryx-og\.png\?v=20260723-1$/);
+  expect(await meta('meta[property="og:image"]')).toMatch(/\/cyryx-og\.png\?v=20261113-1$/);
   expect(await meta('meta[property="og:image:secure_url"]')).toMatch(
-    /\/cyryx-og\.png\?v=20260723-1$/,
+    /\/cyryx-og\.png\?v=20261113-1$/,
   );
   expect(await meta('meta[name="twitter:card"]')).toBe("summary_large_image");
   expect(await meta('meta[name="twitter:title"]')).toBe(EXPECTED.twitterTitle);
   expect(await meta('meta[name="twitter:description"]')).toBe(EXPECTED.twitterDescription);
-  expect(await meta('meta[name="twitter:image"]')).toMatch(/\/cyryx-og\.png\?v=20260723-1$/);
+  expect(await meta('meta[name="twitter:image"]')).toMatch(/\/cyryx-og\.png\?v=20261113-1$/);
   expect(await link('link[rel="icon"][sizes="any"]')).toBe("/favicon.ico?v=20260723-1");
   expect(await link('link[rel="icon"][sizes="32x32"]')).toBe("/favicon-32x32.png?v=20260723-1");
   expect(await link('link[rel="apple-touch-icon"]')).toBe("/apple-touch-icon.png?v=20260723-1");

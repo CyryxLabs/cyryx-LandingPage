@@ -53,10 +53,10 @@ export const START_CONTEXT_SOURCE_LABELS: Record<StartContextSource, string> = {
 
 export const START_CONTEXT_INTENT_LABELS: Record<StartContextIntent, string> = {
   "operating-capability": "Owned operating capability",
-  "strategy-advisory": "AI Strategy & Advisory",
-  "digital-system": "Digital & Web Systems",
-  "workflow-automation": "Workflow Automation",
-  "internal-assistant": "Internal AI Assistant",
+  "strategy-advisory": "AI Strategy, Roadmap & Training",
+  "digital-system": "Websites & AI Search Visibility",
+  "workflow-automation": "Workflow Automation & Integration",
+  "internal-assistant": "AI Agents, Assistants & Knowledge",
   "custom-ai-product": "Custom AI Product Development",
   "governance-control": "AI Governance & Cost Control",
   "managed-operations": "Managed Operations",

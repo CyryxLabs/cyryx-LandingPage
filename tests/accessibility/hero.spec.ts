@@ -267,11 +267,11 @@ test("Forced-colors keeps Hero text and focus indicators system-readable", async
   await page.emulateMedia({ forcedColors: "active" });
   await page.reload({ waitUntil: "networkidle" });
   const headlineColor = await page
-    .locator(".cx-hero-title-line")
+    .locator(".cy-hero__l")
     .first()
     .evaluate((el) => getComputedStyle(el).color);
   const textFill = await page
-    .locator(".cx-hero-title-line")
+    .locator(".cy-hero__l")
     .first()
     .evaluate((el) => getComputedStyle(el).webkitTextFillColor);
   expect(headlineColor).not.toBe("rgba(0, 0, 0, 0)");

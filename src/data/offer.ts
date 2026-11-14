@@ -76,7 +76,7 @@ export const SERVICE_STAGES: readonly ServiceStage[] = [
   },
 ];
 
-export type ProductStage = "Available" | "Waitlist" | "In daily use";
+export type ProductStage = "Available" | "Free beta" | "In daily use";
 
 export type CyryxProduct = {
   readonly id: "aexos" | "onyx" | "astra";
@@ -95,8 +95,8 @@ export type CyryxProduct = {
 };
 
 /**
- * Stages are the real ones, checked 2026-10-19: AEXOS Core is published on npm;
- * Onyx (onyx.cyryxlabs.com) is pre-launch with a waitlist; ASTRA runs Cyryx
+ * Stages are the real ones, checked 2026-11-13: AEXOS Core is published on npm;
+ * Onyx (onyx.cyryxlabs.com) is a free beta for Windows; ASTRA runs Cyryx
  * Labs itself and is not sold as a packaged product.
  */
 export const CYRYX_PRODUCTS: readonly CyryxProduct[] = [
@@ -123,18 +123,18 @@ export const CYRYX_PRODUCTS: readonly CyryxProduct[] = [
   {
     id: "onyx",
     name: "Onyx",
-    category: "A personal AI assistant",
-    stage: "Waitlist",
-    stageNote: "Pre-launch · join the waitlist",
+    category: "An AI coworker for Windows",
+    stage: "Free beta",
+    stageNote: "Free beta · Windows 10 and 11",
     summary:
-      "An AI assistant that works for one owner. You talk to it; it remembers what matters and helps with your inbox and your work on the computer.",
+      "An AI coworker that lives on your Windows PC. It talks with you, works your inbox, does research, operates your apps and remembers what it learns in a vault you own.",
     points: [
-      "Built for one person, not a whole team",
-      "Speaks and keeps a memory of your context",
-      "Helps manage your inbox and computer work",
+      "Runs on your own PC, for one owner",
+      "Live voice and a memory you own",
+      "Asks before it acts outside your machine",
     ],
     primary: {
-      label: "Join the Onyx waitlist",
+      label: "Get the free beta",
       href: "https://onyx.cyryxlabs.com/",
       external: true,
     },
