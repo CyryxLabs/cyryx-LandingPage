@@ -110,6 +110,7 @@ export function useCyMotion() {
       }
     };
 
+    const progressBar = document.querySelector<HTMLElement>(".cy-progress");
     let frame = 0;
     let lastPass = window.scrollY;
     const revealPassed = () => {
@@ -126,7 +127,11 @@ export function useCyMotion() {
       frame = 0;
       const viewport = window.innerHeight;
       const max = root.scrollHeight - viewport;
-      root.style.setProperty("--cy-scroll", max > 0 ? String(window.scrollY / max) : "0");
+      // Written straight onto the bar. As a custom property on the root it made the
+      // browser recompute the style of every element on the page on every scroll frame.
+      if (progressBar) {
+        progressBar.style.transform = `scaleX(${max > 0 ? (window.scrollY / max).toFixed(4) : "0"})`;
+      }
 
       for (const scene of scenes) {
         const rect = scene.getBoundingClientRect();
@@ -203,17 +208,14 @@ export function useCyMotion() {
     };
     document.addEventListener("focusin", onFocus);
 
-    // Pointer: ambient light, spotlight borders and magnetic primary buttons.
+    // Pointer: spotlight borders and magnetic primary buttons.
     let pointerFrame = 0;
     let pointerEvent: PointerEvent | null = null;
     let magnet: HTMLElement | null = null;
-    const light = document.querySelector<HTMLElement>(".cy-light");
     const applyPointer = () => {
       pointerFrame = 0;
       const event = pointerEvent;
       if (!event) return;
-      light?.style.setProperty("--lx", `${event.clientX}px`);
-      light?.style.setProperty("--ly", `${event.clientY}px`);
       const target = event.target instanceof Element ? event.target : null;
       const surface = target?.closest<HTMLElement>(".cy-spot");
       if (surface) {
@@ -254,7 +256,7 @@ export function useCyMotion() {
       document.removeEventListener("pointermove", onMove);
       if (frame) cancelAnimationFrame(frame);
       if (pointerFrame) cancelAnimationFrame(pointerFrame);
-      root.style.removeProperty("--cy-scroll");
+      if (progressBar) progressBar.style.transform = "";
     };
   }, [pathname]);
 }

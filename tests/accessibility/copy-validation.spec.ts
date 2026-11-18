@@ -186,7 +186,7 @@ test.describe("Hero — plain-English value proposition", () => {
     await expect(services.getByRole("heading", { level: 2 })).toHaveText(
       "Ten services. One for each thing in the way.",
     );
-    await expect(services.locator("a.cy-card")).toHaveCount(10);
+    await expect(services.locator("a.cy-index__row")).toHaveCount(10);
     for (const href of [
       "/solutions/ai-strategy-advisory",
       "/solutions/workflow-automation",
@@ -199,7 +199,7 @@ test.describe("Hero — plain-English value proposition", () => {
       "/solutions/ai-training-enablement",
       "/managed-operations",
     ]) {
-      await expect(services.locator(`a.cy-card[href="${href}"]`)).toHaveCount(1);
+      await expect(services.locator(`a.cy-index__row[href="${href}"]`)).toHaveCount(1);
     }
     // Prices stay off the site until the founder publishes them.
     await expect(page.locator("main")).not.toContainText(/\$\d/);

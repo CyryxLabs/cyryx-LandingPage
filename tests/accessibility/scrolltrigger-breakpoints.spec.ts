@@ -55,7 +55,7 @@ for (const vp of VIEWPORTS) {
 
     if (vp.name !== "desktop") {
       // The six offer rows must end fully readable on phones and tablets.
-      const controls = page.locator("#services a.cy-card");
+      const controls = page.locator("#services a.cy-index__row");
       await expect(controls).toHaveCount(10);
       await controls.last().scrollIntoViewIfNeeded();
       await expect

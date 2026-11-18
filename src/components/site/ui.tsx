@@ -56,8 +56,10 @@ export function Lines({ lines, auto = false }: { lines: readonly ReactNode[]; au
 }
 
 /**
- * Splits a heading into words that rise out of a blur one after another.
+ * Splits a heading into words that rise one after another.
  * `auto` animates on load with CSS only; otherwise the motion hook reveals it.
+ * Words between asterisks ("Three ways it works *for you.*") are set in the
+ * italic serif accent; the asterisks are never shown.
  */
 export function Words({
   text,
@@ -68,12 +70,26 @@ export function Words({
   auto?: boolean;
   start?: number;
 }) {
-  const words = text.split(" ");
+  let accent = false;
+  const words = text.split(" ").map((raw) => {
+    let word = raw;
+    const opens = word.startsWith("*");
+    if (opens) word = word.slice(1);
+    const closes = word.endsWith("*");
+    if (closes) word = word.slice(0, -1);
+    if (opens) accent = true;
+    const item = { word, accent };
+    if (closes) accent = false;
+    return item;
+  });
   return (
     <span className={auto ? "cy-words cy-words--auto" : "cy-words"}>
-      {words.map((word, index) => (
+      {words.map(({ word, accent: italic }, index) => (
         <span key={`${word}-${index}`}>
-          <span className="cy-word" style={{ "--cy-i": start + index } as React.CSSProperties}>
+          <span
+            className={italic ? "cy-word cy-word--it" : "cy-word"}
+            style={{ "--cy-i": start + index } as React.CSSProperties}
+          >
             <span>{word}</span>
           </span>
           {index < words.length - 1 ? " " : ""}
@@ -283,7 +299,7 @@ export function PageHero({
 }
 
 export function FinalCta({
-  title = "Start with a 20\u2011minute conversation.",
+  title = "Start with a *20\u2011minute* conversation.",
   lead = "Tell us what you want to change. You get an honest answer on whether AI is the right tool, and a fixed written plan if it is.",
   source,
   intent,

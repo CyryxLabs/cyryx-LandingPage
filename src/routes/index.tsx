@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SiteShell } from "@/components/site/SiteShell";
-import { HeroFilm } from "@/components/site/HeroFilm";
+import { HeroStill, HeroStrip, useHeroVideo } from "@/components/site/HeroVideo";
+import { LightField } from "@/components/site/LightField";
 import { AexosShowcase, OnyxShowcase } from "@/components/site/ProductShowcase";
 import { WorkflowConsole } from "@/components/site/WorkflowConsole";
 import { Scorecard } from "@/components/site/Scorecard";
@@ -10,7 +11,6 @@ import {
   Faq,
   FinalCta,
   SectionHead,
-  ServiceIcon,
   SourceNote,
   StartButton,
   Words,
@@ -18,7 +18,7 @@ import {
 import { ADOPTION_GAP, MARKET_REVIEWED, SEGMENTS } from "@/data/market";
 import { SERVICES } from "@/data/services";
 import { PUBLICATIONS } from "@/data/publications";
-import { GUARDRAILS, HOME_FAQ, MARQUEE, PROCESS_STEPS } from "@/data/home";
+import { GUARDRAILS, HOME_FAQ, PROCESS_STEPS } from "@/data/home";
 import { absoluteSiteUrl, SITE_URL } from "@/lib/site-url";
 import { buildStartProjectHref } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
@@ -58,18 +58,20 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: HOME_URL },
-      // First frame of the hero film: the largest element on the first screen.
+      // The hero picture is the largest element on the first screen.
       {
         rel: "preload",
         as: "image",
-        href: "/media/hero-film-poster.webp",
+        href: "/media/hero-touch-1920.webp",
+        imageSrcSet: "/media/hero-touch-1280.webp 1280w, /media/hero-touch-1920.webp 1920w",
+        imageSizes: "114vw",
         media: "(min-width: 900px)",
         fetchPriority: "high",
       },
       {
         rel: "preload",
         as: "image",
-        href: "/media/hero-film-poster-960.webp",
+        href: "/media/hero-touch-tall.webp",
         media: "(max-width: 899px)",
         fetchPriority: "high",
       },
@@ -140,8 +142,9 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   return (
     <SiteShell source="home">
+      <LightField />
       <Hero />
-      <Marquee />
+      <Assurances />
       <Pillars />
       <Gap />
       <Demo />
@@ -159,62 +162,72 @@ function HomePage() {
 }
 
 function Hero() {
+  const hostRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useHeroVideo(hostRef, videoRef);
   return (
-    <section id="top" className="cy-hero" data-hero aria-labelledby="hero-heading">
-      <div className="cy-hero__veil" aria-hidden="true" />
-      <div className="cy-hero__ignite" aria-hidden="true" />
-      <div className="cy-container cy-hero__stage">
-        <p className="cy-eyebrow cy-in">Cyryx Labs · AI technology company</p>
-        <h1 id="hero-heading" className="cy-hero__title">
-          <span className="cy-hero__l">
-            <Words auto text="We build AI systems" />
-          </span>{" "}
-          <span className="cy-hero__l">
-            <Words auto start={4} text="that" />{" "}
-            <em>
-              <Words auto start={5} text="do real work." />
-            </em>
-          </span>
-        </h1>
-        <p className="cy-hero__sub cy-in" style={{ "--cy-i": 9 } as React.CSSProperties}>
-          We design, build and operate AI systems, workflow automation and system integration for
-          companies across the United States, with human approval, audit logs and cost limits built
-          in.
-        </p>
-        <div className="cy-actions cy-in" style={{ "--cy-i": 11 } as React.CSSProperties}>
-          <StartButton section="hero" source="home" />
-          <a
-            href="#services"
-            data-cta="secondary"
-            className="cy-btn cy-btn--ghost"
-            onClick={() => trackCta({ cta: "see_delivery", section: "hero", href: "#services" })}
-          >
-            See what we build
-          </a>
+    <section
+      id="top"
+      ref={hostRef}
+      className="cy-cmd cy-hv"
+      data-hero
+      aria-labelledby="hero-heading"
+    >
+      <HeroStill videoRef={videoRef} />
+      <div className="cy-cmd__screen">
+        <div className="cy-container cy-cmd__stage">
+          <div className="cy-cmd__head">
+            <p className="cy-cmd__eyebrow cy-pill cy-in">Cyryx Labs · AI technology company</p>
+            <h1 id="hero-heading" className="cy-cmd__title">
+              <span className="cy-hero__l">
+                <Words auto text="We build AI systems" />
+              </span>{" "}
+              <span className="cy-hero__l">
+                <Words auto start={4} text="that do *real work.*" />
+              </span>
+            </h1>
+          </div>
+          <div className="cy-cmd__side">
+            <p className="cy-cmd__sub cy-in" style={{ "--cy-i": 9 } as React.CSSProperties}>
+              We design, build and operate AI systems, workflow automation and system integration
+              for companies across the United States, with human approval, audit logs and cost
+              limits built in.
+            </p>
+            <div className="cy-actions cy-in" style={{ "--cy-i": 11 } as React.CSSProperties}>
+              <StartButton section="hero" source="home" />
+              <a
+                href="#services"
+                data-cta="secondary"
+                className="cy-cmd__more"
+                onClick={() =>
+                  trackCta({ cta: "see_delivery", section: "hero", href: "#services" })
+                }
+              >
+                <span>See what we build</span>
+                <i aria-hidden="true">→</i>
+              </a>
+            </div>
+          </div>
         </div>
-        <div className="cy-hero__meta cy-in" style={{ "--cy-i": 13 } as React.CSSProperties}>
-          <ul className="cy-trust">
-            <li>Fixed scope and quote in writing</li>
-            <li>Human approval on what matters</li>
-            <li>You own the code and data</li>
-          </ul>
+      </div>
+      <div className="cy-cmd__strip cy-in" style={{ "--cy-i": 13 } as React.CSSProperties}>
+        <div className="cy-container cy-cmd__striprow">
+          <HeroStrip />
           <AskAssistant source="hero" label="Ask the Cyryx assistant" />
         </div>
       </div>
-      <HeroFilm />
     </section>
   );
 }
 
-function Marquee() {
-  const items = [...MARQUEE, ...MARQUEE];
+function Assurances() {
   return (
-    <div className="cy-marquee" aria-hidden="true">
-      <div className="cy-marquee__track">
-        {items.map((item, index) => (
-          <span key={`${item}-${index}`} data-t={item} />
-        ))}
-      </div>
+    <div className="cy-assure">
+      <ul className="cy-container cy-assure__list">
+        <li>Fixed scope and quote in writing</li>
+        <li>Human approval on what matters</li>
+        <li>You own the code and data</li>
+      </ul>
     </div>
   );
 }
@@ -248,38 +261,59 @@ const PILLARS = [
 
 function Pillars() {
   return (
-    <section id="what-we-do" className="cy-section cy-pillars" aria-labelledby="pillars-heading">
-      <div className="cy-container">
-        <SectionHead
-          id="pillars-heading"
-          eyebrow="What Cyryx Labs does"
-          title="One AI company. Three ways it works for you."
-          lead="Cyryx Labs is an applied AI company based in Florida. We build AI for other companies, ship products of our own, and publish the research behind both."
-          split
+    <section id="what-we-do" className="cy-ways" aria-labelledby="pillars-heading">
+      <div className="cy-ways__media" aria-hidden="true">
+        <img
+          src="/media/network-aerial.webp"
+          alt=""
+          width={1600}
+          height={900}
+          loading="lazy"
+          decoding="async"
         />
-        <ul className="cy-pillars__grid">
-          {PILLARS.map((pillar, index) => (
-            <li key={pillar.n} data-cy-reveal style={{ "--cy-i": index } as React.CSSProperties}>
-              <a
-                href={pillar.href}
-                className="cy-pillar cy-spot"
-                onClick={() =>
-                  trackCta({ cta: "see_delivery", section: "paths", href: pillar.href })
-                }
-              >
-                <span className="cy-pillar__n" aria-hidden="true">
-                  {pillar.n}
-                </span>
-                <span className="cy-pillar__kind">{pillar.kind}</span>
-                <h3 className="cy-h3">{pillar.title}</h3>
-                <p>{pillar.body}</p>
-                <span className="cy-card__go">
-                  {pillar.cta} <span aria-hidden="true">→</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
+      </div>
+      <div className="cy-container cy-ways__inner">
+        <div className="cy-ways__col">
+          <div className="cy-ways__head" data-cy-reveal>
+            <p className="cy-eyebrow">What Cyryx Labs does</p>
+            <h2 id="pillars-heading" className="cy-ways__title">
+              One AI company.{" "}
+              <span>
+                Three ways it works <em className="cy-it">for you.</em>
+              </span>
+            </h2>
+            <p className="cy-ways__lead">
+              Cyryx Labs is an applied AI company based in Florida. We build AI for other companies,
+              ship products of our own, and publish the research behind both.
+            </p>
+          </div>
+          <ul className="cy-ways__list">
+            {PILLARS.map((pillar, index) => (
+              <li key={pillar.n} data-cy-reveal style={{ "--cy-i": index } as React.CSSProperties}>
+                <a
+                  href={pillar.href}
+                  className="cy-ways__row"
+                  onClick={() =>
+                    trackCta({ cta: "see_delivery", section: "paths", href: pillar.href })
+                  }
+                >
+                  <span className="cy-ways__n" aria-hidden="true">
+                    {pillar.n}
+                  </span>
+                  <div className="cy-ways__main">
+                    <span className="cy-ways__kind">{pillar.kind}</span>
+                    <h3 className="cy-ways__t">{pillar.title}</h3>
+                    <span className="cy-ways__d">{pillar.body}</span>
+                    <span className="cy-ways__cta">{pillar.cta}</span>
+                  </div>
+                  <span className="cy-ways__go" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
@@ -287,22 +321,17 @@ function Pillars() {
 
 function Gap() {
   return (
-    <section
-      id="market"
-      className="cy-scene cy-scene--market"
-      data-cy-scene="pin"
-      aria-labelledby="gap-heading"
-    >
+    <section id="market" className="cy-section cy-scene--market" aria-labelledby="gap-heading">
       <div className="cy-scene__stage">
         <div className="cy-scene__glow" aria-hidden="true" />
         <div className="cy-container cy-scene__inner">
-          <p className="cy-eyebrow" data-cy-at="0">
+          <p className="cy-eyebrow" data-cy-reveal>
             The state of AI in US business, 2026
           </p>
           <h2 id="gap-heading" className="cy-mega">
-            <span data-cy-at="0.02">Almost everyone has AI.</span>{" "}
-            <span data-cy-at="0.2" className="cy-mega__accent">
-              Very few have it working.
+            <span data-cy-reveal>Almost everyone has AI.</span>{" "}
+            <span data-cy-reveal className="cy-mega__accent">
+              Very few have it <em className="cy-it">working.</em>
             </span>
           </h2>
           <div className="cy-stats">
@@ -310,7 +339,8 @@ function Gap() {
               <article
                 key={item.id}
                 className="cy-stat"
-                data-cy-at={(0.38 + index * 0.15).toFixed(2)}
+                data-cy-reveal
+                style={{ "--cy-i": index } as React.CSSProperties}
               >
                 <p className="cy-product__cat">{item.segment}</p>
                 <div className="cy-stat__pair">
@@ -334,7 +364,7 @@ function Gap() {
               </article>
             ))}
           </div>
-          <p className="cy-lead cy-scene__close" data-cy-at="0.86">
+          <p className="cy-lead cy-scene__close" data-cy-reveal>
             The tools are everywhere. What is missing is the connection to real work: the data, the
             systems, the rules and the people. <strong>That gap is what we close.</strong>
           </p>
@@ -357,7 +387,7 @@ function Demo() {
           <SectionHead
             id="demo-heading"
             eyebrow="See it work"
-            title="One request in. Five steps. Nothing retyped."
+            title="One request in. Five steps. *Nothing retyped.*"
             lead="An example of the kind of workflow we build: your systems connected, AI on the reading, and a person approving what matters."
           />
         </div>
@@ -380,7 +410,7 @@ function Audiences() {
         <SectionHead
           id="who-heading"
           eyebrow="Who we work with"
-          title="Pick your size. See what is in the way."
+          title="Pick your size. See what is *in the way.*"
           lead="The obstacles change as a company grows. So does the right first project."
           split
         />
@@ -471,65 +501,53 @@ function Audiences() {
 
 function Services() {
   return (
-    <section
-      id="services"
-      className="cy-scene cy-rail"
-      data-cy-scene="rail"
-      style={{ "--n": SERVICES.length + 1 } as React.CSSProperties}
-      aria-labelledby="services-heading"
-    >
-      <div className="cy-scene__stage cy-rail__stage">
-        <div className="cy-container cy-rail__head">
-          <SectionHead
-            id="services-heading"
-            eyebrow="What we build"
-            title="Ten services. One for each thing in the way."
-            lead="Every service answers a problem US companies report in 2026. Start with one; they are built to connect."
-            split
-          />
-        </div>
-        <div className="cy-rail__track" data-cy-track>
+    <section id="services" className="cy-section cy-index" aria-labelledby="services-heading">
+      <div className="cy-container">
+        <SectionHead
+          id="services-heading"
+          eyebrow="What we build"
+          title="Ten services. *One for each* thing in the way."
+          lead="Every service answers a problem US companies report in 2026. Start with one; they are built to connect."
+          split
+        />
+        <ul className="cy-index__list">
           {SERVICES.map((service, index) => (
-            <Link
+            <li
               key={service.slug}
-              to={service.path}
-              className="cy-card cy-spot cy-rail__card"
-              onClick={() =>
-                trackCta({ cta: "see_delivery", section: "solutions", href: service.path })
-              }
+              data-cy-reveal
+              style={{ "--cy-i": index % 2 } as React.CSSProperties}
             >
-              <span className="cy-rail__n" aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div
-                style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+              <Link
+                to={service.path}
+                className="cy-index__row"
+                onClick={() =>
+                  trackCta({ cta: "see_delivery", section: "solutions", href: service.path })
+                }
               >
-                <ServiceIcon name={service.icon} />
-                <span className="cy-card__n">{service.stage}</span>
-              </div>
-              <h3 className="cy-h3">{service.name}</h3>
-              <p>{service.cardLine}</p>
-              <p className="cy-card__pain">{service.cardPain}</p>
-              <span className="cy-card__go">
-                Learn more <span aria-hidden="true">→</span>
-              </span>
-            </Link>
+                <span className="cy-index__n" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="cy-index__main">
+                  <h3 className="cy-index__t">{service.name}</h3>
+                  <span className="cy-index__d">{service.cardLine}</span>
+                </span>
+                <span className="cy-index__meta">{service.stage}</span>
+                <span className="cy-index__go" aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            </li>
           ))}
-          <div className="cy-card cy-rail__card cy-rail__card--ask">
+        </ul>
+        <div className="cy-index__ask" data-cy-reveal>
+          <div>
             <h3 className="cy-h3">Not sure which one you need?</h3>
             <p>
               That is what the fit check is for. Twenty minutes, free, and you leave with a clear
               next step.
             </p>
-            <div>
-              <StartButton section="solutions" source="home" small />
-            </div>
           </div>
-        </div>
-        <div className="cy-container">
-          <div className="cy-rail__meter" aria-hidden="true">
-            <i />
-          </div>
+          <StartButton section="solutions" source="home" small />
         </div>
       </div>
     </section>
@@ -549,7 +567,7 @@ function Process() {
             How it works
           </p>
           <h2 id="process-heading" className="cy-h2" data-cy-reveal>
-            You see the plan and the price before you commit.
+            You see the plan and the price <em className="cy-it">before you commit.</em>
           </h2>
           <p className="cy-lead" data-cy-reveal>
             No open-ended retainers and no surprise invoices. Every project runs the same four
@@ -591,7 +609,7 @@ function Control() {
         <SectionHead
           id="control-heading"
           eyebrow="AI within limits you set"
-          title="Powerful enough to do the work. Controlled enough to trust."
+          title="Powerful enough to do the work. *Controlled enough to trust.*"
           lead="Data privacy and security is the concern businesses raise first about AI. So control is built into every system we deliver, not added afterwards."
           split
         />
@@ -621,7 +639,7 @@ function Products() {
         <SectionHead
           id="products-heading"
           eyebrow="Our own products"
-          title="Two AI products you can use today."
+          title="Two AI products you can use *today.*"
           lead="The engineering that goes into client work also ships in products we design, run and answer for ourselves. Both are live: open each one to see it."
           split
         />
@@ -644,7 +662,7 @@ function Research() {
         <SectionHead
           id="research-heading"
           eyebrow="Applied AI Lab"
-          title="Research we publish under our own name."
+          title="Research we publish *under our own name.*"
           lead="Our lab studies how AI systems should be controlled, measured and trusted, and publishes what it finds as open, citable work."
           split
         />
@@ -709,7 +727,7 @@ function Readiness() {
             Free · 60 seconds
           </p>
           <h2 id="readiness-heading" className="cy-h2" data-cy-reveal>
-            How ready is your company for AI?
+            How ready is your company <em className="cy-it">for AI?</em>
           </h2>
           <p className="cy-lead" data-cy-reveal>
             Five questions. You get a score and a recommended first step straight away, with no
@@ -736,7 +754,7 @@ function Questions() {
             Questions
           </p>
           <h2 id="faq-heading" className="cy-h2" data-cy-reveal>
-            What companies ask us first.
+            What companies <em className="cy-it">ask us first.</em>
           </h2>
           <div data-cy-reveal>
             <AskAssistant source="final_cta" label="Ask the assistant something else" />
