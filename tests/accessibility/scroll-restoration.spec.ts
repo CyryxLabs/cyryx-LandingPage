@@ -39,7 +39,7 @@ test.describe("Initial scroll restoration", () => {
 
     await page
       .locator('footer[role="contentinfo"]')
-      .getByRole("link", { name: "Get a free fit check", exact: true })
+      .getByRole("link", { name: "Discuss your project", exact: true })
       .click();
 
     await expect(page).toHaveURL(/\/start$/);

@@ -65,7 +65,7 @@ const LEVELS: readonly Level[] = [
   {
     name: "Getting started",
     summary:
-      "You are early, which is a good place to be: nothing to untangle. One well-chosen automation and some basic rules will show a return quickly.",
+      "You are early, which is a good place to be: nothing to untangle. One well-chosen automation and some basic rules are a sensible first step.",
     next: "Start with one automation",
     href: "/solutions/workflow-automation",
     projectType: "Workflow Automation",

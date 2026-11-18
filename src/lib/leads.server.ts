@@ -147,7 +147,12 @@ export async function draftFirstReply(
   return sanitizeReply(text);
 }
 
-const ALLOWED_LINK_HOSTS = new Set(["cyryxlabs.com", "www.cyryxlabs.com", "aexos.cyryxlabs.com"]);
+const ALLOWED_LINK_HOSTS = new Set([
+  "cyryxlabs.com",
+  "www.cyryxlabs.com",
+  "onyx.cyryxlabs.com",
+  "www.npmjs.com",
+]);
 
 function keepAllowedUrl(raw: string): string {
   const trailing = raw.match(/[.,;:!?)]+$/)?.[0] ?? "";

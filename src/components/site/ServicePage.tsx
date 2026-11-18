@@ -8,7 +8,6 @@ import {
   buildWebPageJsonLd,
 } from "@/components/cyryx/seo/seo";
 import { MARKET_REVIEWED } from "@/data/market";
-import { GUARDRAILS } from "@/data/home";
 import { SiteShell } from "./SiteShell";
 import { Faq, FinalCta, PageHero, SectionHead, ServiceIcon, SourceNote, StartButton } from "./ui";
 
@@ -64,12 +63,8 @@ export function ServicePage({ service }: { service: Service }) {
               <dd>{service.startsWith}</dd>
             </div>
             <div className="cy-kv">
-              <dt>Timeline</dt>
-              <dd>{service.timeline}</dd>
-            </div>
-            <div className="cy-kv">
-              <dt>Price</dt>
-              <dd>Fixed, agreed in writing before work starts</dd>
+              <dt>Scope and timeline</dt>
+              <dd>A written scope you approve before work starts. {service.timeline}</dd>
             </div>
           </dl>
         }
@@ -135,7 +130,7 @@ export function ServicePage({ service }: { service: Service }) {
               What you get
             </p>
             <h2 id="deliver-heading" className="cy-h2" data-cy-reveal>
-              Delivered, tested and yours.
+              Delivered and tested.
             </h2>
             <p className="cy-lead" data-cy-reveal>
               Each item below is written into your plan and checked off before the project is called
@@ -175,9 +170,8 @@ export function ServicePage({ service }: { service: Service }) {
             <div className="cy-guarantee" data-cy-reveal>
               <strong>The acceptance checklist</strong>
               <p>
-                The project is finished when it passes the checklist we agreed in writing, not
-                before. We don&apos;t guarantee traffic, rankings or revenue. We guarantee what we
-                agreed to build.
+                A project is done when it passes the acceptance checklist we agree on, not before.
+                We don&apos;t guarantee traffic, rankings or revenue.
               </p>
             </div>
           </div>
@@ -217,18 +211,10 @@ export function ServicePage({ service }: { service: Service }) {
               </li>
             ))}
           </ul>
-          <ul
-            className="cy-guard"
-            style={{ marginTop: 16 }}
-            aria-label="How AI is kept under control"
-          >
-            {GUARDRAILS.map((item) => (
-              <li key={item.title} data-cy-reveal>
-                <h3 className="cy-h3">{item.title}</h3>
-                <p className="cy-muted">{item.body}</p>
-              </li>
-            ))}
-          </ul>
+          <p className="cy-muted" style={{ marginTop: 16 }} data-cy-reveal>
+            Access, approvals, logging and spending limits are defined in the scope of each project.
+            Ownership and licensing are defined in each agreement.
+          </p>
         </div>
       </section>
 

@@ -14,7 +14,7 @@ export const SHARED_COPY: Omit<CopyDocument, "hero"> & {
     rail: ["Websites. Software.", "Automation. AI.", "One accountable team, start to finish."],
     ctaPrimary: "Get a free fit check",
     ctaSecondary: "See what we build",
-    trust: "Free 20-minute call · Fixed-price quotes · English & Español",
+    trust: "Free 20-minute call · Written scope before work starts · English & Español",
     assistantNote: "Have a question first? Ask the Cyryx assistant. It answers in seconds.",
   },
   header: {

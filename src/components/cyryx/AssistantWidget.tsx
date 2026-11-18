@@ -19,14 +19,14 @@ const STORAGE_KEY = "cyryx_assistant_thread";
 const GREETING: ChatMessage = {
   role: "assistant",
   content:
-    "Hi, I'm the Cyryx assistant. Tell me what is slowing your business down, or ask about our AI services, products, timelines or how a project runs. I answer from our public site, and I can pass your details to the team when you're ready.",
+    "Hi, I'm the Cyryx assistant. Tell me what is slowing your business down, or ask about our AI services, products or how a project runs. I answer from our public site, and I can pass your details to the team when you're ready.",
 };
 
 const SUGGESTIONS = [
   "Which service fits my problem?",
-  "How long does an automation take?",
+  "How does a project start?",
   "Is our data safe with AI?",
-  "What are Onyx and AEXOS?",
+  "What products do you make?",
 ];
 
 function loadThread(): ChatMessage[] {
@@ -65,8 +65,8 @@ export function AssistantWidget() {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [mode, setMode] = useState<"chat" | "lead" | "sent">("chat");
-  // On the homepage the hero already offers the assistant; the floating
-  // launcher appears once the visitor scrolls past the first screen.
+  // On the homepage the floating launcher appears once the visitor scrolls
+  // past the first screen, so the hero keeps a single primary action.
   const [pastHero, setPastHero] = useState(true);
   const panelId = useId();
   const launcherRef = useRef<HTMLButtonElement>(null);

@@ -177,8 +177,8 @@ export function WorkflowConsole() {
           </ol>
         </div>
         <div className="cy-console__foot">
-          <span>A person approves what matters</span>
-          <span>Every step on record</span>
+          <span>Approval points set in the scope</span>
+          <span>Logging set in the scope</span>
         </div>
       </div>
       <figcaption

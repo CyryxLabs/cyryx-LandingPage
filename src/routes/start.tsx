@@ -26,7 +26,7 @@ import { isAssistantEnabled, openAssistant } from "@/lib/assistant-client";
 const PATH = "/start";
 const TITLE = "Get a Free AI Fit Check | Cyryx Labs";
 const DESC =
-  "Tell Cyryx Labs what you want to automate, build or fix. Two short steps, then a free 20-minute fit check and a fixed quote in writing.";
+  "Tell Cyryx Labs what you want to automate, build or fix. Two short steps, then a free 20-minute fit check and a written scope you approve before work starts.";
 
 const INVESTMENT_RANGES = [
   "Under $5,000",
@@ -270,7 +270,8 @@ function StartPage() {
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] lg:text-lg">
             An AI system, an automation, an integration or a product: two short steps. We&apos;ll
             tell you whether it makes sense, where to start, or whether not to build at all. If it
-            fits, the next step is a free 20-minute call and a fixed quote in writing.
+            fits, the next step is a free 20-minute call and a written scope you approve before work
+            starts.
           </p>
 
           <ol

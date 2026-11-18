@@ -22,6 +22,11 @@ export type CtaName =
   | "read_cgp"
   | "proof_link"
   | "evidence_sample"
+  // Journeys and demonstrations (CRM event list must accept these names)
+  | "intent_selected"
+  | "product_viewed"
+  | "demo_started"
+  | "demo_completed"
   // Lead funnel
   | "form_start"
   | "form_step_complete"
@@ -52,7 +57,9 @@ export type CtaSection =
   | "evidence"
   | "assistant"
   | "start"
-  | "brief";
+  | "brief"
+  | "workflow_demo"
+  | "demos";
 
 export interface TrackCtaInput {
   cta: CtaName;

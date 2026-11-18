@@ -13,6 +13,7 @@ import {
 } from "@/data/onyx";
 import { AEXOS_CYCLE, AEXOS_NUMBERS, AEXOS_VERSION } from "@/data/aexos";
 import { AEXOS_PRODUCT } from "@/data/site-taxonomy";
+import { ORBIT } from "@/data/products";
 import { trackCta } from "@/lib/track-cta";
 
 type Heading = "h2" | "h3";
@@ -315,14 +316,15 @@ export function AexosShowcase({ as: Tag = "h3" }: { as?: Heading }) {
             <span>{AEXOS_PRODUCT.fullName}</span>
           </p>
           <p className="cy-badge" data-cy-reveal>
-            <i aria-hidden="true" /> Agent framework · Core free on npm
+            <i aria-hidden="true" /> {AEXOS_PRODUCT.category} · AEXOS Core free on npm
           </p>
           <Tag id="show-aexos-heading" className="cy-show__title" data-cy-reveal>
             AI agents that work to a method.
           </Tag>
           <p className="cy-lead" data-cy-reveal>
-            AEXOS installs specialised AI agents, the procedures they follow and the gates they must
-            pass into your project. You talk to one orchestrator; it routes the work to the
+            AEXOS is an agent framework for software projects, for developers who use AI coding
+            tools. It installs specialised AI agents, the procedures they follow and the gates they
+            must pass into your project. You talk to one orchestrator; it routes the work to the
             specialist that owns it.
           </p>
           <p className="cy-code cy-show__cmd" data-cy-reveal>
@@ -354,7 +356,7 @@ export function AexosShowcase({ as: Tag = "h3" }: { as?: Heading }) {
             </a>
           </div>
           <p className="cy-show__note" data-cy-reveal>
-            Core available on npm · v{AEXOS_VERSION} · {AEXOS_PRODUCT.runtime}. Works with{" "}
+            AEXOS Core is free on npm · v{AEXOS_VERSION} · {AEXOS_PRODUCT.runtime}. Works with{" "}
             {AEXOS_PRODUCT.hosts.join(", ")}.
           </p>
         </div>
@@ -369,6 +371,23 @@ export function AexosShowcase({ as: Tag = "h3" }: { as?: Heading }) {
           </div>
         ))}
       </dl>
+    </article>
+  );
+}
+
+/**
+ * Orbit is listed by name and status only (founder decision 2026-11-17):
+ * no description, features, link, CTA or form until a purpose line is approved.
+ */
+export function OrbitCard({ as: Tag = "h3" }: { as?: Heading }) {
+  return (
+    <article id="orbit" className="cy-card cy-prod__more" aria-labelledby="show-orbit-heading">
+      <Tag id="show-orbit-heading" className="cy-h3">
+        {ORBIT.name}
+      </Tag>
+      <p className="cy-badge" style={{ alignSelf: "flex-start" }}>
+        {ORBIT.stage}
+      </p>
     </article>
   );
 }

@@ -1,13 +1,15 @@
 import type { StartContextIntent } from "@/lib/cta";
-import type { SourceId } from "@/data/market";
+import { PLAN_TIMELINE, type SourceId } from "@/data/market";
 
 /**
  * The service catalogue (2026-11): what US companies are asking for in AI,
  * mapped from the market evidence in data/market.ts to what Cyryx Labs builds.
  *
- * Rules kept from earlier founder decisions: no published prices, no client
- * names or results, timelines only where the founder already stated them, and
- * one guarantee — the acceptance checklist.
+ * Rules from founder decisions (latest 2026-11-17): no published prices, no
+ * client names or results, no fixed timelines (each plan sets its own), no
+ * blanket ownership or control promises (both are defined per agreement and
+ * scope), only third-party figures verified on the cited page, and one
+ * guarantee: a project is done when it passes the agreed acceptance checklist.
  */
 export type ServiceStage = "Advise" | "Build" | "Control" | "Operate";
 
@@ -47,8 +49,6 @@ export type Service = {
   readonly related: readonly string[];
 };
 
-const PLAN_TIMELINE = "Set in your written plan before work starts";
-
 export const SERVICES: readonly Service[] = [
   {
     slug: "ai-strategy-advisory",
@@ -63,14 +63,9 @@ export const SERVICES: readonly Service[] = [
     serviceType: "AI strategy consulting",
     h1: "Know where AI pays off before you spend on it.",
     answer:
-      "The AI opportunity assessment is a short, fixed-scope review of how your company works. We map your processes, score each AI opportunity by value, effort and risk, and hand you a ranked roadmap with a plan for the first build. If you build with us, the assessment is credited toward it.",
+      "The AI opportunity assessment is a short, scoped review of how your company works. We map your processes, score each AI opportunity by value, effort and risk, and hand you a ranked roadmap with a plan for the first build.",
     cardPain: "Not knowing where to start, or what the return will be",
     cardLine: "A ranked roadmap of what to build first, what to skip and what each step costs.",
-    stat: {
-      value: "33%",
-      text: "of mid-market firms with stalled AI pilots say the return is unclear.",
-      source: "rsm",
-    },
     problems: [
       "You are paying for AI tools, but nobody can say what they have returned.",
       "Every team has ideas. There is no shared way to rank them.",
@@ -87,7 +82,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         title: "A plan for the first build",
-        body: "Scope, timeline, acceptance checklist and a fixed quote for the first project on the list.",
+        body: "A written scope you approve before work starts, with the timeline and acceptance checklist for the first project on the list.",
       },
       {
         title: "A straight answer",
@@ -108,8 +103,8 @@ export const SERVICES: readonly Service[] = [
         body: "Every opportunity gets a value, an effort and a risk rating you can challenge.",
       },
       {
-        title: "Roadmap and quote",
-        body: "You leave with the roadmap and a fixed plan for the first build.",
+        title: "Roadmap and written scope",
+        body: "You get the roadmap and a written scope for the first build, to approve before work starts.",
       },
     ],
     examples: [
@@ -123,20 +118,16 @@ export const SERVICES: readonly Service[] = [
         text: "A reviewed shortlist of agent use cases with risk and governance notes.",
       },
     ],
-    timeline: "Credited toward a build",
+    timeline: PLAN_TIMELINE,
     startsWith: "A free 20-minute fit check",
     faq: [
       {
         q: "What do we get at the end of an AI assessment?",
-        a: "A written process map, a ranked list of AI and automation opportunities with value, effort and risk for each, and a fixed plan and quote for the first build.",
+        a: "A written process map, a ranked list of AI and automation opportunities with value, effort and risk for each, and a written scope for the first build that you approve before work starts.",
       },
       {
         q: "Will you recommend AI for everything?",
         a: "No. Some problems are better solved with ordinary software or a process change, and sometimes the right answer is not to build. The roadmap says which is which.",
-      },
-      {
-        q: "Does the assessment cost extra if we build with you?",
-        a: "The assessment can be credited toward a build, so it becomes the first phase of the project rather than a separate cost.",
       },
     ],
     related: ["ai-training-enablement", "workflow-automation", "ai-governance-cost-control"],
@@ -150,17 +141,17 @@ export const SERVICES: readonly Service[] = [
     intent: "workflow-automation",
     metaTitle: "AI Workflow Automation Services | Cyryx Labs",
     metaDescription:
-      "Automate the repetitive work between your systems: intake, routing, data entry, follow-ups and reports. One automation ships in about two weeks.",
+      "Automate the repetitive work between your systems: intake, routing, data entry, follow-ups and reports, under a written scope you approve before work starts.",
     serviceType: "AI workflow automation",
     h1: "End the copy-and-paste work between your systems.",
     answer:
-      "Workflow automation moves repetitive work, such as lead intake, data entry, document handling, follow-ups and reports, from people to software. We connect the systems you already use, add AI where a step needs reading or judgment, and keep a person in control of anything that matters. A single automation takes about two weeks.",
+      "Workflow automation moves repetitive work, such as lead intake, data entry, document handling, follow-ups and reports, from people to software. We connect the systems you already use and add AI where a step needs reading or judgment. Access, approvals, logging and spending limits are defined in the scope of each project.",
     cardPain: "Staff time lost to repetitive, manual work",
     cardLine:
-      "The tasks your team repeats every day, running on their own with a person still in control.",
+      "The tasks your team repeats every day, running on their own, with approval points defined in the scope.",
     stat: {
       value: "84%",
-      text: "of small business owners name efficiency and productivity as the main benefit of AI.",
+      text: "of small business owners who use AI name efficiency and productivity as the main benefit.",
       source: "goldman",
     },
     problems: [
@@ -183,11 +174,11 @@ export const SERVICES: readonly Service[] = [
       },
       {
         title: "Approval points",
-        body: "Anything that sends money, messages a customer or changes a record can wait for a person.",
+        body: "Which steps wait for a person, such as payments, customer messages or record changes, is defined in the scope.",
       },
       {
-        title: "An activity log",
-        body: "What ran, what it did and what it cost, so problems are visible the day they start.",
+        title: "Run records",
+        body: "What is recorded about each run, and who can see it, is defined in the scope.",
       },
     ],
     steps: [
@@ -197,12 +188,12 @@ export const SERVICES: readonly Service[] = [
       },
       {
         title: "Map and agree",
-        body: "Scope, acceptance checklist and fixed price in a written plan.",
+        body: "A written scope and acceptance checklist you approve before work starts.",
       },
       { title: "Build and test", body: "Built against real cases, including the awkward ones." },
       {
         title: "Launch and hand over",
-        body: "Your team is trained and owns the result. We can keep it running if you want.",
+        body: "Your team is trained to run it. We can keep it running if you want.",
       },
     ],
     examples: [
@@ -216,10 +207,10 @@ export const SERVICES: readonly Service[] = [
       },
       {
         who: "Enterprise",
-        text: "Service requests are classified and routed across teams with a full audit trail.",
+        text: "Service requests are classified and routed across teams.",
       },
     ],
-    timeline: "About 2 weeks for one automation",
+    timeline: PLAN_TIMELINE,
     startsWith: "One automation on one process",
     faq: [
       {
@@ -228,15 +219,15 @@ export const SERVICES: readonly Service[] = [
       },
       {
         q: "How long does one automation take?",
-        a: "A single automation takes about two weeks from the written plan to launch. Larger workflows are split into stages that each deliver something usable.",
+        a: "The timeline is set in the written plan, once the process and its exceptions are mapped. Larger workflows are split into stages that each deliver something usable.",
       },
       {
         q: "What happens when the automation hits a case it does not understand?",
-        a: "It stops and hands the case to a person with the context attached. Exceptions are designed up front, not discovered in production.",
+        a: "Exceptions are designed up front, not discovered in production. How each one is handled, for example handing the case to a person with the context attached, is written into the scope.",
       },
       {
         q: "Who owns the automation?",
-        a: "You do. At final payment you own the code, content and data we create for you.",
+        a: "Ownership and licensing are defined in each agreement.",
       },
     ],
     related: ["ai-integrations", "internal-ai-assistants", "managed-operations"],
@@ -250,17 +241,17 @@ export const SERVICES: readonly Service[] = [
     intent: "internal-assistant",
     metaTitle: "AI Agents & Internal Assistants | Cyryx Labs",
     metaDescription:
-      "AI agents and assistants that work inside your business with clear permissions, human approval and a record of every action. Pilot in 30 days.",
+      "AI agents and assistants that work inside your business. Access, approvals, logging and spending limits are defined in the scope of each project.",
     serviceType: "AI agent development",
     h1: "AI agents that do the work, inside limits you set.",
     answer:
-      "An AI agent is software that completes a task from start to finish: it reads the request, finds the information, takes the action and reports back. We build agents and internal assistants on one process at a time, with written permissions, human approval for anything that matters and a log of every action. A pilot runs for 30 days.",
+      "An AI agent is software that completes a task from start to finish: it reads the request, finds the information, takes the action and reports back. We build agents and internal assistants on one process at a time. Access, approvals, logging and spending limits are defined in the scope of each project.",
     cardPain: "AI pilots that never reach production",
     cardLine:
-      "An agent on one real process in 30 days, with permissions, approvals and a full record.",
+      "An agent on one real process, with access, approvals and logging defined in the scope.",
     stat: {
       value: "21%",
-      text: "of enterprises have a mature model for governing autonomous agents.",
+      text: "of companies planning to deploy AI agents have a mature model for governing them.",
       source: "deloitte",
     },
     problems: [
@@ -282,12 +273,12 @@ export const SERVICES: readonly Service[] = [
         body: "What it may read, what it may change and what it may spend, agreed before it runs.",
       },
       {
-        title: "Human approval",
-        body: "Consequential actions wait for a named person. The agent prepares; your team decides.",
+        title: "Approval points",
+        body: "Which actions wait for a named person is agreed in the scope. The agent prepares; your team decides.",
       },
       {
         title: "Measured results",
-        body: "Quality, time saved and cost per task, tracked from the first day of the pilot.",
+        body: "The measures agreed in the plan, such as quality, time saved and cost per task, tracked during the pilot.",
       },
     ],
     steps: [
@@ -300,7 +291,7 @@ export const SERVICES: readonly Service[] = [
         body: "Permissions, approval points and test cases, in the written plan.",
       },
       {
-        title: "Pilot for 30 days",
+        title: "Run the pilot",
         body: "The agent works on real cases with your team reviewing its output.",
       },
       {
@@ -319,11 +310,11 @@ export const SERVICES: readonly Service[] = [
       },
       {
         who: "Enterprise",
-        text: "A reviewed pilot with access controls and logs your security team can audit.",
+        text: "A pilot your security team can review, with access controls set in the scope.",
       },
     ],
-    timeline: "30-day pilot",
-    startsWith: "A 30-day AI agent pilot on one process",
+    timeline: PLAN_TIMELINE,
+    startsWith: "An AI agent pilot on one process",
     faq: [
       {
         q: "What is the difference between an AI assistant and an AI agent?",
@@ -331,11 +322,11 @@ export const SERVICES: readonly Service[] = [
       },
       {
         q: "Is our data safe?",
-        a: "Every agent we build has written limits on what it can read, change and spend, asks a person before anything that matters, and keeps a log of what it did. You decide what data it may use.",
+        a: "Access, approvals, logging and spending limits are defined in the scope of each project, and you decide what data the agent may use.",
       },
       {
         q: "What if the agent gets something wrong?",
-        a: "The pilot is designed to find that out safely. Outputs are reviewed, consequential actions wait for approval, and test cases are agreed in advance so quality is measured rather than assumed.",
+        a: "The pilot is designed to find that out safely. Outputs are reviewed, approval points are agreed in the scope, and test cases are agreed in advance so quality is measured rather than assumed.",
       },
     ],
     related: ["data-knowledge-systems", "ai-governance-cost-control", "workflow-automation"],
@@ -357,11 +348,6 @@ export const SERVICES: readonly Service[] = [
     cardPain: "AI that sits beside your systems instead of inside them",
     cardLine:
       "AI wired into your CRM, ERP and internal tools, reading live data and writing results back.",
-    stat: {
-      value: "47%",
-      text: "of mid-market firms with stalled AI pilots cite integration as the barrier.",
-      source: "rsm",
-    },
     problems: [
       "Staff copy information out of one system to paste it into an AI tool.",
       "Older systems have no modern API, so every AI project stops at the same wall.",
@@ -378,7 +364,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         title: "Scoped access",
-        body: "Each connection gets only the data and actions it needs, under its own credentials.",
+        body: "The data and actions each connection may use, and the credentials it runs under, are defined in the scope.",
       },
       {
         title: "Monitoring",
@@ -415,7 +401,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         who: "Enterprise",
-        text: "Agents reach legacy systems through a reviewed gateway with full logging.",
+        text: "Agents reach legacy systems through a reviewed gateway.",
       },
     ],
     timeline: PLAN_TIMELINE,
@@ -427,7 +413,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         q: "Do you work with our IT team?",
-        a: "Yes. We work alongside in-house IT and product teams, document what we build, and hand over access and runbooks at the end.",
+        a: "Yes. We work alongside in-house IT and product teams and document what we build. What is handed over at the end is set out in the agreement.",
       },
       {
         q: "Which systems can you integrate?",
@@ -445,14 +431,13 @@ export const SERVICES: readonly Service[] = [
     intent: "custom-ai-product",
     metaTitle: "Custom AI Product & Software Development | Cyryx Labs",
     metaDescription:
-      "From idea to a working AI product or MVP: a two-week discovery sprint, then a build in 8 to 12 weeks. You own the code.",
+      "From idea to a working AI product or MVP: a discovery sprint, then a build against a written scope you approve before work starts.",
     serviceType: "Custom AI software development",
     h1: "Turn the idea into a product people can use.",
     answer:
-      "We design and build AI-powered products, MVPs and custom software for companies that want to own what they run. A two-week discovery sprint defines the product, the architecture and the acceptance checklist. The build then takes 8 to 12 weeks, and at final payment you own the code, content and data.",
+      "We design and build AI-powered products, MVPs and custom software. A discovery sprint defines the product, the architecture and the acceptance checklist, and ends with a written scope you approve before work starts. The timeline is set in the written plan. Ownership and licensing are defined in each agreement.",
     cardPain: "A product idea with no team to build it",
-    cardLine:
-      "Your product scoped in two weeks, then built in 8 to 12, with the code in your hands.",
+    cardLine: "Your product scoped in a discovery sprint, then built against a written plan.",
     problems: [
       "You know what the product should do, but hiring a full team to find out is too slow and too costly.",
       "Off-the-shelf tools get you most of the way, then stop short of how your business works.",
@@ -461,7 +446,7 @@ export const SERVICES: readonly Service[] = [
     deliver: [
       {
         title: "Discovery sprint",
-        body: "Two weeks to define users, scope, architecture, risks and a fixed quote for the build.",
+        body: "Defines users, scope, architecture and risks, and ends with a written scope for the build that you approve before work starts.",
       },
       {
         title: "A working product",
@@ -469,21 +454,21 @@ export const SERVICES: readonly Service[] = [
       },
       {
         title: "AI that fits the job",
-        body: "Models chosen per task, with evaluation, fallbacks and cost limits built in.",
+        body: "Models chosen per task. Evaluation, fallbacks and cost limits are defined in the scope.",
       },
       {
         title: "Launch-ready quality",
-        body: "Authentication, access control, logging, automated tests and deployment.",
+        body: "Authentication, access control, logging, automated tests and deployment, as defined in the scope.",
       },
       {
-        title: "Full handover",
-        body: "Source code, infrastructure access and documentation. No lock-in.",
+        title: "Handover",
+        body: "What is handed over, such as source code, infrastructure access and documentation, is set out in the agreement.",
       },
     ],
     steps: [
       {
         title: "Discovery sprint",
-        body: "Two weeks. Ends with a scope, a design direction and a fixed quote.",
+        body: "Ends with a written scope and a design direction you approve before the build starts.",
       },
       {
         title: "Build in increments",
@@ -509,16 +494,16 @@ export const SERVICES: readonly Service[] = [
         text: "An internal product that replaces a spreadsheet-run process across teams.",
       },
     ],
-    timeline: "2-week discovery, then 8–12 weeks",
-    startsWith: "A two-week discovery sprint",
+    timeline: PLAN_TIMELINE,
+    startsWith: "A discovery sprint",
     faq: [
       {
         q: "How long does it take to build an MVP?",
-        a: "An MVP takes eight to twelve weeks after a two-week discovery sprint. The sprint fixes the scope, so the timeline is known before the build starts.",
+        a: "The timeline is set in the written plan at the end of the discovery sprint, so it is known before the build starts.",
       },
       {
         q: "Who owns the code?",
-        a: "You do. At final payment you own the code, content and data we create for you.",
+        a: "Ownership and licensing are defined in each agreement.",
       },
       {
         q: "Can you start from a prototype we already have?",
@@ -545,7 +530,7 @@ export const SERVICES: readonly Service[] = [
     cardLine: "Your documents and records, cleaned up and searchable, so AI answers from facts.",
     stat: {
       value: "34%",
-      text: "of middle market executives name data quality as the top barrier to deploying AI.",
+      text: "of middle market executives cite data quality as a top barrier to deploying AI.",
       source: "rsm",
     },
     problems: [
@@ -564,7 +549,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         title: "Access rules",
-        body: "AI sees only what the person asking is allowed to see.",
+        body: "Who can see what through AI, matched to the permissions you already use, is defined in the scope.",
       },
       {
         title: "Quality checks",
@@ -601,7 +586,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         who: "Enterprise",
-        text: "A governed knowledge layer that agents use, with sources and audit logs.",
+        text: "A governed knowledge layer that agents use, with sources shown for each answer.",
       },
     ],
     timeline: PLAN_TIMELINE,
@@ -617,7 +602,7 @@ export const SERVICES: readonly Service[] = [
       },
       {
         q: "Can AI respect our access permissions?",
-        a: "Yes. Access rules are part of the design, so an assistant only retrieves what the person asking is already allowed to see.",
+        a: "Yes, when access rules are part of the design. They are defined in the scope, so an assistant can be limited to what the person asking is already allowed to see.",
       },
     ],
     related: ["internal-ai-assistants", "ai-integrations", "ai-governance-cost-control"],
@@ -638,10 +623,10 @@ export const SERVICES: readonly Service[] = [
       "AI governance is the set of rules and controls that decide what AI may read, change and spend in your company, and who answers for it. We write the policy, put the access controls, approval points and activity logs in place, and add cost limits and reporting, so your teams can use AI with confidence and you can show how it is controlled.",
     cardPain: "Unapproved AI use, data exposure and runaway costs",
     cardLine:
-      "Written rules, access controls, approval points and spending limits for every AI system.",
+      "Written rules, access controls, approval points and spending limits for the AI systems in scope.",
     stat: {
       value: "49%",
-      text: "of employees at large companies use AI tools their employer has not approved.",
+      text: "of employees at US and UK companies with 500+ staff use AI tools their employer has not approved.",
       source: "blackfog",
     },
     problems: [
@@ -727,18 +712,13 @@ export const SERVICES: readonly Service[] = [
     intent: "digital-system",
     metaTitle: "AI-Ready Websites, SEO & GEO Services | Cyryx Labs",
     metaDescription:
-      "Websites built to win customers and to be found in Google and AI answers. Technical SEO, structured data and lead capture in 3 to 4 weeks.",
+      "Websites built to win customers and to be found in Google and AI answers: technical SEO, structured data and lead capture.",
     serviceType: "Website development and generative engine optimization",
     h1: "A website buyers find, in Google and in AI answers.",
     answer:
-      "We build websites and web systems that turn visitors into leads and are structured so search engines and AI assistants can read, trust and cite them. That means fast pages, clear answers, structured data, an AI-readable summary of your company and lead capture connected to your CRM. A launch website takes three to four weeks.",
+      "We build websites and web systems that turn visitors into leads and are structured so search engines and AI assistants can read, trust and cite them. That means fast pages, clear answers, structured data, an AI-readable summary of your company and lead capture connected to your CRM.",
     cardPain: "Being invisible when buyers ask AI for a vendor",
     cardLine: "A fast, clear website that ranks in search, gets cited by AI and captures the lead.",
-    stat: {
-      value: "51%",
-      text: "of software buyers start research in an AI chatbot more often than in Google.",
-      source: "g2",
-    },
     problems: [
       "Your site looks fine, but it does not bring in calls, bookings or qualified leads.",
       "Buyers ask AI assistants for recommendations, and your company is not in the answer.",
@@ -792,7 +772,7 @@ export const SERVICES: readonly Service[] = [
         text: "A product or division site with structured content for search and AI.",
       },
     ],
-    timeline: "3–4 weeks for a launch website",
+    timeline: PLAN_TIMELINE,
     startsWith: "A launch website with lead capture",
     faq: [
       {
@@ -801,11 +781,11 @@ export const SERVICES: readonly Service[] = [
       },
       {
         q: "Do you guarantee rankings or traffic?",
-        a: "No. We don't guarantee traffic, rankings or revenue. We guarantee what we agreed to build, checked against a written acceptance checklist.",
+        a: "No. We don't guarantee traffic, rankings or revenue. A project is done when it passes the acceptance checklist we agree on.",
       },
       {
         q: "How long does a website take?",
-        a: "A launch website takes three to four weeks from the written plan. Larger sites and portals are scoped in stages.",
+        a: "The timeline is set in the written plan. Larger sites and portals are scoped in stages.",
       },
     ],
     related: ["workflow-automation", "internal-ai-assistants", "managed-operations"],
@@ -829,7 +809,7 @@ export const SERVICES: readonly Service[] = [
       "Hands-on workshops on your team's real work, with safe-use rules and playbooks they keep.",
     stat: {
       value: "73%",
-      text: "of small business owners say training and implementation support would help them use AI.",
+      text: "of small business owners say they would benefit from more access to training and implementation resources.",
       source: "goldman",
     },
     problems: [
@@ -903,9 +883,10 @@ export const SERVICES: readonly Service[] = [
     serviceType: "Managed AI operations",
     h1: "Keep it running, and improving, after launch.",
     answer:
-      "Managed operations is ongoing care for the websites, automations and AI systems you depend on. We host and monitor them, fix what breaks, watch quality and cost, make small improvements and send a short report every month, under a written scope that says exactly what is covered.",
+      "Managed operations is ongoing care for the websites, automations and AI systems you depend on. Depending on the written scope, it can include hosting and monitoring, fixes, watching quality and cost, small improvements and a short monthly report. The scope says exactly what is covered.",
     cardPain: "Systems that quietly degrade after launch",
-    cardLine: "Monitoring, fixes, small improvements and a short report every month.",
+    cardLine:
+      "Monitoring, fixes, small improvements and a monthly report, as defined in the scope.",
     problems: [
       "The automation worked at launch. Nobody noticed when it stopped.",
       "AI costs creep up month after month with no one watching.",
@@ -956,7 +937,7 @@ export const SERVICES: readonly Service[] = [
         text: "An operating agreement with defined responsibilities and review cadence.",
       },
     ],
-    timeline: "Monthly",
+    timeline: "Coverage and cadence set in the written scope.",
     startsWith: "Care for one website or one system",
     faq: [
       {
@@ -965,11 +946,11 @@ export const SERVICES: readonly Service[] = [
       },
       {
         q: "What is included each month?",
-        a: "Hosting, monitoring, fixes and small improvements within a written scope, plus a short report. Larger changes are quoted separately.",
+        a: "What the written scope covers, such as hosting, monitoring, fixes, small improvements and a short report. Larger changes are quoted separately.",
       },
       {
         q: "Can we take operations back in-house later?",
-        a: "Yes. You own the code, content and data, and we hand over access and runbooks whenever you decide to.",
+        a: "Yes. What is handed over, such as access and runbooks, is set out in the agreement. Ownership and licensing are defined in each agreement.",
       },
     ],
     related: ["workflow-automation", "internal-ai-assistants", "digital-web-systems"],

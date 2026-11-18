@@ -142,7 +142,7 @@ export function StartButton({
   section,
   source,
   intent,
-  label = "Get a free fit check",
+  label = "Discuss your project",
   variant = "primary",
   small = false,
 }: {
@@ -283,8 +283,8 @@ export function PageHero({
 }
 
 export function FinalCta({
-  title = "Start with a 20\u2011minute conversation.",
-  lead = "Tell us what you want to change. You get an honest answer on whether AI is the right tool, and a fixed written plan if it is.",
+  title = "What should work better in your business?",
+  lead = "Tell us about the task, the tools, and what needs to change. You get an honest answer on whether AI is the right tool, and a written scope you approve before work starts.",
   source,
   intent,
 }: {
@@ -300,7 +300,7 @@ export function FinalCta({
           <Horizon intensity={1.1} />
           <div className="cy-final__copy">
             <p className="cy-badge">
-              <i aria-hidden="true" /> Free · No obligation · Fixed quote in writing
+              <i aria-hidden="true" /> No obligation · Written scope before work starts
             </p>
             <h2 id="final-cta-heading" className="cy-h2">
               <Words text={title} />

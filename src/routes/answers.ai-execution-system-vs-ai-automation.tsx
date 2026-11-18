@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     q: "Where does AEXOS sit?",
-    a: "AEXOS, the Cyryx Labs product for governed AI-assisted software delivery, applies execution-system principles to software work: task contracts, quality gates and a record of what shipped. The Core edition is available on npm.",
+    a: "AEXOS, the Cyryx Labs agent framework for software projects, applies execution-system principles to software work: task contracts, quality gates and a record of what shipped. AEXOS Core is free on npm.",
   },
 ];
 

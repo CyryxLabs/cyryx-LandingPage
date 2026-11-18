@@ -54,9 +54,9 @@ for (const vp of VIEWPORTS) {
     }
 
     if (vp.name !== "desktop") {
-      // The six offer rows must end fully readable on phones and tablets.
-      const controls = page.locator("#services a.cy-card");
-      await expect(controls).toHaveCount(10);
+      // The four solution groups must end fully readable on phones and tablets.
+      const controls = page.locator("#solutions .hm-sol");
+      await expect(controls).toHaveCount(4);
       await controls.last().scrollIntoViewIfNeeded();
       await expect
         .poll(
@@ -104,20 +104,18 @@ for (const path of CONTENT_PAGES) {
   }
 }
 
-test("home control section lists its three rules after the 2026-11-06 redesign", async ({
-  page,
-}) => {
-  // The animated execution rail was retired with the Hallmark redesign; the
-  // same three commitments now read as a numbered list beside a photograph.
+test("home delivery section lists the four steps and the defined controls", async ({ page }) => {
+  // Rebuild v9 (2026-11-17): the control rail became the delivery path plus the
+  // things each written scope defines; the acceptance checklist is the only guarantee.
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
-  const control = page.locator("#control");
-  await expect(control.getByRole("heading", { level: 2 })).toHaveText(
-    "Powerful enough to do the work. Controlled enough to trust.",
+  const delivery = page.locator("#delivery");
+  await expect(delivery.locator("ol.hm-dlv > li")).toHaveCount(4);
+  for (const word of ["Access", "Actions", "Records", "Support"]) {
+    await expect(delivery).toContainText(word);
+  }
+  await expect(delivery.locator(".hm-accept")).toHaveText(
+    "A project is done when it passes the acceptance checklist we agree on.",
   );
-  await expect(control.locator("ul.cy-guard > li")).toHaveCount(3);
-  await expect(
-    control.getByRole("link", { name: /How we handle AI governance and cost control/ }),
-  ).toHaveAttribute("href", "/solutions/ai-governance-cost-control");
 });

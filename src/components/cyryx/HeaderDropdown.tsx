@@ -23,6 +23,27 @@ export function HeaderDropdown({ group, isActive, onClose }: HeaderDropdownProps
   const { location } = useRouterState();
   const pathname = location.pathname;
 
+  if (group.href) {
+    const isCurrent = isNavigationItemActive(pathname, group.href);
+    return (
+      <NavigationMenuItem value={group.id}>
+        <Link
+          to={group.href}
+          onClick={onClose}
+          aria-current={isCurrent ? "page" : undefined}
+          className={cn(
+            "relative inline-flex items-center whitespace-nowrap py-2 text-[0.9375rem] font-sans font-normal normal-case tracking-normal outline-none transition-colors focus-visible:ring-1 focus-visible:ring-[var(--accent-glow)] motion-reduce:transition-none",
+            isActive
+              ? "text-[var(--silver)] after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]"
+              : "text-[var(--silver-dim)] hover:text-[var(--silver)]",
+          )}
+        >
+          {group.label}
+        </Link>
+      </NavigationMenuItem>
+    );
+  }
+
   return (
     <NavigationMenuItem value={group.id}>
       <NavigationMenuTrigger

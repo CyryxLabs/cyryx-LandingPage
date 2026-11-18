@@ -132,44 +132,34 @@ test.describe("Hero — plain-English value proposition", () => {
     }
   });
 
-  test("hero renders the approved headline, sub, and CTA labels with correct destinations", async ({
-    page,
-  }) => {
+  // Rebuild v9 (2026-11-17): Products · Solutions, one primary action, no
+  // published prices, no fixed timelines, Orbit shown by name and stage only.
+  test("hero renders the approved headline, body and actions", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const hero = page.locator("section[data-hero]");
     await expect(hero).toBeVisible();
     await expect(page.locator("#hero-heading")).toHaveText(
-      "We build AI systems that do real work.",
+      "AI products and automation. Built for the way you work.",
     );
     await expect(hero).toContainText(
-      "We design, build and operate AI systems, workflow automation and system integration for companies across the United States, with human approval, audit logs and cost limits built in.",
+      "We build AI software, connect your existing systems, and automate the work between them.",
     );
-    const primary = hero.getByRole("link", { name: APPROVED.ctaPrimary, exact: true });
-    await expect(primary).toHaveAttribute("href", "/start?source=home");
-    const secondary = hero.getByRole("link", { name: "See what we build", exact: true });
-    await expect(secondary).toHaveAttribute("href", "#services");
-    // Products stay out of the hero (founder decision, 2026-11-13).
-    await expect(hero).not.toContainText(/Onyx|AEXOS/);
-    // The four things we build are named in the hero, each with its own link.
-    const forms = hero.getByRole("navigation", { name: "What we build" });
-    for (const [name, href] of [
-      ["AI systems", "/solutions/custom-ai-product-development"],
-      ["Workflow automation", "/solutions/workflow-automation"],
-      ["System integration", "/solutions/ai-integrations"],
-      ["Governance and control", "/solutions/ai-governance-cost-control"],
-    ] as const) {
-      await expect(forms.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
-    }
-    await expect(hero).not.toContainText(/MAAX/i);
-    await expect(hero.locator('a[href*="maax" i], a[href="#maax"]')).toHaveCount(0);
+    await expect(hero.locator('a[data-cta="primary"]')).toHaveText(/Discuss your project/);
+    await expect(hero.locator('a[data-cta="primary"]')).toHaveAttribute(
+      "href",
+      "/start?source=home",
+    );
+    await expect(hero.locator('a[data-cta="secondary"]')).toHaveText("Explore our products");
+    await expect(hero.locator('a[data-cta="secondary"]')).toHaveAttribute("href", "#products");
+    // The workflow surfaces are labelled as sample data.
+    await expect(hero.getByRole("img", { name: /sample data/i })).toBeVisible();
+    await expect(hero).not.toContainText(/MAAX|ASTRA|execution layer/i);
   });
 
-  test("homepage names AI systems, automation, integration, agents and products in visible copy", async ({
-    page,
-  }) => {
+  test("homepage names products, automation, integration and custom software", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const main = page.locator("main");
-    for (const term of [/AI systems/i, /automation/i, /integration/i, /AI agents/i, /website/i]) {
+    for (const term of [/AI products/i, /automat/i, /integration/i, /custom AI software/i]) {
       await expect(main).toContainText(term);
     }
   });
@@ -180,59 +170,56 @@ test.describe("Hero — plain-English value proposition", () => {
     await expect(page.locator("main")).not.toContainText(/MAAX/i);
   });
 
-  test("the ten services each link to their own page and state no price", async ({ page }) => {
+  test("two starting points: products and solutions", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const services = page.locator("#services");
-    await expect(services.getByRole("heading", { level: 2 })).toHaveText(
-      "Ten services. One for each thing in the way.",
+    const paths = page.locator("#paths");
+    await expect(paths.getByRole("link", { name: /Explore Cyryx products/ })).toHaveAttribute(
+      "href",
+      "/products",
     );
-    await expect(services.locator("a.cy-card")).toHaveCount(10);
+    await expect(paths.getByRole("link", { name: /Build AI into your business/ })).toHaveAttribute(
+      "href",
+      "/solutions",
+    );
+  });
+
+  test("the four solution groups link to their own pages and state no price", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const solutions = page.locator("#solutions");
     for (const href of [
       "/solutions/ai-strategy-advisory",
       "/solutions/workflow-automation",
-      "/solutions/internal-ai-assistants",
-      "/solutions/ai-integrations",
       "/solutions/custom-ai-product-development",
-      "/solutions/data-knowledge-systems",
-      "/solutions/ai-governance-cost-control",
-      "/solutions/digital-web-systems",
-      "/solutions/ai-training-enablement",
       "/managed-operations",
     ]) {
-      await expect(services.locator(`a.cy-card[href="${href}"]`)).toHaveCount(1);
+      await expect(solutions.locator(`a[href="${href}"]`)).toHaveCount(1);
     }
     // Prices stay off the site until the founder publishes them.
     await expect(page.locator("main")).not.toContainText(/\$\d/);
   });
 
-  test("products show Onyx and AEXOS with their real stages", async ({ page }) => {
+  test("products show Onyx and AEXOS with their real stages and Orbit by name only", async ({
+    page,
+  }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const products = page.locator("#products");
-    await expect(products).toContainText("AI coworker for Windows · Free beta");
-    await expect(products).toContainText("Core free on npm");
-    // Each product opens its own page: the Onyx site in a new tab, AEXOS on this site.
-    const onyxSite = products.getByRole("link", { name: /Open the Onyx site/ });
-    await expect(onyxSite).toHaveAttribute("href", "https://onyx.cyryxlabs.com/");
-    await expect(onyxSite).toHaveAttribute("target", "_blank");
+    await expect(products.locator("#onyx")).toContainText("Onyx");
+    await expect(products.locator("#aexos")).toContainText("AEXOS");
+    await expect(products.locator("#aexos")).not.toContainText(/\bPro\b/);
     await expect(products.locator('img[src^="/media/onyx/"]').first()).toBeAttached();
-    await expect(products.getByRole("link", { name: "Explore Onyx" })).toHaveAttribute(
-      "href",
-      "/products/onyx",
-    );
-    await expect(products.getByRole("link", { name: "Explore AEXOS" })).toHaveAttribute(
-      "href",
-      "/products/aexos",
-    );
+    await expect(products.locator('a[href="/products/onyx"]').first()).toBeAttached();
+    await expect(products.locator('a[href="/products/aexos"]').first()).toBeAttached();
+    const orbit = products.locator(".hm-prod--orbit");
+    await expect(orbit).toContainText("Orbit");
+    await expect(orbit).toContainText("In development");
+    await expect(orbit.locator("a, button, form")).toHaveCount(0);
     await expect(products).not.toContainText(/ASTRA|MAAX/);
   });
 
-  test("every market figure names its publisher", async ({ page }) => {
+  test("the home publishes no market statistics", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const stats = page.locator("#market .cy-stat");
-    await expect(stats).toHaveCount(3);
-    for (const publisher of ["Goldman Sachs", "RSM US", "Deloitte"]) {
-      await expect(page.locator("#market")).toContainText(publisher);
-    }
+    await expect(page.locator("#market")).toHaveCount(0);
+    await expect(page.locator("main")).not.toContainText(/Goldman Sachs|RSM US|Deloitte/);
   });
 
   test("homepage chapters render in the approved order", async ({ page }) => {
@@ -240,37 +227,40 @@ test.describe("Hero — plain-English value proposition", () => {
     const ids = await page
       .locator("main section[id]")
       .evaluateAll((sections) => sections.map((section) => section.id));
-    const expected = [
+    expect(ids).toEqual([
       "top",
-      "market",
-      "demo",
-      "who",
-      "services",
-      "how-it-works",
-      "control",
+      "paths",
+      "workflow",
+      "solutions",
       "products",
-      "research",
-      "readiness",
-      "faq",
+      "evidence",
+      "delivery",
+      "company",
       "contact",
-    ];
-    expect(ids.filter((id) => expected.includes(id))).toEqual(expected);
+    ]);
     // No founder profile is published.
     await expect(page.locator("#team")).toHaveCount(0);
   });
 
-  test("the visible FAQ and the FAQPage schema say the same thing", async ({ page }) => {
+  test("the home publishes no FAQPage schema without a visible FAQ", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const questions = await page.locator("#faq summary").allInnerTexts();
     const graph = await page
       .locator('script[type="application/ld+json"]')
       .evaluateAll((nodes) =>
         nodes.flatMap((n) => JSON.parse(n.textContent || "{}")["@graph"] ?? []),
       );
     const faq = graph.find((node: { "@type"?: string }) => node["@type"] === "FAQPage");
-    expect(faq).toBeTruthy();
-    expect(faq.mainEntity.map((q: { name: string }) => q.name)).toEqual(
-      questions.map((q) => q.trim()),
+    expect(Boolean(faq)).toBe((await page.locator("#faq").count()) > 0);
+  });
+
+  test("the only guarantee on the home is the acceptance checklist", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const main = page.locator("main");
+    await expect(main).toContainText(
+      "A project is done when it passes the acceptance checklist we agree on.",
+    );
+    await expect(main).not.toContainText(
+      /fixed (written )?quote|fixed price|you own the code|money.back|\b\d+ (days|weeks)\b/i,
     );
   });
 });

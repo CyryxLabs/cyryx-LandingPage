@@ -1,4 +1,4 @@
-export type NavigationGroupId = "products" | "solutions" | "research" | "company";
+export type NavigationGroupId = "products" | "solutions" | "demos" | "insights" | "company";
 
 export type NavigationItem = {
   readonly label: string;
@@ -10,6 +10,8 @@ export type NavigationItem = {
 export type NavigationGroup = {
   readonly id: NavigationGroupId;
   readonly label: string;
+  /** When set, the group renders as a direct link instead of a menu. */
+  readonly href?: string;
   readonly children: readonly NavigationItem[];
 };
 
@@ -18,6 +20,11 @@ export type NavigationCTA = {
   readonly href: string;
 };
 
+/**
+ * Target IA (rebuild v9, 2026-11-17): Products · Solutions · Demos · Insights ·
+ * Company, with "Discuss your project" as the persistent action. Specialist
+ * service pages stay reachable from Solutions; Orbit has no page yet.
+ */
 export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
   {
     id: "products",
@@ -30,9 +37,9 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
   },
   {
     id: "solutions",
-    label: "Services",
+    label: "Solutions",
     children: [
-      { label: "All services", href: "/solutions" },
+      { label: "All solutions", href: "/solutions" },
       { label: "AI Strategy & Roadmap", href: "/solutions/ai-strategy-advisory" },
       { label: "Workflow Automation", href: "/solutions/workflow-automation" },
       { label: "AI Agents & Assistants", href: "/solutions/internal-ai-assistants" },
@@ -47,8 +54,14 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
     ] as const,
   },
   {
-    id: "research",
-    label: "Research",
+    id: "demos",
+    label: "Demos",
+    href: "/demos",
+    children: [{ label: "Workflow demo", href: "/demos" }] as const,
+  },
+  {
+    id: "insights",
+    label: "Insights",
     children: [
       { label: "Research", href: "/research" },
       { label: "Answers", href: "/answers" },
@@ -67,7 +80,7 @@ export const PRIMARY_NAVIGATION: readonly NavigationGroup[] = [
 ] as const;
 
 export const PRIMARY_NAVIGATION_CTA: NavigationCTA = {
-  label: "Get a free fit check",
+  label: "Discuss your project",
   href: "/start",
 } as const;
 
@@ -99,8 +112,10 @@ export function getActiveNavigationGroup(pathname: string): NavigationGroupId | 
   )
     return "solutions";
 
+  if (matchesPathBoundary(path, "/demos")) return "demos";
+
   if (matchesPathBoundary(path, "/research") || matchesPathBoundary(path, "/answers"))
-    return "research";
+    return "insights";
 
   if (
     matchesPathBoundary(path, "/company") ||

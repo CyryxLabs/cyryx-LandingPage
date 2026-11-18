@@ -43,7 +43,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     const productsTrigger = nav.getByRole("button", { name: /^Products$/ });
-    const solutionsTrigger = nav.getByRole("button", { name: /^Services$/ });
+    const solutionsTrigger = nav.getByRole("button", { name: /^Solutions$/ });
 
     // 9. Products opens
     await productsTrigger.click();
@@ -71,7 +71,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     // 13. Exact Solutions labels and hrefs
-    const solutionsTrigger = nav.getByRole("button", { name: /^Services$/ });
+    const solutionsTrigger = nav.getByRole("button", { name: /^Solutions$/ });
     await solutionsTrigger.click();
     const solutions = [
       ["AI Strategy & Roadmap", "/solutions/ai-strategy-advisory"],
@@ -93,8 +93,12 @@ test.describe("Mobile Navigation Accessibility", () => {
       );
     }
 
-    // 14. Exact Research labels and hrefs
-    await nav.getByRole("button", { name: /^Research$/ }).click();
+    // 14. Insights holds Research and Answers; Demos is a direct link.
+    await expect(nav.getByRole("link", { name: "Demos", exact: true })).toHaveAttribute(
+      "href",
+      "/demos",
+    );
+    await nav.getByRole("button", { name: /^Insights$/ }).click();
     await expect(nav.getByRole("link", { name: "Research", exact: true })).toHaveAttribute(
       "href",
       "/research",
@@ -154,7 +158,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     // 20. CTA label and href
-    const cta = nav.getByRole("link", { name: "Get a free fit check" });
+    const cta = nav.getByRole("link", { name: "Discuss your project" });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "/start");
 
@@ -186,11 +190,11 @@ test.describe("Mobile Navigation Accessibility", () => {
     await expect(closeBtn).toBeFocused();
 
     // 25. Tab trap (forward)
-    // 4 groups + 1 CTA = 5 tabs to reach end if all closed
-    for (let i = 0; i < 5; i++) {
+    // 4 group triggers + the Demos link + 1 CTA = 6 tabs to reach the end
+    for (let i = 0; i < 6; i++) {
       await page.keyboard.press("Tab");
     }
-    const cta = nav.getByRole("link", { name: "Get a free fit check" });
+    const cta = nav.getByRole("link", { name: "Discuss your project" });
     await expect(cta).toBeFocused();
 
     await page.keyboard.press("Tab");

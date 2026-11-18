@@ -189,6 +189,23 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
           >
             {PRIMARY_NAVIGATION.map((group) => {
               const isActive = activeGroup === group.id;
+              if (group.href) {
+                return (
+                  <Link
+                    key={group.id}
+                    to={group.href}
+                    resetScroll
+                    onClick={closeMenu}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "flex min-h-[44px] items-center py-5 font-sans text-base font-normal normal-case tracking-normal text-[var(--silver)] hover:text-white",
+                      isActive && "text-[var(--accent-glow)]",
+                    )}
+                  >
+                    {group.label}
+                  </Link>
+                );
+              }
               return (
                 <AccordionItem key={group.id} value={group.id} className="border-none">
                   <AccordionTrigger

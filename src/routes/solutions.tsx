@@ -102,12 +102,6 @@ function SolutionsHub() {
                       <h3 className="cy-h3">{service.name}</h3>
                       <p>{service.cardLine}</p>
                       <p className="cy-card__pain">{service.cardPain}</p>
-                      <dl style={{ margin: 0 }}>
-                        <div className="cy-kv">
-                          <dt>Timeline</dt>
-                          <dd>{service.timeline}</dd>
-                        </div>
-                      </dl>
                       <span className="cy-card__go">
                         Learn more <span aria-hidden="true">→</span>
                       </span>
@@ -124,9 +118,9 @@ function SolutionsHub() {
         <div className="cy-container">
           <SectionHead
             id="why-heading"
-            eyebrow="Why these ten"
-            title="Built from what companies say is in the way."
-            lead="We mapped the service list to the obstacles US businesses report in 2026 surveys, by company size."
+            eyebrow="Market context"
+            title="Most companies use AI. Few have it built into core work."
+            lead="Figures from 2026 third-party surveys, linked to each publisher's page. They describe the market, not Cyryx Labs results."
             split
           />
           <div className="cy-stats">

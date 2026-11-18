@@ -14,6 +14,7 @@ import { Route as BriefRouteImport } from './routes/brief'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DemosRouteImport } from './routes/demos'
 import { Route as EngagementModelRouteImport } from './routes/engagement-model'
 import { Route as ManagedOperationsRouteImport } from './routes/managed-operations'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -83,6 +84,11 @@ const CompanyRoute = CompanyRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemosRoute = DemosRouteImport.update({
+  id: '/demos',
+  path: '/demos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EngagementModelRoute = EngagementModelRouteImport.update({
@@ -335,6 +341,7 @@ export interface FileRoutesByFullPath {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/demos': typeof DemosRoute
   '/engagement-model': typeof EngagementModelRoute
   '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
@@ -387,6 +394,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/demos': typeof DemosRoute
   '/engagement-model': typeof EngagementModelRoute
   '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
@@ -440,6 +448,7 @@ export interface FileRoutesById {
   '/careers': typeof CareersRoute
   '/company': typeof CompanyRoute
   '/contact': typeof ContactRoute
+  '/demos': typeof DemosRoute
   '/engagement-model': typeof EngagementModelRoute
   '/managed-operations': typeof ManagedOperationsRoute
   '/privacy': typeof PrivacyRoute
@@ -494,6 +503,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/demos'
     | '/engagement-model'
     | '/managed-operations'
     | '/privacy'
@@ -546,6 +556,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/demos'
     | '/engagement-model'
     | '/managed-operations'
     | '/privacy'
@@ -598,6 +609,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/company'
     | '/contact'
+    | '/demos'
     | '/engagement-model'
     | '/managed-operations'
     | '/privacy'
@@ -651,6 +663,7 @@ export interface RootRouteChildren {
   CareersRoute: typeof CareersRoute
   CompanyRoute: typeof CompanyRoute
   ContactRoute: typeof ContactRoute
+  DemosRoute: typeof DemosRoute
   EngagementModelRoute: typeof EngagementModelRoute
   ManagedOperationsRoute: typeof ManagedOperationsRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -717,6 +730,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demos': {
+      id: '/demos'
+      path: '/demos'
+      fullPath: '/demos'
+      preLoaderRoute: typeof DemosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/engagement-model': {
@@ -1096,6 +1116,7 @@ const rootRouteChildren: RootRouteChildren = {
   CareersRoute: CareersRoute,
   CompanyRoute: CompanyRoute,
   ContactRoute: ContactRoute,
+  DemosRoute: DemosRoute,
   EngagementModelRoute: EngagementModelRoute,
   ManagedOperationsRoute: ManagedOperationsRoute,
   PrivacyRoute: PrivacyRoute,

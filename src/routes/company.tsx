@@ -7,7 +7,6 @@ import {
   buildOrganizationJsonLd,
   buildWebPageJsonLd,
 } from "@/components/cyryx/seo/seo";
-import { GUARDRAILS } from "@/data/home";
 
 const PATH = "/company";
 const TITLE = "About Cyryx Labs — US AI Systems Company";
@@ -23,7 +22,7 @@ const PILLARS = [
   },
   {
     name: "Products",
-    body: "AI products we design and run ourselves: Onyx, an AI coworker that lives on your Windows PC, and AEXOS, an agentic orchestration framework.",
+    body: "AI products we design and run ourselves: Onyx, an AI coworker for Windows in free beta; AEXOS, an agent framework for software projects; and Orbit, in development.",
     href: "/products",
     cta: "See the products",
   },
@@ -42,7 +41,7 @@ const PRINCIPLES = [
   },
   {
     title: "Say it in writing",
-    body: "Scope, timeline, price and acceptance checklist are agreed on paper before any work starts.",
+    body: "A written scope you approve before work starts. The timeline and the acceptance checklist are set in the same written plan.",
   },
   {
     title: "Sometimes the answer is no",
@@ -50,15 +49,31 @@ const PRINCIPLES = [
   },
   {
     title: "A demo is not a product",
-    body: "Systems are tested on real cases, with their limits written down, before anyone depends on them.",
+    body: "Systems are tested on real cases before anyone depends on them, and their limits are written into the scope.",
   },
   {
-    title: "You own it",
-    body: "At final payment you own the code, content and data we create for you. No lock-in.",
+    title: "Ownership in writing",
+    body: "Ownership and licensing are defined in each agreement. Your data stays yours.",
   },
   {
     title: "Someone answers for it",
-    body: "Every system has a named owner, a way to change it and support that fits how much depends on it.",
+    body: "Who owns each system, how it is changed and what support it gets are defined in the scope.",
+  },
+] as const;
+
+/** Controls are agreed per project, not promised universally (founder decision 2026-11-17). */
+const CONTROLS = [
+  {
+    title: "Access",
+    body: "What each system may read and change is defined in the scope of each project.",
+  },
+  {
+    title: "Approvals",
+    body: "Which actions wait for a person on your team is defined in the scope.",
+  },
+  {
+    title: "Logging and spending",
+    body: "What is logged, who can see it and the spending limits are defined in the scope.",
   },
 ] as const;
 
@@ -167,10 +182,11 @@ function CompanyPage() {
           <SectionHead
             id="trust-heading"
             eyebrow="Responsible AI"
-            title="Every AI system we build stays inside limits you set."
+            title="Limits you agree to, in writing."
+            lead="Access, approvals, logging and spending limits are defined in the scope of each project."
           />
           <ul className="cy-guard">
-            {GUARDRAILS.map((item) => (
+            {CONTROLS.map((item) => (
               <li key={item.title} data-cy-reveal>
                 <h3 className="cy-h3">{item.title}</h3>
                 <p className="cy-muted">{item.body}</p>

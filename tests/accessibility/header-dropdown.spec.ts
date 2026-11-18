@@ -11,12 +11,15 @@ test.describe("Header Dropdown Accessibility", () => {
     await page.setViewportSize({ width: 1280, height: 900 });
   });
 
-  test("Four top-level group triggers render", async ({ page }) => {
+  test("Four top-level group triggers and the Demos link render", async ({ page }) => {
     await openHydrated(page);
-    const triggers = ["Products", "Services", "Research", "Company"];
+    const triggers = ["Products", "Solutions", "Insights", "Company"];
     for (const name of triggers) {
       await expect(page.getByRole("button", { name, exact: true })).toBeVisible();
     }
+    await expect(
+      page.locator('header nav[aria-label="Primary"]').getByRole("link", { name: "Demos" }),
+    ).toHaveAttribute("href", "/demos");
   });
 
   test("Products opens and closes by click", async ({ page }) => {
@@ -41,10 +44,10 @@ test.describe("Header Dropdown Accessibility", () => {
     await expect(dropdownLink).not.toBeVisible();
   });
 
-  test("Opening Services closes Products", async ({ page }) => {
+  test("Opening Solutions closes Products", async ({ page }) => {
     await openHydrated(page);
     const pTrigger = page.getByRole("button", { name: "Products", exact: true });
-    const sTrigger = page.getByRole("button", { name: "Services", exact: true });
+    const sTrigger = page.getByRole("button", { name: "Solutions", exact: true });
 
     // Pointer behavior is covered above. Use keyboard activation here so this
     // state-coordination assertion is not coupled to layout shifts under load.

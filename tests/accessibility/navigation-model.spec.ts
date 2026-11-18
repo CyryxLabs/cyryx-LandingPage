@@ -12,7 +12,9 @@ import {
 test.describe("Navigation Model", () => {
   test("A. Top-level order", () => {
     const labels = PRIMARY_NAVIGATION.map((g) => g.label);
-    expect(labels).toEqual(["Products", "Services", "Research", "Company"]);
+    expect(labels).toEqual(["Products", "Solutions", "Demos", "Insights", "Company"]);
+    // Demos is a direct link, not a menu.
+    expect(PRIMARY_NAVIGATION.find((g) => g.id === "demos")?.href).toBe("/demos");
   });
 
   test("A2. Products group lists every product with its real home", () => {
@@ -29,7 +31,7 @@ test.describe("Navigation Model", () => {
   });
 
   test("B. CTA", () => {
-    expect(PRIMARY_NAVIGATION_CTA).toEqual({ label: "Get a free fit check", href: "/start" });
+    expect(PRIMARY_NAVIGATION_CTA).toEqual({ label: "Discuss your project", href: "/start" });
   });
 
   test("D. Uniqueness", () => {
@@ -73,9 +75,12 @@ test.describe("Navigation Model", () => {
     expect(getActiveNavigationGroup("/managed-operations")).toBe("solutions");
     expect(getActiveNavigationGroup("/engagement-model")).toBe("solutions");
 
-    // RESEARCH
-    expect(getActiveNavigationGroup("/research")).toBe("research");
-    expect(getActiveNavigationGroup("/answers")).toBe("research");
+    // DEMOS
+    expect(getActiveNavigationGroup("/demos")).toBe("demos");
+
+    // INSIGHTS
+    expect(getActiveNavigationGroup("/research")).toBe("insights");
+    expect(getActiveNavigationGroup("/answers")).toBe("insights");
 
     // COMPANY
     expect(getActiveNavigationGroup("/company")).toBe("company");

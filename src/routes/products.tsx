@@ -3,13 +3,13 @@ import { SiteShell } from "@/components/site/SiteShell";
 import { FinalCta, PageHero, SectionHead } from "@/components/site/ui";
 import { buildBreadcrumbJsonLd, buildHead, buildWebPageJsonLd } from "@/components/cyryx/seo/seo";
 import { PRODUCTS } from "@/data/products";
-import { AexosShowcase, OnyxShowcase } from "@/components/site/ProductShowcase";
+import { AexosShowcase, OnyxShowcase, OrbitCard } from "@/components/site/ProductShowcase";
 import { absoluteSiteUrl } from "@/lib/site-url";
 
 const PATH = "/products";
-const TITLE = "AI Products by Cyryx Labs: Onyx and AEXOS";
+const TITLE = "AI Products by Cyryx Labs: Onyx, AEXOS and Orbit";
 const DESC =
-  "Products designed and run by Cyryx Labs: Onyx, an AI coworker that lives on your Windows PC, and AEXOS, a framework that makes AI agents work to a method.";
+  "Cyryx Labs products: Onyx, an AI coworker for Windows in free beta; AEXOS, an agent framework with Core free on npm; and Orbit, in development.";
 
 export const Route = createFileRoute("/products")({
   head: ({ matches }) => {
@@ -29,7 +29,8 @@ export const Route = createFileRoute("/products")({
           "@type": "ListItem",
           position: index + 1,
           name: product.name,
-          url: absoluteSiteUrl(product.path),
+          // Orbit is in development: listed by name only, with no page or link.
+          ...(product.published ? { url: absoluteSiteUrl(product.path) } : {}),
         })),
       },
     ]);
@@ -47,13 +48,14 @@ function ProductsHub() {
         crumbs={[{ name: "Home", path: "/" }, { name: "Products" }]}
         eyebrow="Products"
         title="AI products we design, run and answer for."
-        lead="Cyryx Labs builds its own AI products alongside client work. Each one is shown at its real stage: Onyx is a free beta for Windows, and AEXOS Core is free on npm."
+        lead="Cyryx Labs builds its own AI products alongside client work. Each one is shown at its real stage: Onyx is a free beta for Windows, AEXOS Core is free on npm, and Orbit is in development."
       />
 
       <section className="cy-section cy-prod" aria-label="Products">
         <div className="cy-container">
           <OnyxShowcase as="h2" />
           <AexosShowcase as="h2" />
+          <OrbitCard as="h2" />
         </div>
       </section>
 
@@ -63,7 +65,7 @@ function ProductsHub() {
             id="products-services-heading"
             eyebrow="Products and services"
             title="Need something built for your company instead?"
-            lead="Products are ours. Services are yours: scoped to your business, with code and data you own at the end."
+            lead="Products are ours. Services are scoped to your business in a written scope you approve before work starts. Ownership and licensing are defined in each agreement."
             split
           >
             <p>

@@ -1,26 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { SiteShell } from "@/components/site/SiteShell";
-import { HeroFilm } from "@/components/site/HeroFilm";
-import { AexosShowcase, OnyxShowcase } from "@/components/site/ProductShowcase";
-import { WorkflowConsole } from "@/components/site/WorkflowConsole";
-import { Scorecard } from "@/components/site/Scorecard";
+import { WorkflowDemo } from "@/components/home/WorkflowDemo";
+import { AEXOS, ONYX, ORBIT } from "@/data/products";
+import { AEXOS_PRODUCT } from "@/data/site-taxonomy";
 import {
-  AskAssistant,
-  Faq,
-  FinalCta,
-  SectionHead,
-  ServiceIcon,
-  SourceNote,
-  StartButton,
-  Words,
-} from "@/components/site/ui";
-import { ADOPTION_GAP, MARKET_REVIEWED, SEGMENTS } from "@/data/market";
-import { SERVICES } from "@/data/services";
-import { PUBLICATIONS } from "@/data/publications";
-import { GUARDRAILS, HOME_FAQ, MARQUEE, PROCESS_STEPS } from "@/data/home";
+  ACCEPTANCE_GUARANTEE,
+  DELIVERY_STEPS,
+  EVIDENCE,
+  HOME_CLOSE,
+  HOME_COMPANY,
+  HOME_HERO,
+  HOME_INTENTS,
+  HOME_PATHS,
+  SCOPE_CONTROLS,
+  SOLUTION_GROUPS,
+  WORKFLOW_DEMO,
+} from "@/data/home";
 import { absoluteSiteUrl, SITE_URL } from "@/lib/site-url";
-import { buildStartProjectHref } from "@/lib/cta";
+import { buildStartProjectHref, type StartContextIntent } from "@/lib/cta";
 import { trackCta } from "@/lib/track-cta";
 import {
   buildCyryxOrganizationNode,
@@ -29,10 +27,11 @@ import {
 } from "@/data/seo-entities";
 
 const HOME_URL = SITE_URL;
-const HOME_TITLE = "Cyryx Labs — AI Systems, Automation & Integration";
+const HOME_TITLE = "Cyryx Labs — AI Products, Automation & Integration";
 const HOME_DESCRIPTION =
-  "Cyryx Labs builds AI systems, workflow automations and integrations for US companies, and makes its own AI products, Onyx and AEXOS. A human stays in control.";
+  "Cyryx Labs builds AI software and helps businesses connect AI to their existing systems, automate workflows, and develop custom solutions.";
 const HOME_SOCIAL_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20261113-1");
+const HOME_REVIEWED = "2026-11-17";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -58,19 +57,19 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: HOME_URL },
-      // First frame of the hero film: the largest element on the first screen.
+      // The hero plate is the largest image on the first screen.
       {
         rel: "preload",
         as: "image",
-        href: "/media/hero-film-poster.webp",
-        media: "(min-width: 900px)",
+        href: "/media/precision/hero-metal-1920.webp",
+        media: "(min-width: 961px)",
         fetchPriority: "high",
       },
       {
         rel: "preload",
         as: "image",
-        href: "/media/hero-film-poster-960.webp",
-        media: "(max-width: 899px)",
+        href: "/media/precision/hero-metal-tall-600.webp",
+        media: "(max-width: 960px)",
         fetchPriority: "high",
       },
     ],
@@ -99,7 +98,7 @@ export const Route = createFileRoute("/")({
               url: HOME_URL,
               name: HOME_TITLE,
               description: HOME_DESCRIPTION,
-              dateModified: MARKET_REVIEWED,
+              dateModified: HOME_REVIEWED,
               isPartOf: { "@id": CYRYX_WEBSITE_ID },
               about: { "@id": CYRYX_ORGANIZATION_ID },
               publisher: {
@@ -111,22 +110,13 @@ export const Route = createFileRoute("/")({
             },
             {
               "@type": "ItemList",
-              "@id": `${HOME_URL}#services`,
-              name: "Cyryx Labs services",
-              itemListElement: SERVICES.map((service, index) => ({
+              "@id": `${HOME_URL}#solutions`,
+              name: "Cyryx Labs solutions",
+              itemListElement: SOLUTION_GROUPS.map((group, index) => ({
                 "@type": "ListItem",
                 position: index + 1,
-                name: service.name,
-                url: absoluteSiteUrl(service.path),
-              })),
-            },
-            {
-              "@type": "FAQPage",
-              "@id": `${HOME_URL}#faq`,
-              mainEntity: HOME_FAQ.map((item) => ({
-                "@type": "Question",
-                name: item.q,
-                acceptedAnswer: { "@type": "Answer", text: item.a },
+                name: group.title,
+                url: absoluteSiteUrl(group.href),
               })),
             },
           ],
@@ -138,611 +128,773 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+  useHomeMotion();
   return (
     <SiteShell source="home">
-      <Hero />
-      <Marquee />
-      <Pillars />
-      <Gap />
-      <Demo />
-      <Audiences />
-      <Services />
-      <Process />
-      <Control />
-      <Products />
-      <Research />
-      <Readiness />
-      <Questions />
-      <FinalCta source="home" />
+      <div className="hm">
+        <Hero />
+        <Paths />
+        <Workflow />
+        <Solutions />
+        <Products />
+        <Evidence />
+        <Delivery />
+        <Company />
+        <Close />
+      </div>
     </SiteShell>
   );
 }
 
-function Hero() {
+/** Short entrances and a light parallax. Content is visible without JS. */
+function useHomeMotion() {
+  useEffect(() => {
+    const root = document.documentElement;
+    // Reduced motion and the low-performance path (Save-Data, weak devices)
+    // get the content at rest, with no entrance states.
+    const reduce =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      root.classList.contains("cx-low-perf");
+    const targets = Array.from(document.querySelectorAll<HTMLElement>(".hm [data-hm-in]"));
+    if (reduce || !("IntersectionObserver" in window)) {
+      targets.forEach((el) => el.classList.add("is-in"));
+      return;
+    }
+    root.classList.add("hm-js");
+    const pending = new Set(targets);
+    const reveal = (el: Element) => {
+      el.classList.add("is-in");
+      pending.delete(el as HTMLElement);
+      io.unobserve(el);
+    };
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) reveal(entry.target);
+        }),
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+    );
+    targets.forEach((el) => io.observe(el));
+
+    const hero = document.querySelector<HTMLElement>(".hm-hero");
+    const plates = Array.from(document.querySelectorAll<HTMLElement>(".hm [data-hm-par]"));
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    let mx = 0;
+    let my = 0;
+    let raf = 0;
+    const frame = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      // A jump (anchor link, restored scroll) can skip past elements without
+      // them ever intersecting; reveal anything already above the fold line.
+      pending.forEach((el) => {
+        if (el.getBoundingClientRect().top < vh * 0.92) reveal(el);
+      });
+      if (hero) {
+        hero.style.setProperty("--mx", mx.toFixed(3));
+        hero.style.setProperty("--my", my.toFixed(3));
+        if (window.scrollY < vh * 1.2)
+          hero.style.setProperty("--sy", `${(window.scrollY * 0.18).toFixed(1)}px`);
+      }
+      plates.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < vh)
+          el.style.setProperty("--py", `${((r.top + r.height / 2 - vh / 2) * -0.06).toFixed(1)}px`);
+      });
+    };
+    const request = () => {
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
+    const onPointer = (event: PointerEvent) => {
+      mx = event.clientX / window.innerWidth - 0.5;
+      my = event.clientY / window.innerHeight - 0.5;
+      request();
+    };
+    window.addEventListener("scroll", request, { passive: true });
+    if (fine) window.addEventListener("pointermove", onPointer, { passive: true });
+    frame();
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", request);
+      window.removeEventListener("pointermove", onPointer);
+      root.classList.remove("hm-js");
+    };
+  }, []);
+}
+
+function Arrow({ external = false }: { external?: boolean }) {
   return (
-    <section id="top" className="cy-hero" data-hero aria-labelledby="hero-heading">
-      <div className="cy-hero__veil" aria-hidden="true" />
-      <div className="cy-hero__ignite" aria-hidden="true" />
-      <div className="cy-container cy-hero__stage">
-        <p className="cy-eyebrow cy-in">Cyryx Labs · AI technology company</p>
-        <h1 id="hero-heading" className="cy-hero__title">
-          <span className="cy-hero__l">
-            <Words auto text="We build AI systems" />
-          </span>{" "}
-          <span className="cy-hero__l">
-            <Words auto start={4} text="that" />{" "}
-            <em>
-              <Words auto start={5} text="do real work." />
-            </em>
-          </span>
-        </h1>
-        <p className="cy-hero__sub cy-in" style={{ "--cy-i": 9 } as React.CSSProperties}>
-          We design, build and operate AI systems, workflow automation and system integration for
-          companies across the United States, with human approval, audit logs and cost limits built
-          in.
-        </p>
-        <div className="cy-actions cy-in" style={{ "--cy-i": 11 } as React.CSSProperties}>
-          <StartButton section="hero" source="home" />
-          <a
-            href="#services"
-            data-cta="secondary"
-            className="cy-btn cy-btn--ghost"
-            onClick={() => trackCta({ cta: "see_delivery", section: "hero", href: "#services" })}
+    <span className="hm-ar" aria-hidden="true">
+      {external ? "↗" : "→"}
+    </span>
+  );
+}
+
+function Kicker({ children }: { children: string }) {
+  return (
+    <p className="hm-kicker" data-hm-in>
+      {children}
+    </p>
+  );
+}
+
+/* ═════════ 1 · Hero ═════════ */
+function Hero() {
+  const start = buildStartProjectHref({ source: "home" });
+  return (
+    <section className="hm-hero" id="top" data-hero aria-labelledby="hero-heading">
+      <div className="hm-plate" aria-hidden="true">
+        <picture>
+          <source
+            media="(max-width: 960px)"
+            srcSet="/media/precision/hero-metal-tall-600.webp 600w, /media/precision/hero-metal-tall-900.webp 900w"
+            sizes="100vw"
+          />
+          <img
+            src="/media/precision/hero-metal-1920.webp"
+            srcSet="/media/precision/hero-metal-1280.webp 1280w, /media/precision/hero-metal-1920.webp 1920w"
+            sizes="100vw"
+            alt=""
+            width={1920}
+            height={1080}
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
+      </div>
+      <div className="hm-sweep" aria-hidden="true" />
+      <div className="hm-wrap hm-hero-grid">
+        <div className="hm-hero-copy">
+          <p className="hm-eyebrow">{HOME_HERO.eyebrow}</p>
+          <h1 id="hero-heading">
+            {HOME_HERO.title} <span>{HOME_HERO.titleLine2}</span>
+          </h1>
+          <p className="hm-hero-body">{HOME_HERO.body}</p>
+          <div className="hm-ctas">
+            <a
+              href={start}
+              className="hm-btn hm-btn--pri"
+              data-cta="primary"
+              onClick={() => trackCta({ cta: "start_project", section: "hero", href: start })}
+            >
+              {HOME_HERO.primary} <Arrow />
+            </a>
+            <a
+              href="#products"
+              className="hm-btn hm-btn--sec"
+              data-cta="secondary"
+              onClick={() => trackCta({ cta: "view_product", section: "hero", href: "#products" })}
+            >
+              {HOME_HERO.secondary}
+            </a>
+          </div>
+          <ul className="hm-support" aria-label="How we work">
+            {HOME_HERO.support.map((s) => (
+              <li key={s}>{s}</li>
+            ))}
+          </ul>
+        </div>
+        <div
+          className="hm-surfaces"
+          role="img"
+          aria-label="Illustrative workflow with sample data: an inquiry, an AI summary, and a reply waiting for approval"
+        >
+          <div className="hm-surf hm-s1" aria-hidden="true">
+            <div className="hm-surf-top">
+              <span>Inbox</span>
+              <span className="hm-chip">New</span>
+            </div>
+            <b>“Can we move Thursday’s onboarding call?”</b>
+            <p>Maria Chen · Northline Dental</p>
+          </div>
+          <div className="hm-surf hm-s2" aria-hidden="true">
+            <div className="hm-surf-top">
+              <span>AI step · summary</span>
+              <span className="hm-chip hm-chip--t">Ready</span>
+            </div>
+            <b>Reschedule request · next week</b>
+            <p>Contact found in CRM. Two open slots suggested.</p>
+          </div>
+          <div className="hm-surf hm-s3" aria-hidden="true">
+            <div className="hm-surf-top">
+              <span>Reply draft</span>
+              <span className="hm-chip hm-chip--a">Needs approval</span>
+            </div>
+            <b>“Tuesday at 10:00 or Wednesday at 10:30?”</b>
+            <div className="hm-surf-row">
+              <span className="hm-chip">Edit</span>
+              <span className="hm-chip hm-chip--t">Approve &amp; send</span>
+            </div>
+          </div>
+          <p className="hm-surf-note" aria-hidden="true">
+            Sample data · illustrative
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═════════ 2 · Two starting points ═════════ */
+function Paths() {
+  return (
+    <section className="hm-sec" id="paths" aria-labelledby="hm-paths-title">
+      <div className="hm-wrap">
+        <div className="hm-head">
+          <Kicker>Where to start</Kicker>
+          <h2 className="hm-h2" id="hm-paths-title" data-hm-in>
+            {HOME_PATHS.title}
+          </h2>
+        </div>
+        <div className="hm-paths">
+          <Link
+            to={HOME_PATHS.products.href}
+            className="hm-path"
+            data-hm-in
+            onClick={() =>
+              trackCta({ cta: "intent_selected", section: "paths", href: HOME_PATHS.products.href })
+            }
           >
-            See what we build
+            <div className="hm-path-art hm-path-art--prod" aria-hidden="true">
+              <img
+                src="/media/precision/hero-metal-1280.webp"
+                alt=""
+                loading="lazy"
+                width={1280}
+                height={720}
+              />
+              <div className="hm-plaques">
+                <div className="hm-plaque">
+                  <b>{ONYX.name}</b>
+                  <span>Free beta</span>
+                </div>
+                <div className="hm-plaque">
+                  <b>{AEXOS.name}</b>
+                  <span>Core on npm</span>
+                </div>
+                <div className="hm-plaque hm-plaque--dev">
+                  <b>{ORBIT.name}</b>
+                  <span>{ORBIT.stage}</span>
+                </div>
+              </div>
+            </div>
+            <div className="hm-path-txt">
+              <p className="hm-label">{HOME_PATHS.products.kicker}</p>
+              <h3>{HOME_PATHS.products.title}</h3>
+              <p>{HOME_PATHS.products.body}</p>
+              <span className="hm-lnk">
+                {HOME_PATHS.products.cta} <Arrow />
+              </span>
+            </div>
+          </Link>
+          <Link
+            to={HOME_PATHS.solutions.href}
+            className="hm-path"
+            data-hm-in
+            style={{ "--d": "80ms" } as CSSProperties}
+            onClick={() =>
+              trackCta({
+                cta: "intent_selected",
+                section: "paths",
+                href: HOME_PATHS.solutions.href,
+              })
+            }
+          >
+            <div className="hm-path-art hm-path-art--sol" aria-hidden="true">
+              <svg viewBox="0 0 560 240" preserveAspectRatio="xMidYMid meet">
+                <path className="w" d="M92 70 C170 70 190 120 250 120" />
+                <path className="w" d="M92 170 C170 170 190 120 250 120" />
+                <path className="w w--t" d="M330 120 L400 120" />
+                <path className="w" d="M480 120 C488 120 486 70 492 70" />
+                <path className="w" d="M480 120 C488 120 486 170 492 170" />
+                <g className="n">
+                  <rect x="20" y="52" width="80" height="36" rx="8" />
+                  <text x="60" y="75" textAnchor="middle">
+                    Email
+                  </text>
+                </g>
+                <g className="n">
+                  <rect x="20" y="152" width="80" height="36" rx="8" />
+                  <text x="60" y="175" textAnchor="middle">
+                    Forms
+                  </text>
+                </g>
+                <g className="n n--ai">
+                  <rect x="250" y="100" width="80" height="40" rx="10" />
+                  <text x="290" y="125" textAnchor="middle">
+                    AI step
+                  </text>
+                </g>
+                <g className="n n--p">
+                  <rect x="400" y="100" width="80" height="40" rx="10" />
+                  <text x="440" y="125" textAnchor="middle">
+                    Approve
+                  </text>
+                </g>
+                <g className="n">
+                  <rect x="492" y="52" width="64" height="36" rx="8" />
+                  <text x="524" y="75" textAnchor="middle">
+                    CRM
+                  </text>
+                </g>
+                <g className="n">
+                  <rect x="492" y="152" width="64" height="36" rx="8" />
+                  <text x="524" y="175" textAnchor="middle">
+                    Reply
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div className="hm-path-txt">
+              <p className="hm-label">{HOME_PATHS.solutions.kicker}</p>
+              <h3>{HOME_PATHS.solutions.title}</h3>
+              <p>{HOME_PATHS.solutions.body}</p>
+              <span className="hm-lnk">
+                {HOME_PATHS.solutions.cta} <Arrow />
+              </span>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═════════ 3 · Workflow example ═════════ */
+function Workflow() {
+  const start = buildStartProjectHref({ source: "home", intent: "workflow-automation" });
+  return (
+    <section className="hm-sec hm-sec--flush" id="workflow" aria-labelledby="hm-wf-title">
+      <div className="hm-wrap">
+        <div className="hm-head">
+          <Kicker>Example workflow</Kicker>
+          <h2 className="hm-h2" id="hm-wf-title" data-hm-in>
+            {WORKFLOW_DEMO.title}
+          </h2>
+          <p className="hm-lede" data-hm-in>
+            {WORKFLOW_DEMO.lead}
+          </p>
+        </div>
+        <WorkflowDemo />
+        <div className="hm-wf-foot">
+          <p className="hm-disclaim">
+            <b>{WORKFLOW_DEMO.label}</b> {WORKFLOW_DEMO.note}
+          </p>
+          <a
+            href={start}
+            className="hm-btn hm-btn--sec"
+            onClick={() =>
+              trackCta({ cta: "start_project", section: "workflow_demo", href: start })
+            }
+          >
+            {WORKFLOW_DEMO.cta} <Arrow />
           </a>
         </div>
-        <div className="cy-hero__meta cy-in" style={{ "--cy-i": 13 } as React.CSSProperties}>
-          <ul className="cy-trust">
-            <li>Fixed scope and quote in writing</li>
-            <li>Human approval on what matters</li>
-            <li>You own the code and data</li>
-          </ul>
-          <AskAssistant source="hero" label="Ask the Cyryx assistant" />
-        </div>
       </div>
-      <HeroFilm />
     </section>
   );
 }
 
-function Marquee() {
-  const items = [...MARQUEE, ...MARQUEE];
-  return (
-    <div className="cy-marquee" aria-hidden="true">
-      <div className="cy-marquee__track">
-        {items.map((item, index) => (
-          <span key={`${item}-${index}`} data-t={item} />
-        ))}
-      </div>
-    </div>
-  );
-}
+/* ═════════ 4 · Solutions ═════════ */
+const ICONS: Record<(typeof SOLUTION_GROUPS)[number]["icon"], ReactNode> = {
+  compass: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M15.5 8.5l-2 5-5 2 2-5z" />
+    </>
+  ),
+  connect: (
+    <>
+      <rect x="3" y="4" width="6" height="6" rx="1.5" />
+      <rect x="15" y="14" width="6" height="6" rx="1.5" />
+      <path d="M9 7h4a2 2 0 0 1 2 2v5" />
+    </>
+  ),
+  build: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M3 9h18M9 13l-2 2 2 2M15 13l2 2-2 2" />
+    </>
+  ),
+  pulse: <path d="M3 12h4l2-5 4 10 2-5h6" />,
+};
 
-const PILLARS = [
-  {
-    n: "01",
-    kind: "Solutions",
-    title: "We build AI into your business.",
-    body: "AI systems, workflow automations and integrations, designed around the tools and rules you already have. Fixed written scope, and you own the result.",
-    cta: "See the ten services",
-    href: "#services",
-  },
-  {
-    n: "02",
-    kind: "Products",
-    title: "We make our own AI products.",
-    body: "Onyx, an AI coworker that lives on your Windows PC, and AEXOS, a framework that makes AI agents follow a method. Both are available today.",
-    cta: "Meet Onyx and AEXOS",
-    href: "#products",
-  },
-  {
-    n: "03",
-    kind: "Applied AI Lab",
-    title: "We publish what we learn.",
-    body: "Our lab studies how AI systems should be controlled, measured and trusted, and publishes the results as open, citable research.",
-    cta: "Read the research",
-    href: "#research",
-  },
-] as const;
-
-function Pillars() {
+function Solutions() {
   return (
-    <section id="what-we-do" className="cy-section cy-pillars" aria-labelledby="pillars-heading">
-      <div className="cy-container">
-        <SectionHead
-          id="pillars-heading"
-          eyebrow="What Cyryx Labs does"
-          title="One AI company. Three ways it works for you."
-          lead="Cyryx Labs is an applied AI company based in Florida. We build AI for other companies, ship products of our own, and publish the research behind both."
-          split
-        />
-        <ul className="cy-pillars__grid">
-          {PILLARS.map((pillar, index) => (
-            <li key={pillar.n} data-cy-reveal style={{ "--cy-i": index } as React.CSSProperties}>
-              <a
-                href={pillar.href}
-                className="cy-pillar cy-spot"
+    <section className="hm-sec hm-sec--tint" id="solutions" aria-labelledby="hm-sol-title">
+      <div className="hm-wrap">
+        <div className="hm-head">
+          <Kicker>Solutions</Kicker>
+          <h2 className="hm-h2" id="hm-sol-title" data-hm-in>
+            Start with the work you want to improve.
+          </h2>
+        </div>
+        <div className="hm-sols">
+          {SOLUTION_GROUPS.map((group, i) => (
+            <article
+              className="hm-sol"
+              key={group.id}
+              data-hm-in
+              style={{ "--d": `${i * 60}ms` } as CSSProperties}
+            >
+              <span className="hm-ic" aria-hidden="true">
+                <svg viewBox="0 0 24 24">{ICONS[group.icon]}</svg>
+              </span>
+              <h3>{group.title}</h3>
+              <p>{group.body}</p>
+              <Link
+                to={group.href}
+                className="hm-lnk hm-lnk--cover"
                 onClick={() =>
-                  trackCta({ cta: "see_delivery", section: "paths", href: pillar.href })
+                  trackCta({ cta: "intent_selected", section: "solutions", href: group.href })
                 }
               >
-                <span className="cy-pillar__n" aria-hidden="true">
-                  {pillar.n}
-                </span>
-                <span className="cy-pillar__kind">{pillar.kind}</span>
-                <h3 className="cy-h3">{pillar.title}</h3>
-                <p>{pillar.body}</p>
-                <span className="cy-card__go">
-                  {pillar.cta} <span aria-hidden="true">→</span>
-                </span>
-              </a>
-            </li>
+                {group.cta} <Arrow />
+              </Link>
+            </article>
           ))}
-        </ul>
+        </div>
+        <div className="hm-all">
+          <Link to="/solutions" className="hm-lnk">
+            All solutions <Arrow />
+          </Link>
+        </div>
       </div>
     </section>
   );
 }
 
-function Gap() {
+/* ═════════ 5 · Products ═════════ */
+function useProductViewed(id: string) {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          trackCta({ cta: "product_viewed", section: "product", href: `#${id}` });
+          io.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [id]);
+  return ref;
+}
+
+function Products() {
+  const onyxRef = useProductViewed("onyx");
+  const aexosRef = useProductViewed("aexos");
   return (
-    <section
-      id="market"
-      className="cy-scene cy-scene--market"
-      data-cy-scene="pin"
-      aria-labelledby="gap-heading"
-    >
-      <div className="cy-scene__stage">
-        <div className="cy-scene__glow" aria-hidden="true" />
-        <div className="cy-container cy-scene__inner">
-          <p className="cy-eyebrow" data-cy-at="0">
-            The state of AI in US business, 2026
-          </p>
-          <h2 id="gap-heading" className="cy-mega">
-            <span data-cy-at="0.02">Almost everyone has AI.</span>{" "}
-            <span data-cy-at="0.2" className="cy-mega__accent">
-              Very few have it working.
-            </span>
+    <section className="hm-sec" id="products" aria-labelledby="hm-prod-title">
+      <div className="hm-wrap">
+        <div className="hm-head">
+          <Kicker>Products</Kicker>
+          <h2 className="hm-h2" id="hm-prod-title" data-hm-in>
+            Built by Cyryx. Designed for specific jobs.
           </h2>
-          <div className="cy-stats">
-            {ADOPTION_GAP.map((item, index) => (
-              <article
-                key={item.id}
-                className="cy-stat"
-                data-cy-at={(0.38 + index * 0.15).toFixed(2)}
-              >
-                <p className="cy-product__cat">{item.segment}</p>
-                <div className="cy-stat__pair">
-                  <span className="cy-stat__big">
-                    <span data-cy-count={item.uses}>{item.uses}</span>%
-                  </span>
-                  <span className="cy-stat__vs">
-                    <span data-cy-count={item.works}>{item.works}</span>%<small>working</small>
-                  </span>
-                </div>
-                <div className="cy-gapbar" aria-hidden="true">
-                  <i style={{ "--w": `${item.uses}%` } as React.CSSProperties} />
-                  <i style={{ "--w": `${item.works}%` } as React.CSSProperties} />
-                </div>
-                <p>
-                  <strong style={{ color: "var(--cy-ink)" }}>{item.uses}%</strong> {item.usesLabel}.
-                  Only <strong style={{ color: "var(--cy-teal)" }}>{item.works}%</strong>{" "}
-                  {item.worksLabel}.
-                </p>
-                <SourceNote id={item.source} />
-              </article>
-            ))}
-          </div>
-          <p className="cy-lead cy-scene__close" data-cy-at="0.86">
-            The tools are everywhere. What is missing is the connection to real work: the data, the
-            systems, the rules and the people. <strong>That gap is what we close.</strong>
+        </div>
+        <div className="hm-prods">
+          <article className="hm-prod hm-prod--onyx" id="onyx" ref={onyxRef} data-hm-in>
+            <div className="hm-shot">
+              <img
+                src="/media/onyx/cc-hq.webp"
+                alt="Onyx Command Center showing items that need the owner’s approval, tasks in flight and today’s events, with example data"
+                width={1600}
+                height={1000}
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="hm-tag">Internal product · example data</span>
+            </div>
+            <div className="hm-prod-body">
+              <div className="hm-prod-nm">
+                <h3>{ONYX.name}</h3>
+                <span className="hm-status">Free beta</span>
+              </div>
+              <dl>
+                <dt>What it is</dt>
+                <dd>An AI coworker for Windows</dd>
+                <dt>For</dt>
+                <dd>One owner on their own PC</dd>
+                <dt>Its job</dt>
+                <dd>
+                  Works your inbox, research and apps—and asks before it acts outside your machine.
+                </dd>
+                <dt>Requires</dt>
+                <dd>Windows 10 or 11 (64-bit) and your own AI provider keys</dd>
+              </dl>
+              <div className="hm-prod-acts">
+                <a
+                  className="hm-lnk"
+                  href={ONYX.site}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackCta({ cta: "view_product", section: "product", href: ONYX.site })
+                  }
+                >
+                  Try the beta <Arrow external />
+                </a>
+                <Link className="hm-lnk" to={ONYX.path}>
+                  How Onyx works <Arrow />
+                </Link>
+              </div>
+            </div>
+          </article>
+          <article
+            className="hm-prod"
+            id="aexos"
+            ref={aexosRef}
+            data-hm-in
+            style={{ "--d": "80ms" } as CSSProperties}
+          >
+            <div
+              className="hm-term"
+              aria-label="AEXOS install command and documented story cycle"
+              role="img"
+            >
+              <div>
+                <span className="hm-term-p">$</span> {AEXOS_PRODUCT.installCommand}
+              </div>
+              <div className="hm-term-c"># then, inside your AI coding environment:</div>
+              <div>create → validate → implement → QA gate → push</div>
+              <div className="hm-term-c"># a failing quality gate stops the change</div>
+            </div>
+            <div className="hm-prod-body">
+              <div className="hm-prod-nm">
+                <h3>{AEXOS.name}</h3>
+                <span className="hm-status">Core free on npm</span>
+              </div>
+              <dl>
+                <dt>What it is</dt>
+                <dd>An agent framework for software projects</dd>
+                <dt>For</dt>
+                <dd>Developers using AI coding tools</dd>
+                <dt>Its job</dt>
+                <dd>Runs AI coding agents through defined steps and quality checks.</dd>
+                <dt>Requires</dt>
+                <dd>Node.js 18 or later</dd>
+              </dl>
+              <div className="hm-prod-acts">
+                <Link
+                  className="hm-lnk"
+                  to={AEXOS.path}
+                  onClick={() =>
+                    trackCta({ cta: "view_product", section: "product", href: AEXOS.path })
+                  }
+                >
+                  Explore AEXOS <Arrow />
+                </Link>
+              </div>
+            </div>
+          </article>
+          <article
+            className="hm-prod hm-prod--orbit"
+            data-hm-in
+            style={{ "--d": "140ms" } as CSSProperties}
+          >
+            <div className="hm-prod-body">
+              <div className="hm-prod-nm">
+                <h3>{ORBIT.name}</h3>
+                <span className="hm-status hm-status--dev">{ORBIT.stage}</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═════════ 6 · Evidence ═════════ */
+function Evidence() {
+  return (
+    <section className="hm-sec hm-sec--flush" id="evidence" aria-labelledby="hm-ev-title">
+      <div className="hm-wrap">
+        <div className="hm-head">
+          <Kicker>Evidence</Kicker>
+          <h2 className="hm-h2" id="hm-ev-title" data-hm-in>
+            See the work. Understand the decisions.
+          </h2>
+          <p className="hm-lede" data-hm-in>
+            Every example says what it is, what is real, and what is simulated.
           </p>
         </div>
-      </div>
-    </section>
-  );
-}
-
-function Demo() {
-  return (
-    <section
-      id="demo"
-      className="cy-section cy-demo"
-      data-cy-scene="enter"
-      aria-labelledby="demo-heading"
-    >
-      <div className="cy-container">
-        <div className="cy-center">
-          <SectionHead
-            id="demo-heading"
-            eyebrow="See it work"
-            title="One request in. Five steps. Nothing retyped."
-            lead="An example of the kind of workflow we build: your systems connected, AI on the reading, and a person approving what matters."
-          />
-        </div>
-        <div className="cy-demo__stage">
-          <div className="cy-demo__glow" aria-hidden="true" />
-          <WorkflowConsole />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Audiences() {
-  const [active, setActive] = useState(0);
-  const segment = SEGMENTS[active];
-  const href = buildStartProjectHref({ source: "home", intent: segment.intent });
-  return (
-    <section id="who" className="cy-section cy-section--alt" aria-labelledby="who-heading">
-      <div className="cy-container">
-        <SectionHead
-          id="who-heading"
-          eyebrow="Who we work with"
-          title="Pick your size. See what is in the way."
-          lead="The obstacles change as a company grows. So does the right first project."
-          split
-        />
-        <div className="cy-tabs" data-cy-reveal>
-          <div className="cy-tabs__list" role="tablist" aria-label="Company size">
-            {SEGMENTS.map((item, index) => (
-              <button
-                key={item.id}
-                type="button"
-                role="tab"
-                id={`segment-tab-${item.id}`}
-                aria-selected={index === active}
-                aria-controls="segment-panel"
-                tabIndex={index === active ? 0 : -1}
-                className="cy-tabs__tab"
-                onClick={() => setActive(index)}
-                onKeyDown={(event) => {
-                  if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-                  const next =
-                    (active + (event.key === "ArrowRight" ? 1 : -1) + SEGMENTS.length) %
-                    SEGMENTS.length;
-                  setActive(next);
-                  document.getElementById(`segment-tab-${SEGMENTS[next].id}`)?.focus();
-                }}
-              >
-                {item.name}
-                <small>{item.size}</small>
-              </button>
-            ))}
-          </div>
-          <div
-            key={segment.id}
-            id="segment-panel"
-            role="tabpanel"
-            aria-labelledby={`segment-tab-${segment.id}`}
-            className="cy-tabs__panel"
-          >
-            <div style={{ display: "grid", gap: 24, alignContent: "start" }}>
-              <h3 className="cy-h3" style={{ fontSize: "clamp(1.4rem, 1.4vw + 1rem, 2rem)" }}>
-                {segment.headline}
-              </h3>
-              <ul className="cy-pains">
-                {segment.pains.map((pain) => (
-                  <li key={pain.text} className="cy-pain">
-                    <b>{pain.value}</b>
-                    <span>
-                      {pain.text}
-                      <br />
-                      <SourceNote id={pain.source} prefix="" />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div style={{ display: "grid", gap: 22, alignContent: "start" }}>
-              <p className="cy-eyebrow">What we deliver</p>
-              <ul className="cy-checks">
-                {segment.deliver.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <dl className="cy-kvs">
-                <div className="cy-kv">
-                  <dt>Usually starts with</dt>
-                  <dd>{segment.startsWith}</dd>
+        <div className="hm-ev">
+          {EVIDENCE.map((item, i) => (
+            <article
+              className="hm-evc"
+              key={item.title}
+              data-hm-in
+              style={{ "--d": `${i * 60}ms` } as CSSProperties}
+            >
+              <span className="hm-tag">{item.type}</span>
+              <h3>{item.title}</h3>
+              <dl>
+                <div>
+                  <dt>What is real</dt>
+                  <dd>{item.real}</dd>
                 </div>
-                <div className="cy-kv">
-                  <dt>Typical timeline</dt>
-                  <dd>{segment.timeline}</dd>
+                <div>
+                  <dt>What is simulated</dt>
+                  <dd>{item.simulated}</dd>
                 </div>
               </dl>
-              <div className="cy-actions">
-                <a
-                  href={href}
-                  className="cy-btn cy-btn--primary"
-                  onClick={() => trackCta({ cta: "start_project", section: "paths", href })}
-                >
-                  Get a free fit check
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Services() {
-  return (
-    <section
-      id="services"
-      className="cy-scene cy-rail"
-      data-cy-scene="rail"
-      style={{ "--n": SERVICES.length + 1 } as React.CSSProperties}
-      aria-labelledby="services-heading"
-    >
-      <div className="cy-scene__stage cy-rail__stage">
-        <div className="cy-container cy-rail__head">
-          <SectionHead
-            id="services-heading"
-            eyebrow="What we build"
-            title="Ten services. One for each thing in the way."
-            lead="Every service answers a problem US companies report in 2026. Start with one; they are built to connect."
-            split
-          />
-        </div>
-        <div className="cy-rail__track" data-cy-track>
-          {SERVICES.map((service, index) => (
-            <Link
-              key={service.slug}
-              to={service.path}
-              className="cy-card cy-spot cy-rail__card"
-              onClick={() =>
-                trackCta({ cta: "see_delivery", section: "solutions", href: service.path })
-              }
-            >
-              <span className="cy-rail__n" aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div
-                style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-              >
-                <ServiceIcon name={service.icon} />
-                <span className="cy-card__n">{service.stage}</span>
-              </div>
-              <h3 className="cy-h3">{service.name}</h3>
-              <p>{service.cardLine}</p>
-              <p className="cy-card__pain">{service.cardPain}</p>
-              <span className="cy-card__go">
-                Learn more <span aria-hidden="true">→</span>
-              </span>
-            </Link>
+              <Link className="hm-lnk" to={item.href}>
+                {item.cta} <Arrow />
+              </Link>
+            </article>
           ))}
-          <div className="cy-card cy-rail__card cy-rail__card--ask">
-            <h3 className="cy-h3">Not sure which one you need?</h3>
-            <p>
-              That is what the fit check is for. Twenty minutes, free, and you leave with a clear
-              next step.
-            </p>
-            <div>
-              <StartButton section="solutions" source="home" small />
-            </div>
-          </div>
         </div>
-        <div className="cy-container">
-          <div className="cy-rail__meter" aria-hidden="true">
-            <i />
-          </div>
+        <div className="hm-lab" data-hm-in>
+          <span>
+            <b>From the lab:</b> a governance protocol for human-approved agent work, published with
+            a DOI.
+          </span>
+          <Link
+            className="hm-lnk"
+            to="/research/$slug"
+            params={{ slug: "cgp-v1" }}
+            onClick={() =>
+              trackCta({ cta: "view_research", section: "evidence", href: "/research/cgp-v1" })
+            }
+          >
+            Read the protocol <Arrow />
+          </Link>
         </div>
       </div>
     </section>
   );
 }
 
-function Process() {
+/* ═════════ 7 · Delivery and trust ═════════ */
+function Delivery() {
   return (
-    <section
-      id="how-it-works"
-      className="cy-section cy-section--alt"
-      aria-labelledby="process-heading"
-    >
-      <div className="cy-container cy-process">
-        <div className="cy-process__aside">
-          <p className="cy-eyebrow" data-cy-reveal>
-            How it works
-          </p>
-          <h2 id="process-heading" className="cy-h2" data-cy-reveal>
-            You see the plan and the price before you commit.
+    <section className="hm-sec hm-sec--band" id="delivery" aria-labelledby="hm-dlv-title">
+      <div className="hm-wrap">
+        <div className="hm-head">
+          <Kicker>How we deliver</Kicker>
+          <h2 className="hm-h2" id="hm-dlv-title" data-hm-in>
+            Know what is being built—and how it will be accepted.
           </h2>
-          <p className="cy-lead" data-cy-reveal>
-            No open-ended retainers and no surprise invoices. Every project runs the same four
-            steps.
-          </p>
-          <div className="cy-guarantee" data-cy-reveal>
-            <strong>Our one guarantee</strong>
-            <p>
-              The project is finished when it passes the acceptance checklist we agreed in writing,
-              not before. We don&apos;t guarantee traffic, rankings or revenue. We guarantee what we
-              agreed to build.
-            </p>
-          </div>
-          <div data-cy-reveal>
-            <StartButton section="operating_model" source="home" />
-          </div>
         </div>
-        <ol className="cy-process__steps">
-          {PROCESS_STEPS.map((step) => (
-            <li key={step.n} className="cy-pstep" data-cy-reveal>
-              <div className="cy-pstep__meta">
-                <span>Step {step.n}</span>
-                <b>{step.time}</b>
-              </div>
-              <h3 className="cy-h3">{step.title}</h3>
+        <ol className="hm-dlv" data-hm-in>
+          {DELIVERY_STEPS.map((step, i) => (
+            <li key={step.title}>
+              <span className="hm-label hm-label--t">Step {i + 1}</span>
+              <h3>{step.title}</h3>
               <p>{step.body}</p>
             </li>
           ))}
         </ol>
-      </div>
-    </section>
-  );
-}
-
-function Control() {
-  return (
-    <section id="control" className="cy-section" aria-labelledby="control-heading">
-      <div className="cy-container">
-        <SectionHead
-          id="control-heading"
-          eyebrow="AI within limits you set"
-          title="Powerful enough to do the work. Controlled enough to trust."
-          lead="Data privacy and security is the concern businesses raise first about AI. So control is built into every system we deliver, not added afterwards."
-          split
-        />
-        <ul className="cy-guard">
-          {GUARDRAILS.map((item, index) => (
-            <li key={item.title} data-cy-reveal style={{ "--cy-i": index } as React.CSSProperties}>
-              <span className="cy-card__n">{String(index + 1).padStart(2, "0")}</span>
-              <h3 className="cy-h3">{item.title}</h3>
-              <p className="cy-muted">{item.body}</p>
-            </li>
-          ))}
-        </ul>
-        <p style={{ marginTop: 24 }} data-cy-reveal>
-          <Link to="/solutions/ai-governance-cost-control" className="cy-link">
-            How we handle AI governance and cost control <span aria-hidden="true">→</span>
-          </Link>
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function Products() {
-  return (
-    <section id="products" className="cy-section cy-prod" aria-labelledby="products-heading">
-      <div className="cy-container">
-        <SectionHead
-          id="products-heading"
-          eyebrow="Our own products"
-          title="Two AI products you can use today."
-          lead="The engineering that goes into client work also ships in products we design, run and answer for ourselves. Both are live: open each one to see it."
-          split
-        />
-        <OnyxShowcase />
-        <AexosShowcase />
-        <p className="cy-prod__more" data-cy-reveal>
-          <Link to="/products" className="cy-link">
-            All Cyryx Labs products <span aria-hidden="true">→</span>
-          </Link>
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function Research() {
-  return (
-    <section id="research" className="cy-section" aria-labelledby="research-heading">
-      <div className="cy-container">
-        <SectionHead
-          id="research-heading"
-          eyebrow="Applied AI Lab"
-          title="Research we publish under our own name."
-          lead="Our lab studies how AI systems should be controlled, measured and trusted, and publishes what it finds as open, citable work."
-          split
-        />
-        <div data-cy-reveal>
-          {PUBLICATIONS.map((publication) => (
-            <Link
-              key={publication.slug}
-              to="/research/$slug"
-              params={{ slug: publication.slug }}
-              className="cy-paper"
-              onClick={() =>
-                trackCta({
-                  cta: "view_research",
-                  section: "research_band",
-                  href: `/research/${publication.slug}`,
-                })
-              }
-            >
-              <span className="cy-paper__kind">{publication.category}</span>
-              <span>
-                <span className="cy-paper__title">{publication.title}</span>
-                <span className="cy-paper__meta" style={{ display: "block", marginTop: 4 }}>
-                  {publication.subtitle}
-                </span>
-              </span>
-              <span className="cy-paper__meta">
-                {publication.doi ? `DOI ${publication.doi}` : publication.date}
-              </span>
-            </Link>
-          ))}
-          <Link to="/answers" className="cy-paper">
-            <span className="cy-paper__kind">Explainers</span>
-            <span>
-              <span className="cy-paper__title">Direct answers on AI governance and execution</span>
-              <span className="cy-paper__meta" style={{ display: "block", marginTop: 4 }}>
-                Short, sourced explanations of the terms buyers ask about.
-              </span>
-            </span>
-            <span className="cy-paper__meta">Read →</span>
-          </Link>
-        </div>
-        <p style={{ marginTop: 24 }} data-cy-reveal>
-          <Link to="/research" className="cy-link">
-            Visit the research lab <span aria-hidden="true">→</span>
-          </Link>
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function Readiness() {
-  return (
-    <section
-      id="readiness"
-      className="cy-section cy-section--alt"
-      aria-labelledby="readiness-heading"
-    >
-      <div className="cy-container cy-score">
-        <div style={{ display: "grid", gap: 20 }}>
-          <p className="cy-eyebrow" data-cy-reveal>
-            Free · 60 seconds
-          </p>
-          <h2 id="readiness-heading" className="cy-h2" data-cy-reveal>
-            How ready is your company for AI?
-          </h2>
-          <p className="cy-lead" data-cy-reveal>
-            Five questions. You get a score and a recommended first step straight away, with no
-            email required to see it.
-          </p>
-          <ul className="cy-checks" data-cy-reveal>
-            <li>See where you stand on data, systems, rules and results</li>
-            <li>Get the one project we would start with</li>
-            <li>Ask for it as a written plan, if you want</li>
-          </ul>
-        </div>
-        <Scorecard />
-      </div>
-    </section>
-  );
-}
-
-function Questions() {
-  return (
-    <section id="faq" className="cy-section" aria-labelledby="faq-heading">
-      <div className="cy-container cy-split">
-        <div className="cy-split__aside">
-          <p className="cy-eyebrow" data-cy-reveal>
-            Questions
-          </p>
-          <h2 id="faq-heading" className="cy-h2" data-cy-reveal>
-            What companies ask us first.
-          </h2>
-          <div data-cy-reveal>
-            <AskAssistant source="final_cta" label="Ask the assistant something else" />
+        <div className="hm-trust" data-hm-in>
+          <div className="hm-trust-l">
+            <h3>The controls are part of the scope.</h3>
+            <p>
+              Before anything runs, we write down—with you—what the system may touch and who
+              decides.
+            </p>
+            <p className="hm-accept">{ACCEPTANCE_GUARANTEE}</p>
+          </div>
+          <div className="hm-trust-r">
+            {SCOPE_CONTROLS.map((item) => (
+              <div key={item.title}>
+                <b>{item.title}</b>
+                <p>{item.body}</p>
+              </div>
+            ))}
           </div>
         </div>
-        <Faq items={HOME_FAQ} idPrefix="home-faq" />
+      </div>
+    </section>
+  );
+}
+
+/* ═════════ 8 · Company and close ═════════ */
+function Company() {
+  return (
+    <section className="hm-sec hm-co" id="company" aria-labelledby="hm-co-title">
+      <div className="hm-co-plate" aria-hidden="true">
+        <img
+          src="/media/precision/channel-1600.webp"
+          srcSet="/media/precision/channel-960.webp 960w, /media/precision/channel-1600.webp 1600w"
+          sizes="100vw"
+          alt=""
+          width={1600}
+          height={900}
+          loading="lazy"
+          decoding="async"
+          data-hm-par
+        />
+      </div>
+      <div className="hm-wrap hm-co-grid">
+        <div>
+          <Kicker>Company</Kicker>
+          <h2 className="hm-h2" id="hm-co-title" data-hm-in>
+            {HOME_COMPANY.title}
+          </h2>
+        </div>
+        <div data-hm-in>
+          <p>{HOME_COMPANY.body}</p>
+          <Link className="hm-lnk" to="/company">
+            About Cyryx Labs <Arrow />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Close() {
+  const [intent, setIntent] = useState<StartContextIntent>(HOME_INTENTS[0].intent);
+  const [choice, setChoice] = useState(0);
+  const href = buildStartProjectHref({ source: "home", intent });
+  return (
+    <section className="hm-close" id="contact" aria-labelledby="hm-close-title">
+      <div className="hm-wrap">
+        <div className="hm-close-box" data-hm-in>
+          <div>
+            <h2 className="hm-h2" id="hm-close-title">
+              {HOME_CLOSE.title}
+            </h2>
+            <p className="hm-lede">{HOME_CLOSE.body}</p>
+          </div>
+          <div>
+            <fieldset className="hm-intent">
+              <legend>{HOME_CLOSE.legend}</legend>
+              <div className="hm-chips">
+                {HOME_INTENTS.map((item, i) => (
+                  <label key={item.label}>
+                    <input
+                      type="radio"
+                      name="hm-intent"
+                      checked={choice === i}
+                      onChange={() => {
+                        setChoice(i);
+                        setIntent(item.intent);
+                        trackCta({ cta: "intent_selected", section: "final_cta" });
+                      }}
+                    />
+                    <span>{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <a
+              href={href}
+              className="hm-btn hm-btn--pri hm-close-btn"
+              onClick={() => trackCta({ cta: "start_project", section: "final_cta", href })}
+            >
+              Discuss your project <Arrow />
+            </a>
+            <p className="hm-after">{HOME_CLOSE.after}</p>
+          </div>
+        </div>
       </div>
     </section>
   );

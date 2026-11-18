@@ -52,7 +52,6 @@ export const OPERATING_LIFECYCLE = [
   cta: string;
 }[];
 
-
 export const PUBLIC_CONTENT_DEFINITIONS: readonly PublicContentDefinition[] = [
   {
     kind: "Product",
@@ -77,21 +76,21 @@ export const PUBLIC_CONTENT_DEFINITIONS: readonly PublicContentDefinition[] = [
   },
 ];
 
-
 /**
  * AEXOS — the Cyryx product shown on the public site.
- * Every fact below was verified on 2026-09-24 against the published npm
- * package (@aexos/core) and the AEXOS product brief. Pro/Team pricing is not
- * published: it is still a recommendation being validated with launch partners.
+ * Facts verified on 2026-11-17 against the npm registry (@aexos/core 5.3.0,
+ * engines node >= 18). Only the free Core edition is offered publicly
+ * (founder decision 2026-11-17): no paid edition, price or licence upsell.
  */
 export const AEXOS_PRODUCT = {
   name: "AEXOS",
   fullName: "Agentic eXecution & Orchestration System",
   kind: "Product" as const,
-  identity: "Agentic orchestration for AI-assisted delivery",
-  maturity: "Core available on npm · Pro by commercial license",
+  category: "An agent framework for software projects",
+  identity: "An agent framework for software projects",
+  maturity: "AEXOS Core, free on npm",
   description:
-    "A CLI-first framework that installs specialised AI agents, the procedures they follow and the quality gates they must pass into your project. You talk to one orchestrator; it routes the work to the specialist that owns it.",
+    "An agent framework for software projects, for developers who use AI coding tools. It installs specialised AI agents, the procedures they follow and the quality gates they must pass into your project. You talk to one orchestrator; it routes the work to the specialist that owns it.",
   focus: [
     "Stories that carry context from plan to push",
     "Procedures with inputs, outputs and completion checklists",
@@ -99,10 +98,11 @@ export const AEXOS_PRODUCT = {
   ],
   npmPackage: "@aexos/core",
   npmUrl: "https://www.npmjs.com/package/@aexos/core",
-  productSiteUrl: "https://aexos.cyryxlabs.com/",
+  productSiteUrl: "https://www.npmjs.com/package/@aexos/core",
   installCommand: "npx @aexos/core init my-project",
   existingProjectCommand: "npx @aexos/core install",
-  runtime: "Node.js 18+",
+  version: "5.3.0",
+  runtime: "Node.js 18 or later",
   // Named hosts are limited to non-competitor environments (see .quality/forbidden-terms.json).
   hosts: ["Claude Code", "Gemini CLI", "Codex CLI"],
 } as const;

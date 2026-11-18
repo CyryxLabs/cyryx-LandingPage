@@ -5,6 +5,7 @@ import { buildUrlSetXml, sitemapResponse, type SitemapEntry } from "@/lib/sitema
 
 const ENTRIES: SitemapEntry[] = [
   { path: "/", priority: "1.0", changefreq: "weekly" },
+  { path: "/demos", priority: "0.7", changefreq: "monthly" },
   { path: "/company", priority: "0.7", changefreq: "monthly" },
   { path: "/research", priority: "0.6", changefreq: "monthly" },
   ...PUBLICATIONS.filter(

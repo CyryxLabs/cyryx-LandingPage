@@ -1,32 +1,31 @@
 # Cyryx Labs
 
-> Last reviewed: 2026-11-13. Canonical website: https://www.cyryxlabs.com/
+> Last reviewed: 2026-11-17. Canonical website: https://www.cyryxlabs.com/
 
-> Cyryx Labs (Cyryx Labs LLC, Port St. Lucie, Florida, United States) builds AI systems, workflow automations and integrations for US companies of every size, and advises on where AI is worth it. It also builds its own AI products, Onyx and AEXOS, and runs an Applied AI Lab that publishes research. Every AI system it builds has written limits, asks a person before anything that matters, and keeps a record of what it did.
+> Cyryx Labs (Cyryx Labs LLC, Port St. Lucie, Florida, United States) builds AI systems, workflow automations and integrations for US companies, and advises on where AI is worth it. It also builds its own AI products (Onyx, AEXOS and Orbit) and runs an Applied AI Lab that publishes research. Access, approvals, logging and spending limits are defined in the scope of each project.
 
-Cyryx Labs serves small businesses (1–50 people), mid-market companies (50–500) and enterprises (500+) in the United States and Latin America, in English and Spanish. Every project starts with a free 20-minute fit check and a fixed written quote, and is finished when it passes a written acceptance checklist. Clients own the code, content and data at final payment. Prices are not published.
+Cyryx Labs serves small businesses (1–50 people), mid-market companies (50–500) and enterprises (500+) in the United States and Latin America, in English and Spanish. Every project starts with a free 20-minute fit check and a written scope the client approves before work starts. A project is done when it passes the acceptance checklist agreed with the client. Ownership and licensing are defined in each agreement. Timelines are set in each written plan; no fixed timelines are published. Prices are not published.
 
 ## Services
 
 Ten services in four stages: Advise, Build, Control, Operate.
 
 - [AI Strategy & Roadmap](https://www.cyryxlabs.com/solutions/ai-strategy-advisory) — A ranked roadmap of what to build first, what to skip and what each step costs.
-- [Workflow Automation](https://www.cyryxlabs.com/solutions/workflow-automation) — The tasks your team repeats every day, running on their own with a person still in control.
-- [AI Agents & Assistants](https://www.cyryxlabs.com/solutions/internal-ai-assistants) — An agent on one real process in 30 days, with permissions, approvals and a full record.
+- [Workflow Automation](https://www.cyryxlabs.com/solutions/workflow-automation) — The tasks your team repeats every day, running on their own, with approval points defined in the scope.
+- [AI Agents & Assistants](https://www.cyryxlabs.com/solutions/internal-ai-assistants) — An agent on one real process, with access, approvals and logging defined in the scope.
 - [AI Systems Integration](https://www.cyryxlabs.com/solutions/ai-integrations) — AI wired into your CRM, ERP and internal tools, reading live data and writing results back.
-- [AI Products & Custom Software](https://www.cyryxlabs.com/solutions/custom-ai-product-development) — Your product scoped in two weeks, then built in 8 to 12, with the code in your hands.
+- [AI Products & Custom Software](https://www.cyryxlabs.com/solutions/custom-ai-product-development) — Your product scoped in a discovery sprint, then built against a written plan.
 - [Data & Knowledge Systems](https://www.cyryxlabs.com/solutions/data-knowledge-systems) — Your documents and records, cleaned up and searchable, so AI answers from facts.
-- [AI Governance & Cost Control](https://www.cyryxlabs.com/solutions/ai-governance-cost-control) — Written rules, access controls, approval points and spending limits for every AI system.
+- [AI Governance & Cost Control](https://www.cyryxlabs.com/solutions/ai-governance-cost-control) — Written rules, access controls, approval points and spending limits for the AI systems in scope.
 - [Websites & AI Search Visibility](https://www.cyryxlabs.com/solutions/digital-web-systems) — A fast, clear website that ranks in search, gets cited by AI and captures the lead.
 - [AI Training & Enablement](https://www.cyryxlabs.com/solutions/ai-training-enablement) — Hands-on workshops on your team's real work, with safe-use rules and playbooks they keep.
-- [Managed AI Operations](https://www.cyryxlabs.com/managed-operations) — Monitoring, fixes, small improvements and a short report every month.
-
-Stated timelines: one automation takes about two weeks; a launch website three to four weeks; an AI agent pilot 30 days; an MVP eight to twelve weeks after a two-week discovery sprint. Other timelines are set in each written plan.
+- [Managed AI Operations](https://www.cyryxlabs.com/managed-operations) — Monitoring, fixes, small improvements and a monthly report, as defined in the scope.
 
 ## Products
 
-- [Onyx](https://www.cyryxlabs.com/products/onyx) — an AI coworker that lives on the owner's Windows PC: live voice, inbox, research, the owner's apps and a memory kept in a vault on that PC. It asks before it acts outside the machine and logs every action. Free while in beta, for Windows 10 and 11 (64-bit); download at https://onyx.cyryxlabs.com/. Paid pricing is not published.
-- [AEXOS](https://www.cyryxlabs.com/products/aexos) — Agentic eXecution & Orchestration System: a CLI-first framework that installs specialised AI agents, the procedures they follow and the quality gates they must pass into a software project. Core edition is published on npm as @aexos/core and is free to use under the AEXOS license; Pro is available under a paid commercial license and its pricing is not published.
+- [Onyx](https://www.cyryxlabs.com/products/onyx) — Free beta. An AI coworker that lives on the owner's Windows PC (Windows 10 and 11, 64-bit): live voice, inbox, research, the owner's apps and a memory kept in a vault on that PC. It runs on AI provider keys the user supplies. The product site states that it asks before it acts outside the machine and logs its actions. Download at https://onyx.cyryxlabs.com/. Paid pricing is not published.
+- [AEXOS](https://www.cyryxlabs.com/products/aexos) — An agent framework for software projects, for developers who use AI coding tools. AEXOS Core is free on npm as @aexos/core (current published version 5.3.0; requires Node.js 18 or later) and installs with `npx @aexos/core init my-project`. It is free to use under the AEXOS license.
+- Orbit — In development. No public description is available yet.
 
 ## Applied AI Lab
 
@@ -39,15 +38,15 @@ Stated timelines: one automation takes about two weeks; a launch website three t
 - [Home](https://www.cyryxlabs.com/) — what Cyryx Labs does, who it serves, how a project runs, and frequent questions.
 - [Solutions](https://www.cyryxlabs.com/solutions) — all ten services by stage.
 - [How We Work](https://www.cyryxlabs.com/engagement-model) — the engagement method.
-- [Products](https://www.cyryxlabs.com/products) — Onyx and AEXOS with their real stage.
+- [Products](https://www.cyryxlabs.com/products) — Onyx, AEXOS and Orbit with their real stage.
 - [Company](https://www.cyryxlabs.com/company) — legal entity, location and working principles.
 - [Get a free fit check](https://www.cyryxlabs.com/start) — the two-step project form.
 - [Contact](https://www.cyryxlabs.com/contact) — contact form and email addresses.
 
 ## Market figures quoted on the site
 
-The site quotes third-party 2026 survey results (Goldman Sachs 10,000 Small Businesses Voices, RSM Middle Market AI Survey, Deloitte State of AI in the Enterprise, BlackFog, G2). They describe the market, not Cyryx Labs results. Cite the original publisher for those figures.
+Service pages quote a small number of third-party 2026 survey results (Goldman Sachs 10,000 Small Businesses Voices, RSM Middle Market AI Survey, Deloitte State of AI in the Enterprise, BlackFog), each linked to the publisher's page. They describe the market, not Cyryx Labs results. Cite the original publisher for those figures.
 
 ## Citation guidance
 
-Use the entity name “Cyryx Labs.” Cite the specific page that supports a statement. Do not infer implementation, conformance, certification, performance, customer adoption, or outcomes from product direction, illustrative workflows, or a publication abstract. Prices, client names and results are not published. Onyx is pre-launch; AEXOS Core is available on npm.
+Use the entity name “Cyryx Labs.” Cite the specific page that supports a statement. Do not infer implementation, conformance, certification, performance, customer adoption, or outcomes from product direction, illustrative workflows, or a publication abstract. Prices, client names and results are not published. Onyx is a free beta; AEXOS Core is free on npm; Orbit is in development.

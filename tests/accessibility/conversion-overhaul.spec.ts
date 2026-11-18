@@ -36,15 +36,15 @@ test("discontinued /products/maax-studio permanently redirects to /products", as
   expect(await destination.text()).not.toMatch(/MAAX/);
 });
 
-test("homepage hero carries the approved headline and the fit-check CTA", async ({ page }) => {
+test("homepage hero carries the approved headline and the primary CTA", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await openHome(page);
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  // Title of the 2026-11-13 site: AI systems, automation and integration.
-  await expect(heading).toHaveText("We build AI systems that do real work.");
-  await expect(primary).toHaveText(/Get a free fit check/);
+  // Rebuild v9 (2026-11-17): products and automation, one primary action.
+  await expect(heading).toHaveText("AI products and automation. Built for the way you work.");
+  await expect(primary).toHaveText(/Discuss your project/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
   // The monolith film was retired on 2026-11-06: no scroll scene on the home.
   await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(0);
@@ -248,15 +248,13 @@ test("/start two-step brief ends with the instant first read and a structured v2
   });
 });
 
-test("assistant opens from the hero, streams an answer, and hands off to the team", async ({
+test("assistant opens from the launcher, streams an answer, and hands off to the team", async ({
   page,
 }) => {
-  await openHome(page);
-  const hero = page.locator("section[data-hero]");
+  await page.goto("/products", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
 
-  const entry = hero.getByRole("button", {
-    name: "Ask the Cyryx assistant",
-  });
+  const entry = page.getByRole("button", { name: "Ask Cyryx" });
   await expect(entry).toBeVisible();
   await entry.click();
 
@@ -343,7 +341,9 @@ test("closing the assistant with Escape returns focus to the control that opened
 // for lead attribution only, so it must never change what the page says.
 test("?copy= no longer changes the home hero", async ({ page }) => {
   await openHome(page, "/?copy=v4b");
-  await expect(page.locator("#hero-heading")).toHaveText("We build AI systems that do real work.");
+  await expect(page.locator("#hero-heading")).toHaveText(
+    "AI products and automation. Built for the way you work.",
+  );
 });
 
 test("the contact form reaches the CRM and confirms on the page", async ({ page }) => {
@@ -361,23 +361,5 @@ test("the contact form reaches the CRM and confirms on the page", async ({ page 
   await expect(page.getByText("Message received.")).toBeVisible();
 });
 
-test("the readiness check sends a plan request to the CRM only after consent", async ({ page }) => {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expectPageHydrated(page);
-  const section = page.locator("#readiness");
-  await section.scrollIntoViewIfNeeded();
-  for (let question = 0; question < 5; question += 1) {
-    await section.locator("button.cy-opt").nth(1).click();
-  }
-  await expect(section.locator(".cy-score__num")).toContainText("5");
-  await section.getByLabel("Name").fill("Jordan Rivera");
-  await section.getByLabel("Work email").fill("jordan@example.com");
-  await section.getByLabel("Company").fill("Example Logistics");
-  await section.getByRole("checkbox").check();
-  const response = page.waitForResponse("**/api/public/contact");
-  await section.getByRole("button", { name: "Send me the plan" }).click();
-  const result = await response;
-  expect(result.status()).toBe(200);
-  expect(result.request().postDataJSON().problem).toContain("AI readiness check: 5/10");
-  await expect(section.getByRole("status")).toContainText("Received.");
-});
+// The readiness check left the home with the rebuild v9 (2026-11-17); the home
+// close now hands an intent to /start, covered in home-hero.spec.ts.

@@ -2,19 +2,23 @@
  * Public Onyx facts for the product showcase and /products/onyx.
  *
  * Source: the product's own site, https://onyx.cyryxlabs.com/ (read
- * 2026-11-13, version 1.14.25). Only what that page states is repeated here.
+ * 2026-11-13; status and version re-checked 2026-11-17). Only what that page
+ * states is repeated here. Status: free beta, Windows 10/11 64-bit, AI
+ * provider keys supplied by the user. The version string is kept for
+ * reference only and is not rendered in user-facing copy, so it cannot drift.
  * Media in /public/media/onyx are the product's own captures, shown there with
  * example data.
  */
 export const ONYX_SITE = "https://onyx.cyryxlabs.com/";
-export const ONYX_REVIEWED = "2026-11-13";
-export const ONYX_VERSION = "1.14.25";
+export const ONYX_REVIEWED = "2026-11-17";
+/** Verified on onyx.cyryxlabs.com on 2026-11-17. Not rendered on this site. */
+export const ONYX_VERSION = "1.14.45";
 
 export const ONYX_HEADLINE = "Hire the employee who never logs off.";
 export const ONYX_SUMMARY =
   "Onyx is an AI coworker that lives on your Windows PC. It talks with you in real time, works your inbox, does the research, operates your apps and remembers everything, in a vault you own. Outside your machine, it acts on your word.";
 export const ONYX_AVAILABILITY =
-  "Free while in beta. For Windows 10 and 11, 64-bit. Runs on free AI model tiers with your own keys.";
+  "Free beta. For Windows 10 and 11, 64-bit. Runs on AI provider keys you supply, including free tiers.";
 
 export const ONYX_STATS = [
   { value: "6", label: "Languages it speaks" },
@@ -200,7 +204,10 @@ export const ONYX_BETA = [
     title: "Your machine",
     body: "Memory, vault and logs stay on your PC. Outside it, Onyx acts on your word.",
   },
-  { title: "Free while in beta", body: "No card, no account. Bring your own free AI keys." },
+  {
+    title: "Free while in beta",
+    body: "Runs on AI provider keys you supply, including free tiers.",
+  },
 ] as const;
 
 export const ONYX_FAQ = [

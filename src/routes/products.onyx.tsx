@@ -21,14 +21,13 @@ import {
   ONYX_SKILLS,
   ONYX_STATS,
   ONYX_SUMMARY,
-  ONYX_VERSION,
 } from "@/data/onyx";
 import { trackCta } from "@/lib/track-cta";
 
 const PATH = "/products/onyx";
 const TITLE = "Onyx — AI Coworker for Windows | Cyryx Labs";
 const DESC =
-  "Onyx is an AI coworker by Cyryx Labs that lives on your Windows PC: live voice, inbox, research, your apps and a memory you own. Free while in beta.";
+  "Onyx is an AI coworker by Cyryx Labs for your Windows PC: live voice, inbox, research, your apps and a memory kept on your PC. Free beta for Windows 10 and 11.";
 const FAQ = ONYX_FAQ;
 
 function OnyxLink({ section, label }: { section: "product" | "final_cta"; label: string }) {
@@ -94,7 +93,7 @@ function OnyxPage() {
             ))}
           </ul>
           <p className="cy-show__note" data-cy-reveal>
-            {ONYX_AVAILABILITY} Version {ONYX_VERSION}.
+            {ONYX_AVAILABILITY}
           </p>
         </div>
       </section>

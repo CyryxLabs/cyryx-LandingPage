@@ -18,7 +18,7 @@ export function buildCyryxOrganizationNode() {
     url: SITE_URL,
     slogan: "We build AI systems that do real work.",
     description:
-      "Cyryx Labs builds AI systems, workflow automations and integrations for US companies of every size, and advises on where AI is worth it. It builds its own AI products, Onyx and AEXOS, and runs an Applied AI Lab that publishes research.",
+      "Cyryx Labs builds AI systems, workflow automations and integrations for US companies, and advises on where AI is worth it. It builds its own AI products, Onyx, AEXOS and Orbit, and runs an Applied AI Lab that publishes research.",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Port St. Lucie",

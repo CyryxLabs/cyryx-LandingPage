@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     q: "Where does Cyryx Labs implement this?",
-    a: "Cyryx applies these principles in relevant solution engagements, in AEXOS (its product for governed AI-assisted software delivery) and in applied research.",
+    a: "Cyryx applies these principles in relevant solution engagements, in AEXOS (its agent framework for software projects) and in applied research.",
   },
 ];
 
