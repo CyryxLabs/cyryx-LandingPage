@@ -1,36 +1,111 @@
-import { useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { WORKFLOW_DEMO } from "@/data/home";
 import { trackCta, type CtaSection } from "@/lib/track-cta";
 
-const LAST = WORKFLOW_DEMO.steps.length - 1;
+const STEPS = WORKFLOW_DEMO.steps.length;
+const LAST = STEPS - 1;
+const clamp = (value: number) => Math.min(1, Math.max(0, value));
 
 /**
  * Illustrative inquiry-to-reply workflow. Deterministic sample data, driven by
  * the visitor: step buttons, previous/next, replay and the final state. Nothing
- * is sent or written; the text equivalent below repeats every step.
+ * is sent or written; the text equivalent repeats every step.
+ *
+ * With `scrub`, on large screens and with motion allowed, the demo sits in a
+ * sticky stage inside a tall `[data-hm-track]` and the page scroll walks
+ * through the steps. The controls still work: they scroll to the step.
  */
-export function WorkflowDemo({ section = "workflow_demo" }: { section?: CtaSection }) {
+export function WorkflowDemo({
+  section = "workflow_demo",
+  scrub = false,
+}: {
+  section?: CtaSection;
+  scrub?: boolean;
+}) {
   const [step, setStep] = useState(0);
+  const [scrubbing, setScrubbing] = useState(false);
   const started = useRef(false);
   const completed = useRef(false);
   const stageRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const stepRef = useRef(0);
+
+  const record = useCallback(
+    (value: number) => {
+      if (!started.current && value !== 0) {
+        started.current = true;
+        trackCta({ cta: "demo_started", section });
+      }
+      if (!completed.current && value === LAST) {
+        completed.current = true;
+        trackCta({ cta: "demo_completed", section });
+      }
+      stepRef.current = value;
+      setStep(value);
+    },
+    [section],
+  );
+
+  useEffect(() => {
+    if (!scrub) return;
+    const track = rootRef.current?.closest<HTMLElement>("[data-hm-track]");
+    if (!track) return;
+    // Same gate as the tall track in CSS: `cy-pin` is set before first paint
+    // on large screens with motion allowed (see __root.tsx and motion.ts).
+    const root = document.documentElement;
+    const large = window.matchMedia("(min-width: 900px) and (min-height: 700px)");
+    let frame = 0;
+    let on = false;
+    const update = () => {
+      frame = 0;
+      if (!on) return;
+      const rect = track.getBoundingClientRect();
+      const span = Math.max(1, rect.height - window.innerHeight);
+      const progress = clamp(-rect.top / span);
+      track.style.setProperty("--wp", progress.toFixed(4));
+      const next = Math.min(LAST, Math.floor(progress * STEPS));
+      if (next !== stepRef.current) record(next);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const apply = () => {
+      on = large.matches && root.classList.contains("cy-pin");
+      track.classList.toggle("is-scrub", on);
+      setScrubbing(on);
+      onScroll();
+    };
+    apply();
+    large.addEventListener("change", apply);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      large.removeEventListener("change", apply);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+      track.classList.remove("is-scrub");
+    };
+  }, [scrub, record]);
 
   const go = (next: number, focus = false) => {
     const value = Math.max(0, Math.min(LAST, next));
-    if (!started.current && value !== 0) {
-      started.current = true;
-      trackCta({ cta: "demo_started", section });
+    record(value);
+    const track = scrubbing ? rootRef.current?.closest<HTMLElement>("[data-hm-track]") : null;
+    if (track) {
+      const rect = track.getBoundingClientRect();
+      const span = Math.max(1, rect.height - window.innerHeight);
+      const top = rect.top + window.scrollY + ((value + 0.5) / STEPS) * span;
+      window.scrollTo({ top, behavior: "smooth" });
     }
-    if (!completed.current && value === LAST) {
-      completed.current = true;
-      trackCta({ cta: "demo_completed", section });
-    }
-    setStep(value);
-    if (focus) requestAnimationFrame(() => stageRef.current?.querySelector("h3")?.focus());
+    if (focus)
+      requestAnimationFrame(() =>
+        stageRef.current?.querySelector("h3")?.focus({ preventScroll: true }),
+      );
   };
 
   return (
-    <div className="hm-wf">
+    <div className="hm-wf" ref={rootRef} data-scrub={scrubbing ? "true" : undefined}>
       <div className="hm-wf-grid">
         <div className="hm-wf-side">
           <ol
@@ -80,6 +155,7 @@ export function WorkflowDemo({ section = "workflow_demo" }: { section?: CtaSecti
             </span>
             <span className="hm-sample">Sample data</span>
           </div>
+          <span className="hm-stage-prog" aria-hidden="true" />
           <div className="hm-view" key={step}>
             <h3 tabIndex={-1}>
               {step + 1} · {WORKFLOW_DEMO.steps[step].name}
@@ -90,17 +166,30 @@ export function WorkflowDemo({ section = "workflow_demo" }: { section?: CtaSecti
         </div>
       </div>
 
-      <details className="hm-texteq">
-        <summary>Read the whole example as text</summary>
-        <ol>
-          {WORKFLOW_DEMO.steps.map((s) => (
-            <li key={s.name}>
-              {s.name}: {s.text}
-            </li>
-          ))}
-        </ol>
-      </details>
+      {scrub ? (
+        <p className="hm-scroll-hint" aria-hidden="true">
+          Scroll to follow the request
+        </p>
+      ) : (
+        <WorkflowText />
+      )}
     </div>
+  );
+}
+
+/** The whole example as text, for every visitor and assistive technology. */
+export function WorkflowText() {
+  return (
+    <details className="hm-texteq">
+      <summary>Read the whole example as text</summary>
+      <ol>
+        {WORKFLOW_DEMO.steps.map((s) => (
+          <li key={s.name}>
+            {s.name}: {s.text}
+          </li>
+        ))}
+      </ol>
+    </details>
   );
 }
 

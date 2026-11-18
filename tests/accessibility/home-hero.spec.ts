@@ -57,10 +57,11 @@ test("the workflow demo is labelled as sample data and states no price or result
 test("the workflow demo is driven by the visitor and reaches the approved state", async ({
   page,
 }) => {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
+  // Land on the section heading: on large screens the scroll then walks the
+  // steps, and the controls scroll to the step they name.
+  await page.goto("/#workflow", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
   const demo = page.locator("#workflow");
-  await demo.scrollIntoViewIfNeeded();
   const steps = demo.getByRole("list", { name: "Workflow steps" });
   await expect(steps.getByRole("button").first()).toHaveAttribute("aria-current", "step");
   await expect(demo.getByRole("heading", { level: 3 }).first()).toContainText("Inquiry received");
@@ -81,6 +82,33 @@ test("the workflow demo is driven by the visitor and reaches the approved state"
   // The whole example is available as text.
   await demo.getByText("Read the whole example as text").click();
   await expect(demo.locator(".hm-texteq li")).toHaveCount(5);
+});
+
+test("on large screens the page scroll walks through the workflow", async ({ page }, testInfo) => {
+  test.skip(
+    testInfo.project.name === "hero-a11y-mobile-360",
+    "Scroll-driven on large screens only.",
+  );
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
+  const track = page.locator("[data-hm-track]");
+  await expect(track).toHaveClass(/is-scrub/);
+  const steps = page.getByRole("list", { name: "Workflow steps" });
+  for (const [ratio, index] of [
+    [0.02, 0],
+    [0.5, 2],
+    [0.98, 4],
+  ] as const) {
+    await track.evaluate((element, r) => {
+      const rect = element.getBoundingClientRect();
+      const span = rect.height - window.innerHeight;
+      window.scrollTo(0, rect.top + window.scrollY + span * r);
+    }, ratio);
+    await expect(steps.getByRole("button").nth(index)).toHaveAttribute("aria-current", "step");
+  }
+  // The stage stays on screen while the steps change.
+  await expect(page.locator(".hm-stage")).toBeInViewport();
 });
 
 test("reduced motion keeps the hero to one screen and shows every element", async ({ page }) => {

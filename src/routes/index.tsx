@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { SiteShell } from "@/components/site/SiteShell";
-import { WorkflowDemo } from "@/components/home/WorkflowDemo";
+import { WorkflowDemo, WorkflowText } from "@/components/home/WorkflowDemo";
+import { ScrubText, Words } from "@/components/home/Words";
+import { useHomeMotion } from "@/components/home/useHomeMotion";
 import { AEXOS, ONYX, ORBIT } from "@/data/products";
 import { AEXOS_PRODUCT } from "@/data/site-taxonomy";
 import {
@@ -146,83 +148,6 @@ function HomePage() {
   );
 }
 
-/** Short entrances and a light parallax. Content is visible without JS. */
-function useHomeMotion() {
-  useEffect(() => {
-    const root = document.documentElement;
-    // Reduced motion and the low-performance path (Save-Data, weak devices)
-    // get the content at rest, with no entrance states.
-    const reduce =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      root.classList.contains("cx-low-perf");
-    const targets = Array.from(document.querySelectorAll<HTMLElement>(".hm [data-hm-in]"));
-    if (reduce || !("IntersectionObserver" in window)) {
-      targets.forEach((el) => el.classList.add("is-in"));
-      return;
-    }
-    root.classList.add("hm-js");
-    const pending = new Set(targets);
-    const reveal = (el: Element) => {
-      el.classList.add("is-in");
-      pending.delete(el as HTMLElement);
-      io.unobserve(el);
-    };
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) reveal(entry.target);
-        }),
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
-    );
-    targets.forEach((el) => io.observe(el));
-
-    const hero = document.querySelector<HTMLElement>(".hm-hero");
-    const plates = Array.from(document.querySelectorAll<HTMLElement>(".hm [data-hm-par]"));
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    let mx = 0;
-    let my = 0;
-    let raf = 0;
-    const frame = () => {
-      raf = 0;
-      const vh = window.innerHeight;
-      // A jump (anchor link, restored scroll) can skip past elements without
-      // them ever intersecting; reveal anything already above the fold line.
-      pending.forEach((el) => {
-        if (el.getBoundingClientRect().top < vh * 0.92) reveal(el);
-      });
-      if (hero) {
-        hero.style.setProperty("--mx", mx.toFixed(3));
-        hero.style.setProperty("--my", my.toFixed(3));
-        if (window.scrollY < vh * 1.2)
-          hero.style.setProperty("--sy", `${(window.scrollY * 0.18).toFixed(1)}px`);
-      }
-      plates.forEach((el) => {
-        const r = el.getBoundingClientRect();
-        if (r.bottom > 0 && r.top < vh)
-          el.style.setProperty("--py", `${((r.top + r.height / 2 - vh / 2) * -0.06).toFixed(1)}px`);
-      });
-    };
-    const request = () => {
-      if (!raf) raf = requestAnimationFrame(frame);
-    };
-    const onPointer = (event: PointerEvent) => {
-      mx = event.clientX / window.innerWidth - 0.5;
-      my = event.clientY / window.innerHeight - 0.5;
-      request();
-    };
-    window.addEventListener("scroll", request, { passive: true });
-    if (fine) window.addEventListener("pointermove", onPointer, { passive: true });
-    frame();
-    return () => {
-      io.disconnect();
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", request);
-      window.removeEventListener("pointermove", onPointer);
-      root.classList.remove("hm-js");
-    };
-  }, []);
-}
-
 function Arrow({ external = false }: { external?: boolean }) {
   return (
     <span className="hm-ar" aria-hidden="true">
@@ -264,11 +189,20 @@ function Hero() {
         </picture>
       </div>
       <div className="hm-sweep" aria-hidden="true" />
+      <span className="hm-cue" aria-hidden="true">
+        Scroll
+        <i />
+      </span>
       <div className="hm-wrap hm-hero-grid">
         <div className="hm-hero-copy">
           <p className="hm-eyebrow">{HOME_HERO.eyebrow}</p>
           <h1 id="hero-heading">
-            {HOME_HERO.title} <span>{HOME_HERO.titleLine2}</span>
+            <span className="hm-l1">
+              <Words text={HOME_HERO.title} />
+            </span>{" "}
+            <span className="hm-l2">
+              <Words text={HOME_HERO.titleLine2} from={HOME_HERO.title.split(" ").length} />
+            </span>
           </h1>
           <p className="hm-hero-body">{HOME_HERO.body}</p>
           <div className="hm-ctas">
@@ -344,7 +278,7 @@ function Paths() {
         <div className="hm-head">
           <Kicker>Where to start</Kicker>
           <h2 className="hm-h2" id="hm-paths-title" data-hm-in>
-            {HOME_PATHS.title}
+            <Words text={HOME_PATHS.title} />
           </h2>
         </div>
         <div className="hm-paths">
@@ -352,6 +286,7 @@ function Paths() {
             to={HOME_PATHS.products.href}
             className="hm-path"
             data-hm-in
+            data-hm-tilt
             onClick={() =>
               trackCta({ cta: "intent_selected", section: "paths", href: HOME_PATHS.products.href })
             }
@@ -392,6 +327,7 @@ function Paths() {
             to={HOME_PATHS.solutions.href}
             className="hm-path"
             data-hm-in
+            data-hm-tilt
             style={{ "--d": "80ms" } as CSSProperties}
             onClick={() =>
               trackCta({
@@ -403,11 +339,11 @@ function Paths() {
           >
             <div className="hm-path-art hm-path-art--sol" aria-hidden="true">
               <svg viewBox="0 0 560 240" preserveAspectRatio="xMidYMid meet">
-                <path className="w" d="M92 70 C170 70 190 120 250 120" />
-                <path className="w" d="M92 170 C170 170 190 120 250 120" />
+                <path className="w" pathLength={1} d="M92 70 C170 70 190 120 250 120" />
+                <path className="w" pathLength={1} d="M92 170 C170 170 190 120 250 120" />
                 <path className="w w--t" d="M330 120 L400 120" />
-                <path className="w" d="M480 120 C488 120 486 70 492 70" />
-                <path className="w" d="M480 120 C488 120 486 170 492 170" />
+                <path className="w" pathLength={1} d="M480 120 C488 120 486 70 492 70" />
+                <path className="w" pathLength={1} d="M480 120 C488 120 486 170 492 170" />
                 <g className="n">
                   <rect x="20" y="52" width="80" height="36" rx="8" />
                   <text x="60" y="75" textAnchor="middle">
@@ -470,13 +406,22 @@ function Workflow() {
         <div className="hm-head">
           <Kicker>Example workflow</Kicker>
           <h2 className="hm-h2" id="hm-wf-title" data-hm-in>
-            {WORKFLOW_DEMO.title}
+            <Words text={WORKFLOW_DEMO.title} />
           </h2>
           <p className="hm-lede" data-hm-in>
             {WORKFLOW_DEMO.lead}
           </p>
         </div>
-        <WorkflowDemo />
+      </div>
+      <div className="hm-wf-track" data-hm-track>
+        <div className="hm-wf-sticky">
+          <div className="hm-wrap">
+            <WorkflowDemo scrub />
+          </div>
+        </div>
+      </div>
+      <div className="hm-wrap">
+        <WorkflowText />
         <div className="hm-wf-foot">
           <p className="hm-disclaim">
             <b>{WORKFLOW_DEMO.label}</b> {WORKFLOW_DEMO.note}
@@ -500,24 +445,24 @@ function Workflow() {
 const ICONS: Record<(typeof SOLUTION_GROUPS)[number]["icon"], ReactNode> = {
   compass: (
     <>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M15.5 8.5l-2 5-5 2 2-5z" />
+      <circle pathLength={1} cx="12" cy="12" r="9" />
+      <path pathLength={1} d="M15.5 8.5l-2 5-5 2 2-5z" />
     </>
   ),
   connect: (
     <>
-      <rect x="3" y="4" width="6" height="6" rx="1.5" />
-      <rect x="15" y="14" width="6" height="6" rx="1.5" />
-      <path d="M9 7h4a2 2 0 0 1 2 2v5" />
+      <rect pathLength={1} x="3" y="4" width="6" height="6" rx="1.5" />
+      <rect pathLength={1} x="15" y="14" width="6" height="6" rx="1.5" />
+      <path pathLength={1} d="M9 7h4a2 2 0 0 1 2 2v5" />
     </>
   ),
   build: (
     <>
-      <rect x="3" y="4" width="18" height="16" rx="2" />
-      <path d="M3 9h18M9 13l-2 2 2 2M15 13l2 2-2 2" />
+      <rect pathLength={1} x="3" y="4" width="18" height="16" rx="2" />
+      <path pathLength={1} d="M3 9h18M9 13l-2 2 2 2M15 13l2 2-2 2" />
     </>
   ),
-  pulse: <path d="M3 12h4l2-5 4 10 2-5h6" />,
+  pulse: <path pathLength={1} d="M3 12h4l2-5 4 10 2-5h6" />,
 };
 
 function Solutions() {
@@ -527,7 +472,7 @@ function Solutions() {
         <div className="hm-head">
           <Kicker>Solutions</Kicker>
           <h2 className="hm-h2" id="hm-sol-title" data-hm-in>
-            Start with the work you want to improve.
+            <Words text="Start with the work you want to improve." />
           </h2>
         </div>
         <div className="hm-sols">
@@ -536,6 +481,7 @@ function Solutions() {
               className="hm-sol"
               key={group.id}
               data-hm-in
+              data-hm-spot
               style={{ "--d": `${i * 60}ms` } as CSSProperties}
             >
               <span className="hm-ic" aria-hidden="true">
@@ -595,12 +541,12 @@ function Products() {
         <div className="hm-head">
           <Kicker>Products</Kicker>
           <h2 className="hm-h2" id="hm-prod-title" data-hm-in>
-            Built by Cyryx. Designed for specific jobs.
+            <Words text="Built by Cyryx. Designed for specific jobs." />
           </h2>
         </div>
         <div className="hm-prods">
           <article className="hm-prod hm-prod--onyx" id="onyx" ref={onyxRef} data-hm-in>
-            <div className="hm-shot">
+            <div className="hm-shot" data-hm-scene>
               <img
                 src="/media/onyx/cc-hq.webp"
                 alt="Onyx Command Center showing items that need the owner’s approval, tasks in flight and today’s events, with example data"
@@ -658,12 +604,32 @@ function Products() {
               aria-label="AEXOS install command and documented story cycle"
               role="img"
             >
-              <div>
-                <span className="hm-term-p">$</span> {AEXOS_PRODUCT.installCommand}
-              </div>
-              <div className="hm-term-c"># then, inside your AI coding environment:</div>
-              <div>create → validate → implement → QA gate → push</div>
-              <div className="hm-term-c"># a failing quality gate stops the change</div>
+              {[
+                { text: `$ ${AEXOS_PRODUCT.installCommand}`, prompt: true },
+                { text: "# then, inside your AI coding environment:", comment: true },
+                { text: "create → validate → implement → QA gate → push" },
+                { text: "# a failing quality gate stops the change", comment: true },
+              ].map((line, i, lines) => (
+                <div
+                  key={line.text}
+                  className={line.comment ? "hm-term-c" : undefined}
+                  style={
+                    {
+                      "--n": line.text.length,
+                      "--t": `${lines.slice(0, i).reduce((sum, l) => sum + l.text.length * 22 + 260, 300)}ms`,
+                    } as CSSProperties
+                  }
+                >
+                  {line.prompt ? (
+                    <>
+                      <span className="hm-term-p">$</span>
+                      {line.text.slice(1)}
+                    </>
+                  ) : (
+                    line.text
+                  )}
+                </div>
+              ))}
             </div>
             <div className="hm-prod-body">
               <div className="hm-prod-nm">
@@ -719,7 +685,7 @@ function Evidence() {
         <div className="hm-head">
           <Kicker>Evidence</Kicker>
           <h2 className="hm-h2" id="hm-ev-title" data-hm-in>
-            See the work. Understand the decisions.
+            <Words text="See the work. Understand the decisions." />
           </h2>
           <p className="hm-lede" data-hm-in>
             Every example says what it is, what is real, and what is simulated.
@@ -731,6 +697,7 @@ function Evidence() {
               className="hm-evc"
               key={item.title}
               data-hm-in
+              data-hm-tilt
               style={{ "--d": `${i * 60}ms` } as CSSProperties}
             >
               <span className="hm-tag">{item.type}</span>
@@ -780,10 +747,10 @@ function Delivery() {
         <div className="hm-head">
           <Kicker>How we deliver</Kicker>
           <h2 className="hm-h2" id="hm-dlv-title" data-hm-in>
-            Know what is being built—and how it will be accepted.
+            <Words text="Know what is being built—and how it will be accepted." />
           </h2>
         </div>
-        <ol className="hm-dlv" data-hm-in>
+        <ol className="hm-dlv" data-hm-in data-hm-progress>
           {DELIVERY_STEPS.map((step, i) => (
             <li key={step.title}>
               <span className="hm-label hm-label--t">Step {i + 1}</span>
@@ -836,11 +803,13 @@ function Company() {
         <div>
           <Kicker>Company</Kicker>
           <h2 className="hm-h2" id="hm-co-title" data-hm-in>
-            {HOME_COMPANY.title}
+            <Words text={HOME_COMPANY.title} />
           </h2>
         </div>
         <div data-hm-in>
-          <p>{HOME_COMPANY.body}</p>
+          <p>
+            <ScrubText text={HOME_COMPANY.body} />
+          </p>
           <Link className="hm-lnk" to="/company">
             About Cyryx Labs <Arrow />
           </Link>
@@ -860,7 +829,7 @@ function Close() {
         <div className="hm-close-box" data-hm-in>
           <div>
             <h2 className="hm-h2" id="hm-close-title">
-              {HOME_CLOSE.title}
+              <Words text={HOME_CLOSE.title} />
             </h2>
             <p className="hm-lede">{HOME_CLOSE.body}</p>
           </div>
