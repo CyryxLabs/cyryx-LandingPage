@@ -55,7 +55,7 @@ for (const vp of VIEWPORTS) {
 
     if (vp.name !== "desktop") {
       // The four solution groups must end fully readable on phones and tablets.
-      const controls = page.locator("#solutions .hm-sol");
+      const controls = page.locator("#solutions [data-row]");
       await expect(controls).toHaveCount(4);
       await controls.last().scrollIntoViewIfNeeded();
       await expect
@@ -111,11 +111,11 @@ test("home delivery section lists the four steps and the defined controls", asyn
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expectPageHydrated(page);
   const delivery = page.locator("#delivery");
-  await expect(delivery.locator("ol.hm-dlv > li")).toHaveCount(4);
+  await expect(delivery.locator("ol.stairs > li")).toHaveCount(4);
   for (const word of ["Access", "Actions", "Records", "Support"]) {
     await expect(delivery).toContainText(word);
   }
-  await expect(delivery.locator(".hm-accept")).toHaveText(
+  await expect(delivery.locator(".quiet h2")).toHaveText(
     "A project is done when it passes the acceptance checklist we agree on.",
   );
 });

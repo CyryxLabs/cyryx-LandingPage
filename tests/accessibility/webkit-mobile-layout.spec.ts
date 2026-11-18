@@ -128,10 +128,11 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   expect(layout.scrollWidth, "Safari mobile must not overflow horizontally").toBeLessThanOrEqual(
     layout.clientWidth + 1,
   );
-  // Raised from 12,500 on 2026-10-19: the home now also carries products, who we
-  // serve, the three-step plan and the FAQ (positioning plan). Keep it bounded.
+  // Raised from 12,500 on 2026-10-19 (products, who we serve, the plan, FAQ)
+  // and from 14,000 on 2026-11-18: the v10 home adds the "what we do" chapter
+  // with its four panels. This is the page at rest (no scroll tracks). Keep it bounded.
   expect(layout.scrollHeight, "Homepage mobile storytelling should remain compact").toBeLessThan(
-    14_000,
+    16_000,
   );
 });
 

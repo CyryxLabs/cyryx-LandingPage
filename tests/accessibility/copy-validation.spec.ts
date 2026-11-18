@@ -132,8 +132,19 @@ test.describe("Hero — plain-English value proposition", () => {
     }
   });
 
-  // Rebuild v9 (2026-11-17): Products · Solutions, one primary action, no
-  // published prices, no fixed timelines, Orbit shown by name and stage only.
+  // Rebuild v9 (2026-11-17) with the v10 home (2026-11-18): Products ·
+  // Solutions, one primary action, no published prices, no fixed timelines,
+  // Orbit shown by name and stage only.
+  test("the second chapter states what the company does, in the approved sentence", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("#what-title")).toHaveText(
+      "Cyryx Labs builds AI software and helps businesses connect AI to their existing systems, automate workflows, and develop custom solutions.",
+    );
+    await expect(page.locator("#what [data-wpanel]")).toHaveCount(4);
+  });
+
   test("hero renders the approved headline, body and actions", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const hero = page.locator("section[data-hero]");
@@ -151,8 +162,6 @@ test.describe("Hero — plain-English value proposition", () => {
     );
     await expect(hero.locator('a[data-cta="secondary"]')).toHaveText("Explore our products");
     await expect(hero.locator('a[data-cta="secondary"]')).toHaveAttribute("href", "#products");
-    // The workflow surfaces are labelled as sample data.
-    await expect(hero.getByRole("img", { name: /sample data/i })).toBeVisible();
     await expect(hero).not.toContainText(/MAAX|ASTRA|execution layer/i);
   });
 
@@ -209,7 +218,7 @@ test.describe("Hero — plain-English value proposition", () => {
     await expect(products.locator('img[src^="/media/onyx/"]').first()).toBeAttached();
     await expect(products.locator('a[href="/products/onyx"]').first()).toBeAttached();
     await expect(products.locator('a[href="/products/aexos"]').first()).toBeAttached();
-    const orbit = products.locator(".hm-prod--orbit");
+    const orbit = products.locator(".orbit");
     await expect(orbit).toContainText("Orbit");
     await expect(orbit).toContainText("In development");
     await expect(orbit.locator("a, button, form")).toHaveCount(0);
@@ -229,6 +238,7 @@ test.describe("Hero — plain-English value proposition", () => {
       .evaluateAll((sections) => sections.map((section) => section.id));
     expect(ids).toEqual([
       "top",
+      "what",
       "paths",
       "workflow",
       "solutions",

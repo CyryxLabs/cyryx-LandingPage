@@ -39,7 +39,7 @@ export const HOME_PATHS = {
 
 /** Illustrative workflow. Sample data only: nothing is sent or written. */
 export const WORKFLOW_DEMO = {
-  title: "Less copying. Fewer handoffs. A clearer next step.",
+  title: "One request, from inbox to answer.",
   lead: "See how a customer request can move from your inbox to the right system—with AI handling defined steps and your team approving important actions.",
   label: "Illustrative workflow using sample data.",
   note: "Your implementation depends on your systems, permissions, and agreed scope. No message is sent and no record is written on this page.",
