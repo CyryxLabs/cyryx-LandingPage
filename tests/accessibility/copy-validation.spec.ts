@@ -14,13 +14,13 @@ test.describe("Copy variants — shape validation", () => {
     });
   }
 
-  test("registry exposes exactly v4a (default) and v4b", () => {
-    expect([...AVAILABLE_COPY_VARIANTS].sort()).toEqual(["v4a", "v4b"]);
-    expect(DEFAULT_COPY_VARIANT).toBe("v4a");
+  test("registry exposes v5 (default since the 2026-11-06 redesign), v4a and v4b", () => {
+    expect([...AVAILABLE_COPY_VARIANTS].sort()).toEqual(["v4a", "v4b", "v5"]);
+    expect(DEFAULT_COPY_VARIANT).toBe("v5");
   });
 
-  test("getCopy falls back to the default v4a for unknown or retired variants", () => {
-    const fallback = getCopy("v4a").hero.headline;
+  test("getCopy falls back to the default v5 for unknown or retired variants", () => {
+    const fallback = getCopy("v5").hero.headline;
     expect(getCopy("does-not-exist").hero.headline).toBe(fallback);
     expect(getCopy("v3").hero.headline).toBe(fallback);
     expect(getCopy(null).hero.headline).toBe(fallback);
@@ -38,7 +38,7 @@ test.describe("Copy variants — shape validation", () => {
         .success,
     ).toBe(false);
     expect(
-      CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, headline: "x".repeat(91) } })
+      CopyDocumentSchema.safeParse({ ...copy, hero: { ...copy.hero, headline: "x".repeat(101) } })
         .success,
     ).toBe(false);
     expect(
@@ -58,6 +58,7 @@ test.describe("Copy variants — shape validation", () => {
           "headline",
           "rail",
           "sub",
+          "trust",
         ].sort(),
       );
       expect(copy).not.toHaveProperty("maaxSpotlight");
@@ -76,22 +77,26 @@ test.describe("Consent + legal anchors render", () => {
   });
 });
 
-test("primary navigation uses the official mark and wordmark lockup", async ({ page }) => {
+test("primary navigation uses the official wordmark alone, with no crest", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
   const home = page.getByRole("link", { name: "Cyryx Labs — home" });
   const lockup = home.locator("[data-cyryx-lockup]");
   await expect(lockup).toBeVisible();
-  await expect(lockup.locator("img")).toHaveCount(2);
+  // Founder decision 2026-11-13: wordmark only, the crest mark is retired.
+  await expect(lockup.locator("img")).toHaveCount(1);
+  await expect(page.locator('img[src*="brand-mark"]')).toHaveCount(0);
   await expect(lockup.locator('img[alt="Cyryx Labs"]')).toHaveCount(1);
 });
 
-test.describe("Hero — enterprise value proposition", () => {
+test.describe("Hero — plain-English value proposition", () => {
+  // Positioning plan of 2026-10-19: what we do, for whom, and what to click, in five seconds.
   const APPROVED = {
-    eyebrow: "AI systems · Advise · Build · Control · Operate",
-    headline: "The execution layer for enterprise AI.",
-    sub: "We design, build and run AI systems that act inside your workflows, with clear permissions, human approval where it matters and a record of every decision.",
-    ctaPrimary: "Start a project",
-    ctaSecondary: "See how we work",
+    eyebrow: "Advise · Build · Control · Operate",
+    headline:
+      "Websites, software and AI that grow your business — built and run by one accountable team.",
+    sub: "Cyryx Labs designs and builds websites, automations, custom software and AI for small businesses, growing companies and enterprises across the US and Latin America. Fixed timelines. A human in control of every AI decision.",
+    ctaPrimary: "Get a free fit check",
+    ctaSecondary: "See what we build",
   } as const;
 
   test("v4a hero copy matches the approved source of truth exactly", () => {
@@ -101,75 +106,71 @@ test.describe("Hero — enterprise value proposition", () => {
     expect(hero.sub).toBe(APPROVED.sub);
     expect(hero.ctaPrimary).toBe(APPROVED.ctaPrimary);
     expect(hero.ctaSecondary).toBe(APPROVED.ctaSecondary);
-    expect(getCopy("v4a").header.cta).toBe("Start a project");
-    expect(getCopy("v4a").finalCta.ctaPrimary).toBe("Start a project");
+    expect(getCopy("v4a").header.cta).toBe("Get a free fit check");
+    expect(getCopy("v4a").finalCta.ctaPrimary).toBe("Get a free fit check");
   });
 
   test("v4b only changes the hero promise", () => {
     const a = getCopy("v4a");
     const b = getCopy("v4b");
     expect(b.hero.headline).toBe(
-      "Put AI to work in your operations, without losing control of it.",
+      "From idea to running system: websites, MVPs and AI, with you in control.",
     );
     expect(b.hero.headline).not.toBe(a.hero.headline);
-    expect(b.hero.sub).not.toBe(a.hero.sub);
-    expect(b.hero.eyebrow).toBe(a.hero.eyebrow);
-    expect(b.hero.ctaPrimary).toBe(a.hero.ctaPrimary);
-    expect(b.hero.ctaSecondary).toBe(a.hero.ctaSecondary);
+    expect({ ...b.hero, headline: "" }).toEqual({ ...a.hero, headline: "" });
     expect(b.header).toEqual(a.header);
     expect(b.finalCta).toEqual(a.finalCta);
   });
 
-  test("hero copy does not contain the forbidden 'business AI' variant", () => {
+  test("hero copy avoids the jargon retired by the positioning plan", () => {
     for (const variant of AVAILABLE_COPY_VARIANTS) {
       const hero = getCopy(variant).hero;
-      const forbidden = "The execution layer for business AI.";
-      expect(hero.headline).not.toBe(forbidden);
-      expect(hero.sub).not.toContain(forbidden);
+      for (const term of [/execution layer/i, /consequential execution/i, /authority boundar/i]) {
+        expect(hero.headline).not.toMatch(term);
+        expect(hero.sub).not.toMatch(term);
+      }
     }
   });
 
-  test("hero renders approved headline, sub, and CTA labels with correct destinations", async ({
+  // Rebuild v9 (2026-11-17) with the v10 home (2026-11-18): Products ·
+  // Solutions, one primary action, no published prices, no fixed timelines,
+  // Orbit shown by name and stage only.
+  test("the second chapter states what the company does, in the approved sentence", async ({
     page,
   }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("#what-title")).toHaveText(
+      "Cyryx Labs builds AI software and helps businesses connect AI to their existing systems, automate workflows, and develop custom solutions.",
+    );
+    await expect(page.locator("#what [data-wpanel]")).toHaveCount(4);
+  });
+
+  test("hero renders the approved headline, body and actions", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     const hero = page.locator("section[data-hero]");
     await expect(hero).toBeVisible();
-    await expect(hero).toContainText(APPROVED.eyebrow);
-    await expect(page.locator("#hero-heading")).toHaveText(APPROVED.headline);
-    await expect(hero).toContainText(APPROVED.sub);
-    const primary = hero.getByRole("link", { name: APPROVED.ctaPrimary, exact: true });
-    await expect(primary).toHaveAttribute("href", "/start?source=home");
-    const secondary = hero.getByRole("link", { name: APPROVED.ctaSecondary, exact: true });
-    await expect(secondary).toHaveAttribute("href", "/engagement-model");
-    await expect(hero).not.toContainText("The execution layer for business AI.");
-    await expect(hero).not.toContainText(/MAAX/i);
-    await expect(hero.locator('a[href*="maax" i], a[href="#maax"]')).toHaveCount(0);
+    await expect(page.locator("#hero-heading")).toHaveText(
+      "AI products and automation. Built for the way you work.",
+    );
+    await expect(hero).toContainText(
+      "We build AI software, connect your existing systems, and automate the work between them.",
+    );
+    await expect(hero.locator('a[data-cta="primary"]')).toHaveText(/Discuss your project/);
+    await expect(hero.locator('a[data-cta="primary"]')).toHaveAttribute(
+      "href",
+      "/start?source=home",
+    );
+    await expect(hero.locator('a[data-cta="secondary"]')).toHaveText("Explore our products");
+    await expect(hero.locator('a[data-cta="secondary"]')).toHaveAttribute("href", "#products");
+    await expect(hero).not.toContainText(/MAAX|ASTRA|execution layer/i);
   });
 
-  test("execution gap names the four breaks without third-party statistics", async ({ page }) => {
+  test("homepage names products, automation, integration and custom software", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const section = page.locator("#execution-gap");
-    await expect(section).toBeVisible();
-    await expect(section).not.toContainText(/Gartner/);
-    const breaks = section.locator(".cx-gap-item");
-    await expect(breaks).toHaveCount(4);
-    for (const title of [
-      "Data the system can trust",
-      "Permissions someone decided",
-      "Cost someone watches",
-      "An owner for the outcome",
-    ]) {
-      await expect(section.getByRole("heading", { name: title })).toBeVisible();
+    const main = page.locator("main");
+    for (const term of [/AI products/i, /automat/i, /integration/i, /custom AI software/i]) {
+      await expect(main).toContainText(term);
     }
-  });
-
-  test("homepage connects the execution gap directly to the Cyryx thesis", async ({ page }) => {
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    const section = page.locator("#execution-gap");
-
-    await expect(section).toContainText("A capable model is not yet a working system.");
-    await expect(section).toContainText("The missing layer is controlled execution");
   });
 
   test("homepage presents no discontinued MAAX product section", async ({ page }) => {
@@ -178,22 +179,56 @@ test.describe("Hero — enterprise value proposition", () => {
     await expect(page.locator("main")).not.toContainText(/MAAX/i);
   });
 
-  test("homepage explains the four ways to engage with focused entry points", async ({ page }) => {
+  test("two starting points: products and solutions", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const operatingModel = page.locator("#operating-model");
+    const paths = page.locator("#paths");
+    await expect(paths.getByRole("link", { name: /Explore Cyryx products/ })).toHaveAttribute(
+      "href",
+      "/products",
+    );
+    await expect(paths.getByRole("link", { name: /Build AI into your business/ })).toHaveAttribute(
+      "href",
+      "/solutions",
+    );
+  });
 
-    await expect(operatingModel.getByRole("heading", { level: 2 })).toHaveText(
-      "Four ways to start.",
-    );
-    await expect(operatingModel).toContainText(
-      "Start with the stage you need now: Advise, Build, Control or Operate.",
-    );
-    await expect(
-      operatingModel.getByRole("link", { name: /Not sure where to start\? Tell us the problem/ }),
-    ).toHaveAttribute("href", "/start?source=home");
-    await expect(
-      operatingModel.getByRole("link", { name: /See how engagements run/ }),
-    ).toHaveAttribute("href", "/engagement-model");
+  test("the four solution groups link to their own pages and state no price", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const solutions = page.locator("#solutions");
+    for (const href of [
+      "/solutions/ai-strategy-advisory",
+      "/solutions/workflow-automation",
+      "/solutions/custom-ai-product-development",
+      "/managed-operations",
+    ]) {
+      await expect(solutions.locator(`a[href="${href}"]`)).toHaveCount(1);
+    }
+    // Prices stay off the site until the founder publishes them.
+    await expect(page.locator("main")).not.toContainText(/\$\d/);
+  });
+
+  test("products show Onyx and AEXOS with their real stages and Orbit by name only", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const products = page.locator("#products");
+    await expect(products.locator("#onyx")).toContainText("Onyx");
+    await expect(products.locator("#aexos")).toContainText("AEXOS");
+    await expect(products.locator("#aexos")).not.toContainText(/\bPro\b/);
+    await expect(products.locator('img[src^="/media/onyx/"]').first()).toBeAttached();
+    await expect(products.locator('a[href="/products/onyx"]').first()).toBeAttached();
+    await expect(products.locator('a[href="/products/aexos"]').first()).toBeAttached();
+    const orbit = products.locator(".orbit");
+    await expect(orbit).toContainText("Orbit");
+    await expect(orbit).toContainText("In development");
+    await expect(orbit.locator("a, button, form")).toHaveCount(0);
+    await expect(products).not.toContainText(/ASTRA|MAAX/);
+  });
+
+  test("the home publishes no market statistics", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("#market")).toHaveCount(0);
+    await expect(page.locator("main")).not.toContainText(/Goldman Sachs|RSM US|Deloitte/);
   });
 
   test("homepage chapters render in the approved order", async ({ page }) => {
@@ -201,24 +236,41 @@ test.describe("Hero — enterprise value proposition", () => {
     const ids = await page
       .locator("main section[id]")
       .evaluateAll((sections) => sections.map((section) => section.id));
-    const expected = [
+    expect(ids).toEqual([
       "top",
-      "execution-gap",
-      "operating-model",
-      "controlled-execution",
+      "what",
+      "paths",
+      "workflow",
+      "solutions",
+      "products",
       "evidence",
-      "security",
+      "delivery",
+      "company",
       "contact",
-    ];
-    expect(ids.filter((id) => expected.includes(id))).toEqual(expected);
-    // TeamBlock renders nothing while no founder profile is published.
+    ]);
+    // No founder profile is published.
     await expect(page.locator("#team")).toHaveCount(0);
   });
 
-  test("sample deliverables are labelled as illustrative", async ({ page }) => {
+  test("the home publishes no FAQPage schema without a visible FAQ", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const evidence = page.locator("#evidence");
-    await expect(evidence.getByRole("tablist")).toBeVisible();
-    await expect(evidence.getByRole("tabpanel")).toContainText("Sample · illustrative data");
+    const graph = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((nodes) =>
+        nodes.flatMap((n) => JSON.parse(n.textContent || "{}")["@graph"] ?? []),
+      );
+    const faq = graph.find((node: { "@type"?: string }) => node["@type"] === "FAQPage");
+    expect(Boolean(faq)).toBe((await page.locator("#faq").count()) > 0);
+  });
+
+  test("the only guarantee on the home is the acceptance checklist", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const main = page.locator("main");
+    await expect(main).toContainText(
+      "A project is done when it passes the acceptance checklist we agree on.",
+    );
+    await expect(main).not.toContainText(
+      /fixed (written )?quote|fixed price|you own the code|money.back|\b\d+ (days|weeks)\b/i,
+    );
   });
 });

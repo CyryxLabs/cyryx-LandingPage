@@ -65,7 +65,7 @@ function EngagementModelPage() {
       <main id="main-content">
         <InternalHero
           eyebrow="How we work · Controlled delivery"
-          title="Decisions first. Evidence throughout. Ownership at launch."
+          title="Decisions first. Evidence throughout. Ownership in writing."
           body="Every engagement is shaped around the actual problem, authority, and operating life of the system."
           primaryCta={{
             label: "Start a project",

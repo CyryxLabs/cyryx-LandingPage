@@ -4,7 +4,8 @@
  * Source: the published npm package @aexos/core (README, LICENSE, constitution
  * and docs), version 5.3.0. Numbers are the ones the package counts from its
  * own tree. Nothing here comes from internal go-to-market material: no prices,
- * launch plans or roadmap items.
+ * launch plans or roadmap items. Only AEXOS Core is offered publicly
+ * (founder decision 2026-11-17).
  */
 
 export const AEXOS_VERSION = "5.3.0";
@@ -178,13 +179,8 @@ export const AEXOS_REQUIREMENTS = [
 export const AEXOS_EDITIONS = [
   {
     name: "Core",
-    state: "Available on npm",
+    state: "Free on npm",
     body: "Free to use under the AEXOS license for personal, internal, educational and commercial work, including work you deliver to clients. The CLI, the core roles, the squads, tasks and workflows, and the doctor, validate and update commands.",
-  },
-  {
-    name: "Pro",
-    state: "Commercial license",
-    body: "Pro capabilities and squads for licensed users, available under a paid commercial agreement. Talk to us about access.",
   },
 ] as const;
 

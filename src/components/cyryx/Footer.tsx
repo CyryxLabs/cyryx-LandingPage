@@ -1,6 +1,9 @@
+import * as React from "react";
+import { useEffect, useRef } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ArrowUp, ArrowUpRight, Github, MessageSquare } from "lucide-react";
+import { ArrowUp, ArrowUpRight, MessageSquare } from "lucide-react";
 import { CyryxLockup } from "./primitives/CyryxMark";
+import wordmarkLarge from "@/assets/cyryx-wordmark-1200.webp";
 import { PRIMARY_NAVIGATION, PRIMARY_NAVIGATION_CTA, type NavigationItem } from "@/lib/navigation";
 import { trackCta } from "@/lib/track-cta";
 import { isAssistantEnabled, openAssistant } from "@/lib/assistant-client";
@@ -29,7 +32,12 @@ function FooterLink({ item, className }: { item: FooterItem; className?: string 
   }
 
   return (
-    <Link to={item.href} className={cn(LINK_CLASS, className)} activeOptions={{ exact: true }}>
+    <Link
+      to={item.href}
+      hash={item.hash}
+      className={cn(LINK_CLASS, className)}
+      activeOptions={{ exact: true, includeHash: Boolean(item.hash) }}
+    >
       {item.label}
     </Link>
   );
@@ -67,6 +75,7 @@ export function Footer() {
   );
   const startHref = PRIMARY_NAVIGATION_CTA.href;
   const assistantEnabled = isAssistantEnabled();
+  const footerRef = useFooterMotion(pathname);
 
   const scrollTop = () => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -75,22 +84,15 @@ export function Footer() {
   };
 
   return (
-    <footer role="contentinfo" className="cx-footer relative overflow-hidden">
+    <footer ref={footerRef} role="contentinfo" className="cx-footer ft relative overflow-hidden">
       <span aria-hidden className="cx-sweep-line absolute inset-x-0 top-0 block h-px" />
-      <div aria-hidden className="cx-footer-glow" />
+      <div aria-hidden className="ft-aura" />
 
-      <div className="relative mx-auto max-w-7xl px-5 pb-[max(env(safe-area-inset-bottom),6rem)] pt-16 sm:px-8 lg:px-10 lg:pb-10 lg:pt-24">
+      <div className="ft-wrap">
         {showCtaBand ? (
-          <div className="cx-spotlight cx-footer-cta grid gap-8 rounded-2xl border p-7 sm:p-10 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:p-12">
-            <div>
-              <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[var(--accent-glow)]">
-                Start here
-              </p>
-              <p className="mt-4 max-w-[22ch] font-display text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[var(--silver)] sm:text-4xl lg:text-5xl">
-                Have a workflow AI should run under control?
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+          <div className="cx-spotlight cx-footer-cta ft-band" data-ft-in>
+            <p className="ft-band-title">Ready to put AI to work in your business?</p>
+            <div className="ft-band-acts">
               <a
                 href={startHref}
                 className="cx-btn-primary"
@@ -119,22 +121,16 @@ export function Footer() {
           </div>
         ) : null}
 
-        <div
-          className={cn(
-            "grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-20",
-            showCtaBand ? "mt-16 lg:mt-24" : "",
-          )}
-        >
-          <div className="flex flex-col items-start">
-            <CyryxLockup className="h-14" />
-            <p className="mt-6 max-w-xs text-sm leading-relaxed text-[var(--silver-dim)]">
-              We design, build and run AI systems that act inside your workflows, with clear
-              permissions, human approval and a record of every decision.
-            </p>
+        <div className="ft-top">
+          <p className="ft-statement" data-ft-in>
+            AI that works.
+            <span> People who answer for it.</span>
+          </p>
+          <div className="ft-top-acts" data-ft-in>
             {showCtaBand ? null : (
               <a
                 href={startHref}
-                className="cx-btn-primary cx-btn-sm mt-8"
+                className="cx-btn-primary"
                 onClick={() =>
                   trackCta({ cta: "start_project", section: "footer", href: startHref })
                 }
@@ -143,53 +139,54 @@ export function Footer() {
                 <ArrowUpRight className="h-4 w-4" aria-hidden />
               </a>
             )}
-            <ul className="mt-8 flex gap-3" aria-label="Cyryx Labs on social media">
-              <li>
-                <a
-                  href="https://x.com/cyryxlabs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cx-footer-social"
-                  aria-label="Cyryx Labs on X (opens in a new tab)"
-                >
-                  <XMark className="h-4 w-4" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/CyryxLabs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cx-footer-social"
-                  aria-label="Cyryx Labs on GitHub (opens in a new tab)"
-                >
-                  <Github className="h-4 w-4" aria-hidden />
-                </a>
-              </li>
-            </ul>
-            <div className="mt-10">
-              <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
-                Contact
-              </p>
-              <ul className="mt-4 space-y-2.5">
-                {CONTACT.map((item) => (
+            <FooterLink item={CONTACT[0]} className="ft-mail" />
+          </div>
+        </div>
+
+        <div className="ft-grid">
+          <div className="ft-brand" data-ft-in>
+            <CyryxLockup className="h-8" />
+            <p>
+              AI products, workflow automation and system integration, plus applied research. Cyryx
+              Labs LLC.
+            </p>
+            <div className="ft-brand-end">
+              <ul className="ft-contact" aria-label="Other contacts">
+                {CONTACT.slice(1).map((item) => (
                   <li key={item.label}>
                     <FooterLink item={item} />
                   </li>
                 ))}
               </ul>
+              <ul className="flex gap-3" aria-label="Cyryx Labs on social media">
+                <li>
+                  <a
+                    href="https://x.com/cyryxlabs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cx-footer-social"
+                    aria-label="Cyryx Labs on X (opens in a new tab)"
+                  >
+                    <XMark className="h-4 w-4" />
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-4">
-            {PRIMARY_NAVIGATION.map((group) => (
-              <nav key={group.id} aria-label={group.label}>
-                <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--steel)]">
-                  {group.label}
-                </p>
-                <ul className="mt-5 space-y-3.5">
+          <div className="ft-nav">
+            {PRIMARY_NAVIGATION.map((group, index) => (
+              <nav
+                key={group.id}
+                aria-label={group.label}
+                className={cn("ft-col", group.id === "solutions" && "ft-col--wide")}
+                data-ft-in
+                style={{ "--d": `${80 + index * 60}ms` } as React.CSSProperties}
+              >
+                <p className="ft-col-title">{group.label}</p>
+                <ul>
                   {group.children.map((item) => (
-                    <li key={item.label}>
+                    <li key={`${item.label}-${item.hash ?? ""}`}>
                       <FooterLink item={item} />
                     </li>
                   ))}
@@ -199,23 +196,32 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-5 border-t border-white/10 pt-7 sm:flex-row sm:items-center sm:justify-between lg:mt-24">
-          <p className="text-xs tracking-wide text-[var(--silver-dim)]">
-            &copy; {year} Cyryx Labs. All rights reserved.
-          </p>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <ul className="flex flex-wrap gap-x-6 gap-y-3">
+        <div className="ft-mark" aria-hidden="true">
+          <img
+            src={wordmarkLarge}
+            alt=""
+            width={1200}
+            height={296}
+            loading="lazy"
+            decoding="async"
+          />
+          <span
+            className="ft-mark-sheen"
+            style={{ "--wm": `url(${wordmarkLarge})` } as React.CSSProperties}
+          />
+        </div>
+
+        <div className="ft-legal">
+          <p>&copy; {year} Cyryx Labs LLC. All rights reserved.</p>
+          <div className="ft-legal-links">
+            <ul>
               {LEGAL.map((item) => (
                 <li key={item.label}>
                   <FooterLink item={item} className="text-xs" />
                 </li>
               ))}
             </ul>
-            <button
-              type="button"
-              onClick={scrollTop}
-              className="inline-flex min-h-11 items-center gap-2 font-mono text-[12px] uppercase tracking-[0.16em] text-[var(--silver-dim)] transition-colors hover:text-[var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-glow)]"
-            >
+            <button type="button" onClick={scrollTop} className="ft-top-btn">
               Top of page <ArrowUp className="h-3.5 w-3.5" aria-hidden />
             </button>
           </div>
@@ -223,4 +229,72 @@ export function Footer() {
       </div>
     </footer>
   );
+}
+
+/**
+ * Arrival motion: columns rise in, the large wordmark lifts out of the floor
+ * as the footer scrolls into view and a sheen crosses it. Everything is
+ * visible without JavaScript; reduced motion and the low-performance path
+ * never arm the hidden states.
+ */
+function useFooterMotion(pathname: string) {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const footer = ref.current;
+    if (!footer) return;
+    const root = document.documentElement;
+    const still =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      root.classList.contains("cx-low-perf") ||
+      !("IntersectionObserver" in window);
+    if (still) {
+      footer.classList.add("is-in");
+      return;
+    }
+    footer.classList.add("ft-js");
+    const items = Array.from(footer.querySelectorAll<HTMLElement>("[data-ft-in]"));
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-in");
+          io.unobserve(entry.target);
+        }),
+      { rootMargin: "0px 0px -6% 0px", threshold: 0.1 },
+    );
+    items.forEach((el) => io.observe(el));
+    const mark = footer.querySelector<HTMLElement>(".ft-mark");
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      if (!mark) return;
+      const rect = mark.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const atEnd = window.scrollY + vh >= root.scrollHeight - 4;
+      const progress = atEnd
+        ? 1
+        : Math.min(1, Math.max(0, (vh - rect.top) / (rect.height + vh * 0.15)));
+      mark.style.setProperty("--fp", progress.toFixed(3));
+      items.forEach((el) => {
+        if (!el.classList.contains("is-in") && el.getBoundingClientRect().top < vh) {
+          el.classList.add("is-in");
+          io.unobserve(el);
+        }
+      });
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      io.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      footer.classList.remove("ft-js");
+    };
+  }, [pathname]);
+  return ref;
 }

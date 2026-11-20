@@ -1,13 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { serviceRoute } from "@/components/site/ServicePage";
 
-export const Route = createFileRoute("/solutions/ai-integrations")({
-  beforeLoad: () => {
-    throw redirect({
-      to: "/solutions/workflow-automation",
-      search: true,
-      replace: true,
-      statusCode: 308,
-    });
-  },
-  component: () => null,
-});
+export const Route = createFileRoute("/solutions/ai-integrations")(serviceRoute("ai-integrations"));

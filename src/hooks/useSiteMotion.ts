@@ -54,6 +54,9 @@ export function useSiteMotion() {
     let revert: (() => void) | undefined;
 
     const frame = window.requestAnimationFrame(() => {
+      // Pages on the 2026-11 site system (`.cy-main`) run their own lightweight
+      // motion (components/site/motion.ts) and never load the animation library.
+      if (document.querySelector("#main-content.cy-main")) return;
       void (async () => {
         const [{ gsap }, { ScrollTrigger }] = await Promise.all([
           import("gsap"),

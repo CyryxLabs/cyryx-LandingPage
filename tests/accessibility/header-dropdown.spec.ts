@@ -11,12 +11,15 @@ test.describe("Header Dropdown Accessibility", () => {
     await page.setViewportSize({ width: 1280, height: 900 });
   });
 
-  test("Four top-level group triggers render", async ({ page }) => {
+  test("Four top-level group triggers and the Demos link render", async ({ page }) => {
     await openHydrated(page);
-    const triggers = ["Products", "Solutions", "Research", "Company"];
+    const triggers = ["Products", "Solutions", "Insights", "Company"];
     for (const name of triggers) {
       await expect(page.getByRole("button", { name, exact: true })).toBeVisible();
     }
+    await expect(
+      page.locator('header nav[aria-label="Primary"]').getByRole("link", { name: "Demos" }),
+    ).toHaveAttribute("href", "/demos");
   });
 
   test("Products opens and closes by click", async ({ page }) => {

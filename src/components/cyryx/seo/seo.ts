@@ -23,7 +23,7 @@ export interface PageMetaInput {
   ogType?: "website" | "article" | "product";
 }
 
-const DEFAULT_OG_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20260723-1");
+const DEFAULT_OG_IMAGE = absoluteSiteUrl("/cyryx-og.png?v=20261113-1");
 
 /**
  * Build the standard meta + canonical entries for a route head().

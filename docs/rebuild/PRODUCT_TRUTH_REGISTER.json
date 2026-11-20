@@ -1,0 +1,184 @@
+{
+  "register_version": "gate1-2026-11-17",
+  "method": "Public pages read with a fetch tool on 2026-11-17; repository snapshot of feat/site-2026-11 (a816685 + uncommitted work). No product was installed, run, purchased or signed up for. No form was submitted.",
+  "products": [
+    {
+      "id": "onyx",
+      "name": "Onyx",
+      "category": "AI coworker for Windows (as published on cyryxlabs.com: src/data/products.ts:27; product site tagline 'AI coworker for Windows')",
+      "audience": "Individual owner on one Windows PC (src/data/onyx.ts FAQ 'Onyx works for one owner on one PC'); not a team product.",
+      "core_job": "Desktop AI assistant that talks by voice, triages inbox and calendar, researches, operates apps and keeps a local note vault, asking before acting outside the machine (as stated, not tested).",
+      "status": "Free beta (Windows 10/11 64-bit)",
+      "verified_at": "2026-11-17",
+      "evidence": [
+        {
+          "url": "https://onyx.cyryxlabs.com/",
+          "observed": "Headline 'Hire the employee who never logs off.'; 'Free while in beta'; version 1.14.45 shown in footer and beta section; 'Paid plans come later; the beta stays free while it runs.'; '(c) 2026 Cyryx Labs LLC' / 'Made by Cyryx Labs LLC.'; download buttons ('Download beta', 'Download the free beta', 'Download for Windows') point to https://onyx.cyryxlabs.com/download/Onyx-Windows-x64-Setup.exe; a modal asks name, work email, optional company and role with an opt-in for beta update e-mails and says the download starts right away; installer is not code-signed (SmartScreen warning, 'More info' > 'Run anyway'); privacy link to https://www.cyryxlabs.com/privacy; feedback via mailto contact@cyryxlabs.com; cites a BLS median pay figure for executive assistants."
+        },
+        {
+          "url": "https://www.cyryxlabs.com/products/onyx",
+          "observed": "Eyebrow 'Onyx - AI coworker for Windows - Free beta'; note 'Free while in beta. For Windows 10 and 11, 64-bit. Runs on free AI model tiers with your own keys. Version 1.14.25.'; CTAs link to https://onyx.cyryxlabs.com/ (not to the installer)."
+        }
+      ],
+      "verification_gaps": [
+        "Installer URL was observed on the page but the file was not downloaded, so it is not verified that it serves a working installer.",
+        "Whether the download modal is required or optional is unclear (page metadata flag 'meta-onyx-beta-form' reads 'off').",
+        "No capability (voice, inbox, approvals, tamper-evident log, spending caps) was tested."
+      ],
+      "access_url": "https://onyx.cyryxlabs.com/",
+      "dependencies_requirements": {
+        "os": "Windows 10 or 11, 64-bit only (no macOS/Linux)",
+        "hardware": "Dedicated GPU recommended for characters; lighter mode on older PCs (product site)",
+        "ai_models": "User-supplied API keys; free tiers of Google Gemini and OpenRouter suggested; on free tiers Google may use content to improve its products (disclosed on both sites)",
+        "companions": "Android app pairing and Telegram (stated, not verified)",
+        "installer": "Unsigned Windows .exe (SmartScreen warning)"
+      },
+      "pricing_state": "Free during beta; no paid price published; 'paid plans come later' with no date. Consistent with founder rule 'no prices published'.",
+      "limitations": [
+        "Beta software; unsigned installer (not mentioned on cyryxlabs.com)",
+        "Windows only",
+        "Single owner / single PC",
+        "Requires user's own AI provider keys; free-tier data-use caveat",
+        "Website version string is stale (1.14.25 on cyryxlabs.com vs 1.14.45 on product site)"
+      ],
+      "support_url": "mailto:contact@cyryxlabs.com (subject 'Onyx beta feedback' on product site). No dedicated support page, terms of use or beta licence link observed.",
+      "cta_label_and_destination": {
+        "rule_applied": "Blueprint: beta with working access -> 'Try beta'.",
+        "primary": "Try the Onyx beta -> https://onyx.cyryxlabs.com/ (product site handles download and any sign-up)",
+        "secondary": "See how Onyx works -> /products/onyx",
+        "condition": "Keep 'Try the beta' only after the founder confirms the installer download works end to end; otherwise downgrade to 'Get updates'."
+      },
+      "open_questions": [
+        "Is the download modal (name, work e-mail, role) mandatory? If yes, remove 'No card, no account' (src/data/onyx.ts:203) or reword.",
+        "Approve stating the unsigned-installer limitation on cyryxlabs.com.",
+        "Should the cyryxlabs.com version string be removed or fed from the product site to avoid drift?",
+        "Is 'tamper-evident log' (src/data/onyx.ts:170) an accurate description of the implementation?",
+        "Beta terms / licence and data-flow statement for Onyx: do they exist?",
+        "Keep or soften the headline 'Hire the employee who never logs off.' and the '24/7' stat?",
+        "Should Onyx's BLS salary comparison stay off the corporate site (recommended)?"
+      ]
+    },
+    {
+      "id": "aexos",
+      "name": "AEXOS (Agentic eXecution & Orchestration System)",
+      "category": "Published variously as 'Agentic orchestration framework' (src/data/products.ts:49), 'Agent framework' (ProductShowcase.tsx:318) and 'CLI-first framework' (products.aexos.tsx:33). Needs one plain-English category.",
+      "audience": "Developers and technical teams using AI coding assistants in a repository.",
+      "core_job": "Installs a defined set of AI agent roles, procedures, checklists and git-hook/CI quality gates into a software project, routed through one orchestrator (as documented, not tested).",
+      "status": "Core edition published on npm (single version 5.3.0). Pro edition: no verified commercial offer.",
+      "verified_at": "2026-11-17",
+      "evidence": [
+        {
+          "url": "https://registry.npmjs.org/@aexos/core/latest",
+          "observed": "name @aexos/core; version 5.3.0; license 'SEE LICENSE IN LICENSE'; engines node >=18.0.0, npm >=9.0.0; author Cyryx Labs LLC; maintainer 'cyryx' (contact@cyryxlabs.com); homepage/repository github.com/CyryxLabs/AEXOS; bin aexos, core, aexos-core and others; tarball fileCount 2196."
+        },
+        {
+          "url": "https://registry.npmjs.org/@aexos/core",
+          "observed": "Only one version (5.3.0); created and published 2026-08-03T03:14Z; dist-tag latest = 5.3.0."
+        },
+        {
+          "url": "https://api.npmjs.org/downloads/point/last-week/@aexos/core",
+          "observed": "6 downloads between 2026-11-10 and 2026-11-16."
+        },
+        {
+          "url": "https://www.npmjs.com/package/@aexos/core",
+          "observed": "Page could not be fetched (client error); registry API used instead."
+        },
+        {
+          "url": "https://www.cyryxlabs.com/products/aexos",
+          "observed": "H1 'AI agents that work to a method.'; 'Core available on npm - v5.3.0 - Node.js 18+'; editions Core (free under AEXOS license) and Pro ('available under a paid commercial agreement'); no price; no SoftwareApplication JSON-LD."
+        },
+        {
+          "url": "https://aexos.cyryxlabs.com/",
+          "observed": "302 Found to https://www.cyryxlabs.com/products/aexos."
+        }
+      ],
+      "verification_gaps": [
+        "LICENSE text not read; proprietary/free-for-commercial-use terms are the site's description only.",
+        "GitHub repository https://github.com/CyryxLabs/AEXOS could not be checked (rate limited); public or private unknown.",
+        "Counts (64 agents, 291 tasks, 33 workflows, 62 checklists, 9 squads) not recounted.",
+        "Compatibility with Claude Code, Gemini CLI, Codex CLI not tested.",
+        "No evidence of a Pro edition being sold, provisioned or licensed (src/data/site-taxonomy.ts:84-85 says Pro/Team pricing is still being validated)."
+      ],
+      "access_url": "https://www.npmjs.com/package/@aexos/core (install: npx @aexos/core init my-project)",
+      "dependencies_requirements": {
+        "runtime": "Node.js >= 18 (20+ recommended on site), npm >= 9 (registry engines field confirms both minimums)",
+        "os": "Linux, macOS or Windows (site claim, src/data/aexos.ts:175)",
+        "environment": "An AI coding environment (site names Claude Code, Gemini CLI, Codex CLI) plus the user's own model access/fees"
+      },
+      "pricing_state": "Core: free under the AEXOS licence (site claim). Pro: described as paid commercial licence; no price, no checkout, no verified offer. Do not present Pro as purchasable.",
+      "limitations": [
+        "Proprietary licence; redistribution and hosted resale not permitted (site claim, licence text not read)",
+        "Single published version; low observed adoption (6 weekly downloads)",
+        "User remains responsible for reviewing agent output (site FAQ)",
+        "Model/API costs are the user's and are not included"
+      ],
+      "support_url": "https://github.com/CyryxLabs/AEXOS/issues (registry 'bugs' field; reachability not verified) and contact@cyryxlabs.com",
+      "cta_label_and_destination": {
+        "rule_applied": "Blueprint: available and verified -> appropriate start/evaluate action; unspecified commercial status -> no purchase CTA.",
+        "primary": "Install AEXOS Core -> https://www.npmjs.com/package/@aexos/core",
+        "secondary": "Read the AEXOS overview -> /products/aexos",
+        "remove_or_hold": "'Ask about Pro or team use' (products.aexos.tsx:562) until the founder confirms a real Pro offer; if kept, label it 'Ask about team use' and route to /start?intent=aexos without implying a paid product exists."
+      },
+      "open_questions": [
+        "Is Pro actually offered today (terms, provisioning, invoicing)? If not, show Core only.",
+        "Approve one plain-English category, e.g. 'Framework for AI coding agents'.",
+        "Is the GitHub repository public? If private, remove repository/issue links from public surfaces.",
+        "Should the site show the 64/291/33/62/9 counts, or link to the package README instead?",
+        "Remove aexos.cyryxlabs.com from AEXOS_PRODUCT.productSiteUrl (it redirects back to the main site)."
+      ]
+    },
+    {
+      "id": "orbit",
+      "name": "Orbit",
+      "category": "Not published. No category may be stated until the founder approves one.",
+      "audience": "Unknown / not approved.",
+      "core_job": "Unknown / not approved. The founder has not yet approved a one-line purpose.",
+      "status": "In development (founder decision; not verifiable publicly)",
+      "verified_at": "2026-11-17",
+      "evidence": [
+        {
+          "url": "(repository snapshot)",
+          "observed": "No reference to Orbit anywhere in src/, tests/ or seo/ (only an unrelated CSS variable '--font-orbitron' at src/styles.css:67)."
+        },
+        {
+          "url": "https://www.cyryxlabs.com/",
+          "observed": "No mention of Orbit on the live homepage; live llms.txt does not mention Orbit."
+        }
+      ],
+      "verification_gaps": [
+        "No public artifact, URL, repository or package exists to verify. Status rests solely on the founder's statement."
+      ],
+      "access_url": null,
+      "dependencies_requirements": null,
+      "pricing_state": "None. No pricing, no waitlist, no form.",
+      "limitations": [
+        "Must not be described (role, features, dependencies, relationship to Onyx, launch date) until approved."
+      ],
+      "support_url": null,
+      "cta_label_and_destination": {
+        "rule_applied": "Founder decision overrides blueprint 'development -> get updates': no CTA and no form until a purpose line is approved.",
+        "primary": null,
+        "display": "Product card on /products with name 'Orbit' and status badge 'In development' only; no link, no description."
+      },
+      "open_questions": [
+        "Approve a one-line purpose for Orbit (required before any description).",
+        "Should Orbit appear on the homepage portfolio now, or only on /products?",
+        "When a notification form is wanted, which CRM route and consent text will it use?"
+      ]
+    }
+  ],
+  "retired_products": [
+    {
+      "id": "maax-studio",
+      "status": "Discontinued Sep 2026 (founder decision)",
+      "site_state": "src/routes/products.maax-studio.tsx 308 -> /products; tests assert no 'MAAX' in bundles, nav, footer or home. No visible MAAX text found on live home on 2026-11-17.",
+      "note": "Blueprint source S2 reports the Instagram profile may still reference MAAX Studio; not checked here."
+    },
+    {
+      "id": "astra",
+      "status": "Retired (founder decision)",
+      "site_state": "Only in unused data module src/data/offer.ts:142-159 (CYRYX_PRODUCTS is not imported anywhere). Not rendered; not in live home or llms.txt.",
+      "note": "Delete offer.ts after approval to stop it being re-imported."
+    }
+  ]
+}

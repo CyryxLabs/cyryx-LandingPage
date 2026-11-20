@@ -50,9 +50,18 @@ describe("sanitizeReply", () => {
     expect(out).not.toContain("evil.example");
   });
 
-  test("keeps links to the AEXOS product site", () => {
-    expect(sanitizeReply("Docs: https://aexos.cyryxlabs.com/.")).toContain(
-      "https://aexos.cyryxlabs.com/",
+  test("keeps links to the AEXOS package and the Onyx product site", () => {
+    expect(sanitizeReply("Install: https://www.npmjs.com/package/@aexos/core.")).toContain(
+      "https://www.npmjs.com/package/@aexos/core",
+    );
+    expect(sanitizeReply("See https://onyx.cyryxlabs.com/")).toContain(
+      "https://onyx.cyryxlabs.com/",
+    );
+  });
+
+  test("drops the retired AEXOS subdomain (it now redirects to /products/aexos)", () => {
+    expect(sanitizeReply("Docs: https://aexos.cyryxlabs.com/")).not.toContain(
+      "aexos.cyryxlabs.com",
     );
   });
 });

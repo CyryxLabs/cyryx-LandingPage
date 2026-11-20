@@ -30,7 +30,7 @@ import { trackCta } from "@/lib/track-cta";
 const PATH = "/products/aexos";
 const TITLE = "AEXOS — Agentic Execution & Orchestration System · Cyryx Labs";
 const DESC =
-  "AEXOS is a CLI-first framework that installs AI agents, the procedures they follow and the quality gates they must pass into your project. Core is on npm.";
+  "AEXOS is an agent framework for developers using AI coding tools: agents, the procedures they follow and the quality gates they must pass. Core is free on npm.";
 
 const COMMANDS = [
   { label: "New project", command: AEXOS_PRODUCT.installCommand },
@@ -153,10 +153,10 @@ function AexosPage() {
         <InternalHero
           eyebrow="Cyryx Labs / Products / AEXOS"
           title="AI agents that work to a method."
-          body="AEXOS, the Agentic eXecution & Orchestration System, installs specialised AI agents, the procedures they follow and the gates they must pass into your project. You talk to one orchestrator; it routes the work to the specialist that owns it."
+          body="AEXOS, the Agentic eXecution & Orchestration System, is an agent framework for software projects. It installs specialised AI agents, the procedures they follow and the gates they must pass into your project. You talk to one orchestrator; it routes the work to the specialist that owns it."
           primaryCta={{ label: "Install from npm", href: product.npmUrl, onClick: trackInstall }}
           secondaryCta={{ label: "Talk to us about AEXOS", href: talkHref, onClick: trackTalk }}
-          boundaryNote={`Core available on npm · v${AEXOS_VERSION} · ${product.runtime}`}
+          boundaryNote={`AEXOS Core · free on npm · v${AEXOS_VERSION} · ${product.runtime}`}
           lifecycleLabel="Story development cycle"
           lifecycle={[
             { number: "01", label: "Create" },
@@ -196,7 +196,7 @@ function AexosPage() {
                 ],
                 [
                   "Leaves a record",
-                  "Stories, QA verdicts and state live in files you own and can review.",
+                  "Stories, QA verdicts and state live in files in your repository that you can review.",
                 ],
               ].map(([title, body]) => (
                 <article key={title} className="cx-spotlight bg-[var(--obsidian)] p-6 sm:p-8">
@@ -523,11 +523,11 @@ function AexosPage() {
           <div className="mx-auto max-w-7xl">
             <SectionIntro
               id="aexos-editions"
-              label="Editions"
-              title="Start free with Core."
-              body="AEXOS is proprietary software from Cyryx Labs. Core is free to use under the AEXOS license; Pro is licensed commercially."
+              label="Edition"
+              title="Start free with AEXOS Core."
+              body="AEXOS is proprietary software from Cyryx Labs. AEXOS Core is free to use under the AEXOS license."
             />
-            <div className="mt-12 grid gap-4 lg:grid-cols-2">
+            <div className="mt-12 grid max-w-3xl gap-4">
               {AEXOS_EDITIONS.map((edition) => (
                 <article
                   key={edition.name}
@@ -557,9 +557,6 @@ function AexosPage() {
               >
                 Install Core <ArrowRight className="h-4 w-4" aria-hidden />
                 <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-              <a href={talkHref} className="cx-btn-secondary" onClick={trackTalk}>
-                Ask about Pro or team use <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
             </div>
           </div>

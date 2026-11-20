@@ -24,9 +24,9 @@ import { getActiveCopyVariant } from "@/lib/copy-variant";
 import { isAssistantEnabled, openAssistant } from "@/lib/assistant-client";
 
 const PATH = "/start";
-const TITLE = "Start a Project — Cyryx Labs";
+const TITLE = "Get a Free AI Fit Check | Cyryx Labs";
 const DESC =
-  "Tell us about the workflow, product or system you want to change. Two short steps; Cyryx Labs will tell you where to start, or recommend not to build.";
+  "Tell Cyryx Labs what you want to automate, build or fix. Two short steps, then a free 20-minute fit check and a written scope you approve before work starts.";
 
 const INVESTMENT_RANGES = [
   "Under $5,000",
@@ -265,11 +265,13 @@ function StartPage() {
             Start with the problem
           </HudLabel>
           <h1 className="mt-4 max-w-[16ch] font-display text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-silver-gradient sm:text-5xl lg:text-6xl">
-            Tell us what you want AI to change.
+            Tell us what you want to build or fix.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] lg:text-lg">
-            Two short steps. We'll tell you whether AI belongs there, where to start (Advise, Build,
-            Control or Operate) or whether not to build at all.
+            An AI system, an automation, an integration or a product: two short steps. We&apos;ll
+            tell you whether it makes sense, where to start, or whether not to build at all. If it
+            fits, the next step is a free 20-minute call and a written scope you approve before work
+            starts.
           </p>
 
           <ol
@@ -443,7 +445,10 @@ function StartPage() {
                     />
                     <span>
                       I consent to Cyryx Labs contacting me about this brief in accordance with the{" "}
-                      <Link to="/privacy" className="text-[var(--accent-glow)] hover:underline">
+                      <Link
+                        to="/privacy"
+                        className="text-[var(--accent-glow)] underline underline-offset-4"
+                      >
                         Privacy Policy
                       </Link>
                       .

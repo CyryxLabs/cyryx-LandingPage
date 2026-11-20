@@ -23,8 +23,9 @@ test.describe("footer navigation model", () => {
     await expect(productsGroup).toBeVisible();
 
     const expectedProducts = [
-      { label: "Products Overview", href: "/products" },
+      { label: "All products", href: "/products" },
       { label: "AEXOS", href: "/products/aexos" },
+      { label: "Onyx", href: "/products/onyx" },
     ];
 
     for (const item of expectedProducts) {
@@ -37,58 +38,33 @@ test.describe("footer navigation model", () => {
     await expect(page.locator('footer a[href*="maax" i]')).toHaveCount(0);
   });
 
-  test("solutions group content", async ({ page }) => {
-    const solutionsGroup = page.locator('footer nav[aria-label="Solutions"]');
-    await expect(solutionsGroup).toBeVisible();
+  // Rebuild v9 (2026-11-17): Products · Solutions · Demos · Insights · Company.
+  for (const group of PRIMARY_NAVIGATION.filter((g) => g.id !== "products")) {
+    test(`${group.id} group content`, async ({ page }) => {
+      const nav = page.locator(`footer nav[aria-label="${group.label}"]`);
+      await expect(nav).toBeVisible();
+      for (const item of group.children) {
+        const link = nav.getByRole("link", { name: item.label, exact: true });
+        await expect(link).toBeVisible();
+        await expect(link).toHaveAttribute("href", item.href);
+      }
+    });
+  }
 
-    const expectedSolutions = [
-      { label: "Digital & Web Systems", href: "/solutions/digital-web-systems" },
-      { label: "Workflow Automation", href: "/solutions/workflow-automation" },
-      { label: "Internal AI Assistants", href: "/solutions/internal-ai-assistants" },
-      { label: "Custom AI Product Development", href: "/solutions/custom-ai-product-development" },
-      { label: "AI Governance & Cost Control", href: "/solutions/ai-governance-cost-control" },
-      { label: "Managed Operations", href: "/managed-operations" },
-      { label: "How We Work", href: "/engagement-model" },
-    ];
-
-    for (const item of expectedSolutions) {
-      const link = solutionsGroup.getByRole("link", { name: item.label, exact: true });
-      await expect(link).toBeVisible();
-      await expect(link).toHaveAttribute("href", item.href);
-    }
-  });
-
-  test("research group content", async ({ page }) => {
-    const researchGroup = page.locator('footer nav[aria-label="Research"]');
-    await expect(researchGroup).toBeVisible();
-
-    const expectedResearch = [
-      { label: "Research", href: "/research" },
-      { label: "Answers", href: "/answers" },
-    ];
-
-    for (const item of expectedResearch) {
-      const link = researchGroup.getByRole("link", { name: item.label, exact: true });
-      await expect(link).toBeVisible();
-      await expect(link).toHaveAttribute("href", item.href);
-    }
-  });
-
-  test("company group content", async ({ page }) => {
-    const companyGroup = page.locator('footer nav[aria-label="Company"]');
-    await expect(companyGroup).toBeVisible();
-
-    const expectedCompany = [
-      { label: "Company", href: "/company" },
-      { label: "Careers", href: "/careers" },
-      { label: "Contact", href: "/contact" },
-    ];
-
-    for (const item of expectedCompany) {
-      const link = companyGroup.getByRole("link", { name: item.label, exact: true });
-      await expect(link).toBeVisible();
-      await expect(link).toHaveAttribute("href", item.href);
-    }
+  test("the footer groups follow the approved order", async ({ page }) => {
+    const labels = await page
+      .locator('footer[role="contentinfo"] nav[aria-label]')
+      .evaluateAll((navs) => navs.map((nav) => nav.getAttribute("aria-label")));
+    expect(labels.filter((l) => l !== "Legal")).toEqual(
+      expect.arrayContaining(["Products", "Solutions", "Demos", "Insights", "Company"]),
+    );
+    expect(PRIMARY_NAVIGATION.map((g) => g.label)).toEqual([
+      "Products",
+      "Solutions",
+      "Demos",
+      "Insights",
+      "Company",
+    ]);
   });
 
   test("footer CTA", async ({ page }) => {

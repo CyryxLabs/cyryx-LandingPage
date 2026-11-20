@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { X } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { CyryxMark, CyryxWordmark } from "./primitives/CyryxMark";
+import { CyryxWordmark } from "./primitives/CyryxMark";
 import { trackCta } from "@/lib/track-cta";
 import { cn } from "@/lib/utils";
 import {
@@ -166,7 +166,6 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
       <div className="relative flex min-h-full flex-col px-6 pt-[max(env(safe-area-inset-top),1.25rem)] pb-[max(env(safe-area-inset-bottom),2.5rem)]">
         <div className="flex items-center justify-between h-12 shrink-0">
           <div className="flex items-center gap-2.5">
-            <CyryxMark size={30} />
             <CyryxWordmark />
           </div>
           <button
@@ -190,11 +189,28 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
           >
             {PRIMARY_NAVIGATION.map((group) => {
               const isActive = activeGroup === group.id;
+              if (group.href) {
+                return (
+                  <Link
+                    key={group.id}
+                    to={group.href}
+                    resetScroll
+                    onClick={closeMenu}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "flex min-h-[44px] items-center py-5 font-sans text-base font-normal normal-case tracking-normal text-[var(--silver)] hover:text-white",
+                      isActive && "text-[var(--accent-glow)]",
+                    )}
+                  >
+                    {group.label}
+                  </Link>
+                );
+              }
               return (
                 <AccordionItem key={group.id} value={group.id} className="border-none">
                   <AccordionTrigger
                     className={cn(
-                      "hud-label text-[var(--silver)] hover:text-white py-5 min-h-[44px]",
+                      "font-sans text-base font-normal normal-case tracking-normal text-[var(--silver)] hover:text-white py-5 min-h-[44px]",
                       isActive && "text-[var(--accent-glow)]",
                       expandedGroup === group.id && "text-white",
                     )}
@@ -203,12 +219,13 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                   </AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-0.5 pb-2">
                     {group.children.map((item) => {
-                      const isItemActive = isNavigationItemActive(pathname, item.href);
+                      const isItemActive = isNavigationItemActive(pathname, item.href, item.hash);
                       return (
                         <Link
-                          key={item.href}
+                          key={`${item.href}#${item.hash ?? ""}`}
                           to={item.href}
-                          resetScroll
+                          hash={item.hash}
+                          resetScroll={!item.hash}
                           onClick={closeMenu}
                           className={cn(
                             "flex items-center min-h-[44px] px-4 py-3 rounded-md transition-colors",
@@ -217,7 +234,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                           )}
                           aria-current={isItemActive ? "page" : undefined}
                         >
-                          <span className="hud-label text-sm uppercase tracking-wider">
+                          <span className="font-sans text-sm font-normal text-[var(--silver)]">
                             {item.label}
                           </span>
                         </Link>
@@ -243,7 +260,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
               }}
               aria-current={isPrimaryNavigationCTAActive(pathname) ? "page" : undefined}
               className={cn(
-                "cx-btn cx-liquid-glass flex min-h-[44px] w-full items-center justify-center rounded-md hud-label text-[var(--silver)] transition-all",
+                "cx-btn cx-liquid-glass flex min-h-[44px] w-full items-center justify-center rounded-md font-sans text-base font-normal text-[var(--silver)] transition-all",
                 isPrimaryNavigationCTAActive(pathname)
                   ? "border-[var(--accent-glow)] text-white shadow-[0_0_12px_var(--accent-glow)]"
                   : "hover:text-white",

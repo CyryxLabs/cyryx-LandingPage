@@ -93,7 +93,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       {
         rel: "stylesheet",
-        href: `${appCss}?v=${BUILD_LABEL}`,
+        // Only the hashed production asset gets the version query. In development
+        // the URL is /src/styles.css, and Vite serves any `?v=` URL as immutable
+        // for a year, which pins a stale stylesheet in the browser while the
+        // markup keeps updating.
+        href: appCss.includes("/assets/") ? `${appCss}?v=${BUILD_LABEL}` : appCss,
       },
       {
         rel: "icon",
@@ -117,30 +121,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         sizes: "180x180",
         href: "/apple-touch-icon.png?v=20260723-1",
       },
-      {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
-      },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      },
-      // Preload BEFORE the stylesheet link so the font CSS request starts early.
-      // Trimmed weights to only what the hero/body actually render above the fold.
+      // Brand fonts are self-hosted (public/fonts): no third-party request on
+      // first paint. Only the two families used above the fold are preloaded.
       {
         rel: "preload",
-        as: "style",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/space-grotesk-latin-wght-normal.woff2",
         crossOrigin: "anonymous",
       },
       {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..600&family=Space+Grotesk:wght@500..700&display=swap",
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/inter-latin-wght-normal.woff2",
         crossOrigin: "anonymous",
       },
-      // Font files are discovered from the Google Fonts stylesheet. Avoid a
-      // version-specific direct preload URL, which can become stale upstream.
     ],
   }),
   shellComponent: RootShell,
@@ -163,6 +159,15 @@ function RootShell({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{
             __html:
               "(function(){try{var n=navigator,c=n.connection||n.mozConnection||n.webkitConnection,low=false;if(c){if(c.saveData)low=true;if(/^(slow-2g|2g|3g)$/.test(c.effectiveType||''))low=true;}if(typeof n.deviceMemory==='number'&&n.deviceMemory<4)low=true;if(low)document.documentElement.classList.add('cx-low-perf');}catch(e){}})();",
+          }}
+        />
+        {/* Arms the scroll-reveal hidden states in cy.css before first paint,
+            only when motion is welcome. If hydration never happens the class
+            is removed again so no content stays hidden. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var r=document.documentElement;if(r.classList.contains('cx-low-perf'))return;if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!('IntersectionObserver' in window))return;r.classList.add('cy-js');if(window.matchMedia('(min-width: 900px) and (min-height: 700px)').matches)r.classList.add('cy-pin');setTimeout(function(){if(!window.__cyMotionReady)r.classList.remove('cy-js','cy-pin');},8000);}catch(e){}})();",
           }}
         />
         {/* Defensive: unregister any legacy Service Worker that could pin

@@ -1,24 +1,30 @@
 import type { CopyDocument } from "./types";
 
-/** Copy shared by every hero variant. Only the hero promise changes between A and B. */
+/**
+ * Copy shared by every hero variant. Only the hero promise changes between A and B.
+ * Plain English on purpose: a visitor should know in five seconds what Cyryx
+ * builds, for whom, and what to click (positioning plan, 2026-10-19).
+ */
 export const SHARED_COPY: Omit<CopyDocument, "hero"> & {
-  heroBase: Omit<CopyDocument["hero"], "headline" | "sub">;
+  heroBase: Omit<CopyDocument["hero"], "headline">;
 } = {
   heroBase: {
-    eyebrow: "AI systems · Advise · Build · Control · Operate",
-    rail: ["Advise. Build.", "Control. Operate.", "From intent to action. From action to evidence."],
-    ctaPrimary: "Start a project",
-    ctaSecondary: "See how we work",
+    eyebrow: "Advise · Build · Control · Operate",
+    sub: "Cyryx Labs designs and builds websites, automations, custom software and AI for small businesses, growing companies and enterprises across the US and Latin America. Fixed timelines. A human in control of every AI decision.",
+    rail: ["Websites. Software.", "Automation. AI.", "One accountable team, start to finish."],
+    ctaPrimary: "Get a free fit check",
+    ctaSecondary: "See what we build",
+    trust: "Free 20-minute call · Written scope before work starts · English & Español",
     assistantNote: "Have a question first? Ask the Cyryx assistant. It answers in seconds.",
   },
   header: {
-    cta: "Start a project",
+    cta: "Get a free fit check",
   },
   finalCta: {
     eyebrow: "Start here",
-    headline: "What should AI be trusted to change in your business?",
-    body: "Tell us about the workflow, product or constraint. We will tell you whether AI belongs there, what it would take, and where to start: Advise, Build, Control or Operate. Sometimes the right answer is not to build.",
-    ctaPrimary: "Start a project",
+    headline: "Sometimes the right answer is not to build.",
+    body: "Let's find out in 20 minutes. Tell us what you want to build or fix — a website, an automation, software or AI — and we'll give you an honest answer and a clear next step.",
+    ctaPrimary: "Get a free fit check",
     ctaSecondary: "See how we work",
   },
 };

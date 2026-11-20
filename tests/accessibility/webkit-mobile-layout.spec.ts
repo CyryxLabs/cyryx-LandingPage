@@ -1,15 +1,17 @@
 import { expect, test } from "@playwright/test";
 
-// Homepage chapter order: 01 problem, 02 ways to engage, 03 how it runs,
-// 04 what you receive, 05 governance, 06 start.
+// Homepage section order of the rebuild v9 (2026-11-17).
 const HOME_SECTIONS = [
-  "execution-gap",
-  "operating-model",
-  "controlled-execution",
+  "paths",
+  "workflow",
+  "solutions",
+  "products",
   "evidence",
-  "security",
+  "delivery",
+  "company",
   "contact",
 ] as const;
+const REVEALS = ".cx-reveal, .cx-stagger-item, [data-hm-in]";
 
 function isTransparentColor(value: string) {
   const normalized = value.replaceAll(" ", "").toLowerCase();
@@ -32,15 +34,8 @@ test("Safari on iPhone gets the full experience, not the low-performance fallbac
   await expect(page.locator("html")).not.toHaveClass(/cx-low-perf/);
 
   const hero = page.locator("section[data-hero]");
-  await expect(hero.locator("[data-hero-sequence]")).toHaveAttribute(
-    "data-sequence-ready",
-    "true",
-    {
-      timeout: 30_000,
-    },
-  );
-  await expect(hero.locator(".cx-hero-sub")).toBeVisible();
-  await expect(hero.locator(".cx-hero-ctas")).toBeVisible();
+  await expect(hero.locator(".hm-hero-body")).toBeVisible();
+  await expect(hero.locator(".hm-ctas")).toBeVisible();
 
   for (const id of HOME_SECTIONS) {
     const section = page.locator(`#${id}`);
@@ -51,10 +46,13 @@ test("Safari on iPhone gets the full experience, not the low-performance fallbac
     await expect
       .poll(
         () =>
-          section.evaluate((element) =>
-            [...element.querySelectorAll<HTMLElement>(".cx-reveal, .cx-stagger-item")].every(
-              (item) => Number.parseFloat(getComputedStyle(item).opacity) >= 0.95,
-            ),
+          section.evaluate(
+            (element, sel) =>
+              [...element.querySelectorAll<HTMLElement>(sel)]
+                // Scroll reveals run per element: check what is on screen.
+                .filter((item) => item.getBoundingClientRect().top < window.innerHeight * 0.85)
+                .every((item) => Number.parseFloat(getComputedStyle(item).opacity) >= 0.95),
+            REVEALS,
           ),
         { message: `${id} reveals should finish in WebKit`, timeout: 15_000 },
       )
@@ -82,8 +80,8 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   await expect(page.locator("main")).not.toContainText(/MAAX/i);
   const primaryCta = page.locator('section[data-hero] a[data-cta="primary"]');
   await expect(primaryCta).toHaveAttribute("href", "/start?source=home");
-  const secondaryCtaLabel = page.locator('section[data-hero] a[data-cta="secondary"] > span');
-  await expect(secondaryCtaLabel).toHaveText("See how we work");
+  const secondaryCtaLabel = page.locator('section[data-hero] a[data-cta="secondary"]');
+  await expect(secondaryCtaLabel).toHaveText("Explore our products");
   const secondaryCtaColors = await secondaryCtaLabel.evaluate((element) => {
     const style = getComputedStyle(element);
     return {
@@ -106,10 +104,12 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
     await expect
       .poll(
         () =>
-          section.evaluate((element) =>
-            [...element.querySelectorAll<HTMLElement>(".cx-reveal, .cx-stagger-item")].every(
-              (item) => Number.parseFloat(getComputedStyle(item).opacity) >= 0.95,
-            ),
+          section.evaluate(
+            (element, sel) =>
+              [...element.querySelectorAll<HTMLElement>(sel)].every(
+                (item) => Number.parseFloat(getComputedStyle(item).opacity) >= 0.95,
+              ),
+            REVEALS,
           ),
         {
           message: `${id} should not leave invisible animation gaps in WebKit`,
@@ -128,8 +128,11 @@ test("Safari mobile keeps the homepage compact, visible, and scroll-safe on lowe
   expect(layout.scrollWidth, "Safari mobile must not overflow horizontally").toBeLessThanOrEqual(
     layout.clientWidth + 1,
   );
+  // Raised from 12,500 on 2026-10-19 (products, who we serve, the plan, FAQ)
+  // and from 14,000 on 2026-11-18: the v10 home adds the "what we do" chapter
+  // with its four panels. This is the page at rest (no scroll tracks). Keep it bounded.
   expect(layout.scrollHeight, "Homepage mobile storytelling should remain compact").toBeLessThan(
-    12_500,
+    16_000,
   );
 });
 

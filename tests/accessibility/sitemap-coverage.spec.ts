@@ -25,7 +25,6 @@ const EXCLUDED = new Set<string>([
 // a real page.
 const REDIRECT_ONLY = new Set<string>([
   // Compatibility aliases intentionally redirect to canonical solution routes.
-  "solutions.ai-integrations.tsx",
   "solutions.ai-product-engineering.tsx",
   "solutions.ai-websites-lead-systems.tsx",
   "solutions.applied-ai-systems.tsx",

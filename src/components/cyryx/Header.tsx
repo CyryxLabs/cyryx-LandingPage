@@ -64,10 +64,11 @@ export function Header() {
   return (
     <>
       <header
+        data-scrolled={scrolled ? "true" : "false"}
         className={cn(
           "cx-liquid-glass cx-site-header fixed inset-x-0 top-0 z-50 rounded-none border-x-0 border-t-0 transition-all duration-300",
           scrolled
-            ? "shadow-[0_1px_0_0_color-mix(in_oklab,var(--accent-glow)_18%,transparent)]"
+            ? "shadow-[0_1px_0_0_color-mix(in_oklab,var(--silver)_12%,transparent)]"
             : "shadow-none",
         )}
       >
@@ -77,7 +78,7 @@ export function Header() {
             className="-mx-1 inline-flex h-12 min-w-0 shrink-0 items-center px-1 lg:h-16"
             aria-label="Cyryx Labs — home"
           >
-            <CyryxLockup priority className="h-10 lg:h-14" />
+            <CyryxLockup priority className="h-7 lg:h-9" />
           </Link>
 
           <nav ref={navRef} className="hidden lg:flex items-center" aria-label="Primary">
@@ -131,11 +132,10 @@ export function Header() {
             className={cn(
               "cx-btn-primary cx-btn-sm hidden lg:inline-flex relative",
               isPrimaryNavigationCTAActive(pathname) &&
-                "after:absolute after:left-2 after:right-2 after:-bottom-2 after:h-px after:bg-[var(--accent-glow)] after:shadow-[0_0_6px_var(--accent-glow)]",
+                "after:absolute after:left-2 after:right-2 after:-bottom-2 after:h-px after:bg-[var(--accent-glow)]",
             )}
           >
             {PRIMARY_NAVIGATION_CTA.label}
-            <span aria-hidden>→</span>
           </Link>
 
           <button

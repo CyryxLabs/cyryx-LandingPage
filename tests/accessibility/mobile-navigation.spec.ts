@@ -50,7 +50,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     await expect(productsTrigger).toHaveAttribute("aria-expanded", "true");
 
     // 12. Exact Products labels and hrefs
-    await expect(nav.getByRole("link", { name: "Products Overview" })).toHaveAttribute(
+    await expect(nav.getByRole("link", { name: "All products" })).toHaveAttribute(
       "href",
       "/products",
     );
@@ -74,12 +74,16 @@ test.describe("Mobile Navigation Accessibility", () => {
     const solutionsTrigger = nav.getByRole("button", { name: /^Solutions$/ });
     await solutionsTrigger.click();
     const solutions = [
-      ["Digital & Web Systems", "/solutions/digital-web-systems"],
+      ["AI Strategy & Roadmap", "/solutions/ai-strategy-advisory"],
       ["Workflow Automation", "/solutions/workflow-automation"],
-      ["Internal AI Assistants", "/solutions/internal-ai-assistants"],
-      ["Custom AI Product Development", "/solutions/custom-ai-product-development"],
+      ["AI Agents & Assistants", "/solutions/internal-ai-assistants"],
+      ["AI Systems Integration", "/solutions/ai-integrations"],
+      ["AI Products & Custom Software", "/solutions/custom-ai-product-development"],
+      ["Data & Knowledge Systems", "/solutions/data-knowledge-systems"],
       ["AI Governance & Cost Control", "/solutions/ai-governance-cost-control"],
-      ["Managed Operations", "/managed-operations"],
+      ["Websites & AI Search Visibility", "/solutions/digital-web-systems"],
+      ["AI Training & Enablement", "/solutions/ai-training-enablement"],
+      ["Managed AI Operations", "/managed-operations"],
       ["How We Work", "/engagement-model"],
     ];
     for (const [label, href] of solutions) {
@@ -89,8 +93,12 @@ test.describe("Mobile Navigation Accessibility", () => {
       );
     }
 
-    // 14. Exact Research labels and hrefs
-    await nav.getByRole("button", { name: /^Research$/ }).click();
+    // 14. Insights holds Research and Answers; Demos is a direct link.
+    await expect(nav.getByRole("link", { name: "Demos", exact: true })).toHaveAttribute(
+      "href",
+      "/demos",
+    );
+    await nav.getByRole("button", { name: /^Insights$/ }).click();
     await expect(nav.getByRole("link", { name: "Research", exact: true })).toHaveAttribute(
       "href",
       "/research",
@@ -150,7 +158,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     const nav = getNav(page);
 
     // 20. CTA label and href
-    const cta = nav.getByRole("link", { name: "Start a project" });
+    const cta = nav.getByRole("link", { name: "Discuss your project" });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("href", "/start");
 
@@ -182,11 +190,11 @@ test.describe("Mobile Navigation Accessibility", () => {
     await expect(closeBtn).toBeFocused();
 
     // 25. Tab trap (forward)
-    // 4 groups + 1 CTA = 5 tabs to reach end if all closed
-    for (let i = 0; i < 5; i++) {
+    // 4 group triggers + the Demos link + 1 CTA = 6 tabs to reach the end
+    for (let i = 0; i < 6; i++) {
       await page.keyboard.press("Tab");
     }
-    const cta = nav.getByRole("link", { name: "Start a project" });
+    const cta = nav.getByRole("link", { name: "Discuss your project" });
     await expect(cta).toBeFocused();
 
     await page.keyboard.press("Tab");
@@ -210,7 +218,7 @@ test.describe("Mobile Navigation Accessibility", () => {
     for (let i = 0; i < 10; i++) {
       await page.keyboard.press("Tab");
       const active = await page.evaluate(() => document.activeElement?.textContent);
-      if (active?.includes("AEXOS") || active?.includes("Products Overview")) {
+      if (active?.includes("AEXOS") || active?.includes("All products")) {
         foundHiddenLink = true;
       }
     }

@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./styles/cy.css";
+@import "./styles/home.css";
+@import "./styles/home-cinema.css";
+@import "./styles/footer.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -115,8 +119,7 @@
 
   /* Governed typography exception: InternalHero H1 only. Body, UI, and all
    * other display surfaces remain on the locked Space Grotesk / Inter stack. */
-  --font-editorial-hero:
-    "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-editorial-hero: "Space Grotesk", "Inter", system-ui, sans-serif;
 
   /* Semantic tokens (dark only) */
   --background: var(--onyx);
@@ -493,7 +496,6 @@ html.cx-low-perf .glass-panel {
   max-width: 15ch;
   margin-inline: auto;
 }
-
 
 .cx-hero-media {
   filter: saturate(0.86) contrast(1.08) brightness(0.78);
@@ -1291,17 +1293,16 @@ html.cx-low-perf .cx-liquid-glass {
   padding: 0.75rem 1rem;
   background: var(--accent-glow);
   color: #000;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
   transform: translateY(-110%);
   transition: transform 0.2s ease;
 }
 .skip-link:focus,
 .skip-link:focus-visible {
   transform: translateY(0);
-  outline: 2px solid #000;
+  outline: 2px solid var(--silver);
   outline-offset: 2px;
 }
 
@@ -1800,11 +1801,11 @@ html.cx-low-perf .cx-sticky-cta {
     gap: 0.5rem;
     border-radius: 6px;
     padding: 0.75rem 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 12px;
+    font-family: var(--font-sans);
+    font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     white-space: nowrap;
     transition:
       background-color 160ms ease,
@@ -1816,7 +1817,6 @@ html.cx-low-perf .cx-sticky-cta {
   .cx-btn-primary {
     background: var(--accent-glow);
     color: var(--onyx);
-    box-shadow: 0 12px 32px -14px color-mix(in oklab, var(--accent-glow) 70%, transparent);
   }
 
   .cx-btn-primary:hover {
@@ -1843,7 +1843,7 @@ html.cx-low-perf .cx-sticky-cta {
   .cx-btn-sm {
     min-height: 44px;
     padding: 0.6rem 1.1rem;
-    font-size: 12px;
+    font-size: 15px;
   }
 
   @media (max-width: 639px) {
@@ -1857,6 +1857,13 @@ html.cx-low-perf .cx-sticky-cta {
 /* Header: opaque enough that content never reads through it while scrolling. */
 .cx-site-header {
   background: color-mix(in oklab, var(--onyx) 90%, transparent) !important;
+}
+
+/* Header (Hallmark redesign 2026-11-06): one neutral hairline, no teal glow on hover. */
+.cx-site-header,
+.cx-site-header:hover {
+  border-color: color-mix(in oklab, var(--silver) 12%, transparent);
+  box-shadow: none;
 }
 
 /* Execution trace (hero) */
@@ -2803,4 +2810,13 @@ html.cx-low-perf .cx-internal-hero .cx-internal-hero-media {
    bleed through while scrolling. Keep it nearly opaque there. */
 html.cx-low-perf .cx-site-header {
   background: color-mix(in oklab, var(--onyx) 97%, transparent) !important;
+}
+
+/* Hero promise — proof split: the clause after the dash reads one step quieter. */
+.cx-hero-title-tail {
+  margin-top: 0.35em;
+  font-size: 0.56em;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }

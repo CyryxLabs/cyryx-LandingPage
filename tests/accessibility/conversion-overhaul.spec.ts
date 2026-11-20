@@ -36,17 +36,18 @@ test("discontinued /products/maax-studio permanently redirects to /products", as
   expect(await destination.text()).not.toMatch(/MAAX/);
 });
 
-test("homepage hero carries the registered headline and the project CTA", async ({ page }) => {
+test("homepage hero carries the approved headline and the primary CTA", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await openHome(page);
 
   const heading = page.locator("#hero-heading");
   const primary = page.locator('section[data-hero] a[data-cta="primary"]');
-  await expect(heading).toHaveText("The execution layer for enterprise AI.");
-  await expect(primary).toHaveText(/Start a project/);
+  // Rebuild v9 (2026-11-17): products and automation, one primary action.
+  await expect(heading).toHaveText("AI products and automation. Built for the way you work.");
+  await expect(primary).toHaveText(/Discuss your project/);
   await expect(primary).toHaveAttribute("href", "/start?source=home");
-  // The approved scroll scene is kept: phones read the copy after the film.
-  await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(1);
+  // The monolith film was retired on 2026-11-06: no scroll scene on the home.
+  await expect(page.locator("[data-hero-scroll-scene]")).toHaveCount(0);
 });
 
 test("a CTA click reaches the CRM as a signed funnel event without personal data", async ({
@@ -116,7 +117,10 @@ test("the careers talent form reaches the CRM as a signed introduction, not a le
   ).toBe(false);
 });
 
-test("retired console and hosting URLs redirect instead of failing", async ({ baseURL, request }) => {
+test("retired console and hosting URLs redirect instead of failing", async ({
+  baseURL,
+  request,
+}) => {
   for (const path of ["/auth", "/workspace", "/workspace/pipeline"]) {
     const response = await request.get(`${baseURL}${path}`, { maxRedirects: 0 });
     expect(response.status()).toBe(308);
@@ -158,9 +162,9 @@ test("/start two-step brief ends with the instant first read and a structured v2
   await expectPageHydrated(page);
 
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Tell us what you want AI to change.",
+    "Tell us what you want to build or fix.",
   );
-  await expect(page).toHaveTitle("Start a Project — Cyryx Labs");
+  await expect(page).toHaveTitle("Get a Free AI Fit Check | Cyryx Labs");
   await expect(page.getByLabel("What kind of work?")).toHaveValue("Workflow Automation");
 
   await page.getByLabel("Full name").fill("Ada Lovelace");
@@ -244,15 +248,13 @@ test("/start two-step brief ends with the instant first read and a structured v2
   });
 });
 
-test("assistant opens from the hero, streams an answer, and hands off to the team", async ({
+test("assistant opens from the launcher, streams an answer, and hands off to the team", async ({
   page,
 }) => {
-  await openHome(page);
-  const hero = page.locator("section[data-hero]");
+  await page.goto("/products", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
 
-  const entry = hero.getByRole("button", {
-    name: "Have a question first? Ask the Cyryx assistant. It answers in seconds.",
-  });
+  const entry = page.getByRole("button", { name: "Ask Cyryx" });
   await expect(entry).toBeVisible();
   await entry.click();
 
@@ -261,10 +263,12 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
   await expect(panel.getByLabel("Your question")).toBeFocused();
 
   const assistantResponse = page.waitForResponse("**/api/public/assistant");
-  await panel.getByRole("button", { name: "Where should we start?" }).click();
+  await panel.getByRole("button", { name: "Which service fits my problem?" }).click();
   expect((await assistantResponse).status()).toBe(200);
 
-  await expect(panel.locator(".cx-assistant-msg--user")).toHaveText("Where should we start?");
+  await expect(panel.locator(".cx-assistant-msg--user")).toHaveText(
+    "Which service fits my problem?",
+  );
   await expect(panel.locator(".cx-assistant-msg").last()).toContainText("Advise", {
     timeout: 15_000,
   });
@@ -272,7 +276,9 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
     "Want to tell me about yours?",
   );
   // Suggestions are only offered on an empty thread.
-  await expect(panel.getByRole("button", { name: "Where should we start?" })).toHaveCount(0);
+  await expect(panel.getByRole("button", { name: "Which service fits my problem?" })).toHaveCount(
+    0,
+  );
 
   await panel.getByRole("button", { name: "Talk to the team" }).click();
   await expect(
@@ -281,7 +287,7 @@ test("assistant opens from the hero, streams an answer, and hands off to the tea
   await expect(panel.getByLabel("Name", { exact: true })).toBeVisible();
   await expect(panel.getByLabel("Work email")).toBeVisible();
   await expect(panel.getByLabel("What do you want to change?")).toHaveValue(
-    "Where should we start?",
+    "Which service fits my problem?",
   );
   await expect(panel.getByRole("button", { name: "Send to the team" })).toBeVisible();
 });
@@ -330,25 +336,30 @@ test("closing the assistant with Escape returns focus to the control that opened
   await expect(page.getByRole("button", { name: "Ask Cyryx" })).toBeFocused();
 });
 
-test("?copy=v4b renders hero option B and ?copy=v4a restores the default", async ({ page }) => {
+// The ?copy= hero variants (v4a, v4b, v5) were retired with the 2026-11-13
+// site: the home hero has one approved headline. The parameter is still read
+// for lead attribution only, so it must never change what the page says.
+test("?copy= no longer changes the home hero", async ({ page }) => {
   await openHome(page, "/?copy=v4b");
   await expect(page.locator("#hero-heading")).toHaveText(
-    "Put AI to work in your operations, without losing control of it.",
+    "AI products and automation. Built for the way you work.",
   );
-  await expect(page.locator("section[data-hero]")).toContainText(
-    "Cyryx Labs builds agents, automations and internal assistants",
-  );
-  await expect(page.locator('section[data-hero] a[data-cta="primary"]')).toHaveText(
-    /Start a project/,
-  );
-
-  // The choice is pinned in this browser...
-  await openHome(page, "/");
-  await expect(page.locator("#hero-heading")).toHaveText(
-    "Put AI to work in your operations, without losing control of it.",
-  );
-
-  // ...until the visitor opts back into the default.
-  await openHome(page, "/?copy=v4a");
-  await expect(page.locator("#hero-heading")).toHaveText("The execution layer for enterprise AI.");
 });
+
+test("the contact form reaches the CRM and confirms on the page", async ({ page }) => {
+  await page.goto("/contact", { waitUntil: "domcontentloaded" });
+  await expectPageHydrated(page);
+  const form = page.getByRole("form", { name: "Contact form" });
+  await form.getByLabel("Name").fill("Jordan Rivera");
+  await form.getByLabel("Work email").fill("jordan@example.com");
+  await form.getByLabel("Company").fill("Example Logistics");
+  await form.getByLabel("How can we help?").fill("We want to automate invoice intake.");
+  await form.getByRole("checkbox").check();
+  const response = page.waitForResponse("**/api/public/contact");
+  await form.getByRole("button", { name: "Send message" }).click();
+  expect((await response).status()).toBe(200);
+  await expect(page.getByText("Message received.")).toBeVisible();
+});
+
+// The readiness check left the home with the rebuild v9 (2026-11-17); the home
+// close now hands an intent to /start, covered in home-hero.spec.ts.

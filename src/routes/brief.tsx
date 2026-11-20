@@ -143,7 +143,7 @@ function BriefPage() {
               </div>
               <p className="max-w-2xl text-base leading-relaxed text-[var(--silver-dim)] sm:text-lg">
                 Vague scope, unstated assumptions and missing people are what make projects late and
-                expensive. Fifteen minutes here saves weeks later.
+                expensive. Fifteen minutes here saves rework later.
               </p>
             </div>
             <div className="mt-12 grid gap-4 md:grid-cols-3">
